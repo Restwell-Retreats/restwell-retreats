@@ -28,6 +28,19 @@ function restwell_disable_emoji_scripts() {
 add_action( 'init', 'restwell_disable_emoji_scripts', 1 );
 
 /**
+ * Disable WordPress 6.8+ speculation-rules prefetch (footer inline script).
+ *
+ * Core prints <script type="speculationrules"> via wp_print_speculation_rules(), which
+ * triggers CSP script-src-elem in report-only mode and is not needed for this theme.
+ *
+ * @see wp_get_speculation_rules_configuration() Returning null disables the script.
+ */
+function restwell_disable_speculation_rules() {
+	add_filter( 'wp_speculation_rules_configuration', '__return_null' );
+}
+add_action( 'init', 'restwell_disable_speculation_rules', 1 );
+
+/**
  * Omit the WordPress generator meta tag (minor version disclosure reduction).
  */
 function restwell_remove_version_generator() {

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ruleset name="Restwell Retreats">
+	<description>WordPress Coding Standards for the Restwell theme (restwell-theme/).</description>
+
+	<file>restwell-theme</file>
+
+	<arg name="extensions" value="php"/>
+	<arg value="psn"/>
+	<arg name="colors"/>
+
+	<config name="minimum_wp_version" value="6.4"/>
+	<config name="testVersion" value="7.4-"/>
+	<config name="text_domain" value="restwell-retreats"/>
+	<config name="prefix" value="restwell"/>
+
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>restwell-theme/assets/css/tailwind.css</exclude-pattern>
+	<exclude-pattern>*/package-lock.json</exclude-pattern>
+
+	<rule ref="WordPress-Extra"/>
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

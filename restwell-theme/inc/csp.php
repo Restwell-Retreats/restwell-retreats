@@ -87,7 +87,7 @@ function restwell_build_csp_directives() {
 		'script-src ' . implode( ' ', $script_src ),
 		"style-src 'self' 'unsafe-inline'",
 		"img-src 'self' data: https:",
-		"font-src 'self'",
+		"font-src 'self' data:",
 		'connect-src ' . implode( ' ', $connect_src ),
 		"frame-ancestors 'none'",
 		"base-uri 'self'",

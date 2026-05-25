@@ -1,0 +1,23 @@
+{
+	"name": "restwell/restwell-retreats",
+	"description": "Restwell Retreats monorepo — WordPress theme and CRM",
+	"type": "project",
+	"license": "proprietary",
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.7",
+		"wp-coding-standards/wpcs": "^3.0",
+		"phpcompatibility/phpcompatibility-wp": "^2.1"
+	},
+	"scripts": {
+		"phpcs": "phpcs",
+		"phpcbf": "phpcbf"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"sort-packages": true
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true
+}

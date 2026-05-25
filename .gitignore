@@ -1,6 +1,10 @@
 # Dependencies
 **/node_modules
 .pnpm-store/
+/vendor/
+
+# Allow PHPCS ruleset despite *.dist ignore below
+!phpcs.xml.dist
 
 # Build outputs
 dist/
@@ -130,8 +134,3 @@ vite.config.ts
 ideas.md
 SEO_Web_Development.md
 respite_care_guide.md
-*.md
-!restwell-theme/DESIGN-SYSTEM.md
-!restwell-theme/VISUAL-FRONTEND-AUDIT.md
-!restwell-theme/SEO-INTENT-ONPAGE-PLAN.md
-!restwell-theme/SEO-PROGRESS-MATRIX.md
