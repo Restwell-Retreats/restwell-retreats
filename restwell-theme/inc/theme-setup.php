@@ -589,9 +589,9 @@ function restwell_get_enquire_page_defaults() {
 		'enq_intro'   => 'Fill in the form and we\'ll call you back within 48 hours. No commitment, no hard sell: just a conversation.',
 
 		'enq_form_heading'        => 'Tell us about your stay',
-		'enq_success_heading'     => 'Thank you. We\'ll be in touch.',
-		'enq_success_body'        => 'We will call you back within 48 hours to discuss your enquiry. If you would prefer an email response, just let us know.',
-		'enq_success_urgent_body' => 'As you\'ve indicated this is time-sensitive, we will aim to respond as quickly as possible.',
+		'enq_success_heading'     => 'Thank you — we have your enquiry.',
+		'enq_success_body'        => 'We usually respond within one to two working days (often sooner), using your preferred contact method where you have told us one. If your dates are tight, say so in your message and we will prioritise a quick first reply.',
+		'enq_success_urgent_body' => 'You marked this as time-sensitive. We will prioritise your request and aim to respond within one working day where possible, using your preferred contact method.',
 
 		'enq_contact_heading' => 'Other ways to reach us',
 		'enq_email'            => 'hello@restwellretreats.co.uk',
@@ -637,7 +637,7 @@ function restwell_get_guest_guide_page_defaults() {
 	return array(
 		'gg_checkin_time'    => '2:00 pm',
 		'gg_checkout_time'   => '11:00 am',
-		'gg_house_rules'     => "Please treat the property with care; it is someone's home.\nNo smoking anywhere inside the property.\nPets are welcome, including assistance dogs. Please keep pets off the furniture.\nPlease lock all doors and close all windows when you go out.\nReport any damages as soon as possible.",
+		'gg_house_rules'     => "Please treat the property with care; it is someone's home.\nNo smoking anywhere inside the property.\nDogs are allowed, subject to risk assessment and prior notice. Please keep dogs off the furniture.\nPlease lock all doors and close all windows when you go out.\nReport any damages as soon as possible.",
 		'gg_departure_notes' => "Strip the beds and leave used linen in the laundry room.\nPlace all rubbish in the bins provided.\nReturn all keys and fobs to the key safe (location shared on arrival).\nClose all windows and lock all doors.\nLeave the property in a tidy condition. Thank you!",
 		'gg_parking_info'    => "Two off-road spaces on the private driveway at the property—enough room for most cars and adapted vehicles if you deploy ramps thoughtfully.\nIf you are bringing more than two cars, you can usually park on the road outside. There is no residents permit scheme on this road, and we have not seen time-limited bay controls here—please still check any street signs when you arrive in case local rules change.",
 		'gg_local_info'      => "Whitstable town centre is approximately 15 minutes on foot via a flat, paved route.\nTankerton promenade is about 15 minutes away on foot. The promenade itself is wide, level, and fully surfaced, suitable for wheelchairs and powerchairs. The grassy slopes above it are steep, so stick to the paved path along the seafront. Free parking is available along Marine Parade at the top.\nTesco Extra (Whitstable) is a 7-minute drive and has accessible parking, automatic doors, and a wheelchair-friendly layout.\nWheelchair and equipment hire is available locally; we can share details of trusted suppliers before your stay. Just ask.",
@@ -1310,7 +1310,7 @@ function restwell_get_terms_conditions_content(): string {
 <p>The property includes a ceiling track hoist, profiling bed, wet room, and other accessibility features. Please use all equipment safely and only for its intended purpose. Report any fault or problem to us immediately so we can resolve it promptly. Equipment must be left in the condition and position in which it was found.</p>
 
 <h2>Assistance dogs</h2>
-<p>Assistance dogs are welcome. Please let us know in advance so we can ensure everything is ready for your stay.</p>
+<p>Dogs are allowed, subject to risk assessment and prior notice.</p>
 
 <h2>Smoking and vaping</h2>
 <p>Smoking and vaping are not permitted inside the property. If you smoke, please do so outside and dispose of waste safely.</p>

@@ -287,7 +287,7 @@ add_action( 'restwell_gg_dispatch_scheduled', 'restwell_gg_process_scheduled_dis
  * Handle "Add guest" form submission.
  */
 function restwell_gg_handle_add_guest() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! restwell_crm_can_manage() ) {
 		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
 	}
 	check_admin_referer( 'restwell_gg_add_guest' );
@@ -318,7 +318,7 @@ add_action( 'admin_post_restwell_gg_add_guest', 'restwell_gg_handle_add_guest' )
  * Handle "Delete guest" form submission.
  */
 function restwell_gg_handle_delete_guest() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! restwell_crm_can_manage() ) {
 		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
 	}
 	check_admin_referer( 'restwell_gg_delete_guest' );
@@ -342,7 +342,7 @@ add_action( 'admin_post_restwell_gg_delete_guest', 'restwell_gg_handle_delete_gu
  * Handle "Send now" / "Resend" form submission.
  */
 function restwell_gg_handle_send_now() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! restwell_crm_can_manage() ) {
 		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
 	}
 	check_admin_referer( 'restwell_gg_send_now' );
@@ -372,7 +372,7 @@ add_action( 'admin_post_restwell_gg_send_now', 'restwell_gg_handle_send_now' );
  * Handle "Save CC emails" form submission.
  */
 function restwell_gg_handle_save_cc() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! restwell_crm_can_manage() ) {
 		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
 	}
 	check_admin_referer( 'restwell_gg_save_cc' );
@@ -406,8 +406,8 @@ add_action( 'admin_post_restwell_gg_save_cc', 'restwell_gg_handle_save_cc' );
  * Render the Guest Guide settings page.
  */
 function restwell_guest_guide_settings_page() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'You do not have permission to access this page.', 'restwell-retreats' ), '', array( 'response' => 403 ) );
 	}
 
 	$guests     = restwell_gg_get_guests();
@@ -638,8 +638,41 @@ function restwell_is_approved_email( $email ): bool {
 // =============================================================================
 
 /**
+ * Per-email issuance throttle for OTP requests.
+ *
+ * Complements the per-IP throttle (`restwell_form_rate_limit_exceeded()`):
+ * the IP guard stops a single attacker, this guard stops a distributed
+ * email-bomb attack on one specific guest's inbox. Capped at 5 issuances
+ * per hour per email by default — well above what a real guest needs even
+ * with retries, far below what an attacker would need for abuse.
+ *
+ * Counter increments on every call (matching the per-IP helper's contract),
+ * so simply *checking* the throttle uses a slot. Always call this immediately
+ * before issuing an OTP, never speculatively.
+ *
+ * @param string $email  Email address (will be lower-cased / trimmed for keying).
+ * @param int    $max    Max issuances per window. Default 5.
+ * @param int    $window Window length in seconds. Default 1 hour.
+ * @return bool True when the limit has been exceeded (caller must block).
+ */
+function restwell_guide_otp_email_throttled( string $email, int $max = 5, int $window = HOUR_IN_SECONDS ): bool {
+	$key   = 'rw_otp_email_' . md5( strtolower( trim( $email ) ) );
+	$count = (int) get_transient( $key );
+	if ( $count >= $max ) {
+		return true;
+	}
+	set_transient( $key, $count + 1, $window );
+	return false;
+}
+
+/**
  * Generate a 6-digit OTP, persist it as a 30-minute WordPress transient,
  * and send it to the guest via wp_mail().
+ *
+ * Note: this function does NOT enforce rate limits. Callers are responsible
+ * for checking `restwell_form_rate_limit_exceeded( 'guide_otp', ... )` and
+ * `restwell_guide_otp_email_throttled()` before calling, so that legitimate
+ * non-public callers (admin tooling, future cron jobs) can bypass throttles.
  *
  * @param string $email Verified approved email address.
  */

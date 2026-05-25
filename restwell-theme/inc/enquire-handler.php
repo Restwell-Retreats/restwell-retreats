@@ -47,6 +47,38 @@ function restwell_validate_enquiry_dates( string $date_from, string $date_to ): 
 }
 
 /**
+ * Render Y-m-d date pair as the human-readable `preferred_dates` string we store
+ * on the enquiry row ("12 Mar 2026 - 15 Mar 2026", or "12 Mar 2026" for either
+ * a start- or end-only value, or "" if neither is set).
+ *
+ * Centralising this means the public form (initial submission) and the admin
+ * detail page (post-hoc edits) produce byte-identical strings — so the listing
+ * column, CSV export, and any future filters never go out of sync.
+ *
+ * Note: end-only is rendered as a single date because the admin form lets a
+ * staff member set just an end date (e.g. "guest is leaving on the 15th, start
+ * TBC"). That input never reaches the public form, but if it ever does (custom
+ * theme hack, manipulated POST), we still surface it rather than silently
+ * dropping the data.
+ *
+ * @param string $date_from Y-m-d or empty.
+ * @param string $date_to   Y-m-d or empty.
+ * @return string
+ */
+function restwell_format_enquiry_date_range( string $date_from, string $date_to ): string {
+	if ( '' !== $date_from && '' !== $date_to ) {
+		return gmdate( 'j M Y', strtotime( $date_from ) ) . ' - ' . gmdate( 'j M Y', strtotime( $date_to ) );
+	}
+	if ( '' !== $date_from ) {
+		return gmdate( 'j M Y', strtotime( $date_from ) );
+	}
+	if ( '' !== $date_to ) {
+		return gmdate( 'j M Y', strtotime( $date_to ) );
+	}
+	return '';
+}
+
+/**
  * Redirect back to the enquiry form with validation messages and field values.
  *
  * @param string               $redirect Base URL.
@@ -135,6 +167,7 @@ function restwell_handle_enquire_submit(): void {
 	$access       = isset( $_POST['enq_accessibility'] ) ? sanitize_textarea_field( wp_unslash( $_POST['enq_accessibility'] ) ) : '';
 	$funding      = isset( $_POST['enq_funding'] ) ? sanitize_key( wp_unslash( $_POST['enq_funding'] ) ) : '';
 	$urgent       = ! empty( $_POST['enq_urgent'] );
+	$marketing_optin = ! empty( $_POST['enq_marketing_optin'] );
 	$contact_pref = isset( $_POST['enq_contact_preference'] ) ? sanitize_key( wp_unslash( $_POST['enq_contact_preference'] ) ) : '';
 	$pref_time    = isset( $_POST['enq_preferred_time'] ) ? sanitize_key( wp_unslash( $_POST['enq_preferred_time'] ) ) : '';
 
@@ -150,6 +183,7 @@ function restwell_handle_enquire_submit(): void {
 		'enq_accessibility'      => $access,
 		'enq_funding'            => $funding,
 		'enq_urgent'             => $urgent ? '1' : '',
+		'enq_marketing_optin'    => $marketing_optin ? '1' : '',
 		'enq_contact_preference' => $contact_pref,
 		'enq_preferred_time'     => $pref_time,
 	);
@@ -181,9 +215,8 @@ function restwell_handle_enquire_submit(): void {
 	}
 
 	// Normalise dates for storage: blank invalid pairs already rejected.
-	$dates = $date_from && $date_to
-		? gmdate( 'j M Y', strtotime( $date_from ) ) . ' - ' . gmdate( 'j M Y', strtotime( $date_to ) )
-		: ( $date_from ? gmdate( 'j M Y', strtotime( $date_from ) ) : '' );
+	// Shared helper so admin date edits (inc/crm.php) produce identical strings.
+	$dates = restwell_format_enquiry_date_range( $date_from, $date_to );
 
 	$body = "Name: $name\nEmail: $email\n";
 	if ( $phone ) {
@@ -207,6 +240,7 @@ function restwell_handle_enquire_submit(): void {
 	if ( $urgent ) {
 		$body .= "\n*** URGENT - prioritised callback requested ***\n";
 	}
+	$body .= "\nMarketing updates consent: " . ( $marketing_optin ? 'Yes (opted in)' : 'No (not opted in)' ) . "\n";
 	if ( $care ) {
 		$body .= "\nCare requirements:\n$care\n";
 	}
@@ -230,9 +264,13 @@ function restwell_handle_enquire_submit(): void {
 		'pref_time'    => $pref_time,
 		'message'      => $message,
 		'urgent'       => $urgent,
+		'marketing_optin' => $marketing_optin,
 	);
 
-	$enquiry_id = restwell_crm_save_enquiry( $crm_data );
+	$crm_result   = restwell_crm_save_enquiry( $crm_data );
+	$enquiry_id   = $crm_result['id'] ?? false;
+	$is_duplicate = $crm_result['is_duplicate'] ?? false;
+
 	if ( ! $enquiry_id ) {
 		// Rare DB failure: still email staff the payload so nothing is lost.
 		$to      = restwell_get_submission_notify_email();
@@ -246,6 +284,35 @@ function restwell_handle_enquire_submit(): void {
 			),
 			$fields_flash
 		);
+	}
+
+	if ( $is_duplicate ) {
+		// Visitor re-submitted the same form within 30 minutes — silently succeed
+		// without spamming staff or the guest with duplicate emails.
+		if ( function_exists( 'restwell_crm_add_note' ) ) {
+			restwell_crm_add_note(
+				$enquiry_id,
+				__( 'Automated note: duplicate submit suppressed (same email within 30 minutes). No emails sent.', 'restwell-retreats' )
+			);
+		}
+		wp_safe_redirect( add_query_arg( array( 'sent' => '1' ), $redirect ) . '#enquiry-result' );
+		exit;
+	}
+
+	if ( $marketing_optin ) {
+		$mailchimp_ok = restwell_mailchimp_upsert_marketing_contact(
+			$email,
+			$name,
+			$phone,
+			'enquire',
+			array( 'enquiry-form' )
+		);
+		if ( ! $mailchimp_ok && function_exists( 'restwell_crm_add_note' ) ) {
+			restwell_crm_add_note(
+				$enquiry_id,
+				__( 'Automated note: marketing opt-in was recorded, but Mailchimp sync failed. Please retry from CRM if needed.', 'restwell-retreats' )
+			);
+		}
 	}
 
 	$to      = restwell_get_submission_notify_email();

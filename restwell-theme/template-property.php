@@ -269,7 +269,6 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- Your home for the week (3 feature cards) -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]">
 		<div class="container">
 			<?php if ( $prop_home_label !== '' ) : ?>
@@ -293,7 +292,6 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- Designed for dignity and comfort -->
 	<section class="rw-section-y bg-[var(--soft-sand)] overflow-hidden">
 		<div class="container">
 			<div class="grid md:grid-cols-2 gap-0 items-stretch max-w-6xl mx-auto">
@@ -319,7 +317,7 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- Adapted property highlights: icons align to prop_feature_1…8 defaults in theme-setup (order matters if CMS copy changes). -->
+	<?php // Feature icons align 1:1 with prop_feature_1…8 defaults in theme-setup.php — order matters if CMS copy changes. ?>
 	<section class="rw-section-y bg-[var(--bg-subtle)]">
 		<div class="container">
 			<div class="rw-section-head rw-section-head--center">
@@ -347,8 +345,7 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- Accessibility you can rely on -->
-<section class="rw-section-y bg-white">
+	<section class="rw-section-y bg-white">
 		<div class="container">
 			<div class="max-w-5xl mx-auto rw-stack rw-stack--loose">
 			<div class="rw-section-head rw-section-head--center max-w-3xl mx-auto text-center">
@@ -390,7 +387,6 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- Why not just an accessible hotel? -->
 	<section class="rw-section-y bg-[var(--soft-sand)]">
 		<div class="container">
 			<div class="rw-section-head rw-section-head--center rw-section-head--wide text-center">
@@ -437,7 +433,6 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- See the space -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]">
 		<div class="container">
 			<?php if ( $prop_gallery_label !== '' ) : ?>
@@ -450,14 +445,40 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 				'Private garden with level patio and coastal plants',
 				'Tankerton promenade at golden hour',
 			);
-			$src1 = $prop_gallery_1 ? wp_get_attachment_image_url( $prop_gallery_1, 'large' ) : '';
-			$src2 = $prop_gallery_2 ? wp_get_attachment_image_url( $prop_gallery_2, 'large' ) : '';
-			$src3 = $prop_gallery_3 ? wp_get_attachment_image_url( $prop_gallery_3, 'large' ) : '';
+			$gallery_image_attrs = array(
+				array(
+					'id'    => $prop_gallery_1,
+					'alt'   => $alts[0],
+					'sizes' => '(max-width: 639px) 100vw, (max-width: 1024px) 66vw, 768px',
+				),
+				array(
+					'id'    => $prop_gallery_2,
+					'alt'   => $alts[1],
+					'sizes' => '(max-width: 639px) 100vw, (max-width: 1024px) 33vw, 384px',
+				),
+				array(
+					'id'    => $prop_gallery_3,
+					'alt'   => $alts[2],
+					'sizes' => '(max-width: 639px) 100vw, (max-width: 1024px) 33vw, 384px',
+				),
+			);
 			?>
 			<div class="prop-gallery-grid max-w-6xl mx-auto">
 			<figure class="gallery-item gallery-main m-0">
-				<?php if ( $src1 ) : ?>
-					<img src="<?php echo esc_url( $src1 ); ?>" alt="<?php echo esc_attr( $alts[0] ); ?>" />
+				<?php if ( $gallery_image_attrs[0]['id'] && wp_attachment_is_image( $gallery_image_attrs[0]['id'] ) ) : ?>
+					<?php
+					echo wp_get_attachment_image(
+						$gallery_image_attrs[0]['id'],
+						'large',
+						false,
+						array(
+							'alt'      => $gallery_image_attrs[0]['alt'],
+							'loading'  => 'lazy',
+							'decoding' => 'async',
+							'sizes'    => $gallery_image_attrs[0]['sizes'],
+						)
+					);
+					?>
 				<?php else : ?>
 					<div class="gallery-placeholder">
 						<span class="flex flex-col items-center gap-2 text-[var(--muted-grey)]">
@@ -468,8 +489,20 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 				<?php endif; ?>
 			</figure>
 			<figure class="gallery-item m-0">
-				<?php if ( $src2 ) : ?>
-					<img src="<?php echo esc_url( $src2 ); ?>" alt="<?php echo esc_attr( $alts[1] ); ?>" />
+				<?php if ( $gallery_image_attrs[1]['id'] && wp_attachment_is_image( $gallery_image_attrs[1]['id'] ) ) : ?>
+					<?php
+					echo wp_get_attachment_image(
+						$gallery_image_attrs[1]['id'],
+						'large',
+						false,
+						array(
+							'alt'      => $gallery_image_attrs[1]['alt'],
+							'loading'  => 'lazy',
+							'decoding' => 'async',
+							'sizes'    => $gallery_image_attrs[1]['sizes'],
+						)
+					);
+					?>
 				<?php else : ?>
 					<div class="gallery-placeholder">
 						<span class="flex flex-col items-center gap-2 text-[var(--muted-grey)]">
@@ -480,8 +513,20 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 			<?php endif; ?>
 		</figure>
 		<figure class="gallery-item m-0">
-			<?php if ( $src3 ) : ?>
-				<img src="<?php echo esc_url( $src3 ); ?>" alt="<?php echo esc_attr( $alts[2] ); ?>" />
+			<?php if ( $gallery_image_attrs[2]['id'] && wp_attachment_is_image( $gallery_image_attrs[2]['id'] ) ) : ?>
+				<?php
+				echo wp_get_attachment_image(
+					$gallery_image_attrs[2]['id'],
+					'large',
+					false,
+					array(
+						'alt'      => $gallery_image_attrs[2]['alt'],
+						'loading'  => 'lazy',
+						'decoding' => 'async',
+						'sizes'    => $gallery_image_attrs[2]['sizes'],
+					)
+				);
+				?>
 			<?php else : ?>
 				<div class="gallery-placeholder">
 					<span class="flex flex-col items-center gap-2 text-[var(--muted-grey)]">
@@ -516,7 +561,6 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- The essentials -->
 	<section class="rw-section-y bg-white">
 		<div class="container">
 			<div class="rw-section-head rw-section-head--center max-w-2xl">
@@ -562,7 +606,6 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 		</div>
 	</section>
 
-	<!-- Explore Whitstable: filter by access, distance on each card, 6th CTA, a11y label + icon -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="explore-whitstable-heading">
 		<div class="container">
 			<?php if ( $prop_nearby_label !== '' ) : ?>
@@ -595,8 +638,7 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 			?>
 				<article class="explore-card bg-white rounded-2xl p-5 sm:p-6 shadow-[0_4px_20px_rgb(0,0,0,0.05)] flex flex-col border border-gray-100 transition-[box-shadow,transform] duration-200 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0" role="listitem" data-filter="<?php echo esc_attr( $place['filter'] ); ?>">
 
-					<!-- 1. Meta row: icon + category type + distance, all left-aligned -->
-					<div class="flex items-center gap-2.5 mb-3">
+				<div class="flex items-center gap-2.5 mb-3">
 						<span class="explore-card__meta-icon-wrap shrink-0 rounded-full bg-[var(--deep-teal)]/10 flex items-center justify-center text-[var(--deep-teal)]" aria-hidden="true">
 							<i class="explore-card__meta-icon ph-bold ph-<?php echo esc_attr( $card_icon ); ?>"></i>
 						</span>
@@ -608,8 +650,7 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 						<?php endif; ?>
 					</div>
 
-					<!-- 2. Title: now left-aligned with body text below -->
-					<h3 class="text-lg md:text-xl font-semibold font-serif text-[var(--deep-teal)] leading-snug mb-3">
+				<h3 class="text-lg md:text-xl font-semibold font-serif text-[var(--deep-teal)] leading-snug mb-3">
 						<?php if ( ! empty( $place['map_url'] ) ) : ?>
 							<a href="<?php echo esc_url( $place['map_url'] ); ?>" target="_blank" rel="noopener noreferrer" class="group inline-flex items-baseline gap-1.5 text-[var(--deep-teal)] no-underline hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm">
 								<?php echo esc_html( $place['title'] ); ?>
@@ -621,13 +662,11 @@ $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 						<?php endif; ?>
 					</h3>
 
-					<!-- 3. Body text -->
-					<div class="rw-copy-body leading-relaxed text-sm md:text-base flex-1 space-y-2">
+				<div class="rw-copy-body leading-relaxed text-sm md:text-base flex-1 space-y-2">
 						<?php echo wp_kses_post( wpautop( $place['body'] ) ); ?>
 					</div>
 
-					<!-- 4. Access footer -->
-					<?php if ( ! empty( $place['acc'] ) ) : ?>
+				<?php if ( ! empty( $place['acc'] ) ) : ?>
 						<div class="mt-3 pt-3 border-t border-gray-100" aria-label="<?php echo esc_attr__( 'Accessibility information', 'restwell-retreats' ); ?>">
 							<p class="rw-copy-muted text-xs md:text-sm leading-relaxed flex items-start gap-2">
 								<i class="explore-card__acc-icon ph-bold ph-wheelchair shrink-0" aria-hidden="true"></i>

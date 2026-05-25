@@ -14,11 +14,46 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 // Pull the "page for posts" if set, to allow editors to set a title/excerpt
-// in the WordPress admin for the archive hero.
+// in the WordPress admin for the default archive hero.
 $posts_page_id = (int) get_option( 'page_for_posts' );
 $archive_title  = $posts_page_id ? get_the_title( $posts_page_id ) : __( 'Guides & articles', 'restwell-retreats' );
 $archive_intro  = $posts_page_id ? get_the_excerpt( $posts_page_id ) : __( 'Practical guides to accessible travel on the Kent coast, local area information, and updates from Restwell.', 'restwell-retreats' );
 $archive_label  = __( 'From the blog', 'restwell-retreats' );
+
+// Category/tag/date archives should expose their own identity in the hero.
+if ( is_category() ) {
+	$category_obj = get_queried_object();
+	if ( $category_obj && ! is_wp_error( $category_obj ) ) {
+		$archive_title = single_cat_title( '', false );
+		$archive_intro = trim( wp_strip_all_tags( (string) category_description( (int) $category_obj->term_id ) ) );
+		$archive_label = __( 'Category', 'restwell-retreats' );
+		if ( $archive_intro === '' ) {
+			$archive_intro = sprintf(
+				/* translators: %s: category name */
+				__( 'Articles filed under %s.', 'restwell-retreats' ),
+				$archive_title
+			);
+		}
+	}
+} elseif ( is_tag() ) {
+	$tag_obj = get_queried_object();
+	if ( $tag_obj && ! is_wp_error( $tag_obj ) ) {
+		$archive_title = single_tag_title( '', false );
+		$archive_intro = trim( wp_strip_all_tags( (string) tag_description( (int) $tag_obj->term_id ) ) );
+		$archive_label = __( 'Tag', 'restwell-retreats' );
+		if ( $archive_intro === '' ) {
+			$archive_intro = sprintf(
+				/* translators: %s: tag name */
+				__( 'Articles tagged %s.', 'restwell-retreats' ),
+				$archive_title
+			);
+		}
+	}
+} elseif ( is_date() ) {
+	$archive_title = get_the_archive_title();
+	$archive_intro = __( 'Archive by publication date.', 'restwell-retreats' );
+	$archive_label = __( 'Archive', 'restwell-retreats' );
+}
 
 $archive_hero_media = 0;
 if ( $posts_page_id ) {
@@ -67,7 +102,7 @@ if ( have_posts() ) {
 	}
 }
 ?>
-<main class="flex-1" id="main-content">
+<main class="flex-1 blog-archive-main" id="main-content">
 
 	<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
@@ -86,19 +121,16 @@ if ( have_posts() ) {
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- Articles -->
 	<div class="bg-[var(--bg-subtle)] rw-section-y">
-		<div class="container max-w-5xl">
+		<div class="container">
 
 			<?php if ( $first_post ) : ?>
 
-				<!-- Featured article -->
 				<article class="group mb-14 md:mb-20" aria-label="<?php echo esc_attr( $first_post['title'] ); ?>">
 					<a href="<?php echo esc_url( $first_post['permalink'] ); ?>"
 					   class="grid md:grid-cols-2 gap-0 bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-gray-100 no-underline hover:shadow-[0_12px_40px_rgb(0,0,0,0.09)] transition-shadow duration-300"
 					   aria-label="<?php echo esc_attr( sprintf( /* translators: %s post title */ __( 'Continue reading: %s', 'restwell-retreats' ), $first_post['title'] ) ); ?>"
 					   tabindex="0">
-						<!-- Image -->
 						<div class="relative overflow-hidden min-h-[16rem] md:min-h-[22rem] bg-[var(--deep-teal)]/10">
 							<?php if ( $first_post['img_src'] ) : ?>
 								<img src="<?php echo esc_url( $first_post['img_src'] ); ?>"
@@ -111,8 +143,7 @@ if ( have_posts() ) {
 								</div>
 							<?php endif; ?>
 						</div>
-						<!-- Content -->
-						<div class="flex flex-col justify-between p-8 md:p-10">
+					<div class="flex flex-col justify-between p-8 md:p-10">
 							<div>
 								<div class="flex flex-wrap items-center gap-3 mb-4">
 									<?php if ( $first_post['category'] ) : ?>
@@ -134,7 +165,6 @@ if ( have_posts() ) {
 					</a>
 				</article>
 
-				<!-- Remaining articles grid -->
 				<?php if ( ! empty( $remaining_posts ) ) : ?>
 					<div class="grid sm:grid-cols-2 gap-6 lg:gap-8">
 						<?php foreach ( $remaining_posts as $post ) : ?>
@@ -142,7 +172,6 @@ if ( have_posts() ) {
 								<a href="<?php echo esc_url( $post['permalink'] ); ?>"
 								   class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 no-underline hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0 h-full"
 								   aria-label="<?php echo esc_attr( sprintf( /* translators: %s post title */ __( 'Continue reading: %s', 'restwell-retreats' ), $post['title'] ) ); ?>">
-									<!-- Image -->
 									<div class="relative overflow-hidden aspect-[16/9] bg-[var(--deep-teal)]/10">
 										<?php if ( $post['img_src'] ) : ?>
 											<img src="<?php echo esc_url( $post['img_src'] ); ?>"
@@ -155,7 +184,6 @@ if ( have_posts() ) {
 											</div>
 										<?php endif; ?>
 									</div>
-									<!-- Content -->
 									<div class="flex flex-col flex-1 p-6">
 										<div class="flex items-center gap-2 mb-3">
 											<?php if ( $post['category'] ) : ?>
@@ -178,7 +206,6 @@ if ( have_posts() ) {
 					</div>
 				<?php endif; ?>
 
-				<!-- Pagination -->
 				<?php
 				the_posts_pagination( array(
 					'mid_size'           => 2,
@@ -191,7 +218,6 @@ if ( have_posts() ) {
 
 			<?php else : ?>
 
-				<!-- Empty state -->
 				<div class="text-center py-16 max-w-md mx-auto">
 					<div class="w-16 h-16 bg-[#A8D5D0]/30 rounded-full flex items-center justify-center mx-auto mb-6" aria-hidden="true">
 						<i class="ph-bold ph-pen-nib text-[var(--deep-teal)] text-2xl"></i>

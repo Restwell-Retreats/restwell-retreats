@@ -14,19 +14,16 @@ get_header();
 
 $pid = get_the_ID();
 
-// Hero
 $enq_hero_image_id = (int) get_post_meta( $pid, 'enq_hero_image_id', true );
 $enq_label          = get_post_meta( $pid, 'enq_label', true ) ?: 'Get in touch';
 $enq_heading        = get_post_meta( $pid, 'enq_heading', true ) ?: 'Start a conversation.';
 $enq_intro          = get_post_meta( $pid, 'enq_intro', true ) ?: 'Whether you want to book an accessible holiday cottage in Kent or simply ask about a bathroom measurement, we are here to help. This is not a booking commitment: it is the start of a conversation. No pressure, no hard sell.';
 
-// Form copy
 $enq_form_heading        = get_post_meta( $pid, 'enq_form_heading', true ) ?: 'Request a call about your stay';
-$enq_success_heading     = get_post_meta( $pid, 'enq_success_heading', true ) ?: 'Thank you for your enquiry';
-$enq_success_body        = get_post_meta( $pid, 'enq_success_body', true ) ?: "We've received your enquiry. We'll be in touch to confirm availability and next steps.";
-$enq_success_urgent_body = get_post_meta( $pid, 'enq_success_urgent_body', true ) ?: "We've received your urgent enquiry. We'll prioritise your request and be in touch as soon as we can.";
+$enq_success_heading     = get_post_meta( $pid, 'enq_success_heading', true ) ?: __( 'Thank you — we have your enquiry.', 'restwell-retreats' );
+$enq_success_body        = get_post_meta( $pid, 'enq_success_body', true ) ?: __( 'We usually respond within one to two working days (often sooner), using your preferred contact method where you have told us one. If your dates are tight, say so in your message and we will prioritise a quick first reply.', 'restwell-retreats' );
+$enq_success_urgent_body = get_post_meta( $pid, 'enq_success_urgent_body', true ) ?: __( 'You marked this as time-sensitive. We will prioritise your request and aim to respond within one working day where possible, using your preferred contact method.', 'restwell-retreats' );
 
-// Sidebar
 $enq_contact_heading = get_post_meta( $pid, 'enq_contact_heading', true ) ?: __( 'Other ways to reach us', 'restwell-retreats' );
 $enq_email           = get_post_meta( $pid, 'enq_email', true ) ?: 'hello@restwellretreats.co.uk';
 $enq_phone           = get_post_meta( $pid, 'enq_phone', true ) ?: (string) get_option( 'restwell_phone_number', '01622 809881' );
@@ -52,6 +49,7 @@ $enq_f     = array(
 	'enq_accessibility'      => '',
 	'enq_funding'            => '',
 	'enq_urgent'             => '',
+	'enq_marketing_optin'    => '',
 	'enq_contact_preference' => '',
 	'enq_preferred_time'     => '',
 );
@@ -97,19 +95,15 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- Form + sidebar -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="enq-form-heading">
 		<div class="container max-w-5xl">
-			<div class="grid md:grid-cols-5 gap-12">
+			<div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12">
 
-				<!-- Form column -->
-				<div class="md:col-span-3">
-				<?php if ( $sent ) : ?>
-					<!-- Success state -->
-					<div id="enquiry-result" class="enquiry-result rw-surface-card overflow-hidden scroll-mt-[clamp(5rem,14vh,8rem)]" role="status" aria-live="polite" tabindex="-1">
+			<div class="md:col-span-3">
+			<?php if ( $sent ) : ?>
+				<div id="enquiry-result" class="enquiry-result rw-surface-card overflow-hidden scroll-mt-[clamp(5rem,14vh,8rem)]" role="status" aria-live="polite" tabindex="-1">
 						<div class="p-8 md:p-10">
-							<!-- Icon + heading -->
-							<div class="flex items-start gap-5 mb-6">
+						<div class="flex items-start gap-5 mb-6">
 								<div class="shrink-0 w-14 h-14 bg-[#A8D5D0]/25 rounded-full flex items-center justify-center text-[var(--deep-teal)]" aria-hidden="true">
 									<i class="ph-bold ph-check text-xl"></i>
 								</div>
@@ -123,35 +117,32 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 									<?php endif; ?>
 								</div>
 							</div>
-							<!-- What happens next -->
-							<div class="border-t border-[#E8DFD0] pt-6">
+						<div class="border-t border-[#E8DFD0] pt-6">
 								<p class="text-xs font-semibold text-[var(--warm-gold-text)] uppercase tracking-wider mb-4">What happens next</p>
 								<ol class="enquiry-next-steps space-y-4 text-sm rw-copy-body list-none p-0 m-0">
 									<li class="flex gap-3 items-center">
 										<span class="enquiry-step-num shrink-0 w-8 h-8 rounded-full bg-[var(--deep-teal)]/10 text-[var(--deep-teal)] text-sm font-serif font-semibold inline-flex items-center justify-center leading-none" aria-hidden="true">1</span>
-										<span class="min-w-0 leading-relaxed">We&rsquo;ll review your enquiry and check availability for your dates.</span>
+										<span class="min-w-0 leading-relaxed"><?php esc_html_e( 'We review your enquiry and check availability for your dates.', 'restwell-retreats' ); ?></span>
 									</li>
 									<li class="flex gap-3 items-center">
 										<span class="enquiry-step-num shrink-0 w-8 h-8 rounded-full bg-[var(--deep-teal)]/10 text-[var(--deep-teal)] text-sm font-serif font-semibold inline-flex items-center justify-center leading-none" aria-hidden="true">2</span>
-										<span class="min-w-0 leading-relaxed">We&rsquo;ll contact you by your preferred method to confirm details and answer any questions.</span>
+										<span class="min-w-0 leading-relaxed"><?php esc_html_e( 'We contact you within one to two working days (often sooner), using your preferred method where we can.', 'restwell-retreats' ); ?></span>
 									</li>
 									<li class="flex gap-3 items-center">
 										<span class="enquiry-step-num shrink-0 w-8 h-8 rounded-full bg-[var(--deep-teal)]/10 text-[var(--deep-teal)] text-sm font-serif font-semibold inline-flex items-center justify-center leading-none" aria-hidden="true">3</span>
-										<span class="min-w-0 leading-relaxed">No commitment at this stage &mdash; just a conversation at your own pace.</span>
+										<span class="min-w-0 leading-relaxed"><?php esc_html_e( 'No commitment at this stage — just a conversation at your own pace.', 'restwell-retreats' ); ?></span>
 									</li>
 								</ol>
 							</div>
-							<!-- CTA back to site -->
-							<div class="mt-8">
+						<div class="mt-8">
 								<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="btn btn-outline">
 									<i class="ph-bold ph-arrow-left" aria-hidden="true"></i> Back to home
 								</a>
 							</div>
 						</div>
 					</div>
-					<?php else : ?>
-						<!-- Multi-step form -->
-						<form method="post" action="<?php echo esc_url( $current_url ); ?>"
+				<?php else : ?>
+					<form method="post" action="<?php echo esc_url( $current_url ); ?>"
 						      class="restwell-enq-form rw-surface-card p-8 md:p-10"
 						      data-multistep
 						      novalidate>
@@ -159,17 +150,17 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 							<input type="hidden" name="restwell_enquire" value="1" />
 							<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $current_url ); ?>" />
 							<input type="hidden" name="restwell_form_opened_at" value="" data-restwell-form-opened />
-							<!-- Honeypot: must stay empty; bots fill it, humans don't see it -->
-							<div style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+						<?php // Honeypot: visually hidden; bots fill it, humans never see or tab to it. Checked server-side. ?>
+						<div style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
 								<label for="enq_website">Website</label>
 								<input type="text" id="enq_website" name="enq_website" tabindex="-1" autocomplete="off" />
 							</div>
 
-							<!-- Screen-reader live region: announces step name when the user moves between steps. -->
-						<p id="enq-step-announcement" class="sr-only" aria-live="assertive" aria-atomic="true"></p>
+					<?php // Live region: JS writes the step label here on navigation so screen readers announce the new step. ?>
+					<p id="enq-step-announcement" class="sr-only" aria-live="assertive" aria-atomic="true"></p>
 
 						<h2 id="enq-form-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-2"><?php echo esc_html( $enq_form_heading ); ?></h2>
-						<p class="text-xs text-[var(--muted-grey)] mb-6">Fields marked <span class="text-[#D4A853]" aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
+						<p class="text-xs text-[var(--muted-grey)] mb-6">Fields marked <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required.</p>
 
 						<?php if ( ! empty( $enq_errors ) ) : ?>
 							<div class="text-sm text-[#7a1c1c] bg-[#fef2f2] border border-[#fecaca] rounded-xl px-4 py-3 mb-6" role="alert">
@@ -179,38 +170,36 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 							</div>
 						<?php endif; ?>
 
-							<!-- Step progress indicator -->
-							<div class="enq-steps-progress flex items-start gap-0 mb-8"
+						<div class="enq-steps-progress flex items-start gap-0 mb-8"
 							     role="progressbar"
 							     aria-label="Enquiry form progress"
 							     aria-valuenow="1"
 							     aria-valuemin="1"
 							     aria-valuemax="3">
 								<div class="step-node flex flex-col items-center flex-1 min-w-0" data-step="1">
-									<div class="step-circle w-9 h-9 rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">1</div>
-									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1">About you</p>
+									<div class="step-circle w-11 h-11 min-w-[2.75rem] min-h-[2.75rem] rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">1</div>
+									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1"><?php esc_html_e( 'About you', 'restwell-retreats' ); ?></p>
 								</div>
-								<div class="step-line flex-1 h-0.5 mt-4 transition-colors duration-200"></div>
+								<div class="step-line flex-1 h-0.5 mt-[1.375rem] transition-colors duration-200"></div>
 								<div class="step-node flex flex-col items-center flex-1 min-w-0" data-step="2">
-									<div class="step-circle w-9 h-9 rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">2</div>
-									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1">Your stay</p>
+									<div class="step-circle w-11 h-11 min-w-[2.75rem] min-h-[2.75rem] rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">2</div>
+									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1"><?php esc_html_e( 'Your stay', 'restwell-retreats' ); ?></p>
 								</div>
-								<div class="step-line flex-1 h-0.5 mt-4 transition-colors duration-200"></div>
+								<div class="step-line flex-1 h-0.5 mt-[1.375rem] transition-colors duration-200"></div>
 								<div class="step-node flex flex-col items-center flex-1 min-w-0" data-step="3">
-									<div class="step-circle w-9 h-9 rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">3</div>
-									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1">Your needs</p>
+									<div class="step-circle w-11 h-11 min-w-[2.75rem] min-h-[2.75rem] rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">3</div>
+									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1"><?php esc_html_e( 'Your needs', 'restwell-retreats' ); ?></p>
 								</div>
 							</div>
 
-							<!-- Step 1: About you -->
-							<div class="enquire-step space-y-5" data-step="1">
+						<div class="enquire-step space-y-5" data-step="1">
 						<div>
-								<label for="enq_name" class="<?php echo esc_attr( $label_class ); ?>">Your name <span class="text-[#D4A853]" aria-hidden="true">*</span></label>
+								<label for="enq_name" class="<?php echo esc_attr( $label_class ); ?>">Your name <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 								<input type="text" id="enq_name" name="enq_name" required aria-required="true" autocomplete="name"
 								       class="<?php echo esc_attr( $input_class ); ?>" placeholder="Jane Smith" value="<?php echo esc_attr( $enq_f['enq_name'] ); ?>" />
 							</div>
 							<div>
-								<label for="enq_email" class="<?php echo esc_attr( $label_class ); ?>">Email address <span class="text-[#D4A853]" aria-hidden="true">*</span></label>
+								<label for="enq_email" class="<?php echo esc_attr( $label_class ); ?>">Email address <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 								<input type="email" id="enq_email" name="enq_email" required aria-required="true" autocomplete="email"
 								       class="<?php echo esc_attr( $input_class ); ?>" placeholder="jane@example.com" value="<?php echo esc_attr( $enq_f['enq_email'] ); ?>" />
 								</div>
@@ -243,8 +232,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 								</div>
 							</div>
 
-							<!-- Step 2: Your stay -->
-							<div class="enquire-step space-y-5 hidden" data-step="2">
+						<div class="enquire-step space-y-5 hidden" data-step="2">
 								<fieldset class="border-0 p-0 m-0">
 									<legend class="<?php echo esc_attr( $label_class ); ?>">Preferred dates <span class="text-[var(--muted-grey)] font-normal">(optional)</span></legend>
 									<div class="grid grid-cols-2 gap-3 mt-1.5">
@@ -278,11 +266,11 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 										<a href="<?php echo esc_url( $resources_url ); ?>" class="text-[var(--deep-teal)] hover:underline">Not sure? See our Funding &amp; support page</a>
 									</p>
 								</div>
-								<div class="flex items-center gap-3 py-2">
+								<div class="flex items-center gap-3 min-h-[44px] py-1">
 									<input type="checkbox" id="enq_urgent" name="enq_urgent" value="1"
 									       class="enquire-checkbox-urgent h-[1.125rem] w-[1.125rem] shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2" <?php checked( $enq_f['enq_urgent'], '1' ); ?> />
 									<label for="enq_urgent" class="text-sm font-medium leading-snug text-[#1B4D5C] cursor-pointer select-none">
-										This is urgent - please prioritise my enquiry
+										<?php esc_html_e( 'This is urgent — please prioritise my enquiry', 'restwell-retreats' ); ?>
 									</label>
 								</div>
 								<div class="flex gap-3 pt-2">
@@ -295,8 +283,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 								</div>
 							</div>
 
-							<!-- Step 3: Your needs -->
-							<div class="enquire-step space-y-5 hidden" data-step="3">
+						<div class="enquire-step space-y-5 hidden" data-step="3">
 								<div>
 									<label for="enq_care" class="<?php echo esc_attr( $label_class ); ?>">Care requirements <span class="text-[var(--muted-grey)] font-normal">(optional)</span></label>
 									<textarea id="enq_care" name="enq_care" rows="3"
@@ -310,10 +297,20 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 									          placeholder="Any specific accessibility requirements we should know about?"><?php echo esc_textarea( $enq_f['enq_accessibility'] ); ?></textarea>
 								</div>
 							<div>
-								<label for="enq_message" class="<?php echo esc_attr( $label_class ); ?>">Your message <span class="text-[#D4A853]" aria-hidden="true">*</span></label>
+								<label for="enq_message" class="<?php echo esc_attr( $label_class ); ?>">Your message <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 								<textarea id="enq_message" name="enq_message" required aria-required="true" rows="4"
 									          class="<?php echo esc_attr( $input_class ); ?> resize-y"
 									          placeholder="Tell us a bit about what you're looking for, or ask any questions."><?php echo esc_textarea( $enq_f['enq_message'] ); ?></textarea>
+								</div>
+								<div class="rounded-xl border border-[#CFC2AD] bg-[#FFFEFC] px-4 py-3">
+									<div class="flex items-start gap-3">
+										<input type="checkbox" id="enq_marketing_optin" name="enq_marketing_optin" value="1"
+										       class="h-[1.125rem] w-[1.125rem] mt-0.5 shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2"
+											<?php checked( $enq_f['enq_marketing_optin'], '1' ); ?> />
+										<label for="enq_marketing_optin" class="text-sm leading-snug text-[#1B4D5C] cursor-pointer">
+											<?php esc_html_e( 'Yes, send me occasional email updates with priority date alerts, special offers, and practical accessibility holiday tips (you can unsubscribe at any time).', 'restwell-retreats' ); ?>
+										</label>
+									</div>
 								</div>
 								<div class="flex gap-3 pt-2">
 									<button type="button" class="step-back btn btn-outline flex-1" data-back="2">
@@ -330,8 +327,8 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 					<?php endif; ?>
 				</div>
 
-				<!-- Sidebar: single contact card (hero + success state already cover timing and no-obligation). -->
-				<div class="md:col-span-2 space-y-6">
+			<?php // Sidebar is intentionally minimal — hero and success state already cover timing and the no-obligation message. ?>
+			<div class="md:col-span-2 space-y-6">
 					<?php if ( $enq_email || $enq_phone ) : ?>
 					<div class="<?php echo esc_attr( $sidebar_card_base ); ?>">
 						<h3 class="<?php echo esc_attr( $sidebar_card_heading ); ?>"><?php echo esc_html( $enq_contact_heading ); ?></h3>
@@ -365,10 +362,10 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 						<h3 class="<?php echo esc_attr( $sidebar_card_heading ); ?>"><?php esc_html_e( 'Funding your stay', 'restwell-retreats' ); ?></h3>
 						<p class="rw-copy-body text-sm leading-relaxed mb-5"><?php esc_html_e( 'Direct payments, personal budgets, and NHS CHC may apply depending on your package and local authority. We can provide documentation to support applications.', 'restwell-retreats' ); ?></p>
 						<div class="flex flex-wrap gap-2">
-							<a href="<?php echo esc_url( $resources_url ); ?>" class="inline-flex items-center gap-2 rounded-full border border-[var(--deep-teal)]/25 px-3 py-1.5 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
+							<a href="<?php echo esc_url( $resources_url ); ?>" class="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full border border-[var(--deep-teal)]/25 px-4 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
 								<?php esc_html_e( 'Funding &amp; support', 'restwell-retreats' ); ?>
 							</a>
-							<a href="<?php echo esc_url( $enq_who_url ); ?>" class="inline-flex items-center gap-2 rounded-full border border-[var(--deep-teal)]/25 px-3 py-1.5 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
+							<a href="<?php echo esc_url( $enq_who_url ); ?>" class="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full border border-[var(--deep-teal)]/25 px-4 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
 								<?php esc_html_e( 'Who it\'s for', 'restwell-retreats' ); ?>
 							</a>
 						</div>

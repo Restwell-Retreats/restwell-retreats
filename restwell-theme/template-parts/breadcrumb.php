@@ -28,51 +28,78 @@ $crumbs[] = array(
 	'url'   => home_url( '/' ),
 );
 
-// For single posts, add the archive as an intermediate crumb.
-if ( is_singular( 'post' ) ) {
-	$posts_page_id = (int) get_option( 'page_for_posts' );
-	if ( $posts_page_id ) {
-		$crumbs[] = array(
-			'label' => get_the_title( $posts_page_id ),
-			'url'   => get_permalink( $posts_page_id ),
-		);
-	} else {
-		$crumbs[] = array(
-			'label' => __( 'Blog', 'restwell-retreats' ),
-			'url'   => home_url( '/blog/' ),
-		);
-	}
-}
+// Shared blog index crumb for posts, categories, tags and date archives.
+$posts_page_id   = (int) get_option( 'page_for_posts' );
+$blog_index_label = $posts_page_id ? get_the_title( $posts_page_id ) : __( 'Blog', 'restwell-retreats' );
+$blog_index_url   = $posts_page_id ? get_permalink( $posts_page_id ) : home_url( '/blog/' );
 
-// Current page / post (no URL - it is the current page).
-$crumbs[] = array(
-	'label' => get_the_title(),
-	'url'   => '',
-);
-
-// Build Schema.org BreadcrumbList JSON-LD.
-$schema_items = array();
-foreach ( $crumbs as $position => $crumb ) {
-	$item = array(
-		'@type'    => 'ListItem',
-		'position' => $position + 1,
-		'name'     => $crumb['label'],
+if ( is_home() ) {
+	$crumbs[] = array(
+		'label' => $blog_index_label,
+		'url'   => '',
 	);
-	if ( ! empty( $crumb['url'] ) ) {
-		$item['item'] = $crumb['url'];
+} elseif ( is_category() ) {
+	$crumbs[] = array(
+		'label' => $blog_index_label,
+		'url'   => $blog_index_url,
+	);
+	$crumbs[] = array(
+		'label' => single_cat_title( '', false ),
+		'url'   => '',
+	);
+} elseif ( is_tag() ) {
+	$crumbs[] = array(
+		'label' => $blog_index_label,
+		'url'   => $blog_index_url,
+	);
+	$crumbs[] = array(
+		'label' => single_tag_title( '', false ),
+		'url'   => '',
+	);
+} elseif ( is_date() ) {
+	$crumbs[] = array(
+		'label' => $blog_index_label,
+		'url'   => $blog_index_url,
+	);
+	$crumbs[] = array(
+		'label' => get_the_archive_title(),
+		'url'   => '',
+	);
+} elseif ( is_singular( 'post' ) ) {
+	$crumbs[] = array(
+		'label' => $blog_index_label,
+		'url'   => $blog_index_url,
+	);
+
+	$post_categories = get_the_category();
+	if ( ! empty( $post_categories ) ) {
+		foreach ( $post_categories as $cat_obj ) {
+			if ( 'uncategorized' === $cat_obj->slug ) {
+				continue;
+			}
+			$crumbs[] = array(
+				'label' => $cat_obj->name,
+				'url'   => get_category_link( $cat_obj->term_id ),
+			);
+			break;
+		}
 	}
-	$schema_items[] = $item;
+
+	$crumbs[] = array(
+		'label' => get_the_title(),
+		'url'   => '',
+	);
+} else {
+	// Default interior page / CPT fallback.
+	$crumbs[] = array(
+		'label' => get_the_title(),
+		'url'   => '',
+	);
 }
 
-$breadcrumb_schema = array(
-	'@context'        => 'https://schema.org',
-	'@type'           => 'BreadcrumbList',
-	'itemListElement' => $schema_items,
-);
+// BreadcrumbList JSON-LD is output in <head> by restwell_output_jsonld_breadcrumb() (inc/seo.php).
+// Do not echo a second <script type="application/ld+json"> block here to avoid duplicate markup errors.
 ?>
-<script type="application/ld+json">
-<?php echo wp_json_encode( $breadcrumb_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?>
-</script>
 <nav class="breadcrumb" aria-label="<?php esc_attr_e( 'Breadcrumb', 'restwell-retreats' ); ?>">
 	<div class="container">
 		<ol class="breadcrumb__list">

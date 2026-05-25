@@ -13,7 +13,6 @@ get_header();
 
 $pid = get_the_ID();
 
-// Hero
 $acc_hero_image_id = (int) get_post_meta( $pid, 'acc_hero_image_id', true );
 $acc_label          = get_post_meta( $pid, 'acc_label', true ) ?: 'Accessibility';
 $acc_heading        = get_post_meta( $pid, 'acc_heading', true ) ?: 'Honest detail, so you can decide';
@@ -36,7 +35,6 @@ $acc_kitchen_body     = get_post_meta( $pid, 'acc_kitchen_body', true ) ?: '';
 $acc_outdoor_heading  = get_post_meta( $pid, 'acc_outdoor_heading', true ) ?: 'Outdoor spaces';
 $acc_outdoor_body     = get_post_meta( $pid, 'acc_outdoor_body', true ) ?: '';
 
-// Destination
 $acc_dest_label             = get_post_meta( $pid, 'acc_dest_label', true ) ?: 'The destination';
 $acc_dest_heading           = get_post_meta( $pid, 'acc_dest_heading', true ) ?: 'Whitstable: what to expect';
 $acc_dest_intro             = get_post_meta( $pid, 'acc_dest_intro', true ) ?: 'An honest picture of the area: what is accessible, where there are challenges, and what matters most for your visit.';
@@ -78,7 +76,6 @@ $rooms = array(
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- Room by room -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="acc-room-heading">
 		<div class="container max-w-5xl">
 
@@ -129,7 +126,6 @@ $rooms = array(
 				<?php endforeach; ?>
 			</div>
 
-			<!-- Inquiry cards -->
 			<div class="mt-10 md:mt-12 grid md:grid-cols-2 rw-gap-grid">
 				<article class="flex h-full min-h-0 flex-col rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-5">
@@ -170,7 +166,6 @@ $rooms = array(
 		</div>
 	</section>
 
-	<!-- Destination: what to expect -->
 	<section class="rw-section-y bg-[var(--soft-sand)]" aria-labelledby="acc-dest-heading">
 		<div class="container max-w-5xl">
 
@@ -184,7 +179,6 @@ $rooms = array(
 
 			<div class="grid md:grid-cols-3 rw-gap-grid">
 
-				<!-- The good -->
 				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
 				                transition-all duration-300 ease-out
 				                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
@@ -200,7 +194,6 @@ $rooms = array(
 					</div>
 				</article>
 
-				<!-- The challenge -->
 				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
 				                transition-all duration-300 ease-out
 				                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
@@ -216,7 +209,6 @@ $rooms = array(
 					</div>
 				</article>
 
-				<!-- The reality -->
 				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
 				                transition-all duration-300 ease-out
 				                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
@@ -237,7 +229,6 @@ $rooms = array(
 	</section>
 
 	<?php if ( $access_statement_url !== '' ) : ?>
-	<!-- Access statement download -->
 	<section class="rw-section-y bg-white" aria-labelledby="acc-statement-heading">
 		<div class="container max-w-5xl">
 			<div class="rounded-2xl border border-[var(--deep-teal)]/15 bg-[var(--bg-subtle)] p-8 md:p-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-2xl mx-auto">
@@ -256,7 +247,6 @@ $rooms = array(
 	</section>
 	<?php endif; ?>
 
-	<!-- Related pages -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="acc-related-heading">
 		<div class="container max-w-5xl">
 			<div class="rw-section-head max-w-prose">

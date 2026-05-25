@@ -77,6 +77,8 @@ function restwell_get_front_page_field_definitions() {
 			'hero_subheading'         => restwell_field( __( 'Hero intro: one short sentence (shown in the hero under the headline)', 'restwell-retreats' ) ),
 			'hero_spec_heading'       => restwell_field( __( 'Optional. Equipment or promise line in the strip under the hero only when filled (hidden when empty)', 'restwell-retreats' ), 'textarea' ),
 			'hero_media_id'           => restwell_field( __( 'Hero background (image or video)', 'restwell-retreats' ), 'media' ),
+			'hero_mobile_video_id'    => restwell_field( __( 'Hero mobile video (optional attachment ID; used only when Hero background is a video)', 'restwell-retreats' ), 'media' ),
+			'hero_video_poster_id'    => restwell_field( __( 'Hero video poster image (optional attachment ID; used only when Hero background is a video)', 'restwell-retreats' ), 'image' ),
 			'hero_cta_primary_label'  => restwell_field( __( 'Hero primary button label', 'restwell-retreats' ) ),
 			'hero_cta_primary_url'    => restwell_field( __( 'Hero primary button URL', 'restwell-retreats' ) ),
 			'hero_cta_secondary_label'=> restwell_field( __( 'Hero secondary button label', 'restwell-retreats' ) ),
@@ -244,10 +246,10 @@ function restwell_get_front_page_field_definitions() {
 function restwell_get_property_field_definitions() {
 	return array(
 		'Structured Data (Address)' => array(
-			'prop_address_street'   => restwell_field( __( 'Street address (for VacationRental schema)', 'restwell-retreats' ) ),
-			'prop_address_locality' => restwell_field( __( 'Town / city (for VacationRental schema)', 'restwell-retreats' ) ),
-			'prop_address_region'   => restwell_field( __( 'County / region (for VacationRental schema)', 'restwell-retreats' ) ),
-			'prop_address_postcode' => restwell_field( __( 'Postcode (for VacationRental schema)', 'restwell-retreats' ) ),
+			'prop_address_street'   => restwell_field( __( 'Street address (internal reference only; not used in public JSON-LD)', 'restwell-retreats' ) ),
+			'prop_address_locality' => restwell_field( __( 'Town / city (internal reference only)', 'restwell-retreats' ) ),
+			'prop_address_region'   => restwell_field( __( 'County / region (internal reference only)', 'restwell-retreats' ) ),
+			'prop_address_postcode' => restwell_field( __( 'Postcode (internal reference only)', 'restwell-retreats' ) ),
 		),
 		'Hero' => array(
 			'prop_hero_label'              => restwell_field( __( 'Hero label (e.g. The Property)', 'restwell-retreats' ) ),
@@ -614,7 +616,7 @@ function restwell_get_enquire_field_definitions() {
 		'Form' => array(
 			'enq_form_heading'        => restwell_field( __( 'Form heading (h2)', 'restwell-retreats' ) ),
 			'enq_success_heading'     => restwell_field( __( 'Success message heading', 'restwell-retreats' ) ),
-			'enq_success_body'        => restwell_field( __( 'Success message body (24hr callback)', 'restwell-retreats' ), 'textarea' ),
+			'enq_success_body'        => restwell_field( __( 'Success message body (e.g. one to two working days)', 'restwell-retreats' ), 'textarea' ),
 			'enq_success_urgent_body' => restwell_field( __( 'Success message body when urgent', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Sidebar' => array(

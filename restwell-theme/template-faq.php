@@ -13,7 +13,6 @@ get_header();
 
 $pid = get_the_ID();
 
-// Hero
 $faq_hero_image_id = (int) get_post_meta( $pid, 'faq_hero_image_id', true );
 $faq_label          = get_post_meta( $pid, 'faq_label', true ) ?: 'Frequently asked questions';
 $faq_heading        = get_post_meta( $pid, 'faq_heading', true ) ?: 'Questions we get asked';
@@ -23,7 +22,6 @@ $faq_intro          = get_post_meta( $pid, 'faq_intro', true ) ?: 'We have tried
 $faq_list_label   = get_post_meta( $pid, 'faq_list_label', true ) ?: 'Browse by topic';
 $faq_list_heading = get_post_meta( $pid, 'faq_list_heading', true ) ?: '';
 
-// CTA section
 $faq_cta_label   = get_post_meta( $pid, 'faq_cta_label', true ) ?: '';
 $faq_cta_heading = get_post_meta( $pid, 'faq_cta_heading', true ) ?: 'Still have a question?';
 $faq_cta_body    = get_post_meta( $pid, 'faq_cta_body', true ) ?: 'Get in touch and we will answer honestly. We respond within 48 hours.';
@@ -35,6 +33,7 @@ $faq_question_errors = array();
 $faq_q_name          = '';
 $faq_q_email         = '';
 $faq_q_message       = '';
+$faq_q_marketing_optin = '';
 
 $faq_flash_key = isset( $_GET['faq_flash'] ) ? sanitize_text_field( wp_unslash( $_GET['faq_flash'] ) ) : '';
 if ( $faq_flash_key ) {
@@ -45,6 +44,7 @@ if ( $faq_flash_key ) {
 		$faq_q_name            = isset( $fields['name'] ) ? sanitize_text_field( (string) $fields['name'] ) : '';
 		$faq_q_email           = isset( $fields['email'] ) ? sanitize_email( (string) $fields['email'] ) : '';
 		$faq_q_message         = isset( $fields['message'] ) ? sanitize_textarea_field( (string) $fields['message'] ) : '';
+		$faq_q_marketing_optin = isset( $fields['marketing_optin'] ) ? sanitize_text_field( (string) $fields['marketing_optin'] ) : '';
 		delete_transient( 'restwell_faq_flash_' . $faq_flash_key );
 	}
 }
@@ -83,7 +83,6 @@ $categories = array(
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- FAQ list with category filters -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="faq-list-heading">
 		<div class="container max-w-3xl">
 		<?php
@@ -98,7 +97,6 @@ $categories = array(
 		<h2 id="faq-list-heading" class="<?php echo esc_attr( $list_heading_classes ); ?>"><?php echo esc_html( $list_heading_text ); ?></h2>
 		</div>
 
-			<!-- Category filter pills -->
 			<div class="faq-filter mb-8" role="group" aria-label="Filter questions by category">
 				<div class="flex flex-wrap gap-2">
 					<?php foreach ( $categories as $cat_key => $cat_label ) : ?>
@@ -112,10 +110,9 @@ $categories = array(
 				</div>
 			</div>
 
-			<!-- Status message for screen readers -->
+			<?php // Live region: JS writes filtered count here for screen readers. ?>
 			<p id="faq-filter-status" class="sr-only" role="status" aria-live="polite"></p>
 
-			<!-- FAQ accordion list -->
 			<div class="space-y-4 faq-list" id="faq-list">
 				<?php foreach ( $faq_pairs as $faq ) : ?>
 					<details class="faq-item bg-white rounded-2xl px-8 py-1 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 group hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-300 ease-out motion-reduce:transition-none"
@@ -133,7 +130,7 @@ $categories = array(
 				<?php endforeach; ?>
 			</div>
 
-			<!-- Empty state (shown by JS when no results) -->
+			<?php // Hidden by default; JS reveals this when the active filter returns no items. ?>
 			<p id="faq-empty-state" class="hidden text-gray-600 text-center py-8">
 				No questions in this category yet. <a href="#faq-question-form" class="text-[var(--deep-teal)] hover:underline font-medium">Ask us directly</a>.
 			</p>
@@ -141,7 +138,6 @@ $categories = array(
 		</div>
 	</section>
 
-	<!-- Related guides -->
 	<section class="rw-section-y--compact bg-white border-t border-gray-100" aria-labelledby="faq-related-heading">
 		<div class="container max-w-3xl">
 			<h2 id="faq-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-4"><?php esc_html_e( 'Further reading', 'restwell-retreats' ); ?></h2>
@@ -153,7 +149,7 @@ $categories = array(
 					<span class="text-gray-500">: <?php esc_html_e( 'funding your care support during a stay.', 'restwell-retreats' ); ?></span>
 				</li>
 				<li>
-					<a href="<?php echo esc_url( home_url( '/accessible-beaches-kent-coast/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
 						<?php esc_html_e( 'Accessible beaches and coastal walks in Kent', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'what to expect at the beaches closest to the property.', 'restwell-retreats' ); ?></span>
@@ -168,7 +164,6 @@ $categories = array(
 		</div>
 	</section>
 
-	<!-- CTA -->
 	<section class="rw-section-y--cta bg-[var(--deep-teal)]" aria-labelledby="faq-cta-heading">
 		<div class="container max-w-4xl">
 			<div id="faq-question-form" class="rounded-3xl bg-white border border-[#E9E1D5] overflow-hidden shadow-[0_18px_44px_rgba(0,0,0,0.2)]">
@@ -176,8 +171,8 @@ $categories = array(
 					<div class="lg:col-span-2 bg-[#FBF8F3] px-6 py-7 md:px-8 md:py-8">
 						<p class="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--warm-gold-text)] mb-2"><?php esc_html_e( 'Quick question form', 'restwell-retreats' ); ?></p>
 						<h2 id="faq-cta-heading" class="text-[2rem] font-serif text-[var(--deep-teal)] leading-tight mb-3"><?php echo esc_html( $faq_cta_heading ); ?></h2>
-						<p class="text-[#395962] text-[15px] leading-relaxed mb-3"><?php echo esc_html( $faq_cta_body ); ?></p>
-						<p class="text-[#5f747b] text-sm leading-relaxed"><?php esc_html_e( 'Ask anything here and we will reply directly by email.', 'restwell-retreats' ); ?></p>
+						<p class="text-[var(--deep-teal)] text-[15px] leading-relaxed mb-3"><?php echo esc_html( $faq_cta_body ); ?></p>
+						<p class="text-[var(--muted-grey)] text-sm leading-relaxed"><?php esc_html_e( 'Ask anything here and we will reply directly by email.', 'restwell-retreats' ); ?></p>
 					</div>
 
 					<div class="lg:col-span-3 px-6 py-7 md:px-8 md:py-8">
@@ -223,8 +218,18 @@ $categories = array(
 								<label for="faq_q_message" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your question', 'restwell-retreats' ); ?></label>
 								<textarea id="faq_q_message" name="faq_q_message" required rows="5" class="<?php echo esc_attr( $faq_form_input_class ); ?>"><?php echo esc_textarea( $faq_q_message ); ?></textarea>
 							</div>
+							<div class="rounded-xl border border-[#CFC2AD] bg-[#FFFEFC] px-4 py-3">
+								<div class="flex items-start gap-3">
+									<input type="checkbox" id="faq_q_marketing_optin" name="faq_q_marketing_optin" value="1"
+										class="h-[1.125rem] w-[1.125rem] mt-0.5 shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2"
+										<?php checked( $faq_q_marketing_optin, '1' ); ?> />
+									<label for="faq_q_marketing_optin" class="text-sm leading-snug text-[#1B4D5C] cursor-pointer">
+										<?php esc_html_e( 'Yes, send me occasional email updates with priority date alerts, special offers, and practical accessibility holiday tips (you can unsubscribe at any time).', 'restwell-retreats' ); ?>
+									</label>
+								</div>
+							</div>
 
-							<p class="text-xs text-[#5f747b] leading-relaxed"><?php esc_html_e( 'We use your details only to answer you. We never sell contact information.', 'restwell-retreats' ); ?></p>
+							<p class="text-xs text-[var(--muted-grey)] leading-relaxed"><?php esc_html_e( 'We use your details only to answer you. We never sell contact information.', 'restwell-retreats' ); ?></p>
 							<button type="submit" class="btn btn-gold min-h-[48px] px-7 w-full md:w-auto">
 								<?php esc_html_e( 'Send my question', 'restwell-retreats' ); ?> <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
 							</button>

@@ -88,6 +88,31 @@
   }
 
   /*
+   * Readable column width — uses :root --rw-readable-measure ramp.
+   * Use inside .container (start-aligned with gutters); avoid margin-inline: auto unless centering on purpose.
+   */
+  .rw-measure-readable {
+    width: 100%;
+    max-width: var(--rw-readable-measure);
+  }
+
+  /* Blog single: looser stack gap for prose → tags → nav (scoped). */
+  .blog-single-main .rw-measure-readable.rw-stack--loose {
+    --rw-stack-gap: var(--space-10);
+  }
+
+  .blog-single__tags {
+    padding-top: var(--space-8);
+  }
+
+  .blog-single__back-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  /*
    * Section title band: eyebrow + heading (+ optional dek). Replaces ad-hoc mb-3/mb-4 on labels
    * and mixed space-y on wrappers. Margin below = distance before grids/prose.
    */
@@ -604,12 +629,12 @@
   :root {
     --deep-teal: #1B4D5C;
     --warm-gold: #D4A853;
-    --warm-gold-text: #815F10;       /* 5.8:1 on white, 4.9:1 on --soft-sand - passes AA on both */
+    --warm-gold-text: #6B4A0F;       /* 7.2:1 on white, 6.1:1 on --soft-sand - improved AA contrast */
     --warm-gold-hero: #F0C97A;       /* for use on dark/teal backgrounds - 5.3:1 on --deep-teal */
     --sea-glass: #A8D5D0;
     --soft-sand: #F5EDE0;
     --driftwood: #E8DFD0;
-    --muted-grey: #6B6355;
+    --muted-grey: #3A5A63;            /* 7.1:1 on white, 6.2:1 on light backgrounds - meets AA+ */
     --body-secondary: #2d4a52;
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-serif: 'Lora', Georgia, serif;
@@ -647,6 +672,13 @@
     --rw-gutter-x: var(--space-5);
     --rw-gutter-x-sm: var(--space-6);
     --rw-gutter-x-lg: var(--space-8);
+
+    /*
+     * Page rail (matches .container @ lg) + readable column ramp for hero, long-form, blog body.
+     * Breakpoints mirror .hero.home-hero .home-hero__copy — single source; pair with .rw-measure-readable.
+     */
+    --rw-max-page: 1200px;
+    --rw-readable-measure: min(42rem, 100%);
 
     /*
      * Sitewide section vertical padding — 4 tiers aligned with Tailwind breakpoints.
@@ -719,6 +751,18 @@
     --section-padding-y-cta-sm: 4rem;
     --section-padding-y-cta-tablet: 5rem;
     --section-padding-y-cta-desktop: 5rem;
+  }
+
+  @media (min-width: 1280px) {
+    :root {
+      --rw-readable-measure: min(48rem, 100%);
+    }
+  }
+
+  @media (min-width: 1536px) {
+    :root {
+      --rw-readable-measure: min(56rem, min(100%, 52vw));
+    }
   }
 
   /* -----------------------------------------------------------------------------
@@ -943,6 +987,49 @@
     line-height: 1.4;
   }
 
+  /* "We restored your details" notice injected by initEnquiryDraftPersistence().
+     Soft sea-glass band — present enough to be noticed, quiet enough not to
+     compete with the form heading. The discard control reads as a link rather
+     than a button so it doesn't compete visually with the primary submit. */
+  .restwell-enq-draft-notice {
+    margin: 0 0 1.25rem;
+    padding: 0.625rem 0.875rem;
+    background-color: rgba(168, 213, 208, 0.18);  /* sea-glass @ ~18% */
+    border-left: 3px solid var(--deep-teal);
+    border-radius: 0.5rem;
+  }
+  .restwell-enq-draft-notice__text {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--deep-teal);
+  }
+  .restwell-enq-draft-notice__discard {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    color: var(--deep-teal);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    /* 44×44 hit target overflows visually for a tiny inline control;
+       a comfortable horizontal padding zone is the practical compromise here. */
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+  }
+  .restwell-enq-draft-notice__discard:hover {
+    text-decoration-thickness: 2px;
+  }
+  .restwell-enq-draft-notice__discard:focus-visible {
+    outline: 2px solid var(--deep-teal);
+    outline-offset: 2px;
+  }
+
   /* Homepage / content links: ≥44×44px tap target (WCAG 2.5.5); global :focus-visible applies.
      No negative horizontal margin — it was eating card padding and made copy look flush on mobile. */
   a.restwell-tap-link {
@@ -963,8 +1050,9 @@
 
   /* -----------------------------------------------------------------------------
      4. Container + page gutters (spacing system)
-     Horizontal inset uses --rw-gutter-x / --rw-gutter-x-sm / --rw-gutter-x-lg.
-     ≤768px uses --space-6 so small phones match header / hero rhythm.
+     Horizontal inset: --rw-gutter-x / --rw-gutter-x-sm / --rw-gutter-x-lg.
+     Max width at lg: --rw-max-page. Long-form copy: .rw-measure-readable (uses --rw-readable-measure).
+     ≤768px uses --space-6 for small phones (see max-width rule below).
      `.rw-page-gutter-x` = inset only (pair with w-full max-w-* mx-auto when not using .container).
      ----------------------------------------------------------------------------- */
   .container,
@@ -994,7 +1082,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: var(--rw-max-page);
     }
   }
 
@@ -1812,10 +1900,17 @@
 
   @media (min-width: 1024px) {
     .footer-grid {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 0.9fr);
-      gap: 2.5rem 4rem;
+      gap: var(--space-10) var(--space-12);
       padding: 4rem 0;
       align-items: start;
+    }
+
+    .footer-grid.footer-grid--with-contact {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 0.9fr) minmax(0, 0.85fr);
+    }
+
+    .footer-grid.footer-grid--no-contact {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 
@@ -2022,12 +2117,26 @@
     color: var(--sea-glass);
     text-transform: uppercase;
     letter-spacing: 0.16em;
-    margin: 0 0 1.25rem;
+    margin: 0 0 var(--space-5);
   }
 
   .footer-explore,
+  .footer-blog,
   .footer-contact {
     min-width: 0;
+  }
+
+  /* Footer nav columns should read as simple, equal rhythm blocks. */
+  .footer-explore {
+    align-self: start;
+  }
+
+  .footer-blog {
+    align-self: start;
+  }
+
+  .footer-topic-nav {
+    margin: 0;
   }
 
   /* Explore nav: single clean column */
@@ -2082,8 +2191,8 @@
   }
 
   /*
-   * Contact column: same rhythm as Explore (footer-heading + action).
-   * Reuses .footer-cta__btn--ghost from the strip above; overrides .site-footer a colour.
+   * Contact column: match the rhythm and styling of Explore/Blog sections.
+   * Use simple link styling instead of button to maintain visual consistency.
    */
   .footer-contact {
     display: flex;
@@ -2092,36 +2201,66 @@
     align-self: start;
   }
 
+  /* Style the contact link like other footer nav links for consistency */
   .site-footer .footer-contact .footer-cta__btn.footer-cta__btn--ghost {
-    color: #fff;
+    /* Reset button styles to match footer nav links */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0.45rem 0;
+    min-height: auto;
+    font-size: 0.9375rem;
+    line-height: 1.3;
+    font-weight: normal;
+    color: rgba(245, 237, 224, 0.82);
+    border-bottom: 1px solid rgba(168, 213, 208, 0.1);
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
   }
 
   .site-footer .footer-contact .footer-cta__btn.footer-cta__btn--ghost:hover {
-    color: #fff;
+    background: transparent;
+    color: white;
+    border-color: rgba(168, 213, 208, 0.1);
+    transform: none; /* Remove button hover transform */
   }
 
   .site-footer .footer-contact .footer-cta__btn:focus {
     outline: none;
   }
 
-  /* Ghost focus: match .footer-cta__btn--ghost; clear generic .site-footer a:focus-visible ring. */
+  /* Match footer nav link focus styles */
   .site-footer .footer-contact .footer-cta__btn--ghost:focus-visible {
-    outline: 3px solid var(--warm-gold-hero);
+    outline: 2px solid var(--warm-gold-hero);
     outline-offset: 2px;
     box-shadow: none;
-    border-radius: 1rem;
+    border-radius: 2px;
+  }
+
+  /* Add the chevron arrow like other footer nav links */
+  .site-footer .footer-contact .footer-cta__btn--ghost .ph-arrow-right {
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    margin-left: auto;
+  }
+
+  .site-footer .footer-contact .footer-cta__btn--ghost:hover .ph-arrow-right {
+    opacity: 1;
+    transform: translateX(2px);
   }
 
   @media (max-width: 479px) {
     .footer-contact .footer-cta__btn {
       width: 100%;
-      max-width: 22rem;
+      max-width: none;
     }
   }
 
   @media (min-width: 1024px) {
     .footer-contact .footer-cta__btn {
-      width: auto;
+      width: 100%;
     }
   }
 
@@ -2276,7 +2415,7 @@
      Flex column + gap: one rhythm between headline/lede stack and CTAs (no competing mt-* + space-y). */
   .hero.home-hero .home-hero__copy {
     width: 100%;
-    max-width: min(42rem, 100%);
+    max-width: var(--rw-readable-measure);
     display: flex;
     flex-direction: column;
     /* Copy block → CTA stack: larger than intra-CTA gap (see .home-hero__cta-stack) — conversion cluster */
@@ -2293,18 +2432,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-  }
-
-  @media (min-width: 1280px) {
-    .hero.home-hero .home-hero__copy {
-      max-width: min(48rem, 100%);
-    }
-  }
-
-  @media (min-width: 1536px) {
-    .hero.home-hero .home-hero__copy {
-      max-width: min(56rem, min(100%, 52vw));
-    }
   }
 
   .hero.home-hero .home-hero__eyebrow {
@@ -4159,8 +4286,7 @@ details.wif-persona-card[open] {
    Scoped to .page-whitstable-guide; patterns align with tokens + existing shadows.
    ----------------------------------------------------------------------------- */
 
-/* #main-content section .container uses 1200px; max-w-5xl must apply so every rail matches.
-   main is both #main-content and .page-whitstable-guide (not nested). */
+/* Whitstable guide: narrower rail than --rw-max-page when using .container.max-w-5xl. */
 #main-content.page-whitstable-guide .container.max-w-5xl {
   max-width: 64rem;
 }

@@ -378,6 +378,8 @@ $wg_glance = array(
 					<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/the-property/' ) ); ?>"><?php esc_html_e( 'see the adapted bungalow', 'restwell-retreats' ); ?></a>.
 					<?php esc_html_e( 'When you are ready,', 'restwell-retreats' ); ?>
 					<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/enquire/' ) ); ?>"><?php esc_html_e( 'get in touch about your stay', 'restwell-retreats' ); ?></a>.
+					<?php esc_html_e( 'For in-depth access notes on specific beaches and promenades along this stretch of coast, read our', 'restwell-retreats' ); ?>
+					<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>"><?php esc_html_e( 'guide to accessible beaches in Kent', 'restwell-retreats' ); ?></a>.
 				</p>
 			</div>
 			</div>

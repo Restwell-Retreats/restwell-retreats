@@ -11,41 +11,63 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Version string for a theme file (filemtime) so deploys bust LiteSpeed / CDN caches without a manual style.css bump.
+ *
+ * @param string $relative_path Path under the theme directory, e.g. '/assets/css/tailwind.css'.
+ * @return string
+ */
+function restwell_theme_asset_version( $relative_path ) {
+	$relative_path = '/' . ltrim( (string) $relative_path, '/' );
+	$full          = get_template_directory() . $relative_path;
+	if ( is_readable( $full ) ) {
+		return (string) filemtime( $full );
+	}
+	return (string) wp_get_theme()->get( 'Version' );
+}
+
+/**
  * Enqueue front-end styles and scripts for the theme.
  */
 function restwell_enqueue_scripts() {
 	$theme_uri = get_template_directory_uri();
-	$version   = wp_get_theme()->get( 'Version' );
+
+	// Serve minified assets in production; fall back to unminified when SCRIPT_DEBUG is on.
+	$use_min = ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
 
 	/*
 	 * Phosphor Icons (@phosphor-icons/web): regular = `.ph` + `.ph-{name}`, bold = `.ph-bold` + `.ph-{name}`.
 	 * Note: there is no single `src/index.css` in this package; per-weight styles are the supported entry points.
+	 *
+	 * Output normal <link rel="stylesheet"> tags only. Print/onload deferral was removed: Google Rich Results Test
+	 * and LiteSpeed CSS combine/minify often fail on non-standard markup, producing "resources could not be loaded".
 	 */
 	wp_enqueue_style(
 		'phosphor-icons-regular',
 		$theme_uri . '/assets/fonts/phosphor/regular/style.css',
 		array(),
-		'2.1.1'
+		restwell_theme_asset_version( '/assets/fonts/phosphor/regular/style.css' )
 	);
 	wp_enqueue_style(
 		'phosphor-icons-bold',
 		$theme_uri . '/assets/fonts/phosphor/bold/style.css',
 		array( 'phosphor-icons-regular' ),
-		'2.1.1'
+		restwell_theme_asset_version( '/assets/fonts/phosphor/bold/style.css' )
 	);
 
+	// tailwind.css is always built minified via `npm run build` (Tailwind CLI --minify).
 	wp_enqueue_style(
 		'restwell-tailwind',
 		$theme_uri . '/assets/css/tailwind.css',
 		array( 'phosphor-icons-bold' ),
-		$version
+		restwell_theme_asset_version( '/assets/css/tailwind.css' )
 	);
 
+	$main_js = $use_min ? '/assets/js/main.min.js' : '/assets/js/main.js';
 	wp_enqueue_script(
 		'restwell-main',
-		$theme_uri . '/assets/js/main.js',
+		$theme_uri . $main_js,
 		array(),
-		$version,
+		restwell_theme_asset_version( $main_js ),
 		true
 	);
 
@@ -71,6 +93,26 @@ function restwell_defer_main_script( $tag, $handle, $src ) {
 	return str_replace( '<script ', '<script defer ', $tag );
 }
 add_filter( 'script_loader_tag', 'restwell_defer_main_script', 10, 3 );
+
+/**
+ * Load analytics-loader.js with defer when enqueued (footer deferred / CMP modes).
+ *
+ * @param string $tag    The script HTML.
+ * @param string $handle Script handle.
+ * @param string $src    Source URL (unused).
+ * @return string
+ */
+function restwell_defer_analytics_loader_script( $tag, $handle, $src ) {
+	unset( $src );
+	if ( 'restwell-analytics-loader' !== $handle ) {
+		return $tag;
+	}
+	if ( false !== strpos( $tag, ' defer' ) ) {
+		return $tag;
+	}
+	return str_replace( '<script ', '<script defer ', $tag );
+}
+add_filter( 'script_loader_tag', 'restwell_defer_analytics_loader_script', 10, 3 );
 
 /**
  * Enqueue polished admin styles for Restwell CRM screens.
@@ -115,6 +157,29 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 		array(),
 		$version
 	);
+
+	// Inline status-change UI — only needed on the enquiries list, not the dashboard or guest guide.
+	$load_enquiries_screen = ( 'restwell_page_restwell-enquiries' === $hook_suffix )
+		|| ( 'restwell-enquiries' === $page );
+
+	if ( $load_enquiries_screen ) {
+		wp_enqueue_script(
+			'restwell-crm-actions',
+			$theme_uri . '/assets/js/admin-crm-actions.js',
+			array(),
+			$version,
+			true
+		);
+		wp_localize_script(
+			'restwell-crm-actions',
+			'rwCrmActions',
+			array(
+				'nonce'    => wp_create_nonce( 'restwell_crm_lead_action' ),
+				'ajaxurl'  => admin_url( 'admin-ajax.php' ),
+				'statuses' => restwell_crm_statuses(),
+			)
+		);
+	}
 
 	if ( $page_editor_gg ) {
 		wp_enqueue_style(

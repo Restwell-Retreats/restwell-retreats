@@ -564,13 +564,15 @@ function restwell_seo_admin_schema_status( WP_Post $post, string $template ): ar
 	$is_front  = ( $front_id > 0 && (int) $post->ID === $front_id );
 	$breadcrumb = ! ( $post->post_type === 'page' && $front_id === (int) $post->ID );
 
+	$is_property = ( 'template-property.php' === $template );
+
 	return array(
-		'WebSite + Organization'  => ! $is_front,
-		'WebSite + VacationRental' => $is_front,
-		'Breadcrumb'              => $breadcrumb,
-		'VacationRental'          => $is_front || ( 'template-property.php' === $template ),
-		'FAQPage'                 => ( 'template-faq.php' === $template ),
-		'BlogPosting'             => ( 'post' === $post->post_type ),
+		__( 'WebSite + Organization', 'restwell-retreats' ) => ! $is_front,
+		__( 'WebSite + WebPage + Organization + LocalBusiness (front page)', 'restwell-retreats' ) => $is_front,
+		__( 'LocalBusiness + Service (property template)', 'restwell-retreats' ) => $is_property && ! $is_front,
+		__( 'BreadcrumbList', 'restwell-retreats' ) => $breadcrumb,
+		__( 'FAQPage', 'restwell-retreats' ) => ( 'template-faq.php' === $template ) || $is_front,
+		__( 'BlogPosting', 'restwell-retreats' ) => ( 'post' === $post->post_type ),
 	);
 }
 

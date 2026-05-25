@@ -38,7 +38,6 @@ get_header();
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- ─── Helpful links ─────────────────────────────────────────────────────── -->
 	<section
 		class="rw-section-y bg-[var(--soft-sand)]"
 		aria-label="<?php esc_attr_e( 'Helpful pages', 'restwell-retreats' ); ?>"
@@ -46,7 +45,6 @@ get_header();
 		<div class="container">
 			<div class="grid sm:grid-cols-3 gap-6 lg:gap-8 max-w-4xl mx-auto">
 
-				<!-- The property -->
 				<div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-start gap-4">
 					<div class="feature-icon-wrapper">
 						<div class="feature-icon-blob"></div>
@@ -75,7 +73,6 @@ get_header();
 					</a>
 				</div>
 
-				<!-- Enquire -->
 				<div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-start gap-4">
 					<div class="feature-icon-wrapper">
 						<div class="feature-icon-blob"></div>
@@ -98,7 +95,6 @@ get_header();
 					</a>
 				</div>
 
-				<!-- How it works -->
 				<div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-start gap-4">
 					<div class="feature-icon-wrapper">
 						<div class="feature-icon-blob"></div>

@@ -77,9 +77,8 @@ $published_ts = (int) get_post_time( 'U', true, $post_id );
 $modified_ts  = (int) get_post_modified_time( 'U', true, $post_id );
 $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 ?>
-<main class="flex-1" id="main-content">
+<main class="flex-1 blog-single-main" id="main-content">
 
-	<!-- Breadcrumb -->
 	<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
 	<?php
@@ -122,21 +121,18 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- Article body -->
 	<div class="bg-white rw-section-y--compact">
-		<div class="container max-w-3xl">
-
-
-			<div class="prose prose-lg prose-headings:font-serif prose-headings:text-[var(--deep-teal)] prose-headings:font-normal prose-a:text-[var(--deep-teal)] prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-[var(--deep-teal)] prose-p:text-gray-700 prose-p:leading-relaxed max-w-none">
+		<div class="container">
+			<div class="rw-measure-readable rw-stack rw-stack--loose">
+				<div class="prose prose-lg prose-headings:font-serif prose-headings:text-[var(--deep-teal)] prose-headings:font-normal prose-a:text-[var(--deep-teal)] prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-[var(--deep-teal)] prose-p:text-gray-700 prose-p:leading-relaxed max-w-none">
 				<?php echo wp_kses_post( apply_filters( 'the_content', $content ) ); ?>
-			</div>
+				</div>
 
-			<!-- Tags -->
-			<?php
+		<?php
 			$tags = get_the_tags();
 			if ( $tags ) :
 			?>
-				<div class="flex flex-wrap gap-2 mt-10 pt-8 border-t border-gray-100">
+				<div class="blog-single__tags flex flex-wrap gap-2 border-t border-gray-100">
 					<span class="text-xs text-[var(--muted-grey)] font-medium self-center mr-1"><?php esc_html_e( 'Tagged:', 'restwell-retreats' ); ?></span>
 					<?php foreach ( $tags as $tag ) : ?>
 						<a href="<?php echo esc_url( get_tag_link( $tag->term_id ) ); ?>"
@@ -147,21 +143,34 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 				</div>
 			<?php endif; ?>
 
-			<!-- Back to articles -->
-			<div class="mt-10">
+		<div class="blog-single__back-links">
 				<a href="<?php echo esc_url( $archive_url ); ?>" class="inline-flex items-center gap-2 text-[var(--deep-teal)] text-sm font-semibold hover:underline no-underline">
 					<i class="ph-bold ph-arrow-left text-xs" aria-hidden="true"></i>
 					<?php echo esc_html( sprintf( __( 'Back to %s', 'restwell-retreats' ), $archive_label ) ); ?>
 				</a>
+			<?php if ( $primary_cat_term ) : ?>
+					<a href="<?php echo esc_url( get_category_link( $primary_cat_term ) ); ?>" class="inline-flex items-center gap-2 text-[var(--deep-teal)] text-sm font-semibold hover:underline no-underline">
+						<i class="ph-bold ph-folder-simple text-xs" aria-hidden="true"></i>
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: category name */
+								__( 'More in %s', 'restwell-retreats' ),
+								$primary_cat_term->name
+							)
+						);
+						?>
+					</a>
+			<?php endif; ?>
 			</div>
 
+			</div>
 		</div>
 	</div>
 
-	<!-- Related articles -->
 	<?php if ( ! empty( $related_posts ) ) : ?>
 		<section class="rw-section-y--cta bg-[var(--bg-subtle)]" aria-labelledby="related-heading">
-			<div class="container max-w-5xl">
+			<div class="container">
 				<div class="rw-section-head rw-section-head--left">
 				<p class="section-label"><?php esc_html_e( 'More to read', 'restwell-retreats' ); ?></p>
 				<h2 id="related-heading" class="text-2xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'You might also like', 'restwell-retreats' ); ?></h2>

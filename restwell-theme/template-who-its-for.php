@@ -392,7 +392,7 @@ $wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_
 			<div class="flex flex-wrap gap-3">
 				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/resources/' ) ); ?>"><?php esc_html_e( 'Funding & support hub', 'restwell-retreats' ); ?></a>
 				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/whitstable-area-guide/' ) ); ?>"><?php esc_html_e( 'Whitstable area guide', 'restwell-retreats' ); ?></a>
-				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/accessible-beaches-kent-coast/' ) ); ?>"><?php esc_html_e( 'Accessible beaches and coastal walks', 'restwell-retreats' ); ?></a>
+				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>"><?php esc_html_e( 'Accessible beaches and coastal walks', 'restwell-retreats' ); ?></a>
 				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/revitalise-alternatives-accessible-holidays/' ) ); ?>"><?php esc_html_e( 'Revitalise alternatives', 'restwell-retreats' ); ?></a>
 			</div>
 		</div>

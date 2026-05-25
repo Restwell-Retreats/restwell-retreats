@@ -16,6 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Output Open Graph and Twitter Card <meta> tags in <head>.
  */
 function restwell_output_social_meta() {
+	if ( is_404() || is_search() || is_page_template( 'page-guest-guide.php' ) ) {
+		return;
+	}
+
 	$pid = is_singular() ? get_queried_object_id() : 0;
 
 	// Title
@@ -26,11 +30,12 @@ function restwell_output_social_meta() {
 			$title    = $defaults['meta_title'] !== '' ? $defaults['meta_title'] : get_the_title( $pid );
 		}
 	} else {
-		$title = get_bloginfo( 'name' );
+		$title = restwell_get_request_level_title_fallback();
 	}
+	$title = restwell_trim_meta_text( $title, 60 );
 
 	// Description
-	$desc = '';
+	$desc = restwell_get_meta_description_for_request();
 	if ( $pid ) {
 		$desc = (string) get_post_meta( $pid, 'meta_description', true );
 		if ( $desc === '' ) {
@@ -44,9 +49,16 @@ function restwell_output_social_meta() {
 	if ( $desc === '' ) {
 		$desc = (string) get_bloginfo( 'description' );
 	}
+	$desc = restwell_trim_meta_text( $desc, 160 );
 
-	// URL
-	$url = $pid ? get_permalink( $pid ) : home_url( '/' );
+	// URL — match canonical (archives, pagination, meta_canonical) so og:url is not the homepage on non-singular views.
+	$url = '';
+	if ( function_exists( 'restwell_get_canonical_url_for_request' ) ) {
+		$url = (string) restwell_get_canonical_url_for_request();
+	}
+	if ( $url === '' ) {
+		$url = $pid ? (string) get_permalink( $pid ) : home_url( '/' );
+	}
 	if ( is_front_page() ) {
 		$url = home_url( '/' );
 	}

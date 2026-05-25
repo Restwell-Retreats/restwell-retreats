@@ -152,6 +152,12 @@ $hero_media_mime = $hero_media_id ? get_post_mime_type( $hero_media_id ) : '';
 $hero_is_video  = $hero_media_mime && strpos( $hero_media_mime, 'video/' ) === 0;
 $hero_img_size   = function_exists( 'restwell_pick_attachment_size' ) ? restwell_pick_attachment_size( $hero_media_id, 'restwell-hero' ) : 'full';
 $hero_media_url  = $hero_media_id ? ( $hero_is_video ? wp_get_attachment_url( $hero_media_id ) : wp_get_attachment_image_url( $hero_media_id, $hero_img_size ) ) : '';
+$hero_video_desktop_url = $hero_is_video ? $hero_media_url : '';
+$hero_mobile_video_id   = absint( get_post_meta( $pid, 'hero_mobile_video_id', true ) );
+$hero_video_poster_id   = absint( get_post_meta( $pid, 'hero_video_poster_id', true ) );
+$hero_mobile_video_mime = $hero_mobile_video_id ? get_post_mime_type( $hero_mobile_video_id ) : '';
+$hero_video_mobile_url  = ( $hero_is_video && $hero_mobile_video_mime && strpos( $hero_mobile_video_mime, 'video/' ) === 0 ) ? wp_get_attachment_url( $hero_mobile_video_id ) : '';
+$hero_video_poster_url  = ( $hero_is_video && $hero_video_poster_id && wp_attachment_is_image( $hero_video_poster_id ) ) ? wp_get_attachment_image_url( $hero_video_poster_id, 'full' ) : '';
 
 /*
  * Homepage layout tokens: vertical padding from CSS (.rw-section-y / .rw-section-y--cta); see DESIGN-SYSTEM.md.
@@ -393,11 +399,12 @@ $rw_fp_faq_bg          = isset( $rw_fp_band_bg['faq'] ) ? $rw_fp_band_bg['faq'] 
 $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trust'] : '';
 ?>
 <main class="flex-1" id="main-content">
-	<!--
-		Homepage order (wireframe): hero → spec strip → discovery cards (area & funding)
-		→ who (guest/carer) → property spotlight → testimonials → why Restwell → comparison → bottom CTA → FAQ → trust.
-	-->
-	<!-- Hero Section -->
+	<?php
+	/*
+	 * Layout order: hero → spec strip → area/funding teaser → who → property spotlight
+	 *              → testimonials → why Restwell → partners → comparison → bottom CTA → FAQ → trust.
+	 */
+	?>
 	<section class="hero home-hero relative flex overflow-hidden <?php echo ( $hero_media_id && $hero_media_url ) ? 'hero--has-media' : ''; ?> <?php echo ( $hero_media_id && $hero_is_video ) ? 'hero--has-video' : ''; ?> <?php echo $hero_media_id ? '' : 'bg-[var(--deep-teal)]'; ?>" aria-labelledby="home-hero-heading"<?php echo ! empty( $home_hero_describedby ) ? ' aria-describedby="' . esc_attr( implode( ' ', $home_hero_describedby ) ) . '"' : ''; ?>>
 		<?php if ( $hero_media_id && $hero_media_url ) : ?>
 			<?php if ( $hero_is_video ) : ?>
@@ -412,8 +419,12 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					disablepictureinpicture
 					disableremoteplayback
 					aria-hidden="true"
+					<?php echo $hero_video_poster_url ? 'poster="' . esc_url( $hero_video_poster_url ) . '"' : ''; ?>
 				>
-					<source src="<?php echo esc_url( $hero_media_url ); ?>" type="<?php echo esc_attr( $hero_media_mime ); ?>">
+					<?php if ( $hero_video_mobile_url ) : ?>
+						<source src="<?php echo esc_url( $hero_video_mobile_url ); ?>" type="<?php echo esc_attr( $hero_mobile_video_mime ); ?>" media="(max-width: 767px)">
+					<?php endif; ?>
+					<source src="<?php echo esc_url( $hero_video_desktop_url ); ?>" type="<?php echo esc_attr( $hero_media_mime ); ?>">
 				</video>
 				</div>
 			<?php else : ?>
@@ -568,7 +579,6 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 	<?php endif; ?>
 
-	<!-- Who it's for -->
 	<section class="who-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_who_bg ); ?>">
 		<div class="container mx-auto px-6">
 			<div class="text-center max-w-3xl mx-auto rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
@@ -613,7 +623,6 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 		</div>
 	</section>
 
-	<!-- Property snapshot: photo-first, editorial copy, minimal link list -->
 	<section class="property-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_property_bg ); ?>" aria-labelledby="home-property-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<div class="property-grid property-grid--home grid grid-cols-1 gap-x-0 gap-y-9 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:items-start md:gap-x-10 md:gap-y-0">
@@ -710,7 +719,6 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 
 	<?php if ( $show_testimonials ) : ?>
-	<!-- Testimonials: after property spotlight, before “why Restwell” (wireframe flow). -->
 	<section class="testimonials-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_testimonials_bg ); ?> rw-seam-t" aria-labelledby="home-testimonials-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<div class="text-center max-w-3xl mx-auto rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
@@ -740,7 +748,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 	<?php endif; ?>
 
-	<!-- Why Restwell: rw-section-y--head-grid-split balances .rw-mb-section before the grid; see DESIGN-SYSTEM.md -->
+	<?php // rw-section-y--head-grid-split: balances .rw-mb-section before the feature card grid — see DESIGN-SYSTEM.md. ?>
 	<section class="features-section <?php echo esc_attr( $rw_fp_section_y . ' rw-section-y--head-grid-split ' . $rw_fp_features_bg ); ?> rw-seam-t" aria-labelledby="home-why-restwell-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<div class="text-center rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
@@ -942,7 +950,6 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 	<?php endif; ?>
 
-	<!-- Bottom CTA -->
 	<section class="cta-section relative <?php echo esc_attr( $rw_fp_section_y_emphasis ); ?> rw-seam-t overflow-hidden">
 		<?php if ( $cta_image_id ) : ?>
 			<?php
@@ -1006,7 +1013,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 
 	<?php if ( $show_home_faq && ! empty( $home_faq_pairs ) ) : ?>
-	<!-- Homepage FAQ: same accordion markup/classes as template-faq.php (FAQPage JSON-LD in inc/seo.php) -->
+	<?php // Accordion markup/classes mirror template-faq.php; FAQPage JSON-LD is output by inc/seo.php. ?>
 	<section class="<?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_faq_bg ); ?> rw-seam-t" aria-labelledby="home-faq-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner_narrow ); ?> text-left">
 			<header class="max-w-3xl mx-auto text-center rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">

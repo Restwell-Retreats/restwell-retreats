@@ -29,6 +29,10 @@ nocache_headers();
 $error   = '';
 $notice  = '';
 
+// 30-minute OTP TTL, mirroring `restwell_send_guide_otp()` in inc/guest-guide.php.
+// Anywhere we display "expires in N minutes" or detect expiry, this is the source of truth.
+const RESTWELL_GG_OTP_TTL_SECONDS = 30 * MINUTE_IN_SECONDS;
+
 // ---------- Step 1: email submitted ----------------------------------------
 if (
 	isset( $_POST['restwell_gg_step'], $_POST['restwell_gg_nonce'] ) &&
@@ -48,11 +52,64 @@ if (
 			__( 'Sorry, we do not recognise that email address. Please use the address your booking confirmation was sent to. If you have recently changed your email or are unsure which address was used, please call us on %s and we can help.', 'restwell-retreats' ),
 			(string) get_option( 'restwell_phone_number', '01622 809881' )
 		);
+	} elseif (
+		// Per-IP throttle: 5 OTP issuances per IP per hour. Tighter than the
+		// generic 12/hour public-form bucket because a real guest only ever
+		// needs 1–3 codes (initial + occasional resend / start-again).
+		restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS )
+		// Per-email throttle: protects a specific guest's inbox from being
+		// email-bombed by a distributed attacker (multiple IPs, one target).
+		|| restwell_guide_otp_email_throttled( $submitted_email )
+	) {
+		// Deliberately generic message: don't reveal which throttle tripped,
+		// and don't tell the user they're rate-limited as a guest vs. as an IP.
+		$error = sprintf(
+			/* translators: %s phone number */
+			__( "We can't send another code to that address right now. Please wait a little while and try again, or call us on %s if you need help getting in.", 'restwell-retreats' ),
+			(string) get_option( 'restwell_phone_number', '01622 809881' )
+		);
 	} else {
 		restwell_send_guide_otp( $submitted_email );
 		$_SESSION['gg_pending_email'] = $submitted_email;
 		$_SESSION['gg_otp_sent']      = time();
 		unset( $_SESSION['gg_verified'] );
+	}
+}
+
+// ---------- Step 1b: resend code (no re-typing email) ----------------------
+// Issued from the OTP form, reuses the email already in session. Subject to
+// the same per-IP and per-email throttles as a fresh request, so a guest who
+// hammers it gets the same friendly throttle message rather than an inbox flood.
+if (
+	isset( $_POST['restwell_gg_step'], $_POST['restwell_gg_nonce'] ) &&
+	'resend' === $_POST['restwell_gg_step'] &&
+	wp_verify_nonce(
+		sanitize_text_field( wp_unslash( $_POST['restwell_gg_nonce'] ) ),
+		'restwell_gg_resend_step'
+	)
+) {
+	$pending_email = isset( $_SESSION['gg_pending_email'] ) ? (string) $_SESSION['gg_pending_email'] : '';
+
+	if ( '' === $pending_email ) {
+		// Session lost (cookie cleared, server restart) — gracefully bounce
+		// them back to the email-entry step rather than silently failing.
+		$error = __( 'Your session has expired. Please enter your email again.', 'restwell-retreats' );
+		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
+	} elseif (
+		restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS )
+		|| restwell_guide_otp_email_throttled( $pending_email )
+	) {
+		$error = sprintf(
+			/* translators: %s phone number */
+			__( "We can't send another code to that address right now. Please wait a little while and try again, or call us on %s if you need help getting in.", 'restwell-retreats' ),
+			(string) get_option( 'restwell_phone_number', '01622 809881' )
+		);
+	} else {
+		restwell_send_guide_otp( $pending_email );
+		// Refresh the timestamp so the "expires in N minutes" countdown
+		// restarts from the new issuance, not the original one.
+		$_SESSION['gg_otp_sent'] = time();
+		$notice = __( "We've sent you a new code. Please check your inbox (and spam folder).", 'restwell-retreats' );
 	}
 }
 
@@ -71,6 +128,13 @@ if (
 	if ( '' === $submitted_code || '' === $pending_email ) {
 		$error = __( 'Your session has expired. Please start again.', 'restwell-retreats' );
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
+	} elseif ( restwell_form_rate_limit_exceeded( 'guide_otp_verify', 10, HOUR_IN_SECONDS ) ) {
+		// Brute-force guard: 10 verification attempts per IP per hour. Code is
+		// 6 digits (1,000,000 combinations); 10 attempts/hour caps any guesser
+		// at well below feasible brute-force range while still leaving room
+		// for a real guest's typos. Same generic message as a wrong code so
+		// the limit itself isn't useful information to an attacker.
+		$error = __( 'Too many attempts. Please wait a little while and try again, or request a new code.', 'restwell-retreats' );
 	} elseif ( restwell_verify_guide_otp( $pending_email, $submitted_code ) ) {
 		$_SESSION['gg_verified']       = true;
 		$_SESSION['gg_verified_email'] = $pending_email;
@@ -118,6 +182,23 @@ $pending_email = isset( $_SESSION['gg_pending_email'] ) ? (string) $_SESSION['gg
 $otp_sent      = ! empty( $pending_email );
 $show_otp_form = $otp_sent && ! $is_verified;
 $show_email_form = ! $is_verified && ! $otp_sent;
+
+// Honest "expires in N minutes" countdown. The static "30 minutes" line was
+// only true at issuance — by the time a guest actually reads the page (often
+// minutes later after switching apps for the email), it's misleading.
+// `$_SESSION['gg_otp_sent']` is the unix timestamp from `restwell_send_guide_otp`.
+$otp_remaining_minutes = 0;
+$otp_expired           = false;
+if ( $show_otp_form && ! empty( $_SESSION['gg_otp_sent'] ) ) {
+	$elapsed   = time() - (int) $_SESSION['gg_otp_sent'];
+	$remaining = RESTWELL_GG_OTP_TTL_SECONDS - $elapsed;
+	if ( $remaining <= 0 ) {
+		$otp_expired = true;
+	} else {
+		// Round up so we never show "0 minutes" while there's still time on the clock.
+		$otp_remaining_minutes = (int) ceil( $remaining / MINUTE_IN_SECONDS );
+	}
+}
 
 // -------------------------------------------------------------------------
 // Meta field retrieval
@@ -187,12 +268,10 @@ get_header();
 		</div>
 	<?php endif; ?>
 
-	<!-- Gate / guide section -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-label="<?php esc_attr_e( 'Guest guide', 'restwell-retreats' ); ?>">
 		<div class="container">
 
-			<?php if ( $show_email_form ) : ?>
-			<!-- ===== State 1: Email entry ===== -->
+		<?php if ( $show_email_form ) : // State 1: email entry. ?>
 			<div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
 				<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-2">
 					<?php esc_html_e( 'Verify your identity', 'restwell-retreats' ); ?>
@@ -215,7 +294,7 @@ get_header();
 						<div>
 							<label for="gg_email" class="<?php echo esc_attr( $label_class ); ?>">
 								<?php esc_html_e( 'Email address', 'restwell-retreats' ); ?>
-								<span class="text-[#D4A853]" aria-hidden="true">*</span>
+								<span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span>
 							</label>
 							<input
 								type="email"
@@ -238,27 +317,54 @@ get_header();
 				</form>
 			</div>
 
-			<?php elseif ( $show_otp_form ) : ?>
-			<!-- ===== State 2: OTP entry ===== -->
+		<?php elseif ( $show_otp_form ) : // State 2: OTP verification. ?>
 			<div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
 				<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-2">
 					<?php esc_html_e( 'Enter your access code', 'restwell-retreats' ); ?>
 				</h2>
+
 				<p class="text-sm text-[var(--muted-grey)] mb-8 leading-relaxed">
 					<?php
-					echo wp_kses_post(
-						sprintf(
-							/* translators: %s - partially masked email address */
-							__( 'We have sent a 6-digit code to %s. It will expire in 30 minutes.', 'restwell-retreats' ),
-							'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>'
-						)
-					);
+					if ( $otp_expired ) {
+						// The original code has timed out. Don't pretend it's still valid;
+						// tell the guest plainly and point them at the Resend button below.
+						echo wp_kses_post(
+							sprintf(
+								/* translators: %s - partially masked email address */
+								__( 'We sent a 6-digit code to %s, but it has now expired. Please request a new one below.', 'restwell-retreats' ),
+								'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>'
+							)
+						);
+					} else {
+						// Honest countdown: based on actual elapsed time, not a static "30 minutes"
+						// that's a lie the moment the page is rendered after issuance.
+						echo wp_kses_post(
+							sprintf(
+								/* translators: 1: partially masked email address, 2: number of whole minutes remaining */
+								_n(
+									'We have sent a 6-digit code to %1$s. It expires in about %2$d minute.',
+									'We have sent a 6-digit code to %1$s. It expires in about %2$d minutes.',
+									$otp_remaining_minutes,
+									'restwell-retreats'
+								),
+								'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>',
+								$otp_remaining_minutes
+							)
+						);
+					}
 					?>
 				</p>
 
 				<?php if ( '' !== $error ) : ?>
 					<div class="rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 mb-6" role="alert">
 						<?php echo esc_html( $error ); ?>
+					</div>
+				<?php endif; ?>
+
+				<?php if ( '' !== $notice ) : ?>
+					<div class="rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm px-4 py-3 mb-6"
+					     role="status" aria-live="polite">
+						<?php echo esc_html( $notice ); ?>
 					</div>
 				<?php endif; ?>
 
@@ -270,7 +376,7 @@ get_header();
 						<div>
 							<label for="gg_code" class="<?php echo esc_attr( $label_class ); ?>">
 								<?php esc_html_e( '6-digit code', 'restwell-retreats' ); ?>
-								<span class="text-[#D4A853]" aria-hidden="true">*</span>
+								<span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span>
 							</label>
 							<input
 								type="text"
@@ -282,12 +388,13 @@ get_header();
 								inputmode="numeric"
 								autocomplete="one-time-code"
 								pattern="[0-9]{6}"
-								class="<?php echo esc_attr( $input_class ); ?> tracking-widest text-center text-xl font-mono"
+								<?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>
+								class="<?php echo esc_attr( $input_class ); ?> tracking-widest text-center text-xl font-mono <?php echo $otp_expired ? 'opacity-50 cursor-not-allowed' : ''; ?>"
 								placeholder="123456"
 							/>
 						</div>
 						<div class="pt-2">
-							<button type="submit" class="btn btn-primary w-full">
+							<button type="submit" class="btn btn-primary w-full" <?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>>
 								<?php esc_html_e( 'Access my guide', 'restwell-retreats' ); ?>
 								<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
 							</button>
@@ -295,17 +402,41 @@ get_header();
 					</div>
 				</form>
 
-				<p class="text-xs text-[var(--muted-grey)] text-center mt-6">
-					<?php esc_html_e( 'Wrong address or no code arrived?', 'restwell-retreats' ); ?>
-					<a
-						href="<?php echo esc_url( add_query_arg( 'gg_reset', '1', get_permalink() ) ); ?>"
-						class="text-[var(--deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2 rounded"
-					><?php esc_html_e( 'Start again', 'restwell-retreats' ); ?></a>
-				</p>
+				<!--
+					Secondary actions, in order of likelihood: most guests who need help will
+					just want a fresh code, not a fresh email entry. Resend is a real form
+					button (not a text link) so it's discoverable and tap-friendly. "Start
+					again" stays as a quiet text link for the genuine wrong-email case.
+				-->
+				<div class="mt-6 pt-6 border-t border-gray-100 space-y-4">
+					<form method="post" action="<?php echo esc_url( get_permalink() ); ?>">
+						<?php wp_nonce_field( 'restwell_gg_resend_step', 'restwell_gg_nonce' ); ?>
+						<input type="hidden" name="restwell_gg_step" value="resend" />
+						<button type="submit" class="btn btn-outline w-full">
+							<i class="ph-bold ph-paper-plane-tilt" aria-hidden="true"></i>
+							<?php
+							// Two literal strings (not a ternary inside esc_html_e) so the
+							// WP i18n string extractor can pick them up cleanly.
+							if ( $otp_expired ) {
+								esc_html_e( 'Send me a new code', 'restwell-retreats' );
+							} else {
+								esc_html_e( 'Resend code', 'restwell-retreats' );
+							}
+							?>
+						</button>
+					</form>
+
+					<p class="text-xs text-[var(--muted-grey)] text-center">
+						<?php esc_html_e( 'Used the wrong email?', 'restwell-retreats' ); ?>
+						<a
+							href="<?php echo esc_url( add_query_arg( 'gg_reset', '1', get_permalink() ) ); ?>"
+							class="text-[var(--deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2 rounded"
+						><?php esc_html_e( 'Start again with a different address', 'restwell-retreats' ); ?></a>
+					</p>
+				</div>
 			</div>
 
-			<?php elseif ( $is_verified ) : ?>
-			<!-- ===== State 3: Guest guide content ===== -->
+		<?php elseif ( $is_verified ) : // State 3: authenticated guide content. ?>
 
 				<div class="max-w-6xl mx-auto">
 				<div class="mb-8 md:mb-10 rw-stack max-w-3xl">
@@ -314,8 +445,7 @@ get_header();
 					<p class="text-gray-600 leading-relaxed m-0"><?php esc_html_e( 'Check-in details, property access, local area notes, and emergency contacts - all in one place. You can print this page or come back to it during your stay.', 'restwell-retreats' ); ?></p>
 				</div>
 
-				<!-- Welcome card - full width -->
-				<?php if ( '' !== $gg_welcome ) : ?>
+			<?php if ( '' !== $gg_welcome ) : ?>
 				<div class="bg-[var(--deep-teal)] rounded-2xl p-8 md:p-10 text-[#F5EDE0] mb-10">
 					<p class="text-[var(--warm-gold-hero)] text-xs font-semibold uppercase tracking-[0.2em] mb-3 font-sans">
 						<?php esc_html_e( 'Welcome', 'restwell-retreats' ); ?>
@@ -331,7 +461,6 @@ get_header();
 				</div>
 				<div class="grid md:grid-cols-2 xl:grid-cols-3 rw-gap-grid mb-10">
 
-					<!-- Arrival card -->
 					<?php if ( $gg_address || $gg_checkin || $gg_checkout ) : ?>
 					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -361,7 +490,6 @@ get_header();
 					</div>
 					<?php endif; ?>
 
-					<!-- Getting in card -->
 					<?php if ( $gg_keysafe || $gg_door ) : ?>
 					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -399,7 +527,6 @@ get_header();
 					</div>
 					<?php endif; ?>
 
-					<!-- WiFi card -->
 					<?php if ( $gg_wifi_name || $gg_wifi_pass ) : ?>
 					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -423,7 +550,6 @@ get_header();
 					</div>
 					<?php endif; ?>
 
-					<!-- Parking card -->
 					<?php if ( $gg_parking ) : ?>
 					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -436,7 +562,6 @@ get_header();
 					</div>
 				<?php endif; ?>
 
-				<!-- House rules card -->
 				<?php if ( $gg_house_rules !== '' ) : ?>
 				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -449,7 +574,6 @@ get_header();
 				</div>
 				<?php endif; ?>
 
-				<!-- Departure checklist card -->
 				<?php if ( $gg_departure_notes !== '' ) : ?>
 				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -465,7 +589,6 @@ get_header();
 				</div>
 				<?php endif; ?>
 
-			<!-- Local area card -->
 				<?php if ( $gg_local_info !== '' ) : ?>
 				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -487,7 +610,6 @@ get_header();
 				</div>
 				<?php endif; ?>
 
-				<!-- Emergency information card -->
 				<?php if ( array_filter( $gg_emergency ) ) : ?>
 				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
 					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
@@ -523,9 +645,8 @@ get_header();
 				</div>
 				<?php endif; ?>
 
-			</div><!-- /grid -->
+			</div>
 
-			<!-- Host contact card - full width -->
 				<?php if ( $gg_host ) : ?>
 				<div class="rw-section-head rw-section-head--left rw-section-head--tight">
 					<p class="section-label"><?php esc_html_e( 'Support contacts', 'restwell-retreats' ); ?></p>
@@ -548,7 +669,6 @@ get_header();
 					</button>
 				</div>
 
-			<!-- I've read the guide confirmation -->
 				<?php
 				$gg_guest_row = isset( $_SESSION['gg_verified_email'] )
 					? restwell_get_guest_by_email( $_SESSION['gg_verified_email'] )
@@ -582,7 +702,6 @@ get_header();
 				</p>
 				<?php endif; ?>
 
-			<!-- Sign out link -->
 				<p class="text-center mt-6 text-xs text-[var(--muted-grey)] no-print">
 					<?php esc_html_e( 'Finished reading?', 'restwell-retreats' ); ?>
 					<a

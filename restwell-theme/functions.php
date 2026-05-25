@@ -19,12 +19,17 @@ add_filter( 'xmlrpc_enabled', '__return_false' );
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/wp-runtime-optimization.php';
+require_once get_template_directory() . '/inc/security-rest.php';
+require_once get_template_directory() . '/inc/litespeed-compat.php';
+require_once get_template_directory() . '/inc/smtp-config.php';
 require_once get_template_directory() . '/inc/meta-fields.php';
 require_once get_template_directory() . '/inc/theme-setup.php';
 require_once get_template_directory() . '/inc/social-profiles.php';
 require_once get_template_directory() . '/inc/emails.php';
 require_once get_template_directory() . '/inc/form-notify.php';
+require_once get_template_directory() . '/inc/mailchimp.php';
 require_once get_template_directory() . '/inc/crm.php';
+require_once get_template_directory() . '/inc/crm-reminders.php';
 require_once get_template_directory() . '/inc/faq.php';
 require_once get_template_directory() . '/inc/faq-question-handler.php';
 require_once get_template_directory() . '/inc/enquire-handler.php';
@@ -33,7 +38,6 @@ require_once get_template_directory() . '/inc/seo-social-meta.php';
 require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/seo-admin.php';
 require_once get_template_directory() . '/inc/guest-guide.php';
-require_once get_template_directory() . '/inc/video-optimizer.php';
 require_once get_template_directory() . '/inc/sitemap-robots.php';
 require_once get_template_directory() . '/inc/llms-txt.php';
 require_once get_template_directory() . '/inc/seo-dashboard.php';
@@ -148,6 +152,19 @@ function restwell_nav_resolve_page_url( $slug ) {
 	if ( isset( $cache[ $slug ] ) ) {
 		return $cache[ $slug ];
 	}
+
+	// Match Settings → Privacy: footer and nav must link to the designated policy page, not only /privacy-policy/.
+	if ( 'privacy-policy' === $slug ) {
+		$policy_id = (int) get_option( 'wp_page_for_privacy_policy', 0 );
+		if ( $policy_id > 0 ) {
+			$policy_url = get_permalink( $policy_id );
+			if ( $policy_url ) {
+				$cache[ $slug ] = $policy_url;
+				return $cache[ $slug ];
+			}
+		}
+	}
+
 	$page = get_page_by_path( $slug, OBJECT, 'page' );
 	$cache[ $slug ] = $page ? get_permalink( $page ) : home_url( '/' . $slug . '/' );
 	return $cache[ $slug ];
@@ -196,6 +213,153 @@ function restwell_redirect_legacy_carers_guide_slug() {
 add_action( 'template_redirect', 'restwell_redirect_legacy_carers_guide_slug', 21 );
 
 /**
+ * 301 redirect any ?page_id=3 request (orphaned WP sample content) to the homepage.
+ * The link source is stored in the WP database (menu/post content) and cannot be removed
+ * from the theme, but this redirect prevents the 404 from appearing in crawlers.
+ */
+function restwell_redirect_page_id_orphan() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pid = isset( $_GET['page_id'] ) ? absint( $_GET['page_id'] ) : 0;
+	if ( 3 === $pid ) {
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'restwell_redirect_page_id_orphan', 5 );
+
+/**
+ * 301 redirect the defunct /accessible-beaches-kent-coast/ slug to the canonical slug.
+ * Theme templates were updated to use the correct slug; this covers any external/cached links.
+ */
+function restwell_redirect_accessible_beaches_old_slug() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	global $wp;
+	if ( ! isset( $wp->request ) || ! is_string( $wp->request ) ) {
+		return;
+	}
+	if ( preg_match( '#^accessible-beaches-kent-coast/?$#', $wp->request ) ) {
+		wp_safe_redirect( home_url( '/accessible-beaches-coastal-walks-kent/' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'restwell_redirect_accessible_beaches_old_slug', 22 );
+
+/**
+ * Enforce the canonical host (www vs apex) by 301-redirecting the alternate variant.
+ *
+ * Reads the WP home URL to determine the canonical host. If the current request uses
+ * the other variant (e.g. www when home is apex, or apex when home is www) it issues
+ * a 301 to the canonical host, preserving path and query string.
+ *
+ * Note: a server-level redirect (nginx/Apache) is preferred for performance; this
+ * acts as a PHP-level safety net when the server configuration cannot be changed.
+ */
+function restwell_redirect_to_canonical_host() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+
+	$home    = (string) home_url( '/' );
+	$home_parts = wp_parse_url( $home );
+	$canonical_host = isset( $home_parts['host'] ) ? strtolower( $home_parts['host'] ) : '';
+	if ( $canonical_host === '' ) {
+		return;
+	}
+
+	// Detect the current request host.
+	$current_host = isset( $_SERVER['HTTP_HOST'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) ) : '';
+	if ( $current_host === '' || $current_host === $canonical_host ) {
+		return; // already on the canonical host.
+	}
+
+	// Only act when the difference is purely www vs no-www.
+	$canonical_no_www = ltrim( $canonical_host, 'www.' );
+	$current_no_www   = ltrim( $current_host, 'www.' );
+	if ( $canonical_no_www !== $current_no_www ) {
+		return; // different domain altogether — don't touch.
+	}
+
+	$scheme  = ( isset( $_SERVER['HTTPS'] ) && 'off' !== $_SERVER['HTTPS'] ) ? 'https' : 'http';
+	$request = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '/';
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$redirect = $scheme . '://' . $canonical_host . $request;
+
+	wp_redirect( esc_url_raw( $redirect ), 301 );
+	exit;
+}
+add_action( 'template_redirect', 'restwell_redirect_to_canonical_host', 1 );
+
+/**
+ * Ensure a published shell page exists at /privacy-policy/ when missing.
+ */
+function restwell_ensure_privacy_policy_page_exists() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	if ( get_page_by_path( 'privacy-policy', OBJECT, 'page' ) ) {
+		return;
+	}
+	$inserted = wp_insert_post(
+		array(
+			'post_type'    => 'page',
+			'post_status'  => 'publish',
+			'post_title'   => __( 'Privacy Policy', 'restwell-retreats' ),
+			'post_name'    => 'privacy-policy',
+			'post_content' => '',
+		),
+		true
+	);
+	if ( ! is_wp_error( $inserted ) && $inserted > 0 ) {
+		update_option( 'wp_page_for_privacy_policy', (int) $inserted );
+	}
+}
+add_action( 'init', 'restwell_ensure_privacy_policy_page_exists', 20 );
+
+/**
+ * Redirect legacy /privacy-policy/ to the configured privacy policy page when needed.
+ *
+ * Uses the queried privacy policy page ID instead of comparing URL strings (which could
+ * mismatch scheme, trailing slashes, or subdirectory home URLs and cause endless 301s).
+ */
+function restwell_redirect_privacy_policy_to_configured_page() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	$policy_page_id = (int) get_option( 'wp_page_for_privacy_policy', 0 );
+	if ( $policy_page_id <= 0 ) {
+		return;
+	}
+
+	// Already displaying the policy page — no redirect (avoids 301 loops vs string URL compares).
+	if ( is_page( $policy_page_id ) ) {
+		return;
+	}
+
+	$policy_permalink = get_permalink( $policy_page_id );
+	if ( ! $policy_permalink ) {
+		return;
+	}
+
+	global $wp;
+	$is_privacy_request = is_page( 'privacy-policy' );
+	if ( ! $is_privacy_request && isset( $wp->request ) && is_string( $wp->request ) ) {
+		$is_privacy_request = preg_match( '#^privacy-policy/?$#', $wp->request ) === 1;
+	}
+	if ( ! $is_privacy_request ) {
+		return;
+	}
+
+	wp_safe_redirect( $policy_permalink, 301 );
+	exit;
+}
+add_action( 'template_redirect', 'restwell_redirect_privacy_policy_to_configured_page', 23 );
+
+/**
  * Redirect public author archives to home to reduce user-enumeration surface.
  */
 function restwell_redirect_author_archives() {
@@ -208,6 +372,33 @@ function restwell_redirect_author_archives() {
 	}
 }
 add_action( 'template_redirect', 'restwell_redirect_author_archives', 22 );
+
+/**
+ * Add HSTS header on HTTPS responses.
+ *
+ * Uses includeSubDomains without preload as a safe default.
+ */
+function restwell_send_hsts_header() {
+	if ( is_ssl() ) {
+		header( 'Strict-Transport-Security: max-age=31536000; includeSubDomains' );
+	}
+}
+add_action( 'send_headers', 'restwell_send_hsts_header' );
+
+/**
+ * Suppress WordPress users sitemap provider to avoid username exposure.
+ *
+ * @param WP_Sitemaps_Provider|false $provider Provider instance.
+ * @param string                     $name     Provider name.
+ * @return WP_Sitemaps_Provider|false
+ */
+function restwell_disable_users_sitemap_provider( $provider, $name ) {
+	if ( 'users' === $name ) {
+		return false;
+	}
+	return $provider;
+}
+add_filter( 'wp_sitemaps_add_provider', 'restwell_disable_users_sitemap_provider', 10, 2 );
 
 /**
  * Primary navigation tree for desktop: top-level links plus dropdown groups.
@@ -241,18 +432,28 @@ function restwell_get_primary_nav_structure() {
 		),
 		array(
 			'type'     => 'dropdown',
-			'label'    => __( 'Area & funding', 'restwell-retreats' ),
+			'label'    => __( 'Area guide', 'restwell-retreats' ),
 			'nav_id'   => 'restwell-nav-area',
 			'children' => array(
 				array( 'label' => __( 'Whitstable Guide', 'restwell-retreats' ), 'slug' => 'whitstable-area-guide' ),
-				array( 'label' => __( 'Blog', 'restwell-retreats' ), 'slug' => 'blog' ),
-				array( 'label' => __( 'Funding & Support', 'restwell-retreats' ), 'slug' => 'resources' ),
 			),
+		),
+		array(
+			'type'   => 'link',
+			'label'  => __( 'Funding & Support', 'restwell-retreats' ),
+			'slug'   => 'resources',
+			'is_cta' => false,
 		),
 		array(
 			'type'   => 'link',
 			'label'  => __( 'FAQ', 'restwell-retreats' ),
 			'slug'   => 'faq',
+			'is_cta' => false,
+		),
+		array(
+			'type'   => 'link',
+			'label'  => __( 'Blog', 'restwell-retreats' ),
+			'slug'   => 'blog',
 			'is_cta' => false,
 		),
 		array(
@@ -281,6 +482,18 @@ function restwell_get_primary_nav_structure() {
 					'slug'  => $ch['slug'],
 					'url'   => restwell_nav_resolve_page_url( $ch['slug'] ),
 				);
+			}
+			// A single-child dropdown adds an unnecessary interaction step.
+			// Collapse to a direct top-level link and keep the parent label.
+			if ( 1 === count( $children ) ) {
+				$out[] = array(
+					'type'   => 'link',
+					'label'  => $item['label'],
+					'slug'   => $children[0]['slug'],
+					'url'    => $children[0]['url'],
+					'is_cta' => false,
+				);
+				continue;
 			}
 			$out[] = array(
 				'type'     => 'dropdown',

@@ -13,7 +13,6 @@ get_header();
 
 $pid = get_the_ID();
 
-// Hero
 $hiw_hero_image_id = (int) get_post_meta( $pid, 'hiw_hero_image_id', true );
 $hiw_label          = get_post_meta( $pid, 'hiw_label', true ) ?: '';
 $hiw_heading        = get_post_meta( $pid, 'hiw_heading', true ) ?: 'How it works';
@@ -25,7 +24,6 @@ $hiw_hero_cta_secondary_text = get_post_meta( $pid, 'hiw_hero_cta_secondary_text
 $hiw_hero_cta_secondary_url  = esc_url( get_post_meta( $pid, 'hiw_hero_cta_secondary_url', true ) ?: home_url( '/enquire/' ) );
 $hiw_tldr_markup             = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
 
-// Steps (4) - section label, heading + step copy
 $hiw_steps_label   = get_post_meta( $pid, 'hiw_steps_label', true ) ?: 'FOUR-STEP PROCESS';
 $hiw_steps_heading = get_post_meta( $pid, 'hiw_steps_heading', true ) ?: 'Straightforward from start to finish';
 $hiw_steps_intro   = get_post_meta( $pid, 'hiw_steps_intro', true ) ?: 'Share your dates and what you need; we\'ll handle the rest.';
@@ -55,7 +53,6 @@ for ( $i = 1; $i <= 4; $i++ ) {
 	);
 }
 
-// Care CTA band
 $hiw_care_cta_label   = get_post_meta( $pid, 'hiw_care_cta_label', true ) ?: 'CARE SUPPORT';
 $hiw_care_cta_heading = get_post_meta( $pid, 'hiw_care_cta_heading', true ) ?: 'Care support works around you, not shift patterns.';
 $hiw_care_cta_body    = get_post_meta( $pid, 'hiw_care_cta_body', true ) ?: 'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.';
@@ -83,7 +80,6 @@ for ( $i = 1; $i <= 6; $i++ ) {
 	}
 }
 
-// Bottom CTA
 $hiw_cta_label            = get_post_meta( $pid, 'hiw_cta_label', true ) ?: '';
 $hiw_cta_heading          = get_post_meta( $pid, 'hiw_cta_heading', true ) ?: 'Ready to plan your break?';
 $hiw_cta_body             = get_post_meta( $pid, 'hiw_cta_body', true ) ?: 'Get in touch and we\'ll answer any questions, check availability, and take it from there.';
@@ -93,7 +89,6 @@ $hiw_cta_promise          = get_post_meta( $pid, 'hiw_cta_promise', true ) ?: 'N
 $hiw_cta_secondary_label  = get_post_meta( $pid, 'hiw_cta_secondary_label', true ) ?: 'See the property';
 $hiw_cta_secondary_url    = esc_url( get_post_meta( $pid, 'hiw_cta_secondary_url', true ) ?: home_url( '/the-property/' ) );
 
-// Common questions (FAQ)
 $hiw_faq_label   = get_post_meta( $pid, 'hiw_faq_label', true ) ?: 'HAVE QUESTIONS?';
 $hiw_faq_heading = get_post_meta( $pid, 'hiw_faq_heading', true ) ?: 'Common questions';
 $hiw_faq_intro   = get_post_meta( $pid, 'hiw_faq_intro', true ) ?: 'Answers to the things people ask us most. Anything else: just get in touch.';
@@ -126,7 +121,6 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<!-- Four-step process -->
 	<?php
 	set_query_var( 'args', array(
 		'steps_label'   => $hiw_steps_label,
@@ -137,7 +131,6 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 	get_template_part( 'template-parts/how-it-works-steps' );
 	?>
 
-	<!-- Care support CTA band -->
 	<section class="rw-section-y bg-[var(--deep-teal)]" aria-labelledby="care-cta-heading">
 		<div class="container max-w-3xl text-center">
 			<?php if ( $hiw_care_cta_label !== '' ) : ?>
@@ -152,7 +145,6 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 		</div>
 	</section>
 
-	<!-- What's included (cards) -->
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="hiw-included-heading">
 		<div class="container">
 			<p class="section-label text-center mb-3"><?php echo esc_html( $hiw_included_label ); ?></p>
@@ -210,7 +202,6 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 		</div>
 	</section>
 
-	<!-- Bottom CTA -->
 	<section class="rw-section-y bg-[var(--soft-sand)]" aria-labelledby="hiw-cta-heading">
 		<div class="container max-w-3xl text-center">
 			<div class="rw-section-head rw-section-head--center rw-section-head--tight mx-auto">
@@ -237,7 +228,7 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 		</div>
 	</section>
 
-	<!-- Common questions (FAQ): same accordion pattern as template-faq.php -->
+	<?php // Accordion markup mirrors template-faq.php (no filter pills; simpler variant). ?>
 	<?php if ( ! empty( $faq_pairs ) ) : ?>
 	<section class="rw-section-y bg-white" aria-labelledby="hiw-faq-heading">
 		<div class="container max-w-3xl">
@@ -263,7 +254,6 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 	</section>
 	<?php endif; ?>
 
-	<!-- Related guides -->
 	<section class="rw-section-y--compact bg-[var(--bg-subtle)] border-t border-gray-100" aria-labelledby="hiw-related-heading">
 		<div class="container max-w-3xl">
 			<h2 id="hiw-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-4"><?php esc_html_e( 'Useful guides for planning your stay', 'restwell-retreats' ); ?></h2>

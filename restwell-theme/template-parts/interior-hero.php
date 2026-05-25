@@ -174,7 +174,7 @@ $section_class .= $has_media ? '' : ' bg-neutral-900';
 					<?php if ( trim( (string) $intro ) !== '' ) : ?>
 						<p
 							id="<?php echo esc_attr( $lede_id ); ?>"
-							class="home-hero__lede text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.3)] font-sans text-base sm:text-lg md:text-xl font-normal leading-relaxed tracking-normal sm:tracking-tight text-balance m-0"
+							class="home-hero__lede max-w-prose text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.3)] font-sans text-base sm:text-lg md:text-xl font-normal leading-relaxed tracking-normal sm:tracking-tight text-balance m-0"
 						>
 							<?php echo esc_html( $intro ); ?>
 						</p>

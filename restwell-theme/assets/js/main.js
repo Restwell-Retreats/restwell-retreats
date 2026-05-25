@@ -763,6 +763,278 @@
 	}
 
 	/**
+	 * Enquiry form draft persistence.
+	 *
+	 * Why: a 3-step form on a phone is a real abandonment risk. If the user
+	 * answers a call mid-step and the tab gets evicted, or they navigate away
+	 * to check a date, losing every keystroke is the kind of friction that
+	 * turns a warm enquiry into a never-returns. localStorage gives us a
+	 * cheap, server-free safety net.
+	 *
+	 * Behaviour:
+	 *   - Persist non-sensitive form fields to localStorage on input/change
+	 *     (debounced).
+	 *   - On a fresh load, restore the draft and show a subtle "we restored
+	 *     your details" notice with a Discard control.
+	 *   - Server-flashed values (post-validation re-render) always win — we
+	 *     never let stale localStorage clobber what the server just sent back.
+	 *   - Clear on submit so a successful send wipes the draft.
+	 *   - Warn via beforeunload if the form has user input and they navigate
+	 *     away without submitting (browsers ignore custom messages now;
+	 *     setting returnValue is enough to trigger the standard prompt).
+	 *   - Honeypot, nonce, timing token, and action marker are *intentionally*
+	 *     excluded — they must never round-trip through localStorage.
+	 */
+	function initEnquiryDraftPersistence() {
+		var form = document.querySelector('.restwell-enq-form[data-multistep]');
+		if (!form) return;
+
+		// Versioned key so we can change the stored shape later without exhuming
+		// bad drafts from returning visitors.
+		var KEY = 'restwell_enquiry_draft_v1';
+		// Drop drafts older than a week — by then the user has clearly moved on
+		// and seeing a 12-day-old "Restored your details" banner is jarring.
+		var MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+		// Long enough to coalesce burst typing into one write; short enough that
+		// closing the tab right after typing still captures the latest state.
+		var SAVE_DEBOUNCE_MS = 400;
+
+		var PERSIST_FIELDS = [
+			'enq_name', 'enq_email', 'enq_phone',
+			'enq_contact_preference', 'enq_preferred_time',
+			'enq_date_from', 'enq_date_to',
+			'enq_guests', 'enq_funding', 'enq_urgent',
+			'enq_care', 'enq_accessibility', 'enq_message',
+			'enq_marketing_optin'
+		];
+
+		// Probe localStorage with a write/remove. Safari's "Block all cookies"
+		// or quota-exhausted contexts throw, in which case we silently no-op
+		// and the form keeps working without persistence.
+		function safeStorage() {
+			try {
+				var k = '__rw_test__';
+				window.localStorage.setItem(k, k);
+				window.localStorage.removeItem(k);
+				return window.localStorage;
+			} catch (e) {
+				return null;
+			}
+		}
+		var storage = safeStorage();
+		if (!storage) return;
+
+		function getField(name) {
+			return form.querySelector('[name="' + name + '"]');
+		}
+
+		function readField(field) {
+			if (!field) return '';
+			if (field.type === 'checkbox') return field.checked ? '1' : '';
+			return field.value == null ? '' : String(field.value);
+		}
+
+		function writeField(field, val) {
+			if (!field) return;
+			if (field.type === 'checkbox') {
+				field.checked = val === '1' || val === true;
+				return;
+			}
+			field.value = val == null ? '' : String(val);
+		}
+
+		// True if the page rendered with values already filled in by the server.
+		// That happens after a validation failure: the server re-renders the
+		// form with the user's submitted values via $enq_f. Their just-typed
+		// state is fresher than anything in localStorage, so we leave it alone.
+		function isServerPrefilled() {
+			for (var i = 0; i < PERSIST_FIELDS.length; i++) {
+				var f = getField(PERSIST_FIELDS[i]);
+				if (!f) continue;
+				if (f.type === 'checkbox') {
+					if (f.checked) return true;
+				} else if (readField(f) !== '') {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function loadDraft() {
+			try {
+				var raw = storage.getItem(KEY);
+				if (!raw) return null;
+				var data = JSON.parse(raw);
+				if (!data || !data.savedAt || !data.fields) return null;
+				if ((Date.now() - data.savedAt) > MAX_AGE_MS) {
+					storage.removeItem(KEY);
+					return null;
+				}
+				return data;
+			} catch (e) {
+				return null;
+			}
+		}
+
+		function persistDraft() {
+			var fields = {};
+			var anyValue = false;
+			PERSIST_FIELDS.forEach(function (name) {
+				var f = getField(name);
+				var v = readField(f);
+				if (v) anyValue = true;
+				fields[name] = v;
+			});
+			if (!anyValue) {
+				// Empty form means there's nothing worth restoring later. Wipe
+				// any stale draft so the next visit doesn't show the notice.
+				try { storage.removeItem(KEY); } catch (e) {}
+				hasUnsavedInput = false;
+				return;
+			}
+			try {
+				storage.setItem(KEY, JSON.stringify({
+					v: 1,
+					savedAt: Date.now(),
+					fields: fields
+				}));
+				hasUnsavedInput = true;
+			} catch (e) {
+				// QuotaExceededError or storage disabled mid-session — there's
+				// nothing useful we can do here, and the form still submits.
+			}
+		}
+
+		function clearDraft() {
+			try { storage.removeItem(KEY); } catch (e) {}
+			hasUnsavedInput = false;
+		}
+
+		function applyDraft(draft) {
+			PERSIST_FIELDS.forEach(function (name) {
+				if (Object.prototype.hasOwnProperty.call(draft.fields, name)) {
+					writeField(getField(name), draft.fields[name]);
+				}
+			});
+			// Re-run the date-range floor calc now that values are populated;
+			// the multi-step controller wires this up but only on a real change
+			// event, not on programmatic value writes.
+			if (dateFromAfterRestore && dateToAfterRestore) {
+				try {
+					dateFromAfterRestore.dispatchEvent(new Event('change', { bubbles: true }));
+				} catch (e) { /* old IE shims not relevant here */ }
+			}
+		}
+
+		function relativeMinutes(savedAt) {
+			var minutes = Math.max(1, Math.round((Date.now() - savedAt) / 60000));
+			if (minutes < 60) {
+				return minutes + (minutes === 1 ? ' minute ago' : ' minutes ago');
+			}
+			var hours = Math.round(minutes / 60);
+			if (hours < 24) {
+				return hours + (hours === 1 ? ' hour ago' : ' hours ago');
+			}
+			var days = Math.round(hours / 24);
+			return days + (days === 1 ? ' day ago' : ' days ago');
+		}
+
+		function showRestoredNotice(draft) {
+			var notice = document.createElement('div');
+			notice.className = 'restwell-enq-draft-notice';
+			notice.setAttribute('role', 'status');
+			// polite (not assertive) — the user already knows they came back to
+			// the form. A jolting screen-reader interrupt is the wrong volume.
+			notice.setAttribute('aria-live', 'polite');
+
+			var p = document.createElement('p');
+			p.className = 'restwell-enq-draft-notice__text';
+			p.appendChild(document.createTextNode('We restored your details from ' + relativeMinutes(draft.savedAt) + '. '));
+
+			var discard = document.createElement('button');
+			discard.type = 'button';
+			discard.className = 'restwell-enq-draft-notice__discard';
+			discard.textContent = 'Discard and start fresh';
+
+			discard.addEventListener('click', function () {
+				PERSIST_FIELDS.forEach(function (name) {
+					writeField(getField(name), '');
+				});
+				clearDraft();
+				notice.remove();
+				// Send the user back to step 1 so the cleared form makes sense
+				// in context — they shouldn't be staring at an empty step 3.
+				var firstNode = form.querySelector('.step-node[data-step="1"]');
+				var visibleStep = form.querySelector('.enquire-step:not(.hidden)');
+				if (visibleStep && firstNode && parseInt(visibleStep.getAttribute('data-step'), 10) > 1) {
+					var backBtn = form.querySelector('.step-back[data-back="1"]');
+					if (backBtn) backBtn.click();
+				}
+				var name = getField('enq_name');
+				if (name) name.focus();
+			});
+
+			p.appendChild(discard);
+			notice.appendChild(p);
+
+			var heading = form.querySelector('h2');
+			if (heading && heading.parentNode) {
+				heading.parentNode.insertBefore(notice, heading.nextSibling);
+			} else {
+				form.insertBefore(notice, form.firstChild);
+			}
+		}
+
+		// Capture date inputs once so applyDraft() can re-fire the change event.
+		var dateFromAfterRestore = form.querySelector('#enq_date_from');
+		var dateToAfterRestore   = form.querySelector('#enq_date_to');
+
+		var hasUnsavedInput = false;
+
+		if (isServerPrefilled()) {
+			// Server flash carried the user's submitted values. Treat that as
+			// "unsaved" so beforeunload still warns them off accidental nav.
+			hasUnsavedInput = true;
+		} else {
+			var draft = loadDraft();
+			if (draft) {
+				applyDraft(draft);
+				showRestoredNotice(draft);
+				hasUnsavedInput = true;
+			}
+		}
+
+		// Save on input and change. Debounced to avoid storage churn on long
+		// messages — we hit storage once after the user pauses, not 200 times
+		// while they type.
+		var saveTimer = null;
+		function scheduleSave() {
+			if (saveTimer) window.clearTimeout(saveTimer);
+			saveTimer = window.setTimeout(persistDraft, SAVE_DEBOUNCE_MS);
+		}
+		form.addEventListener('input',  scheduleSave, { passive: true });
+		form.addEventListener('change', scheduleSave, { passive: true });
+
+		// Clear on submit. The next page load is the success view, which has
+		// no form to restore into; clearing here also covers the "tab restore
+		// after a successful submit" case so users don't see a phantom notice.
+		form.addEventListener('submit', function () {
+			clearDraft();
+		});
+
+		// beforeunload warning. Modern browsers ignore custom messages and show
+		// a generic "Leave site?" prompt; setting returnValue is the standards
+		// pattern that triggers it. Bail out if the form is empty so we don't
+		// nag people who just glanced at the page.
+		window.addEventListener('beforeunload', function (e) {
+			if (!hasUnsavedInput) return;
+			e.preventDefault();
+			// returnValue is the documented contract for this prompt.
+			e.returnValue = '';
+		});
+	}
+
+	/**
 	 * Scroll-depth tracking for content engagement.
 	 * Fires once each at 25%, 50%, 75%, and 90%.
 	 */
@@ -1097,8 +1369,13 @@
 				if (!id || typeof window.gtag !== 'function') {
 					return;
 				}
+				var ctaLabel = el.getAttribute('data-cta-label');
+				if (!ctaLabel) {
+					ctaLabel = (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim();
+				}
 				window.gtag('event', 'restwell_cta_click', {
 					cta_id: id,
+					cta_text: ctaLabel ? ctaLabel.substring(0, 120) : id,
 					page_path: window.location.pathname,
 					user_type: 'guest',
 				});
@@ -1177,6 +1454,14 @@
 		});
 	}
 
+	function runWhenIdle(task) {
+		if (typeof window.requestIdleCallback === 'function') {
+			window.requestIdleCallback(task, { timeout: 1200 });
+			return;
+		}
+		window.setTimeout(task, 300);
+	}
+
 	ready(function () {
 		initRestwellFormOpenedAt();
 		setActiveNavLinks();
@@ -1187,12 +1472,20 @@
 		initFaqTabs();
 		initHomeFaqAccordion();
 		initMultiStepForm();
-		initRestwellGa4SecondaryEvents();
-		initEnquirySuccessScroll();
-		initRestwellCtaAnalytics();
-		initScrollDepthTracking();
+		// Must run AFTER initMultiStepForm() so the multi-step controller has
+		// already wired up showStep() and date-range constraints; the draft
+		// restore can then dispatch a 'change' event safely without racing.
+		initEnquiryDraftPersistence();
 		initWifPersonaNav();
-		initRevealAnimations();
 		initHomeComparisonScrollHints();
+
+		// Non-critical analytics and reveal effects run after the initial paint window.
+		runWhenIdle(function () {
+			initRestwellGa4SecondaryEvents();
+			initEnquirySuccessScroll();
+			initRestwellCtaAnalytics();
+			initScrollDepthTracking();
+			initRevealAnimations();
+		});
 	});
 })();

@@ -714,11 +714,6 @@
 	max-width: 14rem;
 }
 
-.restwell-admin-enquiries .rw-enquiries-table .column-assigned {
-	min-width: 7rem;
-	max-width: 11rem;
-}
-
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-status {
 	min-width: 10.5rem;
 	max-width: 15rem;
@@ -882,6 +877,54 @@
 .restwell-admin-enquiry-detail .rw-prose-block:last-of-type,
 .restwell-admin-enquiry-detail .rw-prose-block--message {
 	margin-bottom: 0;
+}
+
+/*
+ * Editable stay-dates panel — sits below the read-only Booking table.
+ * Uses CSS Grid so the two date fields sit side-by-side on wide admin screens
+ * but stack on narrow ones (mobile-narrow admin sidebar, half-width windows)
+ * without needing a JS breakpoint.
+ */
+.restwell-admin-enquiry-detail .rw-stay-dates-form {
+	margin: 0 0 var(--rw-space-2);
+}
+
+.restwell-admin-enquiry-detail .rw-stay-dates-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: var(--rw-space-3) var(--rw-space-4);
+	margin: 0 0 var(--rw-space-3);
+}
+
+.restwell-admin-enquiry-detail .rw-stay-dates-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 0;
+}
+
+.restwell-admin-enquiry-detail .rw-stay-dates-field label {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.restwell-admin-enquiry-detail .rw-stay-dates-field input[type="date"] {
+	width: 100%;
+	max-width: 220px;
+	box-sizing: border-box;
+}
+
+.restwell-admin-enquiry-detail .rw-stay-dates-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--rw-space-3);
+	margin: 0;
+}
+
+.restwell-admin-enquiry-detail .rw-stay-dates-help {
+	color: var(--rw-subtle);
+	font-style: normal;
 }
 
 .restwell-admin-enquiry-detail .rw-submitted-meta {

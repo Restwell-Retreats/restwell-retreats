@@ -21,7 +21,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <header class="site-header">
 	<div class="container">
-		<!-- Logo -->
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" aria-label="<?php echo esc_attr( sprintf( __( '%s home', 'restwell-retreats' ), restwell_site_brand_lockup() ) ); ?>">
 			<img
 				src="<?php echo esc_url( restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) ); ?>"
@@ -32,7 +31,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			>
 		</a>
 
-		<!-- Desktop Nav -->
 		<nav class="site-nav" aria-label="Main navigation">
 		<?php
 		if ( has_nav_menu( 'primary' ) ) {
@@ -51,7 +49,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 		</nav>
 
-		<!-- Mobile Menu Button (toggle will be wired up in main.js) -->
 		<button
 			type="button"
 			class="mobile-menu-btn"
@@ -64,7 +61,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</button>
 	</div>
 
-	<!-- Mobile Nav -->
 	<nav id="mobile-nav" class="mobile-nav" aria-hidden="true" aria-label="Mobile navigation">
 		<div class="container">
 		<?php

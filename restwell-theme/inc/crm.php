@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RESTWELL_CRM_DB_VERSION', '3.3' );
+define( 'RESTWELL_CRM_DB_VERSION', '3.5' );
 define( 'RESTWELL_CRM_TABLE',    'rw_enquiries' );
 define( 'RESTWELL_NOTES_TABLE',  'rw_enquiry_notes' );
 define( 'RESTWELL_GUESTS_TABLE', 'rw_guests' );
@@ -75,21 +75,6 @@ function restwell_crm_apply_role_caps(): void {
 }
 add_action( 'init', 'restwell_crm_apply_role_caps', 20 );
 
-/**
- * Users selectable as enquiry assignees.
- *
- * @return array<int, WP_User>
- */
-function restwell_crm_get_assignable_users(): array {
-	return get_users(
-		array(
-			'capability' => restwell_crm_capability(),
-			'orderby'    => 'display_name',
-			'order'      => 'ASC',
-		)
-	);
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. DATABASE SETUP
 // ─────────────────────────────────────────────────────────────────────────────
@@ -127,6 +112,8 @@ function restwell_crm_maybe_create_table() {
 		preferred_time varchar(100) NOT NULL DEFAULT '',
 		message text NOT NULL,
 		is_urgent tinyint(1) NOT NULL DEFAULT 0,
+		marketing_optin tinyint(1) NOT NULL DEFAULT 0,
+		marketing_optin_at datetime DEFAULT NULL,
 		status varchar(50) NOT NULL DEFAULT 'new',
 		assigned_to bigint(20) UNSIGNED DEFAULT NULL,
 		staff_notes text NOT NULL,
@@ -136,7 +123,11 @@ function restwell_crm_maybe_create_table() {
 		qualified_at datetime DEFAULT NULL,
 		booked_at datetime DEFAULT NULL,
 		closed_at datetime DEFAULT NULL,
-		PRIMARY KEY  (id)
+		PRIMARY KEY  (id),
+		KEY status_submitted (status, submitted_at),
+		KEY email_submitted (email, submitted_at),
+		KEY follow_up_status (follow_up_at, status),
+		KEY urgent_status (is_urgent, status)
 	) {$charset_collate};" );
 
 	// ── rw_enquiry_notes ─────────────────────────────────────────────────────
@@ -175,11 +166,24 @@ function restwell_crm_maybe_create_table() {
 		email varchar(200) NOT NULL DEFAULT '',
 		question text NOT NULL,
 		notify_sent tinyint(1) NOT NULL DEFAULT 0,
+		marketing_optin tinyint(1) NOT NULL DEFAULT 0,
+		marketing_optin_at datetime DEFAULT NULL,
+		marketing_sync_failed tinyint(1) NOT NULL DEFAULT 0,
 		source_url varchar(500) NOT NULL DEFAULT '',
 		PRIMARY KEY  (id),
 		KEY submitted_at (submitted_at),
 		KEY email (email)
 	) {$charset_collate};" );
+
+	// Backfill legacy enquiry consent stored in staff_notes.
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$wpdb->query(
+		"UPDATE {$enq_table}
+		SET marketing_optin = 1,
+			marketing_optin_at = COALESCE(marketing_optin_at, submitted_at)
+		WHERE marketing_optin = 0
+		AND staff_notes LIKE '%Marketing updates consent: Yes%'"
+	);
 
 	// ── One-time migration: restwell_guests option → rw_guests ───────────────
 	$legacy_guests = get_option( 'restwell_guests', array() );
@@ -231,18 +235,14 @@ add_action( 'init', 'restwell_crm_maybe_create_table', 5 );
  * row ID, preventing accidental double-submissions.
  *
  * @param array $data Sanitised form values keyed by short name.
- * @return int|false Inserted (or existing) row ID, or false on failure.
+ * @return array{id: int|false, is_duplicate: bool}
+ *   'id'           — Inserted or existing row ID (false on DB failure).
+ *   'is_duplicate' — true when the insert was skipped due to deduplication.
  */
-function restwell_crm_save_enquiry( array $data ) {
+function restwell_crm_save_enquiry( array $data ): array {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
 	$email = $data['email'] ?? '';
-	$default_assignee = absint( get_option( 'default_assignee_user_id', 0 ) );
-	$assigned_to      = 0;
-
-	if ( $default_assignee && user_can( $default_assignee, restwell_crm_capability() ) ) {
-		$assigned_to = $default_assignee;
-	}
 
 	// Duplicate guard: same email, submitted in the last 30 minutes.
 	if ( $email ) {
@@ -256,13 +256,21 @@ function restwell_crm_save_enquiry( array $data ) {
 			)
 		);
 		if ( $dup_id ) {
-			return $dup_id;
+			return array( 'id' => $dup_id, 'is_duplicate' => true );
 		}
 	}
 
 	// Normalise optional date columns; store NULL when blank.
 	$date_from = ! empty( $data['date_from'] ) ? $data['date_from'] : null;
 	$date_to   = ! empty( $data['date_to'] )   ? $data['date_to']   : null;
+	$marketing_optin    = ! empty( $data['marketing_optin'] ) ? 1 : 0;
+	$marketing_optin_at = $marketing_optin ? current_time( 'mysql' ) : null;
+	$staff_notes = '';
+	if ( array_key_exists( 'marketing_optin', $data ) ) {
+		$staff_notes = ! empty( $data['marketing_optin'] )
+			? __( 'Marketing updates consent: Yes (opted in).', 'restwell-retreats' )
+			: __( 'Marketing updates consent: No (not opted in).', 'restwell-retreats' );
+	}
 
 	$result = $wpdb->insert(
 		$table,
@@ -282,25 +290,31 @@ function restwell_crm_save_enquiry( array $data ) {
 			'preferred_time'     => $data['pref_time'] ?? '',
 			'message'            => $data['message'] ?? '',
 			'is_urgent'          => ! empty( $data['urgent'] ) ? 1 : 0,
+			'marketing_optin'    => $marketing_optin,
+			'marketing_optin_at' => $marketing_optin_at,
 			'status'             => 'new',
-			'assigned_to'        => $assigned_to ? $assigned_to : null,
-			'staff_notes'        => '',
+			'staff_notes'        => $staff_notes,
 		),
-		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%d', '%s' )
+		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' )
 	);
 
-	return $result ? (int) $wpdb->insert_id : false;
+	if ( $result ) {
+		return array( 'id' => (int) $wpdb->insert_id, 'is_duplicate' => false );
+	}
+	return array( 'id' => false, 'is_duplicate' => false );
 }
 
 /**
  * Persist an FAQ page question (always store before attempting email).
  *
- * @param array{name:string,email:string,question:string,source_url?:string} $data Sanitised fields.
+ * @param array{name:string,email:string,question:string,source_url?:string,marketing_optin?:bool|int|string} $data Sanitised fields.
  * @return int|false Inserted row ID, or false on failure.
  */
 function restwell_faq_save_submission( array $data ) {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
+	$marketing_optin    = ! empty( $data['marketing_optin'] ) ? 1 : 0;
+	$marketing_optin_at = $marketing_optin ? current_time( 'mysql' ) : null;
 	$result = $wpdb->insert(
 		$table,
 		array(
@@ -309,9 +323,11 @@ function restwell_faq_save_submission( array $data ) {
 			'email'        => $data['email'] ?? '',
 			'question'     => $data['question'] ?? '',
 			'notify_sent'  => 0,
+			'marketing_optin' => $marketing_optin,
+			'marketing_optin_at' => $marketing_optin_at,
 			'source_url'   => $data['source_url'] ?? '',
 		),
-		array( '%s', '%s', '%s', '%s', '%d', '%s' )
+		array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' )
 	);
 	return $result ? (int) $wpdb->insert_id : false;
 }
@@ -370,12 +386,21 @@ function restwell_crm_register_menu() {
 		'restwell_crm_enquiries_page'
 	);
 
+	add_submenu_page(
+		'restwell-crm',
+		__( 'Mailing list', 'restwell-retreats' ),
+		__( 'Mailing list', 'restwell-retreats' ),
+		restwell_crm_capability(),
+		'restwell-mailing-list',
+		'restwell_crm_mailing_list_page'
+	);
+
 	// Guest Guide submenu: callback defined in inc/guest-guide.php.
 	add_submenu_page(
 		'restwell-crm',
 		__( 'Guest Guide', 'restwell-retreats' ),
 		__( 'Guest Guide', 'restwell-retreats' ),
-		'manage_options',
+		restwell_crm_capability(),
 		'restwell-guest-guide',
 		'restwell_guest_guide_settings_page'
 	);
@@ -505,8 +530,32 @@ function restwell_crm_handle_export_csv() {
 
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	// Explicit column list — avoids pulling unexpected columns added by future migrations.
 	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$rows = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY submitted_at DESC", ARRAY_A );
+	$rows = $wpdb->get_results(
+		"SELECT id, submitted_at, name, email, phone,
+		        preferred_dates, date_from, date_to, num_guests,
+		        care_requirements, accessibility, funding_type,
+		        contact_preference, preferred_time, message,
+		        is_urgent, marketing_optin, marketing_optin_at,
+		        status, staff_notes, follow_up_at,
+		        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at
+		 FROM {$table} ORDER BY submitted_at DESC",
+		ARRAY_A
+	);
+
+	// Append to audit log before streaming headers (headers cannot be sent before update_option).
+	$export_log_entry = array(
+		'user_id'     => get_current_user_id(),
+		'exported_at' => gmdate( 'Y-m-d H:i:s' ),
+		'row_count'   => count( (array) $rows ),
+	);
+	$export_log = get_option( 'restwell_crm_export_log', array() );
+	if ( ! is_array( $export_log ) ) {
+		$export_log = array();
+	}
+	$export_log[] = $export_log_entry;
+	update_option( 'restwell_crm_export_log', array_slice( $export_log, -200 ) ); // keep last 200 entries
 
 	$filename = 'restwell-enquiries-' . gmdate( 'Y-m-d' ) . '.csv';
 
@@ -564,38 +613,61 @@ add_action( 'admin_post_restwell_crm_send_post_stay', 'restwell_crm_handle_send_
  * Save the notification email setting.
  */
 function restwell_crm_handle_save_settings() {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! restwell_crm_can_manage() ) {
 		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
 	}
 	check_admin_referer( 'restwell_crm_settings' );
 
+	// Always persist these values — including empty string — so editors can intentionally clear stale data.
 	$email = isset( $_POST['restwell_enquiry_notify_email'] )
 		? sanitize_email( wp_unslash( $_POST['restwell_enquiry_notify_email'] ) )
 		: '';
-	if ( $email ) {
-		update_option( 'restwell_enquiry_notify_email', $email );
-	}
+	update_option( 'restwell_enquiry_notify_email', $email );
 
 	$phone = isset( $_POST['restwell_phone_number'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_phone_number'] ) )
 		: '';
-	if ( $phone ) {
-		update_option( 'restwell_phone_number', $phone );
-	}
+	update_option( 'restwell_phone_number', $phone );
 
 	$address = isset( $_POST['restwell_property_address'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_property_address'] ) )
 		: '';
-	if ( $address ) {
-		update_option( 'restwell_property_address', $address );
-	}
+	update_option( 'restwell_property_address', $address );
 
 	$postcode = isset( $_POST['restwell_property_postcode'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_property_postcode'] ) )
 		: '';
-	if ( $postcode ) {
-		update_option( 'restwell_property_postcode', $postcode );
-	}
+	update_option( 'restwell_property_postcode', $postcode );
+
+	$business_street = isset( $_POST['restwell_business_street'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_business_street'] ) )
+		: '';
+	update_option( 'restwell_business_street', $business_street );
+
+	$business_locality = isset( $_POST['restwell_business_locality'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_business_locality'] ) )
+		: '';
+	update_option( 'restwell_business_locality', $business_locality );
+
+	$business_region = isset( $_POST['restwell_business_region'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_business_region'] ) )
+		: '';
+	update_option( 'restwell_business_region', $business_region );
+
+	$business_postcode = isset( $_POST['restwell_business_postcode'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_business_postcode'] ) )
+		: '';
+	update_option( 'restwell_business_postcode', $business_postcode );
+
+	$business_geo_lat = isset( $_POST['restwell_business_geo_lat'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_business_geo_lat'] ) )
+		: '';
+	update_option( 'restwell_business_geo_lat', $business_geo_lat );
+
+	$business_geo_lon = isset( $_POST['restwell_business_geo_lon'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_business_geo_lon'] ) )
+		: '';
+	update_option( 'restwell_business_geo_lon', $business_geo_lon );
 
 	$footer_heading = isset( $_POST['restwell_footer_cta_heading'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_heading'] ) )
@@ -638,6 +710,42 @@ function restwell_crm_handle_save_settings() {
 	$ga4 = preg_replace( '/\s+/', '', $ga4 );
 	update_option( 'restwell_ga4_measurement_id', $ga4 );
 
+	$mailchimp_api_key = isset( $_POST['restwell_mailchimp_api_key'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_api_key'] ) )
+		: '';
+	$mailchimp_api_key = preg_replace( '/[^A-Za-z0-9\-]/', '', trim( $mailchimp_api_key ) );
+	if ( '' !== $mailchimp_api_key ) {
+		update_option( 'restwell_mailchimp_api_key', $mailchimp_api_key );
+	} elseif ( ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
+		update_option( 'restwell_mailchimp_api_key', '' );
+	}
+
+	$mailchimp_audience_id = isset( $_POST['restwell_mailchimp_audience_id'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_audience_id'] ) )
+		: '';
+	$mailchimp_audience_id = preg_replace( '/[^0-9A-Za-z]/', '', $mailchimp_audience_id );
+	update_option( 'restwell_mailchimp_audience_id', $mailchimp_audience_id );
+
+	$mailchimp_server_prefix = isset( $_POST['restwell_mailchimp_server_prefix'] )
+		? sanitize_key( wp_unslash( $_POST['restwell_mailchimp_server_prefix'] ) )
+		: '';
+	update_option( 'restwell_mailchimp_server_prefix', $mailchimp_server_prefix );
+
+	$metricool_hash = isset( $_POST['restwell_metricool_hash'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_metricool_hash'] ) )
+		: '';
+	$metricool_hash = preg_replace( '/[^0-9A-Za-z]/', '', $metricool_hash );
+	$metricool_hash = strtolower( $metricool_hash );
+	update_option( 'restwell_metricool_hash', $metricool_hash );
+
+	$analytics_mode = isset( $_POST['restwell_analytics_load_mode'] )
+		? sanitize_key( wp_unslash( $_POST['restwell_analytics_load_mode'] ) )
+		: 'head';
+	if ( ! in_array( $analytics_mode, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
+		$analytics_mode = 'head';
+	}
+	update_option( 'restwell_analytics_load_mode', $analytics_mode );
+
 	$bing = isset( $_POST['restwell_bing_verification'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_bing_verification'] ) )
 		: '';
@@ -659,12 +767,6 @@ function restwell_crm_handle_save_settings() {
 		$cap_roles = array( 'administrator' );
 	}
 	update_option( 'restwell_crm_cap_roles', $cap_roles );
-
-	$default_assignee = absint( $_POST['default_assignee_user_id'] ?? 0 );
-	if ( $default_assignee && ! user_can( $default_assignee, restwell_crm_capability() ) ) {
-		$default_assignee = 0;
-	}
-	update_option( 'default_assignee_user_id', $default_assignee );
 
 	wp_safe_redirect(
 		add_query_arg( array( 'page' => 'restwell-crm', 'settings_saved' => '1' ), admin_url( 'admin.php' ) )
@@ -698,6 +800,105 @@ function restwell_crm_handle_add_note() {
 	exit;
 }
 add_action( 'admin_post_restwell_crm_add_note', 'restwell_crm_handle_add_note' );
+
+/**
+ * Update an enquiry's stay dates from the detail page.
+ *
+ * Why this exists separately from the public enquiry form's validation:
+ * - Admins are allowed to set dates in the past (cleaning up historical records,
+ *   logging arrival info after the fact, etc.). The public-form rule that
+ *   "preferred dates can't be in the past" doesn't apply to staff.
+ * - Admins are allowed to clear dates entirely (a guest changes their mind,
+ *   or the original submission was a typo). Empty string → NULL in the DB,
+ *   and `preferred_dates` gets recomputed to "" in lockstep.
+ * - Every change is recorded as an automated note ("Stay dates updated:
+ *   {old} → {new}") so the activity log stays an honest audit trail.
+ *
+ * Re-uses `restwell_format_enquiry_date_range()` so the human-readable
+ * `preferred_dates` string the rest of the CRM displays stays byte-identical
+ * to what the public form would have written.
+ */
+function restwell_crm_handle_update_stay_dates(): void {
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
+	}
+	check_admin_referer( 'restwell_crm_update_stay_dates' );
+
+	$enquiry_id = absint( $_POST['rw_enquiry_id'] ?? 0 );
+	$date_from  = sanitize_text_field( wp_unslash( $_POST['rw_date_from'] ?? '' ) );
+	$date_to    = sanitize_text_field( wp_unslash( $_POST['rw_date_to']   ?? '' ) );
+
+	if ( ! $enquiry_id ) {
+		wp_die( esc_html__( 'Missing enquiry ID.', 'restwell-retreats' ) );
+	}
+
+	$redirect_base = add_query_arg(
+		array( 'page' => 'restwell-enquiries', 'view' => $enquiry_id ),
+		admin_url( 'admin.php' )
+	);
+
+	// Format check: empty is fine (= clear the field), but anything non-empty
+	// must be a valid Y-m-d. We deliberately *don't* reject past dates here —
+	// see the docblock above.
+	$valid_ymd = static function ( string $d ): bool {
+		return '' === $d || (bool) preg_match( '/^\d{4}-\d{2}-\d{2}$/', $d );
+	};
+	if ( ! $valid_ymd( $date_from ) || ! $valid_ymd( $date_to ) ) {
+		wp_safe_redirect( add_query_arg( 'stay_dates_error', 'invalid', $redirect_base ) );
+		exit;
+	}
+	if ( '' !== $date_from && '' !== $date_to && $date_to < $date_from ) {
+		wp_safe_redirect( add_query_arg( 'stay_dates_error', 'order', $redirect_base ) );
+		exit;
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+
+	// Read current values so we can (a) skip a no-op write, and (b) write a
+	// "before → after" entry in the activity log.
+	$existing = $wpdb->get_row(
+		$wpdb->prepare( "SELECT date_from, date_to FROM {$table} WHERE id = %d", $enquiry_id )
+	);
+	if ( ! $existing ) {
+		wp_die( esc_html__( 'Enquiry not found.', 'restwell-retreats' ) );
+	}
+	$old_from = $existing->date_from ?: '';
+	$old_to   = $existing->date_to   ?: '';
+
+	if ( $old_from === $date_from && $old_to === $date_to ) {
+		// Nothing changed — don't pollute the activity log with empty diffs.
+		wp_safe_redirect( add_query_arg( 'stay_dates_unchanged', '1', $redirect_base ) );
+		exit;
+	}
+
+	$wpdb->update(
+		$table,
+		array(
+			// Empty becomes NULL in the column (it's `date DEFAULT NULL`); $wpdb
+			// passes NULL through regardless of the format string for that slot.
+			'date_from'       => '' === $date_from ? null : $date_from,
+			'date_to'         => '' === $date_to   ? null : $date_to,
+			'preferred_dates' => restwell_format_enquiry_date_range( $date_from, $date_to ),
+		),
+		array( 'id' => $enquiry_id ),
+		array( '%s', '%s', '%s' ),
+		array( '%d' )
+	);
+
+	$none_label = __( '(none)', 'restwell-retreats' );
+	$note       = sprintf(
+		/* translators: 1: previous stay-date range or "(none)", 2: new stay-date range or "(none)" */
+		__( 'Stay dates updated: %1$s → %2$s', 'restwell-retreats' ),
+		restwell_format_enquiry_date_range( $old_from, $old_to ) ?: $none_label,
+		restwell_format_enquiry_date_range( $date_from, $date_to ) ?: $none_label
+	);
+	restwell_crm_add_note( $enquiry_id, $note );
+
+	wp_safe_redirect( add_query_arg( 'stay_dates_updated', '1', $redirect_base ) );
+	exit;
+}
+add_action( 'admin_post_restwell_crm_update_stay_dates', 'restwell_crm_handle_update_stay_dates' );
 
 /**
  * Handle inline lead quick-actions from the enquiries list.
@@ -742,8 +943,7 @@ function restwell_crm_handle_lead_action() {
 
 	if ( 'set_status' === $action_type ) {
 		$new_status = sanitize_key( $_POST['new_status'] ?? '' );
-		$statuses   = restwell_crm_statuses();
-		if ( ! isset( $statuses[ $new_status ] ) ) {
+		if ( ! isset( restwell_crm_statuses()[ $new_status ] ) ) {
 			wp_send_json_error(
 				array(
 					'message' => __( 'Invalid status.', 'restwell-retreats' ),
@@ -752,45 +952,11 @@ function restwell_crm_handle_lead_action() {
 			);
 		}
 
-		$update_data    = array( 'status' => $new_status );
-		$update_formats = array( '%s' );
+		// Delegate to the unified function — it handles timestamps, note, and booking email.
+		$ok = restwell_crm_apply_status_change( $lead_id, $new_status, 'ajax' );
 
-		if ( 'contacted' === $new_status && empty( $row->contacted_at ) ) {
-			$update_data['contacted_at'] = current_time( 'mysql' );
-			$update_formats[]            = '%s';
-		}
-		if ( 'qualified' === $new_status && empty( $row->qualified_at ) ) {
-			$update_data['qualified_at'] = current_time( 'mysql' );
-			$update_formats[]            = '%s';
-		}
-		if ( 'booked' === $new_status && empty( $row->booked_at ) ) {
-			$update_data['booked_at'] = current_time( 'mysql' );
-			$update_formats[]         = '%s';
-		}
-		if ( 'closed' === $new_status && empty( $row->closed_at ) ) {
-			$update_data['closed_at'] = current_time( 'mysql' );
-			$update_formats[]         = '%s';
-		}
-
-		$wpdb->update( $table, $update_data, array( 'id' => $lead_id ), $update_formats, array( '%d' ) );
-
-		if ( $row->status !== $new_status ) {
-			$old_label = $statuses[ $row->status ]['label'] ?? ucfirst( $row->status );
-			$new_label = $statuses[ $new_status ]['label'] ?? ucfirst( $new_status );
-			restwell_crm_add_note(
-				$lead_id,
-				sprintf(
-					/* translators: 1: old status label, 2: new status label */
-					__( 'Status changed from "%1$s" to "%2$s".', 'restwell-retreats' ),
-					$old_label,
-					$new_label
-				)
-			);
-
-			if ( 'booked' === $new_status && empty( $row->booked_at ) && function_exists( 'restwell_email_booking_confirmed' ) ) {
-				$email_data = restwell_email_booking_confirmed( $row->name, $row->email );
-				wp_mail( $row->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
-			}
+		if ( ! $ok ) {
+			wp_send_json_error( array( 'message' => __( 'Status update failed.', 'restwell-retreats' ) ), 500 );
 		}
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -829,6 +995,175 @@ function restwell_crm_handle_lead_action() {
 add_action( 'wp_ajax_restwell_lead_action', 'restwell_crm_handle_lead_action' );
 
 // ─────────────────────────────────────────────────────────────────────────────
+// UNIFIED STATUS TRANSITION
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Apply a status change to a single enquiry.
+ *
+ * This is the canonical implementation of "what does it mean to transition
+ * status X to Y?" — timestamps, activity note, and booking email all live here.
+ * Every entry point (detail form, bulk, AJAX) must delegate to this function
+ * rather than re-implementing the rules.
+ *
+ * @param int    $id         Enquiry ID.
+ * @param string $new_status Target status key (must exist in restwell_crm_statuses()).
+ * @param string $context    Caller context: 'detail', 'ajax', or 'bulk'.
+ *                           Booking confirmation email is suppressed when context = 'bulk'.
+ * @return bool True if the update succeeded, false otherwise.
+ */
+function restwell_crm_apply_status_change( int $id, string $new_status, string $context = 'detail' ): bool {
+	$statuses = restwell_crm_statuses();
+	if ( ! isset( $statuses[ $new_status ] ) ) {
+		return false;
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$current = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) );
+
+	if ( ! $current ) {
+		return false;
+	}
+
+	$update_data    = array( 'status' => $new_status );
+	$update_formats = array( '%s' );
+
+	// Set first-touch lifecycle timestamps only when the column is still NULL.
+	if ( 'contacted' === $new_status && empty( $current->contacted_at ) ) {
+		$update_data['contacted_at'] = current_time( 'mysql' );
+		$update_formats[]            = '%s';
+	}
+	if ( 'qualified' === $new_status && empty( $current->qualified_at ) ) {
+		$update_data['qualified_at'] = current_time( 'mysql' );
+		$update_formats[]            = '%s';
+	}
+	if ( 'booked' === $new_status && empty( $current->booked_at ) ) {
+		$update_data['booked_at'] = current_time( 'mysql' );
+		$update_formats[]         = '%s';
+	}
+	if ( 'closed' === $new_status && empty( $current->closed_at ) ) {
+		$update_data['closed_at'] = current_time( 'mysql' );
+		$update_formats[]         = '%s';
+	}
+
+	$result = $wpdb->update( $table, $update_data, array( 'id' => $id ), $update_formats, array( '%d' ) );
+
+	if ( false === $result ) {
+		return false;
+	}
+
+	// Auto-log to activity log when status actually changed.
+	if ( $current->status !== $new_status ) {
+		$old_label = $statuses[ $current->status ]['label'] ?? ucfirst( $current->status );
+		$new_label = $statuses[ $new_status ]['label'] ?? ucfirst( $new_status );
+		restwell_crm_add_note(
+			$id,
+			sprintf(
+				/* translators: 1: old status label, 2: new status label, 3: context (detail/ajax/bulk) */
+				__( 'Status changed from "%1$s" to "%2$s" (via %3$s).', 'restwell-retreats' ),
+				$old_label,
+				$new_label,
+				$context
+			)
+		);
+
+		// Send booking confirmation email on first 'booked' transition.
+		// Suppressed in bulk context to avoid accidental mass email.
+		if (
+			'booked' === $new_status
+			&& empty( $current->booked_at )
+			&& 'bulk' !== $context
+			&& function_exists( 'restwell_email_booking_confirmed' )
+		) {
+			$email_data = restwell_email_booking_confirmed( $current->name, $current->email );
+			wp_mail( $current->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Render opted-in marketing contacts from site forms.
+ */
+function restwell_crm_mailing_list_page(): void {
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'You do not have permission to view this page.', 'restwell-retreats' ) );
+	}
+
+	global $wpdb;
+	$enq_table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$faq_table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
+
+	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	$rows = $wpdb->get_results(
+		"
+		SELECT
+			email,
+			MAX(name) AS name,
+			MAX(last_opted_in_at) AS last_opted_in_at,
+			GROUP_CONCAT(DISTINCT source ORDER BY source SEPARATOR ', ') AS sources
+		FROM (
+			SELECT
+				email,
+				name,
+				COALESCE(marketing_optin_at, submitted_at) AS last_opted_in_at,
+				'Enquiry form' AS source
+			FROM {$enq_table}
+			WHERE marketing_optin = 1 AND email <> ''
+			UNION ALL
+			SELECT
+				email,
+				name,
+				COALESCE(marketing_optin_at, submitted_at) AS last_opted_in_at,
+				'FAQ question form' AS source
+			FROM {$faq_table}
+			WHERE marketing_optin = 1 AND email <> ''
+		) all_optins
+		GROUP BY email
+		ORDER BY last_opted_in_at DESC
+		",
+		ARRAY_A
+	);
+	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'Mailing list', 'restwell-retreats' ); ?></h1>
+		<p class="description">
+			<?php esc_html_e( 'Contacts who explicitly opted in to marketing emails from enquiry and FAQ forms.', 'restwell-retreats' ); ?>
+		</p>
+		<?php if ( empty( $rows ) ) : ?>
+			<p><?php esc_html_e( 'No opted-in contacts yet.', 'restwell-retreats' ); ?></p>
+		<?php else : ?>
+			<p><strong><?php echo esc_html( sprintf( __( 'Total subscribers: %d', 'restwell-retreats' ), count( $rows ) ) ); ?></strong></p>
+			<table class="widefat striped">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></th>
+						<th><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></th>
+						<th><?php esc_html_e( 'Source', 'restwell-retreats' ); ?></th>
+						<th><?php esc_html_e( 'Most recent opt-in', 'restwell-retreats' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $rows as $row ) : ?>
+						<tr>
+							<td><?php echo esc_html( (string) ( $row['name'] ?? '' ) ); ?></td>
+							<td><a href="mailto:<?php echo esc_attr( (string) ( $row['email'] ?? '' ) ); ?>"><?php echo esc_html( (string) ( $row['email'] ?? '' ) ); ?></a></td>
+							<td><?php echo esc_html( (string) ( $row['sources'] ?? '' ) ); ?></td>
+							<td><?php echo esc_html( (string) ( $row['last_opted_in_at'] ?? '' ) ); ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 7. DASHBOARD PAGE
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -837,7 +1172,7 @@ add_action( 'wp_ajax_restwell_lead_action', 'restwell_crm_handle_lead_action' );
  */
 function restwell_crm_dashboard_page() {
 	if ( ! restwell_crm_can_manage() ) {
-		return;
+		wp_die( esc_html__( 'You do not have permission to access this page.', 'restwell-retreats' ), '', array( 'response' => 403 ) );
 	}
 
 	global $wpdb;
@@ -866,6 +1201,9 @@ function restwell_crm_dashboard_page() {
 	);
 
 	// Booked enquiries not yet added to the Guest Guide.
+	// NOTE: LOWER() on both sides prevents index use on email columns; revisit with a normalised
+	// stored column (e.g. email_lower GENERATED ALWAYS AS (LOWER(email)) STORED + index) if this
+	// query appears in the MySQL slow log.
 	$booked_without_guide = $wpdb->get_results(
 		"SELECT e.id, e.name, e.email, e.preferred_dates, e.booked_at
 		 FROM {$enq_table} e
@@ -892,7 +1230,8 @@ function restwell_crm_dashboard_page() {
 					'label' => __( 'New this week', 'restwell-retreats' ),
 					'value' => $stat_new_week,
 					'color' => '#2271b1',
-					'url'   => add_query_arg( 'status_filter', 'new', $enquiries_url ),
+					// Links to all enquiries submitted in the last 7 days, matching the count's SQL.
+					'url'   => add_query_arg( 'submitted_since', $week_ago, $enquiries_url ),
 				),
 				array(
 					'label' => __( 'Total enquiries', 'restwell-retreats' ),
@@ -904,13 +1243,15 @@ function restwell_crm_dashboard_page() {
 					'label' => __( 'Urgent & uncontacted', 'restwell-retreats' ),
 					'value' => $stat_urgent,
 					'color' => '#d63638',
-					'url'   => add_query_arg( 'status_filter', 'new', $enquiries_url ),
+					// Both filters must match the SQL: is_urgent = 1 AND status = 'new'.
+					'url'   => add_query_arg( array( 'status_filter' => 'new', 'urgent_filter' => '1' ), $enquiries_url ),
 				),
 				array(
 					'label' => __( 'Follow-ups overdue', 'restwell-retreats' ),
 					'value' => $stat_follow_ups,
 					'color' => '#996800',
-					'url'   => $enquiries_url,
+					// Filter matches the SQL: follow_up_at <= now AND status != 'closed'.
+					'url'   => add_query_arg( 'follow_up_filter', 'overdue', $enquiries_url ),
 				),
 			);
 			foreach ( $tiles as $tile ) :
@@ -1074,7 +1415,7 @@ function restwell_crm_dashboard_page() {
 							array(
 								__( 'Notification email / phone / address', 'restwell-retreats' ),
 								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-crm', $base_url ) ) . '">' . __( 'Dashboard → Notification &amp; Site Settings', 'restwell-retreats' ) . '</a>',
-								__( 'Used in email templates, schema markup, footer, and 404 page.', 'restwell-retreats' ),
+								__( 'Property line is for internal copy and the 404 page (not public JSON-LD). Business address fields power Organization / LocalBusiness schema and should match Google Business Profile.', 'restwell-retreats' ),
 							),
 							array(
 								__( 'Enquiries (contact form submissions)', 'restwell-retreats' ),
@@ -1111,7 +1452,6 @@ function restwell_crm_dashboard_page() {
 		</div>
 	</div>
 
-	<?php if ( current_user_can( 'manage_options' ) ) : ?>
 	<!-- Notification settings -->
 		<div class="rw-settings-wrap">
 			<div class="postbox">
@@ -1176,7 +1516,7 @@ function restwell_crm_dashboard_page() {
 										class="regular-text"
 									/>
 									<p class="description">
-										<?php esc_html_e( 'Used in schema.org markup, 404 page, and other copy.', 'restwell-retreats' ); ?>
+										<?php esc_html_e( 'Shown in on-site copy and the 404 page. Not used in public JSON-LD (use Business address below for Organization / LocalBusiness).', 'restwell-retreats' ); ?>
 									</p>
 								</td>
 							</tr>
@@ -1194,6 +1534,66 @@ function restwell_crm_dashboard_page() {
 										value="<?php echo esc_attr( (string) get_option( 'restwell_property_postcode', 'CT5 2RQ' ) ); ?>"
 										class="regular-text"
 									/>
+									<p class="description">
+										<?php esc_html_e( 'Matches the property line above for internal copy; not output in public schema.', 'restwell-retreats' ); ?>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" colspan="2">
+									<strong><?php esc_html_e( 'Business address (JSON-LD)', 'restwell-retreats' ); ?></strong>
+									<p class="description rw-description--tight-top">
+										<?php esc_html_e( 'Used for Organization and LocalBusiness structured data. Keep aligned with your Google Business Profile (default: Vinters Business Park, Maidstone).', 'restwell-retreats' ); ?>
+									</p>
+								</th>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="restwell_business_street"><?php esc_html_e( 'Business street', 'restwell-retreats' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="restwell_business_street" name="restwell_business_street" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_street', 'Vinters Business Park' ) ); ?>" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="restwell_business_locality"><?php esc_html_e( 'Business town / city', 'restwell-retreats' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="restwell_business_locality" name="restwell_business_locality" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_locality', 'Maidstone' ) ); ?>" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="restwell_business_region"><?php esc_html_e( 'Business county / region', 'restwell-retreats' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="restwell_business_region" name="restwell_business_region" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_region', 'Kent' ) ); ?>" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="restwell_business_postcode"><?php esc_html_e( 'Business postcode', 'restwell-retreats' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="restwell_business_postcode" name="restwell_business_postcode" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_postcode', 'ME14 5NZ' ) ); ?>" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="restwell_business_geo_lat"><?php esc_html_e( 'Business latitude (optional)', 'restwell-retreats' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="restwell_business_geo_lat" name="restwell_business_geo_lat" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_geo_lat', '51.2707' ) ); ?>" />
+									<p class="description"><?php esc_html_e( 'Decimal degrees; used for LocalBusiness geo.', 'restwell-retreats' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="restwell_business_geo_lon"><?php esc_html_e( 'Business longitude (optional)', 'restwell-retreats' ); ?></label>
+								</th>
+								<td>
+									<input type="text" id="restwell_business_geo_lon" name="restwell_business_geo_lon" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_geo_lon', '0.5207' ) ); ?>" />
 								</td>
 							</tr>
 							<tr>
@@ -1350,7 +1750,151 @@ function restwell_crm_dashboard_page() {
 									</span>
 								</div>
 								<p class="description">
-									<?php esc_html_e( 'Optional. When set, the gtag snippet is output on the front end.', 'restwell-retreats' ); ?>
+									<?php esc_html_e( 'Optional. When set, GA4 is loaded according to “Analytics script placement” below (head, deferred footer, or consent-gated).', 'restwell-retreats' ); ?>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="restwell_mailchimp_api_key">
+									<?php esc_html_e( 'Mailchimp API key', 'restwell-retreats' ); ?>
+								</label>
+							</th>
+							<td>
+								<?php
+								$mailchimp_key_stored = (string) get_option( 'restwell_mailchimp_api_key', '' );
+								$mailchimp_key_masked = '';
+								if ( '' !== $mailchimp_key_stored ) {
+									$masked_tail         = substr( $mailchimp_key_stored, -4 );
+									$mailchimp_key_masked = '************' . $masked_tail;
+								}
+								$mailchimp_audience_current = (string) get_option( 'restwell_mailchimp_audience_id', '' );
+								$mailchimp_server_current   = (string) get_option( 'restwell_mailchimp_server_prefix', '' );
+								if ( restwell_mailchimp_is_configured() ) {
+									$mailchimp_badge_class = 'rw-ga4-badge rw-ga4-badge--active';
+									$mailchimp_badge_text  = __( 'Configured', 'restwell-retreats' );
+								} else {
+									$mailchimp_badge_class = 'rw-ga4-badge rw-ga4-badge--unset';
+									$mailchimp_badge_text  = __( 'Not configured', 'restwell-retreats' );
+								}
+								?>
+								<div class="rw-ga4-field-wrap">
+									<input
+										type="password"
+										id="restwell_mailchimp_api_key"
+										name="restwell_mailchimp_api_key"
+										value=""
+										class="regular-text"
+										autocomplete="new-password"
+										placeholder="<?php echo esc_attr( $mailchimp_key_masked ); ?>"
+									/>
+									<span class="<?php echo esc_attr( $mailchimp_badge_class ); ?>" aria-live="polite">
+										<?php echo esc_html( $mailchimp_badge_text ); ?>
+									</span>
+								</div>
+								<p class="description">
+									<?php esc_html_e( 'Leave blank to keep your existing API key. Add a new key to replace it.', 'restwell-retreats' ); ?>
+								</p>
+								<p class="description">
+									<label>
+										<input type="checkbox" name="restwell_mailchimp_api_key_clear" value="1" />
+										<?php esc_html_e( 'Clear stored API key on save', 'restwell-retreats' ); ?>
+									</label>
+								</p>
+								<p class="description">
+									<label for="restwell_mailchimp_audience_id"><?php esc_html_e( 'Audience ID', 'restwell-retreats' ); ?></label><br />
+									<input
+										type="text"
+										id="restwell_mailchimp_audience_id"
+										name="restwell_mailchimp_audience_id"
+										value="<?php echo esc_attr( $mailchimp_audience_current ); ?>"
+										class="regular-text"
+										placeholder="3ad6ed993b"
+									/>
+								</p>
+								<p class="description">
+									<label for="restwell_mailchimp_server_prefix"><?php esc_html_e( 'Server prefix', 'restwell-retreats' ); ?></label><br />
+									<input
+										type="text"
+										id="restwell_mailchimp_server_prefix"
+										name="restwell_mailchimp_server_prefix"
+										value="<?php echo esc_attr( $mailchimp_server_current ); ?>"
+										class="small-text"
+										placeholder="us15"
+									/>
+								</p>
+								<p class="description">
+									<?php esc_html_e( 'Tip: you can still override these with constants in wp-config.php.', 'restwell-retreats' ); ?>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="restwell_metricool_hash">
+									<?php esc_html_e( 'Metricool tracking hash', 'restwell-retreats' ); ?>
+								</label>
+							</th>
+							<td>
+								<?php
+								$metricool_current = (string) get_option( 'restwell_metricool_hash', '' );
+								if ( $metricool_current === '' ) {
+									$metricool_badge_class = 'rw-ga4-badge rw-ga4-badge--unset';
+									$metricool_badge_text  = __( 'Not set — tracking inactive', 'restwell-retreats' );
+								} elseif ( preg_match( '/^[a-f0-9]{32}$/i', $metricool_current ) ) {
+									$metricool_badge_class = 'rw-ga4-badge rw-ga4-badge--active';
+									$metricool_badge_text  = __( 'Active', 'restwell-retreats' );
+								} else {
+									$metricool_badge_class = 'rw-ga4-badge rw-ga4-badge--invalid';
+									$metricool_badge_text  = __( 'Wrong format — should be a 32-character hash', 'restwell-retreats' );
+								}
+								?>
+								<div class="rw-ga4-field-wrap">
+								<input
+									type="text"
+									id="restwell_metricool_hash"
+									name="restwell_metricool_hash"
+									value="<?php echo esc_attr( $metricool_current ); ?>"
+									class="regular-text"
+									placeholder="0123456789abcdef0123456789abcdef"
+								/>
+									<span class="<?php echo esc_attr( $metricool_badge_class ); ?>" aria-live="polite">
+										<?php echo esc_html( $metricool_badge_text ); ?>
+									</span>
+								</div>
+								<p class="description">
+									<?php esc_html_e( 'Optional. Paste your Metricool 32-character website tracking hash. When valid, tracking loads according to “Analytics script placement”.', 'restwell-retreats' ); ?>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label for="restwell_analytics_load_mode">
+									<?php esc_html_e( 'Analytics script placement', 'restwell-retreats' ); ?>
+								</label>
+							</th>
+							<td>
+								<?php
+								$analytics_mode_current = (string) get_option( 'restwell_analytics_load_mode', 'head' );
+								if ( ! in_array( $analytics_mode_current, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
+									$analytics_mode_current = 'head';
+								}
+								?>
+								<select name="restwell_analytics_load_mode" id="restwell_analytics_load_mode">
+									<option value="head" <?php selected( $analytics_mode_current, 'head' ); ?>>
+										<?php esc_html_e( 'Head — load immediately (default)', 'restwell-retreats' ); ?>
+									</option>
+									<option value="footer_deferred" <?php selected( $analytics_mode_current, 'footer_deferred' ); ?>>
+										<?php esc_html_e( 'Footer — deferred loader (better for Core Web Vitals)', 'restwell-retreats' ); ?>
+									</option>
+									<option value="consent_gated" <?php selected( $analytics_mode_current, 'consent_gated' ); ?>>
+										<?php esc_html_e( 'Consent-gated — load only after CMP / consent (recommended with a cookie banner)', 'restwell-retreats' ); ?>
+									</option>
+								</select>
+								<p class="description">
+									<?php esc_html_e( 'Consent-gated mode outputs Google Consent Mode defaults in the head and loads GA4 and Metricool only after consent — you do not need CookieAdmin Pro; the free plugin is enough. With CookieAdmin (free), the theme reads the cookieadmin_consent cookie (Accept all or Analytics). Other CMPs can call window.restwellGrantAnalyticsConsent() or dispatch document event restwell-analytics-allow. Cookiebot and CookieYes listeners are included; Complianz often works via cmplz_fire_categories when statistics cookies are allowed.', 'restwell-retreats' ); ?>
+								</p>
+								<p class="description">
+									<?php esc_html_e( 'Verify Search Console using the meta tag above or DNS — GA placement no longer affects verification when using deferred or consent modes.', 'restwell-retreats' ); ?>
 								</p>
 							</td>
 						</tr>
@@ -1415,35 +1959,62 @@ function restwell_crm_dashboard_page() {
 									<p class="description"><?php esc_html_e( 'Selected roles can access and edit CRM enquiries.', 'restwell-retreats' ); ?></p>
 								</td>
 							</tr>
-							<tr>
-								<th scope="row">
-									<label for="default_assignee_user_id"><?php esc_html_e( 'Default assignee', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<?php
-									$default_assignee_id = absint( get_option( 'default_assignee_user_id', 0 ) );
-									$assignable_users    = restwell_crm_get_assignable_users();
-									?>
-									<select id="default_assignee_user_id" name="default_assignee_user_id" class="regular-text">
-										<option value="0"><?php esc_html_e( '- Unassigned -', 'restwell-retreats' ); ?></option>
-										<?php foreach ( $assignable_users as $assignable_user ) : ?>
-											<option value="<?php echo esc_attr( (string) $assignable_user->ID ); ?>" <?php selected( $default_assignee_id, (int) $assignable_user->ID ); ?>>
-												<?php echo esc_html( $assignable_user->display_name . ' (' . $assignable_user->user_email . ')' ); ?>
-											</option>
-										<?php endforeach; ?>
-									</select>
-									<p class="description"><?php esc_html_e( 'New enquiries are auto-assigned to this user.', 'restwell-retreats' ); ?></p>
-								</td>
-							</tr>
 						</table>
-						<?php submit_button( __( 'Save', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
-					</form>
-				</div>
+					<?php submit_button( __( 'Save', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
+				</form>
 			</div>
 		</div>
-		<?php endif; ?>
+	</div>
 
-	</div><!-- .wrap -->
+	<!-- Export audit log -->
+	<div class="rw-settings-wrap">
+		<div class="postbox">
+			<div class="postbox-header">
+				<h2 class="hndle">
+					<span class="rw-panel-title">
+						<span class="rw-panel-title__icon" aria-hidden="true">&#128196;</span>
+						<span><?php esc_html_e( 'Export Audit Log', 'restwell-retreats' ); ?></span>
+					</span>
+				</h2>
+			</div>
+			<div class="inside">
+				<?php
+				$export_log     = get_option( 'restwell_crm_export_log', array() );
+				$export_log     = is_array( $export_log ) ? $export_log : array();
+				$recent_exports = array_slice( array_reverse( $export_log ), 0, 10 );
+				if ( empty( $recent_exports ) ) :
+				?>
+					<p class="rw-empty"><?php esc_html_e( 'No exports have been run yet.', 'restwell-retreats' ); ?></p>
+				<?php else : ?>
+					<table class="widefat striped rw-dashboard-table">
+						<thead>
+							<tr>
+								<th><?php esc_html_e( 'User', 'restwell-retreats' ); ?></th>
+								<th><?php esc_html_e( 'Exported at (UTC)', 'restwell-retreats' ); ?></th>
+								<th><?php esc_html_e( 'Rows', 'restwell-retreats' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $recent_exports as $entry ) :
+								$exporter    = isset( $entry['user_id'] ) ? get_userdata( (int) $entry['user_id'] ) : false;
+								$display     = $exporter ? esc_html( $exporter->display_name ) : esc_html__( 'Unknown', 'restwell-retreats' );
+								$exported_at = isset( $entry['exported_at'] ) ? esc_html( $entry['exported_at'] ) : '—';
+								$row_count   = isset( $entry['row_count'] ) ? absint( $entry['row_count'] ) : '—';
+							?>
+							<tr>
+								<td><?php echo $display; // phpcs:ignore WordPress.Security.EscapeOutput — already escaped above ?></td>
+								<td class="rw-table-meta"><?php echo $exported_at; // phpcs:ignore WordPress.Security.EscapeOutput — already escaped above ?></td>
+								<td class="rw-table-meta"><?php echo esc_html( (string) $row_count ); ?></td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+
+</div><!-- .wrap -->
 	<?php
 }
 
@@ -1456,7 +2027,7 @@ function restwell_crm_dashboard_page() {
  */
 function restwell_crm_enquiries_page() {
 	if ( ! restwell_crm_can_manage() ) {
-		return;
+		wp_die( esc_html__( 'You do not have permission to access this page.', 'restwell-retreats' ), '', array( 'response' => 403 ) );
 	}
 
 	global $wpdb;
@@ -1470,89 +2041,27 @@ function restwell_crm_enquiries_page() {
 		$id         = absint( $_POST['rw_enquiry_id'] );
 		$new_status = sanitize_key( $_POST['rw_status'] );
 		$notes      = isset( $_POST['rw_notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['rw_notes'] ) ) : '';
-		$assigned_to_raw = absint( $_POST['rw_assigned_to'] ?? 0 );
-		$assigned_to     = 0;
-		if ( $assigned_to_raw && user_can( $assigned_to_raw, restwell_crm_capability() ) ) {
-			$assigned_to = $assigned_to_raw;
-		}
 
 		// Parse follow-up date from datetime-local format (YYYY-MM-DDTHH:MM).
 		$follow_up_raw = isset( $_POST['rw_follow_up'] ) ? sanitize_text_field( wp_unslash( $_POST['rw_follow_up'] ) ) : '';
 		$follow_up_at  = $follow_up_raw ? str_replace( 'T', ' ', $follow_up_raw ) . ':00' : null;
 
 		if ( array_key_exists( $new_status, restwell_crm_statuses() ) ) {
-			// Fetch current row to determine first-time status timestamps.
-			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-			$current = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) );
+			// Status transition (timestamps, status-change note, booking email) is
+			// handled entirely by the unified function.
+			restwell_crm_apply_status_change( $id, $new_status, 'detail' );
 
-			$update_data    = array(
-				'status'       => $new_status,
-				'assigned_to'  => $assigned_to ? $assigned_to : null,
-				'staff_notes'  => $notes,
-				'follow_up_at' => $follow_up_at,
+			// Detail-view-only fields: notes, follow-up date.
+			$wpdb->update(
+				$table,
+				array(
+					'staff_notes'  => $notes,
+					'follow_up_at' => $follow_up_at,
+				),
+				array( 'id' => $id ),
+				array( '%s', '%s' ),
+				array( '%d' )
 			);
-			$update_formats = array( '%s', '%d', '%s', '%s' );
-
-			if ( $current ) {
-				// Set first-time status timestamps only when the column is still NULL.
-				if ( 'contacted' === $new_status && empty( $current->contacted_at ) ) {
-					$update_data['contacted_at'] = current_time( 'mysql' );
-					$update_formats[]            = '%s';
-				}
-				if ( 'qualified' === $new_status && empty( $current->qualified_at ) ) {
-					$update_data['qualified_at'] = current_time( 'mysql' );
-					$update_formats[]            = '%s';
-				}
-				if ( 'booked' === $new_status && empty( $current->booked_at ) ) {
-					$update_data['booked_at'] = current_time( 'mysql' );
-					$update_formats[]         = '%s';
-				}
-				if ( 'closed' === $new_status && empty( $current->closed_at ) ) {
-					$update_data['closed_at'] = current_time( 'mysql' );
-					$update_formats[]         = '%s';
-				}
-			}
-
-			$wpdb->update( $table, $update_data, array( 'id' => $id ), $update_formats, array( '%d' ) );
-
-			// Auto-log status change to the activity log when it actually changed.
-			if ( $current && $current->status !== $new_status ) {
-				$statuses_map = restwell_crm_statuses();
-				$old_label    = $statuses_map[ $current->status ]['label'] ?? ucfirst( $current->status );
-				$new_label    = $statuses_map[ $new_status ]['label'] ?? ucfirst( $new_status );
-				restwell_crm_add_note(
-					$id,
-					sprintf(
-						/* translators: 1: old status label, 2: new status label */
-						__( 'Status changed from "%1$s" to "%2$s".', 'restwell-retreats' ),
-						$old_label,
-						$new_label
-					)
-				);
-
-				// Send booking confirmation email on first 'booked' transition.
-				if ( 'booked' === $new_status && empty( $current->booked_at ) && function_exists( 'restwell_email_booking_confirmed' ) ) {
-					$email_data = restwell_email_booking_confirmed( $current->name, $current->email );
-					wp_mail( $current->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
-				}
-			}
-
-			if ( $current && (int) $current->assigned_to !== $assigned_to ) {
-				$old_user = (int) $current->assigned_to ? get_userdata( (int) $current->assigned_to ) : null;
-				$new_user = $assigned_to ? get_userdata( $assigned_to ) : null;
-				$old_name = $old_user ? $old_user->display_name : __( 'Unassigned', 'restwell-retreats' );
-				$new_name = $new_user ? $new_user->display_name : __( 'Unassigned', 'restwell-retreats' );
-
-				restwell_crm_add_note(
-					$id,
-					sprintf(
-						/* translators: 1: previous assignee, 2: new assignee */
-						__( 'Assignment changed from "%1$s" to "%2$s".', 'restwell-retreats' ),
-						$old_name,
-						$new_name
-					)
-				);
-			}
 		}
 
 		wp_safe_redirect(
@@ -1571,7 +2080,8 @@ function restwell_crm_enquiries_page() {
 
 		if ( array_key_exists( $bulk_action, restwell_crm_statuses() ) && $ids ) {
 			foreach ( $ids as $id ) {
-				$wpdb->update( $table, array( 'status' => $bulk_action ), array( 'id' => $id ), array( '%s' ), array( '%d' ) );
+				// Booking confirmation email is suppressed in bulk context (context = 'bulk').
+				restwell_crm_apply_status_change( $id, $bulk_action, 'bulk' );
 			}
 		}
 
@@ -1586,12 +2096,15 @@ function restwell_crm_enquiries_page() {
 	}
 
 	// ── Build WHERE clause safely ────────────────────────────────────────────
-	$status_filter = isset( $_GET['status_filter'] ) ? sanitize_key( $_GET['status_filter'] ) : '';
-	$owner_filter  = isset( $_GET['owner_filter'] ) ? sanitize_key( $_GET['owner_filter'] ) : 'all';
-	$search        = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
-	$per_page      = 25;
-	$current_page  = max( 1, isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1 );
-	$offset        = ( $current_page - 1 ) * $per_page;
+	// SAFETY: only append fragments returned by $wpdb->prepare() — never raw $_GET strings.
+	$status_filter      = isset( $_GET['status_filter'] ) ? sanitize_key( $_GET['status_filter'] ) : '';
+	$search             = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+	$urgent_filter      = isset( $_GET['urgent_filter'] ) ? absint( $_GET['urgent_filter'] ) : 0;
+	$follow_up_filter   = isset( $_GET['follow_up_filter'] ) ? sanitize_key( $_GET['follow_up_filter'] ) : '';
+	$submitted_since_raw = isset( $_GET['submitted_since'] ) ? sanitize_text_field( wp_unslash( $_GET['submitted_since'] ) ) : '';
+	$per_page           = 25;
+	$current_page       = max( 1, isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1 );
+	$offset             = ( $current_page - 1 ) * $per_page;
 
 	// Sortable columns.
 	$allowed_orderby = array( 'submitted_at', 'status', 'name' );
@@ -1609,10 +2122,21 @@ function restwell_crm_enquiries_page() {
 		$like          = '%' . $wpdb->esc_like( $search ) . '%';
 		$where_parts[] = $wpdb->prepare( '(name LIKE %s OR email LIKE %s OR phone LIKE %s)', $like, $like, $like );
 	}
-	if ( 'mine' === $owner_filter ) {
-		$where_parts[] = $wpdb->prepare( 'assigned_to = %d', get_current_user_id() );
-	} elseif ( 'unassigned' === $owner_filter ) {
-		$where_parts[] = '(assigned_to IS NULL OR assigned_to = 0)';
+	if ( $urgent_filter ) {
+		$where_parts[] = 'is_urgent = 1';
+	}
+	if ( 'overdue' === $follow_up_filter ) {
+		$where_parts[] = $wpdb->prepare(
+			'follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != %s',
+			current_time( 'mysql' ),
+			'closed'
+		);
+	}
+	if ( $submitted_since_raw ) {
+		$submitted_since_ts = strtotime( $submitted_since_raw );
+		if ( $submitted_since_ts ) {
+			$where_parts[] = $wpdb->prepare( 'submitted_at >= %s', gmdate( 'Y-m-d H:i:s', $submitted_since_ts ) );
+		}
 	}
 
 	$where = implode( ' AND ', $where_parts );
@@ -1677,29 +2201,9 @@ function restwell_crm_enquiries_page() {
 					<?php endforeach; ?>
 				</ul>
 			</div>
-
-			<div class="rw-filter-group">
-				<span class="rw-filter-group__label" id="rw-enquiries-owner-label"><?php esc_html_e( 'Owner', 'restwell-retreats' ); ?></span>
-				<ul class="subsubsub rw-subsubsub--owner rw-filter-pills" role="list" aria-labelledby="rw-enquiries-owner-label">
-					<?php
-					$owner_links = array(
-						'all'        => __( 'All owners', 'restwell-retreats' ),
-						'mine'       => __( 'Mine', 'restwell-retreats' ),
-						'unassigned' => __( 'Unassigned', 'restwell-retreats' ),
-					);
-					foreach ( $owner_links as $owner_slug => $owner_label ) :
-						?>
-						<li>
-							<a href="<?php echo esc_url( add_query_arg( array( 'owner_filter' => $owner_slug, 'status_filter' => $status_filter, 's' => $search ), $base_url ) ); ?>" <?php if ( $owner_filter === $owner_slug ) { echo 'class="current"'; } ?>>
-								<?php echo esc_html( $owner_label ); ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
 			</div><!-- .rw-enquiries-controls__primary -->
 
-			<!-- Search -->
+			<!-- Search (sibling of __primary: second column of .rw-enquiries-controls grid) -->
 			<div class="rw-enquiries-search">
 				<span class="rw-filter-group__label" id="rw-enquiries-search-label"><?php esc_html_e( 'Search', 'restwell-retreats' ); ?></span>
 				<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" aria-labelledby="rw-enquiries-search-label">
@@ -1707,7 +2211,6 @@ function restwell_crm_enquiries_page() {
 					<?php if ( $status_filter ) : ?>
 						<input type="hidden" name="status_filter" value="<?php echo esc_attr( $status_filter ); ?>">
 					<?php endif; ?>
-					<input type="hidden" name="owner_filter" value="<?php echo esc_attr( $owner_filter ); ?>">
 					<p class="search-box">
 						<label class="screen-reader-text" for="rw-crm-search"><?php esc_html_e( 'Search enquiries', 'restwell-retreats' ); ?></label>
 						<input type="search" id="rw-crm-search" name="s"
@@ -1733,7 +2236,7 @@ function restwell_crm_enquiries_page() {
 						</svg>
 					</div>
 					<p class="rw-enquiries-empty__title"><?php esc_html_e( 'No enquiries yet', 'restwell-retreats' ); ?></p>
-					<p class="rw-enquiries-empty__text"><?php esc_html_e( 'When visitors submit the enquiry form on your site, they will show up here. You can filter by status, owner, and search by name or contact details.', 'restwell-retreats' ); ?></p>
+					<p class="rw-enquiries-empty__text"><?php esc_html_e( 'When visitors submit the enquiry form on your site, they will show up here. You can filter by status and search by name or contact details.', 'restwell-retreats' ); ?></p>
 				</div>
 			</div>
 		<?php else : ?>
@@ -1770,7 +2273,7 @@ function restwell_crm_enquiries_page() {
 						</span>
 						<?php for ( $p = 1; $p <= $total_pages; $p++ ) : ?>
 							<a class="button<?php echo $p === $current_page ? ' button-primary' : ''; ?>"
-							   href="<?php echo esc_url( add_query_arg( array( 'paged' => $p, 'status_filter' => $status_filter, 'owner_filter' => $owner_filter, 's' => $search ), $base_url ) ); ?>">
+							   href="<?php echo esc_url( add_query_arg( array( 'paged' => $p, 'status_filter' => $status_filter, 's' => $search ), $base_url ) ); ?>">
 								<?php echo esc_html( $p ); ?>
 							</a>
 						<?php endfor; ?>
@@ -1812,7 +2315,6 @@ function restwell_crm_enquiries_page() {
 			$sort_extras = array_filter( array(
 				'page'          => 'restwell-enquiries',
 				'status_filter' => $status_filter,
-				'owner_filter'  => $owner_filter !== 'all' ? $owner_filter : '',
 				's'             => $search,
 			) );
 			?>
@@ -1826,8 +2328,8 @@ function restwell_crm_enquiries_page() {
 						<?php echo $sort_link( 'name', __( 'Name', 'restwell-retreats' ), $orderby, $order, admin_url( 'admin.php' ), $sort_extras ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					</th>
 					<th scope="col" class="column-rw-contact"><?php esc_html_e( 'Contact', 'restwell-retreats' ); ?></th>
+					<th scope="col" class="column-rw-marketing"><?php esc_html_e( 'Marketing', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-rw-dates"><?php esc_html_e( 'Dates / Guests', 'restwell-retreats' ); ?></th>
-					<th scope="col" class="column-assigned"><?php esc_html_e( 'Assigned to', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-rw-status sortable <?php echo 'status' === $orderby ? 'sorted' : ''; ?>">
 						<?php echo $sort_link( 'status', __( 'Status', 'restwell-retreats' ), $orderby, $order, admin_url( 'admin.php' ), $sort_extras ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					</th>
@@ -1839,10 +2341,9 @@ function restwell_crm_enquiries_page() {
 				<tbody>
 					<?php foreach ( $rows as $row ) : ?>
 						<?php
-						$detail_url  = add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $row->id ), admin_url( 'admin.php' ) );
-						$is_overdue  = ! empty( $row->follow_up_at ) && $row->follow_up_at <= $now_mysql && 'closed' !== $row->status;
-						$assignee    = ! empty( $row->assigned_to ) ? get_userdata( (int) $row->assigned_to ) : null;
-						$sla_badge   = restwell_crm_sla_badge( $row );
+					$detail_url    = add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $row->id ), admin_url( 'admin.php' ) );
+					$is_overdue    = ! empty( $row->follow_up_at ) && $row->follow_up_at <= $now_mysql && 'closed' !== $row->status;
+					$sla_badge     = restwell_crm_sla_badge( $row );
 						?>
 						<tr<?php echo $row->is_urgent ? ' class="rw-row--urgent"' : ''; ?>>
 							<th scope="row" class="check-column">
@@ -1875,6 +2376,16 @@ function restwell_crm_enquiries_page() {
 									</a>
 								<?php endif; ?>
 							</td>
+							<td class="column-rw-marketing rw-text-meta">
+								<?php if ( ! empty( $row->marketing_optin ) ) : ?>
+									<span class="rw-badge rw-badge--booked"><?php esc_html_e( 'Opted in', 'restwell-retreats' ); ?></span>
+									<?php if ( ! empty( $row->marketing_optin_at ) ) : ?>
+										<br><span class="rw-text-muted-sm"><?php echo esc_html( date_i18n( 'j M Y', strtotime( $row->marketing_optin_at ) ) ); ?></span>
+									<?php endif; ?>
+								<?php else : ?>
+									<span class="rw-text-dim"><?php esc_html_e( 'No', 'restwell-retreats' ); ?></span>
+								<?php endif; ?>
+							</td>
 							<td class="column-rw-dates">
 								<?php if ( $row->preferred_dates ) : ?>
 									<span class="rw-text-meta"><?php echo esc_html( $row->preferred_dates ); ?></span>
@@ -1886,11 +2397,8 @@ function restwell_crm_enquiries_page() {
 									<span class="rw-text-dim">-</span>
 								<?php endif; ?>
 							</td>
-							<td class="column-assigned rw-text-meta">
-								<?php echo esc_html( $assignee ? $assignee->display_name : __( 'Unassigned', 'restwell-retreats' ) ); ?>
-							</td>
 							<td class="column-rw-status">
-								<div class="rw-status-badge"><?php echo restwell_crm_status_badge( $row->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
+							<div class="rw-status-badge" data-enquiry-id="<?php echo esc_attr( $row->id ); ?>"><?php echo restwell_crm_status_badge( $row->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
 								<div class="rw-status-actions">
 									<a class="rw-details-link" href="<?php echo esc_url( $detail_url ); ?>">
 										<?php esc_html_e( 'Open details', 'restwell-retreats' ); ?>
@@ -1955,7 +2463,6 @@ function restwell_crm_enquiry_detail( int $id ) {
 	$statuses = restwell_crm_statuses();
 	$back_url = admin_url( 'admin.php?page=restwell-enquiries' );
 	$notes    = restwell_crm_get_notes( $id );
-	$assignable_users = restwell_crm_get_assignable_users();
 
 	// Build mailto with subject pre-filled.
 	$mailto = 'mailto:' . rawurlencode( $row->email ) . '?subject=' . rawurlencode( 'Re: Your Restwell Retreats Enquiry' );
@@ -1996,6 +2503,27 @@ function restwell_crm_enquiry_detail( int $id ) {
 		<?php if ( isset( $_GET['note_added'] ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Note added.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
+		<?php if ( isset( $_GET['stay_dates_updated'] ) ) : ?>
+			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Stay dates updated. The change has been recorded in the activity log.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['stay_dates_unchanged'] ) ) : ?>
+			<div class="notice notice-info is-dismissible"><p><?php esc_html_e( 'Stay dates were already set to those values — nothing to update.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['stay_dates_error'] ) ) : ?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+					<?php
+					// Two distinct error reasons get two distinct messages so staff
+					// know exactly what to fix without guessing.
+					if ( 'order' === $_GET['stay_dates_error'] ) {
+						esc_html_e( 'End date must be on or after the start date.', 'restwell-retreats' );
+					} else {
+						esc_html_e( 'One of the dates was not in a valid format. Please use the date pickers to enter a date.', 'restwell-retreats' );
+					}
+					?>
+				</p>
+			</div>
+		<?php endif; ?>
 
 		<div class="rw-detail-layout">
 
@@ -2016,11 +2544,24 @@ function restwell_crm_enquiry_detail( int $id ) {
 								: '',
 							__( 'Preferred contact', 'restwell-retreats' ) => esc_html( $row->contact_preference ),
 							__( 'Best time to call', 'restwell-retreats' ) => esc_html( $row->preferred_time ),
+							__( 'Marketing preference', 'restwell-retreats' ) => ! empty( $row->marketing_optin )
+								? esc_html__( 'Opted in', 'restwell-retreats' )
+								: esc_html__( 'Not opted in', 'restwell-retreats' ),
 						);
+						if ( ! empty( $row->marketing_optin ) && ! empty( $row->marketing_optin_at ) ) {
+							$contact_fields[ __( 'Marketing opted in at', 'restwell-retreats' ) ] = esc_html(
+								date_i18n( 'j M Y, H:i', strtotime( $row->marketing_optin_at ) )
+							);
+						}
+						// Preferred dates moved out of this read-only block — they get
+						// their own editable panel below so staff can update them without
+						// needing a separate edit screen. Guests and funding stay read-only:
+						// guest count edits are rare and would warrant their own UX, and
+						// funding type drives downstream comms so we don't want it changing
+						// silently from the detail page.
 						$booking_fields = array(
-							__( 'Preferred dates', 'restwell-retreats' ) => esc_html( $row->preferred_dates ),
 							__( 'Number of guests', 'restwell-retreats' ) => esc_html( $row->num_guests ),
-							__( 'Funding type', 'restwell-retreats' )    => esc_html( $row->funding_type ),
+							__( 'Funding type', 'restwell-retreats' )    => esc_html( function_exists( 'restwell_enquiry_funding_label' ) ? restwell_enquiry_funding_label( (string) $row->funding_type ) : $row->funding_type ),
 						);
 						?>
 
@@ -2047,6 +2588,75 @@ function restwell_crm_enquiry_detail( int $id ) {
 								<?php endif; ?>
 							<?php endforeach; ?>
 						</table>
+
+						<?php
+						/*
+						 * Editable stay-dates panel.
+						 *
+						 * Standalone form with native HTML5 date inputs (the device's own
+						 * picker — no JS-driven calendar widget to fight with screen readers
+						 * or break on mobile). Empty inputs are valid and clear the dates.
+						 *
+						 * The handler `restwell_crm_handle_update_stay_dates()` writes a
+						 * "Stay dates updated: {old} → {new}" entry to the activity log on
+						 * every change, so this is auditable without staff having to
+						 * remember to leave a note.
+						 */
+						$stay_from = $row->date_from ? esc_attr( $row->date_from ) : '';
+						$stay_to   = $row->date_to   ? esc_attr( $row->date_to )   : '';
+						?>
+						<h3 class="rw-detail-section-title">
+							<?php esc_html_e( 'Stay dates', 'restwell-retreats' ); ?>
+						</h3>
+						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-stay-dates-form">
+							<?php wp_nonce_field( 'restwell_crm_update_stay_dates' ); ?>
+							<input type="hidden" name="action" value="restwell_crm_update_stay_dates" />
+							<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( (string) $row->id ); ?>" />
+
+							<div class="rw-stay-dates-grid">
+								<p class="rw-stay-dates-field">
+									<label for="rw_date_from">
+										<?php esc_html_e( 'Arriving', 'restwell-retreats' ); ?>
+									</label>
+									<input
+										type="date"
+										id="rw_date_from"
+										name="rw_date_from"
+										value="<?php echo esc_attr( $stay_from ); ?>"
+									/>
+								</p>
+								<p class="rw-stay-dates-field">
+									<label for="rw_date_to">
+										<?php esc_html_e( 'Leaving', 'restwell-retreats' ); ?>
+									</label>
+									<input
+										type="date"
+										id="rw_date_to"
+										name="rw_date_to"
+										value="<?php echo esc_attr( $stay_to ); ?>"
+									/>
+								</p>
+							</div>
+
+							<p class="rw-stay-dates-actions">
+								<button type="submit" class="button button-primary">
+									<?php esc_html_e( 'Save stay dates', 'restwell-retreats' ); ?>
+								</button>
+								<span class="description rw-stay-dates-help">
+									<?php
+									if ( '' !== (string) $row->preferred_dates ) {
+										printf(
+											/* translators: %s: current preferred-dates value as the guest entered or last edited it */
+											esc_html__( 'Currently shown as: %s. Leave both empty to clear. Changes are recorded in the activity log.', 'restwell-retreats' ),
+											esc_html( $row->preferred_dates )
+										);
+									} else {
+										esc_html_e( 'No stay dates set yet. Changes are recorded in the activity log.', 'restwell-retreats' );
+									}
+									?>
+								</span>
+							</p>
+						</form>
 
 						<?php if ( $row->care_requirements ) : ?>
 							<h3 class="rw-detail-section-title"><?php esc_html_e( 'Care Requirements', 'restwell-retreats' ); ?></h3>
@@ -2098,18 +2708,6 @@ function restwell_crm_enquiry_detail( int $id ) {
 								<?php foreach ( $statuses as $slug => $info ) : ?>
 									<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $row->status, $slug ); ?>>
 										<?php echo esc_html( $info['label'] ); ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-
-							<label for="rw-assigned-to" class="rw-sidebar-label">
-								<?php esc_html_e( 'Assigned to', 'restwell-retreats' ); ?>
-							</label>
-							<select name="rw_assigned_to" id="rw-assigned-to" class="rw-sidebar-field">
-								<option value="0"><?php esc_html_e( '- Unassigned -', 'restwell-retreats' ); ?></option>
-								<?php foreach ( $assignable_users as $assignable_user ) : ?>
-									<option value="<?php echo esc_attr( (string) $assignable_user->ID ); ?>" <?php selected( (int) $row->assigned_to, (int) $assignable_user->ID ); ?>>
-										<?php echo esc_html( $assignable_user->display_name . ' (' . $assignable_user->user_email . ')' ); ?>
 									</option>
 								<?php endforeach; ?>
 							</select>
