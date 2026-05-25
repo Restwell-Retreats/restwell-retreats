@@ -3,6 +3,15 @@
 .pnpm-store/
 /vendor/
 
+# Local tooling and crawl exports
+__pycache__/
+*.pyc
+wp-cli.phar
+2026.*/
+
+# Batch SEO draft output (regenerable)
+restwell-theme/scripts/seo-p2-queue/generated/
+
 # Allow PHPCS ruleset despite *.dist ignore below
 !phpcs.xml.dist
 
