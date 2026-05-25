@@ -13,7 +13,7 @@
  *   Soft sand  #F5EDE0
  *   Muted grey #6B6355
  *
- * @package Restwell_Retreats
+ * @package Restwell_CRM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,6 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string          Full HTML email document.
  */
 function restwell_email_wrap( string $content, string $preview = '' ): string {
+	$font_base  = function_exists( 'restwell_crm_theme_asset_uri' ) ? restwell_crm_theme_asset_uri() : get_template_directory_uri();
 	$site       = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
 	$home       = esc_url( home_url( '/' ) );
 	$year       = gmdate( 'Y' );
@@ -53,25 +54,25 @@ function restwell_email_wrap( string $content, string $preview = '' ): string {
   /* Self-hosted fonts - work in Apple Mail, Yahoo, Samsung. Gmail strips <style>; fallbacks handle it. */
   @font-face {
     font-family: "Inter";
-    src: url("' . esc_url( get_template_directory_uri() ) . '/assets/fonts/inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+    src: url("' . esc_url( $font_base ) . '/assets/fonts/inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
     font-weight: 100 900;
     font-style: normal;
   }
   @font-face {
     font-family: "Inter";
-    src: url("' . esc_url( get_template_directory_uri() ) . '/assets/fonts/inter/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+    src: url("' . esc_url( $font_base ) . '/assets/fonts/inter/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
     font-weight: 100 900;
     font-style: italic;
   }
   @font-face {
     font-family: "Lora";
-    src: url("' . esc_url( get_template_directory_uri() ) . '/assets/fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
+    src: url("' . esc_url( $font_base ) . '/assets/fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
     font-weight: 400 700;
     font-style: normal;
   }
   @font-face {
     font-family: "Lora";
-    src: url("' . esc_url( get_template_directory_uri() ) . '/assets/fonts/lora/Lora-Italic-VariableFont_wght.ttf") format("truetype");
+    src: url("' . esc_url( $font_base ) . '/assets/fonts/lora/Lora-Italic-VariableFont_wght.ttf") format("truetype");
     font-weight: 400 700;
     font-style: italic;
   }

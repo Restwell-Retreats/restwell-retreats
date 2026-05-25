@@ -2,7 +2,7 @@
 /**
  * Shared helpers for public form submissions: notify address, rate limits, mail reliability.
  *
- * @package Restwell_Retreats
+ * @package Restwell_CRM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

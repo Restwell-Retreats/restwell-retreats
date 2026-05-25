@@ -399,7 +399,7 @@ add_action( 'admin_post_restwell_gg_save_cc', 'restwell_gg_handle_save_cc' );
 
 /**
  * The Guest Guide page is registered as a submenu of the Restwell CRM menu
- * in inc/crm.php. No separate menu registration needed here.
+ * in the Restwell CRM mu-plugin (crm.php). No separate menu registration needed here.
  */
 
 /**

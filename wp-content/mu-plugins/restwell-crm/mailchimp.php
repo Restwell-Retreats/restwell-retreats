@@ -2,7 +2,7 @@
 /**
  * Mailchimp sync helpers for marketing opt-ins.
  *
- * @package Restwell_Retreats
+ * @package Restwell_CRM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

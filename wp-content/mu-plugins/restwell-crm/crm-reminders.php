@@ -22,7 +22,7 @@
  *     to the database — useful for validating after a content backfill
  *     or schema change.
  *
- * @package Restwell_Retreats
+ * @package Restwell_CRM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -67,10 +67,10 @@ function restwell_crm_reminder_schedule_cron(): void {
 add_action( 'init', 'restwell_crm_reminder_schedule_cron' );
 
 /**
- * Clear the scheduled cron event when the theme is switched away.
+ * Clear the scheduled cron event when the active theme changes.
  *
- * Without this hook a stray event sits in `wp_options` forever and re-fires
- * if anyone re-activates the theme — a classic source of "ghost emails".
+ * CRM lives in a must-use plugin, but this hook still prevents a stale
+ * `restwell_crm_reminder_check` event if the theme (or whole stack) is replaced.
  */
 function restwell_crm_reminder_clear_cron(): void {
 	$timestamp = wp_next_scheduled( RESTWELL_CRM_REMINDER_HOOK );
@@ -216,7 +216,7 @@ function restwell_crm_reminder_mark_reminded( int $enquiry_id ): void {
  * Build the staff-facing reminder email payload for a single enquiry.
  *
  * Plain text matches the existing staff-notification style in
- * inc/enquire-handler.php so reminders sit comfortably alongside fresh
+ * enquire-handler.php so reminders sit comfortably alongside fresh
  * enquiry alerts in the team inbox.
  *
  * @param object $row         Enquiry row from the database.

@@ -2,7 +2,7 @@
 /**
  * Enquiry form submission handler: validate, persist to CRM, email notify address, acknowledgement, redirect.
  *
- * @package Restwell_Retreats
+ * @package Restwell_CRM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -215,7 +215,7 @@ function restwell_handle_enquire_submit(): void {
 	}
 
 	// Normalise dates for storage: blank invalid pairs already rejected.
-	// Shared helper so admin date edits (inc/crm.php) produce identical strings.
+	// Shared helper so admin date edits (crm.php) produce identical strings.
 	$dates = restwell_format_enquiry_date_range( $date_from, $date_to );
 
 	$body = "Name: $name\nEmail: $email\n";

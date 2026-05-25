@@ -730,7 +730,7 @@ get_header();
 	a[href]::after { content: none !important; }
 }
 </style>
-<script>
+<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 (function () {
 	'use strict';
 	var btn   = document.getElementById( 'gg-keysafe-reveal' );

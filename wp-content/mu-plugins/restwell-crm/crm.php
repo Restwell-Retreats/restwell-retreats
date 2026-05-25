@@ -6,7 +6,7 @@
  * Provides a top-level "Restwell" admin menu with Dashboard, Enquiries
  * list/detail view, and exposes helpers used by the enquiry form handler.
  *
- * @package Restwell_Retreats
+ * @package Restwell_CRM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

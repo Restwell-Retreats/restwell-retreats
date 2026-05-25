@@ -26,7 +26,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Last updated (ISO)** | 2026-05-11 |
+| **Last updated (ISO)** | 2026-05-25 |
 | **Matrix schema** | 2.0 |
 | **P4 catalog URLs** | 34 |
 | **P4 URLs with §13.1 row (worksheet)** | 33 (`/`, `/accessibility/`, `/enquire/`, `/how-it-works/`, `/resources/`, `/the-property/`, `/whitstable-area-guide/`, `/accessible-beaches-coastal-walks-kent/`, `/accessible-parking-whitstable-tankerton/`, `/accessible-eating-out-whitstable-kent/`, `/who-its-for/`, `/faq/`, `/guest-guide/`, `/blog/`, `/how-to-choose-accessible-self-catering-holiday/`, `/direct-payment-holiday-accommodation/`, `/chc-respite-holiday-accommodation-uk/`, `/personal-budget-short-break-care-act/`, `/commissioner-checklist-accessible-respite-stay/`, `/revitalise-alternatives-accessible-holidays/`, `/carers-respite-holiday-guide/`, `/what-to-pack-accessible-self-catering-uk/`, `/hire-mobility-scooter-equipment-uk-holiday/`, `/holiday-backup-plan-care-worker-change/`, `/accessible-train-travel-whitstable-kent/`, `/travel-insurance-disability-uk-self-catering/`, `/how-to-read-holiday-cottage-access-statement/`, `/changing-places-toilets-kent-coast-days-out/`, `/fatigue-friendly-whitstable-coastal-day/`, `/quieter-times-whitstable-low-crowd-access/`, `/privacy-policy/`, `/terms-and-conditions/`, `/accessibility-policy/`) |
@@ -121,7 +121,7 @@ _Plan sync 2026-05-11: P4 Step C outline for `/enquire/` refreshed in `SEO-INTEN
 
 | Path | A | B | C | D | E | F | G |
 |------|---|---|---|---|---|---|---|
-| `/` | x | x | x | . | ~ | . | . |
+| `/` | x | x | x | x | ~ | . | . |
 | `/the-property/` | x | x | x | . | ~ | ~ | . |
 | `/accessibility/` | x | x | x | x | ~ | ~ | . |
 | `/enquire/` | x | x | x | x | ~ | . | . |

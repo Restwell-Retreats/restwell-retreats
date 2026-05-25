@@ -584,7 +584,7 @@ function restwell_output_ga4_consent_default() {
 		return;
 	}
 	?>
-<script>
+<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('consent', 'default', {
@@ -649,8 +649,8 @@ function restwell_output_ga4() {
 		return;
 	}
 	?>
-<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $mid ); ?>"></script>
-<script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $mid ); ?>"></script>
+<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
@@ -673,7 +673,7 @@ function restwell_output_metricool_tracker() {
 		return;
 	}
 	?>
-<script>
+<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 function loadScript(a){
 var b=document.getElementsByTagName("head")[0],c=document.createElement("script");
 c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}
@@ -1200,60 +1200,34 @@ function restwell_output_jsonld_front_page_webpage() {
 }
 
 /**
- * FAQ question/answer pairs for the homepage (visible section + FAQPage JSON-LD).
+ * Homepage FAQ pairs (legacy q/a shape for theme setup seed map).
  *
- * @param int $page_id Front page post ID (optional; loads per-item overrides from meta when > 0).
+ * Content comes from inc/homepage-faq.php via restwell_get_faq_items( 'homepage' ).
+ * Front page post meta home_faq_{1..7}_{q,a} is no longer read for FAQ copy.
+ *
+ * @param int $page_id Front page post ID (unused for FAQ copy; kept for filter signature).
  * @return array<int, array{q: string, a: string}>
  */
 function restwell_get_homepage_faq_pairs( $page_id = 0 ) {
 	$page_id = (int) $page_id;
-	$defaults  = array(
-		array(
-			'q' => __( 'What is Restwell Retreats?', 'restwell-retreats' ),
-			'a' => __( 'Restwell Retreats is a private wheelchair-accessible self-catering holiday bungalow in Whitstable, Kent. You book the whole property for a coastal break. Optional CQC-regulated care is available through Continuity of Care Services. Not sure if we are the right fit? Read Who it is for and the accessibility specification, or tell us what you need in your enquiry.', 'restwell-retreats' ),
-		),
-		array(
-			'q' => __( 'Is the property wheelchair accessible?', 'restwell-retreats' ),
-			'a' => __( 'Yes. The single-storey layout has level access on the ground floor, wide doorways, a ceiling track hoist in the accessible bedroom, profiling bed, and a roll-in wet room on the same level with a height-adjustable washbasin. See our Accessibility page for dimensions and equipment.', 'restwell-retreats' ),
-		),
-		array(
-			'q' => __( 'Can I bring my own carer?', 'restwell-retreats' ),
-			'a' => __( 'Yes. Many guests bring a PA or family carer. The layout has space for assistance routines. You can also arrange optional support with Continuity of Care Services, or combine both.', 'restwell-retreats' ),
-		),
-		array(
-			'q' => __( 'How do I book?', 'restwell-retreats' ),
-			'a' => __( 'Start with our enquiry form or contact us by phone or email. We confirm availability, talk through your needs, then agree dates. No pressure until you are ready. Cancellation terms depend on how close your stay is; we confirm the current policy when you book. See Terms & Conditions on this site for wording.', 'restwell-retreats' ),
-		),
-		array(
-			'q' => __( 'What accessibility features are included?', 'restwell-retreats' ),
-			'a' => __( 'Highlights include a ceiling track hoist in the accessible bedroom, profiling bed, roll-in shower wet room, grab rails, height-adjustable washbasin, level access, and two off-road spaces on the private drive. Full detail is in our accessibility specification.', 'restwell-retreats' ),
-		),
-		array(
-			'q' => __( 'Can I use personal budget or CHC funding?', 'restwell-retreats' ),
-			'a' => __( 'Many guests use direct payments or personal budgets subject to your care plan. NHS Continuing Healthcare for care during your stay depends on your package: speak to your case manager. We can provide documentation to support applications.', 'restwell-retreats' ),
-		),
-		array(
-			'q' => __( 'Is care included in the rental?', 'restwell-retreats' ),
-			'a' => __( 'The holiday let is accommodation only. Care is optional and arranged separately with Continuity of Care Services (CQC-regulated) if you need it.', 'restwell-retreats' ),
-		),
-	);
+	$pairs   = array();
 
-	$pairs = $defaults;
-	if ( $page_id > 0 ) {
-		foreach ( $pairs as $i => $pair ) {
-			$n   = $i + 1;
-			$mq  = get_post_meta( $page_id, 'home_faq_' . $n . '_q', true );
-			$ma  = get_post_meta( $page_id, 'home_faq_' . $n . '_a', true );
-			if ( $mq !== '' && $ma !== '' ) {
-				$pairs[ $i ] = array( 'q' => $mq, 'a' => $ma );
+	if ( function_exists( 'restwell_get_faq_items' ) ) {
+		foreach ( restwell_get_faq_items( 'homepage' ) as $item ) {
+			if ( empty( $item['q'] ) || empty( $item['a'] ) ) {
+				continue;
 			}
+			$pairs[] = array(
+				'q' => $item['q'],
+				'a' => $item['a'],
+			);
 		}
 	}
 
 	/**
-	 * Filter homepage FAQ pairs before output (JSON-LD and template).
+	 * Filter homepage FAQ pairs before output (theme setup seed map).
 	 *
-	 * @param array<int, array{q: string, a: string}> $pairs Pairs to show.
+	 * @param array<int, array{q: string, a: string}> $pairs   Pairs to show.
 	 * @param int                                     $page_id Front page ID.
 	 */
 	return apply_filters( 'restwell_homepage_faq_pairs', $pairs, $page_id );
@@ -1304,12 +1278,20 @@ function restwell_output_jsonld_homepage_faq() {
 		if ( empty( $pair['q'] ) || empty( $pair['a'] ) ) {
 			continue;
 		}
+
+		$answer_text = '';
+		if ( ! empty( $pair['answer_text'] ) ) {
+			$answer_text = $pair['answer_text'];
+		} else {
+			$answer_text = wp_strip_all_tags( $pair['a'] );
+		}
+
 		$main_entity[] = array(
 			'@type'          => 'Question',
 			'name'           => wp_strip_all_tags( $pair['q'] ),
 			'acceptedAnswer' => array(
 				'@type' => 'Answer',
-				'text'  => wp_strip_all_tags( $pair['a'] ),
+				'text'  => $answer_text,
 			),
 		);
 	}
