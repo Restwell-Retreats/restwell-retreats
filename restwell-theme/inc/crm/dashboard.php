@@ -64,7 +64,7 @@ function restwell_crm_dashboard_page() {
 	<div class="wrap restwell-admin restwell-admin-dashboard">
 		<h1 class="rw-page-title"><?php esc_html_e( 'Restwell Dashboard', 'restwell-retreats' ); ?></h1>
 
-		<?php if ( isset( $_GET['settings_saved'] ) ) : ?>
+		<?php if ( isset( $_GET['settings_saved'] ) && absint( wp_unslash( $_GET['settings_saved'] ) ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Settings saved.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
 

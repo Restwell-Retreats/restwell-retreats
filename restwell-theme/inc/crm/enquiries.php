@@ -82,26 +82,26 @@ function restwell_crm_enquiries_page() {
 
 	// ── Single enquiry detail view ───────────────────────────────────────────
 	if ( isset( $_GET['view'] ) ) {
-		restwell_crm_enquiry_detail( absint( $_GET['view'] ) );
+		restwell_crm_enquiry_detail( absint( wp_unslash( $_GET['view'] ) ) );
 		return;
 	}
 
 	// ── Build WHERE clause safely ────────────────────────────────────────────
 	// SAFETY: only append fragments returned by $wpdb->prepare() — never raw $_GET strings.
-	$status_filter      = isset( $_GET['status_filter'] ) ? sanitize_key( $_GET['status_filter'] ) : '';
+	$status_filter      = isset( $_GET['status_filter'] ) ? sanitize_key( wp_unslash( $_GET['status_filter'] ) ) : '';
 	$search             = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
-	$urgent_filter      = isset( $_GET['urgent_filter'] ) ? absint( $_GET['urgent_filter'] ) : 0;
-	$follow_up_filter   = isset( $_GET['follow_up_filter'] ) ? sanitize_key( $_GET['follow_up_filter'] ) : '';
+	$urgent_filter      = isset( $_GET['urgent_filter'] ) ? absint( wp_unslash( $_GET['urgent_filter'] ) ) : 0;
+	$follow_up_filter   = isset( $_GET['follow_up_filter'] ) ? sanitize_key( wp_unslash( $_GET['follow_up_filter'] ) ) : '';
 	$submitted_since_raw = isset( $_GET['submitted_since'] ) ? sanitize_text_field( wp_unslash( $_GET['submitted_since'] ) ) : '';
 	$per_page           = 25;
-	$current_page       = max( 1, isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1 );
+	$current_page       = max( 1, isset( $_GET['paged'] ) ? absint( wp_unslash( $_GET['paged'] ) ) : 1 );
 	$offset             = ( $current_page - 1 ) * $per_page;
 
 	// Sortable columns.
 	$allowed_orderby = array( 'submitted_at', 'status', 'name' );
-	$orderby_raw     = isset( $_GET['orderby'] ) ? sanitize_key( $_GET['orderby'] ) : 'submitted_at';
+	$orderby_raw     = isset( $_GET['orderby'] ) ? sanitize_key( wp_unslash( $_GET['orderby'] ) ) : 'submitted_at';
 	$orderby         = in_array( $orderby_raw, $allowed_orderby, true ) ? $orderby_raw : 'submitted_at';
-	$order_raw       = isset( $_GET['order'] ) ? strtoupper( sanitize_key( $_GET['order'] ) ) : 'DESC';
+	$order_raw       = isset( $_GET['order'] ) ? strtoupper( sanitize_key( wp_unslash( $_GET['order'] ) ) ) : 'DESC';
 	$order           = ( 'ASC' === $order_raw ) ? 'ASC' : 'DESC';
 
 	$where_parts = array( '1=1' );
@@ -500,13 +500,18 @@ function restwell_crm_enquiry_detail( int $id ) {
 		<?php if ( isset( $_GET['stay_dates_unchanged'] ) ) : ?>
 			<div class="notice notice-info is-dismissible"><p><?php esc_html_e( 'Stay dates were already set to those values — nothing to update.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
-		<?php if ( isset( $_GET['stay_dates_error'] ) ) : ?>
+		<?php
+		$stay_dates_error = isset( $_GET['stay_dates_error'] )
+			? sanitize_key( wp_unslash( $_GET['stay_dates_error'] ) )
+			: '';
+		?>
+		<?php if ( $stay_dates_error !== '' ) : ?>
 			<div class="notice notice-error is-dismissible">
 				<p>
 					<?php
 					// Two distinct error reasons get two distinct messages so staff
 					// know exactly what to fix without guessing.
-					if ( 'order' === $_GET['stay_dates_error'] ) {
+					if ( 'order' === $stay_dates_error ) {
 						esc_html_e( 'End date must be on or after the start date.', 'restwell-retreats' );
 					} else {
 						esc_html_e( 'One of the dates was not in a valid format. Please use the date pickers to enter a date.', 'restwell-retreats' );
