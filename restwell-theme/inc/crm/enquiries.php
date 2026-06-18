@@ -289,19 +289,37 @@ function restwell_crm_enquiries_page() {
 				$is_active  = ( $col === $current );
 				$next_order = $is_active && 'ASC' === $current_order ? 'DESC' : 'ASC';
 				$arrow      = '';
+				$sort_hint  = '';
 				if ( $is_active ) {
 					$arrow = 'ASC' === $current_order
 						? ' <span aria-hidden="true">&#9650;</span>'
 						: ' <span aria-hidden="true">&#9660;</span>';
+					$sort_hint = 'ASC' === $current_order
+						? ' ' . __( 'Sorted ascending.', 'restwell-retreats' )
+						: ' ' . __( 'Sorted descending.', 'restwell-retreats' );
 				}
 				$href = add_query_arg( array_merge( $extras, array( 'orderby' => $col, 'order' => $next_order ) ), $base );
 				return sprintf(
-					'<a href="%s" class="%s">%s%s</a>',
+					'<a href="%s" class="%s" aria-label="%s">%s%s<span class="screen-reader-text">%s</span></a>',
 					esc_url( $href ),
 					$is_active ? 'rw-sort-link rw-sort-link--active' : 'rw-sort-link',
+					esc_attr(
+						sprintf(
+							/* translators: %s: column label */
+							__( 'Sort by %s', 'restwell-retreats' ),
+							$label
+						)
+					),
 					esc_html( $label ),
-					$arrow
+					$arrow,
+					esc_html( $sort_hint )
 				);
+			};
+			$sort_aria = function( string $col, string $current, string $current_order ): string {
+				if ( $col !== $current ) {
+					return 'none';
+				}
+				return 'ASC' === $current_order ? 'ascending' : 'descending';
 			};
 			$sort_extras = array_filter( array(
 				'page'          => 'restwell-enquiries',
@@ -315,16 +333,16 @@ function restwell_crm_enquiries_page() {
 						<input id="cb-select-all" type="checkbox">
 					</td>
 					<th scope="col" class="column-rw-flag"><span class="screen-reader-text"><?php esc_html_e( 'Flags', 'restwell-retreats' ); ?></span></th>
-					<th scope="col" class="column-rw-name sortable <?php echo 'name' === $orderby ? 'sorted' : ''; ?>">
+					<th scope="col" class="column-rw-name sortable <?php echo 'name' === $orderby ? 'sorted' : ''; ?>" aria-sort="<?php echo esc_attr( $sort_aria( 'name', $orderby, $order ) ); ?>">
 						<?php echo $sort_link( 'name', __( 'Name', 'restwell-retreats' ), $orderby, $order, admin_url( 'admin.php' ), $sort_extras ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					</th>
 					<th scope="col" class="column-rw-contact"><?php esc_html_e( 'Contact', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-rw-marketing"><?php esc_html_e( 'Marketing', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-rw-dates"><?php esc_html_e( 'Dates / Guests', 'restwell-retreats' ); ?></th>
-					<th scope="col" class="column-rw-status sortable <?php echo 'status' === $orderby ? 'sorted' : ''; ?>">
+					<th scope="col" class="column-rw-status sortable <?php echo 'status' === $orderby ? 'sorted' : ''; ?>" aria-sort="<?php echo esc_attr( $sort_aria( 'status', $orderby, $order ) ); ?>">
 						<?php echo $sort_link( 'status', __( 'Status', 'restwell-retreats' ), $orderby, $order, admin_url( 'admin.php' ), $sort_extras ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					</th>
-					<th scope="col" class="column-rw-received sortable <?php echo 'submitted_at' === $orderby ? 'sorted' : ''; ?>">
+					<th scope="col" class="column-rw-received sortable <?php echo 'submitted_at' === $orderby ? 'sorted' : ''; ?>" aria-sort="<?php echo esc_attr( $sort_aria( 'submitted_at', $orderby, $order ) ); ?>">
 						<?php echo $sort_link( 'submitted_at', __( 'Received', 'restwell-retreats' ), $orderby, $order, admin_url( 'admin.php' ), $sort_extras ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 					</th>
 				</tr>

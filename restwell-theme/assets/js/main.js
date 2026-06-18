@@ -430,6 +430,26 @@
 	}
 
 	/**
+	 * Keep aria-expanded in sync on FAQ <details> summaries for assistive tech.
+	 */
+	function initFaqToggleA11y() {
+		var items = document.querySelectorAll('.faq-item');
+		if (!items.length) {
+			return;
+		}
+		items.forEach(function (item) {
+			var summary = item.querySelector('summary');
+			if (!summary) {
+				return;
+			}
+			summary.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+			item.addEventListener('toggle', function () {
+				summary.setAttribute('aria-expanded', item.open ? 'true' : 'false');
+			});
+		});
+	}
+
+	/**
 	 * Homepage FAQ accordion behavior.
 	 * Keeps a single FAQ item open at a time.
 	 */
@@ -1470,6 +1490,7 @@
 		initMobileMenu();
 		initExploreFilter();
 		initFaqTabs();
+		initFaqToggleA11y();
 		initHomeFaqAccordion();
 		initMultiStepForm();
 		// Must run AFTER initMultiStepForm() so the multi-step controller has
