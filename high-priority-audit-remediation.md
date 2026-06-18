@@ -21,7 +21,7 @@ Ship a focused remediation pass across the 8 high-priority audit domains using s
 - [x] Task 6: **Performance** - add font preloading for self-hosted Phosphor WOFF2 files and ensure no duplicate icon CSS enqueues. -> Verify: one enqueue path per icon weight and preload hooks output local `.woff2` URLs.
 - [x] Task 7: **Accessibility & UX** - add `aria-sort` state updates for sortable admin enquiry headers and ensure FAQ toggle controls expose expanded state. -> Verify: relevant markup/scripts contain `aria-sort` and `aria-expanded` updates.
 - [x] Task 8: **Keyword Cannibalization (Editorial)** - update target page metadata/content seeds to enforce intent split (Who It's For vs Carers post; Resources vs funding posts) and add linking rule notes in `AUDIT.md`. -> Verify: changed keyphrases/meta descriptions in source and explicit hub/spoke guidance in `AUDIT.md`.
-- [ ] Task 9: **Audit Refresh** - update `restwell-theme/AUDIT.md` scores, open issues, and action plan based on completed work above. -> Verify: all 8 domains include current status and no stale references to fixed items.
+- [x] Task 9: **Audit Refresh** - update `restwell-theme/AUDIT.md` scores, open issues, and action plan based on completed work above. -> Verify: all 8 domains include current status and no stale references to fixed items.
 - [ ] Task 10: **Verification (LAST)** - run lint/diagnostic pass on touched files and perform a manual source-check checklist (events, meta tags, llms entries, hardening hooks). -> Verify: no new diagnostics introduced and checklist items all pass.
 
 ## Done When
@@ -32,3 +32,8 @@ Ship a focused remediation pass across the 8 high-priority audit domains using s
 ## Notes
 - Keep changes WordPress-native (`restwell_` prefix, escaped output, no new dependencies).
 - Preserve behavior on admin/AJAX/REST contexts when adding frontend redirects or request guards.
+
+## Progress log
+- 2026-06-18: Tasks 1–5 verified pre-existing (social meta split, TL;DR, llms.txt, analytics events, REST guard).
+- 2026-06-18: Tasks 6–8 implemented (Phosphor preload, aria-sort/aria-expanded, hub/spoke AUDIT table).
+- 2026-06-18: Task 9 — `AUDIT.md` scorecard and verification notes refreshed for high-priority pass.
