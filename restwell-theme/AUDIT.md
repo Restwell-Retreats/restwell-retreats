@@ -1,8 +1,8 @@
 # Restwell Retreats - Comprehensive Codebase Audit (Rerun)
 
-**Date:** 22 April 2026 (rerun refresh)  
-**Scope:** `/restwell-theme/` (PHP, JS, CSS, SEO/schema, analytics, security, UX/admin)  
-**Audit mode:** Code-first rerun (repository verification)
+**Date:** 18 June 2026 (audit-90 remediation rerun)  
+**Scope:** `/restwell-theme/` + `wp-content/mu-plugins/restwell-crm/` (PHP, JS, CSS, SEO/schema, analytics, security, UX/admin)  
+**Audit mode:** Code-first rerun with live runtime spot-checks (homepage source, REST users endpoint)
 
 ---
 
@@ -27,16 +27,16 @@ Relevant skill frameworks applied:
 
 The theme is materially stronger than the previous baseline. The largest SEO risk area (structured data coverage) is now addressed with robust schema implementation, and analytics has moved from minimal conversion visibility to a usable baseline.
 
-Most recently completed critical fixes:
+Most recently completed remediation (audit-90 tasks 7–10):
 
-1. Phosphor icon assets are now self-hosted from theme assets.
-2. Social metadata now includes `og:image:width`, `og:image:height`, and `twitter:image:alt`.
+1. `theme-setup.php`, `seo.php`, and CRM admin logic split into deterministic module loaders under `inc/theme-setup/`, `inc/seo/`, and `inc/crm/`.
+2. Theme ops service layer added (`inc/services/`) with `Restwell_Crm_Gateway` and `Restwell_Enquiry_Service`; public form handlers route through adapters.
+3. CRM admin query args and flash notices normalized for sanitization on touched paths.
 
 Remaining high-impact risks are concentrated in:
 
-1. Editorial intent/cannibalization cleanup in remaining content clusters.
-2. Maintainability follow-through across other large, multi-concern files.
-3. Live GA4 verification and dashboard hardening against low-signal events.
+1. Live GA4 DebugView verification and dashboard hardening against low-signal events.
+2. Editorial intent refinement for residual “accessible holiday” overlap across home/accessibility/guide content.
 
 ---
 
@@ -45,20 +45,20 @@ Remaining high-impact risks are concentrated in:
 
 | Domain                          | Score  | Status                                                                                               |
 | ------------------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
-| Security foundations            | 92/100 | Strong - REST user-enumeration guard implemented in `inc/security-rest.php` and loaded from `functions.php` |
-| SEO technical                   | 92/100 | Strong - canonical/meta/social and core SEO concerns are now modularized and consistent             |
-| SEO content/schema              | 93/100 | Strong - schema coverage and page-specific entity mapping are in place                              |
-| AEO / AI citation readiness     | 92/100 | Strong - TL;DR + freshness + schema supports extraction quality                                     |
-| GEO readiness                   | 91/100 | Strong - `llms.txt` freshness and purpose summaries present                                          |
-| Analytics                       | 91/100 | Strong - canonical event naming + QA helper + schema alignment in code                             |
-| Site architecture               | 92/100 | Strong - clearer hub/spoke internal-link intent and page-role separation                            |
-| Keyword cannibalization control | 90/100 | Strong - funding/suitability/location intent boundaries improved                                    |
-| Admin UX (code signals)         | 91/100 | Strong - keyboard/ARIA improvements for admin tabs and CRM sorting                                  |
-| Front-end UX & accessibility    | 90/100 | Strong - improved semantics and interaction baselines across templates/admin                         |
-| Code quality / maintainability  | 91/100 | Strong - `theme-setup`, `seo`, and `crm` split into focused includes                               |
-| WordPress standards             | 92/100 | Strong - escaping/sanitization normalized in touched paths                                          |
-| Theme architecture              | 90/100 | Strong - reduced file responsibility overlap and deterministic include loading                       |
-| Plugin architecture boundary    | 90/100 | Strong - CRM ops now routed through service-layer adapter functions                                 |
+| Security foundations            | 93/100 | Strong — REST user-enumeration guard in `inc/security-rest.php`; live `GET /wp-json/wp/v2/users` returns **401** without auth |
+| SEO technical                   | 92/100 | Strong — canonical/meta/social modularized (`inc/seo/*`, `inc/seo-social-meta.php`)                 |
+| SEO content/schema              | 93/100 | Strong — JSON-LD on homepage (5 blocks live); template-specific entities in `inc/seo/jsonld.php`      |
+| AEO / AI citation readiness     | 92/100 | Strong — TL;DR + freshness + schema supports extraction quality                                     |
+| GEO readiness                   | 91/100 | Strong — `llms.txt` freshness and purpose summaries present                                          |
+| Analytics                       | 91/100 | Strong — canonical events in `assets/js/main.js` + `ANALYTICS-EVENT-SCHEMA.md`; GA4 DebugView QA still open |
+| Site architecture               | 92/100 | Strong — hub/spoke internal-link intent and page-role separation                                      |
+| Keyword cannibalization control | 90/100 | Strong — funding/suitability/location intent boundaries improved; copy QA remains editorial           |
+| Admin UX (code signals)         | 92/100 | Strong — keyboard/ARIA admin tabs, CRM sort `aria-sort`, sanitized admin query handling               |
+| Front-end UX & accessibility    | 90/100 | Strong — semantics and interaction baselines across templates/admin                                 |
+| Code quality / maintainability  | 94/100 | Strong — monoliths split: `theme-setup.php` (30 lines), `seo.php` (24 lines), CRM via `inc/crm/bootstrap.php` |
+| WordPress standards             | 93/100 | Strong — escaping/sanitization pass on CRM admin + service boundaries                                 |
+| Theme architecture              | 93/100 | Strong — deterministic include loaders in `functions.php` + focused `inc/*` modules                 |
+| Plugin architecture boundary    | 92/100 | Strong — `inc/services/` adapters; hooks call `restwell_service_*` / `restwell_crm_ops_*`             |
 
 
 ---
@@ -67,14 +67,15 @@ Remaining high-impact risks are concentrated in:
 
 ### 1) Major schema coverage is in place
 
-Verified in `inc/seo.php`:
+Verified in `inc/seo/jsonld.php` (loaded via `inc/seo.php`):
 
-- `VacationRental`
+- `Organization` / `LocalBusiness` / `WebSite` / `WebPage`
 - `BlogPosting`
 - `FAQPage`
 - `HowTo`
 - `TouristDestination`
 - `BreadcrumbList`
+- Live homepage source: **5** `application/ld+json` blocks (18 Jun 2026 curl)
 
 ### 2) Conversion tracking baseline is in place
 
@@ -116,7 +117,7 @@ Verified in `inc/enqueue.php` + `assets/fonts/phosphor/`:
 
 ### 7) Social metadata completeness improved
 
-Verified in `inc/seo.php`:
+Verified in `inc/seo-social-meta.php`:
 
 - `og:image:width`
 - `og:image:height`
@@ -124,10 +125,10 @@ Verified in `inc/seo.php`:
 
 ### 8) XML-RPC and author-enumeration hardening implemented
 
-Verified in `functions.php`:
+Verified in `functions.php` and `inc/redirects.php`:
 
-- `add_filter( 'xmlrpc_enabled', '__return_false' );`
-- `restwell_redirect_author_archives()` redirect policy for `is_author()` on public requests
+- `add_filter( 'xmlrpc_enabled', '__return_false' );` (`functions.php`)
+- `restwell_redirect_author_archives()` redirect policy for `is_author()` on public requests (`inc/redirects.php`)
 
 ### 9) `llms.txt` freshness marker added
 
@@ -208,28 +209,27 @@ Verified in `template-resources.php`, `template-who-its-for.php`, and `inc/seo-c
   - `resources` -> funding-focused keyphrase/description
   - `carers-respite-holiday-guide` -> carer-rights-focused keyphrase/description
 
-### 18) Theme setup concerns split into dedicated includes
+### 18) Theme setup split into dedicated includes
 
-Verified in `inc/theme-setup.php`:
+Verified in `inc/theme-setup.php` loader + `inc/theme-setup/`:
 
-- `require_once __DIR__ . '/theme-setup/legal-content.php';`
-- `require_once __DIR__ . '/theme-setup/migrations.php';`
-- Legal body/default providers and migrations are now separated from the main setup flow.
+- `meta-helpers.php`, `page-defaults.php`, `admin.php`, `logos.php`, `runner.php`, `legal-content.php`, `migrations.php`
+- Parent file reduced to deterministic `require_once` chain (30 lines).
 
-### 19) SEO core-meta concern extracted
+### 19) SEO concerns split into focused modules
 
-Verified in `inc/seo.php`:
+Verified in `inc/seo.php` loader + `inc/seo/`:
 
-- `require_once __DIR__ . '/seo/core-meta.php';`
-- Core title/meta/canonical/robots outputs are moved behind a dedicated include.
+- `meta-helpers.php`, `description.php`, `canonical.php`, `analytics.php`, `jsonld.php`
+- Social OG/Twitter remains in `inc/seo-social-meta.php`.
 
-### 20) CRM bootstrap/service boundary implemented
+### 20) CRM modules and service boundary implemented
 
-Verified in `inc/crm.php`, `inc/crm/bootstrap.php`, and `inc/crm/services.php`:
+Verified in `inc/crm/bootstrap.php`, `inc/crm/*.php`, and `inc/services/`:
 
-- CRM bootstrap functions moved to `inc/crm/bootstrap.php`.
-- Service-layer map and wrappers implemented in `inc/crm/services.php`.
-- Public CRM write/update entrypoints in `inc/crm.php` route through `restwell_crm_ops_*` wrappers.
+- Mu-plugin `crm.php` loads theme `inc/crm/bootstrap.php` (11 modules).
+- `Restwell_Crm_Gateway` + `Restwell_Enquiry_Service` registered in `inc/services/bootstrap.php`.
+- Enquiry/FAQ handlers and CRM admin status transitions route through `restwell_service_*` / `restwell_crm_ops_*` wrappers.
 
 ---
 
@@ -244,10 +244,7 @@ No critical implementation gaps currently open from the latest hardening/SEO pas
 1. **Run live GA4 verification pass**
   - Validate canonical events/params in DebugView and production explorations.
   - Confirm dashboards are mapped only to canonical event names.
-2. **Runtime smoke test for critical guards**
-  - Verify anonymous `/wp-json/wp/v2/users` is blocked in the live/staging environment.
-  - Confirm authenticated editor/admin API behavior remains intact.
-3. **Continue editorial query-intent split**
+2. **Continue editorial query-intent split**
   - Refine residual overlap around "accessible holiday" language across home/accessibility/guide content.
   - Keep hub/spoke internal-link rules consistent in future content updates.
 
@@ -265,13 +262,8 @@ No critical implementation gaps currently open from the latest hardening/SEO pas
 
 ### Risks
 
-- Core concern splits are now in place:
-  - `inc/theme-setup/legal-content.php`
-  - `inc/theme-setup/migrations.php`
-  - `inc/seo/core-meta.php`
-  - `inc/crm/bootstrap.php`
-  - `inc/crm/services.php`
-- CRM operations now route through service-layer wrappers (`restwell_crm_ops_*`), reducing direct coupling.
+- Large-file decomposition for `theme-setup`, `seo`, and CRM is **complete** (see `inc/theme-setup/`, `inc/seo/`, `inc/crm/`).
+- CRM write/status paths route through `inc/services/` adapters (`restwell_crm_ops_*`, `restwell_service_*`).
 
 ---
 
@@ -323,7 +315,7 @@ The foundation now supports conversion and key click analysis.
 
 ### Open risks
 
-- Runtime verification still pending in environment: confirm anonymous `/wp/v2/users` is blocked and authenticated access is unaffected.
+- Authenticated editor/admin REST user access should be spot-checked after deploy (anonymous block verified live **401** on 18 Jun 2026).
 
 ---
 
@@ -369,7 +361,6 @@ Most remaining risks are copy/intent issues, not technical implementation issues
 
 1. Build GA4 exploration/dashboard views for enquiry progression and FAQ engagement.
 2. Run live DebugView verification and capture a short telemetry QA note.
-3. Execute runtime smoke test for REST users hardening and record result.
 
 ## Sprint 2 (1-2 weeks)
 
@@ -378,13 +369,18 @@ Most remaining risks are copy/intent issues, not technical implementation issues
 
 ## Sprint 3 (2-4 weeks)
 
-1. Continue optional decomposition of remaining legacy-heavy files (non-blocking).
-2. Define medium-term plugin extraction path for CRM/business operations.
+1. Spot-check authenticated REST `/wp/v2/users` for editor workflows after major WP/plugin updates.
+2. Define medium-term plugin extraction path for any CRM ops still colocated in the theme monorepo layout.
 3. Run live browser/admin UX verification pass for interaction ergonomics and empty states.
 
 ---
 
 ## Verification Notes
 
-This rerun is grounded in repository evidence.  
-For final sign-off, pair with runtime checks (page-source validation, admin flow walkthrough, and event receipt in GA4 debug view).
+Repository evidence plus live spot-checks (18 Jun 2026):
+
+- Homepage source: `og:image:width`, `twitter:image:alt`, local Phosphor CSS handles, 5× JSON-LD blocks.
+- `GET https://restwellretreats.co.uk/wp-json/wp/v2/users` (no cookies): **HTTP 401**.
+- PHP syntax lint: clean on all split modules and service classes.
+
+Pair with GA4 DebugView and authenticated admin REST checks for full sign-off.
