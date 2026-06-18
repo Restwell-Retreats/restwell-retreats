@@ -93,7 +93,7 @@ function restwell_crm_handle_send_post_stay() {
 	if ( $row && function_exists( 'restwell_email_post_stay' ) ) {
 		$email_data = restwell_email_post_stay( $row->email, $row->name );
 		wp_mail( $row->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
-		restwell_crm_add_note( $id, __( 'Post-stay email sent.', 'restwell-retreats' ) );
+		restwell_service_crm_gateway()->add_enquiry_note( $id, __( 'Post-stay email sent.', 'restwell-retreats' ) );
 	}
 
 	wp_safe_redirect(
@@ -282,7 +282,7 @@ function restwell_crm_handle_add_note() {
 	$note       = sanitize_textarea_field( wp_unslash( $_POST['rw_note_text'] ?? '' ) );
 
 	if ( $enquiry_id && $note ) {
-		restwell_crm_add_note( $enquiry_id, $note );
+		restwell_service_crm_gateway()->add_enquiry_note( $enquiry_id, $note );
 	}
 
 	wp_safe_redirect(
@@ -387,7 +387,7 @@ function restwell_crm_handle_update_stay_dates(): void {
 		restwell_format_enquiry_date_range( $old_from, $old_to ) ?: $none_label,
 		restwell_format_enquiry_date_range( $date_from, $date_to ) ?: $none_label
 	);
-	restwell_crm_add_note( $enquiry_id, $note );
+	restwell_service_crm_gateway()->add_enquiry_note( $enquiry_id, $note );
 
 	wp_safe_redirect( add_query_arg( 'stay_dates_updated', '1', $redirect_base ) );
 	exit;
@@ -447,7 +447,7 @@ function restwell_crm_handle_lead_action() {
 		}
 
 		// Delegate to the unified function — it handles timestamps, note, and booking email.
-		$ok = restwell_crm_apply_status_change( $lead_id, $new_status, 'ajax' );
+		$ok = restwell_crm_ops_apply_status_change( $lead_id, $new_status, 'ajax' );
 
 		if ( ! $ok ) {
 			wp_send_json_error( array( 'message' => __( 'Status update failed.', 'restwell-retreats' ) ), 500 );
@@ -477,7 +477,7 @@ function restwell_crm_handle_lead_action() {
 		);
 	}
 
-	restwell_crm_add_note( $lead_id, $note_text );
+	restwell_service_crm_gateway()->add_enquiry_note( $lead_id, $note_text );
 
 	wp_send_json_success(
 		array(

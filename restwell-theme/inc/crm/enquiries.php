@@ -40,7 +40,7 @@ function restwell_crm_enquiries_page() {
 		if ( array_key_exists( $new_status, restwell_crm_statuses() ) ) {
 			// Status transition (timestamps, status-change note, booking email) is
 			// handled entirely by the unified function.
-			restwell_crm_apply_status_change( $id, $new_status, 'detail' );
+			restwell_crm_ops_apply_status_change( $id, $new_status, 'detail' );
 
 			// Detail-view-only fields: notes, follow-up date.
 			$wpdb->update(
@@ -72,7 +72,7 @@ function restwell_crm_enquiries_page() {
 		if ( array_key_exists( $bulk_action, restwell_crm_statuses() ) && $ids ) {
 			foreach ( $ids as $id ) {
 				// Booking confirmation email is suppressed in bulk context (context = 'bulk').
-				restwell_crm_apply_status_change( $id, $bulk_action, 'bulk' );
+				restwell_crm_ops_apply_status_change( $id, $bulk_action, 'bulk' );
 			}
 		}
 

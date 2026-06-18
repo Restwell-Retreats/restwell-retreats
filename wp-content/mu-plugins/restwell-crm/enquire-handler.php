@@ -267,7 +267,7 @@ function restwell_handle_enquire_submit(): void {
 		'marketing_optin' => $marketing_optin,
 	);
 
-	$crm_result   = restwell_crm_save_enquiry( $crm_data );
+	$crm_result   = restwell_service_enquiry()->persist_lead( $crm_data );
 	$enquiry_id   = $crm_result['id'] ?? false;
 	$is_duplicate = $crm_result['is_duplicate'] ?? false;
 
@@ -289,12 +289,7 @@ function restwell_handle_enquire_submit(): void {
 	if ( $is_duplicate ) {
 		// Visitor re-submitted the same form within 30 minutes — silently succeed
 		// without spamming staff or the guest with duplicate emails.
-		if ( function_exists( 'restwell_crm_add_note' ) ) {
-			restwell_crm_add_note(
-				$enquiry_id,
-				__( 'Automated note: duplicate submit suppressed (same email within 30 minutes). No emails sent.', 'restwell-retreats' )
-			);
-		}
+		restwell_service_enquiry()->record_duplicate_submit( (int) $enquiry_id );
 		wp_safe_redirect( add_query_arg( array( 'sent' => '1' ), $redirect ) . '#enquiry-result' );
 		exit;
 	}
@@ -307,11 +302,8 @@ function restwell_handle_enquire_submit(): void {
 			'enquire',
 			array( 'enquiry-form' )
 		);
-		if ( ! $mailchimp_ok && function_exists( 'restwell_crm_add_note' ) ) {
-			restwell_crm_add_note(
-				$enquiry_id,
-				__( 'Automated note: marketing opt-in was recorded, but Mailchimp sync failed. Please retry from CRM if needed.', 'restwell-retreats' )
-			);
+		if ( ! $mailchimp_ok ) {
+			restwell_service_enquiry()->record_marketing_sync_failure( (int) $enquiry_id );
 		}
 	}
 
@@ -321,18 +313,18 @@ function restwell_handle_enquire_submit(): void {
 	$body   .= "\n\nCRM enquiry ID: #" . (string) $enquiry_id;
 
 	$staff_sent = restwell_wp_mail_with_retry( $to, $subject, $body, $headers );
-	if ( ! $staff_sent && function_exists( 'restwell_crm_add_note' ) ) {
-		restwell_crm_add_note(
-			$enquiry_id,
+	if ( ! $staff_sent ) {
+		restwell_service_crm_gateway()->add_enquiry_note(
+			(int) $enquiry_id,
 			__( 'Automated note: staff notification email did not send (SMTP/mail transport). Please follow up from CRM or resend manually.', 'restwell-retreats' )
 		);
 	}
 
 	$ack = restwell_email_enquiry_ack( $name, $email, $urgent );
 	$ack_ok = restwell_wp_mail_with_retry( $email, $ack['subject'], $ack['body'], $ack['headers'] );
-	if ( ! $ack_ok && function_exists( 'restwell_crm_add_note' ) ) {
-		restwell_crm_add_note(
-			$enquiry_id,
+	if ( ! $ack_ok ) {
+		restwell_service_crm_gateway()->add_enquiry_note(
+			(int) $enquiry_id,
 			__( 'Automated note: acknowledgement email to the guest may not have sent. Consider replying manually.', 'restwell-retreats' )
 		);
 	}

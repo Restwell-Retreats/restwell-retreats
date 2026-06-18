@@ -45,6 +45,8 @@ require_once get_template_directory() . '/inc/sitemap-robots.php';
 require_once get_template_directory() . '/inc/smtp-config.php';
 require_once get_template_directory() . '/inc/social-profiles.php';
 require_once get_template_directory() . '/inc/theme-setup.php';
+require_once get_template_directory() . '/inc/crm.php';
+require_once get_template_directory() . '/inc/services/bootstrap.php';
 require_once get_template_directory() . '/inc/tldr.php';
 require_once get_template_directory() . '/inc/wif-helpers.php';
 require_once get_template_directory() . '/inc/wp-runtime-optimization.php';

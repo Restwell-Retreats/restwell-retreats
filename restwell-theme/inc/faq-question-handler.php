@@ -91,7 +91,7 @@ function restwell_handle_faq_question_submit(): void {
 	}
 
 	$source = $pid ? (string) get_permalink( $pid ) : $back;
-	$row_id = restwell_faq_save_submission(
+	$row_id = restwell_service_crm_gateway()->save_faq_submission(
 		array(
 			'name'        => $name,
 			'email'       => $email,
@@ -111,15 +111,7 @@ function restwell_handle_faq_question_submit(): void {
 		);
 		// Persist failure flag so inbox can surface rows that need manual sync.
 		if ( ! $mc_ok && $row_id ) {
-			global $wpdb;
-			$faq_table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
-			$wpdb->update(
-				$faq_table,
-				array( 'marketing_sync_failed' => 1 ),
-				array( 'id' => $row_id ),
-				array( '%d' ),
-				array( '%d' )
-			);
+			restwell_service_crm_gateway()->mark_faq_marketing_sync_failed( (int) $row_id );
 		}
 	}
 
@@ -155,7 +147,7 @@ function restwell_handle_faq_question_submit(): void {
 
 	$sent = restwell_wp_mail_with_retry( $to, $subject, implode( "\n", $lines ), $headers );
 	if ( $sent ) {
-		restwell_faq_mark_notify_sent( $row_id );
+		restwell_service_crm_gateway()->mark_faq_notify_sent( $row_id );
 		wp_safe_redirect( add_query_arg( 'question_sent', '1', $back ) . '#faq-question-form' );
 		exit;
 	}
