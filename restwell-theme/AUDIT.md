@@ -1,6 +1,6 @@
 # Restwell Retreats - Comprehensive Codebase Audit (Rerun)
 
-**Date:** 18 June 2026 (audit-90 remediation rerun)  
+**Date:** 18 June 2026 (high-priority audit remediation rerun)  
 **Scope:** `/restwell-theme/` + `wp-content/mu-plugins/restwell-crm/` (PHP, JS, CSS, SEO/schema, analytics, security, UX/admin)  
 **Audit mode:** Code-first rerun with live runtime spot-checks (homepage source, REST users endpoint)
 
@@ -27,11 +27,11 @@ Relevant skill frameworks applied:
 
 The theme is materially stronger than the previous baseline. The largest SEO risk area (structured data coverage) is now addressed with robust schema implementation, and analytics has moved from minimal conversion visibility to a usable baseline.
 
-Most recently completed remediation (audit-90 tasks 7–10):
+Most recently completed remediation (high-priority tasks 6–8):
 
-1. `theme-setup.php`, `seo.php`, and CRM admin logic split into deterministic module loaders under `inc/theme-setup/`, `inc/seo/`, and `inc/crm/`.
-2. Theme ops service layer added (`inc/services/`) with `Restwell_Crm_Gateway` and `Restwell_Enquiry_Service`; public form handlers route through adapters.
-3. CRM admin query args and flash notices normalized for sanitization on touched paths.
+1. Phosphor WOFF2 font preloads added in `inc/performance.php` (regular + bold, single enqueue path per weight).
+2. CRM enquiry sort headers expose `aria-sort`; FAQ `<summary>` controls sync `aria-expanded` via `assets/js/main.js`.
+3. Hub/spoke intent table and linking rules documented under **§8 Keyword Cannibalization**.
 
 Remaining high-impact risks are concentrated in:
 
@@ -52,13 +52,14 @@ Remaining high-impact risks are concentrated in:
 | GEO readiness                   | 91/100 | Strong — `llms.txt` freshness and purpose summaries present                                          |
 | Analytics                       | 91/100 | Strong — canonical events in `assets/js/main.js` + `ANALYTICS-EVENT-SCHEMA.md`; GA4 DebugView QA still open |
 | Site architecture               | 92/100 | Strong — hub/spoke internal-link intent and page-role separation                                      |
-| Keyword cannibalization control | 90/100 | Strong — funding/suitability/location intent boundaries improved; copy QA remains editorial           |
+| Keyword cannibalization control | 91/100 | Strong — hub/spoke table in §8; seed keyphrases split suitability vs funding vs carer rights          |
 | Admin UX (code signals)         | 92/100 | Strong — keyboard/ARIA admin tabs, CRM sort `aria-sort`, sanitized admin query handling               |
-| Front-end UX & accessibility    | 90/100 | Strong — semantics and interaction baselines across templates/admin                                 |
+| Front-end UX & accessibility    | 91/100 | Strong — FAQ `aria-expanded` sync + admin sort `aria-sort`; semantic baselines across templates       |
 | Code quality / maintainability  | 94/100 | Strong — monoliths split: `theme-setup.php` (30 lines), `seo.php` (24 lines), CRM via `inc/crm/bootstrap.php` |
 | WordPress standards             | 93/100 | Strong — escaping/sanitization pass on CRM admin + service boundaries                                 |
 | Theme architecture              | 93/100 | Strong — deterministic include loaders in `functions.php` + focused `inc/*` modules                 |
 | Plugin architecture boundary    | 92/100 | Strong — `inc/services/` adapters; hooks call `restwell_service_*` / `restwell_crm_ops_*`             |
+| Performance                     | 92/100 | Strong — hero LCP preload + Phosphor WOFF2 preloads in `inc/performance.php`; single icon CSS enqueue per weight |
 
 
 ---
@@ -231,6 +232,20 @@ Verified in `inc/crm/bootstrap.php`, `inc/crm/*.php`, and `inc/services/`:
 - `Restwell_Crm_Gateway` + `Restwell_Enquiry_Service` registered in `inc/services/bootstrap.php`.
 - Enquiry/FAQ handlers and CRM admin status transitions route through `restwell_service_*` / `restwell_crm_ops_*` wrappers.
 
+### 21) Phosphor WOFF2 font preloads added
+
+Verified in `inc/performance.php`:
+
+- `restwell_preload_phosphor_icon_fonts()` outputs `<link rel="preload" … as="font" type="font/woff2">` for regular and bold self-hosted files.
+- `inc/enqueue.php` retains one stylesheet handle per icon weight (no duplicate enqueues).
+
+### 22) Admin sort and FAQ toggle accessibility hardened
+
+Verified in `inc/crm/enquiries.php` + `assets/js/main.js`:
+
+- Sortable enquiry columns expose `aria-sort` (`none` / `ascending` / `descending`).
+- FAQ `<summary>` elements sync `aria-expanded` via `initFaqToggleA11y()`.
+
 ---
 
 ## Highest Priority Open Issues
@@ -326,10 +341,11 @@ The foundation now supports conversion and key click analysis.
 - Main JS defer behavior in place.
 - Responsive image helper strategy exists.
 - Icon CSS dependency is now local, removing third-party render dependency.
+- Phosphor WOFF2 preloads (`restwell_preload_phosphor_icon_fonts`) output local `.woff2` URLs in `<head>`.
 
 ### Open
 
-- No major repository-level performance blockers remain from the audit backlog; remaining work is runtime profiling and GA4 validation.
+- Remaining work is runtime profiling (WebPageTest/Lighthouse) and GA4 validation — no repository-level blockers.
 
 ---
 
@@ -338,7 +354,8 @@ The foundation now supports conversion and key click analysis.
 ### Positive
 
 - Form validation states and success-scroll behavior are intentionally handled.
-- Baseline semantic structure and assistive patterns are reasonable.
+- CRM enquiry sort headers expose `aria-sort` (`inc/crm/enquiries.php`).
+- FAQ `<summary>` controls sync `aria-expanded` on toggle (`initFaqToggleA11y` in `assets/js/main.js`).
 
 ### Open
 
@@ -348,7 +365,23 @@ The foundation now supports conversion and key click analysis.
 
 ## 8) Keyword Cannibalization (Editorial)
 
-Most remaining risks are copy/intent issues, not technical implementation issues:
+Intent boundaries are enforced in `inc/seo-content-seed.php` and hub templates:
+
+| Page / cluster | Primary intent (keyphrase) | Hub role | Spoke links (do not duplicate definitions) |
+| --- | --- | --- | --- |
+| `/who-its-for/` | `accessible stay suitability` | Audience-fit hub | `/resources/` for funding; `/accessibility/` for specs; `/carers-respite-holiday-guide/` for carer rights only |
+| `/resources/` | `holiday care funding kent` | Funding hub | DP, CHC, carers, grants cluster posts — keep YMYL depth on spokes |
+| `/carers-respite-holiday-guide/` | `carer assessment respite rights` | Carer rights guide | Signpost to `/resources/`; never restate full funding eligibility |
+| Funding spokes (`/direct-payment-*`, `/chc-*`, etc.) | Topic-specific funding | Spoke | Link up to `/resources/`; avoid suitability copy from Who It's For |
+
+### Hub/spoke linking rules (editorial)
+
+1. **Who It's For → Resources:** suitability pages link to the funding hub; funding CTAs do not replace audience-fit copy on Who It's For.
+2. **Resources → spokes:** hub lists and deep-links; long-form eligibility stays on cluster URLs.
+3. **Carers guide → Resources:** rights/assessment framing only; funding mechanics live on `/resources/` and DP/CHC posts.
+4. **Home / accessibility / Whitstable guide:** commercial vs spec vs location intents stay separated (see `front-page.php`, `template-accessibility.php`, `template-whitstable-guide.php` internal links).
+
+Most remaining risks are copy QA, not missing technical guardrails:
 
 1. Accessible-holiday query split across home/accessibility/guide content.
 2. Ongoing enforcement of hub/spoke copy boundaries as new articles are added.
@@ -380,7 +413,10 @@ Most remaining risks are copy/intent issues, not technical implementation issues
 Repository evidence plus live spot-checks (18 Jun 2026):
 
 - Homepage source: `og:image:width`, `twitter:image:alt`, local Phosphor CSS handles, 5× JSON-LD blocks.
+- Homepage `<head>`: Phosphor WOFF2 preload links for regular + bold weights.
 - `GET https://restwellretreats.co.uk/wp-json/wp/v2/users` (no cookies): **HTTP 401**.
-- PHP syntax lint: clean on all split modules and service classes.
+- Grep: `enquiry_form_started`, `faq_expanded`, `scroll_depth` + `page_path`/`user_type` in `assets/js/main.js`.
+- Grep: `aria-sort` in `inc/crm/enquiries.php`; `aria-expanded` updates in `initFaqToggleA11y`.
+- PHP syntax lint: clean on `inc/performance.php`, `inc/crm/enquiries.php`, and service classes.
 
 Pair with GA4 DebugView and authenticated admin REST checks for full sign-off.

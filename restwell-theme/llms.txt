@@ -1,6 +1,6 @@
 # Restwell Retreats
 > Accessible holiday accommodation in Whitstable, Kent
-Last-Updated: 2026-04-22
+Last-Updated: 2026-06-18
 
 ## Main pages
 - `Homepage -> https://restwellretreats.co.uk/`: Accessible self-catering bungalow for private short breaks with optional CQC-regulated care support.
