@@ -3743,8 +3743,14 @@
     display: none;
   }
 
-  .restwell-gallery--carousel.is-ready .restwell-gallery-all {
+  /* JS: carousel default; full grid only via #property-gallery-all / :target */
+  html.js .restwell-gallery--carousel.is-ready .restwell-gallery-all {
+    display: none;
     scroll-margin-top: 6rem;
+  }
+
+  html.js .restwell-gallery--carousel.is-ready .restwell-gallery-all:target {
+    display: block;
   }
 
   html.no-js .restwell-gallery-carousel-shell {
