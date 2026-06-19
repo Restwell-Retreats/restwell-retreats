@@ -1975,33 +1975,43 @@
 	}
 
 	ready(function () {
-		initRestwellFormOpenedAt();
-		setActiveNavLinks();
-		initStickyHeaderShadow();
-		initNavDropdowns();
-		initMobileMenu();
-		initExploreFilter();
-		initFaqTabs();
-		initFaqToggleA11y();
-		initHomeFaqAccordion();
-		initMultiStepForm();
-		initFaqQuestionFormValidation();
+		function safeInit(name, fn) {
+			try {
+				fn();
+			} catch (err) {
+				if (typeof console !== 'undefined' && console.error) {
+					console.error('Restwell init failed: ' + name, err);
+				}
+			}
+		}
+
+		safeInit('initRestwellGalleryCarousel', initRestwellGalleryCarousel);
+		safeInit('initRestwellGalleryLightbox', initRestwellGalleryLightbox);
+		safeInit('initRestwellFormOpenedAt', initRestwellFormOpenedAt);
+		safeInit('setActiveNavLinks', setActiveNavLinks);
+		safeInit('initStickyHeaderShadow', initStickyHeaderShadow);
+		safeInit('initNavDropdowns', initNavDropdowns);
+		safeInit('initMobileMenu', initMobileMenu);
+		safeInit('initExploreFilter', initExploreFilter);
+		safeInit('initFaqTabs', initFaqTabs);
+		safeInit('initFaqToggleA11y', initFaqToggleA11y);
+		safeInit('initHomeFaqAccordion', initHomeFaqAccordion);
+		safeInit('initMultiStepForm', initMultiStepForm);
+		safeInit('initFaqQuestionFormValidation', initFaqQuestionFormValidation);
 		// Must run AFTER initMultiStepForm() so the multi-step controller has
 		// already wired up showStep() and date-range constraints; the draft
 		// restore can then dispatch a 'change' event safely without racing.
-		initEnquiryDraftPersistence();
-		initWifPersonaNav();
-		initHomeComparisonScrollHints();
-		initRestwellGalleryCarousel();
-		initRestwellGalleryLightbox();
+		safeInit('initEnquiryDraftPersistence', initEnquiryDraftPersistence);
+		safeInit('initWifPersonaNav', initWifPersonaNav);
+		safeInit('initHomeComparisonScrollHints', initHomeComparisonScrollHints);
 
 		// Non-critical analytics and reveal effects run after the initial paint window.
 		runWhenIdle(function () {
-			initRestwellGa4SecondaryEvents();
-			initEnquirySuccessScroll();
-			initRestwellCtaAnalytics();
-			initScrollDepthTracking();
-			initRevealAnimations();
+			safeInit('initRestwellGa4SecondaryEvents', initRestwellGa4SecondaryEvents);
+			safeInit('initEnquirySuccessScroll', initEnquirySuccessScroll);
+			safeInit('initRestwellCtaAnalytics', initRestwellCtaAnalytics);
+			safeInit('initScrollDepthTracking', initScrollDepthTracking);
+			safeInit('initRevealAnimations', initRevealAnimations);
 		});
 	});
 })();

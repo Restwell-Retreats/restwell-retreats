@@ -3714,6 +3714,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: var(--radius);
     transition: transform 0.35s ease;
   }
 
@@ -3737,32 +3738,8 @@
     margin-inline: auto;
   }
 
-  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__viewport,
-  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__controls,
-  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__view-all {
+  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__controls {
     display: none;
-  }
-
-  /* JS: carousel default; full grid only via #property-gallery-all / :target */
-  html.js .restwell-gallery--carousel.is-ready .restwell-gallery-all {
-    display: none;
-    scroll-margin-top: 6rem;
-  }
-
-  html.js .restwell-gallery--carousel.is-ready .restwell-gallery-all:target {
-    display: block;
-  }
-
-  html.no-js .restwell-gallery-carousel-shell {
-    display: none;
-  }
-
-  html.js .restwell-gallery-fallback {
-    display: none;
-  }
-
-  html.js .restwell-gallery-fallback:target {
-    display: block;
   }
 
   .restwell-carousel__viewport {
@@ -3811,6 +3788,7 @@
     object-fit: cover;
     display: block;
     aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
   }
 
   .restwell-carousel__caption {
@@ -3841,9 +3819,68 @@
     color: var(--muted-grey);
   }
 
+  .restwell-gallery-all {
+    scroll-margin-top: 6rem;
+  }
+
+  .restwell-gallery-all__panel {
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .restwell-gallery-all__panel {
+      margin-top: 2.5rem;
+    }
+  }
+
   .restwell-carousel__view-all {
     margin: 1rem 0 0;
     text-align: center;
+    list-style: none;
+    cursor: pointer;
+    color: var(--deep-teal);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .restwell-carousel__view-all::-webkit-details-marker {
+    display: none;
+  }
+
+  .restwell-carousel__view-all::marker {
+    content: '';
+  }
+
+  .restwell-carousel__view-all::after {
+    content: '';
+    display: inline-block;
+    width: 0.4em;
+    height: 0.4em;
+    margin-left: 0.35em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-0.1em);
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+  }
+
+  .restwell-gallery-all[open] > .restwell-carousel__view-all::after {
+    transform: rotate(-135deg) translateY(0.1em);
+  }
+
+  .restwell-carousel__view-all:hover {
+    text-decoration: none;
+  }
+
+  .restwell-carousel__view-all:focus {
+    outline: none;
+  }
+
+  .restwell-carousel__view-all:focus-visible {
+    outline: 2px solid var(--deep-teal);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   .restwell-carousel__btn {

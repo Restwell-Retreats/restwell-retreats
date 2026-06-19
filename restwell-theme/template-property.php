@@ -72,6 +72,12 @@ $prop_room_tour = function_exists( 'restwell_get_property_room_tour_sections' )
 	? restwell_get_property_room_tour_sections( $pid )
 	: array();
 
+$prop_care_heading     = $m( 'prop_care_heading' );
+$prop_care_body        = $m( 'prop_care_body' );
+$prop_location_heading = $m( 'prop_location_heading' );
+$prop_location_body    = $m( 'prop_location_body' );
+$area_guide_url        = esc_url( home_url( '/whitstable-area-guide/' ) );
+
 $prop_access_essentials = array();
 foreach ( $prop_features as $feature ) {
 	$needle = strtolower( $feature['title'] . ' ' . $feature['desc'] );
@@ -224,6 +230,49 @@ $enquire_url = esc_url( home_url( '/enquire/' ) );
 				</article>
 				<?php endforeach; ?>
 			</div>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( $prop_care_heading !== '' || $prop_care_body !== '' ) : ?>
+	<section class="rw-section-y bg-white rw-seam-t" aria-labelledby="prop-care-heading">
+		<div class="container max-w-5xl mx-auto">
+			<?php if ( $prop_care_heading !== '' ) : ?>
+				<h2 id="prop-care-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php echo esc_html( $prop_care_heading ); ?></h2>
+			<?php endif; ?>
+			<?php if ( $prop_care_body !== '' ) : ?>
+				<div class="rw-copy-body rw-prose-stack max-w-prose leading-relaxed <?php echo $prop_care_heading !== '' ? 'mt-6 md:mt-8' : ''; ?>">
+					<?php echo wp_kses_post( wpautop( $prop_care_body ) ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php if ( $prop_location_heading !== '' || $prop_location_body !== '' ) : ?>
+	<section class="rw-section-y bg-[var(--bg-subtle)] rw-seam-t" aria-labelledby="prop-location-heading">
+		<div class="container max-w-5xl mx-auto">
+			<?php if ( $prop_location_heading !== '' ) : ?>
+				<h2 id="prop-location-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php echo esc_html( $prop_location_heading ); ?></h2>
+			<?php endif; ?>
+			<?php if ( $prop_location_body !== '' ) : ?>
+				<div class="rw-copy-body rw-prose-stack max-w-prose leading-relaxed <?php echo $prop_location_heading !== '' ? 'mt-6 md:mt-8' : ''; ?>">
+					<?php
+					$area_guide_needle = 'area guide';
+					$location_parts    = explode( $area_guide_needle, $prop_location_body, 2 );
+					if ( count( $location_parts ) === 2 ) {
+						$location_html = esc_html( $location_parts[0] )
+							. '<a href="' . esc_url( $area_guide_url ) . '" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm">'
+							. esc_html__( 'area guide', 'restwell-retreats' )
+							. '</a>'
+							. esc_html( $location_parts[1] );
+						echo wp_kses_post( wpautop( $location_html ) );
+					} else {
+						echo wp_kses_post( wpautop( $prop_location_body ) );
+					}
+					?>
+				</div>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>

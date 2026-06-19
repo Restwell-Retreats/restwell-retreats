@@ -441,9 +441,12 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 		$height  = is_array( $meta ) && ! empty( $meta['height'] ) ? (int) $meta['height'] : 1200;
 		$is_first = 0 === $index;
 		$loading  = $is_first ? 'eager' : 'lazy';
-		$hidden   = $is_first ? '' : ' hidden';
 
-		echo '<figure class="restwell-carousel__slide' . esc_attr( $hidden ) . '" data-carousel-slide="' . esc_attr( (string) $index ) . '" role="group" aria-roledescription="slide" aria-label="' . esc_attr( sprintf( /* translators: 1: current slide number, 2: total slides */ __( 'Slide %1$d of %2$d', 'restwell-retreats' ), $index + 1, $total ) ) . '">';
+		echo '<figure class="restwell-carousel__slide" data-carousel-slide="' . esc_attr( (string) $index ) . '"';
+		if ( ! $is_first ) {
+			echo ' hidden';
+		}
+		echo ' role="group" aria-roledescription="slide" aria-label="' . esc_attr( sprintf( /* translators: 1: current slide number, 2: total slides */ __( 'Slide %1$d of %2$d', 'restwell-retreats' ), $index + 1, $total ) ) . '">';
 
 		if ( $lightbox ) {
 			echo '<button type="button" class="restwell-carousel__media-btn" data-restwell-gallery-open data-gallery-id="' . esc_attr( $gallery_uid ) . '" data-gallery-index="' . esc_attr( (string) $index ) . '" aria-label="' . esc_attr( sprintf( /* translators: %s: image description */ __( 'View full size: %s', 'restwell-retreats' ), $alt ) ) . '">';
@@ -511,24 +514,17 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 		}
 	}
 
-	$all_grid_id = trim( (string) ( $args['all_grid_id'] ?? 'property-gallery-all' ) );
-	if ( $all_grid_id === '' ) {
-		$all_grid_id = 'property-gallery-all';
-	}
-
-	printf(
-		'<p class="restwell-carousel__view-all"><a href="#%1$s" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm">%2$s</a></p>',
-		esc_attr( $all_grid_id ),
-		esc_html(
-			sprintf(
-				/* translators: %d: number of photos */
-				_n( 'View all %d photo', 'View all %d photos', $total, 'restwell-retreats' ),
-				$total
-			)
-		)
+	$view_all_label = sprintf(
+		/* translators: %d: number of photos */
+		_n( 'View all %d photo', 'View all %d photos', $total, 'restwell-retreats' ),
+		$total
 	);
 
-	echo '<div id="' . esc_attr( $all_grid_id ) . '" class="restwell-gallery-all mt-10 md:mt-12">';
+	echo '<details class="restwell-gallery-all mt-10 md:mt-12">';
+	echo '<summary class="restwell-carousel__view-all">';
+	echo esc_html( $view_all_label );
+	echo '</summary>';
+	echo '<div class="restwell-gallery-all__panel">';
 	echo '<h3 class="sr-only">' . esc_html( (string) ( $args['all_grid_aria_label'] ?? __( 'All property photos', 'restwell-retreats' ) ) ) . '</h3>';
 	restwell_render_gallery(
 		$image_ids,
@@ -541,6 +537,7 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 		)
 	);
 	echo '</div>';
+	echo '</details>';
 
 	echo '</div>';
 }
