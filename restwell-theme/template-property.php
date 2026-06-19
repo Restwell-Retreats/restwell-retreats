@@ -12,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
+$GLOBALS['restwell_hide_footer_cta'] = true;
+
 $pid = get_the_ID();
 $d   = restwell_get_property_page_defaults();
 $m   = function ( $key ) use ( $pid, $d ) {
@@ -77,27 +79,9 @@ $prop_location_heading = $m( 'prop_location_heading' );
 $prop_location_body    = $m( 'prop_location_body' );
 $area_guide_url        = esc_url( home_url( '/whitstable-area-guide/' ) );
 
-$prop_access_essentials = array();
-foreach ( $prop_features as $feature ) {
-	$needle = strtolower( $feature['title'] . ' ' . $feature['desc'] );
-	if (
-		str_contains( $needle, 'accessible' )
-		|| str_contains( $needle, 'hoist' )
-		|| str_contains( $needle, 'step-free' )
-		|| str_contains( $needle, 'wheelchair' )
-		|| str_contains( $needle, 'wet room' )
-	) {
-		$prop_access_essentials[] = $feature;
-	}
-}
-if ( empty( $prop_access_essentials ) && count( $prop_features ) >= 5 ) {
-	$prop_access_essentials = array( $prop_features[1], $prop_features[4], $prop_features[5] );
-}
-
-$access_url  = esc_url( home_url( '/accessibility/' ) );
-$enquire_url = esc_url( home_url( '/enquire/' ) );
+$access_url = esc_url( home_url( '/accessibility/' ) );
 ?>
-<main class="flex-1" id="main-content">
+<main class="flex-1 prop-page" id="main-content">
 <?php get_template_part( 'template-parts/breadcrumb' ); ?>
 	<?php
 	set_query_var(
@@ -136,7 +120,7 @@ $enquire_url = esc_url( home_url( '/enquire/' ) );
 			</div>
 
 			<?php if ( ! empty( $prop_features ) ) : ?>
-			<div class="max-w-3xl mx-auto mt-10 md:mt-12 pt-10 md:pt-12 border-t border-[var(--deep-teal)]/10" aria-labelledby="prop-glance-heading">
+			<div class="max-w-3xl mx-auto prop-page__inset-seam rw-seam-t" aria-labelledby="prop-glance-heading">
 				<div class="rw-section-head rw-section-head--center">
 					<?php if ( $prop_features_label !== '' ) : ?>
 						<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $prop_features_label ) ); ?>
@@ -180,7 +164,7 @@ $enquire_url = esc_url( home_url( '/enquire/' ) );
 			);
 			?>
 			<?php if ( $prop_primary_cta['label'] !== '' && $prop_primary_cta['url'] !== '' ) : ?>
-			<div class="mt-10 md:mt-12 text-center">
+			<div class="prop-page__gallery-cta text-center">
 				<a href="<?php echo esc_url( $prop_primary_cta['url'] ); ?>" class="btn btn-primary">
 					<?php echo esc_html( $prop_primary_cta['label'] ); ?>
 					<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
@@ -198,26 +182,40 @@ $enquire_url = esc_url( home_url( '/enquire/' ) );
 			<div class="prop-room-tour__stack">
 				<?php
 				foreach ( $prop_room_tour as $tour_index => $tour ) :
-					$image_first = 0 === ( $tour_index % 2 );
-					$image_id    = (int) ( $tour['image_id'] ?? 0 );
+					$image_first    = 0 === ( $tour_index % 2 );
+					$image_id       = (int) ( $tour['image_id'] ?? 0 );
+					$image_confirm  = (string) ( $tour['image_confirm'] ?? 'room photo' );
+					$image_meta     = $image_id > 0 ? wp_get_attachment_metadata( $image_id ) : array();
+					$image_width    = is_array( $image_meta ) && ! empty( $image_meta['width'] ) ? (int) $image_meta['width'] : 1200;
+					$image_height   = is_array( $image_meta ) && ! empty( $image_meta['height'] ) ? (int) $image_meta['height'] : 900;
+					$block_classes  = 'prop-room-tour__block grid md:grid-cols-2 gap-8 lg:gap-12 items-start';
+					if ( $tour_index > 0 ) {
+						$block_classes .= ' prop-room-tour__block--seamed rw-seam-t';
+					}
 					?>
-				<article class="prop-room-tour__block grid md:grid-cols-2 gap-8 lg:gap-12 items-start <?php echo $tour_index > 0 ? 'rw-seam-t pt-10 md:pt-12' : ''; ?>">
+				<article class="<?php echo esc_attr( $block_classes ); ?>">
 					<?php if ( $image_id > 0 ) : ?>
 						<div class="<?php echo esc_attr( $image_first ? 'order-1' : 'order-1 md:order-2' ); ?>">
-							<?php
-							echo wp_get_attachment_image(
-								$image_id,
-								'large',
-								false,
-								array(
-									'class'    => 'prop-room-tour__img rounded-2xl w-full aspect-[4/3] object-cover shadow-[0_8px_30px_rgb(0,0,0,0.04)]',
-									'alt'      => (string) ( $tour['heading'] ?? '' ),
-									'loading'  => 'lazy',
-									'decoding' => 'async',
-								)
-							);
-							?>
+							<div class="prop-room-tour__figure">
+								<?php
+								echo wp_get_attachment_image(
+									$image_id,
+									'large',
+									false,
+									array(
+										'class'    => 'prop-room-tour__img',
+										'alt'      => (string) ( $tour['heading'] ?? '' ),
+										'loading'  => 'lazy',
+										'decoding' => 'async',
+										'width'    => $image_width,
+										'height'   => $image_height,
+									)
+								);
+								?>
+							</div>
 						</div>
+					<?php else : ?>
+						<!-- Confirm in WP: needs a <?php echo esc_html( $image_confirm ); ?>. -->
 					<?php endif; ?>
 					<div class="<?php echo esc_attr( $image_id > 0 ? ( $image_first ? 'order-2' : 'order-2 md:order-1' ) : 'md:col-span-2' ); ?>">
 						<h3 class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0 mb-4 leading-tight"><?php echo esc_html( (string) ( $tour['heading'] ?? '' ) ); ?></h3>
@@ -283,34 +281,14 @@ $enquire_url = esc_url( home_url( '/enquire/' ) );
 	</section>
 	<?php endif; ?>
 
-	<?php if ( ! empty( $prop_access_essentials ) ) : ?>
-	<section class="rw-section-y bg-white rw-seam-t" aria-labelledby="prop-access-heading">
+	<section class="rw-section-y bg-white rw-seam-t" aria-label="<?php esc_attr_e( 'Accessibility detail', 'restwell-retreats' ); ?>">
 		<div class="container max-w-5xl mx-auto">
-			<div class="max-w-3xl mx-auto">
-				<div class="rw-section-head rw-section-head--center">
-					<h2 id="prop-access-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php esc_html_e( 'Accessibility essentials', 'restwell-retreats' ); ?></h2>
-				</div>
-				<ul class="prop-glance-list grid sm:grid-cols-2 gap-x-10 gap-y-4 list-disc pl-5 rw-copy-body leading-relaxed m-0 mx-auto">
-					<?php foreach ( $prop_access_essentials as $item ) : ?>
-					<li>
-						<strong class="font-semibold text-[var(--deep-teal)]"><?php echo esc_html( $item['title'] ); ?></strong><?php
-						if ( $item['desc'] !== '' ) {
-							echo ' <span class="text-[var(--muted-grey)]">' . esc_html( $item['desc'] ) . '</span>';
-						}
-						?>
-					</li>
-					<?php endforeach; ?>
-				</ul>
-				<p class="rw-copy-body text-sm md:text-base mt-6 mb-0 max-w-prose mx-auto">
+			<p class="rw-copy-body text-sm md:text-base mb-0 max-w-prose mx-auto text-center">
 				<?php esc_html_e( 'Full measurements, equipment detail and floor plans:', 'restwell-retreats' ); ?>
 				<a href="<?php echo esc_url( $access_url ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
-				<?php esc_html_e( 'Questions?', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $enquire_url ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm"><?php esc_html_e( 'Ask us directly', 'restwell-retreats' ); ?></a>.
-				</p>
-			</div>
+			</p>
 		</div>
 	</section>
-	<?php endif; ?>
 
 	<section class="rw-section-y--cta bg-[var(--deep-teal)] rw-seam-t" aria-labelledby="prop-cta-heading">
 		<div class="container max-w-5xl mx-auto text-center">

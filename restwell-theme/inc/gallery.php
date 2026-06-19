@@ -199,33 +199,98 @@ function restwell_get_gallery_attachment_caption( $attachment_id ) {
 }
 
 /**
- * Resolve a room-tour image: explicit meta ID, else gallery slot by index.
+ * Lowercase search blob from attachment caption, alt text, and title.
  *
- * @param int           $meta_image_id   Optional attachment ID from page meta.
- * @param array<int,int> $gallery_ids    Property gallery IDs.
- * @param int           $fallback_index  Zero-based gallery index.
+ * @param int $attachment_id Attachment ID.
+ * @return string
+ */
+function restwell_get_gallery_attachment_search_blob( $attachment_id ) {
+	$attachment_id = (int) $attachment_id;
+	if ( $attachment_id <= 0 ) {
+		return '';
+	}
+
+	$parts = array(
+		restwell_get_gallery_attachment_caption( $attachment_id ),
+		restwell_get_gallery_attachment_alt( $attachment_id ),
+		trim( (string) get_the_title( $attachment_id ) ),
+	);
+
+	return strtolower( trim( implode( ' ', array_filter( $parts ) ) ) );
+}
+
+/**
+ * Find the best-matching gallery image by caption/alt/title keywords (never by array index).
+ *
+ * @param array<int,int>   $gallery_ids  Candidate attachment IDs.
+ * @param array<int,string> $keywords    Keyword phrases; longer matches score higher.
+ * @param array<int,int>   $exclude_ids  Attachment IDs already assigned to another block.
+ * @return int Attachment ID or 0 when no keyword match.
+ */
+function restwell_find_gallery_image_by_keywords( $gallery_ids, $keywords, $exclude_ids = array() ) {
+	$gallery_ids = restwell_parse_gallery_ids( $gallery_ids );
+	if ( empty( $gallery_ids ) || empty( $keywords ) ) {
+		return 0;
+	}
+
+	$exclude_map = array_fill_keys( array_map( 'absint', (array) $exclude_ids ), true );
+	$best_id     = 0;
+	$best_score  = 0;
+
+	foreach ( $gallery_ids as $attachment_id ) {
+		$attachment_id = (int) $attachment_id;
+		if ( isset( $exclude_map[ $attachment_id ] ) ) {
+			continue;
+		}
+
+		$blob = restwell_get_gallery_attachment_search_blob( $attachment_id );
+		if ( $blob === '' ) {
+			continue;
+		}
+
+		$score = 0;
+		foreach ( (array) $keywords as $keyword ) {
+			$keyword = strtolower( trim( (string) $keyword ) );
+			if ( $keyword === '' ) {
+				continue;
+			}
+			if ( str_contains( $blob, $keyword ) ) {
+				$score += strlen( $keyword );
+			}
+		}
+
+		if ( $score > $best_score ) {
+			$best_score = $score;
+			$best_id    = $attachment_id;
+		}
+	}
+
+	return $best_score > 0 ? $best_id : 0;
+}
+
+/**
+ * Resolve a room-tour image: explicit meta ID, else caption/alt keyword match in the gallery.
+ *
+ * @param int              $meta_image_id Optional attachment ID from page meta.
+ * @param array<int,int>   $gallery_ids   Property gallery IDs.
+ * @param array<int,string> $keywords     Keyword phrases for gallery lookup.
+ * @param array<int,int>   $exclude_ids   IDs already used by other tour blocks.
  * @return int Attachment ID or 0.
  */
-function restwell_resolve_property_tour_image_id( $meta_image_id, $gallery_ids, $fallback_index ) {
+function restwell_resolve_property_tour_image_id( $meta_image_id, $gallery_ids, $keywords = array(), $exclude_ids = array() ) {
 	$meta_image_id = (int) $meta_image_id;
 	if ( $meta_image_id > 0 && wp_attachment_is_image( $meta_image_id ) ) {
 		return $meta_image_id;
 	}
 
-	$gallery_ids = restwell_parse_gallery_ids( $gallery_ids );
-	$fallback_index = (int) $fallback_index;
-	if ( isset( $gallery_ids[ $fallback_index ] ) ) {
-		return (int) $gallery_ids[ $fallback_index ];
-	}
-
-	return 0;
+	return restwell_find_gallery_image_by_keywords( $gallery_ids, $keywords, $exclude_ids );
 }
 
 /**
  * Room-by-room tour blocks for the property page (Job 10 migration target).
  *
  * @param int $post_id Property page ID.
- * @return array<int, array{heading:string,body:string,image_id:int}>
+ * @return array<int, array{key:string,heading:string,body:string,image_id:int,image_confirm:string}>
  */
 function restwell_get_property_room_tour_sections( $post_id = 0 ) {
 	$post_id = (int) $post_id;
@@ -239,38 +304,100 @@ function restwell_get_property_room_tour_sections( $post_id = 0 ) {
 	};
 
 	$gallery_ids = restwell_get_property_gallery_ids( $post_id );
+	$used_ids    = array();
 
-	$sections = array(
+	$slots = array(
 		array(
-			'heading'   => (string) $m( 'prop_living_heading' ),
-			'body'      => (string) $m( 'prop_living_body' ),
-			'image_id'  => restwell_resolve_property_tour_image_id( (int) $m( 'prop_tour_living_image_id' ), $gallery_ids, 0 ),
+			'key'            => 'living',
+			'heading_key'    => 'prop_living_heading',
+			'body_key'       => 'prop_living_body',
+			'image_key'      => 'prop_tour_living_image_id',
+			'image_confirm'  => 'living room/kitchen photo',
+			'keywords'       => array(
+				'living room',
+				'open-plan living',
+				'kitchen',
+				'conservatory',
+				'lounge',
+				'living area',
+			),
 		),
 		array(
-			'heading'   => (string) $m( 'prop_bedrooms_section_heading' ),
-			'body'      => (string) $m( 'prop_bedrooms_section_body' ),
-			'image_id'  => restwell_resolve_property_tour_image_id( (int) $m( 'prop_tour_bedroom_image_id' ), $gallery_ids, 1 ),
+			'key'            => 'bedroom',
+			'heading_key'    => 'prop_bedrooms_section_heading',
+			'body_key'       => 'prop_bedrooms_section_body',
+			'image_key'      => 'prop_tour_bedroom_image_id',
+			'image_confirm'  => 'bedroom photo',
+			'keywords'       => array(
+				'accessible bedroom',
+				'profiling bed',
+				'bedroom',
+				'double bed',
+				'ceiling hoist',
+				'hoist',
+			),
 		),
 		array(
-			'heading'   => (string) $m( 'prop_wetroom_heading' ),
-			'body'      => (string) $m( 'prop_wetroom_body' ),
-			'image_id'  => restwell_resolve_property_tour_image_id( (int) $m( 'prop_tour_wetroom_image_id' ), $gallery_ids, 2 ),
+			'key'            => 'wetroom',
+			'heading_key'    => 'prop_wetroom_heading',
+			'body_key'       => 'prop_wetroom_body',
+			'image_key'      => 'prop_tour_wetroom_image_id',
+			'image_confirm'  => 'wet room photo',
+			'keywords'       => array(
+				'wet room',
+				'roll-in shower',
+				'shower room',
+				'shower',
+				'bathroom',
+				'washroom',
+			),
 		),
 		array(
-			'heading'   => (string) $m( 'prop_garden_heading' ),
-			'body'      => (string) $m( 'prop_garden_body' ),
-			'image_id'  => restwell_resolve_property_tour_image_id( (int) $m( 'prop_tour_garden_image_id' ), $gallery_ids, 3 ),
+			'key'            => 'garden',
+			'heading_key'    => 'prop_garden_heading',
+			'body_key'       => 'prop_garden_body',
+			'image_key'      => 'prop_tour_garden_image_id',
+			'image_confirm'  => 'garden/patio or driveway photo',
+			'keywords'       => array(
+				'garden',
+				'patio',
+				'driveway',
+				'parking',
+				'outdoor',
+				'exterior',
+				'front of',
+			),
 		),
 	);
 
-	return array_values(
-		array_filter(
-			$sections,
-			static function ( $section ) {
-				return trim( (string) ( $section['heading'] ?? '' ) ) !== '' || trim( (string) ( $section['body'] ?? '' ) ) !== '';
-			}
-		)
-	);
+	$sections = array();
+	foreach ( $slots as $slot ) {
+		$heading = trim( (string) $m( $slot['heading_key'] ) );
+		$body    = trim( (string) $m( $slot['body_key'] ) );
+		if ( $heading === '' && $body === '' ) {
+			continue;
+		}
+
+		$image_id = restwell_resolve_property_tour_image_id(
+			(int) $m( $slot['image_key'] ),
+			$gallery_ids,
+			$slot['keywords'],
+			$used_ids
+		);
+		if ( $image_id > 0 ) {
+			$used_ids[] = $image_id;
+		}
+
+		$sections[] = array(
+			'key'            => (string) $slot['key'],
+			'heading'        => $heading,
+			'body'           => $body,
+			'image_id'       => $image_id,
+			'image_confirm'  => (string) $slot['image_confirm'],
+		);
+	}
+
+	return $sections;
 }
 
 /**
