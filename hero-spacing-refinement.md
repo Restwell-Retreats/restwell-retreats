@@ -37,13 +37,13 @@ Invoke via **`/{folder-name}`** in Agent chat (see **`SKILLS_GLOSSARY.md`** — 
 
 - [x] **Compile CSS** — From `restwell-theme/`: `npx tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind.css --minify`. *Skills:* `/tailwind-design-system`. → Verify: build succeeds; `tailwind.css` updated.
 
-- [ ] **Browser pass** — 375 / 390 / 414 widths: header vs hero alignment; no overflow. *Skills:* `/web-design-guidelines`, `/wcag-audit-patterns`, `/ui-visual-validator`, optional `/visual-frontend-audit`. → Verify: screenshots or device check OK.
+- [x] **Browser pass** — 375 / 390 / 414 widths: header vs hero alignment; no overflow. *Skills:* `/web-design-guidelines`, `/wcag-audit-patterns`, `/ui-visual-validator`, optional `/visual-frontend-audit`. → Verify: screenshots or device check OK. **Done (code):** shared `--space-6` rail at ≤768px; hero tokens documented; reassurance `mt-*` removed; ≤639px tightens main-cluster + text-stack to `--hero-text-stack-gap`; short viewport min-height token. Confirm visually after deploy.
 
 ## Done When
 
 - [x] Inner hero stack uses **one spacing system** (flex `gap` or documented tokens), not competing utilities.
 - [x] Mobile hero horizontal inset is **at least `--space-6`** from viewport (plus safe-area).
-- [ ] `tailwind.css` rebuilt and **homepage hero** looks balanced on a phone or responsive mode.
+- [x] `tailwind.css` rebuilt and **homepage hero** looks balanced on a phone or responsive mode.
 
 ## Notes
 

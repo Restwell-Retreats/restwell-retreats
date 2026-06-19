@@ -206,7 +206,7 @@ $section_class .= $has_media ? '' : ' bg-neutral-900';
 					</div>
 				<?php endif; ?>
 				<?php if ( $cta_promise !== '' ) : ?>
-					<p id="<?php echo esc_attr( $heading_id ); ?>-reassurance" class="home-hero__reassurance m-0 mt-3 text-white/90 text-sm font-sans leading-snug [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
+					<p id="<?php echo esc_attr( $heading_id ); ?>-reassurance" class="home-hero__reassurance m-0 text-white/90 text-sm font-sans leading-snug [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
 						<?php echo esc_html( $cta_promise ); ?>
 					</p>
 				<?php endif; ?>

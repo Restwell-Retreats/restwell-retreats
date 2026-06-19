@@ -495,7 +495,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						</a>
 					</div>
 					<?php if ( $hero_cta_reassurance_display !== '' ) : ?>
-					<p id="home-hero-reassurance" class="home-hero__reassurance m-0 mt-3 text-white/90 text-sm font-sans leading-snug [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
+					<p id="home-hero-reassurance" class="home-hero__reassurance m-0 text-white/90 text-sm font-sans leading-snug [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
 						<?php echo esc_html( $hero_cta_reassurance_display ); ?>
 					</p>
 					<?php endif; ?>

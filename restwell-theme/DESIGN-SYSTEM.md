@@ -58,6 +58,23 @@ Sections inside `#main-content` with **no** `py-*` and **no** class containing `
 
 **Section hairlines:** Prefer `rw-seam-t`, `rw-seam-y-soft`, or `rw-seam-y-muted` instead of heavy `border-t` / `border-y` on full-width bands.
 
+### Home hero copy rhythm (`.hero.home-hero`)
+
+Use **flex `gap` on wrappers**, not mixed `space-y-*` + `mt-*` on siblings in the same stack.
+
+| Token | Default | Role |
+|-------|---------|------|
+| `--hero-text-stack-gap` | `var(--space-5)` | Eyebrow → H1 → lede inside `.home-hero__text-stack`. |
+| `--hero-copy-gap` | `var(--space-6)` | Desktop: lede block → CTA stack on `.home-hero__copy`. |
+| `--hero-cta-gap` | `var(--space-3)` | Primary + secondary button pair (must stay smaller than `--hero-copy-gap`). |
+| `--hero-main-cluster-gap-mobile` | `var(--space-6)` | ≤768px poster layout: story / CTAs / scroll cluster. |
+| `--hero-text-stack-gap-mobile` | `var(--space-6)` | ≤768px poster layout text stack (≤639px tightens to `--hero-text-stack-gap`). |
+| `--hero-cta-gap-mobile` | `var(--space-2)` | ≤768px centred CTA column. |
+| `--hero-min-height-mobile` | `min(82svh, 44rem)` | ≤768px hero shell. |
+| `--hero-min-height-mobile-short` | `min(76svh, 38rem)` | ≤768px and short viewport height. |
+
+Horizontal inset on mobile: `.container` and `.hero .relative.container` both use `max(var(--space-6), env(safe-area-inset-*))` at ≤768px so header and hero share one rail.
+
 ### After headings and stacks
 
 | Token / utility | Use |
@@ -90,7 +107,7 @@ Sections inside `#main-content` with **no** `py-*` and **no** class containing `
 - **Colour:** `--deep-teal`, `--warm-gold`, `--warm-gold-text` (section labels), `--body-secondary`, `--muted-grey`, `--sea-glass`, `--soft-sand`, `--driftwood`.
 - **Spacing — base:** `--space-1` … `--space-20` (see **Base scale** above).
 - **Spacing — sections:** `--section-padding-y*`, `--section-padding-y-hero*`, `--section-padding-y-compact*`, `--section-padding-y-cta*`.
-- **Spacing — layout:** `--rw-gutter-x*`, `--rw-split-grid-gap-*`, `--rw-grid-gap*`, `--rw-stack-gap*`, `--rw-card-region-gap`, `--rw-section-after-head*`, `--rw-balance-eyebrow-split*`, `--rw-panel-pad-*`.
+- **Spacing — layout:** `--rw-gutter-x*`, `--rw-split-grid-gap-*`, `--rw-grid-gap*`, `--rw-stack-gap*`, `--rw-card-region-gap`, `--rw-section-after-head*`, `--rw-balance-eyebrow-split*`, `--rw-panel-pad-*`, `--hero-text-stack-gap`, `--hero-copy-gap`, `--hero-cta-gap`, `--hero-*-mobile`, `--hero-min-height-mobile*`.
 
 ## Minimum text size
 
