@@ -138,6 +138,7 @@ vite.config.ts
 
 # Theme zip (theme lives in /restwell-theme/)
 *.zip
+restwell-theme/restwell-theme
 
 # Personal notes and reference docs
 ideas.md

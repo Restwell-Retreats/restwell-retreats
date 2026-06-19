@@ -204,9 +204,10 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 								       class="<?php echo esc_attr( $input_class ); ?>" placeholder="jane@example.com" value="<?php echo esc_attr( $enq_f['enq_email'] ); ?>" />
 								</div>
 								<div>
-									<label for="enq_phone" class="<?php echo esc_attr( $label_class ); ?>">Phone number <span class="text-[var(--muted-grey)] font-normal">(optional)</span></label>
-									<input type="tel" id="enq_phone" name="enq_phone" autocomplete="tel"
+									<label for="enq_phone" class="<?php echo esc_attr( $label_class ); ?>">Phone number <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
+									<input type="tel" id="enq_phone" name="enq_phone" required aria-required="true" autocomplete="tel"
 									       class="<?php echo esc_attr( $input_class ); ?>" placeholder="07700 900000" value="<?php echo esc_attr( $enq_f['enq_phone'] ); ?>" />
+									<p id="enq_phone-error" class="enq-field-error" role="alert" hidden></p>
 								</div>
 								<div>
 									<label for="enq_contact_preference" class="<?php echo esc_attr( $label_class ); ?>">Preferred contact method</label>

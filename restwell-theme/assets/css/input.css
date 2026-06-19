@@ -765,6 +765,16 @@
     }
   }
 
+  /*
+   * Gold token usage (single rule):
+   * --warm-gold (#D4A853)     → .btn-gold fill only (brand CTA)
+   * --warm-gold-text (#6B4A0F) → eyebrows, section labels, small accents on light backgrounds
+   * --warm-gold-hero (#F0C97A) → accents on --deep-teal / dark backgrounds only
+   */
+  .section-label-on-dark {
+    color: var(--warm-gold-hero);
+  }
+
   /* -----------------------------------------------------------------------------
      2. CSS reset
      ----------------------------------------------------------------------------- */
@@ -1196,7 +1206,7 @@
     text-decoration-color: currentColor;
   }
 
-  /* CTA in primary nav: same pairing as .btn-gold / hero — warm gold + deep teal (AA on white header) */
+  /* CTA in primary nav: same pairing as .btn-gold — brand warm gold fill on light header */
   .site-nav .site-nav-cta,
   .site-nav .site-nav-list a.site-nav-cta {
     display: inline-flex;
@@ -1208,9 +1218,9 @@
     line-height: 1.25;
     letter-spacing: 0.012em;
     text-decoration: none;
-    background: var(--warm-gold-hero);
+    background: var(--warm-gold);
     color: var(--deep-teal);
-    border: 2px solid var(--warm-gold-hero);
+    border: 2px solid var(--warm-gold);
     padding: 0.4375rem 1.125rem;
     min-height: 2.25rem;
     border-radius: var(--radius);
@@ -1276,7 +1286,7 @@
 
   /* On Enquire page: teal ring reads as “current” without reverting to heavy solid fill */
   .site-nav .current-menu-item > a.site-nav-cta {
-    background: var(--warm-gold-hero);
+    background: var(--warm-gold);
     color: var(--deep-teal);
     border-color: var(--deep-teal);
     box-shadow: 0 1px 2px rgb(27 77 92 / 0.06);
@@ -1623,7 +1633,7 @@
   /* Primary CTA row — match desktop gold CTA */
   .mobile-nav a.mobile-nav-cta.active,
   .mobile-nav .current-menu-item > a.mobile-nav-cta {
-    background: var(--warm-gold-hero);
+    background: var(--warm-gold);
     color: var(--deep-teal);
     border: 2px solid var(--deep-teal);
     box-shadow: none;
@@ -1632,7 +1642,7 @@
   }
 
   .mobile-nav .mobile-nav-cta {
-    background: var(--warm-gold-hero);
+    background: var(--warm-gold);
     color: var(--deep-teal);
     font-weight: var(--font-weight-ui);
     justify-content: center;
@@ -1640,7 +1650,7 @@
     padding: 0.75rem 1.25rem;
     min-height: 48px;
     border-radius: var(--radius);
-    border: 2px solid var(--warm-gold-hero);
+    border: 2px solid var(--warm-gold);
     box-shadow:
       0 1px 2px rgb(27 77 92 / 0.06),
       0 4px 14px rgb(27 77 92 / 0.07);
@@ -1798,7 +1808,7 @@
   }
 
   .footer-cta__btn--primary {
-    background: var(--warm-gold-hero); /* #F0C97A - deep-teal text = 5.2:1 ✅ */
+    background: var(--warm-gold);
     color: var(--deep-teal);
   }
 
@@ -2544,27 +2554,15 @@
     justify-content: center;
   }
 
-  /* Explore: same pairing as .btn-gold — deep-teal on saturated #D4A853 fails AA; hero uses --warm-gold-hero + deep-teal */
+  /* Home hero: .btn-gold uses global brand fill; extra shadow for legibility on photo */
   .hero.home-hero .home-hero__cta-stack .btn.btn-gold:not(.home-hero__cta-secondary) {
-    background-color: var(--warm-gold-hero);
-    border-color: var(--warm-gold-hero);
-    color: var(--deep-teal);
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.35),
       0 1px 2px rgb(0 0 0 / 0.12),
       0 4px 12px rgb(0 0 0 / 0.16);
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      color 0.2s ease,
-      transform 0.15s ease,
-      box-shadow 0.2s ease;
   }
 
   .hero.home-hero .home-hero__cta-stack .btn.btn-gold:not(.home-hero__cta-secondary):hover {
-    background-color: #ddb860;
-    border-color: #ddb860;
-    color: var(--deep-teal);
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.25),
       0 2px 4px rgb(0 0 0 / 0.14),
@@ -3441,11 +3439,8 @@
     margin-bottom: 0.625rem;
   }
 
-  /* #D4A853 with white text = 2.20:1 ✗ - switched to deep-teal text on warm-gold-hero.
-     #F0C97A (warm-gold-hero) with deep-teal text = 5.90:1 ✅
-     Hover darkens to #DDB860 with deep-teal text = 4.91:1 ✅ */
   #main-content a.inline-flex.items-center.gap-2.bg-\[\#D4A853\] {
-    background: var(--warm-gold-hero);
+    background: var(--warm-gold);
     color: var(--deep-teal);
     padding: 0.75rem 1.5rem;
     border-radius: 9999px;
@@ -3658,6 +3653,359 @@
   }
 
   /* -----------------------------------------------------------------------------
+     10b. Restwell photo gallery (scalable grid + lightbox)
+     ----------------------------------------------------------------------------- */
+  .restwell-gallery {
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .restwell-gallery__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .restwell-gallery--teaser .restwell-gallery__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .restwell-gallery--teaser .restwell-gallery__list {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  .restwell-gallery__item {
+    margin: 0;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--driftwood);
+  }
+
+  .restwell-gallery__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    transition: opacity 0.2s ease;
+  }
+
+  .restwell-gallery__link:focus-visible {
+    outline: 3px solid var(--deep-teal);
+    outline-offset: 2px;
+  }
+
+  .restwell-gallery__link:hover .restwell-gallery__img,
+  .restwell-gallery__link:focus-visible .restwell-gallery__img {
+    transform: scale(1.03);
+  }
+
+  .restwell-gallery__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .restwell-gallery__img {
+      transition: none;
+    }
+    .restwell-gallery__link:hover .restwell-gallery__img,
+    .restwell-gallery__link:focus-visible .restwell-gallery__img {
+      transform: none;
+    }
+  }
+
+  .restwell-gallery__data {
+    display: none !important;
+  }
+
+  /* Carousel (single-slide; degrades to grid without JS) */
+  .restwell-gallery--carousel {
+    max-width: min(100%, 72rem);
+    margin-inline: auto;
+  }
+
+  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__viewport,
+  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__controls,
+  .restwell-gallery--carousel:not(.is-ready) .restwell-carousel__view-all {
+    display: none;
+  }
+
+  .restwell-gallery--carousel.is-ready .restwell-gallery-all {
+    scroll-margin-top: 6rem;
+  }
+
+  html.no-js .restwell-gallery-carousel-shell {
+    display: none;
+  }
+
+  html.js .restwell-gallery-fallback {
+    display: none;
+  }
+
+  html.js .restwell-gallery-fallback:target {
+    display: block;
+  }
+
+  .restwell-carousel__viewport {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--driftwood);
+  }
+
+  .restwell-carousel__track {
+    position: relative;
+    margin: 0;
+  }
+
+  .restwell-carousel__slide {
+    margin: 0;
+  }
+
+  .restwell-carousel__slide[hidden] {
+    display: none;
+  }
+
+  .restwell-carousel__media-btn {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    cursor: zoom-in;
+    line-height: 0;
+  }
+
+  .restwell-carousel__media-btn--static {
+    cursor: default;
+  }
+
+  .restwell-carousel__media-btn:focus-visible {
+    outline: 3px solid var(--deep-teal);
+    outline-offset: 2px;
+  }
+
+  .restwell-carousel__img {
+    width: 100%;
+    height: auto;
+    max-height: min(70vh, 42rem);
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 4 / 3;
+  }
+
+  .restwell-carousel__caption {
+    margin: 0;
+    padding: 0.875rem 1rem 1rem;
+    text-align: center;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--muted-grey);
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .restwell-carousel__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .restwell-carousel__status {
+    margin: 0;
+    min-width: 4.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-grey);
+  }
+
+  .restwell-carousel__view-all {
+    margin: 1rem 0 0;
+    text-align: center;
+  }
+
+  .restwell-carousel__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(27, 77, 92, 0.18);
+    background: #fff;
+    color: var(--deep-teal);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .restwell-carousel__btn:hover {
+    background: var(--bg-subtle);
+    border-color: rgba(27, 77, 92, 0.35);
+  }
+
+  .restwell-carousel__btn:focus-visible {
+    outline: 3px solid var(--deep-teal);
+    outline-offset: 2px;
+  }
+
+  .restwell-carousel__btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .restwell-carousel__btn {
+      transition: none;
+    }
+  }
+
+  .prop-room-tour + .prop-room-tour {
+    padding-top: var(--rw-stack-gap-lg, 2.5rem);
+    border-top: 1px solid rgba(27, 77, 92, 0.08);
+  }
+
+  @media (min-width: 768px) {
+    .prop-room-tour + .prop-room-tour {
+      padding-top: var(--rw-stack-gap-lg, 3rem);
+    }
+  }
+
+  .restwell-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(15, 35, 42, 0.92);
+  }
+
+  .restwell-lightbox[hidden] {
+    display: none !important;
+  }
+
+  .restwell-lightbox__dialog {
+    position: relative;
+    width: min(100%, 56rem);
+    max-height: min(92vh, 48rem);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .restwell-lightbox__figure {
+    margin: 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .restwell-lightbox__image {
+    max-width: 100%;
+    max-height: min(78vh, 42rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    background: #0f232a;
+  }
+
+  .restwell-lightbox__caption {
+    margin: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    padding: 0 2.5rem;
+  }
+
+  .restwell-lightbox__toolbar {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .restwell-lightbox__btn {
+    pointer-events: auto;
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0.5rem;
+    border: 0;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .restwell-lightbox__btn:hover,
+  .restwell-lightbox__btn:focus-visible {
+    background: rgba(255, 255, 255, 0.28);
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .restwell-lightbox__btn--close {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .restwell-lightbox__btn--prev {
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .restwell-lightbox__btn--next {
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .restwell-lightbox__status {
+    position: absolute;
+    left: 50%;
+    bottom: 0.5rem;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.8125rem;
+    pointer-events: none;
+  }
+
+  body.restwell-lightbox-open {
+    overflow: hidden;
+  }
+
+  /* -----------------------------------------------------------------------------
      11. Button system
      Single source of truth for every interactive button on the site.
      Variants:  .btn-primary   - deep teal, for main body CTAs
@@ -3742,19 +4090,16 @@
     color: #fff;
   }
 
-  /* - Gold: warm gold background ------------------------------------------- */
-  /* deep-teal text on --warm-gold (#D4A853) = 4.22:1 ✗ - use --warm-gold-hero instead.
-     --warm-gold-hero (#F0C97A) with deep-teal text = 5.90:1 ✅
-     Hover darkens to #DDB860 with deep-teal text = 4.91:1 ✅ */
+  /* - Gold: brand CTA fill (--warm-gold) ----------------------------------- */
   .btn-gold {
-    background-color: var(--warm-gold-hero);
+    background-color: var(--warm-gold);
     color: var(--deep-teal);
-    border-color: var(--warm-gold-hero);
+    border-color: var(--warm-gold);
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
   .btn-gold:hover {
-    background-color: #DDB860;
-    border-color: #DDB860;
+    background-color: #c49a4a;
+    border-color: #c49a4a;
     color: var(--deep-teal);
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
@@ -4320,13 +4665,6 @@ details.wif-persona-card[open] {
   .page-whitstable-guide .wg-section-head {
     padding-left: 1.25rem;
   }
-}
-
-.page-whitstable-guide .wg-band--texture {
-  background-image:
-    radial-gradient(rgba(27, 77, 92, 0.04) 1px, transparent 1px),
-    linear-gradient(var(--bg-subtle), var(--bg-subtle));
-  background-size: 22px 22px, auto;
 }
 
 .page-whitstable-guide .wg-glance {

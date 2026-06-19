@@ -32,6 +32,7 @@ $faq_question_sent   = isset( $_GET['question_sent'] ) && '1' === sanitize_text_
 $faq_question_errors = array();
 $faq_q_name          = '';
 $faq_q_email         = '';
+$faq_q_phone         = '';
 $faq_q_message       = '';
 $faq_q_marketing_optin = '';
 
@@ -43,6 +44,7 @@ if ( $faq_flash_key ) {
 		$fields                = isset( $faq_flash['fields'] ) && is_array( $faq_flash['fields'] ) ? $faq_flash['fields'] : array();
 		$faq_q_name            = isset( $fields['name'] ) ? sanitize_text_field( (string) $fields['name'] ) : '';
 		$faq_q_email           = isset( $fields['email'] ) ? sanitize_email( (string) $fields['email'] ) : '';
+		$faq_q_phone           = isset( $fields['phone'] ) ? sanitize_text_field( (string) $fields['phone'] ) : '';
 		$faq_q_message         = isset( $fields['message'] ) ? sanitize_textarea_field( (string) $fields['message'] ) : '';
 		$faq_q_marketing_optin = isset( $fields['marketing_optin'] ) ? sanitize_text_field( (string) $fields['marketing_optin'] ) : '';
 		delete_transient( 'restwell_faq_flash_' . $faq_flash_key );
@@ -192,7 +194,7 @@ $categories = array(
 							</div>
 						<?php endif; ?>
 
-						<form method="post" action="<?php echo esc_url( get_permalink( $pid ) ); ?>#faq-question-form" class="space-y-4 text-left relative" novalidate>
+						<form method="post" action="<?php echo esc_url( get_permalink( $pid ) ); ?>#faq-question-form" class="restwell-faq-question-form space-y-4 text-left relative" novalidate>
 							<?php wp_nonce_field( 'restwell_faq_question', 'restwell_faq_question_nonce' ); ?>
 							<input type="hidden" name="restwell_faq_question" value="1" />
 							<input type="hidden" name="restwell_faq_page_id" value="<?php echo esc_attr( (string) $pid ); ?>" />
@@ -204,19 +206,28 @@ $categories = array(
 
 							<div class="grid gap-4 md:grid-cols-2">
 								<div>
-									<label for="faq_q_name" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your name', 'restwell-retreats' ); ?></label>
-									<input type="text" id="faq_q_name" name="faq_q_name" required value="<?php echo esc_attr( $faq_q_name ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" />
+									<label for="faq_q_name" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your name', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
+									<input type="text" id="faq_q_name" name="faq_q_name" required aria-required="true" value="<?php echo esc_attr( $faq_q_name ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" />
+									<p id="faq_q_name-error" class="enq-field-error" role="alert" hidden></p>
 								</div>
 
 								<div>
-									<label for="faq_q_email" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Email address', 'restwell-retreats' ); ?></label>
-									<input type="email" id="faq_q_email" name="faq_q_email" required value="<?php echo esc_attr( $faq_q_email ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" />
+									<label for="faq_q_email" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Email address', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
+									<input type="email" id="faq_q_email" name="faq_q_email" required aria-required="true" value="<?php echo esc_attr( $faq_q_email ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" />
+									<p id="faq_q_email-error" class="enq-field-error" role="alert" hidden></p>
 								</div>
 							</div>
 
 							<div>
-								<label for="faq_q_message" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your question', 'restwell-retreats' ); ?></label>
-								<textarea id="faq_q_message" name="faq_q_message" required rows="5" class="<?php echo esc_attr( $faq_form_input_class ); ?>"><?php echo esc_textarea( $faq_q_message ); ?></textarea>
+								<label for="faq_q_phone" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Phone number', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
+								<input type="tel" id="faq_q_phone" name="faq_q_phone" required aria-required="true" autocomplete="tel" value="<?php echo esc_attr( $faq_q_phone ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" placeholder="07700 900000" />
+								<p id="faq_q_phone-error" class="enq-field-error" role="alert" hidden></p>
+							</div>
+
+							<div>
+								<label for="faq_q_message" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your question', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
+								<textarea id="faq_q_message" name="faq_q_message" required aria-required="true" rows="5" class="<?php echo esc_attr( $faq_form_input_class ); ?>"><?php echo esc_textarea( $faq_q_message ); ?></textarea>
+								<p id="faq_q_message-error" class="enq-field-error" role="alert" hidden></p>
 							</div>
 							<div class="rounded-xl border border-[#CFC2AD] bg-[#FFFEFC] px-4 py-3">
 								<div class="flex items-start gap-3">

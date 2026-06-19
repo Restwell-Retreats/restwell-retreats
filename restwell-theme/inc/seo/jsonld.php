@@ -141,6 +141,45 @@ function restwell_output_structured_data() {
 	if ( is_page_template( 'template-enquire.php' ) ) {
 		restwell_output_jsonld_contact_page();
 	}
+
+	if ( is_front_page() ) {
+		$teaser_ids = array_slice( restwell_get_property_gallery_ids(), 0, 6 );
+		if ( ! empty( $teaser_ids ) ) {
+			restwell_output_gallery_jsonld(
+				$teaser_ids,
+				array(
+					'name' => __( 'Property photo preview', 'restwell-retreats' ),
+					'url'  => home_url( '/' ),
+				)
+			);
+		}
+	}
+
+	if ( is_page_template( 'template-property.php' ) && is_singular( 'page' ) ) {
+		$prop_ids = restwell_get_property_gallery_ids( get_queried_object_id() );
+		if ( ! empty( $prop_ids ) ) {
+			restwell_output_gallery_jsonld(
+				$prop_ids,
+				array(
+					'name' => get_the_title( get_queried_object_id() ),
+					'url'  => get_permalink( get_queried_object_id() ),
+				)
+			);
+		}
+	}
+
+	if ( is_page_template( 'template-accessibility.php' ) && is_singular( 'page' ) ) {
+		$acc_ids = restwell_get_accessibility_gallery_ids( get_queried_object_id() );
+		if ( ! empty( $acc_ids ) ) {
+			restwell_output_gallery_jsonld(
+				$acc_ids,
+				array(
+					'name' => get_the_title( get_queried_object_id() ),
+					'url'  => get_permalink( get_queried_object_id() ),
+				)
+			);
+		}
+	}
 }
 add_action( 'wp_head', 'restwell_output_structured_data', 10 );
 
@@ -202,9 +241,6 @@ function restwell_get_accommodation_image_urls( $page_id = 0 ) {
 		'hero_media_id',
 		'prop_hero_image_id',
 		'prop_dignity_image_id',
-		'prop_gallery_1_image_id',
-		'prop_gallery_2_image_id',
-		'prop_gallery_3_image_id',
 	);
 
 	$image_urls = array();
@@ -220,6 +256,22 @@ function restwell_get_accommodation_image_urls( $page_id = 0 ) {
 		}
 
 		$img = wp_get_attachment_image_url( $img_id, 'full' );
+		if ( $img ) {
+			$image_urls[] = $img;
+		}
+	}
+
+	$gallery_ids = restwell_get_page_gallery_ids(
+		$page_id,
+		'prop_gallery_image_ids',
+		array(
+			'prop_gallery_1_image_id',
+			'prop_gallery_2_image_id',
+			'prop_gallery_3_image_id',
+		)
+	);
+	foreach ( $gallery_ids as $gid ) {
+		$img = wp_get_attachment_image_url( $gid, 'full' );
 		if ( $img ) {
 			$image_urls[] = $img;
 		}
@@ -283,9 +335,6 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 				'og_image_id',
 				'prop_hero_image_id',
 				'prop_dignity_image_id',
-				'prop_gallery_1_image_id',
-				'prop_gallery_2_image_id',
-				'prop_gallery_3_image_id',
 			);
 			foreach ( $property_image_keys as $meta_key ) {
 				$img_id = absint( get_post_meta( $prop_pid, $meta_key, true ) );
@@ -297,6 +346,13 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 					continue;
 				}
 				$img = wp_get_attachment_image_url( $img_id, 'full' );
+				if ( $img ) {
+					$image_urls[] = $img;
+				}
+			}
+			$prop_gallery_ids = restwell_get_property_gallery_ids( $prop_pid );
+			foreach ( $prop_gallery_ids as $gid ) {
+				$img = wp_get_attachment_image_url( $gid, 'full' );
 				if ( $img ) {
 					$image_urls[] = $img;
 				}

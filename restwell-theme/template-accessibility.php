@@ -49,6 +49,11 @@ $access_statement_url = restwell_get_access_statement_url();
 $access_statement_url = $access_statement_url !== '' ? esc_url( $access_statement_url ) : '';
 $acc_tldr_markup      = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
 
+$acc_gallery_label   = get_post_meta( $pid, 'acc_gallery_label', true ) ?: __( 'Accessibility features', 'restwell-retreats' );
+$acc_gallery_heading = get_post_meta( $pid, 'acc_gallery_heading', true ) ?: __( 'Equipment and access in pictures', 'restwell-retreats' );
+$acc_gallery_intro   = get_post_meta( $pid, 'acc_gallery_intro', true ) ?: '';
+$acc_gallery_ids     = restwell_get_accessibility_gallery_ids( $pid );
+
 $rooms = array(
 	array( 'heading' => $acc_arrival_heading,  'body' => $acc_arrival_body ),
 	array( 'heading' => $acc_inside_heading,   'body' => $acc_inside_body ),
@@ -165,6 +170,31 @@ $rooms = array(
 
 		</div>
 	</section>
+
+	<?php if ( ! empty( $acc_gallery_ids ) ) : ?>
+	<section class="rw-section-y bg-white" aria-labelledby="acc-gallery-heading">
+		<div class="container max-w-5xl">
+			<div class="rw-section-head max-w-prose">
+				<?php if ( $acc_gallery_label !== '' ) : ?>
+					<p class="section-label"><?php echo esc_html( $acc_gallery_label ); ?></p>
+				<?php endif; ?>
+				<h2 id="acc-gallery-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php echo esc_html( $acc_gallery_heading ); ?></h2>
+				<?php if ( $acc_gallery_intro !== '' ) : ?>
+					<p class="text-[var(--muted-grey)] leading-relaxed m-0"><?php echo esc_html( $acc_gallery_intro ); ?></p>
+				<?php endif; ?>
+			</div>
+			<?php
+			restwell_render_gallery(
+				$acc_gallery_ids,
+				array(
+					'layout'     => 'grid',
+					'aria_label' => __( 'Accessibility feature photos: shower, hoist, entrances, profiling bed, and door clearances', 'restwell-retreats' ),
+				)
+			);
+			?>
+		</div>
+	</section>
+	<?php endif; ?>
 
 	<section class="rw-section-y bg-[var(--soft-sand)]" aria-labelledby="acc-dest-heading">
 		<div class="container max-w-5xl">

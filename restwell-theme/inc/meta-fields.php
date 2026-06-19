@@ -84,6 +84,28 @@ function restwell_page_content_meta_box_callback( $post ) {
 			if ( 'textarea' === $type ) {
 				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
 				echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="5">' . esc_textarea( $value ) . '</textarea>';
+			} elseif ( 'gallery' === $type ) {
+				$gallery_ids   = restwell_parse_gallery_ids( $value );
+				$gallery_value = implode( ',', $gallery_ids );
+				$input_id      = $id . '_value';
+				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+				echo '<div class="restwell-gallery-upload" data-field-id="' . esc_attr( $id ) . '">';
+				echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $gallery_value ) . '" />';
+				echo '<ul class="restwell-gallery-preview" role="list">';
+				foreach ( $gallery_ids as $gid ) {
+					$thumb = wp_get_attachment_image_url( $gid, 'thumbnail' );
+					if ( ! $thumb ) {
+						continue;
+					}
+					echo '<li class="restwell-gallery-preview__item" data-id="' . esc_attr( (string) $gid ) . '">';
+					echo '<img src="' . esc_url( $thumb ) . '" alt="" width="80" height="80" />';
+					echo '<button type="button" class="button-link restwell-gallery-remove" aria-label="' . esc_attr__( 'Remove image', 'restwell-retreats' ) . '">&times;</button>';
+					echo '</li>';
+				}
+				echo '</ul>';
+				echo '<button type="button" id="' . esc_attr( $id ) . '" class="button button-secondary restwell-select-gallery">' . esc_html__( 'Add gallery images', 'restwell-retreats' ) . '</button>';
+				echo '</div>';
+				restwell_render_gallery_admin_alt_notice( $gallery_ids );
 			} elseif ( 'image' === $type || 'media' === $type ) {
 				$img_value    = absint( $value );
 				$img_url      = $img_value ? wp_get_attachment_image_url( $img_value, 'medium' ) : '';
@@ -153,7 +175,10 @@ function restwell_save_page_content_meta_box( $post_id ) {
 			}
 			$raw  = wp_unslash( $_POST[ $key ] );
 			$type = $field['type'];
-			if ( 'image' === $type || 'media' === $type ) {
+			if ( 'gallery' === $type ) {
+				$ids   = restwell_parse_gallery_ids( $raw );
+				$value = implode( ',', $ids );
+			} elseif ( 'image' === $type || 'media' === $type ) {
 				$value = absint( $raw );
 			} elseif ( 'textarea' === $type && 'legal_body_html' === $key ) {
 				$value = wp_kses_post( $raw );

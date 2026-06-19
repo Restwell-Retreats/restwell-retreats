@@ -57,6 +57,10 @@ function restwell_handle_faq_question_submit(): void {
 
 	$name    = isset( $_POST['faq_q_name'] ) ? sanitize_text_field( wp_unslash( $_POST['faq_q_name'] ) ) : '';
 	$email   = isset( $_POST['faq_q_email'] ) ? sanitize_email( wp_unslash( $_POST['faq_q_email'] ) ) : '';
+	$phone_check = restwell_validate_submission_phone(
+		isset( $_POST['faq_q_phone'] ) ? (string) wp_unslash( $_POST['faq_q_phone'] ) : ''
+	);
+	$phone   = $phone_check['phone'];
 	$message = isset( $_POST['faq_q_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['faq_q_message'] ) ) : '';
 	$marketing_optin = ! empty( $_POST['faq_q_marketing_optin'] );
 	$pid     = isset( $_POST['restwell_faq_page_id'] ) ? absint( $_POST['restwell_faq_page_id'] ) : 0;
@@ -68,6 +72,9 @@ function restwell_handle_faq_question_submit(): void {
 	}
 	if ( '' === $email || ! is_email( $email ) ) {
 		$errors[] = __( 'Please add a valid email address.', 'restwell-retreats' );
+	}
+	if ( '' !== $phone_check['error'] ) {
+		$errors[] = $phone_check['error'];
 	}
 	if ( '' === $message ) {
 		$errors[] = __( 'Please type your question.', 'restwell-retreats' );
@@ -83,6 +90,7 @@ function restwell_handle_faq_question_submit(): void {
 			array(
 				'name'    => $name,
 				'email'   => $email,
+				'phone'   => $phone,
 				'message' => $message,
 				'marketing_optin' => $marketing_optin ? '1' : '',
 			)
@@ -120,6 +128,7 @@ function restwell_handle_faq_question_submit(): void {
 	$lines    = array(
 		sprintf( __( 'Name: %s', 'restwell-retreats' ), $name ),
 		sprintf( __( 'Email: %s', 'restwell-retreats' ), $email ),
+		sprintf( __( 'Phone: %s', 'restwell-retreats' ), $phone ),
 		sprintf( __( 'Marketing updates consent: %s', 'restwell-retreats' ), $marketing_optin ? __( 'Yes (opted in)', 'restwell-retreats' ) : __( 'No (not opted in)', 'restwell-retreats' ) ),
 		'',
 		__( 'Question:', 'restwell-retreats' ),

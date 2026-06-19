@@ -26,6 +26,8 @@ require_once get_template_directory() . '/inc/csp.php';
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/faq.php';
 require_once get_template_directory() . '/inc/faq-question-handler.php';
+require_once get_template_directory() . '/inc/gallery.php';
+require_once get_template_directory() . '/inc/property-content.php';
 require_once get_template_directory() . '/inc/guest-guide.php';
 require_once get_template_directory() . '/inc/homepage-faq.php';
 require_once get_template_directory() . '/inc/llms-txt.php';

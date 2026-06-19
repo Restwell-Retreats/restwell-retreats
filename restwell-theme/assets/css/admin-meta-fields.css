@@ -79,6 +79,50 @@
 	margin-top: 4px;
 }
 
+.restwell-meta-fields .restwell-gallery-preview {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 10px;
+	padding: 0;
+	list-style: none;
+}
+
+.restwell-meta-fields .restwell-gallery-preview__item {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	border-radius: 4px;
+	overflow: hidden;
+	border: 1px solid #c3c4c7;
+	background: #f6f7f7;
+}
+
+.restwell-meta-fields .restwell-gallery-preview__item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.restwell-meta-fields .restwell-gallery-remove {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	line-height: 1;
+	border-radius: 9999px;
+	background: rgba(0, 0, 0, 0.65);
+	color: #fff;
+	text-decoration: none;
+}
+
+.restwell-meta-fields .restwell-gallery-alt-notice {
+	max-width: 40rem;
+}
+
 .restwell-meta-fields .restwell-remove-image {
 	color: #b32d2e !important;
 }

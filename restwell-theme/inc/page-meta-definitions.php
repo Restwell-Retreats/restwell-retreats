@@ -4,10 +4,11 @@
  * Used by meta-fields.php to show the right fields when editing a page.
  *
  * Each field is an array: [ 'label' => string, 'type' => string ]
- * Valid types: text | textarea | image | media | number
- *   image  – media library picker (images only)
- *   media  – media library picker (images and video, e.g. hero backgrounds)
- *   number – numeric text input
+ * Valid types: text | textarea | image | media | gallery | number
+ *   image   – media library picker (images only)
+ *   media   – media library picker (images and video, e.g. hero backgrounds)
+ *   gallery – multi-image picker (comma-separated attachment IDs)
+ *   number  – numeric text input
  *
  * @package Restwell_Retreats
  */
@@ -263,14 +264,30 @@ function restwell_get_property_field_definitions() {
 			'prop_hero_cta_promise'        => restwell_field( __( 'Hero promise line (optional)', 'restwell-retreats' ) ),
 		),
 		'Your home for the week' => array(
-			'prop_home_label'   => restwell_field( __( 'Section label (eyebrow)', 'restwell-retreats' ) ),
-			'prop_home_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
-			'prop_home_1_title' => restwell_field( __( 'Card 1 title', 'restwell-retreats' ) ),
-			'prop_home_1_body'  => restwell_field( __( 'Card 1 body', 'restwell-retreats' ), 'textarea' ),
-			'prop_home_2_title' => restwell_field( __( 'Card 2 title', 'restwell-retreats' ) ),
-			'prop_home_2_body'  => restwell_field( __( 'Card 2 body', 'restwell-retreats' ), 'textarea' ),
-			'prop_home_3_title' => restwell_field( __( 'Card 3 title', 'restwell-retreats' ) ),
-			'prop_home_3_body'  => restwell_field( __( 'Card 3 body', 'restwell-retreats' ), 'textarea' ),
+			'prop_bungalow_label'    => restwell_field( __( 'Overview section label (optional eyebrow)', 'restwell-retreats' ) ),
+			'prop_bungalow_heading'  => restwell_field( __( 'Overview heading (h2)', 'restwell-retreats' ) ),
+			'prop_bungalow_body'     => restwell_field( __( 'Overview body', 'restwell-retreats' ), 'textarea' ),
+			'prop_bungalow_image_id' => restwell_field( __( 'Overview image (attachment ID, optional)', 'restwell-retreats' ), 'image' ),
+		),
+		'Room-by-room tour' => array(
+			'prop_living_heading'           => restwell_field( __( 'Living / kitchen heading (h2 in tour)', 'restwell-retreats' ) ),
+			'prop_living_body'              => restwell_field( __( 'Living / kitchen body', 'restwell-retreats' ), 'textarea' ),
+			'prop_tour_living_image_id'     => restwell_field( __( 'Living tour image (optional; falls back to gallery image 1)', 'restwell-retreats' ), 'image' ),
+			'prop_bedrooms_section_heading' => restwell_field( __( 'Bedrooms heading (h2 in tour)', 'restwell-retreats' ) ),
+			'prop_bedrooms_section_body'    => restwell_field( __( 'Bedrooms body', 'restwell-retreats' ), 'textarea' ),
+			'prop_tour_bedroom_image_id'    => restwell_field( __( 'Bedroom tour image (optional; falls back to gallery image 2)', 'restwell-retreats' ), 'image' ),
+			'prop_wetroom_heading'          => restwell_field( __( 'Wet room heading (h2 in tour)', 'restwell-retreats' ) ),
+			'prop_wetroom_body'             => restwell_field( __( 'Wet room body', 'restwell-retreats' ), 'textarea' ),
+			'prop_tour_wetroom_image_id'    => restwell_field( __( 'Wet room tour image (optional; falls back to gallery image 3)', 'restwell-retreats' ), 'image' ),
+			'prop_garden_heading'           => restwell_field( __( 'Garden heading (h2 in tour)', 'restwell-retreats' ) ),
+			'prop_garden_body'              => restwell_field( __( 'Garden body', 'restwell-retreats' ), 'textarea' ),
+			'prop_tour_garden_image_id'     => restwell_field( __( 'Garden tour image (optional; falls back to gallery image 4)', 'restwell-retreats' ), 'image' ),
+		),
+		'Care and location' => array(
+			'prop_care_heading'     => restwell_field( __( 'Care section heading (h2)', 'restwell-retreats' ) ),
+			'prop_care_body'        => restwell_field( __( 'Care section body', 'restwell-retreats' ), 'textarea' ),
+			'prop_location_heading' => restwell_field( __( 'Location section heading (h2)', 'restwell-retreats' ) ),
+			'prop_location_body'    => restwell_field( __( 'Location section body', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Designed for dignity' => array(
 			'prop_dignity_label'    => restwell_field( __( 'Section label (eyebrow)', 'restwell-retreats' ) ),
@@ -296,7 +313,9 @@ function restwell_get_property_field_definitions() {
 			'prop_feature_7'        => restwell_field( __( 'Feature 7 label', 'restwell-retreats' ) ),
 			'prop_feature_7_desc'   => restwell_field( __( 'Feature 7 description', 'restwell-retreats' ), 'textarea' ),
 			'prop_feature_8'        => restwell_field( __( 'Feature 8 label', 'restwell-retreats' ) ),
-			'prop_feature_8_desc'   => restwell_field( __( 'Feature 8 description', 'restwell-retreats' ), 'textarea' ),
+			'prop_feature_8_desc'   => restwell_field( __( 'Feature 8 description (optional)', 'restwell-retreats' ), 'textarea' ),
+			'prop_glance_trust'     => restwell_field( __( 'Trust line under At a glance (optional)', 'restwell-retreats' ) ),
+			'prop_glance_summary'   => restwell_field( __( 'At a glance summary paragraph', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Overview' => array(
 			'prop_overview_heading' => restwell_field( __( 'Overview heading (h2) - fallback for dignity', 'restwell-retreats' ) ),
@@ -327,9 +346,7 @@ function restwell_get_property_field_definitions() {
 		'Gallery / See the space' => array(
 			'prop_gallery_label'       => restwell_field( __( 'Section label', 'restwell-retreats' ) ),
 			'prop_gallery_heading'     => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
-			'prop_gallery_1_image_id'  => restwell_field( __( 'Gallery image 1 (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'prop_gallery_2_image_id'  => restwell_field( __( 'Gallery image 2 (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'prop_gallery_3_image_id'  => restwell_field( __( 'Gallery image 3 (attachment ID)', 'restwell-retreats' ), 'image' ),
+			'prop_gallery_image_ids'   => restwell_field( __( 'Gallery images (room-by-room; order preserved)', 'restwell-retreats' ), 'gallery' ),
 			'prop_gallery_btn_1_label' => restwell_field( __( 'Button 1 label (e.g. Ask about your dates, or See all photos)', 'restwell-retreats' ) ),
 			'prop_gallery_btn_1_url'   => restwell_field( __( 'Button 1 URL', 'restwell-retreats' ) ),
 			'prop_gallery_btn_2_label' => restwell_field( __( 'Button 2 label (e.g. Explore video)', 'restwell-retreats' ) ),
@@ -494,6 +511,12 @@ function restwell_get_accessibility_field_definitions() {
 			'acc_label'         => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
 			'acc_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
 			'acc_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Feature photos' => array(
+			'acc_gallery_label'     => restwell_field( __( 'Gallery section label (optional)', 'restwell-retreats' ) ),
+			'acc_gallery_heading'   => restwell_field( __( 'Gallery section heading (h2)', 'restwell-retreats' ) ),
+			'acc_gallery_intro'     => restwell_field( __( 'Short intro above the gallery (optional)', 'restwell-retreats' ), 'textarea' ),
+			'acc_gallery_image_ids' => restwell_field( __( 'Feature photos (level-access shower, ceiling hoist, step-free entrance, profiling bed, door clearances, etc.)', 'restwell-retreats' ), 'gallery' ),
 		),
 		'Property: room by room' => array(
 			'acc_room_label'      => restwell_field( __( 'Room-by-room section label (optional)', 'restwell-retreats' ) ),

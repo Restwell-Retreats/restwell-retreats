@@ -120,13 +120,99 @@
 		} );
 	}
 
+	function initGalleryFields() {
+		if ( typeof wp === 'undefined' || ! wp.media ) return;
+
+		wrapper.querySelectorAll( '.restwell-gallery-upload' ).forEach( function ( upload ) {
+			var input = upload.querySelector( 'input[type="hidden"]' );
+			var list  = upload.querySelector( '.restwell-gallery-preview' );
+			var addBtn = upload.querySelector( '.restwell-select-gallery' );
+			if ( ! input || ! list || ! addBtn ) return;
+
+			function readIds() {
+				var raw = ( input.value || '' ).trim();
+				if ( ! raw ) return [];
+				return raw.split( /\s*,\s*/ ).map( function ( v ) {
+					return parseInt( v, 10 );
+				} ).filter( function ( n ) {
+					return n > 0;
+				} );
+			}
+
+			function writeIds( ids ) {
+				input.value = ids.join( ',' );
+			}
+
+			function renderItem( attachment ) {
+				var li = document.createElement( 'li' );
+				li.className = 'restwell-gallery-preview__item';
+				li.setAttribute( 'data-id', String( attachment.id ) );
+				var img = document.createElement( 'img' );
+				img.src = ( attachment.sizes && attachment.sizes.thumbnail && attachment.sizes.thumbnail.url )
+					? attachment.sizes.thumbnail.url
+					: ( attachment.url || '' );
+				img.alt = '';
+				img.width = 80;
+				img.height = 80;
+				var remove = document.createElement( 'button' );
+				remove.type = 'button';
+				remove.className = 'button-link restwell-gallery-remove';
+				remove.setAttribute( 'aria-label', 'Remove image' );
+				remove.innerHTML = '&times;';
+				remove.addEventListener( 'click', function () {
+					var ids = readIds().filter( function ( id ) {
+						return id !== attachment.id;
+					} );
+					writeIds( ids );
+					li.remove();
+				} );
+				li.appendChild( img );
+				li.appendChild( remove );
+				list.appendChild( li );
+			}
+
+			addBtn.addEventListener( 'click', function () {
+				var frame = wp.media( {
+					library: { type: 'image' },
+					multiple: true,
+				} );
+				frame.on( 'select', function () {
+					var selection = frame.state().get( 'selection' );
+					var ids = readIds();
+					selection.each( function ( model ) {
+						var attachment = model.toJSON();
+						if ( ids.indexOf( attachment.id ) !== -1 ) return;
+						ids.push( attachment.id );
+						renderItem( attachment );
+					} );
+					writeIds( ids );
+				} );
+				frame.open();
+			} );
+
+			list.querySelectorAll( '.restwell-gallery-remove' ).forEach( function ( btn ) {
+				btn.addEventListener( 'click', function () {
+					var item = btn.closest( '.restwell-gallery-preview__item' );
+					if ( ! item ) return;
+					var id = parseInt( item.getAttribute( 'data-id' ), 10 );
+					writeIds( readIds().filter( function ( v ) {
+						return v !== id;
+					} ) );
+					item.remove();
+				} );
+			} );
+		} );
+	}
+
 	if ( typeof wp !== 'undefined' && wp.media ) {
 		initMediaButtons();
+		initGalleryFields();
 	} else {
 		var attempts = 0;
 		function tryInit() {
 			if ( typeof wp !== 'undefined' && wp.media ) {
 				initMediaButtons();
+				initGalleryFields();
 			} else if ( attempts < 40 ) {
 				attempts++;
 				setTimeout( tryInit, 50 );

@@ -244,7 +244,7 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 					<details class="bg-white rounded-2xl px-8 shadow-[0_4px_20px_rgb(0,0,0,0.05)] border border-gray-100 group">
 						<summary class="text-[var(--deep-teal)] font-medium text-base py-5 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl">
 							<span><?php echo esc_html( $faq['q'] ); ?></span>
-							<span class="flex-shrink-0 text-[var(--warm-gold)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true"><i class="ph-bold ph-caret-down"></i></span>
+							<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true"><i class="ph-bold ph-caret-down"></i></span>
 						</summary>
 						<div class="text-gray-600 text-sm leading-relaxed pb-6"><?php echo wp_kses_post( wpautop( $faq['a'] ) ); ?></div>
 					</details>

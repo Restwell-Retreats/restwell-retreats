@@ -159,7 +159,10 @@ function restwell_handle_enquire_submit(): void {
 	$email   = isset( $_POST['enq_email'] ) ? sanitize_email( wp_unslash( $_POST['enq_email'] ) ) : '';
 	$message = isset( $_POST['enq_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['enq_message'] ) ) : '';
 
-	$phone        = isset( $_POST['enq_phone'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_phone'] ) ) : '';
+	$phone_check  = restwell_validate_submission_phone(
+		isset( $_POST['enq_phone'] ) ? (string) wp_unslash( $_POST['enq_phone'] ) : ''
+	);
+	$phone        = $phone_check['phone'];
 	$date_from    = isset( $_POST['enq_date_from'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_date_from'] ) ) : '';
 	$date_to      = isset( $_POST['enq_date_to'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_date_to'] ) ) : '';
 	$guests       = isset( $_POST['enq_guests'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_guests'] ) ) : '';
@@ -195,6 +198,9 @@ function restwell_handle_enquire_submit(): void {
 	if ( '' === $email || ! is_email( $email ) ) {
 		$errors[] = __( 'Please add a valid email address.', 'restwell-retreats' );
 	}
+	if ( '' !== $phone_check['error'] ) {
+		$errors[] = $phone_check['error'];
+	}
 	if ( '' === $message ) {
 		$errors[] = __( 'Please add a message so we know how to help.', 'restwell-retreats' );
 	}
@@ -218,10 +224,7 @@ function restwell_handle_enquire_submit(): void {
 	// Shared helper so admin date edits (crm.php) produce identical strings.
 	$dates = restwell_format_enquiry_date_range( $date_from, $date_to );
 
-	$body = "Name: $name\nEmail: $email\n";
-	if ( $phone ) {
-		$body .= "Phone: $phone\n";
-	}
+	$body = "Name: $name\nEmail: $email\nPhone: $phone\n";
 	if ( $contact_pref ) {
 		$body .= 'Preferred contact: ' . $contact_pref . "\n";
 	}

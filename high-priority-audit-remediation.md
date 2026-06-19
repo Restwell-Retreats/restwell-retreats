@@ -38,3 +38,4 @@ Ship a focused remediation pass across the 8 high-priority audit domains using s
 - 2026-06-18: Tasks 6–8 implemented (Phosphor preload, aria-sort/aria-expanded, hub/spoke AUDIT table).
 - 2026-06-18: Task 9 — `AUDIT.md` scorecard and verification notes refreshed for high-priority pass.
 - 2026-06-18: Task 10 — PHP lint clean; grep checklist passed; `main.min.js` rebuilt.
+- 2026-06-18: Required phone on enquiry + FAQ forms — shared `restwell_validate_submission_phone()`, markup (`required` / `aria-required` / error containers), client blur+submit validation in `main.js`; `enquiry_form_submitted` unchanged (fires on `?sent=1` only).

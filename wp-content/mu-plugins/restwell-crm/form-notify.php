@@ -71,6 +71,43 @@ function restwell_log_wp_mail_failed( WP_Error $error ): void {
 add_action( 'wp_mail_failed', 'restwell_log_wp_mail_failed' );
 
 /**
+ * Sanitise and validate a required phone number from a public form submission.
+ *
+ * @param string $raw Raw POST value.
+ * @return array{phone:string,error:string} Sanitised phone and British-English error (empty on success).
+ */
+function restwell_validate_submission_phone( string $raw ): array {
+	$phone = sanitize_text_field( $raw );
+
+	if ( '' === trim( $phone ) ) {
+		return array(
+			'phone' => '',
+			'error' => __( 'Please add your phone number so we can call you back.', 'restwell-retreats' ),
+		);
+	}
+
+	if ( ! preg_match( '/^[\d\s+\-\(\)\.]+$/', $phone ) ) {
+		return array(
+			'phone' => $phone,
+			'error' => __( 'Please enter a valid phone number (digits, spaces, +, -, and brackets only).', 'restwell-retreats' ),
+		);
+	}
+
+	$digits = preg_replace( '/\D/', '', $phone );
+	if ( strlen( $digits ) < 7 ) {
+		return array(
+			'phone' => $phone,
+			'error' => __( 'Please enter a valid phone number with at least seven digits.', 'restwell-retreats' ),
+		);
+	}
+
+	return array(
+		'phone' => $phone,
+		'error' => '',
+	);
+}
+
+/**
  * If the browser sent a "form opened at" Unix timestamp, reject instant bot posts.
  *
  * @param string $raw Unix timestamp string from hidden field (may be empty for no-JS users).

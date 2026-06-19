@@ -4,6 +4,9 @@
 (function () {
 	'use strict';
 
+	document.documentElement.classList.remove('no-js');
+	document.documentElement.classList.add('js');
+
 	function ready(fn) {
 		if (document.readyState !== 'loading') {
 			fn();
@@ -487,6 +490,31 @@
 	}
 
 	/**
+	 * Shared phone validation (mirrors restwell_validate_submission_phone()).
+	 */
+	function isPlausiblePhone(value) {
+		var v = String(value || '').trim();
+		if (!v) {
+			return false;
+		}
+		if (!/^[\d\s+\-().]+$/.test(v)) {
+			return false;
+		}
+		return v.replace(/\D/g, '').length >= 7;
+	}
+
+	function restwellPhoneErrorMessage(value) {
+		var v = String(value || '').trim();
+		if (!v) {
+			return 'Please add your phone number so we can call you back.';
+		}
+		if (!/^[\d\s+\-().]+$/.test(v)) {
+			return 'Please enter a valid phone number (digits, spaces, +, -, and brackets only).';
+		}
+		return 'Please enter a valid phone number with at least seven digits.';
+	}
+
+	/**
 	 * Multi-step enquiry form.
 	 * Manages step visibility, progress indicator state, and per-step validation.
 	 */
@@ -634,7 +662,8 @@
 
 		function clearErrors(step) {
 			step.querySelectorAll('.enq-field-error').forEach(function (el) {
-				el.remove();
+				el.textContent = '';
+				el.hidden = true;
 			});
 			step.querySelectorAll('[data-invalid]').forEach(function (el) {
 				el.removeAttribute('data-invalid');
@@ -646,12 +675,16 @@
 
 		function addFieldError(field, message) {
 			var errorId = field.id + '-error';
-			var errorEl = document.createElement('p');
-			errorEl.id        = errorId;
-			errorEl.className = 'enq-field-error';
-			errorEl.setAttribute('role', 'alert');
+			var errorEl = document.getElementById(errorId);
+			if (!errorEl) {
+				errorEl = document.createElement('p');
+				errorEl.id = errorId;
+				errorEl.className = 'enq-field-error';
+				errorEl.setAttribute('role', 'alert');
+				field.parentNode.insertBefore(errorEl, field.nextSibling);
+			}
 			errorEl.textContent = message;
-			field.parentNode.insertBefore(errorEl, field.nextSibling);
+			errorEl.hidden = false;
 
 			field.setAttribute('data-invalid', 'true');
 			field.setAttribute('aria-invalid', 'true');
@@ -682,6 +715,10 @@
 			required.forEach(function (field) {
 				if (!field.value.trim()) {
 					addFieldError(field, getFieldLabel(field) + ' is required.');
+					valid = false;
+					if (!firstInvalid) firstInvalid = field;
+				} else if (field.type === 'tel' && !isPlausiblePhone(field.value)) {
+					addFieldError(field, restwellPhoneErrorMessage(field.value));
 					valid = false;
 					if (!firstInvalid) firstInvalid = field;
 				}
@@ -768,9 +805,17 @@
 		// Clear error on input once user starts correcting the field.
 		form.addEventListener('input', function (e) {
 			var field = e.target;
-			if (field.required && field.value.trim() && field.getAttribute('aria-invalid') === 'true') {
+			if (!field || !field.required) return;
+			var hasValue = field.type === 'checkbox' ? field.checked : !!String(field.value || '').trim();
+			if (hasValue && field.getAttribute('aria-invalid') === 'true') {
+				if (field.type === 'tel' && !isPlausiblePhone(field.value)) {
+					return;
+				}
 				var errorEl = field.id ? document.getElementById(field.id + '-error') : null;
-				if (errorEl) errorEl.remove();
+				if (errorEl) {
+					errorEl.textContent = '';
+					errorEl.hidden = true;
+				}
 				field.removeAttribute('data-invalid');
 				field.removeAttribute('aria-invalid');
 				field.removeAttribute('aria-describedby');
@@ -778,8 +823,122 @@
 			}
 		});
 
+		form.querySelectorAll('[type="tel"][required]').forEach(function (field) {
+			field.addEventListener('blur', function () {
+				if (!field.value.trim()) {
+					addFieldError(field, getFieldLabel(field) + ' is required.');
+					return;
+				}
+				if (!isPlausiblePhone(field.value)) {
+					addFieldError(field, restwellPhoneErrorMessage(field.value));
+					return;
+				}
+				var errorEl = document.getElementById(field.id + '-error');
+				if (errorEl) {
+					errorEl.textContent = '';
+					errorEl.hidden = true;
+				}
+				field.removeAttribute('data-invalid');
+				field.removeAttribute('aria-invalid');
+				field.removeAttribute('aria-describedby');
+				field.style.borderColor = '';
+			});
+		});
+
 		// Initialise at step 1 - skip scroll so the page loads at the top.
 		showStep(1, true);
+	}
+
+	/**
+	 * FAQ "Ask a question" form: inline validation on blur and submit.
+	 */
+	function initFaqQuestionFormValidation() {
+		var form = document.querySelector('.restwell-faq-question-form');
+		if (!form) return;
+
+		function getFieldLabel(field) {
+			var label = form.querySelector('label[for="' + field.id + '"]');
+			if (label) {
+				return (label.firstChild && label.firstChild.nodeValue)
+					? label.firstChild.nodeValue.trim()
+					: label.textContent.replace(/\s*\*\s*|\(optional\)/gi, '').trim();
+			}
+			return 'This field';
+		}
+
+		function clearFieldError(field) {
+			var errorEl = field.id ? document.getElementById(field.id + '-error') : null;
+			if (errorEl) {
+				errorEl.textContent = '';
+				errorEl.hidden = true;
+			}
+			field.removeAttribute('data-invalid');
+			field.removeAttribute('aria-invalid');
+			field.removeAttribute('aria-describedby');
+			field.style.borderColor = '';
+		}
+
+		function showFieldError(field, message) {
+			var errorId = field.id + '-error';
+			var errorEl = document.getElementById(errorId);
+			if (!errorEl) return;
+			errorEl.textContent = message;
+			errorEl.hidden = false;
+			field.setAttribute('data-invalid', 'true');
+			field.setAttribute('aria-invalid', 'true');
+			field.setAttribute('aria-describedby', errorId);
+			field.style.borderColor = '#b91c1c';
+		}
+
+		function validateField(field) {
+			clearFieldError(field);
+			var value = String(field.value || '').trim();
+
+			if (field.required && !value) {
+				showFieldError(field, getFieldLabel(field) + ' is required.');
+				return false;
+			}
+			if (field.type === 'email' && value && !field.checkValidity()) {
+				showFieldError(field, 'Please add a valid email address.');
+				return false;
+			}
+			if (field.type === 'tel' && field.required) {
+				if (!isPlausiblePhone(field.value)) {
+					showFieldError(field, restwellPhoneErrorMessage(field.value));
+					return false;
+				}
+			}
+			return true;
+		}
+
+		form.querySelectorAll('[required]').forEach(function (field) {
+			field.addEventListener('blur', function () {
+				validateField(field);
+			});
+		});
+
+		form.addEventListener('input', function (e) {
+			var field = e.target;
+			if (!field || !field.required) return;
+			if (field.getAttribute('aria-invalid') === 'true') {
+				validateField(field);
+			}
+		});
+
+		form.addEventListener('submit', function (e) {
+			var ok = true;
+			var firstInvalid = null;
+			form.querySelectorAll('[required]').forEach(function (field) {
+				if (!validateField(field)) {
+					ok = false;
+					if (!firstInvalid) firstInvalid = field;
+				}
+			});
+			if (!ok) {
+				e.preventDefault();
+				if (firstInvalid) firstInvalid.focus();
+			}
+		});
 	}
 
 	/**
@@ -1474,6 +1633,339 @@
 		});
 	}
 
+	function initRestwellGalleryCarousel() {
+		var carousels = document.querySelectorAll('[data-restwell-carousel]');
+		if (!carousels.length) {
+			return;
+		}
+
+		carousels.forEach(function (carousel) {
+			var track = carousel.querySelector('[data-carousel-track]');
+			var slides = track
+				? Array.prototype.slice.call(track.querySelectorAll('[data-carousel-slide]'))
+				: Array.prototype.slice.call(carousel.querySelectorAll('[data-carousel-slide]'));
+
+			if (!slides.length) {
+				return;
+			}
+
+			var prevBtn = carousel.querySelector('[data-carousel-prev]');
+			var nextBtn = carousel.querySelector('[data-carousel-next]');
+			var statusEl = carousel.querySelector('[data-carousel-status]');
+			var currentIndex = 0;
+			var total = slides.length;
+
+			if (total <= 1) {
+				if (prevBtn) {
+					prevBtn.disabled = true;
+				}
+				if (nextBtn) {
+					nextBtn.disabled = true;
+				}
+			}
+
+			function announceSlide(index) {
+				if (!statusEl) {
+					return;
+				}
+				var slide = slides[index];
+				var captionEl = slide ? slide.querySelector('.restwell-carousel__caption') : null;
+				var caption = captionEl ? captionEl.textContent.trim() : '';
+				var counter = (index + 1) + ' / ' + total;
+				statusEl.textContent = caption !== '' ? (counter + ': ' + caption) : counter;
+			}
+
+			function showSlide(index) {
+				if (index < 0) {
+					index = total - 1;
+				}
+				if (index >= total) {
+					index = 0;
+				}
+				currentIndex = index;
+
+				slides.forEach(function (slide, slideIndex) {
+					var isActive = slideIndex === currentIndex;
+					slide.hidden = !isActive;
+					slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+				});
+
+				announceSlide(currentIndex);
+			}
+
+			if (prevBtn) {
+				prevBtn.addEventListener('click', function () {
+					showSlide(currentIndex - 1);
+				});
+			}
+			if (nextBtn) {
+				nextBtn.addEventListener('click', function () {
+					showSlide(currentIndex + 1);
+				});
+			}
+
+			carousel.addEventListener('keydown', function (e) {
+				if (e.key === 'ArrowLeft') {
+					e.preventDefault();
+					showSlide(currentIndex - 1);
+				} else if (e.key === 'ArrowRight') {
+					e.preventDefault();
+					showSlide(currentIndex + 1);
+				} else if (e.key === 'Home') {
+					e.preventDefault();
+					showSlide(0);
+				} else if (e.key === 'End') {
+					e.preventDefault();
+					showSlide(total - 1);
+				}
+			});
+
+			if (!carousel.hasAttribute('tabindex')) {
+				carousel.setAttribute('tabindex', '0');
+			}
+
+			showSlide(0);
+
+			var rootGallery = carousel.closest('.restwell-gallery--carousel');
+			if (rootGallery) {
+				rootGallery.classList.add('is-ready');
+			}
+		});
+	}
+
+	function initRestwellGalleryLightbox() {
+		var galleries = document.querySelectorAll('[data-restwell-gallery]');
+		if (!galleries.length) {
+			return;
+		}
+
+		var lightboxEl = null;
+		var lightboxImage = null;
+		var lightboxCaption = null;
+		var lightboxStatus = null;
+		var lightboxClose = null;
+		var lightboxPrev = null;
+		var lightboxNext = null;
+		var slides = [];
+		var currentIndex = 0;
+		var lastFocus = null;
+
+		function getFocusable(root) {
+			return Array.prototype.slice.call(
+				root.querySelectorAll(
+					'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+				)
+			).filter(function (el) {
+				return el.offsetParent !== null || el === document.activeElement;
+			});
+		}
+
+		function trapFocus(e) {
+			if (!lightboxEl || lightboxEl.hasAttribute('hidden')) {
+				return;
+			}
+			if (e.key !== 'Tab') {
+				return;
+			}
+			var focusable = getFocusable(lightboxEl);
+			if (!focusable.length) {
+				return;
+			}
+			var first = focusable[0];
+			var last = focusable[focusable.length - 1];
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault();
+				last.focus();
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault();
+				first.focus();
+			}
+		}
+
+		function ensureLightbox() {
+			if (lightboxEl) {
+				return lightboxEl;
+			}
+			lightboxEl = document.createElement('div');
+			lightboxEl.className = 'restwell-lightbox';
+			lightboxEl.setAttribute('hidden', '');
+			lightboxEl.setAttribute('role', 'dialog');
+			lightboxEl.setAttribute('aria-modal', 'true');
+			lightboxEl.setAttribute('aria-label', 'Photo gallery');
+			lightboxEl.innerHTML =
+				'<div class="restwell-lightbox__dialog">' +
+					'<div class="restwell-lightbox__toolbar">' +
+						'<button type="button" class="restwell-lightbox__btn restwell-lightbox__btn--close" data-lightbox-close aria-label="Close gallery">' +
+							'<i class="ph-bold ph-x" aria-hidden="true"></i>' +
+						'</button>' +
+						'<button type="button" class="restwell-lightbox__btn restwell-lightbox__btn--prev" data-lightbox-prev aria-label="Previous image">' +
+							'<i class="ph-bold ph-caret-left" aria-hidden="true"></i>' +
+						'</button>' +
+						'<button type="button" class="restwell-lightbox__btn restwell-lightbox__btn--next" data-lightbox-next aria-label="Next image">' +
+							'<i class="ph-bold ph-caret-right" aria-hidden="true"></i>' +
+						'</button>' +
+						'<p class="restwell-lightbox__status" data-lightbox-status aria-live="polite"></p>' +
+					'</div>' +
+					'<figure class="restwell-lightbox__figure">' +
+						'<img class="restwell-lightbox__image" src="" alt="" decoding="async" />' +
+					'</figure>' +
+					'<figcaption class="restwell-lightbox__caption" data-lightbox-caption></figcaption>' +
+				'</div>';
+			document.body.appendChild(lightboxEl);
+
+			lightboxImage = lightboxEl.querySelector('.restwell-lightbox__image');
+			lightboxCaption = lightboxEl.querySelector('[data-lightbox-caption]');
+			lightboxStatus = lightboxEl.querySelector('[data-lightbox-status]');
+			lightboxClose = lightboxEl.querySelector('[data-lightbox-close]');
+			lightboxPrev = lightboxEl.querySelector('[data-lightbox-prev]');
+			lightboxNext = lightboxEl.querySelector('[data-lightbox-next]');
+
+			lightboxClose.addEventListener('click', closeLightbox);
+			lightboxPrev.addEventListener('click', function () {
+				showSlide(currentIndex - 1);
+			});
+			lightboxNext.addEventListener('click', function () {
+				showSlide(currentIndex + 1);
+			});
+			lightboxEl.addEventListener('click', function (e) {
+				if (e.target === lightboxEl) {
+					closeLightbox();
+				}
+			});
+			document.addEventListener('keydown', onLightboxKeydown);
+			return lightboxEl;
+		}
+
+		function onLightboxKeydown(e) {
+			if (!lightboxEl || lightboxEl.hasAttribute('hidden')) {
+				return;
+			}
+			if (e.key === 'Escape') {
+				e.preventDefault();
+				closeLightbox();
+				return;
+			}
+			if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				showSlide(currentIndex - 1);
+				return;
+			}
+			if (e.key === 'ArrowRight') {
+				e.preventDefault();
+				showSlide(currentIndex + 1);
+				return;
+			}
+			if (e.key === 'Enter' && document.activeElement === lightboxImage) {
+				closeLightbox();
+				return;
+			}
+			trapFocus(e);
+		}
+
+		function showSlide(index) {
+			if (!slides.length) {
+				return;
+			}
+			if (index < 0) {
+				index = slides.length - 1;
+			}
+			if (index >= slides.length) {
+				index = 0;
+			}
+			currentIndex = index;
+			var slide = slides[currentIndex];
+			lightboxImage.src = slide.url;
+			lightboxImage.alt = slide.alt || '';
+			if (lightboxCaption) {
+				lightboxCaption.textContent = slide.alt || '';
+				lightboxCaption.hidden = !slide.alt;
+			}
+			if (lightboxStatus) {
+				lightboxStatus.textContent = (currentIndex + 1) + ' / ' + slides.length;
+			}
+			if (lightboxPrev) {
+				lightboxPrev.disabled = slides.length <= 1;
+			}
+			if (lightboxNext) {
+				lightboxNext.disabled = slides.length <= 1;
+			}
+		}
+
+		function openLightbox(nextSlides, startIndex) {
+			if (!nextSlides.length) {
+				return;
+			}
+			ensureLightbox();
+			lastFocus = document.activeElement;
+			slides = nextSlides;
+			showSlide(startIndex);
+			lightboxEl.removeAttribute('hidden');
+			document.body.classList.add('restwell-lightbox-open');
+			if (lightboxClose) {
+				lightboxClose.focus();
+			}
+		}
+
+		function closeLightbox() {
+			if (!lightboxEl) {
+				return;
+			}
+			lightboxEl.setAttribute('hidden', '');
+			document.body.classList.remove('restwell-lightbox-open');
+			if (lightboxImage) {
+				lightboxImage.removeAttribute('src');
+			}
+			if (lastFocus && typeof lastFocus.focus === 'function') {
+				lastFocus.focus();
+			}
+		}
+
+		galleries.forEach(function (gallery) {
+			var dataEl = gallery.querySelector('.restwell-gallery__data');
+			if (!dataEl) {
+				return;
+			}
+			var parsed = [];
+			try {
+				parsed = JSON.parse(dataEl.textContent || '[]');
+			} catch (err) {
+				parsed = [];
+			}
+			if (!parsed.length) {
+				return;
+			}
+
+			gallery.addEventListener('click', function (e) {
+				var link = e.target.closest('[data-restwell-gallery-open]');
+				if (!link) {
+					return;
+				}
+				e.preventDefault();
+				var index = parseInt(link.getAttribute('data-gallery-index'), 10);
+				if (isNaN(index)) {
+					index = 0;
+				}
+				openLightbox(parsed, index);
+			});
+
+			gallery.addEventListener('keydown', function (e) {
+				if (e.key !== 'Enter' && e.key !== ' ') {
+					return;
+				}
+				var trigger = e.target.closest('[data-restwell-gallery-open]');
+				if (!trigger || trigger.tagName !== 'BUTTON') {
+					return;
+				}
+				e.preventDefault();
+				var index = parseInt(trigger.getAttribute('data-gallery-index'), 10);
+				if (isNaN(index)) {
+					index = 0;
+				}
+				openLightbox(parsed, index);
+			});
+		});
+	}
+
 	function runWhenIdle(task) {
 		if (typeof window.requestIdleCallback === 'function') {
 			window.requestIdleCallback(task, { timeout: 1200 });
@@ -1493,12 +1985,15 @@
 		initFaqToggleA11y();
 		initHomeFaqAccordion();
 		initMultiStepForm();
+		initFaqQuestionFormValidation();
 		// Must run AFTER initMultiStepForm() so the multi-step controller has
 		// already wired up showStep() and date-range constraints; the draft
 		// restore can then dispatch a 'change' event safely without racing.
 		initEnquiryDraftPersistence();
 		initWifPersonaNav();
 		initHomeComparisonScrollHints();
+		initRestwellGalleryCarousel();
+		initRestwellGalleryLightbox();
 
 		// Non-critical analytics and reveal effects run after the initial paint window.
 		runWhenIdle(function () {

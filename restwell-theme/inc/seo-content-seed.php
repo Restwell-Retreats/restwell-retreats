@@ -42,9 +42,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible holidays whitstable',
 		),
 		'the-property'          => array(
-			'meta_title'       => 'Adapted Bungalow Whitstable | Property | ' . $name,
-			'meta_description' => 'Adapted bungalow Whitstable: bedroom ceiling track hoist, profiling bed, roll-in shower, wide doorways. Private self-catering accessible stay. Book direct.',
-			'focus_keyphrase'  => 'adapted bungalow whitstable',
+			'meta_title'       => 'Accessible bungalow in Whitstable | Restwell Retreats',
+			'meta_description' => 'A wheelchair-accessible, step-free bungalow in Whitstable. Ceiling hoist, profiling beds, level-access wet room and optional care, minutes from the sea.',
+			'focus_keyphrase'  => 'accessible bungalow whitstable',
 		),
 		'accessibility'         => array(
 			'meta_title'       => 'Wheelchair Accessible Holiday Cottage | ' . $name,

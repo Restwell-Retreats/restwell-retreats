@@ -527,6 +527,41 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 	<?php endif; ?>
 
+	<?php
+	$home_gallery_ids        = restwell_get_property_gallery_ids();
+	$home_gallery_teaser_ids = array_slice( $home_gallery_ids, 0, 6 );
+	$fp_property_page        = get_page_by_path( 'the-property', OBJECT, 'page' );
+	$home_gallery_link       = $fp_property_page ? get_permalink( $fp_property_page ) . '#property-gallery' : home_url( '/the-property/#property-gallery' );
+	?>
+	<?php if ( ! empty( $home_gallery_teaser_ids ) ) : ?>
+	<section class="home-gallery-teaser rw-section-y--compact bg-white border-b border-[var(--deep-teal)]/10" aria-labelledby="home-gallery-teaser-heading">
+		<div class="container max-w-6xl">
+			<div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+				<div>
+					<p class="section-label m-0 mb-2"><?php esc_html_e( 'Inside the property', 'restwell-retreats' ); ?></p>
+					<h2 id="home-gallery-teaser-heading" class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php esc_html_e( 'A glimpse of the space', 'restwell-retreats' ); ?></h2>
+				</div>
+				<a href="<?php echo esc_url( $home_gallery_link ); ?>" class="restwell-tap-link inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold underline-offset-2 hover:underline min-h-[44px]">
+					<?php esc_html_e( 'View full gallery', 'restwell-retreats' ); ?>
+					<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+				</a>
+			</div>
+			<?php
+			restwell_render_gallery(
+				$home_gallery_teaser_ids,
+				array(
+					'layout'     => 'teaser',
+					'lightbox'   => false,
+					'link_url'   => $home_gallery_link,
+					'image_size' => 'medium_large',
+					'aria_label' => __( 'Property photo preview (first six images)', 'restwell-retreats' ),
+				)
+			);
+			?>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<?php if ( $show_home_teaser ) : ?>
 	<section
 		class="home-teaser-area-funding <?php echo esc_attr( $rw_fp_section_y . ' rw-section-y--eyebrow-split ' . $rw_fp_teaser_bg ); ?> rw-seam-y-soft"
@@ -798,7 +833,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 			<div class="grid lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-center rw-gap-grid-lg">
 				<header class="rw-stack rw-stack--tight text-left">
 					<?php if ( $home_partners_label !== '' ) : ?>
-						<p class="section-label m-0 text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--gold)]">
+						<p class="section-label m-0 text-[10px] font-bold uppercase tracking-[0.1em]">
 							<?php echo esc_html( $home_partners_label ); ?>
 						</p>
 					<?php endif; ?>
