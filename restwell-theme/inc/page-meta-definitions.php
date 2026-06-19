@@ -314,7 +314,6 @@ function restwell_get_property_field_definitions() {
 			'prop_feature_7_desc'   => restwell_field( __( 'Feature 7 description', 'restwell-retreats' ), 'textarea' ),
 			'prop_feature_8'        => restwell_field( __( 'Feature 8 label', 'restwell-retreats' ) ),
 			'prop_feature_8_desc'   => restwell_field( __( 'Feature 8 description (optional)', 'restwell-retreats' ), 'textarea' ),
-			'prop_glance_trust'     => restwell_field( __( 'Trust line under At a glance (optional)', 'restwell-retreats' ) ),
 			'prop_glance_summary'   => restwell_field( __( 'At a glance summary paragraph', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Overview' => array(

@@ -3919,15 +3919,11 @@
     }
   }
 
-  .prop-room-tour + .prop-room-tour {
-    padding-top: var(--rw-stack-gap-lg, 2.5rem);
-    border-top: 1px solid rgba(27, 77, 92, 0.08);
-  }
-
-  @media (min-width: 768px) {
-    .prop-room-tour + .prop-room-tour {
-      padding-top: var(--rw-stack-gap-lg, 3rem);
-    }
+  /* Property room tour: row spacing from seam + pt only (no stack gap doubling). */
+  .prop-room-tour__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .restwell-lightbox {

@@ -144,11 +144,5 @@ function restwell_get_property_glance_summary( $post_id = 0 ) {
 		$parts[] = $desc !== '' ? $title . ' (' . $desc . ')' : $title;
 	}
 
-	$summary = implode( ', ', $parts );
-	$trust   = trim( (string) $m( 'prop_glance_trust' ) );
-	if ( $trust !== '' ) {
-		$summary = trim( $summary . ( $summary !== '' ? ' ' : '' ) . $trust );
-	}
-
-	return $summary;
+	return implode( ', ', $parts );
 }

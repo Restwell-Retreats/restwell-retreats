@@ -229,7 +229,6 @@ function restwell_get_property_page_defaults() {
 		'prop_feature_7_desc'   => '',
 		'prop_feature_8'        => 'Welcome hamper',
 		'prop_feature_8_desc'   => 'On every stay',
-		'prop_glance_trust'     => 'Listed with Accessible Holiday Escapes since 2026.',
 		'prop_glance_summary'   => 'Two bedrooms, accessible wet room, sleeps up to five (two profiling beds, a double, and a sofa bed in the conservatory), private driveway for two cars plus street parking, dog-friendly.',
 
 		'prop_acc_label'     => '',
