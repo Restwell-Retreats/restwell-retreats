@@ -136,7 +136,7 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 					<span class="text-xs text-[var(--muted-grey)] font-medium self-center mr-1"><?php esc_html_e( 'Tagged:', 'restwell-retreats' ); ?></span>
 					<?php foreach ( $tags as $tag ) : ?>
 						<a href="<?php echo esc_url( get_tag_link( $tag->term_id ) ); ?>"
-						   class="inline-block bg-[var(--bg-subtle)] text-[var(--deep-teal)] text-xs font-medium px-3 py-1 rounded-full hover:bg-[#A8D5D0]/30 transition-colors duration-200 no-underline">
+						   class="inline-block bg-[var(--bg-subtle)] text-[var(--deep-teal)] text-xs font-medium px-3 py-1 rounded-full hover:bg-[var(--sea-glass)]/30 transition-colors duration-200 no-underline">
 							<?php echo esc_html( $tag->name ); ?>
 						</a>
 					<?php endforeach; ?>

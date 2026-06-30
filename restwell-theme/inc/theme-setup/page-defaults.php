@@ -176,32 +176,37 @@ function restwell_get_property_page_defaults() {
 		'prop_hero_image_id'            => 0,
 
 		'prop_bungalow_label'   => '',
-		'prop_bungalow_heading' => 'An accessible bungalow on one level',
+		'prop_bungalow_heading' => 'Single-storey accessible bungalow in Whitstable',
 		'prop_bungalow_body'    => 'Restwell Retreats is a spacious wheelchair-accessible bungalow in a quiet spot close to Whitstable town centre, harbour and beach, and just a few minutes\' walk from Tankerton Beach. A spacious porch with threshold ramp access leads into the hallway, and the whole bungalow is on one level with wide doorways throughout (measurements available on request). It can be tailored to each guest\'s needs, with furniture, beds and equipment rearranged or repositioned on request, and measurements can be provided before you book.',
 		'prop_bungalow_image_id' => 0,
 
-		'prop_living_heading' => 'Living room, kitchen and conservatory',
+		'prop_living_heading' => 'Wheel-under kitchen and open-plan living',
 		'prop_living_body'    => 'The light and airy open-plan living room has sofas, a riser/recliner chair, a dining table, a wall-mounted TV and a feature fireplace, and leads round into a modern fully-equipped kitchen with a lowered, wheel-under worksurface. Double doors open into a conservatory with a sofa (including a sofa bed), laundry facilities and garden views, with threshold ramps onto the patio.',
 
-		'prop_bedrooms_section_heading' => 'The accessible bedroom and a double',
+		'prop_bedrooms_section_heading' => 'Ceiling hoist, profiling beds and a double room',
 		'prop_bedrooms_section_body'    => 'The accessible bedroom has two profiling beds, a full room coverage ceiling hoist and a wall-mounted TV. A mobile hoist and a Sara Stedy stand aid are available to guests and can be used in the bedroom and throughout the bungalow. The second bedroom has a double bed and a wall-mounted TV.',
 
-		'prop_wetroom_heading' => 'Level-access wet room',
+		'prop_wetroom_heading' => 'Roll-in wet room with adjustable basin',
 		'prop_wetroom_body'    => 'The accessible wet room has a step-free shower with a fixed grab-rail, a shower/commode chair, a tilt-in-space shower chair and a shower stool, with fixed and drop-down grab-rails. There is a Geberit AquaClean wash and dry WC with remote and touch control, and a height-adjustable wheel-under washbasin that also swings aside.',
 
-		'prop_garden_heading' => 'Accessible garden and parking',
+		'prop_garden_heading' => 'Private drive, patio and step-free garden',
 		'prop_garden_body'    => 'Double doors from the conservatory lead onto a patio with outdoor dining furniture and a BBQ, with threshold ramps for wheelchair access. The enclosed garden is wheelchair-accessible with a lawned area. To the front there is a hard-standing private driveway for two cars, with additional street parking available.',
 
-		'prop_care_heading' => 'Care and the welcome',
+		'prop_throughout_heading' => 'Wide doorways and step-free access throughout',
+		'prop_throughout_body'    => 'The bungalow is on one level with wide doorways (926 mm and 965 mm clear widths) and step-free routes from the porch through to the patio. Full door and transfer measurements are on the accessibility page if you need them before booking.',
+
+		'prop_care_heading' => 'Optional care and welcome hamper',
 		'prop_care_body'    => 'A range of support can be arranged with Continuity Care Services, from companionship and domiciliary care to complex and 24/7 care. Every stay starts with a welcome hamper, and the bungalow is dog-friendly.',
 
-		'prop_location_heading' => 'Whitstable and around',
+		'prop_location_heading' => 'Whitstable, Tankerton Beach and the Kent coast',
 		'prop_location_body'    => 'The bungalow is a few minutes\' walk from Tankerton Beach and its accessible promenade. Whitstable itself, with its harbour, beach, restaurants and cafes, supermarkets and independent shops and galleries, is within a 20-minute walk. By car you are close to Canterbury, Faversham and Herne Bay, with the countryside and coastline of North Kent to explore. The area guide on the website covers accessible attractions and activities in more detail.',
+		'prop_location_image_id' => 0,
 
 		'prop_tour_living_image_id'   => 0,
 		'prop_tour_bedroom_image_id' => 0,
 		'prop_tour_wetroom_image_id' => 0,
-		'prop_tour_garden_image_id'  => 0,
+		'prop_tour_garden_image_id'     => 0,
+		'prop_tour_throughout_image_id' => 0,
 
 		'prop_overview_heading' => 'An accessible bungalow on one level',
 		'prop_overview_body'    => 'Restwell Retreats is a spacious wheelchair-accessible bungalow in a quiet spot close to Whitstable town centre, harbour and beach, and just a few minutes\' walk from Tankerton Beach. A spacious porch with threshold ramp access leads into the hallway, and the whole bungalow is on one level with wide doorways throughout (measurements available on request). It can be tailored to each guest\'s needs, with furniture, beds and equipment rearranged or repositioned on request, and measurements can be provided before you book.',
@@ -252,7 +257,7 @@ function restwell_get_property_page_defaults() {
 		'prop_comparison_right_4'       => '',
 
 		'prop_gallery_label'       => 'Photos',
-		'prop_gallery_heading'     => 'Take a look around',
+		'prop_gallery_heading'     => 'Photo tour of the accessible bungalow',
 		'prop_gallery_image_ids'   => '',
 		'prop_gallery_btn_1_label' => '',
 		'prop_gallery_btn_1_url'   => '',
@@ -262,20 +267,22 @@ function restwell_get_property_page_defaults() {
 		'prop_gallery_btn_3_url'   => '',
 
 		'prop_practical_label'   => '',
-		'prop_practical_heading' => 'At a glance',
+		'prop_practical_heading' => '2 bedrooms, 2 parking spaces, sleeps 5',
 		'prop_bedrooms_count'    => '2',
-		'prop_bedrooms'          => 'Two bedrooms, plus a sofa bed in the living area—sleeps up to five.',
+		'prop_bedrooms'          => 'Two bedrooms, plus a sofa bed in the living area. Sleeps up to five.',
 		'prop_bathrooms_count'   => '1',
-		'prop_bathroom'          => 'One wet room with roll-in shower (full spec on our Accessibility page)',
+		'prop_bathroom'          => 'Roll-in shower with grab rails and adjustable basin.',
+		'prop_wetroom_walkthrough_url' => 'https://youtube.com/shorts/i1LGyKsyVdw',
 		'prop_parking_label'     => 'Parking',
-		'prop_parking'           => '2 on private drive',
+		'prop_parking'           => '2',
+		'prop_parking_detail'    => 'Room for two vehicles on the resin-bound private drive',
 		'prop_sleeps_value'      => '5',
 		'prop_sleeps_label'      => 'Sleeps',
 		'prop_distances'         => "Tankerton Slopes promenade: 15 min flat walk\nWhitstable town centre: 15 min walk\nWhitstable station: 20-30 min walk",
 		'prop_confirm_details_url' => '/enquire/',
 
 	'prop_nearby_label'       => '',
-	'prop_nearby_heading'     => '',
+	'prop_nearby_heading'     => 'Accessible days out near Whitstable',
 	'prop_nearby_1_title'     => 'The Plough Pub',
 	'prop_nearby_1_body'      => "A friendly local pub on St John's Road, just a short walk from the property. Relaxed atmosphere, good food, live music nights, and welcoming to families and groups.",
 	'prop_nearby_1_acc'       => 'Wheelchair-accessible entrance and accessible restroom. Confirm current details with the pub.',

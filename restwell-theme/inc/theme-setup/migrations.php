@@ -156,7 +156,7 @@ function restwell_migrate_property_bedrooms_parking_v2() {
 	$old_bed_txt = 'Three bedrooms: flexible layout for guests, family, and carers';
 	$cur_bed     = trim( (string) get_post_meta( $page_id, 'prop_bedrooms', true ) );
 	if ( $cur_bed === $old_bed_txt ) {
-		update_post_meta( $page_id, 'prop_bedrooms', 'Two bedrooms, plus a sofa bed in the living area—sleeps up to five.' );
+		update_post_meta( $page_id, 'prop_bedrooms', 'Two bedrooms, plus a sofa bed in the living area. Sleeps up to five.' );
 	}
 
 	$cur_park = trim( (string) get_post_meta( $page_id, 'prop_parking', true ) );
@@ -168,6 +168,259 @@ function restwell_migrate_property_bedrooms_parking_v2() {
 }
 add_action( 'init', 'restwell_migrate_property_bedrooms_parking_v2', 23 );
 add_action( 'after_switch_theme', 'restwell_migrate_property_bedrooms_parking_v2', 13 );
+
+/**
+ * One-time: longer parking detail line and split count from description for existing installs.
+ */
+function restwell_migrate_property_parking_detail_v3() {
+	if ( get_option( 'restwell_property_parking_detail_v3', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = restwell_get_property_page_defaults();
+	$cur_park = trim( (string) get_post_meta( $page_id, 'prop_parking', true ) );
+	$legacy_parking = array(
+		'2 on private drive',
+		'2 cars',
+		'Private drive · 2 cars',
+		'Private drive • 2 cars',
+		'Private driveway, two cars',
+		'Private driveway, 2 cars',
+		'Private drive, 2 cars',
+		'Private drive, two cars',
+	);
+
+	if ( in_array( $cur_park, $legacy_parking, true ) || preg_match( '/^2\s+on private drive$/i', $cur_park ) ) {
+		update_post_meta( $page_id, 'prop_parking', $defaults['prop_parking'] ?? '2' );
+	}
+
+	$cur_detail = trim( (string) get_post_meta( $page_id, 'prop_parking_detail', true ) );
+	if ( $cur_detail === '' ) {
+		update_post_meta( $page_id, 'prop_parking_detail', $defaults['prop_parking_detail'] ?? 'Room for two vehicles on the resin-bound private drive' );
+	}
+
+	$cur_bed = trim( (string) get_post_meta( $page_id, 'prop_bedrooms', true ) );
+	if ( str_contains( $cur_bed, '—' ) ) {
+		update_post_meta( $page_id, 'prop_bedrooms', restwell_normalize_editorial_dashes( $cur_bed ) );
+	}
+
+	update_option( 'restwell_property_parking_detail_v3', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_parking_detail_v3', 24 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_parking_detail_v3', 14 );
+
+/**
+ * One-time: refresh property page H2 headings to SEO-friendly defaults.
+ */
+function restwell_migrate_property_headings_v4() {
+	if ( get_option( 'restwell_property_headings_v4', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+	$maps    = function_exists( 'restwell_get_property_heading_refresh_maps' )
+		? restwell_get_property_heading_refresh_maps()
+		: array();
+
+	foreach ( $maps as $meta_key => $stale_map ) {
+		$current = trim( (string) get_post_meta( $page_id, $meta_key, true ) );
+		if ( $current === '' || ! isset( $stale_map[ $current ] ) ) {
+			continue;
+		}
+		$next = trim( (string) $stale_map[ $current ] );
+		if ( $next !== '' ) {
+			update_post_meta( $page_id, $meta_key, $next );
+		}
+	}
+
+	foreach ( array( 'prop_practical_label', 'prop_features_label' ) as $label_key ) {
+		$label = trim( (string) get_post_meta( $page_id, $label_key, true ) );
+		if ( function_exists( 'restwell_sanitize_property_section_label' ) ) {
+			$clean = restwell_sanitize_property_section_label( $label );
+			if ( $clean !== $label ) {
+				update_post_meta( $page_id, $label_key, $clean );
+			}
+		}
+	}
+
+	update_option( 'restwell_property_headings_v4', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_headings_v4', 25 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v4', 15 );
+
+/**
+ * One-time: clear misplaced section labels and catch practical heading variants.
+ */
+function restwell_migrate_property_labels_v5() {
+	if ( get_option( 'restwell_property_labels_v5', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+
+	foreach ( array( 'prop_practical_label', 'prop_features_label' ) as $label_key ) {
+		$label = trim( (string) get_post_meta( $page_id, $label_key, true ) );
+		if ( function_exists( 'restwell_sanitize_property_section_label' ) ) {
+			$clean = restwell_sanitize_property_section_label( $label );
+			if ( $clean !== $label ) {
+				update_post_meta( $page_id, $label_key, $clean );
+			}
+		}
+	}
+
+	if ( function_exists( 'restwell_get_property_heading' ) ) {
+		$heading = trim( (string) get_post_meta( $page_id, 'prop_practical_heading', true ) );
+		$fixed   = restwell_get_property_heading( $page_id, 'prop_practical_heading' );
+		if ( $heading !== '' && $fixed !== $heading ) {
+			update_post_meta( $page_id, 'prop_practical_heading', $fixed );
+		}
+	}
+
+	update_option( 'restwell_property_labels_v5', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_labels_v5', 26 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_labels_v5', 16 );
+
+/**
+ * One-time: refresh wet room capacity tile copy and drop accessibility-page fallback wording.
+ */
+function restwell_migrate_property_wetroom_stat_v6() {
+	if ( get_option( 'restwell_property_wetroom_stat_v6', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = restwell_get_property_page_defaults();
+	$current  = trim( (string) get_post_meta( $page_id, 'prop_bathroom', true ) );
+	$next     = trim( (string) ( $defaults['prop_bathroom'] ?? '' ) );
+
+	$stale = array(
+		'One wet room with roll-in shower (full spec on our Accessibility page)',
+		'One wet room with roll-in shower (full spec on our accessibility page)',
+	);
+
+	if ( $current === '' || in_array( $current, $stale, true ) || stripos( $current, 'accessibility page' ) !== false ) {
+		if ( $next !== '' ) {
+			update_post_meta( $page_id, 'prop_bathroom', $next );
+		}
+	}
+
+	update_option( 'restwell_property_wetroom_stat_v6', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_wetroom_stat_v6', 27 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_stat_v6', 17 );
+
+/**
+ * One-time: seed wet room walkthrough YouTube Shorts URL when not yet set.
+ */
+function restwell_migrate_property_wetroom_walkthrough_v7() {
+	if ( get_option( 'restwell_property_wetroom_walkthrough_v7', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = restwell_get_property_page_defaults();
+	$url      = trim( (string) get_post_meta( $page_id, 'prop_wetroom_walkthrough_url', true ) );
+	$default  = trim( (string) ( $defaults['prop_wetroom_walkthrough_url'] ?? '' ) );
+
+	if ( $url === '' && $default !== '' ) {
+		update_post_meta( $page_id, 'prop_wetroom_walkthrough_url', $default );
+	}
+
+	update_option( 'restwell_property_wetroom_walkthrough_v7', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_wetroom_walkthrough_v7', 28 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_walkthrough_v7', 18 );
+
+/**
+ * One-time: replace SEO test placeholder copy (e.g. TESTWORD) on the homepage CTA.
+ */
+function restwell_migrate_homepage_cta_testword_v8() {
+	if ( get_option( 'restwell_homepage_cta_testword_v8', '' ) === '1' ) {
+		return;
+	}
+
+	$home = get_page_by_path( 'home', OBJECT, 'page' );
+	if ( ! $home && (int) get_option( 'page_on_front' ) > 0 ) {
+		$home = get_post( (int) get_option( 'page_on_front' ) );
+	}
+	if ( ! $home || (int) $home->ID < 1 ) {
+		return;
+	}
+
+	$page_id  = (int) $home->ID;
+	$defaults = restwell_get_theme_setup_defaults();
+	$current  = trim( (string) get_post_meta( $page_id, 'cta_body', true ) );
+	$fixed    = trim( (string) ( $defaults['cta_body'] ?? '' ) );
+
+	if ( $current !== '' && stripos( $current, 'testword' ) !== false && $fixed !== '' ) {
+		update_post_meta( $page_id, 'cta_body', $fixed );
+	}
+
+	update_option( 'restwell_homepage_cta_testword_v8', '1' );
+}
+add_action( 'init', 'restwell_migrate_homepage_cta_testword_v8', 29 );
+add_action( 'after_switch_theme', 'restwell_migrate_homepage_cta_testword_v8', 19 );
+
+/**
+ * One-time: refresh wet room capacity tile copy (shorter detail under the Wet room label).
+ */
+function restwell_migrate_property_wetroom_stat_copy_v9() {
+	if ( get_option( 'restwell_property_wetroom_stat_copy_v9', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = restwell_get_property_page_defaults();
+	$current  = trim( (string) get_post_meta( $page_id, 'prop_bathroom', true ) );
+	$next     = trim( (string) ( $defaults['prop_bathroom'] ?? '' ) );
+
+	$stale = array(
+		'One wet room with roll-in shower.',
+		'One wet room with roll-in shower',
+		'One wet room with roll-in shower (full spec on our Accessibility page)',
+		'One wet room with roll-in shower (full spec on our accessibility page)',
+	);
+
+	if ( ( $current === '' || in_array( $current, $stale, true ) || stripos( $current, 'accessibility page' ) !== false ) && $next !== '' ) {
+		update_post_meta( $page_id, 'prop_bathroom', $next );
+	}
+
+	update_option( 'restwell_property_wetroom_stat_copy_v9', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_wetroom_stat_copy_v9', 30 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_stat_copy_v9', 20 );
 
 /**
  * One-time: sync FAQ / Accessibility / How it works / Guest Guide copy when pages still have pre-correction defaults.

@@ -147,7 +147,7 @@ if ( have_posts() ) {
 							<div>
 								<div class="flex flex-wrap items-center gap-3 mb-4">
 									<?php if ( $first_post['category'] ) : ?>
-										<span class="inline-block bg-[#A8D5D0]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full"><?php echo esc_html( $first_post['category'] ); ?></span>
+										<span class="inline-block bg-[var(--sea-glass)]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full"><?php echo esc_html( $first_post['category'] ); ?></span>
 									<?php endif; ?>
 									<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $first_post['date'] ); ?></span>
 									<span class="text-[var(--muted-grey)] text-xs" aria-hidden="true">&bull;</span>
@@ -187,7 +187,7 @@ if ( have_posts() ) {
 									<div class="flex flex-col flex-1 p-6">
 										<div class="flex items-center gap-2 mb-3">
 											<?php if ( $post['category'] ) : ?>
-												<span class="inline-block bg-[#A8D5D0]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full"><?php echo esc_html( $post['category'] ); ?></span>
+												<span class="inline-block bg-[var(--sea-glass)]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full"><?php echo esc_html( $post['category'] ); ?></span>
 											<?php endif; ?>
 											<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $post['read_time'] ); ?> min read</span>
 										</div>
@@ -219,7 +219,7 @@ if ( have_posts() ) {
 			<?php else : ?>
 
 				<div class="text-center py-16 max-w-md mx-auto">
-					<div class="w-16 h-16 bg-[#A8D5D0]/30 rounded-full flex items-center justify-center mx-auto mb-6" aria-hidden="true">
+					<div class="w-16 h-16 bg-[var(--sea-glass)]/30 rounded-full flex items-center justify-center mx-auto mb-6" aria-hidden="true">
 						<i class="ph-bold ph-pen-nib text-[var(--deep-teal)] text-2xl"></i>
 					</div>
 					<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-3"><?php esc_html_e( 'Guides coming soon', 'restwell-retreats' ); ?></h2>

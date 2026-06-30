@@ -85,6 +85,7 @@ function restwell_theme_setup() {
 	// Responsive theme images: cap hero/CTA width for smaller files + richer srcset (regenerate after deploy: wp media regenerate).
 	add_image_size( 'restwell-hero', 1920, 0 );
 	add_image_size( 'restwell-cta-bg', 1920, 0 );
+	add_image_size( 'restwell-property', 1920, 0 );
 }
 add_action( 'after_setup_theme', 'restwell_theme_setup' );
 

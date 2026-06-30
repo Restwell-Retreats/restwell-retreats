@@ -9,6 +9,94 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/** Native width for property gallery and room-tour uploads. */
+define( 'RESTWELL_PROPERTY_IMAGE_WIDTH', 1920 );
+
+/**
+ * Registered size slug for 1920px-wide property visuals.
+ *
+ * @return string
+ */
+function restwell_get_property_visual_size_name() {
+	return 'restwell-property';
+}
+
+/**
+ * Best available size for a property visual (1920px when regenerated, else sensible fallbacks).
+ *
+ * @param int $attachment_id Attachment ID.
+ * @return string
+ */
+function restwell_pick_property_visual_size( $attachment_id ) {
+	$attachment_id = (int) $attachment_id;
+	if ( function_exists( 'restwell_pick_attachment_size' ) ) {
+		return restwell_pick_attachment_size(
+			$attachment_id,
+			restwell_get_property_visual_size_name(),
+			'restwell-hero',
+			'large',
+			'full'
+		);
+	}
+
+	return restwell_get_property_visual_size_name();
+}
+
+/**
+ * Responsive sizes attribute for property visuals by layout context.
+ *
+ * @param string $context carousel|room|intro|grid|hero.
+ * @return string
+ */
+function restwell_get_property_visual_sizes_attr( $context = 'carousel' ) {
+	switch ( (string) $context ) {
+		case 'room':
+		case 'intro':
+			return '(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 42vw';
+		case 'grid':
+			return '(max-width: 639px) 45vw, (max-width: 1023px) 30vw, 240px';
+		case 'hero':
+			return '100vw';
+		case 'carousel':
+		default:
+			return '(max-width: 1023px) 100vw, min(64rem, 90vw)';
+	}
+}
+
+/**
+ * Output a responsive property visual with 1920px-aware srcset selection.
+ *
+ * @param int                  $attachment_id Attachment ID.
+ * @param string               $context       Layout context for sizes attribute.
+ * @param array<string, mixed> $attr          Extra attributes for wp_get_attachment_image().
+ * @return string
+ */
+function restwell_get_property_attachment_image( $attachment_id, $context = 'room', $attr = array() ) {
+	$attachment_id = (int) $attachment_id;
+	if ( $attachment_id <= 0 ) {
+		return '';
+	}
+
+	$meta   = wp_get_attachment_metadata( $attachment_id );
+	$width  = is_array( $meta ) && ! empty( $meta['width'] ) ? (int) $meta['width'] : RESTWELL_PROPERTY_IMAGE_WIDTH;
+	$height = is_array( $meta ) && ! empty( $meta['height'] ) ? (int) $meta['height'] : (int) round( $width * 0.75 );
+
+	$defaults = array(
+		'sizes'    => restwell_get_property_visual_sizes_attr( $context ),
+		'loading'  => 'lazy',
+		'decoding' => 'async',
+		'width'    => $width,
+		'height'   => $height,
+	);
+
+	return wp_get_attachment_image(
+		$attachment_id,
+		restwell_pick_property_visual_size( $attachment_id ),
+		false,
+		array_merge( $defaults, $attr )
+	);
+}
+
 /**
  * Parse gallery attachment IDs from meta storage (comma-separated string or array).
  *
@@ -199,6 +287,65 @@ function restwell_get_gallery_attachment_caption( $attachment_id ) {
 }
 
 /**
+ * Whether a gallery caption/alt string is an internal filename, not visitor-facing copy.
+ *
+ * @param string $text Caption or alt text.
+ * @return bool
+ */
+function restwell_is_internal_gallery_label( $text ) {
+	$text = trim( (string) $text );
+	if ( $text === '' ) {
+		return true;
+	}
+
+	if ( preg_match( '/\s/u', $text ) ) {
+		return false;
+	}
+
+	if ( preg_match( '/^(IMG_|DSC_|DSCN|photo[-_]?\d+|image[-_]?\d+)/i', $text ) ) {
+		return true;
+	}
+
+	return (bool) preg_match( '/^[A-Za-z0-9][A-Za-z0-9._-]{0,31}$/', $text )
+		&& preg_match( '/[-_]/', $text );
+}
+
+/**
+ * Visitor-facing carousel caption (empty when label is internal filename noise).
+ *
+ * @param int $attachment_id Attachment ID.
+ * @return string
+ */
+function restwell_get_gallery_carousel_caption( $attachment_id ) {
+	$caption = restwell_get_gallery_attachment_caption( $attachment_id );
+	if ( restwell_is_internal_gallery_label( $caption ) ) {
+		return '';
+	}
+
+	return $caption;
+}
+
+/**
+ * Visitor-facing lightbox label (caption or alt, never internal filenames).
+ *
+ * @param int $attachment_id Attachment ID.
+ * @return string
+ */
+function restwell_get_gallery_lightbox_label( $attachment_id ) {
+	$caption = restwell_get_gallery_carousel_caption( $attachment_id );
+	if ( $caption !== '' ) {
+		return $caption;
+	}
+
+	$alt = restwell_get_gallery_attachment_alt( $attachment_id );
+	if ( restwell_is_internal_gallery_label( $alt ) ) {
+		return '';
+	}
+
+	return $alt;
+}
+
+/**
  * Lowercase search blob from attachment caption, alt text, and title.
  *
  * @param int $attachment_id Attachment ID.
@@ -368,11 +515,32 @@ function restwell_get_property_room_tour_sections( $post_id = 0 ) {
 				'front of',
 			),
 		),
+		array(
+			'key'            => 'throughout',
+			'heading_key'    => 'prop_throughout_heading',
+			'body_key'       => 'prop_throughout_body',
+			'image_key'      => 'prop_tour_throughout_image_id',
+			'image_confirm'  => 'hallway, doorway or entrance photo',
+			'keywords'       => array(
+				'hallway',
+				'doorway',
+				'entrance',
+				'porch',
+				'threshold ramp',
+				'wide door',
+				'926',
+				'965',
+				'step-free',
+				'level access',
+			),
+		),
 	);
 
 	$sections = array();
 	foreach ( $slots as $slot ) {
-		$heading = trim( (string) $m( $slot['heading_key'] ) );
+		$heading = function_exists( 'restwell_get_property_heading' )
+			? restwell_get_property_heading( $post_id, (string) $slot['heading_key'] )
+			: trim( (string) $m( $slot['heading_key'] ) );
 		$body    = trim( (string) $m( $slot['body_key'] ) );
 		if ( $heading === '' && $body === '' ) {
 			continue;
@@ -398,6 +566,80 @@ function restwell_get_property_room_tour_sections( $post_id = 0 ) {
 	}
 
 	return $sections;
+}
+
+/**
+ * Resolve the property page hero image: explicit meta, else best gallery match.
+ *
+ * @param int $post_id Property page ID.
+ * @return int Attachment ID or 0.
+ */
+function restwell_resolve_property_hero_image_id( $post_id = 0 ) {
+	$post_id = (int) $post_id;
+	if ( $post_id <= 0 ) {
+		$post_id = (int) get_queried_object_id();
+	}
+
+	$defaults = restwell_get_property_page_defaults();
+	$explicit = (int) restwell_post_meta_or_default( $post_id, 'prop_hero_image_id', $defaults );
+	if ( $explicit > 0 && wp_attachment_is_image( $explicit ) ) {
+		return $explicit;
+	}
+
+	$gallery_ids = restwell_get_property_gallery_ids( $post_id );
+
+	return restwell_find_gallery_image_by_keywords(
+		$gallery_ids,
+		array(
+			'living room',
+			'open-plan living',
+			'kitchen',
+			'conservatory',
+			'lounge',
+			'interior',
+			'exterior',
+			'front of',
+			'bungalow',
+			'garden',
+		)
+	);
+}
+
+/**
+ * Key fact pill labels for the property page strip (verified meta strings only).
+ *
+ * @param int $post_id Property page ID.
+ * @return array<int, string>
+ */
+function restwell_get_property_key_fact_pills( $post_id = 0 ) {
+	$post_id = (int) $post_id;
+	if ( $post_id <= 0 ) {
+		$post_id = (int) get_queried_object_id();
+	}
+
+	$defaults = restwell_get_property_page_defaults();
+	$m        = static function ( $key ) use ( $post_id, $defaults ) {
+		return restwell_post_meta_or_default( $post_id, $key, $defaults );
+	};
+
+	$meta_keys = array(
+		'prop_feature_3',
+		'prop_feature_6',
+		'prop_feature_5',
+		'prop_wetroom_heading',
+		'prop_feature_4',
+		'prop_feature_7',
+	);
+
+	$pills = array();
+	foreach ( $meta_keys as $key ) {
+		$text = trim( (string) $m( $key ) );
+		if ( $text !== '' ) {
+			$pills[] = $text;
+		}
+	}
+
+	return $pills;
 }
 
 /**
@@ -526,8 +768,8 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 	$defaults = array(
 		'id'                  => '',
 		'class'               => '',
-		'image_size'          => 'large',
-		'sizes'               => '(max-width: 1023px) 100vw, min(72rem, 90vw)',
+		'image_size'          => restwell_get_property_visual_size_name(),
+		'sizes'               => restwell_get_property_visual_sizes_attr( 'carousel' ),
 		'lightbox'            => true,
 		'aria_label'          => __( 'Property photo gallery', 'restwell-retreats' ),
 		'all_grid_id'         => 'property-gallery-all',
@@ -562,12 +804,13 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 		}
 
 		$alt     = restwell_get_gallery_attachment_alt( $attachment_id );
-		$caption = restwell_get_gallery_attachment_caption( $attachment_id );
+		$caption = restwell_get_gallery_carousel_caption( $attachment_id );
 		$meta    = wp_get_attachment_metadata( $attachment_id );
-		$width   = is_array( $meta ) && ! empty( $meta['width'] ) ? (int) $meta['width'] : 1600;
-		$height  = is_array( $meta ) && ! empty( $meta['height'] ) ? (int) $meta['height'] : 1200;
+		$width   = is_array( $meta ) && ! empty( $meta['width'] ) ? (int) $meta['width'] : RESTWELL_PROPERTY_IMAGE_WIDTH;
+		$height  = is_array( $meta ) && ! empty( $meta['height'] ) ? (int) $meta['height'] : (int) round( $width * 0.75 );
 		$is_first = 0 === $index;
 		$loading  = $is_first ? 'eager' : 'lazy';
+		$img_size = restwell_pick_property_visual_size( $attachment_id );
 
 		echo '<figure class="restwell-carousel__slide" data-carousel-slide="' . esc_attr( (string) $index ) . '"';
 		if ( ! $is_first ) {
@@ -583,7 +826,7 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 
 		$img_html = wp_get_attachment_image(
 			$attachment_id,
-			(string) $args['image_size'],
+			$img_size,
 			false,
 			array(
 				'class'    => 'restwell-carousel__img',
@@ -631,7 +874,7 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 			}
 			$slides[] = array(
 				'url' => $full_url,
-				'alt' => restwell_get_gallery_attachment_caption( $attachment_id ),
+				'alt' => restwell_get_gallery_lightbox_label( $attachment_id ),
 			);
 		}
 		if ( ! empty( $slides ) ) {
@@ -659,7 +902,8 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 			'layout'     => 'grid',
 			'lightbox'   => $lightbox,
 			'aria_label' => (string) ( $args['all_grid_aria_label'] ?? __( 'All property photos', 'restwell-retreats' ) ),
-			'sizes'      => (string) $args['sizes'],
+			'image_size' => restwell_get_property_visual_size_name(),
+			'sizes'      => restwell_get_property_visual_sizes_attr( 'grid' ),
 			'class'      => 'restwell-gallery--all-grid',
 		)
 	);
@@ -768,9 +1012,13 @@ function restwell_render_gallery( $image_ids, $args = array() ) {
 			echo '>';
 		}
 
+		$img_size = restwell_get_property_visual_size_name() === (string) $args['image_size']
+			? restwell_pick_property_visual_size( $attachment_id )
+			: (string) $args['image_size'];
+
 		$img_html = wp_get_attachment_image(
 			$attachment_id,
-			(string) $args['image_size'],
+			$img_size,
 			false,
 			array(
 				'class'    => 'restwell-gallery__img',
@@ -799,7 +1047,7 @@ function restwell_render_gallery( $image_ids, $args = array() ) {
 			}
 			$slides[] = array(
 				'url' => $full_url,
-				'alt' => restwell_get_gallery_attachment_alt( $attachment_id ),
+				'alt' => restwell_get_gallery_lightbox_label( $attachment_id ),
 			);
 		}
 

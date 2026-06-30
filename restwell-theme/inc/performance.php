@@ -46,7 +46,7 @@ function restwell_pick_attachment_size( $attachment_id, $preferred, ...$fallback
 
 /**
  * Regenerate WordPress intermediate sizes for every image attachment so new theme sizes
- * (e.g. restwell-hero, restwell-cta-bg) exist in metadata. Intended for admin Theme Setup.
+ * (e.g. restwell-hero, restwell-cta-bg, restwell-property) exist in metadata. Intended for admin Theme Setup.
  *
  * May be slow on very large media libraries; use the skip option or WP-CLI `wp media regenerate` instead.
  *

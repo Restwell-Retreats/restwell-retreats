@@ -173,9 +173,8 @@ $rw_fp_head_tight     = 'rw-mb-section-tight';
 $rw_fp_stack_gap      = 'rw-gap-grid';
 $rw_fp_stack_gap_lg   = 'rw-gap-grid-lg';
 $rw_fp_cta_mt         = 'mt-8 md:mt-10';
-$rw_fp_card_pad       = 'p-6 md:p-8';
-/** Solid white cards: persistent boundaries + hover lift (teaser, highlights, who, property copy, shared pattern). */
-$rw_fp_card_surface_solid = 'rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-md';
+/** Solid white card shell + padding — see .rw-card-solid / .rw-card-pad in input.css */
+$rw_fp_card_shell     = 'rw-card-solid rw-card-pad';
 /** Comparison feature checklist (wider for 3-column grid) */
 $rw_fp_inner_comparison = 'max-w-5xl mx-auto';
 
@@ -351,6 +350,8 @@ if ( $rw_fp_cta_heading_display === 'Ready to plan your accessible stay?' ) {
 	$rw_fp_cta_heading_display = __( 'Need exact access details first?', 'restwell-retreats' );
 }
 if ( $rw_fp_cta_body_display === 'Ask about hoist limits, door widths, or funding. No pressure: we reply with specifics you can use.' ) {
+	$rw_fp_cta_body_display = __( 'Tell us your dates and practical needs. We will reply with clear measurements, equipment details, and next steps.', 'restwell-retreats' );
+} elseif ( stripos( $rw_fp_cta_body_display, 'testword' ) !== false ) {
 	$rw_fp_cta_body_display = __( 'Tell us your dates and practical needs. We will reply with clear measurements, equipment details, and next steps.', 'restwell-retreats' );
 }
 
@@ -536,16 +537,14 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	<?php if ( ! empty( $home_gallery_teaser_ids ) ) : ?>
 	<section class="home-gallery-teaser rw-section-y--compact bg-white border-b border-[var(--deep-teal)]/10" aria-labelledby="home-gallery-teaser-heading">
 		<div class="container max-w-6xl">
-			<div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
-				<div>
-					<p class="section-label m-0 mb-2"><?php esc_html_e( 'Inside the property', 'restwell-retreats' ); ?></p>
-					<h2 id="home-gallery-teaser-heading" class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php esc_html_e( 'A glimpse of the space', 'restwell-retreats' ); ?></h2>
-				</div>
-				<a href="<?php echo esc_url( $home_gallery_link ); ?>" class="restwell-tap-link inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold underline-offset-2 hover:underline min-h-[44px]">
+			<header class="home-gallery-teaser__head text-center max-w-2xl mx-auto mb-6 rw-stack rw-stack--tight">
+				<p class="section-label m-0"><?php esc_html_e( 'Inside the property', 'restwell-retreats' ); ?></p>
+				<h2 id="home-gallery-teaser-heading" class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php esc_html_e( 'A glimpse of the space', 'restwell-retreats' ); ?></h2>
+				<a href="<?php echo esc_url( $home_gallery_link ); ?>" class="restwell-tap-link restwell-tap-link--teal mx-auto">
 					<?php esc_html_e( 'View full gallery', 'restwell-retreats' ); ?>
 					<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
 				</a>
-			</div>
+			</header>
 			<?php
 			restwell_render_gallery(
 				$home_gallery_teaser_ids,
@@ -573,9 +572,9 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $home_teaser_label ) ); ?>
 				</header>
 				<div class="home-teaser__grid who-section__grid grid grid-cols-1 md:grid-cols-2 items-start <?php echo esc_attr( $rw_fp_stack_gap ); ?>">
-					<div class="flex flex-col rw-stack <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+					<div class="flex flex-col rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 						<h3 id="home-teaser-area-heading" class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] leading-tight m-0 text-balance"><?php echo esc_html( $home_teaser_area_title ); ?></h3>
-						<p class="text-[#3a5a63] leading-relaxed m-0 max-w-prose text-base"><?php echo esc_html( $home_teaser_area_body ); ?></p>
+						<p class="text-[var(--muted-grey)] leading-relaxed m-0 max-w-prose text-base"><?php echo esc_html( $home_teaser_area_body ); ?></p>
 						<?php
 						$fp_teaser_guide = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
 						if ( $fp_teaser_guide ) :
@@ -583,7 +582,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<p class="m-0 pt-3">
 							<a
 								href="<?php echo esc_url( get_permalink( $fp_teaser_guide ) ); ?>"
-								class="restwell-tap-link inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold underline-offset-2 hover:underline hover:text-[var(--warm-gold-text)] transition-colors duration-300 no-underline cursor-pointer min-h-[44px]"
+								class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover"
 							>
 								<?php esc_html_e( 'Whitstable & Kent guide', 'restwell-retreats' ); ?>
 								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
@@ -591,9 +590,9 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						</p>
 						<?php endif; ?>
 					</div>
-					<div class="flex flex-col rw-stack <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+					<div class="flex flex-col rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 						<h3 id="home-teaser-funding-heading" class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] leading-tight m-0 text-balance"><?php echo esc_html( $home_teaser_funding_title ); ?></h3>
-						<p class="text-[#3a5a63] leading-relaxed m-0 max-w-prose text-base"><?php echo esc_html( $home_teaser_funding_body ); ?></p>
+						<p class="text-[var(--muted-grey)] leading-relaxed m-0 max-w-prose text-base"><?php echo esc_html( $home_teaser_funding_body ); ?></p>
 						<?php
 						$fp_teaser_res = get_page_by_path( 'resources', OBJECT, 'page' );
 						if ( $fp_teaser_res ) :
@@ -601,7 +600,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<p class="m-0 pt-3">
 							<a
 								href="<?php echo esc_url( get_permalink( $fp_teaser_res ) ); ?>"
-								class="restwell-tap-link inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold underline-offset-2 hover:underline hover:text-[var(--warm-gold-text)] transition-colors duration-300 no-underline cursor-pointer min-h-[44px]"
+								class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover"
 							>
 								<?php esc_html_e( 'Funding & support', 'restwell-retreats' ); ?>
 								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
@@ -626,31 +625,31 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 				<h2 class="text-3xl md:text-4xl section-heading m-0 text-balance"><?php echo esc_html( $m['who_heading'] ?? '' ); ?></h2>
 			</div>
 			<div class="who-section__grid grid grid-cols-1 md:grid-cols-2 <?php echo esc_attr( $rw_fp_stack_gap_lg ); ?> items-stretch">
-				<article class="who-card flex flex-col items-center text-center md:items-start md:text-left md:min-h-[18rem] <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+				<article class="who-card who-card-layout <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="who-card__stack flex w-full flex-col items-center md:items-start rw-stack">
 						<p class="m-0 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--deep-teal)]/85"><?php esc_html_e( 'Independence', 'restwell-retreats' ); ?></p>
 						<div class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--sea-glass)]/30 text-[var(--deep-teal)]" aria-hidden="true">
 							<i class="ph-bold ph-house text-2xl" aria-hidden="true"></i>
 						</div>
 						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $m['who_guest_title'] ?? '' ); ?></h3>
-						<p class="who-card__body text-[#3a5a63] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $m['who_guest_body'] ?? '' ); ?></p>
+						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $m['who_guest_body'] ?? '' ); ?></p>
 					</div>
 				</article>
-				<article class="who-card flex flex-col items-center text-center md:items-start md:text-left md:min-h-[18rem] <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+				<article class="who-card who-card-layout <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="who-card__stack flex w-full flex-col items-center md:items-start rw-stack">
 						<p class="m-0 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--deep-teal)]/85"><?php esc_html_e( 'Peace of mind', 'restwell-retreats' ); ?></p>
 						<div class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--soft-sand)] text-[var(--deep-teal)]" aria-hidden="true">
 							<i class="ph-bold ph-heart text-2xl" aria-hidden="true"></i>
 						</div>
 						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $m['who_carer_title'] ?? '' ); ?></h3>
-						<p class="who-card__body text-[#3a5a63] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $m['who_carer_body'] ?? '' ); ?></p>
+						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $m['who_carer_body'] ?? '' ); ?></p>
 					</div>
 				</article>
 			</div>
 			<?php if ( $fp_who ) : ?>
-			<p class="text-center text-sm text-[#3a5a63] <?php echo esc_attr( $rw_fp_cta_mt ); ?> m-0">
+			<p class="text-center text-sm text-[var(--muted-grey)] <?php echo esc_attr( $rw_fp_cta_mt ); ?> m-0">
 				<a href="<?php echo esc_url( get_permalink( $fp_who ) ); ?>"
-					class="who-section__cta restwell-tap-link text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline cursor-pointer min-h-[44px] inline-flex items-center justify-center py-2 px-3">
+					class="who-section__cta restwell-tap-link restwell-tap-link--underline-cta">
 					<?php esc_html_e( 'Find out if Restwell is right for you →', 'restwell-retreats' ); ?>
 				</a>
 			</p>
@@ -662,7 +661,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<div class="property-grid property-grid--home grid grid-cols-1 gap-x-0 gap-y-9 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:items-start md:gap-x-10 md:gap-y-0">
 				<div class="property-grid__media w-full md:min-h-0">
-					<figure class="property-section__figure relative m-0 flex min-h-[min(65vw,18rem)] flex-col overflow-hidden rounded-2xl bg-[#E8DFD0] shadow-[0_8px_30px_rgb(0,0,0,0.06)] ring-1 ring-black/[0.04] md:min-h-[24rem]">
+					<figure class="property-section__figure relative m-0 flex min-h-[min(65vw,18rem)] flex-col overflow-hidden rounded-2xl bg-[var(--driftwood)] shadow-[0_8px_30px_rgb(0,0,0,0.06)] ring-1 ring-black/[0.04] md:min-h-[24rem]">
 					<?php if ( $property_image_id ) : ?>
 						<?php
 						$property_img_size = function_exists( 'restwell_pick_attachment_size' ) ? restwell_pick_attachment_size( $property_image_id, 'restwell-hero', 'large' ) : 'large';
@@ -682,7 +681,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					<?php else : ?>
 						<div class="property-section__placeholder relative z-[1] flex min-h-[min(65vw,18rem)] flex-col items-center justify-center gap-2.5 px-5 py-10 text-center md:min-h-[24rem]">
 							<i class="ph-bold ph-image text-3xl text-[var(--deep-teal)]/45" aria-hidden="true"></i>
-							<span class="max-w-[20rem] text-base leading-relaxed text-[#3a5a63]"><?php esc_html_e( 'Add a property image in the homepage editor to show the bungalow here.', 'restwell-retreats' ); ?></span>
+							<span class="max-w-[20rem] text-base leading-relaxed text-[var(--muted-grey)]"><?php esc_html_e( 'Add a property image in the homepage editor to show the bungalow here.', 'restwell-retreats' ); ?></span>
 						</div>
 					<?php endif; ?>
 					</figure>
@@ -700,8 +699,8 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					<h2 id="home-property-heading" class="text-3xl md:text-4xl section-heading m-0 text-balance leading-tight"><?php echo esc_html( $property_heading ); ?></h2>
 					<div class="property-section__body rw-stack">
 					<?php if ( $property_body_canonical !== '' && $property_body_trimmed === $property_body_canonical ) : ?>
-						<p class="m-0 text-pretty text-base leading-relaxed text-[#3a5a63] sm:text-[1.05rem]"><?php esc_html_e( 'An adapted single-storey property in Whitstable: level approach from the street, off-street parking for adapted vehicles, and a flat route toward the Tankerton promenade.', 'restwell-retreats' ); ?></p>
-						<ul class="property-section__highlights rw-stack m-0 list-none p-0 text-[0.98rem] leading-relaxed text-[#3a5a63] sm:text-[1rem]" role="list">
+						<p class="m-0 text-pretty text-base leading-relaxed text-[var(--muted-grey)] sm:text-[1.05rem]"><?php esc_html_e( 'An adapted single-storey property in Whitstable: level approach from the street, off-street parking for adapted vehicles, and a flat route toward the Tankerton promenade.', 'restwell-retreats' ); ?></p>
+						<ul class="property-section__highlights rw-stack m-0 list-none p-0 text-[0.98rem] leading-relaxed text-[var(--muted-grey)] sm:text-[1rem]" role="list">
 							<li class="flex gap-2.5">
 								<span class="property-section__check mt-0.5 shrink-0 text-[var(--deep-teal)]" aria-hidden="true"><i class="ph-bold ph-check text-[1.05rem]" aria-hidden="true"></i></span>
 								<span class="text-pretty"><?php esc_html_e( 'Flat route toward the Tankerton promenade and practical access from parking to the door.', 'restwell-retreats' ); ?></span>
@@ -712,7 +711,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 							</li>
 						</ul>
 					<?php else : ?>
-						<p class="text-[#3a5a63] leading-relaxed m-0 text-pretty"><?php echo esc_html( $property_body ); ?></p>
+						<p class="text-[var(--muted-grey)] leading-relaxed m-0 text-pretty"><?php echo esc_html( $property_body ); ?></p>
 					<?php endif; ?>
 					</div>
 					</div>
@@ -726,7 +725,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 								<li class="m-0">
 									<a
 										href="<?php echo esc_url( $fp_quick_item['href'] ); ?>"
-										class="property-section__quick-link group flex min-h-[48px] items-center justify-between gap-3 py-3 text-left text-[0.9375rem] font-medium leading-snug text-[#3a5a63] transition-colors duration-200 hover:text-[var(--deep-teal)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)] cursor-pointer"
+										class="property-section__quick-link group flex min-h-[48px] items-center justify-between gap-3 py-3 text-left text-[0.9375rem] font-medium leading-snug text-[var(--muted-grey)] transition-colors duration-200 hover:text-[var(--deep-teal)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)] cursor-pointer"
 									>
 										<span class="min-w-0 flex-1"><?php echo esc_html( $fp_quick_item['label'] ); ?></span>
 										<i class="ph-bold ph-caret-right shrink-0 text-[var(--deep-teal)]/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--deep-teal)]/70 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden="true"></i>
@@ -765,13 +764,13 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 			<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 <?php echo esc_attr( $rw_fp_stack_gap_lg ); ?> list-none p-0 m-0" role="list">
 				<?php foreach ( $testimonials as $t ) : ?>
 				<li>
-					<article class="h-full flex flex-col <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+					<article class="h-full flex flex-col <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 						<blockquote class="m-0 flex flex-col flex-1">
-							<p class="restwell-prose-readable text-[#3a5a63] leading-relaxed flex-1 mb-4 text-pretty"><?php echo esc_html( $t['quote'] ); ?></p>
+							<p class="restwell-prose-readable text-[var(--muted-grey)] leading-relaxed flex-1 mb-4 text-pretty"><?php echo esc_html( $t['quote'] ); ?></p>
 							<footer class="text-[var(--deep-teal)] font-medium">
 								<?php echo esc_html( $t['name'] ); ?>
 								<?php if ( $t['role'] !== '' ) : ?>
-									<span class="block text-sm font-normal text-[#3a5a63]"><?php echo esc_html( $t['role'] ); ?></span>
+									<span class="block text-sm font-normal text-[var(--muted-grey)]"><?php echo esc_html( $t['role'] ); ?></span>
 								<?php endif; ?>
 							</footer>
 						</blockquote>
@@ -791,37 +790,37 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 				<h2 id="home-why-restwell-heading" class="text-3xl md:text-4xl section-heading m-0"><?php echo esc_html( $m['why_heading'] ?? '' ); ?></h2>
 			</div>
 			<ul class="grid grid-cols-1 items-stretch md:grid-cols-2 lg:grid-cols-4 <?php echo esc_attr( $rw_fp_stack_gap ); ?> list-none p-0 m-0" role="list">
-				<li class="feature-item group h-full min-h-0 text-center rw-stack <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-house feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
 					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item1_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[#3a5a63] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item1_desc'] ?? '' ); ?></p>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item1_desc'] ?? '' ); ?></p>
 				</li>
-				<li class="feature-item group h-full min-h-0 text-center rw-stack <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-shield-check feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
 					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item2_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[#3a5a63] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item2_desc'] ?? '' ); ?></p>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item2_desc'] ?? '' ); ?></p>
 				</li>
-				<li class="feature-item group h-full min-h-0 text-center rw-stack <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-map-pin feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
 					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item3_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[#3a5a63] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item3_desc'] ?? '' ); ?></p>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item3_desc'] ?? '' ); ?></p>
 				</li>
-				<li class="feature-item group h-full min-h-0 text-center rw-stack <?php echo esc_attr( $rw_fp_card_surface_solid . ' ' . $rw_fp_card_pad ); ?>">
+				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-heart feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
 					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item4_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[#3a5a63] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item4_desc'] ?? '' ); ?></p>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item4_desc'] ?? '' ); ?></p>
 				</li>
 			</ul>
 		</div>
@@ -830,10 +829,10 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	<?php if ( $show_home_partners ) : ?>
 	<section class="rw-section-y--compact bg-[var(--bg-subtle)] border-b border-[var(--deep-teal)]/10 rw-seam-y-soft" aria-labelledby="home-partners-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
-			<div class="grid lg:grid-cols-[minmax(0,22rem)_1fr] lg:items-center rw-gap-grid-lg">
-				<header class="rw-stack rw-stack--tight text-left">
+			<div class="flex flex-col items-center gap-8 lg:gap-10">
+				<header class="home-partners__head text-center max-w-2xl mx-auto rw-stack rw-stack--tight">
 					<?php if ( $home_partners_label !== '' ) : ?>
-						<p class="section-label m-0 text-[10px] font-bold uppercase tracking-[0.1em]">
+						<p class="section-label m-0">
 							<?php echo esc_html( $home_partners_label ); ?>
 						</p>
 					<?php endif; ?>
@@ -843,14 +842,14 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					</h2>
 
 					<?php if ( $home_partners_intro !== '' ) : ?>
-						<p class="m-0 max-w-[32ch] text-sm leading-relaxed text-[#3a5a63]">
+						<p class="m-0 max-w-prose mx-auto text-sm leading-relaxed text-[var(--muted-grey)]">
 							<?php echo esc_html( $home_partners_intro ); ?>
 						</p>
 					<?php endif; ?>
 
 				</header>
 
-				<ul class="m-0 grid list-none grid-cols-2 items-center p-0 sm:grid-cols-6 rw-gap-grid">
+				<ul class="m-0 grid w-full max-w-3xl list-none grid-cols-2 items-center p-0 sm:grid-cols-6 rw-gap-grid mx-auto">
 					<?php foreach ( $home_partner_items as $partner_index => $partner ) : ?>
 						<?php
 						/**
@@ -1003,7 +1002,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 			);
 			?>
 		<?php endif; ?>
-		<div class="absolute inset-0 bg-[#1B4D5C]/75" aria-hidden="true"></div>
+		<div class="absolute inset-0 bg-[var(--deep-teal)]/75" aria-hidden="true"></div>
 		<div class="relative container text-center <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<div class="mx-auto grid max-w-5xl lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,1fr)] lg:items-center <?php echo esc_attr( $rw_fp_stack_gap_lg ); ?>">
 				<div class="rw-stack max-w-2xl text-center lg:max-w-none lg:text-left">

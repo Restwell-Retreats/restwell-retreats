@@ -40,12 +40,18 @@ function restwell_merge_theme_defaults_into_post_meta( $post_id, array $defaults
 function restwell_post_meta_or_default( $post_id, $key, array $defaults ) {
 	$post_id = (int) $post_id;
 	if ( $post_id < 1 ) {
-		return $defaults[ $key ] ?? '';
+		$value = $defaults[ $key ] ?? '';
+	} elseif ( metadata_exists( 'post', $post_id, $key ) ) {
+		$value = get_post_meta( $post_id, $key, true );
+	} else {
+		$value = $defaults[ $key ] ?? '';
 	}
-	if ( metadata_exists( 'post', $post_id, $key ) ) {
-		return get_post_meta( $post_id, $key, true );
+
+	if ( is_string( $value ) && strncmp( $key, 'prop_', 5 ) === 0 && function_exists( 'restwell_normalize_editorial_dashes' ) ) {
+		$value = restwell_normalize_editorial_dashes( $value );
 	}
-	return $defaults[ $key ] ?? '';
+
+	return $value;
 }
 
 /**
