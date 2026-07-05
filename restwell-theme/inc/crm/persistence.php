@@ -42,13 +42,16 @@ function restwell_crm_save_enquiry( array $data ): array {
 			)
 		);
 		if ( $dup_id ) {
-			return array( 'id' => $dup_id, 'is_duplicate' => true );
+			return array(
+				'id' => $dup_id,
+				'is_duplicate' => true,
+			);
 		}
 	}
 
 	// Normalise optional date columns; store NULL when blank.
 	$date_from = ! empty( $data['date_from'] ) ? $data['date_from'] : null;
-	$date_to   = ! empty( $data['date_to'] )   ? $data['date_to']   : null;
+	$date_to   = ! empty( $data['date_to'] ) ? $data['date_to'] : null;
 	$marketing_optin    = ! empty( $data['marketing_optin'] ) ? 1 : 0;
 	$marketing_optin_at = $marketing_optin ? current_time( 'mysql' ) : null;
 	$staff_notes = '';
@@ -85,9 +88,15 @@ function restwell_crm_save_enquiry( array $data ): array {
 	);
 
 	if ( $result ) {
-		return array( 'id' => (int) $wpdb->insert_id, 'is_duplicate' => false );
+		return array(
+			'id' => (int) $wpdb->insert_id,
+			'is_duplicate' => false,
+		);
 	}
-	return array( 'id' => false, 'is_duplicate' => false );
+	return array(
+		'id' => false,
+		'is_duplicate' => false,
+	);
 }
 
 /**
@@ -133,4 +142,3 @@ function restwell_faq_mark_notify_sent( int $id ): void {
 		array( '%d' )
 	);
 }
-

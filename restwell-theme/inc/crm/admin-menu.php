@@ -66,4 +66,3 @@ function restwell_crm_register_menu() {
 		'restwell_guest_guide_settings_page'
 	);
 }
-

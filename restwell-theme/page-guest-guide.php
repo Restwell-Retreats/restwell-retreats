@@ -26,8 +26,8 @@ nocache_headers();
 // Form processing
 // -------------------------------------------------------------------------
 
-$error   = '';
-$notice  = '';
+$gg_error = '';
+$notice   = '';
 
 // 30-minute OTP TTL, mirroring `restwell_send_guide_otp()` in inc/guest-guide.php.
 // Anywhere we display "expires in N minutes" or detect expiry, this is the source of truth.
@@ -45,9 +45,9 @@ if (
 	$submitted_email = isset( $_POST['gg_email'] ) ? sanitize_email( wp_unslash( $_POST['gg_email'] ) ) : '';
 
 	if ( '' === $submitted_email || ! is_email( $submitted_email ) ) {
-		$error = __( 'Please enter a valid email address.', 'restwell-retreats' );
+		$gg_error = __( 'Please enter a valid email address.', 'restwell-retreats' );
 	} elseif ( ! restwell_is_approved_email( $submitted_email ) ) {
-		$error = sprintf(
+		$gg_error = sprintf(
 			/* translators: %s phone number */
 			__( 'Sorry, we do not recognise that email address. Please use the address your booking confirmation was sent to. If you have recently changed your email or are unsure which address was used, please call us on %s and we can help.', 'restwell-retreats' ),
 			(string) get_option( 'restwell_phone_number', '01622 809881' )
@@ -63,7 +63,7 @@ if (
 	) {
 		// Deliberately generic message: don't reveal which throttle tripped,
 		// and don't tell the user they're rate-limited as a guest vs. as an IP.
-		$error = sprintf(
+		$gg_error = sprintf(
 			/* translators: %s phone number */
 			__( "We can't send another code to that address right now. Please wait a little while and try again, or call us on %s if you need help getting in.", 'restwell-retreats' ),
 			(string) get_option( 'restwell_phone_number', '01622 809881' )
@@ -93,13 +93,13 @@ if (
 	if ( '' === $pending_email ) {
 		// Session lost (cookie cleared, server restart) — gracefully bounce
 		// them back to the email-entry step rather than silently failing.
-		$error = __( 'Your session has expired. Please enter your email again.', 'restwell-retreats' );
+		$gg_error = __( 'Your session has expired. Please enter your email again.', 'restwell-retreats' );
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
 	} elseif (
 		restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS )
 		|| restwell_guide_otp_email_throttled( $pending_email )
 	) {
-		$error = sprintf(
+		$gg_error = sprintf(
 			/* translators: %s phone number */
 			__( "We can't send another code to that address right now. Please wait a little while and try again, or call us on %s if you need help getting in.", 'restwell-retreats' ),
 			(string) get_option( 'restwell_phone_number', '01622 809881' )
@@ -126,7 +126,7 @@ if (
 	$pending_email   = isset( $_SESSION['gg_pending_email'] ) ? (string) $_SESSION['gg_pending_email'] : '';
 
 	if ( '' === $submitted_code || '' === $pending_email ) {
-		$error = __( 'Your session has expired. Please start again.', 'restwell-retreats' );
+		$gg_error = __( 'Your session has expired. Please start again.', 'restwell-retreats' );
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
 	} elseif ( restwell_form_rate_limit_exceeded( 'guide_otp_verify', 10, HOUR_IN_SECONDS ) ) {
 		// Brute-force guard: 10 verification attempts per IP per hour. Code is
@@ -134,13 +134,13 @@ if (
 		// at well below feasible brute-force range while still leaving room
 		// for a real guest's typos. Same generic message as a wrong code so
 		// the limit itself isn't useful information to an attacker.
-		$error = __( 'Too many attempts. Please wait a little while and try again, or request a new code.', 'restwell-retreats' );
+		$gg_error = __( 'Too many attempts. Please wait a little while and try again, or request a new code.', 'restwell-retreats' );
 	} elseif ( restwell_verify_guide_otp( $pending_email, $submitted_code ) ) {
 		$_SESSION['gg_verified']       = true;
 		$_SESSION['gg_verified_email'] = $pending_email;
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
 	} else {
-		$error = __( 'That code is not correct, or it has expired. Please try again or request a new code.', 'restwell-retreats' );
+		$gg_error = __( 'That code is not correct, or it has expired. Please try again or request a new code.', 'restwell-retreats' );
 	}
 }
 
@@ -206,28 +206,28 @@ if ( $show_otp_form && ! empty( $_SESSION['gg_otp_sent'] ) ) {
 
 $pid = get_the_ID();
 
-$gg_welcome   = (string) get_post_meta( $pid, 'gg_welcome_message',  true );
-$gg_address   = (string) get_post_meta( $pid, 'gg_address',          true );
-$gg_checkin   = (string) get_post_meta( $pid, 'gg_checkin_time',     true );
-$gg_checkout  = (string) get_post_meta( $pid, 'gg_checkout_time',    true );
-$gg_keysafe          = (string) get_post_meta( $pid, 'gg_keysafe_code',      true );
-$gg_departure_notes  = (string) get_post_meta( $pid, 'gg_departure_notes',  true );
+$gg_welcome   = (string) get_post_meta( $pid, 'gg_welcome_message', true );
+$gg_address   = (string) get_post_meta( $pid, 'gg_address', true );
+$gg_checkin   = (string) get_post_meta( $pid, 'gg_checkin_time', true );
+$gg_checkout  = (string) get_post_meta( $pid, 'gg_checkout_time', true );
+$gg_keysafe          = (string) get_post_meta( $pid, 'gg_keysafe_code', true );
+$gg_departure_notes  = (string) get_post_meta( $pid, 'gg_departure_notes', true );
 $gg_nearest_ae_url   = (string) get_post_meta( $pid, 'gg_nearest_ae_map_url', true );
 $gg_door      = (string) get_post_meta( $pid, 'gg_door_instructions', true );
-$gg_wifi_name = (string) get_post_meta( $pid, 'gg_wifi_name',        true );
-$gg_wifi_pass = (string) get_post_meta( $pid, 'gg_wifi_password',    true );
-$gg_parking   = (string) get_post_meta( $pid, 'gg_parking_info',     true );
-$gg_host        = (string) get_post_meta( $pid, 'gg_host_contact',     true );
-$gg_house_rules = (string) get_post_meta( $pid, 'gg_house_rules',      true );
-$gg_local_info  = (string) get_post_meta( $pid, 'gg_local_info',       true );
+$gg_wifi_name = (string) get_post_meta( $pid, 'gg_wifi_name', true );
+$gg_wifi_pass = (string) get_post_meta( $pid, 'gg_wifi_password', true );
+$gg_parking   = (string) get_post_meta( $pid, 'gg_parking_info', true );
+$gg_host        = (string) get_post_meta( $pid, 'gg_host_contact', true );
+$gg_house_rules = (string) get_post_meta( $pid, 'gg_house_rules', true );
+$gg_local_info  = (string) get_post_meta( $pid, 'gg_local_info', true );
 $gg_emergency   = array(
-	__( 'Emergency services', 'restwell-retreats' )      => (string) get_post_meta( $pid, 'gg_emergency_services',  true ),
-	__( 'NHS (non-emergency)', 'restwell-retreats' )      => (string) get_post_meta( $pid, 'gg_nhs_number',          true ),
-	__( 'Police (non-emergency)', 'restwell-retreats' )   => (string) get_post_meta( $pid, 'gg_police_number',       true ),
-	__( 'Nearest A&E', 'restwell-retreats' )          => (string) get_post_meta( $pid, 'gg_nearest_ae',          true ),
+	__( 'Emergency services', 'restwell-retreats' )      => (string) get_post_meta( $pid, 'gg_emergency_services', true ),
+	__( 'NHS (non-emergency)', 'restwell-retreats' )      => (string) get_post_meta( $pid, 'gg_nhs_number', true ),
+	__( 'Police (non-emergency)', 'restwell-retreats' )   => (string) get_post_meta( $pid, 'gg_police_number', true ),
+	__( 'Nearest A&E', 'restwell-retreats' )          => (string) get_post_meta( $pid, 'gg_nearest_ae', true ),
 	__( 'Property maintenance', 'restwell-retreats' )     => (string) get_post_meta( $pid, 'gg_maintenance_contact', true ),
-	__( 'Out-of-hours maintenance', 'restwell-retreats' ) => (string) get_post_meta( $pid, 'gg_maintenance_oos',     true ),
-	__( 'Gas emergency', 'restwell-retreats' )            => (string) get_post_meta( $pid, 'gg_gas_oos',             true ),
+	__( 'Out-of-hours maintenance', 'restwell-retreats' ) => (string) get_post_meta( $pid, 'gg_maintenance_oos', true ),
+	__( 'Gas emergency', 'restwell-retreats' )            => (string) get_post_meta( $pid, 'gg_gas_oos', true ),
 );
 
 // Common input / label classes (mirroring template-enquire.php).
@@ -280,9 +280,9 @@ get_header();
 					<?php esc_html_e( 'Enter the email address we have on file for your booking. We will send you a one-time code to confirm it is you.', 'restwell-retreats' ); ?>
 				</p>
 
-				<?php if ( '' !== $error ) : ?>
+				<?php if ( '' !== $gg_error ) : ?>
 					<div class="rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 mb-6" role="alert">
-						<?php echo esc_html( $error ); ?>
+						<?php echo esc_html( $gg_error ); ?>
 					</div>
 				<?php endif; ?>
 
@@ -355,15 +355,15 @@ get_header();
 					?>
 				</p>
 
-				<?php if ( '' !== $error ) : ?>
+				<?php if ( '' !== $gg_error ) : ?>
 					<div class="rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 mb-6" role="alert">
-						<?php echo esc_html( $error ); ?>
+						<?php echo esc_html( $gg_error ); ?>
 					</div>
 				<?php endif; ?>
 
 				<?php if ( '' !== $notice ) : ?>
 					<div class="rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm px-4 py-3 mb-6"
-					     role="status" aria-live="polite">
+						 role="status" aria-live="polite">
 						<?php echo esc_html( $notice ); ?>
 					</div>
 				<?php endif; ?>
@@ -502,16 +502,16 @@ get_header();
 								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Key safe code', 'restwell-retreats' ); ?></dt>
 								<dd class="text-gray-600 font-mono text-base tracking-widest relative">
 									<span id="gg-keysafe-value"
-									      style="filter:blur(6px);transition:filter .25s;"
-									      class="select-none"
-									      aria-label="<?php esc_attr_e( 'Hidden key safe code - tap to reveal', 'restwell-retreats' ); ?>">
+										  style="filter:blur(6px);transition:filter .25s;"
+										  class="select-none"
+										  aria-label="<?php esc_attr_e( 'Hidden key safe code - tap to reveal', 'restwell-retreats' ); ?>">
 										<?php echo esc_html( $gg_keysafe ); ?>
 									</span>
 									<button type="button"
-									        id="gg-keysafe-reveal"
-									        class="ml-3 text-xs font-sans font-medium text-[var(--deep-teal)] underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded"
-									        aria-controls="gg-keysafe-value"
-									        aria-expanded="false">
+											id="gg-keysafe-reveal"
+											class="ml-3 text-xs font-sans font-medium text-[var(--deep-teal)] underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded"
+											aria-controls="gg-keysafe-value"
+											aria-expanded="false">
 										<?php esc_html_e( 'Tap to reveal', 'restwell-retreats' ); ?>
 									</button>
 								</dd>
@@ -635,7 +635,7 @@ get_header();
 						if ( $label === $ae_label && $gg_nearest_ae_url ) {
 							$display .= ' <a href="' . esc_url( $gg_nearest_ae_url ) . '" target="_blank" rel="noopener noreferrer" class="text-xs text-[var(--muted-grey)] hover:text-[var(--deep-teal)] underline ml-1" aria-label="' . esc_attr__( 'Open A&E on Google Maps (opens in new tab)', 'restwell-retreats' ) . '">' . esc_html__( 'View on Maps', 'restwell-retreats' ) . '<span class="sr-only"> ' . esc_html__( '(opens in new tab)', 'restwell-retreats' ) . '</span></a>';
 						}
-					?>
+						?>
 						<li>
 							<span class="font-medium text-[var(--deep-teal)]"><?php echo esc_html( $label ); ?>:</span>
 							<?php echo wp_kses_post( $display ); ?>
@@ -663,7 +663,7 @@ get_header();
 				<div class="bg-white rounded-2xl p-6 border border-gray-100 text-center no-print">
 					<p class="text-sm text-[var(--muted-grey)] mb-4"><?php esc_html_e( 'Need a paper copy for your trip?', 'restwell-retreats' ); ?></p>
 					<button type="button" onclick="window.print()"
-					        class="btn btn-outline btn-sm">
+							class="btn btn-outline btn-sm">
 						<i class="ph-bold ph-printer text-sm" aria-hidden="true"></i>
 						<?php esc_html_e( 'Print this guide', 'restwell-retreats' ); ?>
 					</button>

@@ -99,4 +99,3 @@ function restwell_crm_apply_status_change( int $id, string $new_status, string $
 
 	return true;
 }
-

@@ -131,10 +131,22 @@ function restwell_get_primary_nav_structure() {
 			'label'    => __( 'Your stay', 'restwell-retreats' ),
 			'nav_id'   => 'restwell-nav-stay',
 			'children' => array(
-				array( 'label' => __( 'The Property', 'restwell-retreats' ), 'slug' => 'the-property' ),
-				array( 'label' => __( 'How It Works', 'restwell-retreats' ), 'slug' => 'how-it-works' ),
-				array( 'label' => __( 'Accessibility', 'restwell-retreats' ), 'slug' => 'accessibility' ),
-				array( 'label' => __( 'Who It\'s For', 'restwell-retreats' ), 'slug' => 'who-its-for' ),
+				array(
+					'label' => __( 'The Property', 'restwell-retreats' ),
+					'slug' => 'the-property',
+				),
+				array(
+					'label' => __( 'How It Works', 'restwell-retreats' ),
+					'slug' => 'how-it-works',
+				),
+				array(
+					'label' => __( 'Accessibility', 'restwell-retreats' ),
+					'slug' => 'accessibility',
+				),
+				array(
+					'label' => __( 'Who It\'s For', 'restwell-retreats' ),
+					'slug' => 'who-its-for',
+				),
 			),
 		),
 		array(
@@ -142,7 +154,10 @@ function restwell_get_primary_nav_structure() {
 			'label'    => __( 'Area guide', 'restwell-retreats' ),
 			'nav_id'   => 'restwell-nav-area',
 			'children' => array(
-				array( 'label' => __( 'Whitstable Guide', 'restwell-retreats' ), 'slug' => 'whitstable-area-guide' ),
+				array(
+					'label' => __( 'Whitstable Guide', 'restwell-retreats' ),
+					'slug' => 'whitstable-area-guide',
+				),
 			),
 		),
 		array(

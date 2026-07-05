@@ -14,17 +14,17 @@ get_header();
 
 the_post();
 
-$post_id      = get_the_ID();
-$title        = get_the_title();
-$content      = get_the_content();
-$excerpt      = get_the_excerpt();
-$date         = get_the_date();
-$date_iso     = get_the_date( 'c' );
-$modified_iso = get_the_modified_date( 'c' );
-$read_time    = restwell_estimate_read_time( $content );
+$current_post_id       = get_the_ID();
+$post_title    = get_the_title();
+$post_content  = get_the_content();
+$post_excerpt  = get_the_excerpt();
+$post_date     = get_the_date();
+$date_iso      = get_the_date( 'c' );
+$modified_iso  = get_the_modified_date( 'c' );
+$read_time     = restwell_estimate_read_time( $post_content );
 
 $primary_cat_term = null;
-$cats_all       = get_the_category( $post_id );
+$cats_all       = get_the_category( $current_post_id );
 if ( ! empty( $cats_all ) ) {
 	foreach ( $cats_all as $cat_obj ) {
 		if ( 'uncategorized' !== $cat_obj->slug ) {
@@ -33,7 +33,7 @@ if ( ! empty( $cats_all ) ) {
 		}
 	}
 }
-$cat_id = $primary_cat_term ? (int) $primary_cat_term->term_id : 0;
+$primary_cat_id = $primary_cat_term ? (int) $primary_cat_term->term_id : 0;
 
 $img_id  = get_post_thumbnail_id();
 $img_alt = $img_id ? trim( wp_strip_all_tags( (string) get_post_meta( $img_id, '_wp_attachment_image_alt', true ) ) ) : '';
@@ -48,16 +48,18 @@ $archive_label = $posts_page_id ? get_the_title( $posts_page_id ) : __( 'News & 
 
 // Related posts: same category, exclude current.
 $related_posts = array();
-if ( $cat_id ) {
-	$related_query = new WP_Query( array(
-		'category__in'             => array( $cat_id ),
-		'post__not_in'             => array( $post_id ),
-		'posts_per_page'           => 2,
-		'orderby'                  => 'date',
-		'order'                    => 'DESC',
-		'no_found_rows'            => true,
-		'update_post_meta_cache'   => true,
-	) );
+if ( $primary_cat_id ) {
+	$related_query = new WP_Query(
+		array(
+			'category__in'             => array( $primary_cat_id ),
+			'post__not_in'             => array( $current_post_id ),
+			'posts_per_page'           => 2,
+			'orderby'                  => 'date',
+			'order'                    => 'DESC',
+			'no_found_rows'            => true,
+			'update_post_meta_cache'   => true,
+		)
+	);
 	if ( $related_query->have_posts() ) {
 		while ( $related_query->have_posts() ) {
 			$related_query->the_post();
@@ -73,8 +75,8 @@ if ( $cat_id ) {
 	}
 }
 
-$published_ts = (int) get_post_time( 'U', true, $post_id );
-$modified_ts  = (int) get_post_modified_time( 'U', true, $post_id );
+$published_ts = (int) get_post_time( 'U', true, $current_post_id );
+$modified_ts  = (int) get_post_modified_time( 'U', true, $current_post_id );
 $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 ?>
 <main class="flex-1 blog-single-main" id="main-content">
@@ -99,7 +101,7 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 	if ( $show_updated ) {
 		$append_after_h1_html .= '<span class="text-white/65">' . esc_html__( 'Published', 'restwell-retreats' ) . ' </span>';
 	}
-	$append_after_h1_html .= '<time datetime="' . esc_attr( $date_iso ) . '">' . esc_html( $date ) . '</time>';
+	$append_after_h1_html .= '<time datetime="' . esc_attr( $date_iso ) . '">' . esc_html( $post_date ) . '</time>';
 	if ( $show_updated ) {
 		$append_after_h1_html .= ' <span class="text-white/40" aria-hidden="true">·</span> ';
 		$append_after_h1_html .= '<span class="text-white/75">' . esc_html__( 'Updated', 'restwell-retreats' ) . ' <time datetime="' . esc_attr( $modified_iso ) . '">' . esc_html( get_the_modified_date() ) . '</time></span>';
@@ -110,10 +112,10 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 		array(
 			'heading_id'           => 'article-title',
 			'label'                => '',
-			'heading'              => $title,
-			'intro'                => $excerpt,
+			'heading'              => $post_title,
+			'intro'                => $post_excerpt,
 			'media_id'             => $img_id,
-			'image_alt'            => $img_alt !== '' ? $img_alt : $title,
+			'image_alt'            => $img_alt !== '' ? $img_alt : $post_title,
 			'prepend_inner_html'   => $prepend_inner_html,
 			'append_after_h1_html' => $append_after_h1_html,
 		)
@@ -125,19 +127,19 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 		<div class="container">
 			<div class="rw-measure-readable rw-stack rw-stack--loose">
 				<div class="prose prose-lg prose-headings:font-serif prose-headings:text-[var(--deep-teal)] prose-headings:font-normal prose-a:text-[var(--deep-teal)] prose-a:font-medium prose-a:no-underline hover:prose-a:underline prose-strong:text-[var(--deep-teal)] prose-p:text-gray-700 prose-p:leading-relaxed max-w-none">
-				<?php echo wp_kses_post( apply_filters( 'the_content', $content ) ); ?>
+				<?php echo wp_kses_post( apply_filters( 'the_content', $post_content ) ); ?>
 				</div>
 
 		<?php
 			$tags = get_the_tags();
-			if ( $tags ) :
+		if ( $tags ) :
 			?>
 				<div class="blog-single__tags flex flex-wrap gap-2 border-t border-gray-100">
 					<span class="text-xs text-[var(--muted-grey)] font-medium self-center mr-1"><?php esc_html_e( 'Tagged:', 'restwell-retreats' ); ?></span>
-					<?php foreach ( $tags as $tag ) : ?>
-						<a href="<?php echo esc_url( get_tag_link( $tag->term_id ) ); ?>"
+				<?php foreach ( $tags as $tag_term ) : ?>
+						<a href="<?php echo esc_url( get_tag_link( $tag_term->term_id ) ); ?>"
 						   class="inline-block bg-[var(--bg-subtle)] text-[var(--deep-teal)] text-xs font-medium px-3 py-1 rounded-full hover:bg-[var(--sea-glass)]/30 transition-colors duration-200 no-underline">
-							<?php echo esc_html( $tag->name ); ?>
+							<?php echo esc_html( $tag_term->name ); ?>
 						</a>
 					<?php endforeach; ?>
 				</div>
@@ -183,9 +185,9 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 								<?php if ( $rp['img_src'] ) : ?>
 									<div class="relative overflow-hidden aspect-[16/9] bg-[var(--deep-teal)]/10">
 										<img src="<?php echo esc_url( $rp['img_src'] ); ?>"
-										     alt=""
-										     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-										     loading="lazy" />
+											 alt=""
+											 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+											 loading="lazy" />
 									</div>
 								<?php endif; ?>
 								<div class="flex flex-col flex-1 p-6">

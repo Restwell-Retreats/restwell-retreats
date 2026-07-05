@@ -274,9 +274,18 @@ $wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_
 			<div class="grid md:grid-cols-3 rw-gap-grid">
 				<?php
 				$strip = array(
-					array( 'id' => $img_1_id, 'cap' => $img_1_cap ),
-					array( 'id' => $img_2_id, 'cap' => $img_2_cap ),
-					array( 'id' => $img_3_id, 'cap' => $img_3_cap ),
+					array(
+						'id' => $img_1_id,
+						'cap' => $img_1_cap,
+					),
+					array(
+						'id' => $img_2_id,
+						'cap' => $img_2_cap,
+					),
+					array(
+						'id' => $img_3_id,
+						'cap' => $img_3_cap,
+					),
 				);
 				foreach ( $strip as $slot ) :
 					$src = $slot['id'] ? wp_get_attachment_image_url( $slot['id'], 'large' ) : '';

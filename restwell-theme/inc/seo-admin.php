@@ -105,8 +105,8 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 	wp_nonce_field( 'restwell_seo_save', 'restwell_seo_nonce' );
 
 	$focus_kp    = (string) get_post_meta( $post->ID, 'focus_keyphrase', true );
-	$meta_title  = (string) get_post_meta( $post->ID, 'meta_title',       true );
-	$meta_desc   = (string) get_post_meta( $post->ID, 'meta_description',  true );
+	$meta_title  = (string) get_post_meta( $post->ID, 'meta_title', true );
+	$meta_desc   = (string) get_post_meta( $post->ID, 'meta_description', true );
 	$seo_defs = function_exists( 'restwell_get_seo_default_meta_for_post_id' )
 		? restwell_get_seo_default_meta_for_post_id( $post->ID )
 		: array(
@@ -115,10 +115,10 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 			'meta_description' => '',
 		);
 	$kp_placeholder = ! empty( $seo_defs['focus_keyphrase'] ) ? $seo_defs['focus_keyphrase'] : '';
-	$og_image_id = (int)    get_post_meta( $post->ID, 'og_image_id',       true );
-	$og_type     = (string) get_post_meta( $post->ID, 'meta_og_type',      true );
-	$canonical   = (string) get_post_meta( $post->ID, 'meta_canonical',    true );
-	$noindex     = (bool)   get_post_meta( $post->ID, 'meta_noindex',      true );
+	$og_image_id = (int) get_post_meta( $post->ID, 'og_image_id', true );
+	$og_type     = (string) get_post_meta( $post->ID, 'meta_og_type', true );
+	$canonical   = (string) get_post_meta( $post->ID, 'meta_canonical', true );
+	$noindex     = (bool) get_post_meta( $post->ID, 'meta_noindex', true );
 
 	if ( ! in_array( $og_type, array( 'website', 'article' ), true ) ) {
 		$og_type = ( get_post_type( $post ) === 'post' ) ? 'article' : 'website';
@@ -314,15 +314,19 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 		<div class="rw-seo__section" aria-label="<?php esc_attr_e( 'SEO analysis', 'restwell-retreats' ); ?>">
 			<p class="rw-seo__section-label"><?php esc_html_e( 'SEO analysis', 'restwell-retreats' ); ?></p>
 			<ul class="rw-seo__checks" id="rw-seo-checks"
-			    data-content="<?php echo esc_attr( $post->post_content ); ?>"
-			    data-post-type="<?php echo esc_attr( $post->post_type ); ?>">
+				data-content="<?php echo esc_attr( $post->post_content ); ?>"
+				data-post-type="<?php echo esc_attr( $post->post_type ); ?>">
 
 				<?php
 				$checks = restwell_seo_admin_run_checks( $post, $focus_kp, $meta_title, $meta_desc );
 				foreach ( $checks as $check ) :
 					$state = $check['state']; // 'ok', 'warn', 'bad'
-					$icons = array( 'ok' => '✓', 'warn' => '~', 'bad' => '✗' );
-				?>
+					$icons = array(
+						'ok' => '✓',
+						'warn' => '~',
+						'bad' => '✗',
+					);
+					?>
 				<li class="rw-seo__check rw-seo__check--<?php echo esc_attr( $state ); ?>" data-check="<?php echo esc_attr( $check['id'] ); ?>">
 					<span class="rw-seo__check-icon" aria-hidden="true"><?php echo $icons[ $state ]; // phpcs:ignore ?></span>
 					<span class="rw-seo__check-label"><?php echo esc_html( $check['label'] ); ?></span>
@@ -458,7 +462,11 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		$state = ( str_contains( $title_l, $kp ) ) ? 'ok' : 'bad';
 		$label = __( 'Focus keyphrase in SEO title', 'restwell-retreats' );
 	}
-	$checks[] = array( 'id' => 'kp_title', 'label' => $label, 'state' => $state );
+	$checks[] = array(
+		'id' => 'kp_title',
+		'label' => $label,
+		'state' => $state,
+	);
 
 	// 2 - description contains focus keyphrase.
 	if ( $kp === '' ) {
@@ -468,7 +476,11 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		$state = ( str_contains( $desc_l, $kp ) ) ? 'ok' : 'bad';
 		$label = __( 'Focus keyphrase in meta description', 'restwell-retreats' );
 	}
-	$checks[] = array( 'id' => 'kp_desc', 'label' => $label, 'state' => $state );
+	$checks[] = array(
+		'id' => 'kp_desc',
+		'label' => $label,
+		'state' => $state,
+	);
 
 	// 3 - title length 50-60 chars.
 	if ( $title_len >= 50 && $title_len <= 60 ) {

@@ -42,4 +42,3 @@ function restwell_get_tldr_markup( $post_id, $fallback = '' ) {
 	}
 	return '<p class="rw-tldr home-hero__lede max-w-prose text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.3)] font-sans text-base sm:text-lg md:text-xl font-normal leading-relaxed tracking-normal sm:tracking-tight text-balance m-0">' . esc_html( $text ) . '</p>';
 }
-

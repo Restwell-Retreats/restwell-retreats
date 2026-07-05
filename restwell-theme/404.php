@@ -56,12 +56,12 @@ get_header();
 						</h2>
 						<p class="text-sm text-[var(--body-secondary)] leading-relaxed">
 							<?php
-						printf(
+							printf(
 							/* translators: %s - property address */
-							esc_html__( 'See %s - our accessible Whitstable home.', 'restwell-retreats' ),
-							esc_html( (string) get_option( 'restwell_property_address', '101 Russell Drive' ) )
-						);
-						?>
+								esc_html__( 'See %s - our accessible Whitstable home.', 'restwell-retreats' ),
+								esc_html( (string) get_option( 'restwell_property_address', '101 Russell Drive' ) )
+							);
+							?>
 						</p>
 					</div>
 					<a

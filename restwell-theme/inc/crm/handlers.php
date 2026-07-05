@@ -25,16 +25,18 @@ function restwell_crm_handle_export_csv() {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
 	// Explicit column list — avoids pulling unexpected columns added by future migrations.
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$rows = $wpdb->get_results(
-		"SELECT id, submitted_at, name, email, phone,
-		        preferred_dates, date_from, date_to, num_guests,
-		        care_requirements, accessibility, funding_type,
-		        contact_preference, preferred_time, message,
-		        is_urgent, marketing_optin, marketing_optin_at,
-		        status, staff_notes, follow_up_at,
-		        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at
-		 FROM {$table} ORDER BY submitted_at DESC",
+		$wpdb->prepare(
+			'SELECT id, submitted_at, name, email, phone,
+			        preferred_dates, date_from, date_to, num_guests,
+			        care_requirements, accessibility, funding_type,
+			        contact_preference, preferred_time, message,
+			        is_urgent, marketing_optin, marketing_optin_at,
+			        status, staff_notes, follow_up_at,
+			        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at
+			 FROM %i ORDER BY submitted_at DESC',
+			$table
+		),
 		ARRAY_A
 	);
 
@@ -97,7 +99,14 @@ function restwell_crm_handle_send_post_stay() {
 	}
 
 	wp_safe_redirect(
-		add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $id, 'updated' => '1' ), admin_url( 'admin.php' ) )
+		add_query_arg(
+			array(
+				'page' => 'restwell-enquiries',
+				'view' => $id,
+				'updated' => '1',
+			),
+			admin_url( 'admin.php' )
+		)
 	);
 	exit;
 }
@@ -263,7 +272,13 @@ function restwell_crm_handle_save_settings() {
 	update_option( 'restwell_crm_cap_roles', $cap_roles );
 
 	wp_safe_redirect(
-		add_query_arg( array( 'page' => 'restwell-crm', 'settings_saved' => '1' ), admin_url( 'admin.php' ) )
+		add_query_arg(
+			array(
+				'page' => 'restwell-crm',
+				'settings_saved' => '1',
+			),
+			admin_url( 'admin.php' )
+		)
 	);
 	exit;
 }
@@ -287,7 +302,11 @@ function restwell_crm_handle_add_note() {
 
 	wp_safe_redirect(
 		add_query_arg(
-			array( 'page' => 'restwell-enquiries', 'view' => $enquiry_id, 'note_added' => '1' ),
+			array(
+				'page' => 'restwell-enquiries',
+				'view' => $enquiry_id,
+				'note_added' => '1',
+			),
 			admin_url( 'admin.php' )
 		)
 	);
@@ -320,14 +339,17 @@ function restwell_crm_handle_update_stay_dates(): void {
 
 	$enquiry_id = absint( $_POST['rw_enquiry_id'] ?? 0 );
 	$date_from  = sanitize_text_field( wp_unslash( $_POST['rw_date_from'] ?? '' ) );
-	$date_to    = sanitize_text_field( wp_unslash( $_POST['rw_date_to']   ?? '' ) );
+	$date_to    = sanitize_text_field( wp_unslash( $_POST['rw_date_to'] ?? '' ) );
 
 	if ( ! $enquiry_id ) {
 		wp_die( esc_html__( 'Missing enquiry ID.', 'restwell-retreats' ) );
 	}
 
 	$redirect_base = add_query_arg(
-		array( 'page' => 'restwell-enquiries', 'view' => $enquiry_id ),
+		array(
+			'page' => 'restwell-enquiries',
+			'view' => $enquiry_id,
+		),
 		admin_url( 'admin.php' )
 	);
 
@@ -352,13 +374,13 @@ function restwell_crm_handle_update_stay_dates(): void {
 	// Read current values so we can (a) skip a no-op write, and (b) write a
 	// "before → after" entry in the activity log.
 	$existing = $wpdb->get_row(
-		$wpdb->prepare( "SELECT date_from, date_to FROM {$table} WHERE id = %d", $enquiry_id )
+		$wpdb->prepare( 'SELECT date_from, date_to FROM %i WHERE id = %d', $table, $enquiry_id )
 	);
 	if ( ! $existing ) {
 		wp_die( esc_html__( 'Enquiry not found.', 'restwell-retreats' ) );
 	}
 	$old_from = $existing->date_from ?: '';
-	$old_to   = $existing->date_to   ?: '';
+	$old_to   = $existing->date_to ?: '';
 
 	if ( $old_from === $date_from && $old_to === $date_to ) {
 		// Nothing changed — don't pollute the activity log with empty diffs.
@@ -372,7 +394,7 @@ function restwell_crm_handle_update_stay_dates(): void {
 			// Empty becomes NULL in the column (it's `date DEFAULT NULL`); $wpdb
 			// passes NULL through regardless of the format string for that slot.
 			'date_from'       => '' === $date_from ? null : $date_from,
-			'date_to'         => '' === $date_to   ? null : $date_to,
+			'date_to'         => '' === $date_to ? null : $date_to,
 			'preferred_dates' => restwell_format_enquiry_date_range( $date_from, $date_to ),
 		),
 		array( 'id' => $enquiry_id ),
@@ -487,4 +509,3 @@ function restwell_crm_handle_lead_action() {
 	);
 }
 add_action( 'wp_ajax_restwell_lead_action', 'restwell_crm_handle_lead_action' );
-

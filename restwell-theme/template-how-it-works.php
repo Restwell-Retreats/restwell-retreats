@@ -29,26 +29,26 @@ $hiw_steps_heading = get_post_meta( $pid, 'hiw_steps_heading', true ) ?: 'Straig
 $hiw_steps_intro   = get_post_meta( $pid, 'hiw_steps_intro', true ) ?: 'Share your dates and what you need; we\'ll handle the rest.';
 $steps = array();
 for ( $i = 1; $i <= 4; $i++ ) {
-	$title = get_post_meta( $pid, "hiw_step{$i}_title", true );
-	$body  = get_post_meta( $pid, "hiw_step{$i}_body", true );
-	if ( $i === 1 && ! $title ) {
-		$title = 'Get in touch';
-		$body  = $body ?: 'Share your dates and what you need. We\'ll get back to you and take it from there.';
+	$step_title = get_post_meta( $pid, "hiw_step{$i}_title", true );
+	$body       = get_post_meta( $pid, "hiw_step{$i}_body", true );
+	if ( $i === 1 && ! $step_title ) {
+		$step_title = 'Get in touch';
+		$body       = $body ?: 'Share your dates and what you need. We\'ll get back to you and take it from there.';
 	}
-	if ( $i === 2 && ! $title ) {
-		$title = 'Plan your stay';
-		$body  = $body ?: "We'll confirm the property, walk you through what's included, and answer any questions.";
+	if ( $i === 2 && ! $step_title ) {
+		$step_title = 'Plan your stay';
+		$body       = $body ?: "We'll confirm the property, walk you through what's included, and answer any questions.";
 	}
-	if ( $i === 3 && ! $title ) {
-		$title = 'Arrange support (if needed)';
-		$body  = $body ?: "If you want care support during your stay, we can connect you with Continuity of Care Services, a CQC-regulated provider based in Kent. You can also bring your own carer or PA. This step is entirely optional.";
+	if ( $i === 3 && ! $step_title ) {
+		$step_title = 'Arrange support (if needed)';
+		$body       = $body ?: 'If you want care support during your stay, we can connect you with Continuity of Care Services, a CQC-regulated provider based in Kent. You can also bring your own carer or PA. This step is entirely optional.';
 	}
-	if ( $i === 4 && ! $title ) {
-		$title = 'Arrive and enjoy';
-		$body  = $body ?: 'The house is yours. Settle in, explore Whitstable, and take a proper break.';
+	if ( $i === 4 && ! $step_title ) {
+		$step_title = 'Arrive and enjoy';
+		$body       = $body ?: 'The house is yours. Settle in, explore Whitstable, and take a proper break.';
 	}
 	$steps[] = array(
-		'title' => $title ?: '',
+		'title' => $step_title ?: '',
 		'body'  => $body ?: '',
 	);
 }
@@ -64,12 +64,36 @@ $hiw_included_label   = get_post_meta( $pid, 'hiw_included_label', true ) ?: 'WH
 $hiw_included_heading = get_post_meta( $pid, 'hiw_included_heading', true ) ?: "What's included in every stay";
 $hiw_included_intro   = get_post_meta( $pid, 'hiw_included_intro', true ) ?: 'No hidden extras. These come with every booking as standard.';
 $included_items = array(
-	array( 'title' => 'Bed linen & towels', 'desc' => 'Freshly laundered bed linen and towels, prepared before you arrive.', 'icon' => 'linen' ),
-	array( 'title' => 'Welcome pack', 'desc' => 'House guide, local contacts, plus tea, coffee, and basic arrival essentials.', 'icon' => 'gift' ),
-	array( 'title' => 'Full kitchen', 'desc' => 'Fully equipped kitchen so you can cook comfortably at your own pace.', 'icon' => 'kitchen' ),
-	array( 'title' => 'Private garden', 'desc' => 'Private use of the whole bungalow, with no shared spaces.', 'icon' => 'garden' ),
-	array( 'title' => 'Fast Wi-Fi', 'desc' => 'Reliable Wi-Fi coverage across the property for guests and carers.', 'icon' => 'wifi' ),
-	array( 'title' => 'Accessible parking', 'desc' => 'Two off-road spaces on the private drive, with nearby on-street overflow.', 'icon' => 'parking' ),
+	array(
+		'title' => 'Bed linen & towels',
+		'desc' => 'Freshly laundered bed linen and towels, prepared before you arrive.',
+		'icon' => 'linen',
+	),
+	array(
+		'title' => 'Welcome pack',
+		'desc' => 'House guide, local contacts, plus tea, coffee, and basic arrival essentials.',
+		'icon' => 'gift',
+	),
+	array(
+		'title' => 'Full kitchen',
+		'desc' => 'Fully equipped kitchen so you can cook comfortably at your own pace.',
+		'icon' => 'kitchen',
+	),
+	array(
+		'title' => 'Private garden',
+		'desc' => 'Private use of the whole bungalow, with no shared spaces.',
+		'icon' => 'garden',
+	),
+	array(
+		'title' => 'Fast Wi-Fi',
+		'desc' => 'Reliable Wi-Fi coverage across the property for guests and carers.',
+		'icon' => 'wifi',
+	),
+	array(
+		'title' => 'Accessible parking',
+		'desc' => 'Two off-road spaces on the private drive, with nearby on-street overflow.',
+		'icon' => 'parking',
+	),
 );
 for ( $i = 1; $i <= 6; $i++ ) {
 	$t = get_post_meta( $pid, "hiw_included_{$i}_title", true );
@@ -122,12 +146,15 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 	?>
 
 	<?php
-	set_query_var( 'args', array(
-		'steps_label'   => $hiw_steps_label,
-		'steps_heading' => $hiw_steps_heading,
-		'steps_intro'   => $hiw_steps_intro,
-		'steps'         => $steps,
-	) );
+	set_query_var(
+		'args',
+		array(
+			'steps_label'   => $hiw_steps_label,
+			'steps_heading' => $hiw_steps_heading,
+			'steps_intro'   => $hiw_steps_intro,
+			'steps'         => $steps,
+		)
+	);
 	get_template_part( 'template-parts/how-it-works-steps' );
 	?>
 
@@ -155,9 +182,9 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-5xl mx-auto">
 				<?php foreach ( $included_items as $item ) : ?>
 				<div class="bg-white rounded-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100
-				            flex flex-col items-center text-center
-				            hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-				            transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+							flex flex-col items-center text-center
+							hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
+							transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 					<div class="text-[var(--deep-teal)] mb-5" aria-hidden="true">
 						<?php
 						switch ( $item['icon'] ) {
@@ -242,7 +269,7 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 			<div class="space-y-3">
 				<?php foreach ( $faq_pairs as $faq ) : ?>
 					<details class="bg-white rounded-2xl px-8 shadow-[0_4px_20px_rgb(0,0,0,0.05)] border border-gray-100 group">
-						<summary class="text-[var(--deep-teal)] font-medium text-base py-5 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl">
+						<summary class="text-[var(--deep-teal)] font-medium text-base py-5 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2">
 							<span><?php echo esc_html( $faq['q'] ); ?></span>
 							<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true"><i class="ph-bold ph-caret-down"></i></span>
 						</summary>

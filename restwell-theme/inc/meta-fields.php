@@ -73,75 +73,73 @@ function restwell_page_content_meta_box_callback( $post ) {
 			$active   = ( 0 === $index ) ? ' active' : '';
 			echo '<div id="' . esc_attr( $panel_id ) . '" class="restwell-tab-panel' . esc_attr( $active ) . '" role="tabpanel" aria-label="' . esc_attr( $section ) . '">';
 
-		foreach ( $items as $key => $field ) {
-			$label = $field['label'];
-			$type  = $field['type'];
-			$value = isset( $current[ $key ][0] ) ? $current[ $key ][0] : '';
-			$id    = 'restwell_' . $key;
-			$name  = $key;
-			echo '<div class="restwell-field">';
+			foreach ( $items as $key => $field ) {
+				$label = $field['label'];
+				$type  = $field['type'];
+				$value = isset( $current[ $key ][0] ) ? $current[ $key ][0] : '';
+				$id    = 'restwell_' . $key;
+				$name  = $key;
+				echo '<div class="restwell-field">';
 
-			if ( 'textarea' === $type ) {
-				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
-				echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="5">' . esc_textarea( $value ) . '</textarea>';
-			} elseif ( 'gallery' === $type ) {
-				$gallery_ids   = restwell_parse_gallery_ids( $value );
-				$gallery_value = implode( ',', $gallery_ids );
-				$input_id      = $id . '_value';
-				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
-				echo '<div class="restwell-gallery-upload" data-field-id="' . esc_attr( $id ) . '">';
-				echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $gallery_value ) . '" />';
-				echo '<ul class="restwell-gallery-preview" role="list">';
-				foreach ( $gallery_ids as $gid ) {
-					$thumb = wp_get_attachment_image_url( $gid, 'thumbnail' );
-					if ( ! $thumb ) {
-						continue;
+				if ( 'textarea' === $type ) {
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="5">' . esc_textarea( $value ) . '</textarea>';
+				} elseif ( 'gallery' === $type ) {
+					$gallery_ids   = restwell_parse_gallery_ids( $value );
+					$gallery_value = implode( ',', $gallery_ids );
+					$input_id      = $id . '_value';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<div class="restwell-gallery-upload" data-field-id="' . esc_attr( $id ) . '">';
+					echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $gallery_value ) . '" />';
+					echo '<ul class="restwell-gallery-preview" role="list">';
+					foreach ( $gallery_ids as $gid ) {
+						$thumb = wp_get_attachment_image_url( $gid, 'thumbnail' );
+						if ( ! $thumb ) {
+							continue;
+						}
+						echo '<li class="restwell-gallery-preview__item" data-id="' . esc_attr( (string) $gid ) . '">';
+						echo '<img src="' . esc_url( $thumb ) . '" alt="" width="80" height="80" />';
+						echo '<button type="button" class="button-link restwell-gallery-remove" aria-label="' . esc_attr__( 'Remove image', 'restwell-retreats' ) . '">&times;</button>';
+						echo '</li>';
 					}
-					echo '<li class="restwell-gallery-preview__item" data-id="' . esc_attr( (string) $gid ) . '">';
-					echo '<img src="' . esc_url( $thumb ) . '" alt="" width="80" height="80" />';
-					echo '<button type="button" class="button-link restwell-gallery-remove" aria-label="' . esc_attr__( 'Remove image', 'restwell-retreats' ) . '">&times;</button>';
-					echo '</li>';
-				}
-				echo '</ul>';
-				echo '<button type="button" id="' . esc_attr( $id ) . '" class="button button-secondary restwell-select-gallery">' . esc_html__( 'Add gallery images', 'restwell-retreats' ) . '</button>';
-				echo '</div>';
-				restwell_render_gallery_admin_alt_notice( $gallery_ids );
-			} elseif ( 'image' === $type || 'media' === $type ) {
-				$img_value    = absint( $value );
-				$img_url      = $img_value ? wp_get_attachment_image_url( $img_value, 'medium' ) : '';
-				$mime_type    = $img_value ? get_post_mime_type( $img_value ) : '';
-				$is_video     = $mime_type && strpos( $mime_type, 'video/' ) === 0;
-				$preview_show = $img_value ? '' : ' style="display:none;"';
-				$remove_show  = $img_value ? '' : ' style="display:none;"';
-				$allows_video = ( 'media' === $type );
-				$allowed      = $allows_video ? ' data-allowed-types="image,video"' : ' data-allowed-types="image"';
-				$preview_src  = $img_url ? esc_url( $img_url ) : '';
-				$preview_text = $is_video ? esc_html__( 'Video selected', 'restwell-retreats' ) : '';
-				$input_id     = $id . '_value';
-				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
-				echo '<div class="restwell-image-upload restwell-media-upload"' . $allowed . '>';
-				echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
-				echo '<div class="restwell-image-preview"' . $preview_show . '>';
-				if ( $allows_video ) {
-					echo '<img src="' . $preview_src . '" alt="" style="' . ( $is_video ? 'display:none;' : '' ) . '" />';
-					echo '<span class="restwell-media-preview-text" style="' . ( $is_video ? '' : 'display:none;' ) . '">' . $preview_text . '</span>';
+					echo '</ul>';
+					echo '<button type="button" id="' . esc_attr( $id ) . '" class="button button-secondary restwell-select-gallery">' . esc_html__( 'Add gallery images', 'restwell-retreats' ) . '</button>';
+					echo '</div>';
+					restwell_render_gallery_admin_alt_notice( $gallery_ids );
+				} elseif ( 'image' === $type || 'media' === $type ) {
+					$img_value       = absint( $value );
+					$img_url         = $img_value ? wp_get_attachment_image_url( $img_value, 'medium' ) : '';
+					$mime_type       = $img_value ? get_post_mime_type( $img_value ) : '';
+					$is_video        = $mime_type && strpos( $mime_type, 'video/' ) === 0;
+					$has_preview     = (bool) $img_value;
+					$allows_video    = ( 'media' === $type );
+					$allowed_types   = $allows_video ? 'image,video' : 'image';
+					$preview_text    = $is_video ? __( 'Video selected', 'restwell-retreats' ) : '';
+					$input_id        = $id . '_value';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<div class="restwell-image-upload restwell-media-upload" data-allowed-types="' . esc_attr( $allowed_types ) . '">';
+					echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
+					echo '<div class="restwell-image-preview"' . ( $has_preview ? '' : ' style="display:none;"' ) . '>';
+					if ( $allows_video ) {
+						echo '<img src="' . esc_url( $img_url ) . '" alt="" style="' . ( $is_video ? 'display:none;' : '' ) . '" />';
+						echo '<span class="restwell-media-preview-text" style="' . ( $is_video ? '' : 'display:none;' ) . '">' . esc_html( $preview_text ) . '</span>';
+					} else {
+						echo '<img src="' . esc_url( $img_url ) . '" alt="" />';
+					}
+					echo '</div>';
+					$select_btn_text = $allows_video ? __( 'Select image or video', 'restwell-retreats' ) : __( 'Select Image', 'restwell-retreats' );
+					echo '<button type="button" id="' . esc_attr( $id ) . '" class="button button-secondary restwell-select-image">' . esc_html( $select_btn_text ) . '</button>';
+					echo '<button type="button" class="button button-link restwell-remove-image"' . ( $has_preview ? '' : ' style="display:none;"' ) . '>' . esc_html__( 'Remove', 'restwell-retreats' ) . '</button>';
+					echo '</div>';
+				} elseif ( 'number' === $type ) {
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<input type="number" step="any" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 				} else {
-					echo '<img src="' . $preview_src . '" alt="" />';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<input type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 				}
 				echo '</div>';
-				$select_btn_text = $allows_video ? __( 'Select image or video', 'restwell-retreats' ) : __( 'Select Image', 'restwell-retreats' );
-				echo '<button type="button" id="' . esc_attr( $id ) . '" class="button button-secondary restwell-select-image">' . esc_html( $select_btn_text ) . '</button>';
-				echo '<button type="button" class="button button-link restwell-remove-image"' . $remove_show . '>' . esc_html__( 'Remove', 'restwell-retreats' ) . '</button>';
-				echo '</div>';
-			} elseif ( 'number' === $type ) {
-				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
-				echo '<input type="number" step="any" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
-			} else {
-				echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
-				echo '<input type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 			}
-			echo '</div>';
-		}
 			echo '</div>';
 			$index++;
 		}
@@ -156,7 +154,7 @@ function restwell_page_content_meta_box_callback( $post ) {
  */
 function restwell_save_page_content_meta_box( $post_id ) {
 	if ( ! isset( $_POST[ RESTWELL_META_NONCE_NAME ] ) ||
-	     ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ RESTWELL_META_NONCE_NAME ] ) ), RESTWELL_META_NONCE_ACTION ) ) {
+		 ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ RESTWELL_META_NONCE_NAME ] ) ), RESTWELL_META_NONCE_ACTION ) ) {
 		return;
 	}
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {

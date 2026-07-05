@@ -45,7 +45,7 @@ function restwell_get_page_content_field_definitions( $post = null ) {
 	$template = $post ? get_page_template_slug( $post ) : '';
 	$map = array(
 		'template-property.php'    => 'restwell_get_property_field_definitions',
-		'template-how-it-works.php'=> 'restwell_get_how_it_works_field_definitions',
+		'template-how-it-works.php' => 'restwell_get_how_it_works_field_definitions',
 		'template-accessibility.php' => 'restwell_get_accessibility_field_definitions',
 		'template-who-its-for.php' => 'restwell_get_who_its_for_field_definitions',
 		'template-whitstable-guide.php' => 'restwell_get_whitstable_guide_field_definitions',
@@ -82,7 +82,7 @@ function restwell_get_front_page_field_definitions() {
 			'hero_video_poster_id'    => restwell_field( __( 'Hero video poster image (optional attachment ID; used only when Hero background is a video)', 'restwell-retreats' ), 'image' ),
 			'hero_cta_primary_label'  => restwell_field( __( 'Hero primary button label', 'restwell-retreats' ) ),
 			'hero_cta_primary_url'    => restwell_field( __( 'Hero primary button URL', 'restwell-retreats' ) ),
-			'hero_cta_secondary_label'=> restwell_field( __( 'Hero secondary button label', 'restwell-retreats' ) ),
+			'hero_cta_secondary_label' => restwell_field( __( 'Hero secondary button label', 'restwell-retreats' ) ),
 			'hero_cta_secondary_url'  => restwell_field( __( 'Hero secondary button URL', 'restwell-retreats' ) ),
 			'hero_cta_reassurance'    => restwell_field( __( 'Optional line under hero buttons (response time & no obligation). Empty = use theme default; clear the field and save to hide.', 'restwell-retreats' ), 'textarea' ),
 			'hero_cta_promise'        => restwell_field( __( 'Optional. Not shown in the hero (trust line lives on the bottom CTA). You can leave this empty.', 'restwell-retreats' ) ),
@@ -532,7 +532,7 @@ function restwell_get_accessibility_field_definitions() {
 			'acc_inside_body'     => restwell_field( __( 'Inside body', 'restwell-retreats' ), 'textarea' ),
 			'acc_bedroom_heading' => restwell_field( __( 'Bedrooms (h3)', 'restwell-retreats' ) ),
 			'acc_bedroom_body'    => restwell_field( __( 'Bedrooms body', 'restwell-retreats' ), 'textarea' ),
-			'acc_bathroom_heading'=> restwell_field( __( 'Bathroom (h3)', 'restwell-retreats' ) ),
+			'acc_bathroom_heading' => restwell_field( __( 'Bathroom (h3)', 'restwell-retreats' ) ),
 			'acc_bathroom_body'   => restwell_field( __( 'Bathroom body', 'restwell-retreats' ), 'textarea' ),
 			'acc_kitchen_heading' => restwell_field( __( 'Kitchen (h3)', 'restwell-retreats' ) ),
 			'acc_kitchen_body'    => restwell_field( __( 'Kitchen body', 'restwell-retreats' ), 'textarea' ),
@@ -674,7 +674,7 @@ function restwell_get_who_its_for_field_definitions() {
 			'wif_nav_family_label'       => restwell_field( __( 'Jump link: families / guests', 'restwell-retreats' ) ),
 			'wif_nav_carers_label'       => restwell_field( __( 'Jump link: carers', 'restwell-retreats' ) ),
 			'wif_nav_ot_label'           => restwell_field( __( 'Jump link: OT / case manager', 'restwell-retreats' ) ),
-			'wif_nav_commissioners_label'=> restwell_field( __( 'Jump link: commissioners', 'restwell-retreats' ) ),
+			'wif_nav_commissioners_label' => restwell_field( __( 'Jump link: commissioners', 'restwell-retreats' ) ),
 		),
 		'Persona cards (summary)' => array(
 			'wif_family_title'        => restwell_field( __( 'Guests and families card title', 'restwell-retreats' ) ),

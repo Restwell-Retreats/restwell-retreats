@@ -161,7 +161,7 @@ function restwell_get_seeded_post_category_map() {
 	return array(
 		'accessible-beaches-coastal-walks-kent'      => 'kent-coast',
 		'direct-payment-holiday-accommodation'       => 'funding-care',
-		'revitalise-alternatives-accessible-holidays'=> 'news-updates',
+		'revitalise-alternatives-accessible-holidays' => 'news-updates',
 		'how-to-choose-accessible-self-catering-holiday' => 'accessible-holidays',
 		'carers-respite-holiday-guide'               => 'funding-care',
 	);

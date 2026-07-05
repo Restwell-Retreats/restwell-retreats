@@ -1298,32 +1298,50 @@
 	}
 
 	/**
-	 * Who It's For: highlight jump-nav link for the section nearest the upper viewport.
+	 * Sticky section jump-nav: scroll-spy active-link highlight + horizontal
+	 * scroll affordance for the nav track. Shared by the "Who It's For" persona
+	 * nav and the property page section nav — behaviour is identical, only the
+	 * selectors and BEM class prefix differ.
+	 *
+	 * @param {Object} config
+	 * @param {string} config.rootSelector Page wrapper selector.
+	 * @param {string} config.navSelector  Nav element selector, scoped to root.
+	 * @param {string} config.anchorAttr   Link data-attribute holding the target section id.
+	 * @param {string} config.classPrefix  BEM block name for the nav (e.g. 'prop-page-nav').
+	 * @param {string} [config.hintId]     Id of the "scroll for more" hint element, if any.
+	 * @return {{root: Element, nav: Element, links: NodeList, sections: Array}|null}
+	 *   Null when the nav isn't present on this page; otherwise the resolved
+	 *   elements so callers can layer extra behaviour (e.g. accordion cards)
+	 *   on top of the shared scroll-spy.
 	 */
-	function initWifPersonaNav() {
-		var root = document.querySelector('.restwell-wif-page');
+	function initSectionJumpNav(config) {
+		var root = document.querySelector(config.rootSelector);
 		if (!root) {
-			return;
+			return null;
 		}
-		var nav = root.querySelector('.wif-persona-nav');
+		var nav = root.querySelector(config.navSelector);
 		if (!nav) {
-			return;
+			return null;
 		}
-		var personaLinks = nav.querySelectorAll('a[data-wif-anchor]');
+		var links = nav.querySelectorAll('a[' + config.anchorAttr + ']');
 		var sections = [];
-		personaLinks.forEach(function (link) {
-			var id = link.getAttribute('data-wif-anchor');
+		links.forEach(function (link) {
+			var id = link.getAttribute(config.anchorAttr);
 			var el = id ? document.getElementById(id) : null;
 			if (el) {
 				sections.push({ el: el, link: link });
 			}
 		});
 		if (!sections.length) {
-			return;
+			return null;
 		}
+
+		var prefix = config.classPrefix;
+		var activeClass = prefix + '__link--active';
+
 		function clearActive() {
-			nav.querySelectorAll('.wif-persona-nav__link--active').forEach(function (a) {
-				a.classList.remove('wif-persona-nav__link--active');
+			nav.querySelectorAll('.' + activeClass).forEach(function (a) {
+				a.classList.remove(activeClass);
 				a.removeAttribute('aria-current');
 			});
 		}
@@ -1346,7 +1364,7 @@
 			});
 			if (best && best.link) {
 				clearActive();
-				best.link.classList.add('wif-persona-nav__link--active');
+				best.link.classList.add(activeClass);
 				best.link.setAttribute('aria-current', 'true');
 			} else {
 				clearActive();
@@ -1364,9 +1382,9 @@
 			});
 		}
 
-		var track = nav.querySelector('.wif-persona-nav__track');
-		var list = nav.querySelector('.wif-persona-nav__list');
-		var hint = document.getElementById('wif-persona-nav-hint');
+		var track = nav.querySelector('.' + prefix + '__track');
+		var list = nav.querySelector('.' + prefix + '__list');
+		var hint = config.hintId ? document.getElementById(config.hintId) : null;
 		function updateScrollAffordance() {
 			if (!list || !track) {
 				return;
@@ -1374,225 +1392,36 @@
 			var mq = window.matchMedia('(min-width: 768px)');
 			if (mq.matches) {
 				track.classList.remove(
-					'wif-persona-nav__track--scrollable',
-					'wif-persona-nav__track--at-start',
-					'wif-persona-nav__track--at-end'
+					prefix + '__track--scrollable',
+					prefix + '__track--at-start',
+					prefix + '__track--at-end'
 				);
 				if (hint) {
-					hint.classList.remove('wif-persona-nav__hint--collapsed');
+					hint.classList.remove(prefix + '__hint--collapsed');
 				}
 				return;
 			}
 			var overflow = list.scrollWidth > list.clientWidth + 2;
 			if (hint) {
 				if (overflow) {
-					hint.classList.remove('wif-persona-nav__hint--collapsed');
+					hint.classList.remove(prefix + '__hint--collapsed');
 				} else {
-					hint.classList.add('wif-persona-nav__hint--collapsed');
+					hint.classList.add(prefix + '__hint--collapsed');
 				}
 			}
 			if (!overflow) {
 				track.classList.remove(
-					'wif-persona-nav__track--scrollable',
-					'wif-persona-nav__track--at-start',
-					'wif-persona-nav__track--at-end'
+					prefix + '__track--scrollable',
+					prefix + '__track--at-start',
+					prefix + '__track--at-end'
 				);
 				return;
 			}
-			track.classList.add('wif-persona-nav__track--scrollable');
+			track.classList.add(prefix + '__track--scrollable');
 			var maxScroll = list.scrollWidth - list.clientWidth;
 			var sl = list.scrollLeft;
-			track.classList.toggle('wif-persona-nav__track--at-start', sl <= 3);
-			track.classList.toggle('wif-persona-nav__track--at-end', sl >= maxScroll - 3);
-		}
-		if (list) {
-			list.addEventListener(
-				'scroll',
-				function () {
-					updateScrollAffordance();
-				},
-				{ passive: true }
-			);
-		}
-		window.addEventListener('resize', function () {
-			updateScrollAffordance();
-		});
-		updateScrollAffordance();
-		window.requestAnimationFrame(function () {
-			updateScrollAffordance();
-		});
-		setTimeout(updateScrollAffordance, 400);
-
-	// Close all other persona cards smoothly when one opens (exclusive accordion).
-	var allCards = root.querySelectorAll('details.wif-persona-card');
-
-	function closeCard(card) {
-		var body = card.querySelector('.wif-persona-card__body');
-		if (!body) {
-			card.open = false;
-			return;
-		}
-		var startHeight = body.offsetHeight;
-		var anim = body.animate(
-			[{ height: startHeight + 'px', overflow: 'hidden' }, { height: '0px', overflow: 'hidden' }],
-			{ duration: 260, easing: 'ease-in-out' }
-		);
-		anim.onfinish = function () {
-			card.open = false;
-		};
-	}
-
-	allCards.forEach(function (card) {
-		card.addEventListener('toggle', function () {
-			if (!card.open) {
-				return;
-			}
-			allCards.forEach(function (other) {
-				if (other !== card && other.open) {
-					closeCard(other);
-				}
-			});
-		});
-	});
-
-	// Open the <details> card when a persona nav link is clicked.
-	personaLinks.forEach(function (link) {
-		link.addEventListener('click', function () {
-			var id = link.getAttribute('data-wif-anchor') || (link.hash && link.hash.slice(1));
-			if (!id) {
-				return;
-			}
-			var card = document.getElementById(id);
-			if (card && card.tagName === 'DETAILS') {
-				card.open = true;
-			}
-		});
-	});
-	// Open from initial hash or subsequent hash changes.
-	function openDetailsFromHash() {
-		var hash = location.hash.slice(1);
-		if (!hash) {
-			return;
-		}
-		var el = document.getElementById(hash);
-		if (el && el.tagName === 'DETAILS') {
-			el.open = true;
-		}
-	}
-	openDetailsFromHash();
-	window.addEventListener('hashchange', openDetailsFromHash, { passive: true });
-	window.addEventListener('scroll', onScrollOrResize, { passive: true });
-	window.addEventListener('resize', onScrollOrResize, { passive: true });
-	updateActive();
-}
-
-	/**
-	 * Property page: sticky section jump nav (same interaction model as Who It's For).
-	 */
-	function initPropPageNav() {
-		var root = document.querySelector('.prop-page');
-		if (!root) {
-			return;
-		}
-		var nav = root.querySelector('.prop-page-nav');
-		if (!nav) {
-			return;
-		}
-		var navLinks = nav.querySelectorAll('a[data-prop-anchor]');
-		var sections = [];
-		navLinks.forEach(function (link) {
-			var id = link.getAttribute('data-prop-anchor');
-			var el = id ? document.getElementById(id) : null;
-			if (el) {
-				sections.push({ el: el, link: link });
-			}
-		});
-		if (!sections.length) {
-			return;
-		}
-		function clearActive() {
-			nav.querySelectorAll('.prop-page-nav__link--active').forEach(function (a) {
-				a.classList.remove('prop-page-nav__link--active');
-				a.removeAttribute('aria-current');
-			});
-		}
-		function updateActive() {
-			var vh = window.innerHeight || document.documentElement.clientHeight;
-			var target = 0.32 * vh;
-			var best = null;
-			var bestDist = Infinity;
-			sections.forEach(function (s) {
-				var r = s.el.getBoundingClientRect();
-				if (r.bottom <= 0 || r.top >= vh) {
-					return;
-				}
-				var mid = (r.top + r.bottom) / 2;
-				var dist = Math.abs(mid - target);
-				if (dist < bestDist) {
-					bestDist = dist;
-					best = s;
-				}
-			});
-			if (best && best.link) {
-				clearActive();
-				best.link.classList.add('prop-page-nav__link--active');
-				best.link.setAttribute('aria-current', 'true');
-			} else {
-				clearActive();
-			}
-		}
-		var ticking = false;
-		function onScrollOrResize() {
-			if (ticking) {
-				return;
-			}
-			ticking = true;
-			window.requestAnimationFrame(function () {
-				updateActive();
-				ticking = false;
-			});
-		}
-
-		var track = nav.querySelector('.prop-page-nav__track');
-		var list = nav.querySelector('.prop-page-nav__list');
-		var hint = document.getElementById('prop-page-nav-hint');
-		function updateScrollAffordance() {
-			if (!list || !track) {
-				return;
-			}
-			var mq = window.matchMedia('(min-width: 768px)');
-			if (mq.matches) {
-				track.classList.remove(
-					'prop-page-nav__track--scrollable',
-					'prop-page-nav__track--at-start',
-					'prop-page-nav__track--at-end'
-				);
-				if (hint) {
-					hint.classList.remove('prop-page-nav__hint--collapsed');
-				}
-				return;
-			}
-			var overflow = list.scrollWidth > list.clientWidth + 2;
-			if (hint) {
-				if (overflow) {
-					hint.classList.remove('prop-page-nav__hint--collapsed');
-				} else {
-					hint.classList.add('prop-page-nav__hint--collapsed');
-				}
-			}
-			if (!overflow) {
-				track.classList.remove(
-					'prop-page-nav__track--scrollable',
-					'prop-page-nav__track--at-start',
-					'prop-page-nav__track--at-end'
-				);
-				return;
-			}
-			track.classList.add('prop-page-nav__track--scrollable');
-			var maxScroll = list.scrollWidth - list.clientWidth;
-			var sl = list.scrollLeft;
-			track.classList.toggle('prop-page-nav__track--at-start', sl <= 3);
-			track.classList.toggle('prop-page-nav__track--at-end', sl >= maxScroll - 3);
+			track.classList.toggle(prefix + '__track--at-start', sl <= 3);
+			track.classList.toggle(prefix + '__track--at-end', sl >= maxScroll - 3);
 		}
 		if (list) {
 			list.addEventListener(
@@ -1615,6 +1444,99 @@
 		window.addEventListener('scroll', onScrollOrResize, { passive: true });
 		window.addEventListener('resize', onScrollOrResize, { passive: true });
 		updateActive();
+
+		return { root: root, nav: nav, links: links, sections: sections };
+	}
+
+	/**
+	 * Who It's For: highlight jump-nav link for the section nearest the upper
+	 * viewport, plus exclusive-accordion persona cards and hash deep-linking.
+	 */
+	function initWifPersonaNav() {
+		var navState = initSectionJumpNav({
+			rootSelector: '.restwell-wif-page',
+			navSelector: '.wif-persona-nav',
+			anchorAttr: 'data-wif-anchor',
+			classPrefix: 'wif-persona-nav',
+			hintId: 'wif-persona-nav-hint'
+		});
+		if (!navState) {
+			return;
+		}
+		var root = navState.root;
+		var personaLinks = navState.links;
+
+		// Close all other persona cards smoothly when one opens (exclusive accordion).
+		var allCards = root.querySelectorAll('details.wif-persona-card');
+
+		function closeCard(card) {
+			var body = card.querySelector('.wif-persona-card__body');
+			if (!body) {
+				card.open = false;
+				return;
+			}
+			var startHeight = body.offsetHeight;
+			var anim = body.animate(
+				[{ height: startHeight + 'px', overflow: 'hidden' }, { height: '0px', overflow: 'hidden' }],
+				{ duration: 260, easing: 'ease-in-out' }
+			);
+			anim.onfinish = function () {
+				card.open = false;
+			};
+		}
+
+		allCards.forEach(function (card) {
+			card.addEventListener('toggle', function () {
+				if (!card.open) {
+					return;
+				}
+				allCards.forEach(function (other) {
+					if (other !== card && other.open) {
+						closeCard(other);
+					}
+				});
+			});
+		});
+
+		// Open the <details> card when a persona nav link is clicked.
+		personaLinks.forEach(function (link) {
+			link.addEventListener('click', function () {
+				var id = link.getAttribute('data-wif-anchor') || (link.hash && link.hash.slice(1));
+				if (!id) {
+					return;
+				}
+				var card = document.getElementById(id);
+				if (card && card.tagName === 'DETAILS') {
+					card.open = true;
+				}
+			});
+		});
+		// Open from initial hash or subsequent hash changes.
+		function openDetailsFromHash() {
+			var hash = location.hash.slice(1);
+			if (!hash) {
+				return;
+			}
+			var el = document.getElementById(hash);
+			if (el && el.tagName === 'DETAILS') {
+				el.open = true;
+			}
+		}
+		openDetailsFromHash();
+		window.addEventListener('hashchange', openDetailsFromHash, { passive: true });
+	}
+
+	/**
+	 * Property page: sticky section jump nav (same interaction model as Who It's For).
+	 */
+	function initPropPageNav() {
+		initSectionJumpNav({
+			rootSelector: '.prop-page',
+			navSelector: '.prop-page-nav',
+			anchorAttr: 'data-prop-anchor',
+			classPrefix: 'prop-page-nav',
+			hintId: 'prop-page-nav-hint'
+		});
 	}
 
 	/**
@@ -1880,6 +1802,31 @@
 		var slides = [];
 		var currentIndex = 0;
 		var lastFocus = null;
+		var lockedScrollY = 0;
+
+		function lockPageScroll() {
+			lockedScrollY = window.scrollY || window.pageYOffset || 0;
+			document.documentElement.classList.add('restwell-lightbox-open');
+			document.body.classList.add('restwell-lightbox-open');
+			document.body.style.top = '-' + lockedScrollY + 'px';
+		}
+
+		function unlockPageScroll() {
+			document.documentElement.classList.remove('restwell-lightbox-open');
+			document.body.classList.remove('restwell-lightbox-open');
+			document.body.style.top = '';
+			window.scrollTo(0, lockedScrollY);
+		}
+
+		function preventBackgroundTouchMove(e) {
+			if (!lightboxEl || lightboxEl.hasAttribute('hidden')) {
+				return;
+			}
+			if (lightboxEl.contains(e.target)) {
+				return;
+			}
+			e.preventDefault();
+		}
 
 		function getFocusable(root) {
 			return Array.prototype.slice.call(
@@ -1964,6 +1911,7 @@
 				}
 			});
 			document.addEventListener('keydown', onLightboxKeydown);
+			document.addEventListener('touchmove', preventBackgroundTouchMove, { passive: false });
 			return lightboxEl;
 		}
 
@@ -2066,7 +2014,7 @@
 			lastFocus = document.activeElement;
 			slides = nextSlides;
 			lightboxEl.removeAttribute('hidden');
-			document.body.classList.add('restwell-lightbox-open');
+			lockPageScroll();
 			showSlide(startIndex);
 			if (lightboxClose) {
 				lightboxClose.focus();
@@ -2078,7 +2026,7 @@
 				return;
 			}
 			lightboxEl.setAttribute('hidden', '');
-			document.body.classList.remove('restwell-lightbox-open');
+			unlockPageScroll();
 			if (lightboxImage) {
 				lightboxImage.removeAttribute('src');
 			}

@@ -106,7 +106,10 @@ if ( is_home() ) {
 			<?php foreach ( $crumbs as $i => $crumb ) : ?>
 				<?php $is_last = ( $i === count( $crumbs ) - 1 ); ?>
 				<li class="breadcrumb__item <?php echo $is_last ? 'breadcrumb__item--current' : ''; ?>"
-				    <?php if ( $is_last ) : ?> aria-current="page" <?php endif; ?>>
+					<?php
+					if ( $is_last ) :
+						?>
+						aria-current="page" <?php endif; ?>>
 					<?php if ( ! $is_last && $crumb['url'] ) : ?>
 						<a href="<?php echo esc_url( $crumb['url'] ); ?>" class="breadcrumb__link">
 							<?php echo esc_html( $crumb['label'] ); ?>

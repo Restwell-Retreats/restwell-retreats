@@ -73,11 +73,42 @@ if ( $res_contacts_body === '' ) {
 
 // Build nav sections list for sidebar and content loop.
 $sections = array(
-	array( 'id' => 'res-funding',    'label' => 'How to fund your stay',       'heading' => $res_fund_heading,       'body' => $res_fund_body,       'eyebrow' => 'Self-funding & council support' ),
-	array( 'id' => 'res-grants',     'label' => 'Grants and charities',        'heading' => $res_grants_heading,     'body' => $res_grants_body,     'eyebrow' => 'Additional support' ),
-	array( 'id' => 'res-chc',        'label' => 'NHS Continuing Healthcare',   'heading' => $res_chc_heading,        'body' => $res_chc_body,        'eyebrow' => 'NHS funded care' ),
-	array( 'id' => 'res-complaints', 'label' => 'Complaints & appeals',        'heading' => $res_complaints_heading, 'body' => $res_complaints_body, 'eyebrow' => 'If things go wrong' ),
-	array( 'id' => 'res-contacts',   'label' => 'Key contacts',                'heading' => $res_contacts_heading,   'body' => $res_contacts_body,   'eyebrow' => 'Quick reference',  'is_contacts' => true ),
+	array(
+		'id' => 'res-funding',
+		'label' => 'How to fund your stay',
+		'heading' => $res_fund_heading,
+		'body' => $res_fund_body,
+		'eyebrow' => 'Self-funding & council support',
+	),
+	array(
+		'id' => 'res-grants',
+		'label' => 'Grants and charities',
+		'heading' => $res_grants_heading,
+		'body' => $res_grants_body,
+		'eyebrow' => 'Additional support',
+	),
+	array(
+		'id' => 'res-chc',
+		'label' => 'NHS Continuing Healthcare',
+		'heading' => $res_chc_heading,
+		'body' => $res_chc_body,
+		'eyebrow' => 'NHS funded care',
+	),
+	array(
+		'id' => 'res-complaints',
+		'label' => 'Complaints & appeals',
+		'heading' => $res_complaints_heading,
+		'body' => $res_complaints_body,
+		'eyebrow' => 'If things go wrong',
+	),
+	array(
+		'id' => 'res-contacts',
+		'label' => 'Key contacts',
+		'heading' => $res_contacts_heading,
+		'body' => $res_contacts_body,
+		'eyebrow' => 'Quick reference',
+		'is_contacts' => true,
+	),
 );
 $res_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
 ?>

@@ -20,11 +20,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function restwell_crm_statuses(): array {
 	return array(
-		'new'       => array( 'label' => 'New',        'color' => '#2271b1' ),
-		'contacted' => array( 'label' => 'Contacted',  'color' => '#996800' ),
-		'qualified' => array( 'label' => 'Qualified',  'color' => '#6f41c1' ),
-		'booked'    => array( 'label' => 'Booked',     'color' => '#007a3d' ),
-		'closed'    => array( 'label' => 'Closed',     'color' => '#787c82' ),
+		'new'       => array(
+			'label' => 'New',
+			'color' => '#2271b1',
+		),
+		'contacted' => array(
+			'label' => 'Contacted',
+			'color' => '#996800',
+		),
+		'qualified' => array(
+			'label' => 'Qualified',
+			'color' => '#6f41c1',
+		),
+		'booked'    => array(
+			'label' => 'Booked',
+			'color' => '#007a3d',
+		),
+		'closed'    => array(
+			'label' => 'Closed',
+			'color' => '#787c82',
+		),
 	);
 }
 
@@ -78,4 +93,3 @@ function restwell_crm_sla_badge( object $row ): string {
 		esc_html( $label )
 	);
 }
-

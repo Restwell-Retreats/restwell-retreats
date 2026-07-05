@@ -26,16 +26,16 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'home'                  => array(
 			'meta_title'       => 'Accessible holidays Whitstable | Restwell Retreats',
-			
+
 			// Variant A: Specificity-led (151 chars) - ACTIVE
 			'meta_description' => 'Bedroom ceiling track hoist, profiling bed, wet room. Private self-catering bungalow in Whitstable. Optional CQC-regulated care. No booking commitment.',
-			
+
 			// Variant B: Outcome-led (148 chars)
 			// 'meta_description' => 'Accessible coastal break in Whitstable: adapted bungalow, ceiling hoist, wet room. Private self-catering. Optional care partner. Enquire today.',
-			
+
 			// Variant C: Differentiator-led (153 chars)
 			// 'meta_description' => 'Private adapted holiday home Whitstable: ceiling hoist, profiling bed, roll-in wet room. Whole-property booking. Optional CQC care. No pressure.',
-			
+
 			'focus_keyphrase'  => 'accessible holidays whitstable',
 		),
 		'the-property'          => array(
@@ -257,7 +257,12 @@ function restwell_apply_seo_meta_to_pages( $force = false ) {
 		}
 	};
 
-	$pages = get_pages( array( 'post_status' => 'publish', 'number' => 500 ) );
+	$pages = get_pages(
+		array(
+			'post_status' => 'publish',
+			'number' => 500,
+		)
+	);
 	foreach ( $pages as $page ) {
 		$slug = $page->post_name;
 		if ( ! isset( $map[ $slug ] ) ) {

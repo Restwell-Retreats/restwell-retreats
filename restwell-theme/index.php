@@ -134,9 +134,9 @@ if ( have_posts() ) {
 						<div class="relative overflow-hidden min-h-[16rem] md:min-h-[22rem] bg-[var(--deep-teal)]/10">
 							<?php if ( $first_post['img_src'] ) : ?>
 								<img src="<?php echo esc_url( $first_post['img_src'] ); ?>"
-								     alt=""
-								     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-								     loading="eager" />
+									 alt=""
+									 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+									 loading="eager" />
 							<?php else : ?>
 								<div class="absolute inset-0 flex items-center justify-center">
 									<i class="ph-bold ph-newspaper text-[var(--deep-teal)]/20 text-6xl" aria-hidden="true"></i>
@@ -167,17 +167,17 @@ if ( have_posts() ) {
 
 				<?php if ( ! empty( $remaining_posts ) ) : ?>
 					<div class="grid sm:grid-cols-2 gap-6 lg:gap-8">
-						<?php foreach ( $remaining_posts as $post ) : ?>
-							<article class="group" aria-label="<?php echo esc_attr( $post['title'] ); ?>">
-								<a href="<?php echo esc_url( $post['permalink'] ); ?>"
+						<?php foreach ( $remaining_posts as $rp ) : ?>
+							<article class="group" aria-label="<?php echo esc_attr( $rp['title'] ); ?>">
+								<a href="<?php echo esc_url( $rp['permalink'] ); ?>"
 								   class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 no-underline hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0 h-full"
-								   aria-label="<?php echo esc_attr( sprintf( /* translators: %s post title */ __( 'Continue reading: %s', 'restwell-retreats' ), $post['title'] ) ); ?>">
+								   aria-label="<?php echo esc_attr( sprintf( /* translators: %s post title */ __( 'Continue reading: %s', 'restwell-retreats' ), $rp['title'] ) ); ?>">
 									<div class="relative overflow-hidden aspect-[16/9] bg-[var(--deep-teal)]/10">
-										<?php if ( $post['img_src'] ) : ?>
-											<img src="<?php echo esc_url( $post['img_src'] ); ?>"
-											     alt=""
-											     class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-											     loading="lazy" />
+										<?php if ( $rp['img_src'] ) : ?>
+											<img src="<?php echo esc_url( $rp['img_src'] ); ?>"
+												 alt=""
+												 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+												 loading="lazy" />
 										<?php else : ?>
 											<div class="absolute inset-0 flex items-center justify-center">
 												<i class="ph-bold ph-newspaper text-[var(--deep-teal)]/20 text-4xl" aria-hidden="true"></i>
@@ -186,15 +186,15 @@ if ( have_posts() ) {
 									</div>
 									<div class="flex flex-col flex-1 p-6">
 										<div class="flex items-center gap-2 mb-3">
-											<?php if ( $post['category'] ) : ?>
-												<span class="inline-block bg-[var(--sea-glass)]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full"><?php echo esc_html( $post['category'] ); ?></span>
+											<?php if ( $rp['category'] ) : ?>
+												<span class="inline-block bg-[var(--sea-glass)]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full"><?php echo esc_html( $rp['category'] ); ?></span>
 											<?php endif; ?>
-											<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $post['read_time'] ); ?> min read</span>
+											<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $rp['read_time'] ); ?> min read</span>
 										</div>
-										<h2 class="text-lg font-serif text-[var(--deep-teal)] leading-snug mb-3 group-hover:underline decoration-[var(--deep-teal)]/30 underline-offset-4"><?php echo esc_html( $post['title'] ); ?></h2>
-										<p class="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-3"><?php echo esc_html( $post['excerpt'] ); ?></p>
+										<h2 class="text-lg font-serif text-[var(--deep-teal)] leading-snug mb-3 group-hover:underline decoration-[var(--deep-teal)]/30 underline-offset-4"><?php echo esc_html( $rp['title'] ); ?></h2>
+										<p class="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-3"><?php echo esc_html( $rp['excerpt'] ); ?></p>
 										<div class="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
-											<time class="text-xs text-[var(--muted-grey)]" datetime="<?php echo esc_attr( $post['date_iso'] ); ?>"><?php echo esc_html( $post['date'] ); ?></time>
+											<time class="text-xs text-[var(--muted-grey)]" datetime="<?php echo esc_attr( $rp['date_iso'] ); ?>"><?php echo esc_html( $rp['date'] ); ?></time>
 											<span class="inline-flex items-center gap-1 text-[var(--deep-teal)] text-xs font-semibold">
 												<?php esc_html_e( 'Continue', 'restwell-retreats' ); ?> <i class="ph-bold ph-arrow-right text-[10px]" aria-hidden="true"></i>
 											</span>
@@ -207,13 +207,15 @@ if ( have_posts() ) {
 				<?php endif; ?>
 
 				<?php
-				the_posts_pagination( array(
-					'mid_size'           => 2,
-					'prev_text'          => '<i class="ph-bold ph-arrow-left" aria-hidden="true"></i> ' . __( 'Newer', 'restwell-retreats' ),
-					'next_text'          => __( 'Older', 'restwell-retreats' ) . ' <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>',
-					'screen_reader_text' => __( 'Articles navigation', 'restwell-retreats' ),
-					'class'              => 'mt-14 md:mt-20',
-				) );
+				the_posts_pagination(
+					array(
+						'mid_size'           => 2,
+						'prev_text'          => '<i class="ph-bold ph-arrow-left" aria-hidden="true"></i> ' . __( 'Newer', 'restwell-retreats' ),
+						'next_text'          => __( 'Older', 'restwell-retreats' ) . ' <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>',
+						'screen_reader_text' => __( 'Articles navigation', 'restwell-retreats' ),
+						'class'              => 'mt-14 md:mt-20',
+					)
+				);
 				?>
 
 			<?php else : ?>

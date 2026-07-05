@@ -192,7 +192,7 @@ function restwell_print_jsonld( $schema ) {
 	// Remove null values to keep output clean
 	$schema = array_filter(
 		$schema,
-		function( $v ) {
+		function ( $v ) {
 			return $v !== null && $v !== '' && $v !== array();
 		}
 	);
@@ -287,14 +287,46 @@ function restwell_get_accommodation_image_urls( $page_id = 0 ) {
  */
 function restwell_get_default_lodging_amenity_features() {
 	return array(
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Wheelchair accessible accommodation', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Ceiling track hoist (accessible bedroom)', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Profiling bed', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Wet room / roll-in shower', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Level access throughout', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Self-catering kitchen', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Whole-property booking', 'value' => true ),
-		array( '@type' => 'LocationFeatureSpecification', 'name' => 'Optional CQC-regulated care (Continuity of Care Services)', 'value' => true ),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Wheelchair accessible accommodation',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Ceiling track hoist (accessible bedroom)',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Profiling bed',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Wet room / roll-in shower',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Level access throughout',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Self-catering kitchen',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Whole-property booking',
+			'value' => true,
+		),
+		array(
+			'@type' => 'LocationFeatureSpecification',
+			'name' => 'Optional CQC-regulated care (Continuity of Care Services)',
+			'value' => true,
+		),
 	);
 }
 
@@ -801,11 +833,13 @@ function restwell_output_jsonld_breadcrumb() {
 		}
 	);
 
-	restwell_print_jsonld( array(
-		'@context'        => 'https://schema.org',
-		'@type'           => 'BreadcrumbList',
-		'itemListElement' => array_values( $items ),
-	) );
+	restwell_print_jsonld(
+		array(
+			'@context'        => 'https://schema.org',
+			'@type'           => 'BreadcrumbList',
+			'itemListElement' => array_values( $items ),
+		)
+	);
 }
 
 /**

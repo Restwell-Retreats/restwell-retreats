@@ -16,48 +16,48 @@ $GLOBALS['restwell_hide_footer_cta'] = true;
 
 $pid = get_the_ID();
 $d   = restwell_get_property_page_defaults();
-$m   = function ( $key ) use ( $pid, $d ) {
+$prop_meta   = function ( $key ) use ( $pid, $d ) {
 	return restwell_post_meta_or_default( $pid, $key, $d );
 };
 $m_url = function ( $key ) use ( $pid, $d ) {
 	return restwell_post_meta_url( $pid, $key, $d );
 };
 
-$prop_hero_label              = $m( 'prop_hero_label' );
-$prop_hero_heading            = $m( 'prop_hero_heading' );
-$prop_hero_subtitle           = $m( 'prop_hero_subtitle' );
-$prop_hero_cta_text           = $m( 'prop_hero_cta_text' );
+$prop_hero_label              = $prop_meta( 'prop_hero_label' );
+$prop_hero_heading            = $prop_meta( 'prop_hero_heading' );
+$prop_hero_subtitle           = $prop_meta( 'prop_hero_subtitle' );
+$prop_hero_cta_text           = $prop_meta( 'prop_hero_cta_text' );
 $prop_hero_cta_url            = esc_url( $m_url( 'prop_hero_cta_url' ) );
-$prop_hero_cta_promise        = $m( 'prop_hero_cta_promise' );
-$prop_hero_cta_secondary_text = $m( 'prop_hero_cta_secondary_text' );
+$prop_hero_cta_promise        = $prop_meta( 'prop_hero_cta_promise' );
+$prop_hero_cta_secondary_text = $prop_meta( 'prop_hero_cta_secondary_text' );
 $prop_hero_cta_secondary_url  = esc_url( $m_url( 'prop_hero_cta_secondary_url' ) );
 
 $prop_hero_image_id = function_exists( 'restwell_resolve_property_hero_image_id' )
 	? restwell_resolve_property_hero_image_id( $pid )
-	: (int) $m( 'prop_hero_image_id' );
+	: (int) $prop_meta( 'prop_hero_image_id' );
 
-$prop_bungalow_label    = $m( 'prop_bungalow_label' );
+$prop_bungalow_label    = $prop_meta( 'prop_bungalow_label' );
 $prop_bungalow_heading  = function_exists( 'restwell_get_property_heading' )
 	? restwell_get_property_heading( $pid, 'prop_bungalow_heading' )
-	: $m( 'prop_bungalow_heading' );
-$prop_bungalow_body     = $m( 'prop_bungalow_body' );
-$prop_bungalow_image_id = (int) $m( 'prop_bungalow_image_id' );
+	: $prop_meta( 'prop_bungalow_heading' );
+$prop_bungalow_body     = $prop_meta( 'prop_bungalow_body' );
+$prop_bungalow_image_id = (int) $prop_meta( 'prop_bungalow_image_id' );
 
 $prop_features_label = function_exists( 'restwell_sanitize_property_section_label' )
-	? restwell_sanitize_property_section_label( $m( 'prop_features_label' ) )
-	: trim( (string) $m( 'prop_features_label' ) );
+	? restwell_sanitize_property_section_label( $prop_meta( 'prop_features_label' ) )
+	: trim( (string) $prop_meta( 'prop_features_label' ) );
 
-$prop_gallery_label   = $m( 'prop_gallery_label' );
+$prop_gallery_label   = $prop_meta( 'prop_gallery_label' );
 $prop_gallery_heading = function_exists( 'restwell_get_property_heading' )
 	? restwell_get_property_heading( $pid, 'prop_gallery_heading' )
-	: $m( 'prop_gallery_heading' );
+	: $prop_meta( 'prop_gallery_heading' );
 $prop_gallery_ids     = restwell_get_property_gallery_ids( $pid );
 
-$prop_cta_heading = $m( 'prop_cta_heading' );
-$prop_cta_body    = $m( 'prop_cta_body' );
-$prop_cta_btn     = $m( 'prop_cta_btn' );
+$prop_cta_heading = $prop_meta( 'prop_cta_heading' );
+$prop_cta_body    = $prop_meta( 'prop_cta_body' );
+$prop_cta_btn     = $prop_meta( 'prop_cta_btn' );
 $prop_cta_url     = esc_url( $m_url( 'prop_cta_url' ) );
-$prop_cta_promise = $m( 'prop_cta_promise' );
+$prop_cta_promise = $prop_meta( 'prop_cta_promise' );
 
 $prop_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
 
@@ -72,34 +72,34 @@ $prop_room_tour = function_exists( 'restwell_get_property_room_tour_with_feature
 
 $prop_care_heading     = function_exists( 'restwell_get_property_heading' )
 	? restwell_get_property_heading( $pid, 'prop_care_heading' )
-	: $m( 'prop_care_heading' );
-$prop_care_body        = $m( 'prop_care_body' );
+	: $prop_meta( 'prop_care_heading' );
+$prop_care_body        = $prop_meta( 'prop_care_body' );
 $prop_location_heading = function_exists( 'restwell_get_property_heading' )
 	? restwell_get_property_heading( $pid, 'prop_location_heading' )
-	: $m( 'prop_location_heading' );
-$prop_location_body    = $m( 'prop_location_body' );
-$prop_location_image_id = (int) $m( 'prop_location_image_id' );
+	: $prop_meta( 'prop_location_heading' );
+$prop_location_body    = $prop_meta( 'prop_location_body' );
+$prop_location_image_id = (int) $prop_meta( 'prop_location_image_id' );
 $prop_location_has_photo = $prop_location_image_id > 0 && wp_attachment_is_image( $prop_location_image_id );
 
 $prop_practical_label   = function_exists( 'restwell_sanitize_property_section_label' )
-	? restwell_sanitize_property_section_label( $m( 'prop_practical_label' ) )
-	: trim( (string) $m( 'prop_practical_label' ) );
+	? restwell_sanitize_property_section_label( $prop_meta( 'prop_practical_label' ) )
+	: trim( (string) $prop_meta( 'prop_practical_label' ) );
 $prop_practical_heading = function_exists( 'restwell_get_property_practical_heading' )
 	? restwell_get_property_practical_heading( $pid )
-	: $m( 'prop_practical_heading' );
+	: $prop_meta( 'prop_practical_heading' );
 $prop_essentials_stats  = function_exists( 'restwell_get_property_essentials_stats' )
 	? restwell_get_property_essentials_stats( $pid )
 	: array();
 $prop_confirm_details_url = esc_url( $m_url( 'prop_confirm_details_url' ) );
 
-$prop_nearby_label   = $m( 'prop_nearby_label' );
+$prop_nearby_label   = $prop_meta( 'prop_nearby_label' );
 $prop_nearby_heading = function_exists( 'restwell_get_property_heading' )
 	? restwell_get_property_heading( $pid, 'prop_nearby_heading' )
-	: trim( (string) $m( 'prop_nearby_heading' ) );
+	: trim( (string) $prop_meta( 'prop_nearby_heading' ) );
 $prop_nearby_places = function_exists( 'restwell_get_property_nearby_places' )
 	? restwell_get_property_nearby_places( $pid )
 	: array();
-$prop_nearby_cta_label = $m( 'prop_nearby_cta_label' );
+$prop_nearby_cta_label = $prop_meta( 'prop_nearby_cta_label' );
 $prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
 
 $area_guide_url = esc_url( home_url( '/whitstable-area-guide/' ) );
@@ -377,7 +377,8 @@ $prop_section_bg = static function ( $index ) {
 			</div>
 
 			<div class="prop-page__essentials-open">
-					<?php foreach ( $prop_essentials_stats as $stat ) :
+					<?php
+					foreach ( $prop_essentials_stats as $stat ) :
 						if ( $stat['value'] === '' ) {
 							continue;
 						}

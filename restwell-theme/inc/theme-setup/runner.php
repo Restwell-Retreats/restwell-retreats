@@ -103,7 +103,6 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false ) {
 			update_post_meta( $home_id, 'restwell_fields_seeded', '1' );
 			$result['home_seeded'] = true;
 		}
-
 	}
 
 	// Seed meta defaults for all non-Home template pages.

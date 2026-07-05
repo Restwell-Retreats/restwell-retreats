@@ -141,12 +141,9 @@ WordPress resolves URLs from **page slug** (`post_name`), not the PHP filename. 
 | Partial | Role |
 |---------|------|
 | `breadcrumb.php` | Breadcrumb trail |
-| `cta-accessibility-prompt.php` | Accessibility CTA strip |
 | `how-it-works-steps.php` | Numbered steps block |
-| `icon-phosphor-light.php` | Phosphor icon helper |
 | `interior-hero.php` | Interior page hero |
 | `legal-policy-layout.php` | Legal/policy page shell |
-| `page-hero.php` | Standard page hero |
 | `section-label.php` | Eyebrow / section label |
 | `trust-strip.php` | Trust/partner strip |
 

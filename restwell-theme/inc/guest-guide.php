@@ -174,7 +174,7 @@ function restwell_guest_guide_confirm_read( string $email ): void {
 		sprintf( __( '[%s] Guest confirmed reading the arrival guide', 'restwell-retreats' ), $site ),
 		sprintf(
 			/* translators: 1: guest name, 2: guest email */
-			__( "%1\$s (%2\$s) confirmed they have read the guest arrival guide.", 'restwell-retreats' ),
+			__( '%1$s (%2$s) confirmed they have read the guest arrival guide.', 'restwell-retreats' ),
 			esc_html( $guest->name ),
 			esc_html( $email )
 		),
@@ -263,10 +263,10 @@ function restwell_gg_process_scheduled_dispatch() {
 	// Use site local time so the comparison respects the configured timezone.
 	$now_local = current_time( 'mysql' );
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$pending = $wpdb->get_results(
 		$wpdb->prepare(
-			"SELECT * FROM {$table} WHERE send_date <= %s AND sent_at IS NULL",
+			'SELECT * FROM %i WHERE send_date <= %s AND sent_at IS NULL',
+			$table,
 			$now_local
 		),
 		ARRAY_A
@@ -306,7 +306,10 @@ function restwell_gg_handle_add_guest() {
 
 	wp_safe_redirect(
 		add_query_arg(
-			array( 'page' => 'restwell-guest-guide', 'gg_status' => $status ),
+			array(
+				'page' => 'restwell-guest-guide',
+				'gg_status' => $status,
+			),
 			admin_url( 'admin.php' )
 		)
 	);
@@ -330,7 +333,10 @@ function restwell_gg_handle_delete_guest() {
 
 	wp_safe_redirect(
 		add_query_arg(
-			array( 'page' => 'restwell-guest-guide', 'gg_status' => 'deleted' ),
+			array(
+				'page' => 'restwell-guest-guide',
+				'gg_status' => 'deleted',
+			),
 			admin_url( 'admin.php' )
 		)
 	);
@@ -360,7 +366,10 @@ function restwell_gg_handle_send_now() {
 
 	wp_safe_redirect(
 		add_query_arg(
-			array( 'page' => 'restwell-guest-guide', 'gg_status' => $status ),
+			array(
+				'page' => 'restwell-guest-guide',
+				'gg_status' => $status,
+			),
 			admin_url( 'admin.php' )
 		)
 	);
@@ -385,7 +394,10 @@ function restwell_gg_handle_save_cc() {
 
 	wp_safe_redirect(
 		add_query_arg(
-			array( 'page' => 'restwell-guest-guide', 'gg_status' => 'cc_saved' ),
+			array(
+				'page' => 'restwell-guest-guide',
+				'gg_status' => 'cc_saved',
+			),
 			admin_url( 'admin.php' )
 		)
 	);
@@ -416,9 +428,9 @@ function restwell_guest_guide_settings_page() {
 	$admin_post = admin_url( 'admin-post.php' );
 
 	// Prefill from "Promote to Guest" link on an enquiry detail page.
-	$prefill_name       = isset( $_GET['prefill_name'] )       ? sanitize_text_field( urldecode( wp_unslash( $_GET['prefill_name'] ) ) )  : '';
-	$prefill_email      = isset( $_GET['prefill_email'] )      ? sanitize_email( urldecode( wp_unslash( $_GET['prefill_email'] ) ) )       : '';
-	$prefill_enquiry_id = isset( $_GET['prefill_enquiry_id'] ) ? absint( $_GET['prefill_enquiry_id'] )                                     : 0;
+	$prefill_name       = isset( $_GET['prefill_name'] ) ? sanitize_text_field( urldecode( wp_unslash( $_GET['prefill_name'] ) ) ) : '';
+	$prefill_email      = isset( $_GET['prefill_email'] ) ? sanitize_email( urldecode( wp_unslash( $_GET['prefill_email'] ) ) ) : '';
+	$prefill_enquiry_id = isset( $_GET['prefill_enquiry_id'] ) ? absint( $_GET['prefill_enquiry_id'] ) : 0;
 
 	// Status notices.
 	$notices = array(
@@ -426,8 +438,8 @@ function restwell_guest_guide_settings_page() {
 		'deleted'   => array( 'success', __( 'Guest removed.', 'restwell-retreats' ) ),
 		'sent'      => array( 'success', __( 'Invitation sent.', 'restwell-retreats' ) ),
 		'cc_saved'  => array( 'success', __( 'CC addresses saved.', 'restwell-retreats' ) ),
-		'invalid'   => array( 'error',   __( 'Invalid email or missing scheduled date. Please try again.', 'restwell-retreats' ) ),
-		'not_found' => array( 'error',   __( 'Guest not found.', 'restwell-retreats' ) ),
+		'invalid'   => array( 'error', __( 'Invalid email or missing scheduled date. Please try again.', 'restwell-retreats' ) ),
+		'not_found' => array( 'error', __( 'Guest not found.', 'restwell-retreats' ) ),
 	);
 	?>
 	<div class="wrap restwell-admin restwell-admin-guest-guide">
@@ -462,7 +474,8 @@ function restwell_guest_guide_settings_page() {
 				</tr>
 			</thead>
 			<tbody>
-			<?php foreach ( $guests as $guest ) :
+			<?php
+			foreach ( $guests as $guest ) :
 				// send_date is stored as a MySQL datetime in site-local time.
 				if ( ! empty( $guest['send_date'] ) ) {
 					$formatted_date = esc_html( date_i18n( 'j M Y, g:i a', strtotime( $guest['send_date'] ) ) );
@@ -490,7 +503,18 @@ function restwell_guest_guide_settings_page() {
 					<td class="column-name"><?php echo esc_html( $guest['name'] ?: '-' ); ?></td>
 					<td class="column-email"><span class="rw-cell-email"><?php echo esc_html( $guest['email'] ); ?></span></td>
 					<td class="column-scheduled"><?php echo esc_html( $formatted_date ); ?></td>
-					<td class="column-status"><?php echo wp_kses( $status_label, array( 'span' => array( 'class' => array() ), 'br' => array(), 'small' => array() ) ); ?></td>
+					<td class="column-status">
+					<?php
+					echo wp_kses(
+						$status_label,
+						array(
+							'span' => array( 'class' => array() ),
+							'br' => array(),
+							'small' => array(),
+						)
+					);
+					?>
+												</td>
 					<td class="rw-action-cell">
 						<div class="rw-action-cell-inner">
 						<!-- Send now / Resend -->
@@ -504,7 +528,7 @@ function restwell_guest_guide_settings_page() {
 						</form>
 						<!-- Delete -->
 						<form method="post" action="<?php echo esc_url( $admin_post ); ?>"
-						      onsubmit="return confirm('<?php echo esc_js( __( 'Remove this guest?', 'restwell-retreats' ) ); ?>')">
+							  onsubmit="return confirm('<?php echo esc_js( __( 'Remove this guest?', 'restwell-retreats' ) ); ?>')">
 							<?php wp_nonce_field( 'restwell_gg_delete_guest' ); ?>
 							<input type="hidden" name="action" value="restwell_gg_delete_guest" />
 							<input type="hidden" name="gg_guest_id" value="<?php echo esc_attr( $guest['id'] ); ?>" />
@@ -529,7 +553,7 @@ function restwell_guest_guide_settings_page() {
 					/* translators: %s: enquirer name */
 					esc_html__( 'Add a guest (pre-filled from enquiry: %s)', 'restwell-retreats' ),
 					'<strong>' . esc_html( $prefill_name ) . '</strong>'
-				  )
+				)
 				: esc_html__( 'Add a guest', 'restwell-retreats' );
 			?>
 		</h3>
@@ -546,8 +570,8 @@ function restwell_guest_guide_settings_page() {
 					</th>
 					<td>
 						<input type="text" id="gg_name" name="gg_name" class="regular-text"
-						       value="<?php echo esc_attr( $prefill_name ); ?>"
-						       placeholder="<?php esc_attr_e( 'Jane Smith', 'restwell-retreats' ); ?>" />
+							   value="<?php echo esc_attr( $prefill_name ); ?>"
+							   placeholder="<?php esc_attr_e( 'Jane Smith', 'restwell-retreats' ); ?>" />
 						<p class="description"><?php esc_html_e( 'Optional; used in the invitation email greeting.', 'restwell-retreats' ); ?></p>
 					</td>
 				</tr>
@@ -557,8 +581,8 @@ function restwell_guest_guide_settings_page() {
 					</th>
 					<td>
 						<input type="email" id="gg_email" name="gg_email" class="regular-text" required
-						       value="<?php echo esc_attr( $prefill_email ); ?>"
-						       placeholder="jane@example.com" />
+							   value="<?php echo esc_attr( $prefill_email ); ?>"
+							   placeholder="jane@example.com" />
 					</td>
 				</tr>
 				<tr>
@@ -626,9 +650,8 @@ function restwell_guest_guide_settings_page() {
 function restwell_is_approved_email( $email ): bool {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$count = (int) $wpdb->get_var(
-		$wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE LOWER(email) = LOWER(%s)", trim( $email ) )
+		$wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE LOWER(email) = LOWER(%s)', $table, trim( $email ) )
 	);
 	return $count > 0;
 }
@@ -834,14 +857,38 @@ function restwell_guest_guide_field_definitions() {
 			),
 		),
 		__( 'Emergency information', 'restwell-retreats' ) => array(
-			'gg_emergency_services'  => array( 'label' => __( 'Emergency services', 'restwell-retreats' ),      'type' => 'text' ),
-			'gg_nhs_number'          => array( 'label' => __( 'NHS (non-emergency)', 'restwell-retreats' ),      'type' => 'text' ),
-			'gg_police_number'       => array( 'label' => __( 'Police (non-emergency)', 'restwell-retreats' ),   'type' => 'text' ),
-			'gg_nearest_ae'          => array( 'label' => __( 'Nearest A&E', 'restwell-retreats' ),              'type' => 'text' ),
-			'gg_nearest_ae_map_url'  => array( 'label' => __( 'Nearest A&E: Google Maps URL', 'restwell-retreats' ), 'type' => 'text' ),
-			'gg_maintenance_contact' => array( 'label' => __( 'Property maintenance', 'restwell-retreats' ),     'type' => 'text' ),
-			'gg_maintenance_oos'     => array( 'label' => __( 'Out-of-hours maintenance', 'restwell-retreats' ), 'type' => 'text' ),
-			'gg_gas_oos'             => array( 'label' => __( 'Gas emergency', 'restwell-retreats' ),            'type' => 'text' ),
+			'gg_emergency_services'  => array(
+				'label' => __( 'Emergency services', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_nhs_number'          => array(
+				'label' => __( 'NHS (non-emergency)', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_police_number'       => array(
+				'label' => __( 'Police (non-emergency)', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_nearest_ae'          => array(
+				'label' => __( 'Nearest A&E', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_nearest_ae_map_url'  => array(
+				'label' => __( 'Nearest A&E: Google Maps URL', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_maintenance_contact' => array(
+				'label' => __( 'Property maintenance', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_maintenance_oos'     => array(
+				'label' => __( 'Out-of-hours maintenance', 'restwell-retreats' ),
+				'type' => 'text',
+			),
+			'gg_gas_oos'             => array(
+				'label' => __( 'Gas emergency', 'restwell-retreats' ),
+				'type' => 'text',
+			),
 		),
 		__( 'Contact', 'restwell-retreats' ) => array(
 			'gg_host_contact' => array(

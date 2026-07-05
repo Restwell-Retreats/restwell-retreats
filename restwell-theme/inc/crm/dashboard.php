@@ -90,7 +90,13 @@ function restwell_crm_dashboard_page() {
 					'value' => $stat_urgent,
 					'color' => '#d63638',
 					// Both filters must match the SQL: is_urgent = 1 AND status = 'new'.
-					'url'   => add_query_arg( array( 'status_filter' => 'new', 'urgent_filter' => '1' ), $enquiries_url ),
+					'url'   => add_query_arg(
+						array(
+							'status_filter' => 'new',
+							'urgent_filter' => '1',
+						),
+						$enquiries_url
+					),
 				),
 				array(
 					'label' => __( 'Follow-ups overdue', 'restwell-retreats' ),
@@ -101,7 +107,7 @@ function restwell_crm_dashboard_page() {
 				),
 			);
 			foreach ( $tiles as $tile ) :
-			?>
+				?>
 			<a href="<?php echo esc_url( $tile['url'] ); ?>" class="rw-stat-tile" role="listitem" style="--rw-tile-accent:<?php echo esc_attr( $tile['color'] ); ?>;">
 				<div class="rw-stat-value"><?php echo esc_html( $tile['value'] ); ?></div>
 				<div class="rw-stat-label"><?php echo esc_html( $tile['label'] ); ?></div>
@@ -137,7 +143,19 @@ function restwell_crm_dashboard_page() {
 								<?php foreach ( $follow_up_rows as $r ) : ?>
 									<tr>
 										<td>
-											<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $r->id ), admin_url( 'admin.php' ) ) ); ?>">
+											<a href="
+											<?php
+											echo esc_url(
+												add_query_arg(
+													array(
+														'page' => 'restwell-enquiries',
+														'view' => $r->id,
+													),
+													admin_url( 'admin.php' )
+												)
+											);
+											?>
+														">
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
@@ -190,7 +208,19 @@ function restwell_crm_dashboard_page() {
 									?>
 									<tr>
 										<td>
-											<a href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $r->id ), admin_url( 'admin.php' ) ) ); ?>">
+											<a href="
+											<?php
+											echo esc_url(
+												add_query_arg(
+													array(
+														'page' => 'restwell-enquiries',
+														'view' => $r->id,
+													),
+													admin_url( 'admin.php' )
+												)
+											);
+											?>
+														">
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
@@ -285,7 +315,7 @@ function restwell_crm_dashboard_page() {
 							),
 						);
 						foreach ( $rows as $row ) :
-						?>
+							?>
 							<tr>
 								<td class="rw-orient-what"><strong><?php echo wp_kses_post( $row[0] ); ?></strong></td>
 								<td class="rw-orient-where"><?php echo wp_kses_post( $row[1] ); ?></td>
@@ -829,7 +859,7 @@ function restwell_crm_dashboard_page() {
 				$export_log     = is_array( $export_log ) ? $export_log : array();
 				$recent_exports = array_slice( array_reverse( $export_log ), 0, 10 );
 				if ( empty( $recent_exports ) ) :
-				?>
+					?>
 					<p class="rw-empty"><?php esc_html_e( 'No exports have been run yet.', 'restwell-retreats' ); ?></p>
 				<?php else : ?>
 					<table class="widefat striped rw-dashboard-table">
@@ -841,15 +871,16 @@ function restwell_crm_dashboard_page() {
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ( $recent_exports as $entry ) :
+							<?php
+							foreach ( $recent_exports as $entry ) :
 								$exporter    = isset( $entry['user_id'] ) ? get_userdata( (int) $entry['user_id'] ) : false;
-								$display     = $exporter ? esc_html( $exporter->display_name ) : esc_html__( 'Unknown', 'restwell-retreats' );
-								$exported_at = isset( $entry['exported_at'] ) ? esc_html( $entry['exported_at'] ) : '—';
+								$display     = $exporter ? $exporter->display_name : __( 'Unknown', 'restwell-retreats' );
+								$exported_at = isset( $entry['exported_at'] ) ? $entry['exported_at'] : '—';
 								$row_count   = isset( $entry['row_count'] ) ? absint( $entry['row_count'] ) : '—';
-							?>
+								?>
 							<tr>
-								<td><?php echo $display; // phpcs:ignore WordPress.Security.EscapeOutput — already escaped above ?></td>
-								<td class="rw-table-meta"><?php echo $exported_at; // phpcs:ignore WordPress.Security.EscapeOutput — already escaped above ?></td>
+								<td><?php echo esc_html( $display ); ?></td>
+								<td class="rw-table-meta"><?php echo esc_html( $exported_at ); ?></td>
 								<td class="rw-table-meta"><?php echo esc_html( (string) $row_count ); ?></td>
 							</tr>
 							<?php endforeach; ?>

@@ -70,7 +70,6 @@ function restwell_enqueue_scripts() {
 		restwell_theme_asset_version( $main_js ),
 		true
 	);
-
 }
 add_action( 'wp_enqueue_scripts', 'restwell_enqueue_scripts' );
 

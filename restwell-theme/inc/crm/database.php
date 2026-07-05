@@ -29,7 +29,8 @@ function restwell_crm_maybe_create_table() {
 
 	// ── rw_enquiries ─────────────────────────────────────────────────────────
 	$enq_table = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	dbDelta( "CREATE TABLE {$enq_table} (
+	dbDelta(
+		"CREATE TABLE {$enq_table} (
 		id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 		submitted_at datetime NOT NULL,
 		name varchar(200) NOT NULL DEFAULT '',
@@ -62,11 +63,13 @@ function restwell_crm_maybe_create_table() {
 		KEY email_submitted (email, submitted_at),
 		KEY follow_up_status (follow_up_at, status),
 		KEY urgent_status (is_urgent, status)
-	) {$charset_collate};" );
+	) {$charset_collate};"
+	);
 
 	// ── rw_enquiry_notes ─────────────────────────────────────────────────────
 	$notes_table = $wpdb->prefix . RESTWELL_NOTES_TABLE;
-	dbDelta( "CREATE TABLE {$notes_table} (
+	dbDelta(
+		"CREATE TABLE {$notes_table} (
 		id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 		enquiry_id bigint(20) UNSIGNED NOT NULL,
 		note text NOT NULL,
@@ -74,11 +77,13 @@ function restwell_crm_maybe_create_table() {
 		created_by bigint(20) UNSIGNED NOT NULL DEFAULT 0,
 		PRIMARY KEY  (id),
 		KEY enquiry_id (enquiry_id)
-	) {$charset_collate};" );
+	) {$charset_collate};"
+	);
 
 	// ── rw_guests ────────────────────────────────────────────────────────────
 	$guests_table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
-	dbDelta( "CREATE TABLE {$guests_table} (
+	dbDelta(
+		"CREATE TABLE {$guests_table} (
 		id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 		enquiry_id bigint(20) UNSIGNED DEFAULT NULL,
 		name varchar(200) NOT NULL DEFAULT '',
@@ -89,11 +94,13 @@ function restwell_crm_maybe_create_table() {
 		created_at datetime NOT NULL,
 		PRIMARY KEY  (id),
 		KEY email (email)
-	) {$charset_collate};" );
+	) {$charset_collate};"
+	);
 
 	// ── rw_faq_submissions (FAQ page questions; survives email failures) ─────
 	$faq_table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
-	dbDelta( "CREATE TABLE {$faq_table} (
+	dbDelta(
+		"CREATE TABLE {$faq_table} (
 		id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 		submitted_at datetime NOT NULL,
 		name varchar(200) NOT NULL DEFAULT '',
@@ -107,16 +114,20 @@ function restwell_crm_maybe_create_table() {
 		PRIMARY KEY  (id),
 		KEY submitted_at (submitted_at),
 		KEY email (email)
-	) {$charset_collate};" );
+	) {$charset_collate};"
+	);
 
 	// Backfill legacy enquiry consent stored in staff_notes.
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$wpdb->query(
-		"UPDATE {$enq_table}
-		SET marketing_optin = 1,
-			marketing_optin_at = COALESCE(marketing_optin_at, submitted_at)
-		WHERE marketing_optin = 0
-		AND staff_notes LIKE '%Marketing updates consent: Yes%'"
+		$wpdb->prepare(
+			"UPDATE %i
+			SET marketing_optin = 1,
+				marketing_optin_at = COALESCE(marketing_optin_at, submitted_at)
+			WHERE marketing_optin = 0
+			AND staff_notes LIKE %s",
+			$enq_table,
+			'%Marketing updates consent: Yes%'
+		)
 	);
 
 	// ── One-time migration: restwell_guests option → rw_guests ───────────────
@@ -156,4 +167,3 @@ function restwell_crm_maybe_create_table() {
 	update_option( 'restwell_crm_db_version', RESTWELL_CRM_DB_VERSION );
 }
 add_action( 'init', 'restwell_crm_maybe_create_table', 5 );
-

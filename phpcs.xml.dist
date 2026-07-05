@@ -20,4 +20,13 @@
 
 	<rule ref="WordPress-Extra"/>
 	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- Thin wrapper around wp_get_attachment_image(), which WPCS already trusts as pre-escaped. -->
+	<rule ref="WordPress.Security.EscapeOutput">
+		<properties>
+			<property name="customAutoEscapedFunctions" type="array">
+				<element value="restwell_get_property_attachment_image"/>
+			</property>
+		</properties>
+	</rule>
 </ruleset>

@@ -32,7 +32,7 @@ $hero_lede_paragraph     = $hero_subheading;
 $show_hero_spec_strip    = trim( (string) $hero_spec_heading ) !== '';
 $hero_cta_primary_label  = get_post_meta( $pid, 'hero_cta_primary_label', true ) ?: 'View the property';
 $hero_cta_primary_url    = get_post_meta( $pid, 'hero_cta_primary_url', true ) ?: '/the-property/';
-$hero_cta_secondary_label= get_post_meta( $pid, 'hero_cta_secondary_label', true ) ?: 'Send an enquiry';
+$hero_cta_secondary_label = get_post_meta( $pid, 'hero_cta_secondary_label', true ) ?: 'Send an enquiry';
 $hero_cta_secondary_url  = get_post_meta( $pid, 'hero_cta_secondary_url', true ) ?: '/enquire/';
 // Optional line under hero CTAs: unset meta → default; saved empty string → hidden; non-empty → override.
 $hero_cta_reassurance_default = __( 'Usually reply within 48 hours · No obligation', 'restwell-retreats' );
@@ -190,24 +190,24 @@ $rw_fp_resolve_href = static function ( $url ) {
 };
 
 // Merged front-page meta (theme defaults when a key is empty).
-$m = array();
+$fp_meta = array();
 foreach ( $restwell_fp_seed as $key => $default ) {
 	$v = get_post_meta( $pid, $key, true );
 	if ( 'property_image_id' === $key || 'cta_image_id' === $key ) {
 		$vid         = (int) $v;
-		$m[ $key ] = $vid > 0 ? $vid : (int) $default;
+		$fp_meta[ $key ] = $vid > 0 ? $vid : (int) $default;
 		continue;
 	}
 	if ( $v === '' || null === $v ) {
-		$m[ $key ] = $default;
+		$fp_meta[ $key ] = $default;
 	} else {
-		$m[ $key ] = $v;
+		$fp_meta[ $key ] = $v;
 	}
 }
 
-$property_image_id         = (int) ( $m['property_image_id'] ?? 0 );
-$property_heading          = isset( $m['property_heading'] ) ? (string) $m['property_heading'] : '';
-$property_body             = isset( $m['property_body'] ) ? (string) $m['property_body'] : '';
+$property_image_id         = (int) ( $fp_meta['property_image_id'] ?? 0 );
+$property_heading          = isset( $fp_meta['property_heading'] ) ? (string) $fp_meta['property_heading'] : '';
+$property_body             = isset( $fp_meta['property_body'] ) ? (string) $fp_meta['property_body'] : '';
 $property_body_canonical   = isset( $restwell_fp_seed['property_body'] ) ? trim( (string) $restwell_fp_seed['property_body'] ) : '';
 $property_body_trimmed     = trim( $property_body );
 
@@ -242,14 +242,14 @@ if ( $fp_faq ) {
 	);
 }
 
-$cta_image_id = (int) ( $m['cta_image_id'] ?? 0 );
+$cta_image_id = (int) ( $fp_meta['cta_image_id'] ?? 0 );
 
 $hero_cta_primary_href   = $rw_fp_resolve_href( $hero_cta_primary_url );
 $hero_cta_secondary_href = $rw_fp_resolve_href( $hero_cta_secondary_url );
 
-$home_partners_label   = trim( (string) ( $m['home_partners_label'] ?? 'Trusted partners' ) );
-$home_partners_heading = trim( (string) ( $m['home_partners_heading'] ?? 'Specialist Partners' ) );
-$home_partners_intro   = trim( (string) ( $m['home_partners_intro'] ?? 'These are the specialist teams behind Restwell: adaptation, equipment, and ongoing care support for guests.' ) );
+$home_partners_label   = trim( (string) ( $fp_meta['home_partners_label'] ?? 'Trusted partners' ) );
+$home_partners_heading = trim( (string) ( $fp_meta['home_partners_heading'] ?? 'Specialist Partners' ) );
+$home_partners_intro   = trim( (string) ( $fp_meta['home_partners_intro'] ?? 'These are the specialist teams behind Restwell: adaptation, equipment, and ongoing care support for guests.' ) );
 /*
  * Keep partners copy clear even when older seeded meta is still present.
  * Only remap when values exactly match the legacy defaults.
@@ -266,45 +266,45 @@ if ( $home_partners_intro === 'The full story of how we adapted Restwell, who bu
 }
 $home_partner_items    = array(
 	array(
-		'name'    => trim( (string) ( $m['home_partner_1_name'] ?? 'Care Spaces' ) ),
-		'url'     => trim( (string) ( $m['home_partner_1_url'] ?? 'https://www.carespaces.co.uk/' ) ),
-		'logo_id' => absint( $m['home_partner_1_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $m['home_partner_1_blurb'] ?? 'Specialist design and installation for changing places, hygiene rooms, and accessible care environments.' ) ),
-		'scale'   => (float) ( $m['home_partner_1_logo_scale'] ?? 1.75 ),
+		'name'    => trim( (string) ( $fp_meta['home_partner_1_name'] ?? 'Care Spaces' ) ),
+		'url'     => trim( (string) ( $fp_meta['home_partner_1_url'] ?? 'https://www.carespaces.co.uk/' ) ),
+		'logo_id' => absint( $fp_meta['home_partner_1_logo_id'] ?? 0 ),
+		'blurb'   => trim( (string) ( $fp_meta['home_partner_1_blurb'] ?? 'Specialist design and installation for changing places, hygiene rooms, and accessible care environments.' ) ),
+		'scale'   => (float) ( $fp_meta['home_partner_1_logo_scale'] ?? 1.75 ),
 	),
 	array(
-		'name'    => trim( (string) ( $m['home_partner_2_name'] ?? 'Thor Carpentry' ) ),
-		'url'     => trim( (string) ( $m['home_partner_2_url'] ?? 'https://thorcarpenter.co.uk/' ) ),
-		'logo_id' => absint( $m['home_partner_2_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $m['home_partner_2_blurb'] ?? 'Bespoke carpentry and practical adaptation works that help make the property function day to day.' ) ),
-		'scale'   => (float) ( $m['home_partner_2_logo_scale'] ?? 1.85 ),
+		'name'    => trim( (string) ( $fp_meta['home_partner_2_name'] ?? 'Thor Carpentry' ) ),
+		'url'     => trim( (string) ( $fp_meta['home_partner_2_url'] ?? 'https://thorcarpenter.co.uk/' ) ),
+		'logo_id' => absint( $fp_meta['home_partner_2_logo_id'] ?? 0 ),
+		'blurb'   => trim( (string) ( $fp_meta['home_partner_2_blurb'] ?? 'Bespoke carpentry and practical adaptation works that help make the property function day to day.' ) ),
+		'scale'   => (float) ( $fp_meta['home_partner_2_logo_scale'] ?? 1.85 ),
 	),
 	array(
-		'name'    => trim( (string) ( $m['home_partner_3_name'] ?? 'Wealden Rehab' ) ),
-		'url'     => trim( (string) ( $m['home_partner_3_url'] ?? 'https://www.wealdenrehab.com/' ) ),
-		'logo_id' => absint( $m['home_partner_3_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $m['home_partner_3_blurb'] ?? 'Care equipment specialists supporting bathing, moving and handling, and seating solutions.' ) ),
-		'scale'   => (float) ( $m['home_partner_3_logo_scale'] ?? 1.7 ),
+		'name'    => trim( (string) ( $fp_meta['home_partner_3_name'] ?? 'Wealden Rehab' ) ),
+		'url'     => trim( (string) ( $fp_meta['home_partner_3_url'] ?? 'https://www.wealdenrehab.com/' ) ),
+		'logo_id' => absint( $fp_meta['home_partner_3_logo_id'] ?? 0 ),
+		'blurb'   => trim( (string) ( $fp_meta['home_partner_3_blurb'] ?? 'Care equipment specialists supporting bathing, moving and handling, and seating solutions.' ) ),
+		'scale'   => (float) ( $fp_meta['home_partner_3_logo_scale'] ?? 1.7 ),
 	),
 	array(
-		'name'    => trim( (string) ( $m['home_partner_4_name'] ?? 'Continuity of Care Services' ) ),
-		'url'     => trim( (string) ( $m['home_partner_4_url'] ?? 'https://www.continuitycareservices.co.uk/' ) ),
-		'logo_id' => absint( $m['home_partner_4_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $m['home_partner_4_blurb'] ?? 'CQC-regulated care partner providing domiciliary, respite, complex and palliative care in Kent.' ) ),
-		'scale'   => (float) ( $m['home_partner_4_logo_scale'] ?? 1.65 ),
+		'name'    => trim( (string) ( $fp_meta['home_partner_4_name'] ?? 'Continuity of Care Services' ) ),
+		'url'     => trim( (string) ( $fp_meta['home_partner_4_url'] ?? 'https://www.continuitycareservices.co.uk/' ) ),
+		'logo_id' => absint( $fp_meta['home_partner_4_logo_id'] ?? 0 ),
+		'blurb'   => trim( (string) ( $fp_meta['home_partner_4_blurb'] ?? 'CQC-regulated care partner providing domiciliary, respite, complex and palliative care in Kent.' ) ),
+		'scale'   => (float) ( $fp_meta['home_partner_4_logo_scale'] ?? 1.65 ),
 	),
 	array(
-		'name'    => trim( (string) ( $m['home_partner_5_name'] ?? 'Continuity Training Academy' ) ),
-		'url'     => trim( (string) ( $m['home_partner_5_url'] ?? 'https://www.continuitytrainingacademy.co.uk/' ) ),
-		'logo_id' => absint( $m['home_partner_5_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $m['home_partner_5_blurb'] ?? 'CPD-accredited care training provider supporting safer, compliant practice across care teams.' ) ),
-		'scale'   => (float) ( $m['home_partner_5_logo_scale'] ?? 1.6 ),
+		'name'    => trim( (string) ( $fp_meta['home_partner_5_name'] ?? 'Continuity Training Academy' ) ),
+		'url'     => trim( (string) ( $fp_meta['home_partner_5_url'] ?? 'https://www.continuitytrainingacademy.co.uk/' ) ),
+		'logo_id' => absint( $fp_meta['home_partner_5_logo_id'] ?? 0 ),
+		'blurb'   => trim( (string) ( $fp_meta['home_partner_5_blurb'] ?? 'CPD-accredited care training provider supporting safer, compliant practice across care teams.' ) ),
+		'scale'   => (float) ( $fp_meta['home_partner_5_logo_scale'] ?? 1.6 ),
 	),
 );
 $home_partner_items = array_values(
 	array_filter(
 		$home_partner_items,
-		static function( $partner ) {
+		static function ( $partner ) {
 			return is_array( $partner )
 				&& ! empty( $partner['name'] )
 				&& ! empty( $partner['url'] );
@@ -339,8 +339,8 @@ $home_partner_items = array_map(
 );
 $show_home_partners = ( $home_partners_heading !== '' ) && ! empty( $home_partner_items );
 
-$rw_fp_cta_heading_display = trim( (string) ( $m['cta_heading'] ?? '' ) );
-$rw_fp_cta_body_display    = trim( (string) ( $m['cta_body'] ?? '' ) );
+$rw_fp_cta_heading_display = trim( (string) ( $fp_meta['cta_heading'] ?? '' ) );
+$rw_fp_cta_body_display    = trim( (string) ( $fp_meta['cta_body'] ?? '' ) );
 
 /*
  * Keep homepage CTA distinct from footer CTA even on older seeded meta.
@@ -355,7 +355,7 @@ if ( $rw_fp_cta_body_display === 'Ask about hoist limits, door widths, or fundin
 	$rw_fp_cta_body_display = __( 'Tell us your dates and practical needs. We will reply with clear measurements, equipment details, and next steps.', 'restwell-retreats' );
 }
 
-$rw_fp_cta_promise_display = isset( $m['cta_promise'] ) ? trim( (string) $m['cta_promise'] ) : '';
+$rw_fp_cta_promise_display = isset( $fp_meta['cta_promise'] ) ? trim( (string) $fp_meta['cta_promise'] ) : '';
 if ( $rw_fp_cta_promise_display === '' ) {
 	$rw_fp_cta_promise_display = __( 'No pressure to book. Useful answers, usually within 48 hours.', 'restwell-retreats' );
 } elseif ( $rw_fp_cta_promise_display === 'No booking commitment. Replies usually within one working day.' ) {
@@ -467,8 +467,8 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 							? restwell_get_tldr_markup( $pid, '' )
 							: '';
 						if ( $home_tldr_markup !== '' ) :
-						?>
-						<?php echo $home_tldr_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							?>
+							<?php echo $home_tldr_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
 						<?php if ( trim( (string) $hero_lede_paragraph ) !== '' ) : ?>
 						<p id="home-hero-lede" class="home-hero__lede max-w-prose text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.3)] font-sans text-base sm:text-lg md:text-xl font-normal leading-relaxed tracking-normal sm:tracking-tight text-balance m-0">
@@ -617,12 +617,12 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 		<div class="container mx-auto px-6">
 			<div class="text-center max-w-3xl mx-auto rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
 				<?php
-				$who_label_out = isset( $m['who_label'] ) ? trim( (string) $m['who_label'] ) : '';
+				$who_label_out = isset( $fp_meta['who_label'] ) ? trim( (string) $fp_meta['who_label'] ) : '';
 				if ( $who_label_out !== '' ) {
 					get_template_part( 'template-parts/section-label', null, array( 'label' => $who_label_out ) );
 				}
 				?>
-				<h2 class="text-3xl md:text-4xl section-heading m-0 text-balance"><?php echo esc_html( $m['who_heading'] ?? '' ); ?></h2>
+				<h2 class="text-3xl md:text-4xl section-heading m-0 text-balance"><?php echo esc_html( $fp_meta['who_heading'] ?? '' ); ?></h2>
 			</div>
 			<div class="who-section__grid grid grid-cols-1 md:grid-cols-2 <?php echo esc_attr( $rw_fp_stack_gap_lg ); ?> items-stretch">
 				<article class="who-card who-card-layout <?php echo esc_attr( $rw_fp_card_shell ); ?>">
@@ -631,8 +631,8 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<div class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--sea-glass)]/30 text-[var(--deep-teal)]" aria-hidden="true">
 							<i class="ph-bold ph-house text-2xl" aria-hidden="true"></i>
 						</div>
-						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $m['who_guest_title'] ?? '' ); ?></h3>
-						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $m['who_guest_body'] ?? '' ); ?></p>
+						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['who_guest_title'] ?? '' ); ?></h3>
+						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $fp_meta['who_guest_body'] ?? '' ); ?></p>
 					</div>
 				</article>
 				<article class="who-card who-card-layout <?php echo esc_attr( $rw_fp_card_shell ); ?>">
@@ -641,8 +641,8 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<div class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--soft-sand)] text-[var(--deep-teal)]" aria-hidden="true">
 							<i class="ph-bold ph-heart text-2xl" aria-hidden="true"></i>
 						</div>
-						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $m['who_carer_title'] ?? '' ); ?></h3>
-						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $m['who_carer_body'] ?? '' ); ?></p>
+						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['who_carer_title'] ?? '' ); ?></h3>
+						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $fp_meta['who_carer_body'] ?? '' ); ?></p>
 					</div>
 				</article>
 			</div>
@@ -691,7 +691,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<div class="property-section__panel-inner rw-stack--regions">
 					<div class="property-section__intro rw-stack max-w-prose">
 					<?php
-					$property_label_out = isset( $m['property_label'] ) ? trim( (string) $m['property_label'] ) : '';
+					$property_label_out = isset( $fp_meta['property_label'] ) ? trim( (string) $fp_meta['property_label'] ) : '';
 					if ( $property_label_out !== '' ) {
 						get_template_part( 'template-parts/section-label', null, array( 'label' => $property_label_out ) );
 					}
@@ -738,11 +738,11 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					<?php endif; ?>
 
 					<a
-						href="<?php echo esc_url( $rw_fp_resolve_href( isset( $m['property_cta_url'] ) ? (string) $m['property_cta_url'] : '' ) ); ?>"
+						href="<?php echo esc_url( $rw_fp_resolve_href( isset( $fp_meta['property_cta_url'] ) ? (string) $fp_meta['property_cta_url'] : '' ) ); ?>"
 						class="property-section__cta inline-flex w-full min-h-[48px] items-center justify-center gap-2 rounded-xl bg-[var(--deep-teal)] px-5 py-3 text-center text-[0.98rem] font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-[#163f4d] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)] cursor-pointer sm:w-auto sm:min-w-[14rem]"
 						data-cta="property-explore"
 					>
-						<?php echo esc_html( $m['property_cta_label'] ?? '' ); ?>
+						<?php echo esc_html( $fp_meta['property_cta_label'] ?? '' ); ?>
 						<i class="ph-bold ph-arrow-right text-lg" aria-hidden="true"></i>
 					</a>
 						</div>
@@ -786,8 +786,8 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	<section class="features-section <?php echo esc_attr( $rw_fp_section_y . ' rw-section-y--head-grid-split ' . $rw_fp_features_bg ); ?> rw-seam-t" aria-labelledby="home-why-restwell-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<div class="text-center rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
-				<span class="section-label block"><?php echo esc_html( $m['why_label'] ?? '' ); ?></span>
-				<h2 id="home-why-restwell-heading" class="text-3xl md:text-4xl section-heading m-0"><?php echo esc_html( $m['why_heading'] ?? '' ); ?></h2>
+				<span class="section-label block"><?php echo esc_html( $fp_meta['why_label'] ?? '' ); ?></span>
+				<h2 id="home-why-restwell-heading" class="text-3xl md:text-4xl section-heading m-0"><?php echo esc_html( $fp_meta['why_heading'] ?? '' ); ?></h2>
 			</div>
 			<ul class="grid grid-cols-1 items-stretch md:grid-cols-2 lg:grid-cols-4 <?php echo esc_attr( $rw_fp_stack_gap ); ?> list-none p-0 m-0" role="list">
 				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
@@ -795,32 +795,32 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-house feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item1_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item1_desc'] ?? '' ); ?></p>
+					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $fp_meta['why_item1_title'] ?? '' ); ?></h3>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $fp_meta['why_item1_desc'] ?? '' ); ?></p>
 				</li>
 				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-shield-check feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item2_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item2_desc'] ?? '' ); ?></p>
+					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $fp_meta['why_item2_title'] ?? '' ); ?></h3>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $fp_meta['why_item2_desc'] ?? '' ); ?></p>
 				</li>
 				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-map-pin feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item3_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item3_desc'] ?? '' ); ?></p>
+					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $fp_meta['why_item3_title'] ?? '' ); ?></h3>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $fp_meta['why_item3_desc'] ?? '' ); ?></p>
 				</li>
 				<li class="feature-item feature-item-card group rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
 					<div class="feature-icon-wrapper mx-auto">
 						<div class="feature-icon-blob"></div>
 						<i class="ph-bold ph-heart feature-icon-svg text-[var(--deep-teal)] text-2xl" aria-hidden="true"></i>
 					</div>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $m['why_item4_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $m['why_item4_desc'] ?? '' ); ?></p>
+					<h3 class="text-xl font-serif text-[var(--deep-teal)] text-center m-0"><?php echo esc_html( $fp_meta['why_item4_title'] ?? '' ); ?></h3>
+					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed text-center m-0"><?php echo esc_html( $fp_meta['why_item4_desc'] ?? '' ); ?></p>
 				</li>
 			</ul>
 		</div>
@@ -1026,18 +1026,18 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					<div class="grid gap-3">
 						<a
 							id="bottom-cta-enquire"
-							href="<?php echo esc_url( $rw_fp_resolve_href( isset( $m['cta_primary_url'] ) ? (string) $m['cta_primary_url'] : '' ) ); ?>"
+							href="<?php echo esc_url( $rw_fp_resolve_href( isset( $fp_meta['cta_primary_url'] ) ? (string) $fp_meta['cta_primary_url'] : '' ) ); ?>"
 							class="btn btn-gold w-full justify-center"
 							data-cta="cta-enquire"
 						>
-							<?php echo esc_html( $m['cta_primary_label'] ?? '' ); ?>
+							<?php echo esc_html( $fp_meta['cta_primary_label'] ?? '' ); ?>
 						</a>
 						<a
-							href="<?php echo esc_url( $rw_fp_resolve_href( isset( $m['cta_secondary_url'] ) ? (string) $m['cta_secondary_url'] : '' ) ); ?>"
+							href="<?php echo esc_url( $rw_fp_resolve_href( isset( $fp_meta['cta_secondary_url'] ) ? (string) $fp_meta['cta_secondary_url'] : '' ) ); ?>"
 							class="inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/55 px-5 py-3 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-white/15 focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none"
 							data-cta="cta-property"
 						>
-							<?php echo esc_html( $m['cta_secondary_label'] ?? '' ); ?>
+							<?php echo esc_html( $fp_meta['cta_secondary_label'] ?? '' ); ?>
 						</a>
 					</div>
 					<p class="m-0 text-xs leading-relaxed text-white/80"><?php echo esc_html( $rw_fp_cta_promise_display ); ?></p>
@@ -1047,7 +1047,7 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	</section>
 
 	<?php if ( $show_home_faq && ! empty( $home_faq_pairs ) ) : ?>
-	<?php // Accordion markup/classes mirror template-faq.php; FAQPage JSON-LD is output by inc/seo.php. ?>
+		<?php // Accordion markup/classes mirror template-faq.php; FAQPage JSON-LD is output by inc/seo.php. ?>
 	<section class="<?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_faq_bg ); ?> rw-seam-t" aria-labelledby="home-faq-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner_narrow ); ?> text-left">
 			<header class="max-w-3xl mx-auto text-center rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
@@ -1093,26 +1093,26 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	<?php endif; ?>
 
 	<?php if ( $show_trust_block ) : ?>
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'section_class'          => trim( $rw_fp_trust_bg . ' rw-seam-y-muted ' . $rw_fp_section_y ),
-			'container_class'        => $rw_fp_inner,
-			'trust_label'            => $trust_label,
-			'trust_heading'          => $trust_heading,
-			'trust_badge_image_id'   => $trust_badge_image_id,
-			'show_trust_partner'     => $show_trust_partner,
-			'show_trust_cqc_card'    => $show_trust_cqc_card,
-			'trust_line_primary'     => $trust_line_primary,
-			'trust_line'             => $trust_line,
-			'trust_line_secondary'   => $trust_line_secondary,
-			'trust_partner_url'      => $trust_partner_url,
-			'trust_cqc_profile_url'  => $trust_cqc_profile_url,
-		)
-	);
-	get_template_part( 'template-parts/trust-strip' );
-	?>
+		<?php
+		set_query_var(
+			'args',
+			array(
+				'section_class'          => trim( $rw_fp_trust_bg . ' rw-seam-y-muted ' . $rw_fp_section_y ),
+				'container_class'        => $rw_fp_inner,
+				'trust_label'            => $trust_label,
+				'trust_heading'          => $trust_heading,
+				'trust_badge_image_id'   => $trust_badge_image_id,
+				'show_trust_partner'     => $show_trust_partner,
+				'show_trust_cqc_card'    => $show_trust_cqc_card,
+				'trust_line_primary'     => $trust_line_primary,
+				'trust_line'             => $trust_line,
+				'trust_line_secondary'   => $trust_line_secondary,
+				'trust_partner_url'      => $trust_partner_url,
+				'trust_cqc_profile_url'  => $trust_cqc_profile_url,
+			)
+		);
+		get_template_part( 'template-parts/trust-strip' );
+		?>
 	<?php endif; ?>
 
 </main>

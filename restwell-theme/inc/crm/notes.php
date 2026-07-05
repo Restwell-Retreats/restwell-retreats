@@ -42,9 +42,7 @@ function restwell_crm_add_note( int $enquiry_id, string $note ): void {
 function restwell_crm_get_notes( int $enquiry_id ): array {
 	global $wpdb;
 	$notes_table = $wpdb->prefix . RESTWELL_NOTES_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	return (array) $wpdb->get_results(
-		$wpdb->prepare( "SELECT * FROM {$notes_table} WHERE enquiry_id = %d ORDER BY created_at ASC", $enquiry_id )
+		$wpdb->prepare( 'SELECT * FROM %i WHERE enquiry_id = %d ORDER BY created_at ASC', $notes_table, $enquiry_id )
 	);
 }
-

@@ -103,9 +103,9 @@ $categories = array(
 				<div class="flex flex-wrap gap-2">
 					<?php foreach ( $categories as $cat_key => $cat_label ) : ?>
 						<button type="button"
-						        class="faq-filter-pill inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border border-[var(--deep-teal)]/20 text-[var(--deep-teal)] bg-white hover:bg-[var(--deep-teal)]/5 hover:border-[var(--deep-teal)]/40 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2"
-						        data-filter="<?php echo esc_attr( $cat_key ); ?>"
-						        aria-pressed="<?php echo $cat_key === 'all' ? 'true' : 'false'; ?>">
+								class="faq-filter-pill inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border border-[var(--deep-teal)]/20 text-[var(--deep-teal)] bg-white hover:bg-[var(--deep-teal)]/5 hover:border-[var(--deep-teal)]/40 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2"
+								data-filter="<?php echo esc_attr( $cat_key ); ?>"
+								aria-pressed="<?php echo $cat_key === 'all' ? 'true' : 'false'; ?>">
 							<?php echo esc_html( $cat_label ); ?>
 						</button>
 					<?php endforeach; ?>
@@ -118,7 +118,7 @@ $categories = array(
 			<div class="space-y-4 faq-list" id="faq-list">
 				<?php foreach ( $faq_pairs as $faq ) : ?>
 					<details class="faq-item bg-white rounded-2xl px-8 py-1 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 group hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-300 ease-out motion-reduce:transition-none"
-					         data-category="<?php echo esc_attr( $faq['cat'] ); ?>">
+							 data-category="<?php echo esc_attr( $faq['cat'] ); ?>">
 						<summary class="text-[var(--deep-teal)] font-medium text-lg py-4 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2">
 							<span><?php echo esc_html( $faq['q'] ); ?></span>
 							<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
@@ -188,8 +188,8 @@ $categories = array(
 
 						<?php if ( ! empty( $faq_question_errors ) ) : ?>
 							<div class="text-sm text-[#7a1c1c] bg-[#fef2f2] border border-[#fecaca] rounded-xl px-4 py-3 mb-4" role="alert">
-								<?php foreach ( $faq_question_errors as $error ) : ?>
-									<p><?php echo esc_html( $error ); ?></p>
+								<?php foreach ( $faq_question_errors as $faq_form_error ) : ?>
+									<p><?php echo esc_html( $faq_form_error ); ?></p>
 								<?php endforeach; ?>
 							</div>
 						<?php endif; ?>

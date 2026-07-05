@@ -69,7 +69,7 @@ function restwell_theme_setup_page() {
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Restwell Theme Setup', 'restwell-retreats' ); ?></h1>
 
-		<?php echo $message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped - built from escaped fragments ?>
+		<?php echo wp_kses_post( $message ); ?>
 
 		<div class="notice notice-warning">
 			<p><?php esc_html_e( 'Creates missing pages and fills default content. Re-running merges any new theme default fields into pages where those keys are not stored yet; use “Re-run setup anyway” to overwrite Home and template page fields from current theme defaults.', 'restwell-retreats' ); ?></p>

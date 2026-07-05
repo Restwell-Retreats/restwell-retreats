@@ -55,12 +55,30 @@ $acc_gallery_intro   = get_post_meta( $pid, 'acc_gallery_intro', true ) ?: '';
 $acc_gallery_ids     = restwell_get_accessibility_gallery_ids( $pid );
 
 $rooms = array(
-	array( 'heading' => $acc_arrival_heading,  'body' => $acc_arrival_body ),
-	array( 'heading' => $acc_inside_heading,   'body' => $acc_inside_body ),
-	array( 'heading' => $acc_bedroom_heading,  'body' => $acc_bedroom_body ),
-	array( 'heading' => $acc_bathroom_heading, 'body' => $acc_bathroom_body ),
-	array( 'heading' => $acc_kitchen_heading,  'body' => $acc_kitchen_body ),
-	array( 'heading' => $acc_outdoor_heading,  'body' => $acc_outdoor_body ),
+	array(
+		'heading' => $acc_arrival_heading,
+		'body' => $acc_arrival_body,
+	),
+	array(
+		'heading' => $acc_inside_heading,
+		'body' => $acc_inside_body,
+	),
+	array(
+		'heading' => $acc_bedroom_heading,
+		'body' => $acc_bedroom_body,
+	),
+	array(
+		'heading' => $acc_bathroom_heading,
+		'body' => $acc_bathroom_body,
+	),
+	array(
+		'heading' => $acc_kitchen_heading,
+		'body' => $acc_kitchen_body,
+	),
+	array(
+		'heading' => $acc_outdoor_heading,
+		'body' => $acc_outdoor_body,
+	),
 );
 ?>
 <main class="flex-1 restwell-wif-page" id="main-content">
@@ -95,20 +113,26 @@ $rooms = array(
 			</div>
 
 			<div class="grid sm:grid-cols-2 rw-gap-grid">
-				<?php foreach ( $rooms as $room ) :
-					$lines = array_filter( array_map( 'trim', explode( "\n", $room['body'] ) ), function ( $line ) {
-						$lower = strtolower( $line );
-						return strpos( $lower, 'to be confirmed' ) === false
+				<?php
+				foreach ( $rooms as $room ) :
+					$lines = array_filter(
+						array_map( 'trim', explode( "\n", $room['body'] ) ),
+						function ( $line ) {
+							$lower = strtolower( $line );
+							return strpos( $lower, 'to be confirmed' ) === false
 							&& strpos( $lower, 'to be established' ) === false
 							&& strpos( $lower, 'tbc' ) === false
 							&& $line !== '';
-					} );
-					if ( empty( $lines ) ) continue;
-				?>
+						}
+					);
+					if ( empty( $lines ) ) {
+						continue;
+					}
+					?>
 					<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-					                transition-all duration-300 ease-out
-					                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-					                motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+									transition-all duration-300 ease-out
+									hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
+									motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 						<header class="flex items-center gap-4 px-6 pt-6 pb-5 border-b border-gray-100/80">
 							<div class="wif-icon-circle wif-icon-circle--feature h-10 w-10 shrink-0" aria-hidden="true">
 								<i class="ph-bold ph-check text-sm"></i>
@@ -210,9 +234,9 @@ $rooms = array(
 			<div class="grid md:grid-cols-3 rw-gap-grid">
 
 				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-				                transition-all duration-300 ease-out
-				                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-				                motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+								transition-all duration-300 ease-out
+								hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
+								motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-4">
 						<div class="wif-icon-circle wif-icon-circle--feature h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-check-circle text-base"></i>
@@ -225,9 +249,9 @@ $rooms = array(
 				</article>
 
 				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-				                transition-all duration-300 ease-out
-				                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-				                motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+								transition-all duration-300 ease-out
+								hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
+								motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-4">
 						<div class="wif-icon-circle wif-icon-circle--muted h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-warning text-base"></i>
@@ -240,9 +264,9 @@ $rooms = array(
 				</article>
 
 				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-				                transition-all duration-300 ease-out
-				                hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-				                motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+								transition-all duration-300 ease-out
+								hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
+								motion-reduce:transition-none motion-reduce:hover:translate-y-0">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-4">
 						<div class="wif-icon-circle wif-icon-circle--muted h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-info text-base"></i>

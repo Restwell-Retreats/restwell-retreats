@@ -70,7 +70,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		),
 		array(
 			'slug'             => 'carers-respite-holiday-guide',
-			'title'            => "Carers taking holidays: respite rights, funding, and how to plan a break that works",
+			'title'            => 'Carers taking holidays: respite rights, funding, and how to plan a break that works',
 			'excerpt'          => "A practical guide for unpaid carers: what you're entitled to under the Care Act, how to get a carer's assessment in Kent, the funding routes available, and what makes a supported break actually restful.",
 			'meta_title'       => 'Carer Assessment & Respite Rights Guide | ' . $site_name,
 			'meta_description' => 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.',

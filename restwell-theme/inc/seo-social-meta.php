@@ -161,4 +161,3 @@ function restwell_output_social_meta() {
 	echo "\n";
 }
 add_action( 'wp_head', 'restwell_output_social_meta', 5 );
-

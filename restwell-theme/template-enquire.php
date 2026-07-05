@@ -143,9 +143,9 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 					</div>
 				<?php else : ?>
 					<form method="post" action="<?php echo esc_url( $current_url ); ?>"
-						      class="restwell-enq-form rw-surface-card p-8 md:p-10"
-						      data-multistep
-						      novalidate>
+							  class="restwell-enq-form rw-surface-card p-8 md:p-10"
+							  data-multistep
+							  novalidate>
 							<?php wp_nonce_field( RESTWELL_ENQUIRE_NONCE_ACTION, RESTWELL_ENQUIRE_NONCE_NAME ); ?>
 							<input type="hidden" name="restwell_enquire" value="1" />
 							<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $current_url ); ?>" />
@@ -171,11 +171,11 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 						<?php endif; ?>
 
 						<div class="enq-steps-progress flex items-start gap-0 mb-8"
-							     role="progressbar"
-							     aria-label="Enquiry form progress"
-							     aria-valuenow="1"
-							     aria-valuemin="1"
-							     aria-valuemax="3">
+								 role="progressbar"
+								 aria-label="Enquiry form progress"
+								 aria-valuenow="1"
+								 aria-valuemin="1"
+								 aria-valuemax="3">
 								<div class="step-node flex flex-col items-center flex-1 min-w-0" data-step="1">
 									<div class="step-circle w-11 h-11 min-w-[2.75rem] min-h-[2.75rem] rounded-full border-2 flex items-center justify-center text-sm font-semibold leading-none transition-colors duration-200">1</div>
 									<p class="step-label text-xs text-center mt-1.5 leading-tight px-1"><?php esc_html_e( 'About you', 'restwell-retreats' ); ?></p>
@@ -196,17 +196,17 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 						<div>
 								<label for="enq_name" class="<?php echo esc_attr( $label_class ); ?>">Your name <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 								<input type="text" id="enq_name" name="enq_name" required aria-required="true" autocomplete="name"
-								       class="<?php echo esc_attr( $input_class ); ?>" placeholder="Jane Smith" value="<?php echo esc_attr( $enq_f['enq_name'] ); ?>" />
+									   class="<?php echo esc_attr( $input_class ); ?>" placeholder="Jane Smith" value="<?php echo esc_attr( $enq_f['enq_name'] ); ?>" />
 							</div>
 							<div>
 								<label for="enq_email" class="<?php echo esc_attr( $label_class ); ?>">Email address <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 								<input type="email" id="enq_email" name="enq_email" required aria-required="true" autocomplete="email"
-								       class="<?php echo esc_attr( $input_class ); ?>" placeholder="jane@example.com" value="<?php echo esc_attr( $enq_f['enq_email'] ); ?>" />
+									   class="<?php echo esc_attr( $input_class ); ?>" placeholder="jane@example.com" value="<?php echo esc_attr( $enq_f['enq_email'] ); ?>" />
 								</div>
 								<div>
 									<label for="enq_phone" class="<?php echo esc_attr( $label_class ); ?>">Phone number <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 									<input type="tel" id="enq_phone" name="enq_phone" required aria-required="true" autocomplete="tel"
-									       class="<?php echo esc_attr( $input_class ); ?>" placeholder="07700 900000" value="<?php echo esc_attr( $enq_f['enq_phone'] ); ?>" />
+										   class="<?php echo esc_attr( $input_class ); ?>" placeholder="07700 900000" value="<?php echo esc_attr( $enq_f['enq_phone'] ); ?>" />
 									<p id="enq_phone-error" class="enq-field-error" role="alert" hidden></p>
 								</div>
 								<div>
@@ -240,19 +240,19 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 										<div>
 											<label for="enq_date_from" class="block text-xs text-[var(--muted-grey)] mb-1">From</label>
 											<input type="date" id="enq_date_from" name="enq_date_from" min="<?php echo esc_attr( $date_min ); ?>"
-											       class="<?php echo esc_attr( $input_class ); ?> restwell-enq-date" value="<?php echo esc_attr( $enq_f['enq_date_from'] ); ?>" />
+												   class="<?php echo esc_attr( $input_class ); ?> restwell-enq-date" value="<?php echo esc_attr( $enq_f['enq_date_from'] ); ?>" />
 										</div>
 										<div>
 											<label for="enq_date_to" class="block text-xs text-[var(--muted-grey)] mb-1">To</label>
 											<input type="date" id="enq_date_to" name="enq_date_to" min="<?php echo esc_attr( $date_min ); ?>"
-											       class="<?php echo esc_attr( $input_class ); ?> restwell-enq-date" value="<?php echo esc_attr( $enq_f['enq_date_to'] ); ?>" />
+												   class="<?php echo esc_attr( $input_class ); ?> restwell-enq-date" value="<?php echo esc_attr( $enq_f['enq_date_to'] ); ?>" />
 										</div>
 									</div>
 								</fieldset>
 								<div>
 									<label for="enq_guests" class="<?php echo esc_attr( $label_class ); ?>">Number of guests <span class="text-[var(--muted-grey)] font-normal">(optional)</span></label>
 									<input type="number" id="enq_guests" name="enq_guests" min="1" max="20"
-									       class="<?php echo esc_attr( $input_class ); ?>" placeholder="2" value="<?php echo esc_attr( $enq_f['enq_guests'] ); ?>" />
+										   class="<?php echo esc_attr( $input_class ); ?>" placeholder="2" value="<?php echo esc_attr( $enq_f['enq_guests'] ); ?>" />
 								</div>
 								<div>
 									<label for="enq_funding" class="<?php echo esc_attr( $label_class ); ?>">Funding type <span class="text-[var(--muted-grey)] font-normal">(optional)</span></label>
@@ -269,7 +269,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 								</div>
 								<div class="flex items-center gap-3 min-h-[44px] py-1">
 									<input type="checkbox" id="enq_urgent" name="enq_urgent" value="1"
-									       class="enquire-checkbox-urgent h-[1.125rem] w-[1.125rem] shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2" <?php checked( $enq_f['enq_urgent'], '1' ); ?> />
+										   class="enquire-checkbox-urgent h-[1.125rem] w-[1.125rem] shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2" <?php checked( $enq_f['enq_urgent'], '1' ); ?> />
 									<label for="enq_urgent" class="text-sm font-medium leading-snug text-[#1B4D5C] cursor-pointer select-none">
 										<?php esc_html_e( 'This is urgent — please prioritise my enquiry', 'restwell-retreats' ); ?>
 									</label>
@@ -288,25 +288,25 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 								<div>
 									<label for="enq_care" class="<?php echo esc_attr( $label_class ); ?>">Care requirements <span class="text-[var(--muted-grey)] font-normal">(optional)</span></label>
 									<textarea id="enq_care" name="enq_care" rows="3"
-									          class="<?php echo esc_attr( $input_class ); ?> resize-y"
-									          placeholder="Tell us about any care support you might need, or leave blank if not applicable."><?php echo esc_textarea( $enq_f['enq_care'] ); ?></textarea>
+											  class="<?php echo esc_attr( $input_class ); ?> resize-y"
+											  placeholder="Tell us about any care support you might need, or leave blank if not applicable."><?php echo esc_textarea( $enq_f['enq_care'] ); ?></textarea>
 								</div>
 								<div>
 									<label for="enq_accessibility" class="<?php echo esc_attr( $label_class ); ?>">Accessibility needs <span class="text-[var(--muted-grey)] font-normal">(optional)</span></label>
 									<textarea id="enq_accessibility" name="enq_accessibility" rows="3"
-									          class="<?php echo esc_attr( $input_class ); ?> resize-y"
-									          placeholder="Any specific accessibility requirements we should know about?"><?php echo esc_textarea( $enq_f['enq_accessibility'] ); ?></textarea>
+											  class="<?php echo esc_attr( $input_class ); ?> resize-y"
+											  placeholder="Any specific accessibility requirements we should know about?"><?php echo esc_textarea( $enq_f['enq_accessibility'] ); ?></textarea>
 								</div>
 							<div>
 								<label for="enq_message" class="<?php echo esc_attr( $label_class ); ?>">Your message <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
 								<textarea id="enq_message" name="enq_message" required aria-required="true" rows="4"
-									          class="<?php echo esc_attr( $input_class ); ?> resize-y"
-									          placeholder="Tell us a bit about what you're looking for, or ask any questions."><?php echo esc_textarea( $enq_f['enq_message'] ); ?></textarea>
+											  class="<?php echo esc_attr( $input_class ); ?> resize-y"
+											  placeholder="Tell us a bit about what you're looking for, or ask any questions."><?php echo esc_textarea( $enq_f['enq_message'] ); ?></textarea>
 								</div>
 								<div class="rounded-xl border border-[#CFC2AD] bg-[#FFFEFC] px-4 py-3">
 									<div class="flex items-start gap-3">
 										<input type="checkbox" id="enq_marketing_optin" name="enq_marketing_optin" value="1"
-										       class="h-[1.125rem] w-[1.125rem] mt-0.5 shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2"
+											   class="h-[1.125rem] w-[1.125rem] mt-0.5 shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2"
 											<?php checked( $enq_f['enq_marketing_optin'], '1' ); ?> />
 										<label for="enq_marketing_optin" class="text-sm leading-snug text-[#1B4D5C] cursor-pointer">
 											<?php esc_html_e( 'Yes, send me occasional email updates with priority date alerts, special offers, and practical accessibility holiday tips (you can unsubscribe at any time).', 'restwell-retreats' ); ?>

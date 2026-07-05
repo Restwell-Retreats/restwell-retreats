@@ -56,7 +56,14 @@ function restwell_crm_enquiries_page() {
 		}
 
 		wp_safe_redirect(
-			add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $id, 'updated' => '1' ), admin_url( 'admin.php' ) )
+			add_query_arg(
+				array(
+					'page' => 'restwell-enquiries',
+					'view' => $id,
+					'updated' => '1',
+				),
+				admin_url( 'admin.php' )
+			)
 		);
 		exit;
 	}
@@ -76,7 +83,15 @@ function restwell_crm_enquiries_page() {
 			}
 		}
 
-		wp_safe_redirect( add_query_arg( array( 'page' => 'restwell-enquiries', 'updated' => '1' ), admin_url( 'admin.php' ) ) );
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'page' => 'restwell-enquiries',
+					'updated' => '1',
+				),
+				admin_url( 'admin.php' )
+			)
+		);
 		exit;
 	}
 
@@ -178,14 +193,23 @@ function restwell_crm_enquiries_page() {
 				<span class="rw-filter-group__label" id="rw-enquiries-status-label"><?php esc_html_e( 'Status', 'restwell-retreats' ); ?></span>
 				<ul class="subsubsub rw-subsubsub--status rw-filter-pills" role="list" aria-labelledby="rw-enquiries-status-label">
 					<li>
-						<a href="<?php echo esc_url( $base_url ); ?>" <?php if ( ! $status_filter ) echo 'class="current"'; ?>>
+						<a href="<?php echo esc_url( $base_url ); ?>" 
+						<?php
+						if ( ! $status_filter ) {
+							echo 'class="current"';}
+						?>
+						>
 							<?php esc_html_e( 'All', 'restwell-retreats' ); ?> <span class="count">(<?php echo esc_html( $counts['all'] ); ?>)</span>
 						</a>
 					</li>
 					<?php foreach ( $statuses as $slug => $info ) : ?>
 						<li>
 							<a href="<?php echo esc_url( add_query_arg( 'status_filter', $slug, $base_url ) ); ?>"
-							   <?php if ( $status_filter === $slug ) echo 'class="current"'; ?>>
+							   <?php
+								if ( $status_filter === $slug ) {
+									echo 'class="current"';}
+								?>
+								>
 								<?php echo esc_html( $info['label'] ); ?> <span class="count">(<?php echo esc_html( $counts[ $slug ] ); ?>)</span>
 							</a>
 						</li>
@@ -264,7 +288,20 @@ function restwell_crm_enquiries_page() {
 						</span>
 						<?php for ( $p = 1; $p <= $total_pages; $p++ ) : ?>
 							<a class="button<?php echo $p === $current_page ? ' button-primary' : ''; ?>"
-							   href="<?php echo esc_url( add_query_arg( array( 'paged' => $p, 'status_filter' => $status_filter, 's' => $search ), $base_url ) ); ?>">
+							href="
+							<?php
+							echo esc_url(
+								add_query_arg(
+									array(
+										'paged' => $p,
+										'status_filter' => $status_filter,
+										's' => $search,
+									),
+									$base_url
+								)
+							);
+							?>
+									">
 								<?php echo esc_html( $p ); ?>
 							</a>
 						<?php endfor; ?>
@@ -285,7 +322,7 @@ function restwell_crm_enquiries_page() {
 			 * @param array  $extras  Extra query args to preserve.
 			 * @return string HTML.
 			 */
-			$sort_link = function( string $col, string $label, string $current, string $current_order, string $base, array $extras ): string {
+			$sort_link = function ( string $col, string $label, string $current, string $current_order, string $base, array $extras ): string {
 				$is_active  = ( $col === $current );
 				$next_order = $is_active && 'ASC' === $current_order ? 'DESC' : 'ASC';
 				$arrow      = '';
@@ -298,7 +335,16 @@ function restwell_crm_enquiries_page() {
 						? ' ' . __( 'Sorted ascending.', 'restwell-retreats' )
 						: ' ' . __( 'Sorted descending.', 'restwell-retreats' );
 				}
-				$href = add_query_arg( array_merge( $extras, array( 'orderby' => $col, 'order' => $next_order ) ), $base );
+				$href = add_query_arg(
+					array_merge(
+						$extras,
+						array(
+							'orderby' => $col,
+							'order' => $next_order,
+						)
+					),
+					$base
+				);
 				return sprintf(
 					'<a href="%s" class="%s" aria-label="%s">%s%s<span class="screen-reader-text">%s</span></a>',
 					esc_url( $href ),
@@ -315,17 +361,19 @@ function restwell_crm_enquiries_page() {
 					esc_html( $sort_hint )
 				);
 			};
-			$sort_aria = function( string $col, string $current, string $current_order ): string {
+			$sort_aria = function ( string $col, string $current, string $current_order ): string {
 				if ( $col !== $current ) {
 					return 'none';
 				}
 				return 'ASC' === $current_order ? 'ascending' : 'descending';
 			};
-			$sort_extras = array_filter( array(
-				'page'          => 'restwell-enquiries',
-				'status_filter' => $status_filter,
-				's'             => $search,
-			) );
+			$sort_extras = array_filter(
+				array(
+					'page'          => 'restwell-enquiries',
+					'status_filter' => $status_filter,
+					's'             => $search,
+				)
+			);
 			?>
 			<thead>
 				<tr>
@@ -350,9 +398,15 @@ function restwell_crm_enquiries_page() {
 				<tbody>
 					<?php foreach ( $rows as $row ) : ?>
 						<?php
-					$detail_url    = add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $row->id ), admin_url( 'admin.php' ) );
-					$is_overdue    = ! empty( $row->follow_up_at ) && $row->follow_up_at <= $now_mysql && 'closed' !== $row->status;
-					$sla_badge     = restwell_crm_sla_badge( $row );
+						$detail_url    = add_query_arg(
+							array(
+								'page' => 'restwell-enquiries',
+								'view' => $row->id,
+							),
+							admin_url( 'admin.php' )
+						);
+						$is_overdue    = ! empty( $row->follow_up_at ) && $row->follow_up_at <= $now_mysql && 'closed' !== $row->status;
+						$sla_badge     = restwell_crm_sla_badge( $row );
 						?>
 						<tr<?php echo $row->is_urgent ? ' class="rw-row--urgent"' : ''; ?>>
 							<th scope="row" class="check-column">
@@ -617,7 +671,7 @@ function restwell_crm_enquiry_detail( int $id ) {
 						 * remember to leave a note.
 						 */
 						$stay_from = $row->date_from ? esc_attr( $row->date_from ) : '';
-						$stay_to   = $row->date_to   ? esc_attr( $row->date_to )   : '';
+						$stay_to   = $row->date_to ? esc_attr( $row->date_to ) : '';
 						?>
 						<h3 class="rw-detail-section-title">
 							<?php esc_html_e( 'Stay dates', 'restwell-retreats' ); ?>
@@ -728,26 +782,26 @@ function restwell_crm_enquiry_detail( int $id ) {
 
 							<!-- Status timestamps -->
 							<?php
-						$ts_fields = array(
-							'contacted_at'  => __( 'Contacted', 'restwell-retreats' ),
-							'qualified_at'  => __( 'Qualified', 'restwell-retreats' ),
-							'booked_at'     => __( 'Booked', 'restwell-retreats' ),
-							'closed_at'     => __( 'Closed', 'restwell-retreats' ),
-						);
+							$ts_fields = array(
+								'contacted_at'  => __( 'Contacted', 'restwell-retreats' ),
+								'qualified_at'  => __( 'Qualified', 'restwell-retreats' ),
+								'booked_at'     => __( 'Booked', 'restwell-retreats' ),
+								'closed_at'     => __( 'Closed', 'restwell-retreats' ),
+							);
 							foreach ( $ts_fields as $col => $label ) :
 								if ( ! empty( $row->$col ) ) :
-							?>
+									?>
 							<p class="rw-ts-line">
-								<?php
-								printf(
+									<?php
+									printf(
 									/* translators: 1: status label, 2: formatted date */
-									esc_html__( '%1$s: %2$s', 'restwell-retreats' ),
-									esc_html( $label ),
-									esc_html( date_i18n( 'j M Y, H:i', strtotime( $row->$col ) ) )
-								);
-								?>
+										esc_html__( '%1$s: %2$s', 'restwell-retreats' ),
+										esc_html( $label ),
+										esc_html( date_i18n( 'j M Y, H:i', strtotime( $row->$col ) ) )
+									);
+									?>
 							</p>
-							<?php
+									<?php
 								endif;
 							endforeach;
 							?>
@@ -777,14 +831,14 @@ function restwell_crm_enquiry_detail( int $id ) {
 						<div class="inside">
 							<label class="screen-reader-text" for="rw-staff-notes"><?php esc_html_e( 'Staff notes', 'restwell-retreats' ); ?></label>
 							<textarea name="rw_notes" id="rw-staff-notes" rows="5"
-							          class="rw-sidebar-field"
-							          placeholder="<?php esc_attr_e( 'Pinned summary (not visible to the enquirer).', 'restwell-retreats' ); ?>"
+									  class="rw-sidebar-field"
+									  placeholder="<?php esc_attr_e( 'Pinned summary (not visible to the enquirer).', 'restwell-retreats' ); ?>"
 							><?php echo esc_textarea( $row->staff_notes ); ?></textarea>
 						</div>
 					</div>
 
 					<input type="submit" class="button button-primary button-large rw-btn-block"
-					       value="<?php esc_attr_e( 'Save Changes', 'restwell-retreats' ); ?>">
+						   value="<?php esc_attr_e( 'Save Changes', 'restwell-retreats' ); ?>">
 
 				</form>
 
@@ -797,11 +851,12 @@ function restwell_crm_enquiry_detail( int $id ) {
 
 						<?php if ( ! empty( $notes ) ) : ?>
 							<div class="rw-activity-list">
-								<?php foreach ( $notes as $note ) :
+								<?php
+								foreach ( $notes as $note ) :
 									$author = get_userdata( (int) $note->created_by );
 									$author_name = $author ? $author->display_name : __( 'Staff', 'restwell-retreats' );
 									$initial     = mb_strtoupper( mb_substr( $author_name, 0, 1 ) );
-								?>
+									?>
 								<div class="rw-activity-row">
 									<div class="rw-activity-avatar" aria-hidden="true">
 										<?php echo esc_html( $initial ); ?>
@@ -864,7 +919,7 @@ function restwell_crm_enquiry_detail( int $id ) {
 					<input type="hidden" name="action" value="restwell_crm_send_post_stay" />
 					<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( $row->id ); ?>" />
 					<button type="submit" class="button button-large rw-btn-block"
-					        onclick="return confirm('<?php esc_attr_e( 'Send post-stay email to this guest?', 'restwell-retreats' ); ?>');">
+							onclick="return confirm('<?php esc_attr_e( 'Send post-stay email to this guest?', 'restwell-retreats' ); ?>');">
 						&#9993; <?php esc_html_e( 'Send Post-Stay Email', 'restwell-retreats' ); ?>
 					</button>
 				</form>

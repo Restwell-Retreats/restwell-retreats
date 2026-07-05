@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'RESTWELL_CRM_DB_VERSION', '3.5' );
-define( 'RESTWELL_CRM_TABLE',    'rw_enquiries' );
-define( 'RESTWELL_NOTES_TABLE',  'rw_enquiry_notes' );
+define( 'RESTWELL_CRM_TABLE', 'rw_enquiries' );
+define( 'RESTWELL_NOTES_TABLE', 'rw_enquiry_notes' );
 define( 'RESTWELL_GUESTS_TABLE', 'rw_guests' );
-define( 'RESTWELL_FAQ_TABLE',    'rw_faq_submissions' );
-define( 'RESTWELL_CRM_CAP',      'restwell_manage_enquiries' );
+define( 'RESTWELL_FAQ_TABLE', 'rw_faq_submissions' );
+define( 'RESTWELL_CRM_CAP', 'restwell_manage_enquiries' );
 
 /**
  * Return the CRM capability key.
@@ -70,4 +70,3 @@ function restwell_crm_apply_role_caps(): void {
 	}
 }
 add_action( 'init', 'restwell_crm_apply_role_caps', 20 );
-
