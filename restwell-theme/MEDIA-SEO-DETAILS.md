@@ -4,6 +4,8 @@ Scope: files currently in `assets/images/media/`, intended to be uploaded into t
 
 Use this as the fill-in sheet when adding media to WordPress or documenting static theme media. For images, fill in **Title**, **Alt Text**, **Caption** where useful, and **Description** in the Media Library. For videos, use **Title**, **Caption**, **Description**, and make sure decorative background videos stay `aria-hidden="true"` in templates.
 
+**Open tasks:** See [Open tasks (media optimization)](#open-tasks-media-optimization) at the end of this file. Hero derivatives (`*-hero.mp4`, `*-mobile.mp4`) are documented below; remove `.DS_Store` from `assets/images/media/` before commit if present.
+
 ## Homepage Hero Admin Fields
 
 The homepage hero is now Media Library-driven. After upload, fill these page fields in WP Admin:
@@ -558,3 +560,16 @@ For every video:
 - Video is not the only meaningful content.
 - Background videos are decorative with `aria-hidden="true"`.
 - `preload="metadata"` is used unless the video is user-initiated.
+
+---
+
+## Open tasks (media optimization)
+
+Merged from `MEDIA-OPTIMIZATION-TODO.md` (2026-07-05). Hero derivatives are documented in [Homepage Hero Video](#homepage-hero-video) above.
+
+1. Remove `assets/images/media/.DS_Store` before commit if present.
+2. Compress or replace oversized `2400x3200` portrait sources (serve responsive sizes, not originals in templates).
+3. Replace raw property gallery `<img>` tags in `template-property.php` with responsive WordPress image output (`width`/`height`, `loading="lazy"`, `decoding="async"`, `sizes`).
+4. Confirm every meaningful image has useful alt text (10–125 chars; no keyword stuffing).
+5. Shorten long stock-style filenames when re-importing (see legacy TODO for rename examples).
+6. Re-run Lighthouse/PageSpeed after media changes (LCP, CLS, total weight).

@@ -1,5 +1,7 @@
 # Visual Frontend Audit Report
 
+**Remediation status (2026-07-05):** Many contrast, rhythm, and touch-target items from this March 2026 audit were addressed in subsequent homepage polish and audit sprints. See [AUDIT.md](AUDIT.md) scorecard and [PERFECT-SITE-PLAN.md](../docs/archive/seo-legacy/audit-sprints/PERFECT-SITE-PLAN.md) (archived) for fix history. Use this file for **remaining UX findings** and COPY-PASTE step 9 visual passes.
+
 **Site/Page:** Restwell Retreats (multi-page, desktop + mobile)  
 **Date:** Monday 2 March 2026  
 **Input Type:** Screenshots (desktop: Homepage, Property, How It Works, Why Restwell?, Accessibility, FAQ, Enquire; mobile: Homepage, FAQ, Article/How It Works, Why Restwell?, Accessibility)  

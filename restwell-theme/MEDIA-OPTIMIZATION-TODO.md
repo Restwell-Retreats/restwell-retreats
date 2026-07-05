@@ -1,5 +1,7 @@
 # Media Optimization TODO
 
+> **Merged 2026-07-05.** Open tasks moved to [MEDIA-SEO-DETAILS.md](MEDIA-SEO-DETAILS.md#open-tasks-media-optimization). Do not maintain this file; use MEDIA-SEO-DETAILS as the media SSOT.
+
 Scope: `assets/images/media/`
 
 This checklist covers the static media currently stored in the theme, using the `/file-uploads` and `/seo-images` rules: verify real file types, keep filenames safe, compress large assets, prevent layout shift, and avoid hurting LCP.

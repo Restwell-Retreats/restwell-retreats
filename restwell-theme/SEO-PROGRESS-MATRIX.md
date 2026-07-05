@@ -16,7 +16,8 @@
 4. Apply the row/column updates from the **Matrix write-back** table in `SEO-INTENT-ONPAGE-PLAN.md` (section *Write findings into this plan* → **Matrix write-back (required)**) for the **prompt ID you just ran**.
 5. **P2:** When a §2.6 run satisfies plan **§2.0** (repo + SERP/tools + Evidence column targets), set plan spine row **§2.0** to `x` (or `~` if Gap / Next validation still open). Still set row **§2** per existing P2 rules.
 6. **P4 only:** For **each** path in the prompt’s **Batch paths** list, resolve to a **Path** key below (path form `/slug/`; homepage = `/`). Set exactly **one** of **A–G** to `x` (done) or `~` (in plan / partial) for that step only. Never delete URL rows.
-7. Keep long rationale in the plan (**§13.1**, §2.6, §16 B2); this file stays **compact symbols only** in grids.
+7. **COPY-PASTE track:** After a [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) template run, apply the same P4 A–G write-back to §13.1 and this matrix before marking the page done.
+8. Keep long rationale in the plan (**§13.1**, §2.6, §16 B2); this file stays **compact symbols only** in grids.
 
 **Legend:** `.` not started · `~` drafted or partial (plan filled, or WP not verified) · `x` done · `[ ]` / `[x]` Markdown checkboxes for global and checklist rows.
 
@@ -26,10 +27,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Last updated (ISO)** | 2026-05-25 |
+| **Last updated (ISO)** | 2026-07-05 |
 | **Matrix schema** | 2.0 |
 | **P4 catalog URLs** | 34 |
-| **P4 URLs with §13.1 row (worksheet)** | 33 (`/`, `/accessibility/`, `/enquire/`, `/how-it-works/`, `/resources/`, `/the-property/`, `/whitstable-area-guide/`, `/accessible-beaches-coastal-walks-kent/`, `/accessible-parking-whitstable-tankerton/`, `/accessible-eating-out-whitstable-kent/`, `/who-its-for/`, `/faq/`, `/guest-guide/`, `/blog/`, `/how-to-choose-accessible-self-catering-holiday/`, `/direct-payment-holiday-accommodation/`, `/chc-respite-holiday-accommodation-uk/`, `/personal-budget-short-break-care-act/`, `/commissioner-checklist-accessible-respite-stay/`, `/revitalise-alternatives-accessible-holidays/`, `/carers-respite-holiday-guide/`, `/what-to-pack-accessible-self-catering-uk/`, `/hire-mobility-scooter-equipment-uk-holiday/`, `/holiday-backup-plan-care-worker-change/`, `/accessible-train-travel-whitstable-kent/`, `/travel-insurance-disability-uk-self-catering/`, `/how-to-read-holiday-cottage-access-statement/`, `/changing-places-toilets-kent-coast-days-out/`, `/fatigue-friendly-whitstable-coastal-day/`, `/quieter-times-whitstable-low-crowd-access/`, `/privacy-policy/`, `/terms-and-conditions/`, `/accessibility-policy/`) |
+| **P4 URLs with §13.1 row (worksheet)** | 34 (includes `/contact/`; see plan §13.1) |
 | **P4 URLs with column G = `x`** | 0 |
 
 ---
@@ -78,7 +79,7 @@ Spine rows use the same **§** numbers as the plan. **§2.0** is the research-de
 | 15 | Completion checklist | ~ | |
 | 16 | Ranking execution (B1–B6) | ~ | |
 | 17 | Technical remediation (Track A) | . | |
-| 18 | Skills quick reference | . | |
+| 18 | Skills quick reference | x | 2026-07-05 |
 
 ---
 

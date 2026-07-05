@@ -172,17 +172,39 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 | Access statement PDF URL | `restwell_access_statement_url` option | **Restwell CRM** settings |
 | `llms.txt` | `restwell-theme/llms.txt` | Edit file in theme root |
 | Enquiries, Mailchimp, reminders | CRM mu-plugin | `wp-content/mu-plugins/restwell-crm/` |
+| Primary CTA / conversion events | `inc/ANALYTICS-PRIMARY-GOAL.md` | `restwell_cta_click`, `generate_lead` — see doc |
 
 ---
 
 ## Related documentation
 
+### SEO (two tracks)
+
+| Track | Doc | Scope |
+|-------|-----|--------|
+| **SSOT P1–P10** | [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | Strategy, keywords, per-URL on-page work, §13.1 audit trail |
+| **Scoreboard** | [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Symbols only — update after every plan write-back |
+| **Template COPY-PASTE** | [COPY-PASTE-PROMPTS.md](./COPY-PASTE-PROMPTS.md) | Per-template implementation prompts; **requires matrix sync** after each run |
+| **Homepage handoff** | [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) | Published homepage baseline for editors and engineering |
+| **Living audit** | [AUDIT.md](./AUDIT.md) | Multi-domain scorecard and open remediation |
+| **Skills index** | [SKILLS_GLOSSARY.md](./SKILLS_GLOSSARY.md) | Auto-generated slash-command index (regenerate; do not hand-edit) |
+| **Media alt text** | [MEDIA-SEO-DETAILS.md](./MEDIA-SEO-DETAILS.md) | Media Library metadata fill-in sheet |
+| **Consolidation map** | [docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md](../docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md) | Merge/archive status for all SEO markdown |
+| **Archived legacy** | [docs/archive/seo-legacy/](../docs/archive/seo-legacy/) | Superseded strategy, homepage, and audit sprint docs |
+
+### Design and UX
+
 | Doc | Scope |
 |-----|--------|
 | [DESIGN-SYSTEM.md](./DESIGN-SYSTEM.md) | Colours, type, spacing, components, Tailwind conventions |
 | [VISUAL-FRONTEND-AUDIT.md](./VISUAL-FRONTEND-AUDIT.md) | UI audit notes and remediation tracking |
-| [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | **SSOT** for SEO / AEO / GEO: strategy, keywords, per-URL on-page work, §13.1 audit trail (homepage FAQ copy aligns with §13.1 / §4.1 in `inc/homepage-faq.php`) |
-| [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Progress scoreboard companion: global prompts, plan spine, catalog URLs × P4 steps (A–G); update after plan write-backs |
+
+### Analytics and ops (SEO-adjacent)
+
+| Doc | Scope |
+|-----|--------|
+| [inc/ANALYTICS-PRIMARY-GOAL.md](./inc/ANALYTICS-PRIMARY-GOAL.md) | Primary conversion events and message match with SEO seed |
+| [inc/TESTIMONIAL-COLLECT.md](./inc/TESTIMONIAL-COLLECT.md) | Post-stay testimonial collection SOP |
 
 ---
 

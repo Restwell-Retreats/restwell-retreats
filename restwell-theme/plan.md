@@ -80,9 +80,9 @@ Goal: make CRM ownership, team workflow, and stale-lead follow-up reliable for d
 
 ---
 
-## F. SEO execution plan (from `restwell-seo-section1.md` + `restwell-seo-sections2-4.md` + `restwell-seo-sections5-7.md` + `restwell-seo-sections8-11.md`)
+## F. SEO execution plan (from [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) §1–§16 + §19)
 
-Goal: execute the documented SEO strategy in a practical sequence across on-page, technical SEO, local SEO, internal linking, content, and authority building.
+Goal: execute the documented SEO strategy in a practical sequence across on-page, technical SEO, local SEO, internal linking, content, and authority building. Legacy root `restwell-seo-section*.md` files are archived under `docs/archive/seo-legacy/legacy-strategy/`.
 
 - [ ] **F1 - Keep positioning tight (keyword focus + audience)**  
   Enforce "accessible + Whitstable/Kent coast + near Canterbury" as primary targets; avoid chasing broad generic holiday-let terms. Keep dual-audience language: families/carers plus OTs/case managers/commissioners.
@@ -125,7 +125,7 @@ Goal: run SEO as a repeatable operating system with clear thresholds, ownership,
   At review, choose one outcome: refresh, consolidate, or deprecate. Ensure updated posts have refreshed internal links and metadata.
 
 - [ ] **G7 - Backlink pipeline metrics (weekly)**  
-  Track outreach in a simple pipeline: target, relevance tier, contact date, status, live URL, and referral traffic.  
+  Track outreach in a simple pipeline: target, relevance tier, contact date, status, live URL, and referral traffic. See SSOT **§19.2–§19.3** for priority targets and directory checklist.  
   Weekly KPI: pitches sent, responses, links earned, and links from priority categories (accessibility, Kent tourism, professional/care).
 
 - [ ] **G8 - Entity consistency control sheet**  
@@ -133,7 +133,7 @@ Goal: run SEO as a repeatable operating system with clear thresholds, ownership,
   Use it for site copy, GBP, directories, and outreach bios to prevent NAP/category drift.
 
 - [ ] **G9 - Competitor movement review (monthly)**  
-  Track 5-10 direct/indirect competitors from section 8.  
+  Track 5-10 direct/indirect competitors from SSOT **§8.1** (competitor landscape table).  
   Log new ranking pages, new backlinks, and new content themes; convert insights into one concrete monthly action on Restwell pages.
 
 - [ ] **G10 - SEO-to-CRO checks for organic landing pages**  

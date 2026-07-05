@@ -2,9 +2,35 @@
 
 Work **top to bottom**. For each numbered section, copy everything inside the **fenced block** into a new Cursor chat.
 
-**Paths:** `@restwell-theme/` = this theme folder. Skill files use `@/Users/elliesmith/.cursor/skills/...` or project-local `@.cursor/skills/...` as noted.
+**SSOT (strategy + scoreboard):** [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md)
+
+**Paths:** `@restwell-theme/` = this theme folder. Skill names: see [SKILLS_GLOSSARY.md](SKILLS_GLOSSARY.md) (`/skill-name`); legacy absolute paths below still work.
 
 **Once per chat:** `@` every **Context** line plus any skill files you want loaded.
+
+## Post-run sync (required)
+
+After each template run:
+
+1. Map outputs to P4 steps **A–G** (keywords → published/verified).
+2. Append or update the URL row in **SEO-INTENT-ONPAGE-PLAN.md §13.1**.
+3. Update **SEO-PROGRESS-MATRIX.md** symbols for that URL (A–G column).
+4. Do **not** treat COPY-PASTE completion as done until the matrix reflects it.
+
+## Template coverage
+
+| File | Purpose |
+|------|---------|
+| `COPY-PASTE-PROMPTS.md` | **This file** — full prompts per page |
+| `page-manifest.template.yaml` | Blank manifest for custom pages |
+| `inc/page-meta-definitions.php` | Meta keys per template |
+| Homepage field/schema reference | SSOT **§13.1 Home preset** (was `HOMEPAGE-PIPELINE-DELIVERABLE.md`) |
+
+**Templates:** `front-page.php`, `template-property.php`, `template-accessibility.php`, `template-enquire.php`, `template-faq.php`, `template-how-it-works.php`, `template-who-its-for.php`, `template-whitstable-guide.php`, `template-resources.php`, `template-contact.php`; also `single.php`, `page-guest-guide.php` as separate runs.
+
+**Suggested order:** Hubs (property, accessibility, how it works, enquire) → supporting (who it’s for, resources, FAQ, Whitstable guide, contact). Update `sibling_pages_for_seo` in each manifest as you finish pages.
+
+**Done checklist (before next page):** Copy brief accepted · meta-key table complete · one H1 + sensible H2s · internal links listed · schema decision recorded · polish notes match theme · matrix write-back done.
 
 ---
 
@@ -461,7 +487,7 @@ Run the full page pipeline for THIS PAGE ONLY.
 ## Page manifest
 page_id: Whitstable guide
 template_file: @restwell-theme/template-whitstable-guide.php
-wp_path: /whitstable-guide/
+wp_path: /whitstable-area-guide/
 
 primary_goal: Practical local planning with honest access context; support property and enquiry goals.
 primary_cta: Enquire about dates → @restwell-theme/template-enquire.php
@@ -614,3 +640,23 @@ Constraints: Evidence-based; no implementation unless I ask. Reference @restwell
 
 Output: prioritized findings, SEO Health Index per seo-audit skill, and action list.
 ```
+
+---
+
+## Run log (homepage — historical)
+
+*Merged from archived `PAGE-RUNS.md` (2026-07-05). Sync new runs to §13.1 + matrix.*
+
+### Homepage (`front-page.php`) — 2026-04-03
+
+- **Local URL:** http://restwell.local/
+- **Pipeline:** Brief + meta-key table + heading map + schema stance completed; WP admin paste optional.
+- **Visual:** Single H1; H2 order intro → who → property → why → CTA; CTA order **See the property** then **Enquire about dates**.
+- **Placeholders:** `property_image_id`, `cta_image_id` acceptable until final media.
+
+### Homepage — consolidated pipeline (2026-04)
+
+- Field/schema reference now in SSOT **§13.1 Home preset** (archived `HOMEPAGE-PIPELINE-DELIVERABLE.md`).
+- LodgingBusiness NAP sources: verify against admin options and `inc/seo.php`.
+
+**Optional two-phase runs:** Phase A = steps 1–4 + meta table; Phase B = steps 5–9 using saved meta table.

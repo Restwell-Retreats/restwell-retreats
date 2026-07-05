@@ -5,7 +5,7 @@
 Close the gaps from the **combined screenshot audit** (visual + UI validator + Web Interface Guidelines themes): reliable **mobile gutters** and **header↔hero axis alignment**, **even vertical rhythm** (including lede→CTA), **intentional** secondary CTA treatment across breakpoints, **accessible** menu/CTAs (labels, focus, contrast), and a **logged-out** verification pass.
 
 **Glossary:** invoke skills via **`/{folder-name}`** — see  
-`/Users/elliesmith/Developer/Projects/FINALCTAIHOPE/cta-wp-theme/docs/SKILLS_GLOSSARY.md` (879 skills).
+[`restwell-theme/SKILLS_GLOSSARY.md`](restwell-theme/SKILLS_GLOSSARY.md) (879 skills).
 
 | Area | Skills to use |
 |------|----------------|

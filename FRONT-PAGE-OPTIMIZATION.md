@@ -5,7 +5,7 @@
 **Primary conversion goal:** Enquiry form submissions  
 **Constraint:** Hero wording on the homepage must remain unchanged.
 
-This document consolidates the work completed across **Phases 1–15** of `front-page-seo-optimization.md` (execution through 2026-04-12). Use it for **engineering handoff**, **quarterly maintenance**, and **editor training**.
+This document consolidates the work completed across **Phases 1–15** of the homepage SEO execution plan (archived at [`docs/archive/seo-legacy/homepage/front-page-seo-optimization.md`](docs/archive/seo-legacy/homepage/front-page-seo-optimization.md), through 2026-04-12). Use it for **engineering handoff**, **quarterly maintenance**, and **editor training**.
 
 ---
 
@@ -93,6 +93,16 @@ Use **`/seo-content-refresher`**, **`/plan-writing`**, **`/documentation-templat
 - [ ] **robots / llms** — Confirm `/robots.txt` and `/llms.txt` respond 200 after migrations.
 - [ ] **Accessibility** — Spot-check keyboard path and form labels after content edits.
 
+**Live verification (open — assign on production/staging URL):**
+
+- [ ] **GSC keyword review** — Editorial pass on keyword density for target phrases (not machine-verifiable from repo alone).
+- [ ] **Core Web Vitals** — PSI/Lighthouse on `/` and `/enquire/` (LCP, INP, CLS).
+- [ ] **Security headers** — Confirm CSP, HSTS, X-Frame-Options, etc. on live host/CDN.
+- [ ] **WCAG 2.2 AA** — axe or equivalent on homepage after material content/CSS changes.
+- [ ] **Keyboard + screen reader** — VoiceOver/NVDA spot check on hero, nav, enquiry path.
+
+Tracked in SSOT **§11.6** measurement log.
+
 ---
 
 ## 7. Editor & content guide
@@ -154,6 +164,6 @@ Use **`/documentation-generation-doc-generate`**, **`/doc-coauthoring`**, **`/wi
 
 ## 9. Related plan file
 
-- **`front-page-seo-optimization.md`** — Full phased plan, execution tables for Phases 1–16, and verification checklist.
+- **[`docs/archive/seo-legacy/homepage/front-page-seo-optimization.md`](docs/archive/seo-legacy/homepage/front-page-seo-optimization.md)** — Full phased plan, execution tables for Phases 1–16, and verification checklist (archived 2026-07-05).
 
 **Document version:** 2026-04-12 (Phase 16 documentation batch)
