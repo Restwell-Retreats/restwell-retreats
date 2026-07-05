@@ -44,6 +44,7 @@ move_with_banner "$ROOT/restwell-theme/PERFECT-SITE-PLAN.md" "$ARCHIVE/audit-spr
 # prompt-stubs
 move_with_banner "$ROOT/audit.md" "$ARCHIVE/prompt-stubs/audit.md"
 move_with_banner "$ROOT/restwell-theme/seo-admin-cpt.md" "$ARCHIVE/prompt-stubs/seo-admin-cpt.md"
+move_with_banner "$ROOT/restwell-theme/MEDIA-OPTIMIZATION-TODO.md" "$ARCHIVE/prompt-stubs/MEDIA-OPTIMIZATION-TODO.md" 2>/dev/null || true
 move_with_banner "$ROOT/restwell-theme/PAGE-RUNS.md" "$ARCHIVE/prompt-stubs/PAGE-RUNS.md"
 
 echo "Done."

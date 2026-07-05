@@ -1,6 +1,8 @@
+> **Archived 2026-07-05.** Superseded by [`restwell-theme/MEDIA-SEO-DETAILS.md`](../../../restwell-theme/MEDIA-SEO-DETAILS.md) (media SSOT; open tasks at `#open-tasks-media-optimization`). Do not execute tasks from this file.
+
 # Media Optimization TODO
 
-> **Merged 2026-07-05.** Open tasks moved to [MEDIA-SEO-DETAILS.md](MEDIA-SEO-DETAILS.md#open-tasks-media-optimization). Do not maintain this file; use MEDIA-SEO-DETAILS as the media SSOT.
+> **Merged 2026-07-05.** Open tasks moved to [MEDIA-SEO-DETAILS.md](../../../restwell-theme/MEDIA-SEO-DETAILS.md#open-tasks-media-optimization). Do not maintain this file; use MEDIA-SEO-DETAILS as the media SSOT.
 
 Scope: `assets/images/media/`
 

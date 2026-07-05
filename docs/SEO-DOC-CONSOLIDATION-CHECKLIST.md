@@ -37,7 +37,7 @@
 | 16 | `front-page-polish.md` | 3 | Archive | Verification gates → FRONT-PAGE §6 | MFRI historical only | — | [x] |
 | 17 | `restwell-theme/seo-admin-cpt.md` | 4 | Archive | Vision only; live = `inc/seo-admin.php` | — | — | [x] |
 | 18 | `restwell-theme/MEDIA-SEO-DETAILS.md` | 4 | Keep | Open tasks section merged from TODO | Hero derivatives documented | SSOT §6.1 | [x] |
-| 19 | `restwell-theme/MEDIA-OPTIMIZATION-TODO.md` | 4 | Merge | Folded into MEDIA-SEO-DETAILS | Reconciled with DETAILS | Deprecation banner | [x] |
+| 19 | `restwell-theme/MEDIA-OPTIMIZATION-TODO.md` | 4 | **Archived** | Folded into MEDIA-SEO-DETAILS | Reconciled with DETAILS | `prompt-stubs/` | [x] |
 | 20 | `restwell-theme/AUDIT.md` | 5 | Keep | PERFECT-SITE open items extracted | Items #6,14,22–25 | SSOT §16 | [x] |
 | 21 | `restwell-theme/PERFECT-SITE-PLAN.md` | 5 | Extract → archive | → AUDIT + §16 B3/B6 | Open ⏳ owned | AUDIT | [x] |
 | 22 | `audit-90-all-domains.md` | 5 | Archive | Outcomes in AUDIT | All `[x]` | — | [x] |
@@ -47,7 +47,7 @@
 | 26 | `restwell-theme/inc/TESTIMONIAL-COLLECT.md` | 6 | Keep | Optional §16 B5 | — | — | [x] |
 | 27 | `restwell-theme/docs/about-your-stay-welcome-sheet-copy.md` | 6 | Keep | Post-booking; not in matrix | — | — | [x] |
 | 28 | `audit.md` | 6 | Archive | Prompt stub | — | — | [x] |
-| 29 | `hero-audit-follow-up.md` | 6 | Keep until closed | Glossary path fixed; 4/9 tasks open | — | — | [x] |
+| 29 | `hero-audit-follow-up.md` | 6 | **Archived** | Open items in DESIGN-SYSTEM §Hero follow-up | `homepage/` | [x] |
 | 30 | `restwell-theme/VISUAL-FRONTEND-AUDIT.md` | 7 | Keep | Remediation status header | — | COPY-PASTE step 9 | [x] |
 
 *Note: 30 rows — Tier 1–7 sum to 29 SEO-involved files plus `plan.md` §F–G counted with legacy row 11.*
@@ -90,10 +90,10 @@
 | `restwell-theme/COPY-PASTE-PROMPTS.md` | SSOT links; sync; coverage; run log; slug fix |
 | `restwell-theme/AUDIT.md` | PERFECT-SITE extractions |
 | `FRONT-PAGE-OPTIMIZATION.md` | Live verification checklist |
-| `hero-audit-follow-up.md` | Local SKILLS_GLOSSARY path |
+| `restwell-theme/DESIGN-SYSTEM.md` | Hero follow-up open items table |
 | `restwell-theme/VISUAL-FRONTEND-AUDIT.md` | Remediation status header |
 | `restwell-theme/MEDIA-SEO-DETAILS.md` | Open tasks from TODO |
-| `restwell-theme/MEDIA-OPTIMIZATION-TODO.md` | Deprecation pointer (see file) |
+| `restwell-theme/MEDIA-SEO-DETAILS.md` | Open tasks section; archive link to TODO |
 
 ---
 
@@ -104,7 +104,7 @@
 | `legacy-strategy/` | `restwell-seo-section1.md`, `restwell-seo-sections2-4.md`, `restwell-seo-sections5-7.md`, `restwell-seo-sections8-11.md` |
 | `homepage/` | `front-page-seo-optimization.md`, `homepage-seo-cro-plan.md`, `front-page-polish.md`, `HOMEPAGE-PIPELINE-DELIVERABLE.md` |
 | `audit-sprints/` | `audit-90-all-domains.md`, `high-priority-audit-remediation.md`, `critical-audit-fixes.md`, `PERFECT-SITE-PLAN.md` |
-| `prompt-stubs/` | `audit.md`, `seo-admin-cpt.md`, `PAGE-RUNS.md` |
+| `prompt-stubs/` | `audit.md`, `seo-admin-cpt.md`, `PAGE-RUNS.md`, `MEDIA-OPTIMIZATION-TODO.md` |
 
 ---
 

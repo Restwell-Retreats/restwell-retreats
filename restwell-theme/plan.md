@@ -80,65 +80,34 @@ Goal: make CRM ownership, team workflow, and stale-lead follow-up reliable for d
 
 ---
 
-## F. SEO execution plan (from [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) §1–§16 + §19)
+## F. SEO execution plan
 
-Goal: execute the documented SEO strategy in a practical sequence across on-page, technical SEO, local SEO, internal linking, content, and authority building. Legacy root `restwell-seo-section*.md` files are archived under `docs/archive/seo-legacy/legacy-strategy/`.
+**Canonical playbook:** [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) §1–§16 + **§19** (GBP / authority). Legacy `restwell-seo-section*.md` → `docs/archive/seo-legacy/legacy-strategy/`.
 
-- [ ] **F1 - Keep positioning tight (keyword focus + audience)**  
-  Enforce "accessible + Whitstable/Kent coast + near Canterbury" as primary targets; avoid chasing broad generic holiday-let terms. Keep dual-audience language: families/carers plus OTs/case managers/commissioners.
-
-- [ ] **F7 - Accessibility/equipment trust assets**  
-  Publish and prominently link an up-to-date access statement PDF and any professional assessment resources from Accessibility, Who It's For, FAQ, and Enquire.
-
-- [ ] **F9 - 12-month content cadence (section 10)**  
-  Execute monthly blog/resource schedule across four pillars: Accessible Travel Guides, Funding & Access, For Professionals, Kent Coast Life.  
-  Prioritise already identified high-opportunity topics (Revitalise alternatives, direct payments, accessible Kent beaches).
+| Checkbox | Pointer |
+|----------|---------|
+| **F1** Positioning (accessible + Whitstable/Kent + dual audience) | SSOT **§1.1–§1.2**, **§2.1** seeds |
+| **F7** Access statement PDF + trust assets | [AUDIT.md](AUDIT.md) High #3 · SSOT **§16 B5** |
+| **F9** 12-month content cadence | SSOT **§16 B3** (reconciled calendar) · blog seeds in `inc/seo-content-seed-blog-cluster-*.php` |
 
 ---
 
-## G. SEO operating cadence (new-company mode: no social-proof dependency)
+## G. SEO operating cadence
 
-Goal: run SEO as a repeatable operating system with clear thresholds, ownership, and monthly outputs, without relying on reviews/testimonials yet.
+**Monthly ritual:** SSOT **§16 B6** + **§11.5–§11.6** (GSC compare). **Open technical/editorial items:** [AUDIT.md](AUDIT.md).
 
-- [ ] **G1 - KPI scorecard with hard thresholds (90-day + 12-month)**  
-  Create `seo-scorecard.md` (or a sheet) with monthly targets and owners for: non-brand clicks, branded clicks, impressions, CTR on core pages, average position for top 20 target queries, enquiry conversions from organic, and GBP actions.  
-  Add threshold actions, e.g. "if homepage CTR < 2.5% at >1,000 impressions/month, rewrite title/meta within 7 days."
-
-- [ ] **G2 - Intent-to-conversion map per page cluster**  
-  For each cluster/page type (core pages, funding/professional pages, blog posts), define: primary intent, required CTA, and conversion event expected (`enquiry_submit`, `click_to_call`, `email_click`).  
-  Add this map to plan docs and enforce in content reviews before publishing.
-
-- [ ] **G3 - Monthly indexation QA runbook**  
-  On the first week of each month, run checks for: duplicate titles/descriptions, missing meta description, accidental noindex, canonical mismatch, orphan pages, thin pages, and sitemap inclusion errors.  
-  Record findings + fixes in a dated log entry under `Deferred / parked` or a dedicated SEO log.
-
-- [ ] **G4 - Cannibalisation and query-cluster review (monthly)**  
-  In GSC, review overlapping pages for the same query themes (e.g. accessibility vs property vs who-it's-for).  
-  For conflicts, choose one primary URL and execute one action: merge, re-target H1/meta, strengthen internal anchors, or add canonical where justified.
-
-- [ ] **G5 - CTR optimisation sprint (monthly, top 5 pages)**  
-  Pick the 5 URLs with highest impressions and below-target CTR.  
-  Rewrite title/meta using doc-aligned intent language, publish, and measure after 28 days. Keep a changelog of before/after CTR and clicks.
-
-- [ ] **G6 - Content freshness policy**  
-  Add "review due" dates to all blog/resource content at publish time (+6 months).  
-  At review, choose one outcome: refresh, consolidate, or deprecate. Ensure updated posts have refreshed internal links and metadata.
-
-- [ ] **G7 - Backlink pipeline metrics (weekly)**  
-  Track outreach in a simple pipeline: target, relevance tier, contact date, status, live URL, and referral traffic. See SSOT **§19.2–§19.3** for priority targets and directory checklist.  
-  Weekly KPI: pitches sent, responses, links earned, and links from priority categories (accessibility, Kent tourism, professional/care).
-
-- [ ] **G8 - Entity consistency control sheet**  
-  Create one canonical business-facts source (brand name, address, phone, email, primary category, short/long description variants).  
-  Use it for site copy, GBP, directories, and outreach bios to prevent NAP/category drift.
-
-- [ ] **G9 - Competitor movement review (monthly)**  
-  Track 5-10 direct/indirect competitors from SSOT **§8.1** (competitor landscape table).  
-  Log new ranking pages, new backlinks, and new content themes; convert insights into one concrete monthly action on Restwell pages.
-
-- [ ] **G10 - SEO-to-CRO checks for organic landing pages**  
-  For top organic landing pages (`/`, `/accessibility`, `/who-its-for`, `/whitstable-area-guide`, `/resources`, top blog posts), verify CTA clarity, form path friction, and above-the-fold message match to query intent.  
-  Ship at least one conversion-focused UX/copy improvement per month tied to organic-entry pages.
+| Item | Pointer |
+|------|---------|
+| **G1** KPI scorecard + thresholds | Optional `docs/seo-scorecard.md` — defer until G1 prioritised; interim: **§11.2** GSC table |
+| **G2** Intent-to-conversion map | SSOT **§16 B2** intent map + [inc/ANALYTICS-PRIMARY-GOAL.md](inc/ANALYTICS-PRIMARY-GOAL.md) |
+| **G3** Monthly indexation QA | SSOT **§17** Track A + **§11.6** measurement log |
+| **G4** Cannibalisation review | SSOT **§16 B2** · [AUDIT.md](AUDIT.md) §8 |
+| **G5** CTR sprint (top 5 URLs) | SSOT **§16 B6** one-pager · [AUDIT.md](AUDIT.md) High #5 |
+| **G6** Content freshness policy | SSOT **§16 B5** trust log + B3 review dates |
+| **G7** Backlink pipeline | SSOT **§19.2–§19.3** |
+| **G8** Entity consistency (NAP) | SSOT **§19.1** GBP + LodgingBusiness sources in **§13.1 Home preset** |
+| **G9** Competitor review | SSOT **§8.1** competitor table |
+| **G10** SEO-to-CRO on organic landings | [inc/ANALYTICS-PRIMARY-GOAL.md](inc/ANALYTICS-PRIMARY-GOAL.md) · FRONT-PAGE handoff at repo root |
 
 ---
 

@@ -565,7 +565,7 @@ For every video:
 
 ## Open tasks (media optimization)
 
-Merged from `MEDIA-OPTIMIZATION-TODO.md` (2026-07-05). Hero derivatives are documented in [Homepage Hero Video](#homepage-hero-video) above.
+Merged from archived [`MEDIA-OPTIMIZATION-TODO.md`](../../docs/archive/seo-legacy/prompt-stubs/MEDIA-OPTIMIZATION-TODO.md) (2026-07-05). Hero derivatives are documented in [Homepage Hero Video](#homepage-hero-video) above.
 
 1. Remove `assets/images/media/.DS_Store` before commit if present.
 2. Compress or replace oversized `2400x3200` portrait sources (serve responsive sizes, not originals in templates).

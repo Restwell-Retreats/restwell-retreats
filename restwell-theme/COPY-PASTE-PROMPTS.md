@@ -4,7 +4,7 @@ Work **top to bottom**. For each numbered section, copy everything inside the **
 
 **SSOT (strategy + scoreboard):** [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md)
 
-**Paths:** `@restwell-theme/` = this theme folder. Skill names: see [SKILLS_GLOSSARY.md](SKILLS_GLOSSARY.md) (`/skill-name`); legacy absolute paths below still work.
+**Paths:** `@restwell-theme/` = this theme folder. Invoke skills via **`/skill-name`** — see [SKILLS_GLOSSARY.md](SKILLS_GLOSSARY.md).
 
 **Once per chat:** `@` every **Context** line plus any skill files you want loaded.
 
@@ -87,15 +87,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links, jumps.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes (tokens from @restwell-theme/assets/css/input.css, sections, escaping, vs @restwell-theme/template-property.php).
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes (tokens from @restwell-theme/assets/css/input.css, sections, escaping, vs @restwell-theme/template-property.php).
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -141,15 +141,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links, jumps.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement" (note VacationRental/address fields if present).
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes (tokens from @restwell-theme/assets/css/input.css, sections, escaping; reference standard @restwell-theme/template-property.php).
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement" (note VacationRental/address fields if present).
+8. /restwell-page-polish — implementation notes (tokens from @restwell-theme/assets/css/input.css, sections, escaping; reference standard @restwell-theme/template-property.php).
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -194,15 +194,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links, jumps.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes (tokens, sections, escaping, positive framing per skill).
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes (tokens, sections, escaping, positive framing per skill).
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -247,15 +247,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links, jumps.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes (tokens, sections, escaping).
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes (tokens, sections, escaping).
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -300,15 +300,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes (form UX copy, escaping).
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes (form UX copy, escaping).
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -354,15 +354,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links, sticky nav labels.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes (tokens, persona cards, funding section).
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, sticky nav labels.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes (tokens, persona cards, funding section).
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -406,15 +406,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes.
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes.
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -459,15 +459,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — FAQPage only if visible Q&A match; else explain.
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes.
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — FAQPage only if visible Q&A match; else explain.
+8. /restwell-page-polish — implementation notes.
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -511,15 +511,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes.
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
+8. /restwell-page-polish — implementation notes.
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -563,15 +563,15 @@ include_site_wide_seo_audit: false
 artifact_for_visual: none
 
 ## Process (execute in order; brief plan first, then deliver)
-1. /copywriting @/Users/elliesmith/.cursor/skills/skills/copywriting/SKILL.md — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta @/Users/elliesmith/.cursor/skills/skills/seo-meta-optimizer/SKILL.md @/Users/elliesmith/.cursor/skills/wordpress-theme-classic-meta/SKILL.md — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. @/Users/elliesmith/.cursor/skills/skills/seo-structure-architect/SKILL.md /seo-structure-architect — H1–H3, internal links.
-5. @/Users/elliesmith/.cursor/skills/skills/seo-cannibalization-detector/SKILL.md /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. @/Users/elliesmith/.cursor/skills/skills/seo-content-auditor/SKILL.md /seo-content-auditor + /seo-authority-builder @/Users/elliesmith/.cursor/skills/skills/seo-authority-builder/SKILL.md — gaps + E-E-A-T in one pass.
-7. @/Users/elliesmith/.cursor/skills/skills/schema-markup/SKILL.md /schema-markup — LocalBusiness/Organization only if visible NAP matches; else explain.
-8. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — implementation notes.
-9. @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
+2. /copy-editing /copy-editing — Polish the draft.
+3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
+4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
+5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
+6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
+7. /schema-markup /schema-markup — LocalBusiness/Organization only if visible NAP matches; else explain.
+8. /restwell-page-polish — implementation notes.
+9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
 
 Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
 
@@ -604,8 +604,8 @@ meta_prefix_or_notes: gg_* — welcome, address, check-in/out, keysafe, WiFi, pa
 brief_pre_approved: true
 
 ## Process
-1. /copy-editing @/Users/elliesmith/.cursor/skills/skills/copy-editing/SKILL.md — clarity, scannability, consistency.
-2. @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish — layout/accessibility of blocks only; no marketing fluff.
+1. /copy-editing /copy-editing — clarity, scannability, consistency.
+2. /restwell-page-polish — layout/accessibility of blocks only; no marketing fluff.
 3. Do NOT invent policies, numbers, or WiFi credentials; flag placeholders.
 
 Constraints: @restwell-theme only; escape output; treat sensitive fields as sensitive.
@@ -621,12 +621,12 @@ Constraints: @restwell-theme only; escape output; treat sensitive fields as sens
 **Context:** `@restwell-theme/VISUAL-FRONTEND-AUDIT.md` + relevant template (e.g. `@restwell-theme/template-property.php`)
 
 ```
-Run @/Users/elliesmith/.cursor/skills/visual-frontend-audit/SKILL.md /visual-frontend-audit only for this page.
+Run /visual-frontend-audit /visual-frontend-audit only for this page.
 
 Page URL: PASTE_URL
 Template: @restwell-theme/PASTE_TEMPLATE_FILE.php
 
-Check against @restwell-theme/VISUAL-FRONTEND-AUDIT.md and @.cursor/skills/restwell-page-polish/SKILL.md /restwell-page-polish patterns. Output: severity-tagged issues, concrete fixes (classes/tokens), and quick wins.
+Check against @restwell-theme/VISUAL-FRONTEND-AUDIT.md and /restwell-page-polish patterns. Output: severity-tagged issues, concrete fixes (classes/tokens), and quick wins.
 ```
 
 ---
@@ -634,7 +634,7 @@ Check against @restwell-theme/VISUAL-FRONTEND-AUDIT.md and @.cursor/skills/restw
 ## Site-wide SEO audit (optional)
 
 ```
-Run /seo-audit @/Users/elliesmith/.cursor/skills/skills/seo-audit/SKILL.md scope: site-wide Restwell theme.
+Run /seo-audit /seo-audit scope: site-wide Restwell theme.
 
 Constraints: Evidence-based; no implementation unless I ask. Reference @restwell-theme/ templates and @restwell-theme/inc/seo*.php only as needed.
 

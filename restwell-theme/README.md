@@ -188,7 +188,7 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 | **Homepage handoff** | [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) | Published homepage baseline for editors and engineering |
 | **Living audit** | [AUDIT.md](./AUDIT.md) | Multi-domain scorecard and open remediation |
 | **Skills index** | [SKILLS_GLOSSARY.md](./SKILLS_GLOSSARY.md) | Auto-generated slash-command index (regenerate; do not hand-edit) |
-| **Media alt text** | [MEDIA-SEO-DETAILS.md](./MEDIA-SEO-DETAILS.md) | Media Library metadata fill-in sheet |
+| **Media alt text** | [MEDIA-SEO-DETAILS.md](./MEDIA-SEO-DETAILS.md) | Media Library metadata fill-in sheet + open optimization tasks |
 | **Consolidation map** | [docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md](../docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md) | Merge/archive status for all SEO markdown |
 | **Archived legacy** | [docs/archive/seo-legacy/](../docs/archive/seo-legacy/) | Superseded strategy, homepage, and audit sprint docs |
 

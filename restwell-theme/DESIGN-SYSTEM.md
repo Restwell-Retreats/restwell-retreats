@@ -133,3 +133,14 @@ Content and placement should align with the respite-care customer journey. Refer
 - **Placement:** Empathy/headline on homepage (Awareness); benefits, CQC, testimonials on service/property (Consideration); enquiry form (Enquiry); prep pack / what-to-bring in confirmation (post-Decision).
 - **Emotion:** Hero, Why Restwell, and Enquire copy should speak to “overwhelmed” and “reassurance” (guide’s emotion map).
 - **“Your journey” block:** Optional 4-6 step section on How it works (template part `template-parts/your-journey.php`), editable via How it works meta (journey label, heading, step 1-6 title/body). Default steps: Enquire → We confirm availability → Chat through dates & needs → Confirm & prepare → Your stay → Feedback.
+
+## Hero follow-up (open)
+
+Shipped 2026-04 (batch 1): mobile `.container` gutters aligned with safe-area; `home-hero__copy` gap `space-5` at ≤639px. Full log: [`docs/archive/seo-legacy/homepage/hero-audit-follow-up.md`](../../docs/archive/seo-legacy/homepage/hero-audit-follow-up.md).
+
+| Open item | Action |
+|-----------|--------|
+| Secondary CTA cross-breakpoint | Document link-on-mobile vs ghost-on-desktop **or** unify variant in `input.css` |
+| Secondary CTA contrast on hero photo | Overlay, text-shadow, or narrow-only ghost chip — verify on lightest sky patch |
+| Mobile menu a11y | `aria-label` / `aria-expanded`, `focus-visible`, ≥44px targets |
+| Logged-out verification | 375 / 390 / 414 + desktop; safe-area on notched devices |

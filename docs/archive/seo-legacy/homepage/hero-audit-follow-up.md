@@ -1,3 +1,5 @@
+> **Archived 2026-07-05.** Hero spacing batch 1 shipped in CSS (`input.css`). Open items moved to [`restwell-theme/DESIGN-SYSTEM.md`](../restwell-theme/DESIGN-SYSTEM.md#hero-follow-up-open). Full task log preserved below.
+
 # Hero audit follow-up (mobile rhythm, alignment, a11y)
 
 ## Goal
@@ -5,7 +7,7 @@
 Close the gaps from the **combined screenshot audit** (visual + UI validator + Web Interface Guidelines themes): reliable **mobile gutters** and **header↔hero axis alignment**, **even vertical rhythm** (including lede→CTA), **intentional** secondary CTA treatment across breakpoints, **accessible** menu/CTAs (labels, focus, contrast), and a **logged-out** verification pass.
 
 **Glossary:** invoke skills via **`/{folder-name}`** — see  
-[`restwell-theme/SKILLS_GLOSSARY.md`](restwell-theme/SKILLS_GLOSSARY.md) (879 skills).
+[`restwell-theme/SKILLS_GLOSSARY.md`](../restwell-theme/SKILLS_GLOSSARY.md) (879 skills).
 
 | Area | Skills to use |
 |------|----------------|
@@ -50,4 +52,3 @@ Close the gaps from the **combined screenshot audit** (visual + UI validator + W
 - **Canonical logo lockup:** *Restwell by Continuity of Care Services* — used for logo `alt` / `aria-label` via `restwell_site_brand_lockup()` in `inc/theme-setup.php` (screenshot “Coastway” was a misread; replace logo **image file** in Media Library if the artwork still says something else).
 - **Strategic (post-MVP):** optional **scrim** or gradient band behind the copy column for contrast without flattening the whole photo — only if `/wcag-audit-patterns` still flags edge cases after task 5.
 - **Tokens:** if hero spacing stabilises, add **`--hero-*`** (or document existing vars) in `restwell-theme/DESIGN-SYSTEM.md` so mobile/desktop don’t drift — use `/tailwind-design-system` + `/ui-ux-designer`.
-- Full glossary path: `cta-wp-theme/docs/SKILLS_GLOSSARY.md` (local clone).

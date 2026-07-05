@@ -19,6 +19,6 @@ Historical SEO markdown moved here during the **2026-07-05** documentation conso
 | `legacy-strategy/` | Pre-unified `restwell-seo-section*.md` files |
 | `homepage/` | Completed homepage execution plans and deliverables |
 | `audit-sprints/` | Completed audit remediation logs |
-| `prompt-stubs/` | One-shot agent prompts and superseded specs |
+| `prompt-stubs/` | One-shot agent prompts and superseded specs (`MEDIA-OPTIMIZATION-TODO.md`, etc.) |
 
 See [`docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md`](../SEO-DOC-CONSOLIDATION-CHECKLIST.md) for the full merge/archive map.
