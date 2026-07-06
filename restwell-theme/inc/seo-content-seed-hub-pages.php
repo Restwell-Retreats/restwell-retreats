@@ -108,7 +108,7 @@ function restwell_seed_hub_pages_content( array $created_ids, $force, array &$re
 			wp_update_post(
 				array(
 					'ID'           => $blog_id,
-					'post_excerpt' => __( 'Guides and stories: accessible travel, the Kent coast, funding routes, and updates from Restwell Retreats.', 'restwell-retreats' ),
+					'post_excerpt' => __( 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.', 'restwell-retreats' ),
 				)
 			);
 			$result['hub_seeded'][] = 'Blog';
