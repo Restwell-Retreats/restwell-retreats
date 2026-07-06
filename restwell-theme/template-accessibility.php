@@ -15,25 +15,17 @@ $pid = get_the_ID();
 
 $acc_hero_image_id = (int) get_post_meta( $pid, 'acc_hero_image_id', true );
 $acc_label          = get_post_meta( $pid, 'acc_label', true ) ?: 'Accessibility';
-$acc_heading        = get_post_meta( $pid, 'acc_heading', true ) ?: 'Our access statement: the Whitstable bungalow in plain detail';
-$acc_intro          = get_post_meta( $pid, 'acc_intro', true ) ?: 'We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here\'s what\'s in place, room by room.';
+$acc_heading        = get_post_meta( $pid, 'acc_heading', true ) ?: 'Our access statement, room by room';
+$acc_intro          = get_post_meta( $pid, 'acc_intro', true ) ?: 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.';
 
-// Room by room: only confirmed content in defaults; unknowns handled by inquiry card.
+// Room by room: verified facts from restwell_get_property_facts(); headings remain editable in WP.
 $acc_room_label       = get_post_meta( $pid, 'acc_room_label', true ) ?: 'The property';
 $acc_room_heading     = get_post_meta( $pid, 'acc_room_heading', true ) ?: 'Room by room';
 $acc_room_intro       = get_post_meta( $pid, 'acc_room_intro', true ) ?: 'Here is what we have verified about each part of the property. Anything not listed has not been confirmed; ask us and we will find out.';
-$acc_arrival_heading  = get_post_meta( $pid, 'acc_arrival_heading', true ) ?: 'Arrival & entrance';
-$acc_arrival_body     = get_post_meta( $pid, 'acc_arrival_body', true ) ?: "Level threshold with a wide front door\nQuiet, flat residential street with no steep approach";
-$acc_inside_heading   = get_post_meta( $pid, 'acc_inside_heading', true ) ?: 'Inside the property';
-$acc_inside_body      = get_post_meta( $pid, 'acc_inside_body', true ) ?: "Level access throughout the ground floor\nWide doorways suitable for standard and power wheelchairs";
-$acc_bedroom_heading  = get_post_meta( $pid, 'acc_bedroom_heading', true ) ?: 'Bedrooms & sleeping';
-$acc_bedroom_body     = get_post_meta( $pid, 'acc_bedroom_body', true ) ?: '';
-$acc_bathroom_heading = get_post_meta( $pid, 'acc_bathroom_heading', true ) ?: 'Bathroom';
-$acc_bathroom_body    = get_post_meta( $pid, 'acc_bathroom_body', true ) ?: '';
-$acc_kitchen_heading  = get_post_meta( $pid, 'acc_kitchen_heading', true ) ?: 'Kitchen';
-$acc_kitchen_body     = get_post_meta( $pid, 'acc_kitchen_body', true ) ?: '';
-$acc_outdoor_heading  = get_post_meta( $pid, 'acc_outdoor_heading', true ) ?: 'Outdoor spaces';
-$acc_outdoor_body     = get_post_meta( $pid, 'acc_outdoor_body', true ) ?: '';
+
+$rooms = function_exists( 'restwell_get_accessibility_rooms_from_facts' )
+	? restwell_get_accessibility_rooms_from_facts( $pid )
+	: array();
 
 $acc_dest_label             = get_post_meta( $pid, 'acc_dest_label', true ) ?: 'The destination';
 $acc_dest_heading           = get_post_meta( $pid, 'acc_dest_heading', true ) ?: 'Whitstable: what to expect';
@@ -53,33 +45,6 @@ $acc_gallery_label   = get_post_meta( $pid, 'acc_gallery_label', true ) ?: __( '
 $acc_gallery_heading = get_post_meta( $pid, 'acc_gallery_heading', true ) ?: __( 'Equipment and access in pictures', 'restwell-retreats' );
 $acc_gallery_intro   = get_post_meta( $pid, 'acc_gallery_intro', true ) ?: '';
 $acc_gallery_ids     = restwell_get_accessibility_gallery_ids( $pid );
-
-$rooms = array(
-	array(
-		'heading' => $acc_arrival_heading,
-		'body' => $acc_arrival_body,
-	),
-	array(
-		'heading' => $acc_inside_heading,
-		'body' => $acc_inside_body,
-	),
-	array(
-		'heading' => $acc_bedroom_heading,
-		'body' => $acc_bedroom_body,
-	),
-	array(
-		'heading' => $acc_bathroom_heading,
-		'body' => $acc_bathroom_body,
-	),
-	array(
-		'heading' => $acc_kitchen_heading,
-		'body' => $acc_kitchen_body,
-	),
-	array(
-		'heading' => $acc_outdoor_heading,
-		'body' => $acc_outdoor_body,
-	),
-);
 ?>
 <main class="flex-1 restwell-wif-page" id="main-content">
 <?php get_template_part( 'template-parts/breadcrumb' ); ?>
@@ -115,15 +80,16 @@ $rooms = array(
 			<div class="grid sm:grid-cols-2 rw-gap-grid">
 				<?php
 				foreach ( $rooms as $room ) :
-					$lines = array_filter(
-						array_map( 'trim', explode( "\n", $room['body'] ) ),
-						function ( $line ) {
-							$lower = strtolower( $line );
-							return strpos( $lower, 'to be confirmed' ) === false
-							&& strpos( $lower, 'to be established' ) === false
-							&& strpos( $lower, 'tbc' ) === false
-							&& $line !== '';
-						}
+					$lines = array_values(
+						array_filter(
+							array_map(
+								'trim',
+								is_array( $room['facts'] ?? null ) ? $room['facts'] : array()
+							),
+							static function ( $line ) {
+								return $line !== '';
+							}
+						)
 					);
 					if ( empty( $lines ) ) {
 						continue;
@@ -143,7 +109,7 @@ $rooms = array(
 										<span class="wif-icon-circle wif-icon-circle--muted h-5 w-5 shrink-0 mt-0.5" aria-hidden="true">
 											<i class="ph-bold ph-check text-[10px]"></i>
 										</span>
-										<span class="min-w-0"><?php echo wp_kses_post( $line ); ?></span>
+										<span class="min-w-0"><?php echo esc_html( $line ); ?></span>
 									</li>
 								<?php endforeach; ?>
 							</ul>

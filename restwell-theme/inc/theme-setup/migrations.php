@@ -673,3 +673,63 @@ function restwell_migrate_legal_policy_templates_v1() {
 }
 add_action( 'init', 'restwell_migrate_legal_policy_templates_v1', 12 );
 add_action( 'after_switch_theme', 'restwell_migrate_legal_policy_templates_v1', 12 );
+
+/**
+ * One-time: shorten accessibility page H1 and move equipment keywords into the intro.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_accessibility_heading_refresh_map() {
+	return array(
+		'Our access statement: doorway widths, ceiling-track hoist and wet room' => 'Our access statement, room by room',
+		'Our access statement: the Whitstable bungalow in plain detail' => 'Our access statement, room by room',
+		'Wheelchair accessible holiday cottage near Whitstable: hoist, wet room, and measurements we publish' => 'Our access statement, room by room',
+		'Honest detail, so you can decide' => 'Our access statement, room by room',
+	);
+}
+
+/**
+ * One-time: refresh accessibility page intro when it still matches stale defaults.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_accessibility_intro_refresh_map() {
+	return array(
+		'We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here\'s what\'s in place, room by room.' => 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.',
+		"We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here's what's in place, room by room." => 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.',
+	);
+}
+
+/**
+ * One-time: refresh accessibility page hero copy to compact headings.
+ */
+function restwell_migrate_accessibility_headings_v1() {
+	if ( get_option( 'restwell_accessibility_headings_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+
+	foreach ( restwell_get_accessibility_heading_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'acc_heading', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'acc_heading', $next );
+		}
+	}
+
+	foreach ( restwell_get_accessibility_intro_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'acc_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'acc_intro', $next );
+		}
+	}
+
+	update_option( 'restwell_accessibility_headings_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_accessibility_headings_v1', 25 );
+add_action( 'after_switch_theme', 'restwell_migrate_accessibility_headings_v1', 15 );

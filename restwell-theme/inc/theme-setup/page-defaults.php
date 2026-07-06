@@ -413,8 +413,8 @@ function restwell_get_how_it_works_page_defaults() {
 function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
-		'acc_heading' => 'Our access statement: the Whitstable bungalow in plain detail',
-		'acc_intro'   => 'We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here\'s what\'s in place, room by room.',
+		'acc_heading' => 'Our access statement, room by room',
+		'acc_intro'   => 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.',
 
 		'acc_room_label'      => 'The property',
 		'acc_room_heading'    => 'Room by room.',
