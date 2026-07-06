@@ -15,32 +15,40 @@ $pid = get_the_ID();
 
 $hero_image_id = (int) get_post_meta( $pid, 'wif_hero_image_id', true );
 $label          = (string) get_post_meta( $pid, 'wif_label', true ) ?: 'Who it is for';
-$heading        = (string) get_post_meta( $pid, 'wif_heading', true ) ?: 'Who Restwell is for';
-$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Whether you are booking for yourself, someone you support, or a client, Restwell is designed to make planning straightforward and your stay comfortable. Here is how it works for different people.';
+$heading        = (string) get_post_meta( $pid, 'wif_heading', true ) ?: 'Accessible holidays for disabled guests, families and carers';
+$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Restwell suits anyone who needs a step-free holiday with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.';
 
 $audience_heading = (string) get_post_meta( $pid, 'wif_audience_heading', true ) ?: 'Which of these sounds like you?';
 $audience_intro   = (string) get_post_meta( $pid, 'wif_audience_intro', true ) ?: 'Open the section that fits your situation. We have set out what usually matters, in plain language, with a clear next step when you are ready.';
 
-$default_family_bullets = array(
-	'Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower and height-adjustable washbasin, already in place.',
-	'Published access measurements before you commit to anything.',
-	'A private self-catering layout: your daily routines run on your schedule.',
-);
-$default_carers_bullets = array(
-	'Separate sleeping area for the support worker or carer.',
-	'Wet room designed for assisted personal care, not adapted from a standard bathroom.',
-	'You have a legal right to a Carer\'s Assessment under the Care Act 2014. Ask your council.',
-);
-$default_ot_bullets = array(
-	'Doorway widths, turning circles, hoist specs, and wet room measurements on request.',
-	'Transfer clearances and equipment positioning confirmed if not already published.',
-	'Referral conversations welcomed before any booking commitment.',
-);
-$default_commissioners_bullets = array(
-	'Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.',
-	'Documentation provided: property spec, access measurements, and CQC-registered care provider confirmation.',
-	'Direct payments, personal health budgets, and CHC pathways all supported.',
-);
+$default_family_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'family' )
+	: array(
+		'Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower and height-adjustable washbasin, already in place.',
+		'Published access measurements before you commit to anything.',
+		'A private self-catering layout: your daily routines run on your schedule.',
+	);
+$default_carers_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'carers' )
+	: array(
+		'Separate sleeping area for the support worker or carer.',
+		'Wet room designed for assisted personal care, not adapted from a standard bathroom.',
+		'You have a legal right to a Carer\'s Assessment under the Care Act 2014. Ask your council.',
+	);
+$default_ot_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'ot' )
+	: array(
+		'Doorway widths, turning circles, hoist specs, and wet room measurements on request.',
+		'Transfer clearances and equipment positioning confirmed if not already published.',
+		'Referral conversations welcomed before any booking commitment.',
+	);
+$default_commissioners_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'commissioners' )
+	: array(
+		'Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.',
+		'Documentation provided: property spec, access measurements, and CQC-registered care provider confirmation.',
+		'Direct payments, personal health budgets, and CHC pathways all supported.',
+	);
 
 $personas = array(
 	array(
@@ -154,12 +162,9 @@ $funding_routes = array(
 
 $wif_visual_intro = (string) get_post_meta( $pid, 'wif_visual_intro', true ) ?: __( 'Real photos help you judge fit before you book: layout, circulation space, and how equipment sits in the room. Pair these with our accessibility specification for verified measurements and features.', 'restwell-retreats' );
 
-$img_1_id = (int) get_post_meta( $pid, 'wif_section_image_1_id', true );
-$img_2_id = (int) get_post_meta( $pid, 'wif_section_image_2_id', true );
-$img_3_id = (int) get_post_meta( $pid, 'wif_section_image_3_id', true );
-$img_1_cap = (string) get_post_meta( $pid, 'wif_section_image_1_caption', true ) ?: __( 'Wet room and accessible bathroom', 'restwell-retreats' );
-$img_2_cap = (string) get_post_meta( $pid, 'wif_section_image_2_caption', true ) ?: __( 'Spacious layout for equipment and transfers', 'restwell-retreats' );
-$img_3_cap = (string) get_post_meta( $pid, 'wif_section_image_3_caption', true ) ?: __( 'Comfortable, private spaces', 'restwell-retreats' );
+$wif_gallery_slots = function_exists( 'restwell_get_wif_gallery_slots' )
+	? restwell_get_wif_gallery_slots( $pid )
+	: array();
 $wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
 
 ?>
@@ -272,37 +277,48 @@ $wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_
 				<p class="text-gray-600 m-0 leading-relaxed max-w-prose"><?php echo esc_html( $wif_visual_intro ); ?></p>
 			</div>
 			<div class="grid md:grid-cols-3 rw-gap-grid">
-				<?php
-				$strip = array(
-					array(
-						'id' => $img_1_id,
-						'cap' => $img_1_cap,
-					),
-					array(
-						'id' => $img_2_id,
-						'cap' => $img_2_cap,
-					),
-					array(
-						'id' => $img_3_id,
-						'cap' => $img_3_cap,
-					),
-				);
-				foreach ( $strip as $slot ) :
-					$src = $slot['id'] ? wp_get_attachment_image_url( $slot['id'], 'large' ) : '';
+				<?php foreach ( $wif_gallery_slots as $slot ) : ?>
+					<?php
+					$slot_id  = (int) ( $slot['id'] ?? 0 );
+					$slot_cap = trim( (string) ( $slot['caption'] ?? '' ) );
 					?>
 					<figure class="m-0 flex flex-col rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-[0_10px_40px_rgb(0,0,0,0.08)] hover:shadow-[0_14px_48px_rgb(0,0,0,0.1)] transition-shadow duration-300">
-						<?php if ( $src ) : ?>
+						<?php if ( $slot_id > 0 ) : ?>
 							<div class="aspect-[4/3] overflow-hidden bg-[var(--bg-subtle)]">
-								<img src="<?php echo esc_url( $src ); ?>" alt="<?php echo esc_attr( $slot['cap'] ); ?>" class="w-full h-full object-cover" loading="lazy" width="800" height="600" />
+								<?php
+								if ( function_exists( 'restwell_get_property_attachment_image' ) ) {
+									echo restwell_get_property_attachment_image(
+										$slot_id,
+										'grid',
+										array(
+											'class' => 'w-full h-full object-cover',
+										)
+									);
+								} else {
+									echo wp_get_attachment_image(
+										$slot_id,
+										'large',
+										false,
+										array(
+											'class'    => 'w-full h-full object-cover',
+											'loading'  => 'lazy',
+											'decoding' => 'async',
+											'sizes'    => '(max-width: 767px) 100vw, 33vw',
+										)
+									);
+								}
+								?>
 							</div>
 						<?php else : ?>
-							<div class="restwell-image-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 text-center px-4 py-8 text-[var(--muted-grey)]" role="img" aria-label="<?php echo esc_attr( $slot['cap'] ); ?>">
+							<!-- Confirm in WP: assign property gallery images with wet room, bedroom, and kitchen alt text. -->
+							<div class="restwell-image-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 text-center px-4 py-8 text-[var(--muted-grey)]" role="img" aria-label="<?php esc_attr_e( 'Property photo placeholder', 'restwell-retreats' ); ?>">
 								<i class="ph-bold ph-image text-2xl opacity-60" aria-hidden="true"></i>
-								<span class="text-sm font-semibold text-[var(--deep-teal)]/80"><?php echo esc_html( $slot['cap'] ); ?></span>
-								<span class="text-xs leading-snug max-w-[14rem]"><?php esc_html_e( 'Set image ID in page fields to show this shot.', 'restwell-retreats' ); ?></span>
+								<span class="text-xs leading-snug max-w-[14rem]"><?php esc_html_e( 'Add images to the property gallery to show verified shots here.', 'restwell-retreats' ); ?></span>
 							</div>
 						<?php endif; ?>
-						<figcaption class="px-4 py-3.5 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-[var(--bg-subtle)]/50"><?php echo esc_html( $slot['cap'] ); ?></figcaption>
+						<?php if ( $slot_cap !== '' ) : ?>
+						<figcaption class="px-4 py-3.5 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-[var(--bg-subtle)]/50"><?php echo esc_html( $slot_cap ); ?></figcaption>
+						<?php endif; ?>
 					</figure>
 				<?php endforeach; ?>
 			</div>

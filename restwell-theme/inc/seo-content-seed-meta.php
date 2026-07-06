@@ -40,9 +40,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'wheelchair accessible bungalow whitstable',
 		),
 		'who-its-for'           => array(
-			'meta_title'       => 'Respite Breaks in Kent | Who It Is For | ' . $name,
-			'meta_description' => 'Who Restwell is for: guests, families, carers, OTs, and commissioners. Use this page for suitability and referrals, then visit the funding hub for routes.',
-			'focus_keyphrase'  => 'accessible stay suitability',
+			'meta_title'       => 'Accessible Holidays for Disabled Guests & Carers | Restwell',
+			'meta_description' => 'Restwell welcomes wheelchair users, families and guests needing respite, with optional care. A calm, step-free Whitstable bungalow with room for carers too.',
+			'focus_keyphrase'  => 'accessible holiday disabled guests carers',
 		),
 		'whitstable-area-guide' => array(
 			'meta_title'       => 'Whitstable Kent Coast Guide | Days Out | ' . $name,
