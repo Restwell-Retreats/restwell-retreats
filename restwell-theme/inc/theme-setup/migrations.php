@@ -764,3 +764,43 @@ function restwell_migrate_accessibility_intro_v2() {
 }
 add_action( 'init', 'restwell_migrate_accessibility_intro_v2', 26 );
 add_action( 'after_switch_theme', 'restwell_migrate_accessibility_intro_v2', 16 );
+
+/**
+ * One-time: update Who It's For page H1 and intro to shortened, keyword-leading versions.
+ */
+function restwell_migrate_who_its_for_headings_v1() {
+	if ( get_option( 'restwell_who_its_for_headings_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'who-its-for', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+
+	$heading_map = array(
+		'Built for guests with access needs, and everyone travelling with them' => 'Built for guests with access needs',
+	);
+	foreach ( $heading_map as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'wif_heading', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'wif_heading', $next );
+		}
+	}
+
+	$intro_map = array(
+		'Restwell suits anyone who needs a step-free holiday with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.' => 'Restwell is a wheelchair-accessible holiday in Whitstable for anyone who needs a step-free stay with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.',
+	);
+	foreach ( $intro_map as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'wif_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'wif_intro', $next );
+		}
+	}
+
+	update_option( 'restwell_who_its_for_headings_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_who_its_for_headings_v1', 27 );
+add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_headings_v1', 17 );

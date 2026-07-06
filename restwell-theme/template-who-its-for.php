@@ -15,8 +15,8 @@ $pid = get_the_ID();
 
 $hero_image_id = (int) get_post_meta( $pid, 'wif_hero_image_id', true );
 $label          = (string) get_post_meta( $pid, 'wif_label', true ) ?: 'Who it is for';
-$heading        = (string) get_post_meta( $pid, 'wif_heading', true ) ?: 'Accessible holidays for disabled guests, families and carers';
-$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Restwell suits anyone who needs a step-free holiday with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.';
+$heading        = (string) get_post_meta( $pid, 'wif_heading', true ) ?: 'Built for guests with access needs';
+$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Restwell is a wheelchair-accessible holiday in Whitstable for anyone who needs a step-free stay with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.';
 
 $audience_heading = (string) get_post_meta( $pid, 'wif_audience_heading', true ) ?: 'Which of these sounds like you?';
 $audience_intro   = (string) get_post_meta( $pid, 'wif_audience_intro', true ) ?: 'Open the section that fits your situation. We have set out what usually matters, in plain language, with a clear next step when you are ready.';
@@ -273,7 +273,7 @@ $wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_
 		<div class="container max-w-5xl">
 			<div class="rw-stack rw-mb-section max-w-prose">
 				<p class="section-label"><?php esc_html_e( 'The property', 'restwell-retreats' ); ?></p>
-				<h2 id="wif-visual-trust-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'Accessibility you can see, not just read about', 'restwell-retreats' ); ?></h2>
+				<h2 id="wif-visual-trust-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'See the access for yourself', 'restwell-retreats' ); ?></h2>
 				<p class="text-gray-600 m-0 leading-relaxed max-w-prose"><?php echo esc_html( $wif_visual_intro ); ?></p>
 			</div>
 			<div class="grid md:grid-cols-3 rw-gap-grid">
@@ -375,7 +375,7 @@ $wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_
 		<div class="container max-w-5xl">
 			<div class="rw-stack rw-mb-section max-w-prose">
 				<p class="section-label"><?php esc_html_e( 'How we work', 'restwell-retreats' ); ?></p>
-				<h2 id="wif-process-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'Clear, practical steps from first question to arrival', 'restwell-retreats' ); ?></h2>
+				<h2 id="wif-process-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'From first question to arrival', 'restwell-retreats' ); ?></h2>
 				<p class="text-gray-600 m-0 leading-relaxed max-w-prose"><?php esc_html_e( 'You do not need everything decided before you contact us. We will help you work through fit, dates, and any support details.', 'restwell-retreats' ); ?></p>
 			</div>
 			<div class="grid md:grid-cols-3 rw-gap-grid items-stretch">
