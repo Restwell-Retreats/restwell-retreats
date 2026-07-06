@@ -17,7 +17,7 @@ $pid = get_the_ID();
 $enq_hero_image_id = (int) get_post_meta( $pid, 'enq_hero_image_id', true );
 $enq_label          = get_post_meta( $pid, 'enq_label', true ) ?: 'Get in touch';
 $enq_heading        = get_post_meta( $pid, 'enq_heading', true ) ?: 'Start a conversation.';
-$enq_intro          = get_post_meta( $pid, 'enq_intro', true ) ?: 'Whether you want to book an accessible holiday cottage in Kent or simply ask about a bathroom measurement, we are here to help. This is not a booking commitment: it is the start of a conversation. No pressure, no hard sell.';
+$enq_intro          = get_post_meta( $pid, 'enq_intro', true ) ?: 'Tell us your dates, your access needs and anything specific to your situation. We will help you work out whether Restwell is the right fit, with no commitment until you are ready.';
 
 $enq_form_heading        = get_post_meta( $pid, 'enq_form_heading', true ) ?: 'Request a call about your stay';
 $enq_success_heading     = get_post_meta( $pid, 'enq_success_heading', true ) ?: __( 'Thank you — we have your enquiry.', 'restwell-retreats' );
