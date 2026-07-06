@@ -35,7 +35,7 @@ function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
 		'hero_heading'             => 'Accessible self-catering holidays in Whitstable, Kent',
-		'hero_subheading'          => 'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.',
+		'hero_subheading'          => 'Wake up to the sea air in Whitstable and shape the day around your own clock. A step-free accessible holiday home with a ceiling track hoist, level-access wet room and optional CQC-regulated care: the whole house is yours.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'View the property',
 		'hero_cta_primary_url'     => '/the-property/',
@@ -167,7 +167,7 @@ function restwell_get_property_page_defaults() {
 
 		'prop_hero_label'               => 'The Property',
 		'prop_hero_heading'             => 'An accessible bungalow in Whitstable',
-		'prop_hero_subtitle'            => 'A newly adapted single-storey bungalow a few minutes from Tankerton Beach. Step-free throughout, with a full room coverage ceiling hoist, profiling beds and a level-access wet room.',
+		'prop_hero_subtitle'            => 'A single-storey wheelchair accessible bungalow in Whitstable, step-free throughout and fully fitted for access. Here is what each room has, so you can check whether it works for you before you enquire.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -349,7 +349,7 @@ function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
 		'hiw_heading' => 'How to book an accessible holiday with care',
-		'hiw_intro'   => 'Booking a break should be the easy part. From your first enquiry to the morning you leave, we keep things clear and unhurried, so you know what\'s in the house, what care is available and how to pay.',
+		'hiw_intro'   => 'Booking an accessible holiday with optional care is more straightforward than it sounds. Here is what happens from your first question to arrival, and how care is arranged alongside your stay.',
 
 		'hiw_steps_label'   => 'FOUR-STEP PROCESS',
 		'hiw_steps_heading' => 'Straightforward from start to finish',
@@ -455,7 +455,7 @@ function restwell_get_faq_page_defaults() {
 	return array(
 		'faq_label'        => 'FAQ',
 		'faq_heading'      => 'Your questions, answered honestly.',
-		'faq_intro'        => 'If you can\'t find the answer here, get in touch; we respond within 48 hours.',
+		'faq_intro'        => 'Short, plain answers to the questions we hear most before an enquiry. Accessibility, suitability, care, funding and what to do if your situation is not on the list.',
 		'faq_list_label'   => '',
 		'faq_list_heading' => 'Frequently asked questions',
 
@@ -502,7 +502,7 @@ function restwell_get_enquire_page_defaults() {
 	return array(
 		'enq_label'   => 'Get in touch',
 		'enq_heading' => 'Let\'s talk about your stay.',
-		'enq_intro'   => 'Fill in the form and we\'ll call you back within 48 hours. No commitment, no hard sell: just a conversation.',
+		'enq_intro'   => 'Tell us your dates, your access needs and anything specific to your situation. We will help you work out whether Restwell is the right fit, with no commitment until you are ready.',
 
 		'enq_form_heading'        => 'Tell us about your stay',
 		'enq_success_heading'     => 'Thank you — we have your enquiry.',
@@ -522,7 +522,7 @@ function restwell_get_resources_page_defaults() {
 	return array(
 		'res_label'   => 'Funding & support',
 		'res_heading' => 'How to fund an accessible holiday in the UK',
-		'res_intro'   => 'There are several ways people pay for a break like this. The most common are direct payments, a personal budget under the Care Act, and NHS Continuing Healthcare. The right route depends on your circumstances, so treat this as a starting point and check the detail with your local authority or care team.',
+		'res_intro'   => 'Funding an accessible holiday in the UK is possible through several routes, even if you have been told otherwise. Here are the pathways that can help, with step-by-step guides for families, carers and commissioners.',
 
 		'res_fund_heading' => 'How to fund your stay',
 		'res_fund_body'    => "Many guests use a combination of personal savings, direct payments, and charitable grants to fund their stay.\n\nIf you receive a personal budget or direct payment from your local authority or NHS, you may be able to use this towards your stay, particularly if care support is included. We recommend speaking to your care coordinator or social worker in the first instance.\n\nWe are happy to provide documentation to support a funding application.",
@@ -567,7 +567,7 @@ function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'           => 'Who it is for',
 		'wif_heading'         => 'Built for guests with access needs',
-		'wif_intro'           => 'Restwell is a wheelchair-accessible holiday in Whitstable for anyone who needs a step-free stay with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.',
+		'wif_intro'           => 'Restwell suits anyone planning an accessible holiday, from disabled guests and their carers to families, occupational therapists and commissioners. Open the section that fits your situation for honest detail on who the property works best for.',
 		'wif_hero_image_id'   => 0,
 		'wif_family_title'    => 'For guests and families',
 		'wif_family_body'     => '"Accessible" and "wheelchair friendly" are used loosely by a lot of accommodation. People book in good faith and arrive to find a step at the entrance, a bathroom that is too small to turn, or a hoist that is not actually there. Restwell works the other way: the ceiling track hoist is already fitted in the accessible bedroom, the wet room has a roll-in shower with turning space, and every doorway and corridor is sized for a powerchair. The full measurements are published on our accessibility page. Check them before you enquire, not after. This is a private home, not a converted hotel room. No shared spaces, no clinical layout, and no surprises on arrival.',
@@ -596,7 +596,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
 		'wg_heading'       => 'A practical local guide for your stay.',
-		'wg_intro'         => 'From the Tankerton promenade to harbour stops and day trips, here is what guests usually explore on a Restwell stay, with access notes woven in.',
+		'wg_intro'         => 'Whitstable is a genuinely lovely town, and most of it is more accessible than it first appears. This guide covers the seafront, parking, eating out and quieter times, written for wheelchair users and visitors with access needs.',
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'The promenade from Tankerton Slopes',
 		'wg_about_body'    => "A paved promenade route of about two miles, west from the property at the top of Tankerton Slopes. Marine Parade clifftop is wide and flat with weather shelters and benches. At the right tide you can watch The Street, a natural shingle spit, emerge almost 800 metres into the estuary.\nSloped paths down to the beach are steep and easier with a companion for manual wheelchair users. The lower promenade then runs unbroken west past the painted beach huts to Whitstable Castle gardens, town and harbour.",
