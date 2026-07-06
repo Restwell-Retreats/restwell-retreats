@@ -20,9 +20,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 	// Defaults tuned for 50–60 char titles, 120–160 char descriptions, unique focus keyphrases (cannibalization), and theme SEO admin keyphrase checks.
 	return array(
 		'how-it-works'          => array(
-			'meta_title'       => 'How It Works | Plan Your Accessible Stay | ' . $name,
-			'meta_description' => 'Plan your accessible stay from first enquiry to keys: what we include, typical rates, arrival, and optional CQC-regulated care. No pressure: ask us anything.',
-			'focus_keyphrase'  => 'accessible stay',
+			'meta_title'       => 'How It Works | Booking an Accessible Holiday | Restwell',
+			'meta_description' => 'How to book an accessible self-catering break with Restwell in Whitstable. Share your access needs, add optional CQC-regulated care and pick your dates.',
+			'focus_keyphrase'  => 'book accessible holiday whitstable',
 		),
 		'home'                  => array(
 			'meta_title'       => 'Accessible Holidays in Whitstable, Kent | Restwell',

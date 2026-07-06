@@ -15,8 +15,8 @@ $pid = get_the_ID();
 
 $hiw_hero_image_id = (int) get_post_meta( $pid, 'hiw_hero_image_id', true );
 $hiw_label          = get_post_meta( $pid, 'hiw_label', true ) ?: '';
-$hiw_heading        = get_post_meta( $pid, 'hiw_heading', true ) ?: 'How it works';
-$hiw_intro          = get_post_meta( $pid, 'hiw_intro', true ) ?: 'From first enquiry to arrival: how your accessible stay in Kent works at Restwell. Tell us what you need and we will take it from there.';
+$hiw_heading        = get_post_meta( $pid, 'hiw_heading', true ) ?: 'How to book an accessible holiday with care';
+$hiw_intro          = get_post_meta( $pid, 'hiw_intro', true ) ?: 'Booking a break should be the easy part. From your first enquiry to the morning you leave, we keep things clear and unhurried, so you know what\'s in the house, what care is available and how to pay.';
 $hiw_hero_cta_text           = get_post_meta( $pid, 'hiw_hero_cta_text', true ) ?: 'Ask about your dates';
 $hiw_hero_cta_url            = esc_url( get_post_meta( $pid, 'hiw_hero_cta_url', true ) ?: home_url( '/enquire/' ) );
 $hiw_hero_cta_promise        = get_post_meta( $pid, 'hiw_hero_cta_promise', true ) ?: '';
@@ -26,26 +26,26 @@ $hiw_tldr_markup             = function_exists( 'restwell_get_tldr_markup' ) ? r
 
 $hiw_steps_label   = get_post_meta( $pid, 'hiw_steps_label', true ) ?: 'FOUR-STEP PROCESS';
 $hiw_steps_heading = get_post_meta( $pid, 'hiw_steps_heading', true ) ?: 'Straightforward from start to finish';
-$hiw_steps_intro   = get_post_meta( $pid, 'hiw_steps_intro', true ) ?: 'Share your dates and what you need; we\'ll handle the rest.';
+$hiw_steps_intro   = get_post_meta( $pid, 'hiw_steps_intro', true ) ?: '';
 $steps = array();
 for ( $i = 1; $i <= 4; $i++ ) {
 	$step_title = get_post_meta( $pid, "hiw_step{$i}_title", true );
 	$body       = get_post_meta( $pid, "hiw_step{$i}_body", true );
 	if ( $i === 1 && ! $step_title ) {
-		$step_title = 'Get in touch';
-		$body       = $body ?: 'Share your dates and what you need. We\'ll get back to you and take it from there.';
+		$step_title = 'Enquire';
+		$body       = $body ?: 'Tell us your dates and your access needs.';
 	}
 	if ( $i === 2 && ! $step_title ) {
-		$step_title = 'Plan your stay';
-		$body       = $body ?: "We'll confirm the property, walk you through what's included, and answer any questions.";
+		$step_title = 'Confirm';
+		$body       = $body ?: 'We talk through what\'s in the house and any care you\'d like.';
 	}
 	if ( $i === 3 && ! $step_title ) {
-		$step_title = 'Arrange support (if needed)';
-		$body       = $body ?: 'If you want care support during your stay, we can connect you with Continuity of Care Services, a CQC-regulated provider based in Kent. You can also bring your own carer or PA. This step is entirely optional.';
+		$step_title = 'Book';
+		$body       = $body ?: 'You secure your dates.';
 	}
 	if ( $i === 4 && ! $step_title ) {
-		$step_title = 'Arrive and enjoy';
-		$body       = $body ?: 'The house is yours. Settle in, explore Whitstable, and take a proper break.';
+		$step_title = 'Arrive';
+		$body       = $body ?: 'You come home to a step-free house that is ready for you.';
 	}
 	$steps[] = array(
 		'title' => $step_title ?: '',
@@ -54,7 +54,7 @@ for ( $i = 1; $i <= 4; $i++ ) {
 }
 
 $hiw_care_cta_label   = get_post_meta( $pid, 'hiw_care_cta_label', true ) ?: 'CARE SUPPORT';
-$hiw_care_cta_heading = get_post_meta( $pid, 'hiw_care_cta_heading', true ) ?: 'Care support works around you, not shift patterns.';
+$hiw_care_cta_heading = get_post_meta( $pid, 'hiw_care_cta_heading', true ) ?: 'Care is arranged around your days and your routine.';
 $hiw_care_cta_body    = get_post_meta( $pid, 'hiw_care_cta_body', true ) ?: 'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.';
 $hiw_care_cta_btn     = get_post_meta( $pid, 'hiw_care_cta_btn', true ) ?: 'Learn about care support';
 $hiw_care_cta_url     = esc_url( get_post_meta( $pid, 'hiw_care_cta_url', true ) ?: home_url( '/accessibility/' ) );
@@ -114,7 +114,7 @@ $hiw_cta_secondary_label  = get_post_meta( $pid, 'hiw_cta_secondary_label', true
 $hiw_cta_secondary_url    = esc_url( get_post_meta( $pid, 'hiw_cta_secondary_url', true ) ?: home_url( '/the-property/' ) );
 
 $hiw_faq_label   = get_post_meta( $pid, 'hiw_faq_label', true ) ?: 'HAVE QUESTIONS?';
-$hiw_faq_heading = get_post_meta( $pid, 'hiw_faq_heading', true ) ?: 'Common questions';
+$hiw_faq_heading = get_post_meta( $pid, 'hiw_faq_heading', true ) ?: 'Common questions about booking';
 $hiw_faq_intro   = get_post_meta( $pid, 'hiw_faq_intro', true ) ?: 'Answers to the things people ask us most. Anything else: just get in touch.';
 // Use centralised helper so How It Works shows the same FAQs as the FAQ page.
 $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'how-it-works' ) : array();

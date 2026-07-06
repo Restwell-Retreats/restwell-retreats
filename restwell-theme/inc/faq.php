@@ -102,8 +102,16 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 	}
 
 	if ( 'how-it-works' === $scope ) {
-		// How It Works shows the first 7 items from the FAQ page.
-		$items = array_slice( $items, 0, 7 );
+		// How It Works uses its own distinct FAQ set to avoid duplicate content with the FAQ page.
+		$hiw_items = array();
+		foreach ( restwell_get_how_it_works_faq_defaults() as $row ) {
+			$hiw_items[] = array(
+				'q'   => $row['q'],
+				'a'   => $row['a'],
+				'cat' => isset( $row['cat'] ) ? $row['cat'] : 'booking',
+			);
+		}
+		$items = $hiw_items;
 	}
 
 	/**
@@ -114,4 +122,38 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 	 * @param int                                                                $pid    FAQ page ID.
 	 */
 	return apply_filters( 'restwell_faq_items', $items, $scope, $pid );
+}
+
+/**
+ * Default FAQ items for the How It Works page.
+ *
+ * Distinct from the FAQ page set to prevent duplicate-content cannibalisation.
+ * Both template rendering and JSON-LD must read from this same function.
+ *
+ * @return array<int, array{q: string, a: string, cat: string}>
+ */
+function restwell_get_how_it_works_faq_defaults(): array {
+	return array(
+		array(
+			'q'   => __( 'How do I book a stay?', 'restwell-retreats' ),
+			'a'   => __( 'Start with an enquiry through the website or by phone. We confirm availability and what you need, then hold your dates.', 'restwell-retreats' ),
+			'cat' => 'booking',
+		),
+		array(
+			'q'   => __( 'When can care be added?', 'restwell-retreats' ),
+			// Confirm in WP: how far ahead to request care.
+			'a'   => __( 'Care can be arranged when you book or added later, subject to availability.', 'restwell-retreats' ),
+			'cat' => 'care',
+		),
+		array(
+			'q'   => __( 'How can I pay?', 'restwell-retreats' ),
+			'a'   => __( 'Many guests use direct payments or a personal budget. See the Funding and Support page for the options.', 'restwell-retreats' ),
+			'cat' => 'funding',
+		),
+		array(
+			'q'   => __( 'Can a local authority, case manager or NHS team book for me?', 'restwell-retreats' ),
+			'a'   => __( 'Yes. Funded bookings are welcome, and funders can confirm a booking with a purchase order on the same payment timeline as every guest.', 'restwell-retreats' ),
+			'cat' => 'funding',
+		),
+	);
 }
