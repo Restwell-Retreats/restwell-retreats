@@ -166,7 +166,7 @@ function restwell_get_property_page_defaults() {
 		'prop_address_postcode' => 'CT5 2RQ',
 
 		'prop_hero_label'               => 'The Property',
-		'prop_hero_heading'             => 'An accessible bungalow in Whitstable, near the beach',
+		'prop_hero_heading'             => 'An accessible bungalow in Whitstable',
 		'prop_hero_subtitle'            => 'A newly adapted single-storey bungalow a few minutes from Tankerton Beach. Step-free throughout, with a full room coverage ceiling hoist, profiling beds and a level-access wet room.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
@@ -183,7 +183,7 @@ function restwell_get_property_page_defaults() {
 		'prop_living_heading' => 'Wheel-under kitchen and open-plan living',
 		'prop_living_body'    => 'The light and airy open-plan living room has sofas, a riser/recliner chair, a dining table, a wall-mounted TV and a feature fireplace, and leads round into a modern fully-equipped kitchen with a lowered, wheel-under worksurface. Double doors open into a conservatory with a sofa (including a sofa bed), laundry facilities and garden views, with threshold ramps onto the patio.',
 
-		'prop_bedrooms_section_heading' => 'Ceiling hoist, profiling beds and a double room',
+		'prop_bedrooms_section_heading' => 'Ceiling hoist and profiling bed',
 		'prop_bedrooms_section_body'    => 'The accessible bedroom has two profiling beds, a full room coverage ceiling hoist and a wall-mounted TV. A mobile hoist and a Sara Stedy stand aid are available to guests and can be used in the bedroom and throughout the bungalow. The second bedroom has a double bed and a wall-mounted TV.',
 
 		'prop_wetroom_heading' => 'Roll-in wet room with adjustable basin',
@@ -192,7 +192,7 @@ function restwell_get_property_page_defaults() {
 		'prop_garden_heading' => 'Private drive, patio and step-free garden',
 		'prop_garden_body'    => 'Double doors from the conservatory lead onto a patio with outdoor dining furniture and a BBQ, with threshold ramps for wheelchair access. The enclosed garden is wheelchair-accessible with a lawned area. To the front there is a hard-standing private driveway for two cars, with additional street parking available.',
 
-		'prop_throughout_heading' => 'Wide doorways and step-free access throughout',
+		'prop_throughout_heading' => 'Wide doorways, step-free throughout',
 		'prop_throughout_body'    => 'The bungalow is on one level with wide doorways (926 mm and 965 mm clear widths) and step-free routes from the porch through to the patio. Full door and transfer measurements are on the accessibility page if you need them before booking.',
 
 		'prop_care_heading' => 'Optional care and welcome hamper',

@@ -804,3 +804,43 @@ function restwell_migrate_who_its_for_headings_v1() {
 }
 add_action( 'init', 'restwell_migrate_who_its_for_headings_v1', 27 );
 add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_headings_v1', 17 );
+
+/**
+ * One-time: update property page headings to shortened versions.
+ * Handles prop_hero_heading (not covered by refresh maps at runtime).
+ */
+function restwell_migrate_property_headings_v1() {
+	if ( get_option( 'restwell_property_headings_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+
+	$meta_map = array(
+		'prop_hero_heading' => array(
+			'An accessible bungalow in Whitstable, near the beach' => 'An accessible bungalow in Whitstable',
+		),
+		'prop_bedrooms_section_heading' => array(
+			'Ceiling hoist, profiling beds and a double room' => 'Ceiling hoist and profiling bed',
+		),
+		'prop_throughout_heading' => array(
+			'Wide doorways and step-free access throughout' => 'Wide doorways, step-free throughout',
+		),
+	);
+
+	foreach ( $meta_map as $meta_key => $map ) {
+		$current = trim( (string) get_post_meta( $page_id, $meta_key, true ) );
+		if ( isset( $map[ $current ] ) ) {
+			update_post_meta( $page_id, $meta_key, $map[ $current ] );
+		}
+	}
+
+	update_option( 'restwell_property_headings_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_headings_v1', 28 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v1', 18 );

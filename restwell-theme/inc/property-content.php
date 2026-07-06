@@ -33,6 +33,9 @@ function restwell_get_property_heading_refresh_maps() {
 	$defaults = restwell_get_property_page_defaults();
 
 	return array(
+		'prop_hero_heading' => array(
+			'An accessible bungalow in Whitstable, near the beach' => (string) ( $defaults['prop_hero_heading'] ?? '' ),
+		),
 		'prop_bungalow_heading' => array(
 			'An accessible bungalow on one level' => (string) ( $defaults['prop_bungalow_heading'] ?? '' ),
 		),
@@ -40,7 +43,8 @@ function restwell_get_property_heading_refresh_maps() {
 			'Living room, kitchen and conservatory' => (string) ( $defaults['prop_living_heading'] ?? '' ),
 		),
 		'prop_bedrooms_section_heading' => array(
-			'The accessible bedroom and a double' => (string) ( $defaults['prop_bedrooms_section_heading'] ?? '' ),
+			'The accessible bedroom and a double'           => (string) ( $defaults['prop_bedrooms_section_heading'] ?? '' ),
+			'Ceiling hoist, profiling beds and a double room' => (string) ( $defaults['prop_bedrooms_section_heading'] ?? '' ),
 		),
 		'prop_wetroom_heading' => array(
 			'Level-access wet room' => (string) ( $defaults['prop_wetroom_heading'] ?? '' ),
@@ -49,7 +53,8 @@ function restwell_get_property_heading_refresh_maps() {
 			'Accessible garden and parking' => (string) ( $defaults['prop_garden_heading'] ?? '' ),
 		),
 		'prop_throughout_heading' => array(
-			'Wide doorways throughout' => (string) ( $defaults['prop_throughout_heading'] ?? '' ),
+			'Wide doorways throughout'                   => (string) ( $defaults['prop_throughout_heading'] ?? '' ),
+			'Wide doorways and step-free access throughout' => (string) ( $defaults['prop_throughout_heading'] ?? '' ),
 		),
 		'prop_practical_heading' => array(
 			'The basics, clearly'                 => (string) ( $defaults['prop_practical_heading'] ?? '' ),
@@ -611,6 +616,10 @@ function restwell_get_property_room_tour_with_features( $post_id = 0 ) {
 	}
 
 	$enriched = array();
+	$facts_by_room = function_exists( 'restwell_get_property_facts_by_room_key' )
+		? restwell_get_property_facts_by_room_key()
+		: array();
+
 	foreach ( $sections as $section ) {
 		$key = (string) ( $section['key'] ?? '' );
 		$section['highlights'] = restwell_ensure_property_section_highlights(
@@ -618,7 +627,26 @@ function restwell_get_property_room_tour_with_features( $post_id = 0 ) {
 			$key,
 			$post_id
 		);
-		$enriched[]            = $section;
+
+		if ( isset( $facts_by_room[ $key ] ) && function_exists( 'restwell_property_facts_to_highlights' ) ) {
+			$fact_highlights = restwell_property_facts_to_highlights( $facts_by_room[ $key ] );
+			$existing_titles = array_map(
+				static function ( $highlight ) {
+					return strtolower( trim( (string) ( $highlight['title'] ?? '' ) ) );
+				},
+				$section['highlights']
+			);
+			foreach ( $fact_highlights as $fact_highlight ) {
+				$title_key = strtolower( trim( (string) ( $fact_highlight['title'] ?? '' ) ) );
+				if ( $title_key === '' || in_array( $title_key, $existing_titles, true ) ) {
+					continue;
+				}
+				$section['highlights'][] = $fact_highlight;
+				$existing_titles[]       = $title_key;
+			}
+		}
+
+		$enriched[] = $section;
 	}
 
 	return $enriched;

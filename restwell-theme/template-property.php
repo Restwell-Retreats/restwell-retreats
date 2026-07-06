@@ -24,7 +24,9 @@ $m_url = function ( $key ) use ( $pid, $d ) {
 };
 
 $prop_hero_label              = $prop_meta( 'prop_hero_label' );
-$prop_hero_heading            = $prop_meta( 'prop_hero_heading' );
+$prop_hero_heading            = function_exists( 'restwell_get_property_heading' )
+	? restwell_get_property_heading( $pid, 'prop_hero_heading' )
+	: $prop_meta( 'prop_hero_heading' );
 $prop_hero_subtitle           = $prop_meta( 'prop_hero_subtitle' );
 $prop_hero_cta_text           = $prop_meta( 'prop_hero_cta_text' );
 $prop_hero_cta_url            = esc_url( $m_url( 'prop_hero_cta_url' ) );
@@ -91,6 +93,10 @@ $prop_essentials_stats  = function_exists( 'restwell_get_property_essentials_sta
 	? restwell_get_property_essentials_stats( $pid )
 	: array();
 $prop_confirm_details_url = esc_url( $m_url( 'prop_confirm_details_url' ) );
+
+$prop_verified_facts = function_exists( 'restwell_get_property_facts' )
+	? restwell_get_property_facts()
+	: array();
 
 $prop_nearby_label   = $prop_meta( 'prop_nearby_label' );
 $prop_nearby_heading = function_exists( 'restwell_get_property_heading' )
@@ -403,6 +409,42 @@ $prop_section_bg = static function ( $index ) {
 					</div>
 					<?php endforeach; ?>
 			</div>
+
+			<?php if ( ! empty( $prop_verified_facts ) ) : ?>
+			<div class="prop-page__verified-facts mt-10 md:mt-12 max-w-4xl mx-auto">
+				<h3 class="text-xl font-serif text-[var(--deep-teal)] m-0 mb-6 text-center"><?php esc_html_e( 'Verified specs', 'restwell-retreats' ); ?></h3>
+				<div class="grid sm:grid-cols-3 rw-gap-grid">
+					<?php
+					$fact_groups = array(
+						'access'    => __( 'Access', 'restwell-retreats' ),
+						'sleeping'  => __( 'Sleeping', 'restwell-retreats' ),
+						'practical' => __( 'Practical', 'restwell-retreats' ),
+					);
+					foreach ( $fact_groups as $group_key => $group_label ) :
+						$group_facts = isset( $prop_verified_facts[ $group_key ] ) && is_array( $prop_verified_facts[ $group_key ] )
+							? $prop_verified_facts[ $group_key ]
+							: array();
+						if ( empty( $group_facts ) ) {
+							continue;
+						}
+						?>
+					<div class="prop-page__verified-facts-group rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+						<p class="section-label m-0 mb-4"><?php echo esc_html( $group_label ); ?></p>
+						<ul class="m-0 list-none space-y-3 p-0 text-sm leading-relaxed text-[var(--muted-grey)]" role="list">
+							<?php foreach ( $group_facts as $fact_label ) : ?>
+							<li class="flex items-start gap-3">
+								<span class="prop-room-tour__highlight-icon shrink-0" aria-hidden="true">
+									<i class="ph-bold ph-check"></i>
+								</span>
+								<span class="min-w-0"><?php echo esc_html( (string) $fact_label ); ?></span>
+							</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+			<?php endif; ?>
 
 			<p class="text-center text-[var(--muted-grey)] text-sm md:text-base mt-8 mb-0 max-w-prose mx-auto">
 				<?php esc_html_e( 'Full measurements and equipment detail:', 'restwell-retreats' ); ?>
