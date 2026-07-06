@@ -15,8 +15,8 @@ $pid = get_the_ID();
 
 $faq_hero_image_id = (int) get_post_meta( $pid, 'faq_hero_image_id', true );
 $faq_label          = get_post_meta( $pid, 'faq_label', true ) ?: 'Frequently asked questions';
-$faq_heading        = get_post_meta( $pid, 'faq_heading', true ) ?: 'Questions we get asked';
-$faq_intro          = get_post_meta( $pid, 'faq_intro', true ) ?: 'We have tried to cover the most common questions below. If yours isn\'t here, get in touch; we are always happy to talk things through.';
+$faq_heading        = get_post_meta( $pid, 'faq_heading', true ) ?: 'Accessible holiday FAQs';
+$faq_intro          = get_post_meta( $pid, 'faq_intro', true ) ?: 'The questions we are asked most, in one place. For room-by-room measurements see the Accessibility page, and for paying for a stay see Funding and Support.';
 
 // FAQ list section: heading only shown if explicitly set and different from hero heading.
 $faq_list_label   = get_post_meta( $pid, 'faq_list_label', true ) ?: 'Browse by topic';

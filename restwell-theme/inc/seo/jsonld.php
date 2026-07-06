@@ -286,6 +286,10 @@ function restwell_get_accommodation_image_urls( $page_id = 0 ) {
  * @return array<int, array<string, mixed>>
  */
 function restwell_get_default_lodging_amenity_features() {
+	if ( function_exists( 'restwell_get_property_facts_amenity_features' ) ) {
+		return restwell_get_property_facts_amenity_features();
+	}
+
 	return array(
 		array(
 			'@type' => 'LocationFeatureSpecification',
@@ -467,19 +471,23 @@ function restwell_output_jsonld_accommodation_service() {
 	$booking_url  = $enquire_page ? get_permalink( $enquire_page ) : home_url( '/enquire/' );
 
 	$amenities = array();
-	for ( $i = 1; $i <= 8; $i++ ) {
-		$feat = get_post_meta( $pid, 'prop_feature_' . $i, true );
-		$feat_desc = get_post_meta( $pid, 'prop_feature_' . $i . '_desc', true );
-		if ( $feat !== '' ) {
-			$amenity = array(
-				'@type' => 'LocationFeatureSpecification',
-				'name'  => $feat,
-				'value' => true,
-			);
-			if ( $feat_desc !== '' ) {
-				$amenity['description'] = $feat_desc;
+	if ( function_exists( 'restwell_get_property_facts_amenity_features' ) ) {
+		$amenities = restwell_get_property_facts_amenity_features();
+	} else {
+		for ( $i = 1; $i <= 8; $i++ ) {
+			$feat = get_post_meta( $pid, 'prop_feature_' . $i, true );
+			$feat_desc = get_post_meta( $pid, 'prop_feature_' . $i . '_desc', true );
+			if ( $feat !== '' ) {
+				$amenity = array(
+					'@type' => 'LocationFeatureSpecification',
+					'name'  => $feat,
+					'value' => true,
+				);
+				if ( $feat_desc !== '' ) {
+					$amenity['description'] = $feat_desc;
+				}
+				$amenities[] = $amenity;
 			}
-			$amenities[] = $amenity;
 		}
 	}
 	if ( empty( $amenities ) ) {
@@ -919,66 +927,42 @@ function restwell_output_jsonld_article() {
  * @return array<int, array{q: string, a: string, cat: string}>
  */
 function restwell_get_faq_page_default_pairs() {
+	// Broader set -- kept distinct from per-page FAQs (homepage, how-it-works) to prevent duplicate-content cannibalisation.
 	return array(
 		array(
-			'q'   => 'Is this a care home?',
-			'a'   => 'No. Restwell is a private holiday let: a real house that you have entirely to yourself. It is not a care home, a residential facility, or a clinical environment. Care is an optional extra that you can choose to add through our partner, Continuity of Care Services.',
-			'cat' => 'about',
-		),
-		array(
-			'q'   => 'What accessibility features does the property have?',
-			'a'   => 'The property has level access throughout the ground floor and wide doorways suitable for wheelchair access. It is located on a quiet, flat residential street. For full details please visit our Accessibility page.',
-			'cat' => 'about',
-		),
-		array(
-			'q'   => 'How do I book?',
-			'a'   => 'Start by using our enquiry form or getting in touch by phone or email. We will talk through your dates, your needs, and any questions you have. Once we have confirmed availability and you are happy with everything, we will confirm your booking.',
+			'q'   => 'Is Restwell open for bookings?',
+			'a'   => 'Yes, we\'re open and taking bookings now, for dates across 2026 and 2027. Tell us when you\'d like to come and we\'ll check availability.',
 			'cat' => 'booking',
 		),
 		array(
-			'q'   => 'How far in advance can I book?',
-			'a'   => 'We accept bookings as early as you need; some guests plan months ahead, particularly for summer. Get in touch with your preferred dates and we will confirm availability.',
-			'cat' => 'booking',
+			'q'   => 'Do you allow assistance dogs?',
+			'a'   => 'Yes. The bungalow is dog-friendly and welcomes assistance dogs, with water bowls and a toileting area provided.',
+			'cat' => 'about',
 		),
 		array(
-			'q'   => 'Can I bring my own carer or PA?',
-			'a'   => 'Absolutely. Many of our guests bring their own Personal Assistant or carer. The property is designed to accommodate everyone comfortably. You can also use CCS for \'top-up\' support alongside your own carer.',
-			'cat' => 'care',
-		),
-		array(
-			'q'   => 'What care can you provide?',
-			'a'   => 'Care is provided by Continuity of Care Services (CCS), a CQC-regulated Kent-based provider. Support can range from a brief morning check-in to more comprehensive daily assistance. We will discuss your needs before your stay.',
-			'cat' => 'care',
-		),
-		array(
-			'q'   => 'Is the beach accessible?',
-			'a'   => 'Whitstable\'s beach is shingle, which is generally not wheelchair-friendly. However, the Tankerton Slopes promenade (a long, flat concrete walkway above the beach) is excellent for wheelchair users and offers stunning sea views.',
+			'q'   => 'Is parking available at the house?',
+			'a'   => 'Yes, level driveway parking for two cars.',
 			'cat' => 'local',
 		),
 		array(
-			'q'   => 'What is Whitstable like to get around?',
-			'a'   => 'Much of central Whitstable and the seafront area is relatively flat and accessible. The town has accessible parking, and the high street has a good mix of level and stepped access venues. We are happy to suggest specific places to eat, visit, and explore.',
+			'q'   => 'How far is the seafront?',
+			'a'   => 'About ten minutes away, with a paved promenade route along the Tankerton Slopes.',
 			'cat' => 'local',
 		),
 		array(
-			'q'   => 'Can I use my direct payment to stay at Restwell?',
-			'a'   => 'In many cases, yes. Direct payments can often be used for short breaks and respite accommodation, depending on your care plan and local authority. We can provide the documentation your social worker or broker needs to approve the spend. Start with our Funding & Support page or get in touch to discuss your situation.',
-			'cat' => 'funding',
-		),
-		array(
-			'q'   => 'Is the property suitable for hoists and profiling beds?',
-			'a'   => 'Yes. The accessible bedroom has a ceiling track hoist and profiling bed, and there is a full roll-in wet room on the same single-storey level, with a perching stool in the shower and a washbasin you can raise, lower, and swing aside when you need clearer space. A shower chair may be available on request; please say so when you enquire or book. If you have additional or specialist equipment needs, please get in touch before booking so we can confirm we can accommodate them.',
+			'q'   => 'Can I see the full access details before booking?',
+			'a'   => 'Yes, the Accessibility page lists measurements and equipment room by room.',
 			'cat' => 'about',
 		),
 		array(
-			'q'   => 'What is the minimum stay?',
-			'a'   => 'We are flexible. Most guests stay for a week, but shorter breaks are sometimes available depending on the time of year. Get in touch with your preferred dates and we will let you know.',
-			'cat' => 'booking',
+			'q'   => 'Can I get to Whitstable by train step-free?',
+			'a'   => 'Yes. Whitstable station has step-free access to both platforms via separate street-level entrances, and the house is about a nine-minute drive from the station.',
+			'cat' => 'local',
 		),
 		array(
-			'q'   => 'What does CQC-regulated mean?',
-			'a'   => 'CQC stands for Care Quality Commission, the independent regulator of health and social care in England. Continuity of Care Services, our partner provider, is inspected and rated by the CQC. This means the care you receive meets nationally recognised standards for safety and quality. You can see Continuity’s latest inspection summary on the <a href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer">Care Quality Commission website<span class="sr-only"> (opens in new tab)</span></a>.',
-			'cat' => 'funding',
+			'q'   => 'Is there a Changing Places toilet nearby?',
+			'a'   => 'Yes, at Whitstable Harbour on Harbour Road, which needs a RADAR key.',
+			'cat' => 'local',
 		),
 	);
 }

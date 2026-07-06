@@ -55,9 +55,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'contact restwell',
 		),
 		'faq'                   => array(
-			'meta_title'       => 'Restwell Booking Questions | FAQ | ' . $name,
-			'meta_description' => 'Booking FAQs for Restwell: accessibility equipment, carers, funding options, cancellations, house rules, and what to pack before your stay.',
-			'focus_keyphrase'  => 'restwell booking questions',
+			'meta_title'       => 'Accessible Holiday FAQs | Restwell Retreats',
+			'meta_description' => 'Quick answers on bookings, assistance dogs, parking and access details at our step-free Whitstable bungalow, with links to the full room-by-room guides.',
+			'focus_keyphrase'  => 'accessible holiday faq whitstable',
 		),
 		'resources'             => array(
 			'meta_title'       => 'Funding an Accessible Respite Holiday | Restwell',
