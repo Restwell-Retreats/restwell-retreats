@@ -16,7 +16,7 @@ $pid = get_the_ID();
 $hero_image_id = (int) get_post_meta( $pid, 'wg_hero_image_id', true );
 $label            = (string) get_post_meta( $pid, 'wg_label', true ) ?: 'Whitstable & Kent coast';
 $heading          = (string) get_post_meta( $pid, 'wg_heading', true ) ?: 'A practical local guide for your stay.';
-$intro            = (string) get_post_meta( $pid, 'wg_intro', true ) ?: 'From the Tankerton promenade to harbour stops and day trips, here is what guests usually explore on a Restwell stay, with access notes woven in.';
+$intro            = (string) get_post_meta( $pid, 'wg_intro', true ) ?: 'Whitstable is a genuinely lovely town, and most of it is more accessible than it first appears. This guide covers the seafront, parking, eating out and quieter times, written for wheelchair users and visitors with access needs.';
 $hero_heading_id = 'wg-hero-heading';
 
 $sections = array(
@@ -214,6 +214,24 @@ $wg_glance = array(
 						</p>
 					<?php endif; ?>
 				<?php if ( 'parking' === $section['key'] ) : ?>
+					<?php
+					$wg_property_travel_facts = function_exists( 'restwell_get_property_facts_area_travel' )
+						? restwell_get_property_facts_area_travel()
+						: array();
+					?>
+					<?php if ( ! empty( $wg_property_travel_facts ) ) : ?>
+					<div class="<?php echo esc_attr( $body_class ); ?> mt-8 pt-6 border-t border-[var(--deep-teal)]/10">
+						<p class="m-0 mb-3 font-semibold text-[var(--deep-teal)]"><?php esc_html_e( 'At the property', 'restwell-retreats' ); ?></p>
+						<ul class="m-0 list-none space-y-2 p-0" role="list">
+							<?php foreach ( $wg_property_travel_facts as $travel_fact ) : ?>
+							<li class="flex items-start gap-2">
+								<span class="text-[var(--warm-gold-text)] shrink-0" aria-hidden="true"><i class="ph-bold ph-check"></i></span>
+								<span><?php echo esc_html( (string) $travel_fact ); ?></span>
+							</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+					<?php endif; ?>
 					<p class="<?php echo esc_attr( $body_class ); ?> mt-8 pt-6 border-t border-[var(--deep-teal)]/10 m-0"><?php esc_html_e( 'For more on Blue Badge bays and harbour car parks, see our', 'restwell-retreats' ); ?>
 						<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/accessible-parking-whitstable-tankerton/' ) ); ?>"><?php esc_html_e( 'accessible parking guide for Whitstable and Tankerton', 'restwell-retreats' ); ?></a>.
 					</p>
