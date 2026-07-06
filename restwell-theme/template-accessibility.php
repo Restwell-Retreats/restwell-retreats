@@ -16,7 +16,7 @@ $pid = get_the_ID();
 $acc_hero_image_id = (int) get_post_meta( $pid, 'acc_hero_image_id', true );
 $acc_label          = get_post_meta( $pid, 'acc_label', true ) ?: 'Accessibility';
 $acc_heading        = get_post_meta( $pid, 'acc_heading', true ) ?: 'Our access statement, room by room';
-$acc_intro          = get_post_meta( $pid, 'acc_intro', true ) ?: 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.';
+$acc_intro          = get_post_meta( $pid, 'acc_intro', true ) ?: 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.';
 
 // Room by room: verified facts from restwell_get_property_facts(); headings remain editable in WP.
 $acc_room_label       = get_post_meta( $pid, 'acc_room_label', true ) ?: 'The property';

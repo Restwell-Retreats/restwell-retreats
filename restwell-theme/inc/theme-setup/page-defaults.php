@@ -34,7 +34,7 @@ function restwell_get_theme_setup_pages() {
 function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
-		'hero_heading'             => 'Accessible holidays in Whitstable, set up for the way you live',
+		'hero_heading'             => 'Accessible self-catering holidays in Whitstable, Kent',
 		'hero_subheading'          => 'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'View the property',
@@ -414,10 +414,10 @@ function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
 		'acc_heading' => 'Our access statement, room by room',
-		'acc_intro'   => 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.',
+		'acc_intro'   => 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.',
 
 		'acc_room_label'      => 'The property',
-		'acc_room_heading'    => 'Room by room.',
+		'acc_room_heading'    => 'Room by room',
 		'acc_arrival_heading' => 'Arrival & entrance',
 		'acc_arrival_body'    => "Private driveway: two off-road car spaces (adapted vehicles welcome)\nOn-street parking outside if you need extra room—no residents permit on this road; check signs on arrival in case street rules change\nStep-free path from car to front door\nWide front door (965 mm clear)\nLevel threshold, no step",
 		'acc_inside_heading'  => 'Inside the property',
@@ -425,7 +425,7 @@ function restwell_get_accessibility_page_defaults() {
 		'acc_bedroom_heading' => 'Bedrooms & sleeping',
 		'acc_bedroom_body'    => "Accessible bedroom: profiling bed with pressure-relieving mattress\nCeiling hoist with full-room track in this room for transfers at the bed\nHeight-adjustable features\nSpace for carer on both sides of bed\nSecond bedroom for additional guests or a support worker\nSofa bed in the living area—house sleeps up to five; tell us your party layout when you enquire",
 		'acc_bathroom_heading' => 'Wet room',
-		'acc_bathroom_body'   => "Full wet room: roll-in shower, no lip — layout and specification by <a href=\"https://www.carespaces.co.uk/\" target=\"_blank\" rel=\"noopener noreferrer\">Care Spaces</a> (specialist care environments, design & installation)\nPerching stool in the shower for balance and short rests\nShower chair may be available on request; please say so when you enquire or book\nWashbasin is fully height-adjustable and swings aside, so you can set a comfortable working height and move it out of the way for transfers or assistance\nGrab rails: shower, toilet, and washbasin\nFloor-level drain\nExtractor fan",
+		'acc_bathroom_body'   => "Full wet room: roll-in shower, no lip — layout and specification by <a href=\"https://www.carespaces.co.uk/\" target=\"_blank\" rel=\"noopener noreferrer\">Care Spaces</a> (specialist care environments, design & installation)\nPerching stool in the shower for balance and short rests\nTilt-in-space shower chair fitted in the wet room\nWashbasin is fully height-adjustable and swings aside, so you can set a comfortable working height and move it out of the way for transfers or assistance\nGrab rails: shower, toilet, and washbasin\nFloor-level drain\nExtractor fan",
 		'acc_kitchen_heading' => 'Kitchen',
 		'acc_kitchen_body'    => "Open-plan kitchen, easy wheelchair access\nHeight-adapted worktop section\nGas hob (not induction)—no electromagnetic field from the cooktop, which many guests with pacemakers prefer\nAccessible storage at lower levels",
 		'acc_outdoor_heading' => 'Outdoor spaces',
@@ -459,61 +459,33 @@ function restwell_get_faq_page_defaults() {
 		'faq_list_label'   => '',
 		'faq_list_heading' => 'Frequently asked questions',
 
-		'faq_1_q'   => 'What is Restwell?',
-		'faq_1_a'   => 'Restwell is a high-quality accessible holiday let in Whitstable, Kent. It is a proper coastal holiday home, not a care home, not a clinical facility. We offer the option of professional, CQC-regulated care support through our partner, Continuity of Care Services, but it is entirely optional.',
-		'faq_1_cat' => 'about',
+		'faq_1_q'   => 'Is Restwell open for bookings?',
+		'faq_1_a'   => 'Yes, we\'re open and taking bookings now, for dates across 2026 and 2027. Tell us when you\'d like to come and we\'ll check availability.',
+		'faq_1_cat' => 'booking',
 
-		'faq_2_q'   => 'Who is the property suitable for?',
-		'faq_2_a'   => 'The property is designed for guests with disabilities, wheelchair users, and people with complex care needs, and the family and carers who travel with them. It is for anyone who finds standard holiday accommodation doesn\'t quite work.',
+		'faq_2_q'   => 'Do you allow assistance dogs?',
+		'faq_2_a'   => 'Yes. The bungalow is dog-friendly and welcomes assistance dogs, with water bowls and a toileting area provided.',
 		'faq_2_cat' => 'about',
 
-		'faq_3_q'   => 'Do I need to book care?',
-		'faq_3_a'   => 'No. Care support is entirely optional. Many guests book as a self-catering holiday and need no additional support. If you do want professional care, we will connect you with Continuity of Care Services to arrange it.',
-		'faq_3_cat' => 'care',
+		'faq_3_q'   => 'Is parking available at the house?',
+		'faq_3_a'   => 'Yes, level driveway parking for two cars.',
+		'faq_3_cat' => 'local',
 
-		'faq_4_q'   => 'What care services are available?',
-		'faq_4_a'   => 'Through Continuity of Care Services (CQC-regulated), we can arrange personal care, medication management, moving and handling support, and more. The level of support is entirely up to you, from a daily check-in to comprehensive care.',
-		'faq_4_cat' => 'care',
+		'faq_4_q'   => 'How far is the seafront?',
+		'faq_4_a'   => 'About ten minutes away, with a paved promenade route along the Tankerton Slopes.',
+		'faq_4_cat' => 'local',
 
-		'faq_5_q'   => 'How do I book?',
-		'faq_5_a'   => 'Use our enquiry form, email us, or call. We will get back to you within 48 hours, have a conversation about your needs, and confirm availability. Once you\'re happy, we take a deposit and send a booking confirmation.',
-		'faq_5_cat' => 'booking',
+		'faq_5_q'   => 'Can I see the full access details before booking?',
+		'faq_5_a'   => 'Yes, the Accessibility page lists measurements and equipment room by room.',
+		'faq_5_cat' => 'about',
 
-		'faq_6_q'   => 'What is the minimum stay?',
-		'faq_6_a'   => 'We are flexible. Most guests stay for a week, but shorter breaks are sometimes available depending on the time of year. Get in touch with your preferred dates and we will let you know.',
-		'faq_6_cat' => 'booking',
+		'faq_6_q'   => 'Can I get to Whitstable by train step-free?',
+		'faq_6_a'   => 'Yes. Whitstable station has step-free access to both platforms via separate street-level entrances, and the house is about a nine-minute drive from the station.',
+		'faq_6_cat' => 'local',
 
-		'faq_7_q'   => 'What is included in the price?',
-		'faq_7_a'   => 'Exclusive use of the whole house, all accessibility equipment (ceiling hoist in the accessible bedroom, profiling bed, wet room), linen and towels, two off-road spaces on the private drive, and high-speed broadband. Need a third space? You can usually park on the road outside—there is no residents permit scheme on this road. Care is priced separately if required.',
-		'faq_7_cat' => 'booking',
-
-		'faq_8_q'   => 'Is the property suitable for hoists and profiling beds?',
-		'faq_8_a'   => 'Yes. The accessible bedroom has a ceiling track hoist and profiling bed, and there is a full roll-in wet room on the same single-storey level, with a perching stool in the shower and a washbasin you can raise, lower, and swing aside when you need clearer space. A shower chair may be available on request; please say so when you enquire or book. If you have additional or specialist equipment needs, please get in touch before booking so we can confirm we can accommodate them.',
-		'faq_8_cat' => 'about',
-
-		'faq_9_q'   => 'What is Whitstable like for accessibility?',
-		'faq_9_a'   => 'Mostly good: the Tankerton Slopes promenade is excellent for wheelchairs, the town centre is largely flat, and several restaurants and cafes are accessible. The harbour area has some cobblestones and the beach is shingle. Our welcome pack gives detailed local accessibility guidance.',
-		'faq_9_cat' => 'local',
-
-		'faq_10_q'   => 'How far is the property from the sea?',
-		'faq_10_a'   => 'About a five-minute walk along a flat, tarmac path to the Tankerton Slopes promenade.',
-		'faq_10_cat' => 'local',
-
-		'faq_11_q'   => 'What is your cancellation policy?',
-		'faq_11_a'   => "More than 30 days before arrival: full refund. 14-30 days before: 50% refund. Less than 14 days before: no refund.\n\nWe recognise that guests booking accessible accommodation may face unexpected medical or care-related changes. If cancellation is due to serious illness or a care emergency, we will consider a partial refund or a free date change subject to availability.\n\nDate changes requested more than 14 days before arrival are free of charge. Changes within 14 days may incur a fee. No refunds for early departure or no-shows.",
-		'faq_11_cat' => 'booking',
-
-		'faq_12_q'   => 'Can I visit the property before booking?',
-		'faq_12_a'   => 'Pre-booking visits are welcome. Get in touch and we will arrange a convenient time.',
-		'faq_12_cat' => 'booking',
-
-		'faq_13_q'   => 'Can I use my direct payment to stay at Restwell?',
-		'faq_13_a'   => 'In many cases, yes. Direct payments can often be used for short breaks and respite accommodation, depending on your care plan and local authority. We can provide the documentation your social worker or broker needs to approve the spend. Start with our Funding & Support page or get in touch to discuss your situation.',
-		'faq_13_cat' => 'funding',
-
-		'faq_14_q'   => 'What does CQC-regulated mean?',
-		'faq_14_a'   => 'CQC stands for Care Quality Commission, the independent regulator of health and social care in England. Continuity of Care Services, our partner provider, is inspected and rated by the CQC. This means the care you receive meets nationally recognised standards for safety and quality. You can see Continuity’s latest inspection summary on the <a href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer">Care Quality Commission website<span class="sr-only"> (opens in new tab)</span></a>.',
-		'faq_14_cat' => 'funding',
+		'faq_7_q'   => 'Is there a Changing Places toilet nearby?',
+		'faq_7_a'   => 'Yes, at Whitstable Harbour on Harbour Road, which needs a RADAR key.',
+		'faq_7_cat' => 'local',
 
 		'faq_cta_label'   => '',
 		'faq_cta_heading' => 'Still have a question?',
@@ -594,7 +566,7 @@ function restwell_get_guest_guide_page_defaults() {
 function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'           => 'Who it is for',
-		'wif_heading'         => 'Accessible holidays for disabled guests, families and carers',
+		'wif_heading'         => 'Built for guests with access needs, and everyone travelling with them',
 		'wif_intro'           => 'Restwell suits anyone who needs a step-free holiday with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.',
 		'wif_hero_image_id'   => 0,
 		'wif_family_title'    => 'For guests and families',

@@ -500,8 +500,8 @@ function restwell_migrate_property_feature_copy_balance_v1() {
 			'new' => 'Full-room track in the accessible bedroom for daily bed transfers',
 		),
 		'prop_feature_2_desc' => array(
-			'old' => 'Roll-in shower, grab rails, perching stool in the shower, fully height-adjustable washbasin that swings aside (shower chair may be available on request)',
-			'new' => 'Roll-in shower, grab rails, and adjustable washbasin; shower chair may be available on request',
+			'old' => 'Roll-in shower, grab rails, perching stool in the shower, fully height-adjustable washbasin that swings aside (shower chair on request)',
+			'new' => 'Roll-in shower, grab rails, tilt-in-space shower chair, and adjustable washbasin',
 		),
 		'prop_feature_3_desc' => array(
 			'old' => 'With pressure-relieving mattress',
@@ -559,8 +559,8 @@ function restwell_migrate_home_hiw_card_copy_balance_v1() {
 				'new' => 'Adjustable profiling bed with a pressure-relieving mattress, ready on arrival.',
 			),
 			'highlight_3_desc' => array(
-				'old' => 'Roll-in shower, grab rails, perching stool in the shower, height-adjustable washbasin that swings aside, and space to turn and assist (shower chair may be available on request).',
-				'new' => 'Roll-in wet room with grab rails and an adjustable washbasin; shower chair may be available.',
+				'old' => 'Roll-in shower, grab rails, perching stool in the shower, height-adjustable washbasin that swings aside, and space to turn and assist (shower chair on request).',
+				'new' => 'Roll-in wet room with grab rails, tilt-in-space shower chair, and an adjustable washbasin.',
 			),
 		);
 
@@ -695,8 +695,9 @@ function restwell_get_accessibility_heading_refresh_map() {
  */
 function restwell_get_accessibility_intro_refresh_map() {
 	return array(
-		'We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here\'s what\'s in place, room by room.' => 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.',
-		"We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here's what's in place, room by room." => 'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.',
+		'We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here\'s what\'s in place, room by room.' => 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.',
+		"We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here's what's in place, room by room." => 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.',
+		'Doorway widths, ceiling-track hoist and wet room: we list the real measurements so you can decide whether the house works for you. Here is what we have verified in each room.' => 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.',
 	);
 }
 
@@ -733,3 +734,33 @@ function restwell_migrate_accessibility_headings_v1() {
 }
 add_action( 'init', 'restwell_migrate_accessibility_headings_v1', 25 );
 add_action( 'after_switch_theme', 'restwell_migrate_accessibility_headings_v1', 15 );
+
+/**
+ * One-time: update accessibility page intro to SEO-keyword-leading version.
+ * Migrates sites where v1 already ran (stored the previous intermediate intro).
+ */
+function restwell_migrate_accessibility_intro_v2() {
+	if ( get_option( 'restwell_accessibility_intro_v2', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+	$next    = 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.';
+
+	foreach ( restwell_get_accessibility_intro_refresh_map() as $stale => $_ ) {
+		$current = trim( (string) get_post_meta( $page_id, 'acc_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'acc_intro', $next );
+			break;
+		}
+	}
+
+	update_option( 'restwell_accessibility_intro_v2', '1' );
+}
+add_action( 'init', 'restwell_migrate_accessibility_intro_v2', 26 );
+add_action( 'after_switch_theme', 'restwell_migrate_accessibility_intro_v2', 16 );
