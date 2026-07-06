@@ -17,7 +17,7 @@ get_header();
 // in the WordPress admin for the default archive hero.
 $posts_page_id = (int) get_option( 'page_for_posts' );
 $archive_title  = $posts_page_id ? get_the_title( $posts_page_id ) : __( 'Guides & articles', 'restwell-retreats' );
-$archive_intro  = $posts_page_id ? get_the_excerpt( $posts_page_id ) : __( 'Practical guides to accessible travel on the Kent coast, local area information, and updates from Restwell.', 'restwell-retreats' );
+$archive_intro  = $posts_page_id ? get_the_excerpt( $posts_page_id ) : __( 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.', 'restwell-retreats' );
 $archive_label  = __( 'From the blog', 'restwell-retreats' );
 
 // Category/tag/date archives should expose their own identity in the hero.
