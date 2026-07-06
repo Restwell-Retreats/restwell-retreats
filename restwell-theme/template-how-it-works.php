@@ -54,7 +54,7 @@ for ( $i = 1; $i <= 4; $i++ ) {
 }
 
 $hiw_care_cta_label   = get_post_meta( $pid, 'hiw_care_cta_label', true ) ?: 'CARE SUPPORT';
-$hiw_care_cta_heading = get_post_meta( $pid, 'hiw_care_cta_heading', true ) ?: 'Care is arranged around your days and your routine.';
+$hiw_care_cta_heading = get_post_meta( $pid, 'hiw_care_cta_heading', true ) ?: 'Care fits around your routine';
 $hiw_care_cta_body    = get_post_meta( $pid, 'hiw_care_cta_body', true ) ?: 'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.';
 $hiw_care_cta_btn     = get_post_meta( $pid, 'hiw_care_cta_btn', true ) ?: 'Learn about care support';
 $hiw_care_cta_url     = esc_url( get_post_meta( $pid, 'hiw_care_cta_url', true ) ?: home_url( '/accessibility/' ) );
@@ -160,12 +160,14 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 
 	<section class="rw-section-y bg-[var(--deep-teal)]" aria-labelledby="care-cta-heading">
 		<div class="container max-w-3xl text-center">
-			<?php if ( $hiw_care_cta_label !== '' ) : ?>
-				<p class="text-[var(--warm-gold-hero)] text-xs font-semibold uppercase tracking-[0.2em] mb-3 font-sans"><?php echo esc_html( $hiw_care_cta_label ); ?></p>
-			<?php endif; ?>
-			<h2 id="care-cta-heading" class="text-3xl md:text-4xl font-serif text-white mb-4"><?php echo esc_html( $hiw_care_cta_heading ); ?></h2>
+			<div class="rw-section-head rw-section-head--center rw-section-head--tight mx-auto">
+				<?php if ( $hiw_care_cta_label !== '' ) : ?>
+					<p class="text-[var(--warm-gold-hero)] text-xs font-semibold uppercase tracking-[0.2em] font-sans"><?php echo esc_html( $hiw_care_cta_label ); ?></p>
+				<?php endif; ?>
+				<h2 id="care-cta-heading" class="text-3xl md:text-4xl font-serif text-white m-0"><?php echo esc_html( $hiw_care_cta_heading ); ?></h2>
+			</div>
 			<p class="text-white/85 text-lg leading-relaxed mb-8 max-w-2xl mx-auto"><?php echo esc_html( $hiw_care_cta_body ); ?></p>
-		<a href="<?php echo esc_url( $hiw_care_cta_url ); ?>" class="btn btn-gold">
+			<a href="<?php echo esc_url( $hiw_care_cta_url ); ?>" class="btn btn-gold">
 				<?php echo esc_html( $hiw_care_cta_btn ); ?>
 				<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
 			</a>
@@ -174,8 +176,10 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 
 	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="hiw-included-heading">
 		<div class="container">
-			<p class="section-label text-center mb-3"><?php echo esc_html( $hiw_included_label ); ?></p>
-			<h2 id="hiw-included-heading" class="text-3xl font-serif text-[var(--deep-teal)] text-center mb-4"><?php echo esc_html( $hiw_included_heading ); ?></h2>
+			<div class="rw-section-head rw-section-head--center mx-auto">
+				<p class="section-label"><?php echo esc_html( $hiw_included_label ); ?></p>
+				<h2 id="hiw-included-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php echo esc_html( $hiw_included_heading ); ?></h2>
+			</div>
 			<?php if ( $hiw_included_intro !== '' ) : ?>
 			<p class="text-gray-600 text-lg leading-relaxed text-center max-w-prose mx-auto mb-10"><?php echo esc_html( $hiw_included_intro ); ?></p>
 			<?php endif; ?>

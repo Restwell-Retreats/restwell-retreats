@@ -844,3 +844,29 @@ function restwell_migrate_property_headings_v1() {
 }
 add_action( 'init', 'restwell_migrate_property_headings_v1', 28 );
 add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v1', 18 );
+
+/**
+ * One-time: update How It Works care CTA heading to shortened version.
+ */
+function restwell_migrate_how_it_works_headings_v1() {
+	if ( get_option( 'restwell_how_it_works_headings_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'how-it-works', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+
+	$page_id    = (int) $page->ID;
+	$stale      = 'Care is arranged around your days and your routine.';
+	$next       = 'Care fits around your routine';
+	$current    = trim( (string) get_post_meta( $page_id, 'hiw_care_cta_heading', true ) );
+	if ( $current === $stale ) {
+		update_post_meta( $page_id, 'hiw_care_cta_heading', $next );
+	}
+
+	update_option( 'restwell_how_it_works_headings_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_how_it_works_headings_v1', 29 );
+add_action( 'after_switch_theme', 'restwell_migrate_how_it_works_headings_v1', 19 );

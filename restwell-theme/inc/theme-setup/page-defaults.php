@@ -364,7 +364,7 @@ function restwell_get_how_it_works_page_defaults() {
 		'hiw_step4_body'    => 'You come home to a step-free house that is ready for you.',
 
 		'hiw_care_cta_label'   => 'CARE SUPPORT',
-		'hiw_care_cta_heading' => 'Care is arranged around your days and your routine.',
+		'hiw_care_cta_heading' => 'Care fits around your routine',
 		'hiw_care_cta_body'    => 'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.',
 		'hiw_care_cta_btn'     => 'Ask about care options',
 		'hiw_care_cta_url'     => '/enquire/',
