@@ -25,17 +25,8 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible stay',
 		),
 		'home'                  => array(
-			'meta_title'       => 'Accessible holidays Whitstable | Restwell Retreats',
-
-			// Variant A: Specificity-led (151 chars) - ACTIVE
-			'meta_description' => 'Bedroom ceiling track hoist, profiling bed, wet room. Private self-catering bungalow in Whitstable. Optional CQC-regulated care. No booking commitment.',
-
-			// Variant B: Outcome-led (148 chars)
-			// 'meta_description' => 'Accessible coastal break in Whitstable: adapted bungalow, ceiling hoist, wet room. Private self-catering. Optional care partner. Enquire today.',
-
-			// Variant C: Differentiator-led (153 chars)
-			// 'meta_description' => 'Private adapted holiday home Whitstable: ceiling hoist, profiling bed, roll-in wet room. Whole-property booking. Optional CQC care. No pressure.',
-
+			'meta_title'       => 'Accessible Holidays in Whitstable, Kent | Restwell',
+			'meta_description' => 'A step-free accessible holiday bungalow in Whitstable, Kent. Ceiling hoist, profiling bed and level-access wet room, with optional CQC-regulated care.',
 			'focus_keyphrase'  => 'accessible holidays whitstable',
 		),
 		'the-property'          => array(

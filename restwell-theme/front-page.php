@@ -17,14 +17,14 @@ get_header();
 $pid = get_the_ID();
 $restwell_fp_seed        = function_exists( 'restwell_get_theme_setup_defaults' ) ? restwell_get_theme_setup_defaults() : array();
 $hero_eyebrow            = get_post_meta( $pid, 'hero_eyebrow', true ) ?: 'Restwell Retreats';
-$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible Holidays in Whitstable, Kent';
+$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible holidays in Whitstable, set up for the way you live';
 $hero_heading_lines      = preg_split( '/\r\n|\r|\n/', $hero_heading );
 $hero_heading_lines      = array_values( array_filter( array_map( 'trim', $hero_heading_lines ), 'strlen' ) );
 if ( empty( $hero_heading_lines ) ) {
-	$hero_heading_lines = array( 'Accessible Holidays in Whitstable, Kent' );
+	$hero_heading_lines = array( 'Accessible holidays in Whitstable, set up for the way you live' );
 }
 $hero_heading_flat       = trim( preg_replace( '/\s+/', ' ', str_replace( array( "\r\n", "\r", "\n" ), ' ', $hero_heading ) ) );
-$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Adapted bungalow for guests, families, and carers with whole-property booking.';
+$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.';
 $hero_spec_heading       = (string) get_post_meta( $pid, 'hero_spec_heading', true );
 // Optional strip under hero only when this meta is non-empty (no default).
 $hero_lede               = trim( $hero_subheading . ( $hero_spec_heading !== '' ? ' ' . $hero_spec_heading : '' ) );

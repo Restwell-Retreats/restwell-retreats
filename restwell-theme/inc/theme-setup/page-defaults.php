@@ -34,8 +34,8 @@ function restwell_get_theme_setup_pages() {
 function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
-		'hero_heading'             => 'Accessible Holidays in Whitstable, Kent',
-		'hero_subheading'          => 'Adapted bungalow for guests, families, and carers with whole-property booking.',
+		'hero_heading'             => 'Accessible holidays in Whitstable, set up for the way you live',
+		'hero_subheading'          => 'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'View the property',
 		'hero_cta_primary_url'     => '/the-property/',
