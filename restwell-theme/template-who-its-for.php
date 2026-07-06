@@ -16,7 +16,7 @@ $pid = get_the_ID();
 $hero_image_id = (int) get_post_meta( $pid, 'wif_hero_image_id', true );
 $label          = (string) get_post_meta( $pid, 'wif_label', true ) ?: 'Who it is for';
 $heading        = (string) get_post_meta( $pid, 'wif_heading', true ) ?: 'Built for guests with access needs';
-$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Restwell is a wheelchair-accessible holiday in Whitstable for anyone who needs a step-free stay with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.';
+$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Restwell suits anyone planning an accessible holiday, from disabled guests and their carers to families, occupational therapists and commissioners. Open the section that fits your situation for honest detail on who the property works best for.';
 
 $audience_heading = (string) get_post_meta( $pid, 'wif_audience_heading', true ) ?: 'Which of these sounds like you?';
 $audience_intro   = (string) get_post_meta( $pid, 'wif_audience_intro', true ) ?: 'Open the section that fits your situation. We have set out what usually matters, in plain language, with a clear next step when you are ready.';
