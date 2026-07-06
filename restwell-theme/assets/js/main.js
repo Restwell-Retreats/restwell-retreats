@@ -599,7 +599,7 @@
 				} else {
 					// Pending - #6B6355 on white = 5.9:1 (WCAG AA pass)
 					circle.style.backgroundColor = '#fff';
-					circle.style.borderColor     = '#E8DFD0';
+					circle.style.borderColor     = 'var(--driftwood)';
 					circle.style.color           = '#6B6355';
 					circle.innerHTML             = String(n);
 					label.style.color            = '#6B6355';
@@ -609,7 +609,7 @@
 
 			lines.forEach(function (line, idx) {
 				// Line idx connects step (idx+1) to step (idx+2).
-				line.style.backgroundColor = (idx + 1 < newStep) ? 'var(--deep-teal)' : '#E8DFD0';
+				line.style.backgroundColor = (idx + 1 < newStep) ? 'var(--deep-teal)' : 'var(--driftwood)';
 			});
 
 			if (progressBar) {

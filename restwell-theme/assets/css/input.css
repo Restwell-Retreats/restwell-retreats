@@ -432,6 +432,74 @@
     @apply p-6 md:p-8;
   }
 
+  /*
+   * Elevated white card — editorial shadow used on contact, accessibility, guest guide, etc.
+   * Replaces repeated `shadow-[0_8px_30px_rgb(0,0,0,0.04)]` utility strings.
+   */
+  .rw-card-elevated {
+    @apply bg-white rounded-2xl border border-gray-100;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
+  }
+
+  .rw-card-elevated--interactive {
+    @apply transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0;
+  }
+
+  .rw-card-elevated--interactive:hover {
+    box-shadow: 0 12px 40px rgb(0 0 0 / 0.08);
+    transform: translateY(-0.125rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rw-card-elevated--interactive:hover {
+      transform: none;
+    }
+  }
+
+  /*
+   * FAQ accordion shell — homepage + /faq/ (group retained on element for summary chevron).
+   */
+  details.rw-faq-shell {
+    @apply bg-white rounded-2xl border border-gray-100 px-8 py-1;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
+    transition: all 0.3s ease-out;
+  }
+
+  details.rw-faq-shell:hover {
+    box-shadow: 0 12px 40px rgb(0 0 0 / 0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details.rw-faq-shell {
+      transition: none;
+    }
+  }
+
+  /*
+   * Prose inline link — related-reading rows (resources, FAQ footer, How it works).
+   * Pair with .rw-link-prose--focus when a visible focus ring is required.
+   */
+  a.rw-link-prose {
+    color: var(--deep-teal);
+    font-weight: var(--font-weight-emphasis);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  a.rw-link-prose:hover {
+    text-decoration: none;
+  }
+
+  a.rw-link-prose--focus:focus {
+    outline: none;
+  }
+
+  a.rw-link-prose--focus:focus-visible {
+    outline: 2px solid var(--deep-teal);
+    outline-offset: 2px;
+    border-radius: 0.125rem;
+  }
+
   /* Who section card layout — centred on small screens, start-aligned from md up */
   .who-card-layout {
     @apply flex flex-col items-center text-center md:items-start md:text-left md:min-h-[18rem];
@@ -844,16 +912,16 @@
      * ─── Brand colour palette (single source of truth) ───
      * Change hex values here only. Templates and components reference these tokens.
      */
-    --deep-teal: #1B4D5C;            /* headings, primary text, nav, outlines, dark bands */
+    --deep-teal: #1B4D5C;            /* primary text, headings, nav, outlines, dark bands */
     --warm-gold: #D4A853;            /* CTA fill (.btn-gold), warm accent chips */
-    --warm-gold-text: #6B4A0F;       /* eyebrows / section labels on light backgrounds */
-    --warm-gold-hero: #F0C97A;       /* eyebrows / labels on teal or dark backgrounds */
-    --sea-glass: #A8D5D0;            /* icon blobs, category pills, subtle highlights */
-    --soft-sand: #F5EDE0;            /* warm section bands (who section, contact) */
-    --driftwood: #E8DFD0;            /* placeholder surfaces, form borders, dividers */
-    --muted-grey: #3A5A63;           /* secondary body copy, meta text on light backgrounds */
-    --body-secondary: #2d4a52;       /* default body text (base typography) */
-    --bg-subtle: #F8FAFA;            /* alternating section background (subtle band) */
+    --warm-gold-text: #6B4A0F;       /* label on light — section eyebrows, form asterisks */
+    --warm-gold-hero: #F0C97A;       /* label on teal/dark — hero eyebrows, CTA-band links */
+    --sea-glass: #A8D5D0;            /* icon blobs, category pills, form focus rings */
+    --soft-sand: #F5EDE0;            /* warm section bands — who, contact, alternating rows */
+    --driftwood: #E8DFD0;            /* dividers, form borders, enquiry step inactive */
+    --muted-grey: #3A5A63;           /* secondary body, meta, captions on light backgrounds */
+    --body-secondary: #2d4a52;       /* long-form body copy in prose stacks */
+    --bg-subtle: #F8FAFA;            /* subtle band — alternating section backgrounds */
 
     --font-sans: 'Inter', system-ui, sans-serif;
     --font-serif: 'Lora', Georgia, serif;
@@ -1800,7 +1868,7 @@
     text-align: left;
     min-height: 48px;
     padding: 0.625rem 0.75rem;
-    color: #1b4d5c;
+    color: var(--deep-teal);
     text-decoration: none;
     font-size: 1rem;
     font-weight: 500;
@@ -1822,7 +1890,7 @@
 
   /* Hover: underline + slight fade — no pill / band backgrounds */
   .mobile-nav a:not(.mobile-nav-cta):not(.active):hover {
-    background: rgba(168, 213, 208, 0.16);
+    background: color-mix(in srgb, var(--sea-glass) 16%, transparent);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
@@ -1830,7 +1898,7 @@
 
   .mobile-nav a:not(.mobile-nav-cta).active,
   .mobile-nav .current-menu-item > a:not(.mobile-nav-cta) {
-    background: rgba(168, 213, 208, 0.16);
+    background: color-mix(in srgb, var(--sea-glass) 16%, transparent);
     color: var(--deep-teal);
     font-weight: var(--font-weight-ui);
     border-left: none;
@@ -3732,7 +3800,7 @@
   #main-content section.cta-section.relative:is(.rw-section-y--cta, .rw-section-y--hero).overflow-hidden .absolute.inset-0[class*="bg-[#1B4D5C]"] {
     position: absolute;
     inset: 0;
-    background: rgba(27, 77, 92, 0.75);
+    background: color-mix(in srgb, var(--deep-teal) 75%, transparent);
     z-index: 1;
   }
 
