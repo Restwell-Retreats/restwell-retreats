@@ -46,7 +46,7 @@ if ( empty( $steps ) ) {
 				}
 				$num = $idx + 1;
 				?>
-			<div class="bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100
+			<div class="rw-card-elevated p-6
 						flex flex-col items-center text-center
 						hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
 						transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0">

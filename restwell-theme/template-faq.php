@@ -117,7 +117,7 @@ $categories = array(
 
 			<div class="space-y-4 faq-list" id="faq-list">
 				<?php foreach ( $faq_pairs as $faq ) : ?>
-					<details class="faq-item bg-white rounded-2xl px-8 py-1 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 group hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-300 ease-out motion-reduce:transition-none"
+					<details class="faq-item rw-faq-shell group"
 							 data-category="<?php echo esc_attr( $faq['cat'] ); ?>">
 						<summary class="text-[var(--deep-teal)] font-medium text-lg py-4 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2">
 							<span><?php echo esc_html( $faq['q'] ); ?></span>
@@ -145,19 +145,19 @@ $categories = array(
 			<h2 id="faq-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-4"><?php esc_html_e( 'Further reading', 'restwell-retreats' ); ?></h2>
 			<ul class="space-y-3 text-gray-700">
 				<li>
-					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="rw-link-prose">
 						<?php esc_html_e( 'How to use your direct payment for a holiday', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'funding your care support during a stay.', 'restwell-retreats' ); ?></span>
 				</li>
 				<li>
-					<a href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>" class="rw-link-prose">
 						<?php esc_html_e( 'Accessible beaches and coastal walks in Kent', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'what to expect at the beaches closest to the property.', 'restwell-retreats' ); ?></span>
 				</li>
 				<li>
-					<a href="<?php echo esc_url( home_url( '/carers-respite-holiday-guide/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/carers-respite-holiday-guide/' ) ); ?>" class="rw-link-prose">
 						<?php esc_html_e( 'Carers taking holidays: respite rights and funding', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'how to arrange and fund a break for a carer.', 'restwell-retreats' ); ?></span>

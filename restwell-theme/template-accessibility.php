@@ -129,10 +129,7 @@ $rooms = array(
 						continue;
 					}
 					?>
-					<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-									transition-all duration-300 ease-out
-									hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-									motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+					<article class="flex flex-col rw-card-elevated rw-card-elevated--interactive">
 						<header class="flex items-center gap-4 px-6 pt-6 pb-5 border-b border-gray-100/80">
 							<div class="wif-icon-circle wif-icon-circle--feature h-10 w-10 shrink-0" aria-hidden="true">
 								<i class="ph-bold ph-check text-sm"></i>
@@ -156,7 +153,7 @@ $rooms = array(
 			</div>
 
 			<div class="mt-10 md:mt-12 grid md:grid-cols-2 rw-gap-grid">
-				<article class="flex h-full min-h-0 flex-col rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
+				<article class="flex h-full min-h-0 flex-col rw-card-elevated overflow-hidden">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-5">
 						<div class="wif-icon-circle wif-icon-circle--feature h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-chat-circle-text text-sm"></i>
@@ -173,7 +170,7 @@ $rooms = array(
 						</a>
 					</footer>
 				</article>
-				<article class="flex h-full min-h-0 flex-col rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
+				<article class="flex h-full min-h-0 flex-col rw-card-elevated overflow-hidden">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-5">
 						<div class="wif-icon-circle wif-icon-circle--feature h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-ruler text-sm"></i>
@@ -233,10 +230,7 @@ $rooms = array(
 
 			<div class="grid md:grid-cols-3 rw-gap-grid">
 
-				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-								transition-all duration-300 ease-out
-								hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-								motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+				<article class="flex flex-col rw-card-elevated rw-card-elevated--interactive">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-4">
 						<div class="wif-icon-circle wif-icon-circle--feature h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-check-circle text-base"></i>
@@ -248,10 +242,7 @@ $rooms = array(
 					</div>
 				</article>
 
-				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-								transition-all duration-300 ease-out
-								hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-								motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+				<article class="flex flex-col rw-card-elevated rw-card-elevated--interactive">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-4">
 						<div class="wif-icon-circle wif-icon-circle--muted h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-warning text-base"></i>
@@ -263,10 +254,7 @@ $rooms = array(
 					</div>
 				</article>
 
-				<article class="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
-								transition-all duration-300 ease-out
-								hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-								motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+				<article class="flex flex-col rw-card-elevated rw-card-elevated--interactive">
 					<div class="flex items-start gap-4 px-6 pt-6 pb-4">
 						<div class="wif-icon-circle wif-icon-circle--muted h-10 w-10 shrink-0" aria-hidden="true">
 							<i class="ph-bold ph-info text-base"></i>

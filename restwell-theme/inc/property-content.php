@@ -189,7 +189,7 @@ function restwell_get_property_wetroom_stat_detail( $post_id = 0 ) {
 	}
 
 	$link_label = __( 'See a short walkthrough', 'restwell-retreats' );
-	$link       = '<a href="' . esc_url( $url ) . '" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm" target="_blank" rel="noopener noreferrer">'
+	$link       = '<a href="' . esc_url( $url ) . '" class="rw-link-prose rw-link-prose--focus" target="_blank" rel="noopener noreferrer">'
 		. esc_html( $link_label )
 		. '<span class="sr-only"> ' . esc_html__( '(opens on YouTube)', 'restwell-retreats' ) . '</span></a>';
 

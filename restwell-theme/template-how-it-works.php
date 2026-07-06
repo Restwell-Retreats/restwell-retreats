@@ -181,10 +181,8 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 			<?php endif; ?>
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-5xl mx-auto">
 				<?php foreach ( $included_items as $item ) : ?>
-				<div class="bg-white rounded-2xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100
-							flex flex-col items-center text-center
-							hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5
-							transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+				<div class="rw-card-elevated rw-card-elevated--interactive p-8
+							flex flex-col items-center text-center">
 					<div class="text-[var(--deep-teal)] mb-5" aria-hidden="true">
 						<?php
 						switch ( $item['icon'] ) {
@@ -286,19 +284,19 @@ $faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_item
 			<h2 id="hiw-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-4"><?php esc_html_e( 'Useful guides for planning your stay', 'restwell-retreats' ); ?></h2>
 			<ul class="space-y-3 text-gray-700">
 				<li>
-					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="rw-link-prose">
 						<?php esc_html_e( 'How to use your direct payment for a holiday', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'whether your care funding can cover support during a holiday stay.', 'restwell-retreats' ); ?></span>
 				</li>
 				<li>
-					<a href="<?php echo esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) ); ?>" class="rw-link-prose">
 						<?php esc_html_e( 'How to choose an accessible self-catering holiday property', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'a checklist of questions to ask before you commit to any property.', 'restwell-retreats' ); ?></span>
 				</li>
 				<li>
-					<a href="<?php echo esc_url( home_url( '/who-its-for/' ) ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline">
+					<a href="<?php echo esc_url( home_url( '/who-its-for/' ) ); ?>" class="rw-link-prose">
 						<?php esc_html_e( 'Who Restwell is for', 'restwell-retreats' ); ?>
 					</a>
 					<span class="text-gray-500">: <?php esc_html_e( 'guests, carers, families, and professional referrers.', 'restwell-retreats' ); ?></span>

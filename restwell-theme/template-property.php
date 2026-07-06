@@ -406,9 +406,9 @@ $prop_section_bg = static function ( $index ) {
 
 			<p class="text-center text-[var(--muted-grey)] text-sm md:text-base mt-8 mb-0 max-w-prose mx-auto">
 				<?php esc_html_e( 'Full measurements and equipment detail:', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $access_url ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
+				<a href="<?php echo esc_url( $access_url ); ?>" class="rw-link-prose rw-link-prose--focus"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
 				<?php esc_html_e( 'Questions?', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $prop_confirm_details_url ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm"><?php esc_html_e( 'Get in touch', 'restwell-retreats' ); ?></a>.
+				<a href="<?php echo esc_url( $prop_confirm_details_url ); ?>" class="rw-link-prose rw-link-prose--focus"><?php esc_html_e( 'Get in touch', 'restwell-retreats' ); ?></a>.
 			</p>
 		</div>
 	</section>
@@ -523,7 +523,7 @@ $prop_section_bg = static function ( $index ) {
 						$location_parts    = explode( $area_guide_needle, $prop_location_body, 2 );
 						if ( count( $location_parts ) === 2 ) {
 							$location_html = esc_html( $location_parts[0] )
-								. '<a href="' . esc_url( $area_guide_url ) . '" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm">'
+								. '<a href="' . esc_url( $area_guide_url ) . '" class="rw-link-prose rw-link-prose--focus">'
 								. esc_html__( 'area guide', 'restwell-retreats' )
 								. '</a>'
 								. esc_html( $location_parts[1] );
@@ -630,7 +630,7 @@ $prop_section_bg = static function ( $index ) {
 		<div class="container max-w-5xl">
 			<p class="rw-copy-body text-sm md:text-base mb-0 max-w-prose mx-auto text-center">
 				<?php esc_html_e( 'Full measurements, equipment detail and floor plans:', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $access_url ); ?>" class="text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
+				<a href="<?php echo esc_url( $access_url ); ?>" class="rw-link-prose rw-link-prose--focus"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
 			</p>
 		</div>
 	</section>

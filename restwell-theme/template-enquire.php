@@ -75,8 +75,8 @@ $sidebar_card_heading = 'text-lg font-serif text-[var(--deep-teal)] mb-3';
 // provides a 3px deep-teal outline for keyboard users (2.4.7 Focus Visible, WCAG AA).
 // focus-visible:outline-none would suppress it for mouse clicks only, but Tailwind
 // v3 generates a :focus selector here, so we let the CSS layer handle focus-visible.
-$input_class = 'w-full px-4 py-3 rounded-xl border border-[#B9C7CB] bg-white text-[#1B4D5C] text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--deep-teal)] focus:ring-offset-2';
-$label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
+$input_class = 'w-full px-4 py-3 rounded-xl border border-[#B9C7CB] bg-white text-[var(--deep-teal)] text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--deep-teal)] focus:ring-offset-2';
+$label_class = 'block text-sm font-semibold text-[var(--deep-teal)] mb-1.5';
 ?>
 <main class="flex-1" id="main-content">
 <?php get_template_part( 'template-parts/breadcrumb' ); ?>
@@ -104,7 +104,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 				<div id="enquiry-result" class="enquiry-result rw-surface-card overflow-hidden scroll-mt-[clamp(5rem,14vh,8rem)]" role="status" aria-live="polite" tabindex="-1">
 						<div class="p-8 md:p-10">
 						<div class="flex items-start gap-5 mb-6">
-								<div class="shrink-0 w-14 h-14 bg-[#A8D5D0]/25 rounded-full flex items-center justify-center text-[var(--deep-teal)]" aria-hidden="true">
+								<div class="shrink-0 w-14 h-14 bg-[var(--sea-glass)]/25 rounded-full flex items-center justify-center text-[var(--deep-teal)]" aria-hidden="true">
 									<i class="ph-bold ph-check text-xl"></i>
 								</div>
 								<div>
@@ -117,7 +117,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 									<?php endif; ?>
 								</div>
 							</div>
-						<div class="border-t border-[#E8DFD0] pt-6">
+						<div class="border-t border-[var(--driftwood)] pt-6">
 								<p class="text-xs font-semibold text-[var(--warm-gold-text)] uppercase tracking-wider mb-4">What happens next</p>
 								<ol class="enquiry-next-steps space-y-4 text-sm rw-copy-body list-none p-0 m-0">
 									<li class="flex gap-3 items-center">
@@ -270,7 +270,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 								<div class="flex items-center gap-3 min-h-[44px] py-1">
 									<input type="checkbox" id="enq_urgent" name="enq_urgent" value="1"
 										   class="enquire-checkbox-urgent h-[1.125rem] w-[1.125rem] shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2" <?php checked( $enq_f['enq_urgent'], '1' ); ?> />
-									<label for="enq_urgent" class="text-sm font-medium leading-snug text-[#1B4D5C] cursor-pointer select-none">
+									<label for="enq_urgent" class="text-sm font-medium leading-snug text-[var(--deep-teal)] cursor-pointer select-none">
 										<?php esc_html_e( 'This is urgent — please prioritise my enquiry', 'restwell-retreats' ); ?>
 									</label>
 								</div>
@@ -308,7 +308,7 @@ $label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
 										<input type="checkbox" id="enq_marketing_optin" name="enq_marketing_optin" value="1"
 											   class="h-[1.125rem] w-[1.125rem] mt-0.5 shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2"
 											<?php checked( $enq_f['enq_marketing_optin'], '1' ); ?> />
-										<label for="enq_marketing_optin" class="text-sm leading-snug text-[#1B4D5C] cursor-pointer">
+										<label for="enq_marketing_optin" class="text-sm leading-snug text-[var(--deep-teal)] cursor-pointer">
 											<?php esc_html_e( 'Yes, send me occasional email updates with priority date alerts, special offers, and practical accessibility holiday tips (you can unsubscribe at any time).', 'restwell-retreats' ); ?>
 										</label>
 									</div>

@@ -56,7 +56,7 @@ $social_profiles = function_exists( 'restwell_get_social_profile_urls' ) ? restw
 	<section class="rw-section-y bg-white">
 		<div class="container max-w-5xl">
 			<div class="grid md:grid-cols-2 gap-6">
-				<div class="bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
+				<div class="rw-card-elevated p-6">
 					<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-4">Direct contact</h2>
 					<div class="space-y-4 text-gray-600">
 						<p><strong class="text-[var(--deep-teal)]">Phone:</strong> <a class="text-[var(--deep-teal)] hover:underline" href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a></p>

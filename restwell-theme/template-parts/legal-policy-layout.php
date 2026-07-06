@@ -71,7 +71,7 @@ if ( $body_html === '' ) {
 	<section class="legal-policy-section rw-section-y">
 		<div class="container max-w-3xl">
 			<article class="legal-policy-document">
-				<div class="legal-policy-document__content prose prose-lg max-w-none text-[#3a5a63] prose-headings:font-serif prose-headings:text-[var(--deep-teal)] prose-a:text-[var(--deep-teal)] prose-a:font-medium prose-li:marker:text-[var(--deep-teal)]">
+				<div class="legal-policy-document__content prose prose-lg max-w-none text-[var(--muted-grey)] prose-headings:font-serif prose-headings:text-[var(--deep-teal)] prose-a:text-[var(--deep-teal)] prose-a:font-medium prose-li:marker:text-[var(--deep-teal)]">
 					<?php echo wp_kses_post( $body_html ); ?>
 				</div>
 				<p class="legal-policy-document__disclaimer">
