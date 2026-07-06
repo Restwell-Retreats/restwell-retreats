@@ -549,8 +549,8 @@ function restwell_get_enquire_page_defaults() {
 function restwell_get_resources_page_defaults() {
 	return array(
 		'res_label'   => 'Funding & support',
-		'res_heading' => 'Help paying for your break.',
-		'res_intro'   => 'A Restwell Retreats holiday may be more affordable than you think. There are several funding routes worth exploring; we have gathered the most useful information here.',
+		'res_heading' => 'How to fund an accessible holiday in the UK',
+		'res_intro'   => 'There are several ways people pay for a break like this. The most common are direct payments, a personal budget under the Care Act, and NHS Continuing Healthcare. The right route depends on your circumstances, so treat this as a starting point and check the detail with your local authority or care team.',
 
 		'res_fund_heading' => 'How to fund your stay',
 		'res_fund_body'    => "Many guests use a combination of personal savings, direct payments, and charitable grants to fund their stay.\n\nIf you receive a personal budget or direct payment from your local authority or NHS, you may be able to use this towards your stay, particularly if care support is included. We recommend speaking to your care coordinator or social worker in the first instance.\n\nWe are happy to provide documentation to support a funding application.",

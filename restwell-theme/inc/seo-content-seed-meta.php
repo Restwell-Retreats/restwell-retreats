@@ -60,9 +60,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'restwell booking questions',
 		),
 		'resources'             => array(
-			'meta_title'       => 'Accessible Break in Kent | Funding Hub | ' . $name,
-			'meta_description' => 'Funding hub for accessible breaks in Kent: direct payments, CHC, local authority routes, grants, and practical questions for social care teams.',
-			'focus_keyphrase'  => 'holiday care funding kent',
+			'meta_title'       => 'Funding an Accessible Respite Holiday | Restwell',
+			'meta_description' => 'How families fund an accessible respite break: direct payments, personal budgets under the Care Act, and NHS Continuing Healthcare. A plain-English guide.',
+			'focus_keyphrase'  => 'fund accessible respite holiday',
 		),
 		'blog'                  => array(
 			'meta_title'       => 'Accessible Travel Blog | Kent Stories | ' . $name,

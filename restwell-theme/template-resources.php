@@ -16,8 +16,8 @@ $pid = get_the_ID();
 
 $res_hero_image_id = (int) get_post_meta( $pid, 'res_hero_image_id', true );
 $res_label          = get_post_meta( $pid, 'res_label', true ) ?: 'Funding & support';
-$res_heading        = get_post_meta( $pid, 'res_heading', true ) ?: 'We\'ll help you find a way';
-$res_intro          = get_post_meta( $pid, 'res_intro', true ) ?: 'A straightforward guide to funding your stay and finding the right support in Kent.';
+$res_heading        = get_post_meta( $pid, 'res_heading', true ) ?: 'How to fund an accessible holiday in the UK';
+$res_intro          = get_post_meta( $pid, 'res_intro', true ) ?: 'There are several ways people pay for a break like this. The most common are direct payments, a personal budget under the Care Act, and NHS Continuing Healthcare. The right route depends on your circumstances, so treat this as a starting point and check the detail with your local authority or care team.';
 
 $res_fund_heading       = get_post_meta( $pid, 'res_fund_heading', true ) ?: 'How to fund your stay';
 $res_fund_body          = get_post_meta( $pid, 'res_fund_body', true ) ?: '';
