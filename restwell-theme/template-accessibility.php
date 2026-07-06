@@ -15,8 +15,8 @@ $pid = get_the_ID();
 
 $acc_hero_image_id = (int) get_post_meta( $pid, 'acc_hero_image_id', true );
 $acc_label          = get_post_meta( $pid, 'acc_label', true ) ?: 'Accessibility';
-$acc_heading        = get_post_meta( $pid, 'acc_heading', true ) ?: 'Honest detail, so you can decide';
-$acc_intro          = get_post_meta( $pid, 'acc_intro', true ) ?: 'If you are comparing wheelchair accessible holiday cottages in Kent, this page lists the practical detail you need: equipment, dimensions, and what we have verified. For anything specific, we are happy to talk it through.';
+$acc_heading        = get_post_meta( $pid, 'acc_heading', true ) ?: 'Our access statement: the Whitstable bungalow in plain detail';
+$acc_intro          = get_post_meta( $pid, 'acc_intro', true ) ?: 'We list the real measurements so you can decide whether the house works for you, rather than asking you to trust the word accessible. Here\'s what\'s in place, room by room.';
 
 // Room by room: only confirmed content in defaults; unknowns handled by inquiry card.
 $acc_room_label       = get_post_meta( $pid, 'acc_room_label', true ) ?: 'The property';

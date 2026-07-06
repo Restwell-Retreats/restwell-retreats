@@ -35,9 +35,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible bungalow whitstable',
 		),
 		'accessibility'         => array(
-			'meta_title'       => 'Wheelchair Accessible Holiday Cottage | ' . $name,
-			'meta_description' => 'Wheelchair accessible holiday cottage: bedroom hoist, profiling bed, wide doors, roll-in shower, step-free. Download our access statement and book with confidence.',
-			'focus_keyphrase'  => 'wheelchair accessible holiday cottage',
+			'meta_title'       => 'Access Statement | Step-Free Bungalow Whitstable | Restwell',
+			'meta_description' => 'Our full access statement: 965mm front and 926mm internal doorways, a ceiling track hoist, level-access wet room and step-free garden, described room by room.',
+			'focus_keyphrase'  => 'wheelchair accessible bungalow whitstable',
 		),
 		'who-its-for'           => array(
 			'meta_title'       => 'Respite Breaks in Kent | Who It Is For | ' . $name,
