@@ -181,7 +181,8 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 |-------|-----|--------|
 | **SSOT P1–P10** | [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | Strategy, keywords, per-URL on-page work, §13.1 audit trail |
 | **Scoreboard** | [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Symbols only — update after every plan write-back |
-| **Template COPY-PASTE** | [COPY-PASTE-PROMPTS.md](./COPY-PASTE-PROMPTS.md) | Per-template implementation prompts; **requires matrix sync** after each run |
+| **Template COPY-PASTE** | [COPY-PASTE-PROCESS.md](./COPY-PASTE-PROCESS.md) + [COPY-PASTE-PROMPTS.md](./COPY-PASTE-PROMPTS.md) | Workflow + per-page manifests; **requires matrix sync** after each run |
+| **Ops plans** | [plan.md](./plan.md) · [plan-crm-ops.md](./plan-crm-ops.md) · [plan-seo-ops.md](./plan-seo-ops.md) | CRM/journey vs SEO cadence (hub links inward to SSOT) |
 | **Homepage handoff** | [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) | Published homepage baseline for editors and engineering |
 | **Living audit** | [AUDIT.md](./AUDIT.md) | Multi-domain scorecard and open remediation |
 | **Skills index** | [SKILLS_GLOSSARY.md](./SKILLS_GLOSSARY.md) | Auto-generated slash-command index (regenerate; do not hand-edit) |

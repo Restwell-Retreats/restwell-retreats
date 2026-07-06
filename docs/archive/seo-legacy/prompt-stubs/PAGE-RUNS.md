@@ -2,7 +2,7 @@
 
 # Per-page content and polish runs
 
-**Ready-made prompts:** open **`COPY-PASTE-PROMPTS.md`** — one copy-paste block per template, in suggested order. Use this file for custom manifests or YAML-only workflows.
+**Ready-made prompts:** open **`COPY-PASTE-PROMPTS.md`** (manifests) + **`COPY-PASTE-PROCESS.md`** (workflow) — one copy-paste block per template, in suggested order. Use this file for custom manifests or YAML-only workflows.
 
 ## Files
 

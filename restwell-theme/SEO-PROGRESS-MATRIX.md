@@ -16,7 +16,7 @@
 4. Apply the row/column updates from the **Matrix write-back** table in `SEO-INTENT-ONPAGE-PLAN.md` (section *Write findings into this plan* → **Matrix write-back (required)**) for the **prompt ID you just ran**.
 5. **P2:** When a §2.6 run satisfies plan **§2.0** (repo + SERP/tools + Evidence column targets), set plan spine row **§2.0** to `x` (or `~` if Gap / Next validation still open). Still set row **§2** per existing P2 rules.
 6. **P4 only:** For **each** path in the prompt’s **Batch paths** list, resolve to a **Path** key below (path form `/slug/`; homepage = `/`). Set exactly **one** of **A–G** to `x` (done) or `~` (in plan / partial) for that step only. Never delete URL rows.
-7. **COPY-PASTE track:** After a [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) template run, apply the same P4 A–G write-back to §13.1 and this matrix before marking the page done.
+7. **COPY-PASTE track:** After a [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) + [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) template run, apply the same P4 A–G write-back to §13.1 and this matrix before marking the page done.
 8. Keep long rationale in the plan (**§13.1**, §2.6, §16 B2); this file stays **compact symbols only** in grids.
 
 **Legend:** `.` not started · `~` drafted or partial (plan filled, or WP not verified) · `x` done · `[ ]` / `[x]` Markdown checkboxes for global and checklist rows.

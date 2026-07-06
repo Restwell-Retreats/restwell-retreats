@@ -1,58 +1,14 @@
-# Copy-paste page prompts (Restwell theme)
+# Copy-paste page manifests (Restwell theme)
 
-Work **top to bottom**. For each numbered section, copy everything inside the **fenced block** into a new Cursor chat.
+Per-page prompts only. **Workflow, sync rules, and the shared 9-step pipeline** live in [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) — `@` that file in every chat.
 
-**SSOT (strategy + scoreboard):** [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md)
-
-**Paths:** `@restwell-theme/` = this theme folder. Invoke skills via **`/skill-name`** — see [SKILLS_GLOSSARY.md](SKILLS_GLOSSARY.md).
-
-**Once per chat:** `@` every **Context** line plus any skill files you want loaded.
-
-## Post-run sync (required)
-
-After each template run:
-
-1. Map outputs to P4 steps **A–G** (keywords → published/verified).
-2. Append or update the URL row in **SEO-INTENT-ONPAGE-PLAN.md §13.1**.
-3. Update **SEO-PROGRESS-MATRIX.md** symbols for that URL (A–G column).
-4. Do **not** treat COPY-PASTE completion as done until the matrix reflects it.
-
-## Template coverage
-
-| File | Purpose |
-|------|---------|
-| `COPY-PASTE-PROMPTS.md` | **This file** — full prompts per page |
-| `page-manifest.template.yaml` | Blank manifest for custom pages |
-| `inc/page-meta-definitions.php` | Meta keys per template |
-| Homepage field/schema reference | SSOT **§13.1 Home preset** (was `HOMEPAGE-PIPELINE-DELIVERABLE.md`) |
-
-**Templates:** `front-page.php`, `template-property.php`, `template-accessibility.php`, `template-enquire.php`, `template-faq.php`, `template-how-it-works.php`, `template-who-its-for.php`, `template-whitstable-guide.php`, `template-resources.php`, `template-contact.php`; also `single.php`, `page-guest-guide.php` as separate runs.
-
-**Suggested order:** Hubs (property, accessibility, how it works, enquire) → supporting (who it’s for, resources, FAQ, Whitstable guide, contact). Update `sibling_pages_for_seo` in each manifest as you finish pages.
-
-**Done checklist (before next page):** Copy brief accepted · meta-key table complete · one H1 + sensible H2s · internal links listed · schema decision recorded · polish notes match theme · matrix write-back done.
-
----
-
-## Work order (suggested)
-
-1. Homepage — `front-page.php`
-2. Property — `template-property.php`
-3. Accessibility — `template-accessibility.php`
-4. How it works — `template-how-it-works.php`
-5. Enquire — `template-enquire.php`
-6. Who it’s for — `template-who-its-for.php`
-7. Resources — `template-resources.php`
-8. FAQ — `template-faq.php`
-9. Whitstable guide — `template-whitstable-guide.php`
-10. Contact — `template-contact.php`
-11. (Optional) Guest guide — `page-guest-guide.php`
+Work **top to bottom**. For each section, copy the fenced block into a new Cursor chat.
 
 ---
 
 ## 1. Homepage
 
-**Context:** `@restwell-theme/front-page.php` `@restwell-theme/inc/page-meta-definitions.php`
+**Context:** `@restwell-theme/front-page.php` `@restwell-theme/inc/page-meta-definitions.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -86,28 +42,18 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes (tokens from @restwell-theme/assets/css/input.css, sections, escaping, vs @restwell-theme/template-property.php).
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 8: reference standard @restwell-theme/template-property.php for layout patterns.
 ```
 
 ---
 
 ## 2. Property
 
-**Context:** `@restwell-theme/template-property.php` `@restwell-theme/inc/page-meta-definitions.php`
+**Context:** `@restwell-theme/template-property.php` `@restwell-theme/inc/page-meta-definitions.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -140,28 +86,19 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement" (note VacationRental/address fields if present).
-8. /restwell-page-polish — implementation notes (tokens from @restwell-theme/assets/css/input.css, sections, escaping; reference standard @restwell-theme/template-property.php).
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 7: note VacationRental/address fields if present.
+- Step 8: reference standard @restwell-theme/template-property.php.
 ```
 
 ---
 
 ## 3. Accessibility
 
-**Context:** `@restwell-theme/template-accessibility.php`
+**Context:** `@restwell-theme/template-accessibility.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -193,28 +130,18 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes (tokens, sections, escaping, positive framing per skill).
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 8: positive framing per /restwell-page-polish skill.
 ```
 
 ---
 
 ## 4. How it works
 
-**Context:** `@restwell-theme/template-how-it-works.php` `@restwell-theme/template-parts/how-it-works-steps.php`
+**Context:** `@restwell-theme/template-how-it-works.php` `@restwell-theme/template-parts/how-it-works-steps.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -246,28 +173,15 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, jumps.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes (tokens, sections, escaping).
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
-
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 ```
 
 ---
 
 ## 5. Enquire
 
-**Context:** `@restwell-theme/template-enquire.php`
+**Context:** `@restwell-theme/template-enquire.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -299,28 +213,18 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes (form UX copy, escaping).
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 8: form UX copy, escaping.
 ```
 
 ---
 
-## 6. Who it’s for
+## 6. Who it's for
 
-**Context:** `@restwell-theme/template-who-its-for.php`
+**Context:** `@restwell-theme/template-who-its-for.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -353,28 +257,19 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links, sticky nav labels.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes (tokens, persona cards, funding section).
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 4: include sticky nav labels.
+- Step 8: persona cards, funding section.
 ```
 
 ---
 
 ## 7. Resources
 
-**Context:** `@restwell-theme/template-resources.php`
+**Context:** `@restwell-theme/template-resources.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -405,28 +300,15 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes.
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
-
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 ```
 
 ---
 
 ## 8. FAQ
 
-**Context:** `@restwell-theme/template-faq.php`
+**Context:** `@restwell-theme/template-faq.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -458,28 +340,18 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — FAQPage only if visible Q&A match; else explain.
-8. /restwell-page-polish — implementation notes.
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 7: FAQPage only if visible Q&A match; else explain.
 ```
 
 ---
 
 ## 9. Whitstable guide
 
-**Context:** `@restwell-theme/template-whitstable-guide.php`
+**Context:** `@restwell-theme/template-whitstable-guide.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -510,28 +382,15 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — eligibility + minimal JSON-LD OR explicit "do not implement".
-8. /restwell-page-polish — implementation notes.
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
-
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 ```
 
 ---
 
 ## 10. Contact
 
-**Context:** `@restwell-theme/template-contact.php`
+**Context:** `@restwell-theme/template-contact.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 ```
 Run the full page pipeline for THIS PAGE ONLY.
@@ -562,28 +421,18 @@ sibling_pages_for_seo:
 include_site_wide_seo_audit: false
 artifact_for_visual: none
 
-## Process (execute in order; brief plan first, then deliver)
-1. /copywriting /copywriting — Copy Brief Summary + assumptions. If brief_pre_approved is false, STOP after the brief unless I say continue.
-2. /copy-editing /copy-editing — Polish the draft.
-3. /seo-meta-optimizer /wordpress-theme-classic-meta /seo-meta-optimizer /wordpress-theme-classic-meta — Copy deck keyed to post meta keys (table: key → proposed copy → factual/legal risk note if any).
-4. /seo-structure-architect /seo-structure-architect — H1–H3, internal links.
-5. /seo-cannibalization-detector /seo-cannibalization-detector — only if sibling_pages_for_seo is non-empty.
-6. /seo-content-auditor /seo-content-auditor + /seo-authority-builder /seo-authority-builder — gaps + E-E-A-T in one pass.
-7. /schema-markup /schema-markup — LocalBusiness/Organization only if visible NAP matches; else explain.
-8. /restwell-page-polish — implementation notes.
-9. /visual-frontend-audit /visual-frontend-audit — only if artifact_for_visual is not none; align with @restwell-theme/VISUAL-FRONTEND-AUDIT.md when relevant.
+## Process
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Page pipeline (steps 1–9).
 
-Constraints: work only under @restwell-theme ; no fabricated proof; escape all output; no inline script/style.
-
-## Output format
-1) Plan 2) Brief (if needed) 3) Meta-key table 4) SEO 5) Schema 6) Polish checklist 7) Visual (if any)
+### Process overrides
+- Step 7: LocalBusiness/Organization only if visible NAP matches; else explain.
 ```
 
 ---
 
 ## 11. Optional: Guest guide (operational / privacy)
 
-**Context:** `@restwell-theme/page-guest-guide.php`
+**Context:** `@restwell-theme/page-guest-guide.php` `@restwell-theme/COPY-PASTE-PROCESS.md`
 
 Use for **in-house guest copy** — not public SEO.
 
@@ -604,48 +453,14 @@ meta_prefix_or_notes: gg_* — welcome, address, check-in/out, keysafe, WiFi, pa
 brief_pre_approved: true
 
 ## Process
-1. /copy-editing /copy-editing — clarity, scannability, consistency.
-2. /restwell-page-polish — layout/accessibility of blocks only; no marketing fluff.
-3. Do NOT invent policies, numbers, or WiFi credentials; flag placeholders.
-
-Constraints: @restwell-theme only; escape output; treat sensitive fields as sensitive.
-
-## Output format
-1) Edited copy table by meta key 2) List of items needing human verification 3) Polish notes
-```
-
----
-
-## Visual pass (any page)
-
-**Context:** `@restwell-theme/VISUAL-FRONTEND-AUDIT.md` + relevant template (e.g. `@restwell-theme/template-property.php`)
-
-```
-Run /visual-frontend-audit /visual-frontend-audit only for this page.
-
-Page URL: PASTE_URL
-Template: @restwell-theme/PASTE_TEMPLATE_FILE.php
-
-Check against @restwell-theme/VISUAL-FRONTEND-AUDIT.md and /restwell-page-polish patterns. Output: severity-tagged issues, concrete fixes (classes/tokens), and quick wins.
-```
-
----
-
-## Site-wide SEO audit (optional)
-
-```
-Run /seo-audit /seo-audit scope: site-wide Restwell theme.
-
-Constraints: Evidence-based; no implementation unless I ask. Reference @restwell-theme/ templates and @restwell-theme/inc/seo*.php only as needed.
-
-Output: prioritized findings, SEO Health Index per seo-audit skill, and action list.
+@restwell-theme/COPY-PASTE-PROCESS.md — execute §Guest guide pipeline.
 ```
 
 ---
 
 ## Run log (homepage — historical)
 
-*Merged from archived `PAGE-RUNS.md` (2026-07-05). Sync new runs to §13.1 + matrix.*
+*Merged from archived `PAGE-RUNS.md` (2026-07-05). Sync new runs to SSOT §13.1 + [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md) per [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md).*
 
 ### Homepage (`front-page.php`) — 2026-04-03
 
@@ -658,5 +473,3 @@ Output: prioritized findings, SEO Health Index per seo-audit skill, and action l
 
 - Field/schema reference now in SSOT **§13.1 Home preset** (archived `HOMEPAGE-PIPELINE-DELIVERABLE.md`).
 - LodgingBusiness NAP sources: verify against admin options and `inc/seo.php`.
-
-**Optional two-phase runs:** Phase A = steps 1–4 + meta table; Phase B = steps 5–9 using saved meta table.

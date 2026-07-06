@@ -12,7 +12,8 @@
 | Track | Living docs | Archived |
 |-------|-------------|----------|
 | **SSOT P1–P10** | This file + [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md) | — |
-| **Template COPY-PASTE** | [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) (parallel; **post-run sync required** → §13.1 + matrix) | [PAGE-RUNS.md](../docs/archive/seo-legacy/prompt-stubs/PAGE-RUNS.md) |
+| **Template COPY-PASTE** | [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) (workflow) + [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) (manifests); **post-run sync required** → §13.1 + matrix | [PAGE-RUNS.md](../docs/archive/seo-legacy/prompt-stubs/PAGE-RUNS.md) |
+| **Ops plans** | [plan.md](plan.md) (index) · [plan-crm-ops.md](plan-crm-ops.md) · [plan-seo-ops.md](plan-seo-ops.md) | — |
 | **Homepage** | [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) | `docs/archive/seo-legacy/homepage/` |
 | **Audit / technical** | [AUDIT.md](AUDIT.md) | `docs/archive/seo-legacy/audit-sprints/` |
 | **Legacy strategy** | Absorbed into §2–§8, §16, §19 | `docs/archive/seo-legacy/legacy-strategy/` |
@@ -34,7 +35,7 @@ Full merge/archive checklist: [docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md](../docs/
 
 ## How to run this in Cursor (skill order)
 
-**Parallel track:** Template-level runs also use [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md). After each COPY-PASTE run, map outputs to P4 steps A–G and write back to **§13.1** + [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md) (same rules as P4 prompts below).
+**Parallel track:** Template-level runs use [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) + [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md). After each COPY-PASTE run, map outputs to P4 steps A–G and write back to **§13.1** + [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md) (same rules as P4 prompts below).
 
 
 Invoke skills **in the phase order below** (optimised for dependencies). Crosswalk:
@@ -3900,7 +3901,7 @@ Full index: [SKILLS_GLOSSARY.md](SKILLS_GLOSSARY.md). Closest proxies for niche 
 
 **GBP posts:** Rotate awareness (exterior/seafront), consideration (interior space + carers), seasonal booking CTAs → `restwellretreats.co.uk/enquire/` (not `/booking`).
 
-**Operating cadence:** Cross-link [plan.md](plan.md) **G7** (backlink pipeline) and **G8** (entity consistency sheet).
+**Operating cadence:** Cross-link [plan-seo-ops.md](plan-seo-ops.md) **G7** (backlink pipeline) and **G8** (entity consistency sheet).
 
 ### 19.2 Backlink strategy (priority targets)
 
@@ -3916,4 +3917,4 @@ Full index: [SKILLS_GLOSSARY.md](SKILLS_GLOSSARY.md). Closest proxies for niche 
 
 ### 19.3 Directory submissions checklist
 
-Track outreach in plan.md **G7** pipeline: target, tier, contact date, status, live URL, referral traffic.
+Track outreach in [plan-seo-ops.md](plan-seo-ops.md) **G7** pipeline: target, tier, contact date, status, live URL, referral traffic.

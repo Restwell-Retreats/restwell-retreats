@@ -262,7 +262,7 @@ No critical implementation gaps currently open from the latest hardening/SEO pas
 2. **Continue editorial query-intent split**
   - Refine residual overlap around "accessible holiday" language across home/accessibility/guide content.
   - Keep hub/spoke internal-link rules consistent in future content updates.
-3. **Access statement PDF** (plan.md F7 / PERFECT-SITE-PLAN #22)
+3. **Access statement PDF** ([plan-seo-ops.md](plan-seo-ops.md) F7 / PERFECT-SITE-PLAN #22)
   - Publish up-to-date PDF; link from Accessibility, Who It's For, FAQ, Enquire.
 4. **Orphaned GA pages** (PERFECT-SITE-PLAN #14)
   - Confirm top orphan URLs in GA; add internal links or redirects as needed.

@@ -1,7 +1,7 @@
 # SEO documentation consolidation checklist
 
 **Executed:** 2026-07-05  
-**Living operators:** [SEO-INTENT-ONPAGE-PLAN.md](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](../restwell-theme/SEO-PROGRESS-MATRIX.md) · [COPY-PASTE-PROMPTS.md](../restwell-theme/COPY-PASTE-PROMPTS.md) · [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md)
+**Living operators:** [SEO-INTENT-ONPAGE-PLAN.md](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](../restwell-theme/SEO-PROGRESS-MATRIX.md) · [COPY-PASTE-PROCESS.md](../restwell-theme/COPY-PASTE-PROCESS.md) · [COPY-PASTE-PROMPTS.md](../restwell-theme/COPY-PASTE-PROMPTS.md) · [plan.md](../restwell-theme/plan.md) · [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md)
 
 ---
 
@@ -21,15 +21,18 @@
 |---|------|------|--------|--------------|------------------------|-----------------|--------|
 | 1 | `restwell-theme/SEO-INTENT-ONPAGE-PLAN.md` | 1 | Keep + refactor | §0.1 doc map; §13.1 Home preset; §19 GBP/authority; §8.1 competitors; §6.1 a11y; §11.6 verification log; §16 B3 calendar; `/contact/` row; dedupe §17/§18 | SSOT patch script applied | README, matrix, COPY-PASTE | [x] |
 | 2 | `restwell-theme/SEO-PROGRESS-MATRIX.md` | 1 | Keep | COPY-PASTE sync rule #7; §18 = `x`; contact in meta | 34 URLs incl. `/contact/` | README | [x] |
-| 3 | `restwell-theme/COPY-PASTE-PROMPTS.md` | 1 | Keep + refactor | Post-run sync; template coverage; run log; Whitstable slug | `/whitstable-area-guide/` | README, SSOT §0.1 | [x] |
+| 3 | `restwell-theme/COPY-PASTE-PROMPTS.md` | 1 | Keep + refactor | Per-page manifests only; workflow → COPY-PASTE-PROCESS.md | `/whitstable-area-guide/` | README, SSOT §0.1 | [x] |
+| 3b | `restwell-theme/COPY-PASTE-PROCESS.md` | 1 | **New** | Workflow, sync, shared pipeline block | — | README, SSOT §0.1, matrix | [x] |
 | 4 | `restwell-theme/PAGE-RUNS.md` | 1 | Merge → archive | Folded into COPY-PASTE intro + run log | Run log preserved | COPY-PASTE | [x] |
 | 5 | `restwell-theme/SKILLS_GLOSSARY.md` | 1 | Keep | Reference only | — | README | [x] |
 | 6 | `restwell-theme/README.md` | 1 | Refactor | Two-track SEO doc map | — | — | [x] |
-| 7 | `restwell-seo-section1.md` | 2 | Archive | §2.1/§2.6 already supersede keyword tables | No orphaned P1 keywords | plan.md §F | [x] |
+| 7 | `restwell-seo-section1.md` | 2 | Archive | §2.1/§2.6 already supersede keyword tables | No orphaned P1 keywords | plan-seo-ops.md §F | [x] |
 | 8 | `restwell-seo-sections2-4.md` | 2 | Archive | §13.1 + `seo-content-seed.php` live | Title/meta parity via seeds | — | [x] |
-| 9 | `restwell-seo-sections5-7.md` | 2 | Merge → archive | §19.1 GBP; §3.3/B2 links; skip JSON-LD | GBP Q&A/posts in §19 | plan.md G7/G8 | [x] |
-| 10 | `restwell-seo-sections8-11.md` | 2 | Merge → archive | §8.1 competitors; §19.2 backlinks; §16 B3 calendar; §6.1 a11y | Calendar reconciled with seeds | plan.md G9 | [x] |
-| 11 | `restwell-theme/plan.md` §F–G | 2 | Refactor | §F cites SSOT; G7→§19; G9→§8.1 | — | — | [x] |
+| 9 | `restwell-seo-sections5-7.md` | 2 | Merge → archive | §19.1 GBP; §3.3/B2 links; skip JSON-LD | GBP Q&A/posts in §19 | plan-seo-ops.md G7/G8 | [x] |
+| 10 | `restwell-seo-sections8-11.md` | 2 | Merge → archive | §8.1 competitors; §19.2 backlinks; §16 B3 calendar; §6.1 a11y | Calendar reconciled with seeds | plan-seo-ops.md G9 | [x] |
+| 11 | `restwell-theme/plan.md` | 2 | Refactor | Hub only; CRM → plan-crm-ops.md; SEO → plan-seo-ops.md | — | README, SSOT §0.1 | [x] |
+| 11b | `restwell-theme/plan-crm-ops.md` | 2 | **New** | Sections A–E | — | plan.md | [x] |
+| 11c | `restwell-theme/plan-seo-ops.md` | 2 | **New** | Sections F–G; pointers to SSOT/matrix | — | plan.md, SSOT §19 | [x] |
 | 12 | `front-page-seo-optimization.md` | 3 | Archive | Open checks → FRONT-PAGE §6 + §11.6 | Verification rows logged | FRONT-PAGE | [x] |
 | 13 | `FRONT-PAGE-OPTIMIZATION.md` | 3 | Keep | Linked from §13.1 Home + §16 B4 | — | SSOT | [x] |
 | 14 | `homepage-seo-cro-plan.md` | 3 | Archive | Absorbed in front-page cluster | All tasks done | — | [x] |
@@ -48,7 +51,7 @@
 | 27 | `restwell-theme/docs/about-your-stay-welcome-sheet-copy.md` | 6 | Keep | Post-booking; not in matrix | — | — | [x] |
 | 28 | `audit.md` | 6 | Archive | Prompt stub | — | — | [x] |
 | 29 | `hero-audit-follow-up.md` | 6 | **Archived** | Open items in DESIGN-SYSTEM §Hero follow-up | `homepage/` | [x] |
-| 30 | `restwell-theme/VISUAL-FRONTEND-AUDIT.md` | 7 | Keep | Remediation status header | — | COPY-PASTE step 9 | [x] |
+| 30 | `restwell-theme/VISUAL-FRONTEND-AUDIT.md` | 7 | Keep | Remediation status header | — | COPY-PASTE-PROCESS §Visual pass | [x] |
 
 *Note: 30 rows — Tier 1–7 sum to 29 SEO-involved files plus `plan.md` §F–G counted with legacy row 11.*
 
@@ -84,10 +87,13 @@
 
 | File | Updates made |
 |------|----------------|
-| `restwell-theme/README.md` | Two-track SEO table; analytics row; archive links |
-| `restwell-theme/plan.md` | §F → SSOT; G7 → §19; G9 → §8.1 |
-| `restwell-theme/SEO-PROGRESS-MATRIX.md` | COPY-PASTE sync; §18 `x`; meta date |
-| `restwell-theme/COPY-PASTE-PROMPTS.md` | SSOT links; sync; coverage; run log; slug fix |
+| `restwell-theme/README.md` | Two-track SEO table; COPY-PASTE-PROCESS; ops plan split |
+| `restwell-theme/plan.md` | Hub only; links to plan-crm-ops, plan-seo-ops |
+| `restwell-theme/plan-crm-ops.md` | Sections A–E extracted from plan.md |
+| `restwell-theme/plan-seo-ops.md` | Sections F–G; G7→§19; G9→§8.1 |
+| `restwell-theme/SEO-PROGRESS-MATRIX.md` | COPY-PASTE-PROCESS sync; §18 `x`; meta date |
+| `restwell-theme/COPY-PASTE-PROCESS.md` | Workflow + shared pipeline; inward SSOT/matrix links |
+| `restwell-theme/COPY-PASTE-PROMPTS.md` | Manifests only; `@` COPY-PASTE-PROCESS per run |
 | `restwell-theme/AUDIT.md` | PERFECT-SITE extractions |
 | `FRONT-PAGE-OPTIMIZATION.md` | Live verification checklist |
 | `restwell-theme/DESIGN-SYSTEM.md` | Hero follow-up open items table |
