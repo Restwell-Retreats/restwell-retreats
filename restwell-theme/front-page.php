@@ -17,14 +17,14 @@ get_header();
 $pid = get_the_ID();
 $restwell_fp_seed        = function_exists( 'restwell_get_theme_setup_defaults' ) ? restwell_get_theme_setup_defaults() : array();
 $hero_eyebrow            = get_post_meta( $pid, 'hero_eyebrow', true ) ?: 'Restwell Retreats';
-$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible holidays in Whitstable, set up for the way you live';
+$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible self-catering holidays in Whitstable, Kent';
 $hero_heading_lines      = preg_split( '/\r\n|\r|\n/', $hero_heading );
 $hero_heading_lines      = array_values( array_filter( array_map( 'trim', $hero_heading_lines ), 'strlen' ) );
 if ( empty( $hero_heading_lines ) ) {
-	$hero_heading_lines = array( 'Accessible holidays in Whitstable, set up for the way you live' );
+	$hero_heading_lines = array( 'Accessible self-catering holidays in Whitstable, Kent' );
 }
 $hero_heading_flat       = trim( preg_replace( '/\s+/', ' ', str_replace( array( "\r\n", "\r", "\n" ), ' ', $hero_heading ) ) );
-$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.';
+$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Wake up to the sea air in Whitstable and shape the day around your own clock. A step-free accessible holiday home with a ceiling track hoist, level-access wet room and optional CQC-regulated care: the whole house is yours.';
 $hero_spec_heading       = (string) get_post_meta( $pid, 'hero_spec_heading', true );
 // Optional strip under hero only when this meta is non-empty (no default).
 $hero_lede               = trim( $hero_subheading . ( $hero_spec_heading !== '' ? ' ' . $hero_spec_heading : '' ) );
@@ -206,6 +206,12 @@ foreach ( $restwell_fp_seed as $key => $default ) {
 }
 
 $property_image_id         = (int) ( $fp_meta['property_image_id'] ?? 0 );
+if ( $property_image_id <= 0 ) {
+	$property_gallery_fallback = restwell_get_property_gallery_ids();
+	if ( ! empty( $property_gallery_fallback ) ) {
+		$property_image_id = (int) $property_gallery_fallback[0];
+	}
+}
 $property_heading          = isset( $fp_meta['property_heading'] ) ? (string) $fp_meta['property_heading'] : '';
 $property_body             = isset( $fp_meta['property_body'] ) ? (string) $fp_meta['property_body'] : '';
 $property_body_canonical   = isset( $restwell_fp_seed['property_body'] ) ? trim( (string) $restwell_fp_seed['property_body'] ) : '';
@@ -524,6 +530,32 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 			<p class="home-hero-equipment-strip__text m-0 text-[var(--deep-teal)] font-sans text-sm sm:text-base leading-relaxed max-w-4xl mx-auto">
 				<?php echo esc_html( $hero_spec_heading ); ?>
 			</p>
+		</div>
+	</section>
+	<?php endif; ?>
+
+	<?php
+	$home_facts_strip = function_exists( 'restwell_get_property_facts_glance_strip' )
+		? restwell_get_property_facts_glance_strip()
+		: array();
+	?>
+	<?php if ( ! empty( $home_facts_strip ) ) : ?>
+	<section
+		class="home-facts-strip py-4 md:py-5 bg-[var(--soft-sand)] border-b border-[var(--deep-teal)]/10"
+		aria-labelledby="home-facts-strip-heading"
+	>
+		<div class="container max-w-6xl">
+			<h2 id="home-facts-strip-heading" class="sr-only">
+				<?php esc_html_e( 'Accessible holiday home at a glance', 'restwell-retreats' ); ?>
+			</h2>
+			<ul class="home-facts-strip__list m-0 list-none p-0 flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-6" role="list">
+				<?php foreach ( $home_facts_strip as $fact_label ) : ?>
+				<li class="inline-flex items-center gap-2 text-sm sm:text-[0.9375rem] leading-snug text-[var(--deep-teal)]">
+					<span class="text-[var(--warm-gold-text)]" aria-hidden="true"><i class="ph-bold ph-check"></i></span>
+					<span><?php echo esc_html( (string) $fact_label ); ?></span>
+				</li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 	</section>
 	<?php endif; ?>
