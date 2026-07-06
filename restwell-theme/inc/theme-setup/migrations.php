@@ -870,3 +870,348 @@ function restwell_migrate_how_it_works_headings_v1() {
 }
 add_action( 'init', 'restwell_migrate_how_it_works_headings_v1', 29 );
 add_action( 'after_switch_theme', 'restwell_migrate_how_it_works_headings_v1', 19 );
+
+// ---------------------------------------------------------------------------
+// Lede (hero intro paragraph) migrations — Job 9 copy swap.
+// Priority band 30–38 on init / 20–28 on after_switch_theme.
+// ---------------------------------------------------------------------------
+
+/**
+ * Stale => next map for the homepage hero_subheading lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_home_lede_refresh_map() {
+	$next = 'Wake up to the sea air in Whitstable and shape the day around your own clock. A step-free accessible holiday home with a ceiling track hoist, level-access wet room and optional CQC-regulated care: the whole house is yours.';
+	return array(
+		// Original 4-sentence seed (page-defaults + front-page.php fallback).
+		'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh homepage hero lede to two-sentence version.
+ */
+function restwell_migrate_home_lede_v1() {
+	if ( get_option( 'restwell_home_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$home_id = (int) get_option( 'page_on_front', 0 );
+	if ( $home_id < 1 ) {
+		return;
+	}
+	foreach ( restwell_get_home_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $home_id, 'hero_subheading', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $home_id, 'hero_subheading', $next );
+		}
+	}
+	update_option( 'restwell_home_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_home_lede_v1', 30 );
+add_action( 'after_switch_theme', 'restwell_migrate_home_lede_v1', 20 );
+
+/**
+ * Stale => next map for the property page prop_hero_subtitle lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_property_lede_refresh_map() {
+	$next = 'A single-storey wheelchair accessible bungalow in Whitstable, step-free throughout and fully fitted for access. Here is what each room has, so you can check whether it works for you before you enquire.';
+	return array(
+		'A newly adapted single-storey bungalow a few minutes from Tankerton Beach. Step-free throughout, with a full room coverage ceiling hoist, profiling beds and a level-access wet room.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh property hero subtitle lede to two-sentence version.
+ */
+function restwell_migrate_property_lede_v1() {
+	if ( get_option( 'restwell_property_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_property_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'prop_hero_subtitle', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'prop_hero_subtitle', $next );
+		}
+	}
+	update_option( 'restwell_property_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_property_lede_v1', 31 );
+add_action( 'after_switch_theme', 'restwell_migrate_property_lede_v1', 21 );
+
+/**
+ * Stale => next map for the Who It's For page wif_intro lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_wif_lede_refresh_map() {
+	$next = 'Restwell suits anyone planning an accessible holiday, from disabled guests and their carers to families, occupational therapists and commissioners. Open the section that fits your situation for honest detail on who the property works best for.';
+	return array(
+		// Pre-headings-v1 wording.
+		'Restwell suits anyone who needs a step-free holiday with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.' => $next,
+		// Post-headings-v1 wheelchair intro (set by restwell_migrate_who_its_for_headings_v1).
+		'Restwell is a wheelchair-accessible holiday in Whitstable for anyone who needs a step-free stay with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh Who It's For intro lede to two-sentence version.
+ */
+function restwell_migrate_wif_lede_v1() {
+	if ( get_option( 'restwell_wif_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'who-its-for', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_wif_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'wif_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'wif_intro', $next );
+			break;
+		}
+	}
+	update_option( 'restwell_wif_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_wif_lede_v1', 32 );
+add_action( 'after_switch_theme', 'restwell_migrate_wif_lede_v1', 22 );
+
+/**
+ * Stale => next map for the How It Works page hiw_intro lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_hiw_lede_refresh_map() {
+	$next = 'Booking an accessible holiday with optional care is more straightforward than it sounds. Here is what happens from your first question to arrival, and how care is arranged alongside your stay.';
+	return array(
+		'Booking a break should be the easy part. From your first enquiry to the morning you leave, we keep things clear and unhurried, so you know what\'s in the house, what care is available and how to pay.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh How It Works intro lede to two-sentence version.
+ */
+function restwell_migrate_hiw_lede_v1() {
+	if ( get_option( 'restwell_hiw_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'how-it-works', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_hiw_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'hiw_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'hiw_intro', $next );
+		}
+	}
+	update_option( 'restwell_hiw_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_hiw_lede_v1', 33 );
+add_action( 'after_switch_theme', 'restwell_migrate_hiw_lede_v1', 23 );
+
+/**
+ * Stale => next map for the FAQ page faq_intro lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_faq_lede_refresh_map() {
+	$next = 'Short, plain answers to the questions we hear most before an enquiry. Accessibility, suitability, care, funding and what to do if your situation is not on the list.';
+	return array(
+		// page-defaults seed.
+		'If you can\'t find the answer here, get in touch; we respond within 48 hours.' => $next,
+		// template-faq.php inline fallback (differs from seed).
+		'The questions we are asked most, in one place. For room-by-room measurements see the Accessibility page, and for paying for a stay see Funding and Support.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh FAQ intro lede to two-sentence version.
+ */
+function restwell_migrate_faq_lede_v1() {
+	if ( get_option( 'restwell_faq_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'faq', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_faq_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'faq_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'faq_intro', $next );
+			break;
+		}
+	}
+	update_option( 'restwell_faq_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_faq_lede_v1', 34 );
+add_action( 'after_switch_theme', 'restwell_migrate_faq_lede_v1', 24 );
+
+/**
+ * Stale => next map for the Resources page res_intro lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_resources_lede_refresh_map() {
+	$next = 'Funding an accessible holiday in the UK is possible through several routes, even if you have been told otherwise. Here are the pathways that can help, with step-by-step guides for families, carers and commissioners.';
+	return array(
+		'There are several ways people pay for a break like this. The most common are direct payments, a personal budget under the Care Act, and NHS Continuing Healthcare. The right route depends on your circumstances, so treat this as a starting point and check the detail with your local authority or care team.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh Resources intro lede to two-sentence version.
+ */
+function restwell_migrate_resources_lede_v1() {
+	if ( get_option( 'restwell_resources_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'resources', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_resources_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'res_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'res_intro', $next );
+		}
+	}
+	update_option( 'restwell_resources_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_resources_lede_v1', 35 );
+add_action( 'after_switch_theme', 'restwell_migrate_resources_lede_v1', 25 );
+
+/**
+ * Stale => next map for the Whitstable area guide wg_intro lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_wg_lede_refresh_map() {
+	$next = 'Whitstable is a genuinely lovely town, and most of it is more accessible than it first appears. This guide covers the seafront, parking, eating out and quieter times, written for wheelchair users and visitors with access needs.';
+	return array(
+		'From the Tankerton promenade to harbour stops and day trips, here is what guests usually explore on a Restwell stay, with access notes woven in.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh Whitstable area guide intro lede to two-sentence version.
+ */
+function restwell_migrate_wg_lede_v1() {
+	if ( get_option( 'restwell_wg_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_wg_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'wg_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'wg_intro', $next );
+		}
+	}
+	update_option( 'restwell_wg_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_wg_lede_v1', 36 );
+add_action( 'after_switch_theme', 'restwell_migrate_wg_lede_v1', 26 );
+
+/**
+ * Stale => next map for the Enquire page enq_intro lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_enq_lede_refresh_map() {
+	$next = 'Tell us your dates, your access needs and anything specific to your situation. We will help you work out whether Restwell is the right fit, with no commitment until you are ready.';
+	return array(
+		// page-defaults seed.
+		'Fill in the form and we\'ll call you back within 48 hours. No commitment, no hard sell: just a conversation.' => $next,
+		// template-enquire.php inline fallback.
+		'Whether you want to book an accessible holiday cottage in Kent or simply ask about a bathroom measurement, we are here to help. This is not a booking commitment: it is the start of a conversation. No pressure, no hard sell.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh Enquire intro lede to two-sentence version.
+ */
+function restwell_migrate_enq_lede_v1() {
+	if ( get_option( 'restwell_enq_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'enquire', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		return;
+	}
+	$page_id = (int) $page->ID;
+	foreach ( restwell_get_enq_lede_refresh_map() as $stale => $next ) {
+		$current = trim( (string) get_post_meta( $page_id, 'enq_intro', true ) );
+		if ( $current === $stale ) {
+			update_post_meta( $page_id, 'enq_intro', $next );
+			break;
+		}
+	}
+	update_option( 'restwell_enq_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_enq_lede_v1', 37 );
+add_action( 'after_switch_theme', 'restwell_migrate_enq_lede_v1', 27 );
+
+/**
+ * Stale => next map for the Blog index post_excerpt lede.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_blog_lede_refresh_map() {
+	$next = 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.';
+	return array(
+		// hub-pages seed.
+		'Guides and stories: accessible travel, the Kent coast, funding routes, and updates from Restwell Retreats.' => $next,
+		// index.php fallback when no excerpt is stored.
+		'Practical guides to accessible travel on the Kent coast, local area information, and updates from Restwell.' => $next,
+	);
+}
+
+/**
+ * One-time: refresh Blog index post_excerpt lede to two-sentence version.
+ */
+function restwell_migrate_blog_lede_v1() {
+	if ( get_option( 'restwell_blog_lede_v1', '' ) === '1' ) {
+		return;
+	}
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $blog_id < 1 ) {
+		$blog_page = get_page_by_path( 'blog', OBJECT, 'page' );
+		$blog_id   = $blog_page ? (int) $blog_page->ID : 0;
+	}
+	if ( $blog_id < 1 ) {
+		return;
+	}
+	$next = 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.';
+	foreach ( restwell_get_blog_lede_refresh_map() as $stale => $_ ) {
+		$current = trim( (string) get_post_field( 'post_excerpt', $blog_id ) );
+		if ( $current === $stale ) {
+			wp_update_post(
+				array(
+					'ID'           => $blog_id,
+					'post_excerpt' => $next,
+				)
+			);
+			break;
+		}
+	}
+	update_option( 'restwell_blog_lede_v1', '1' );
+}
+add_action( 'init', 'restwell_migrate_blog_lede_v1', 38 );
+add_action( 'after_switch_theme', 'restwell_migrate_blog_lede_v1', 28 );
