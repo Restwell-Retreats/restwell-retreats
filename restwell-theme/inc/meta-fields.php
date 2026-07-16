@@ -47,7 +47,7 @@ add_action( 'admin_enqueue_scripts', 'restwell_enqueue_media_for_page_edit' );
  *
  * @param WP_Post $post Current post object.
  */
-function restwell_page_content_meta_box_callback( $post ) {
+function restwell_page_content_meta_box_callback( WP_Post $post ) {
 	wp_nonce_field( RESTWELL_META_NONCE_ACTION, RESTWELL_META_NONCE_NAME );
 
 	$fields      = restwell_get_page_content_field_definitions( $post );
@@ -268,7 +268,7 @@ function restwell_page_content_meta_box_callback( $post ) {
  *
  * @param int $post_id Post ID being saved.
  */
-function restwell_save_page_content_meta_box( $post_id ) {
+function restwell_save_page_content_meta_box( int $post_id ): void {
 	if ( ! isset( $_POST[ RESTWELL_META_NONCE_NAME ] ) ||
 		 ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ RESTWELL_META_NONCE_NAME ] ) ), RESTWELL_META_NONCE_ACTION ) ) {
 		return;
