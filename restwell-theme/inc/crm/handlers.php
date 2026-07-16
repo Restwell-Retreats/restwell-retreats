@@ -217,22 +217,23 @@ function restwell_crm_handle_save_settings() {
 		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_api_key'] ) )
 		: '';
 	$mailchimp_api_key = preg_replace( '/[^A-Za-z0-9\-]/', '', trim( $mailchimp_api_key ) );
+	// Prefer RESTWELL_MAILCHIMP_API_KEY in wp-config; option is fallback only and must not autoload.
 	if ( '' !== $mailchimp_api_key ) {
-		update_option( 'restwell_mailchimp_api_key', $mailchimp_api_key );
+		update_option( 'restwell_mailchimp_api_key', $mailchimp_api_key, false );
 	} elseif ( ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
-		update_option( 'restwell_mailchimp_api_key', '' );
+		update_option( 'restwell_mailchimp_api_key', '', false );
 	}
 
 	$mailchimp_audience_id = isset( $_POST['restwell_mailchimp_audience_id'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_audience_id'] ) )
 		: '';
 	$mailchimp_audience_id = preg_replace( '/[^0-9A-Za-z]/', '', $mailchimp_audience_id );
-	update_option( 'restwell_mailchimp_audience_id', $mailchimp_audience_id );
+	update_option( 'restwell_mailchimp_audience_id', $mailchimp_audience_id, false );
 
 	$mailchimp_server_prefix = isset( $_POST['restwell_mailchimp_server_prefix'] )
 		? sanitize_key( wp_unslash( $_POST['restwell_mailchimp_server_prefix'] ) )
 		: '';
-	update_option( 'restwell_mailchimp_server_prefix', $mailchimp_server_prefix );
+	update_option( 'restwell_mailchimp_server_prefix', $mailchimp_server_prefix, false );
 
 	$metricool_hash = isset( $_POST['restwell_metricool_hash'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_metricool_hash'] ) )
@@ -509,3 +510,29 @@ function restwell_crm_handle_lead_action() {
 	);
 }
 add_action( 'wp_ajax_restwell_lead_action', 'restwell_crm_handle_lead_action' );
+
+/**
+ * One-time: stop autoloading Mailchimp credentials already stored in the DB.
+ */
+function restwell_crm_disable_mailchimp_option_autoload() {
+	if ( get_option( 'restwell_mailchimp_autoload_fixed_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$keys = array(
+		'restwell_mailchimp_api_key',
+		'restwell_mailchimp_audience_id',
+		'restwell_mailchimp_server_prefix',
+	);
+
+	foreach ( $keys as $option_name ) {
+		$value = get_option( $option_name, null );
+		if ( null === $value || false === $value ) {
+			continue;
+		}
+		update_option( $option_name, $value, false );
+	}
+
+	update_option( 'restwell_mailchimp_autoload_fixed_v1', '1', false );
+}
+add_action( 'admin_init', 'restwell_crm_disable_mailchimp_option_autoload', 5 );

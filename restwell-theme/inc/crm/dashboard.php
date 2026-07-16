@@ -638,17 +638,21 @@ function restwell_crm_dashboard_page() {
 							</th>
 							<td>
 								<?php
-								$mailchimp_key_stored = (string) get_option( 'restwell_mailchimp_api_key', '' );
+								$mailchimp_from_constant = defined( 'RESTWELL_MAILCHIMP_API_KEY' ) && '' !== (string) RESTWELL_MAILCHIMP_API_KEY;
+								$mailchimp_key_stored    = (string) get_option( 'restwell_mailchimp_api_key', '' );
+								// Never echo the raw key — masked placeholder only when an option is stored.
 								$mailchimp_key_masked = '';
 								if ( '' !== $mailchimp_key_stored ) {
-									$masked_tail         = substr( $mailchimp_key_stored, -4 );
+									$masked_tail          = substr( $mailchimp_key_stored, -4 );
 									$mailchimp_key_masked = '************' . $masked_tail;
 								}
 								$mailchimp_audience_current = (string) get_option( 'restwell_mailchimp_audience_id', '' );
 								$mailchimp_server_current   = (string) get_option( 'restwell_mailchimp_server_prefix', '' );
 								if ( restwell_mailchimp_is_configured() ) {
 									$mailchimp_badge_class = 'rw-ga4-badge rw-ga4-badge--active';
-									$mailchimp_badge_text  = __( 'Configured', 'restwell-retreats' );
+									$mailchimp_badge_text  = $mailchimp_from_constant
+										? __( 'Configured (wp-config)', 'restwell-retreats' )
+										: __( 'Configured', 'restwell-retreats' );
 								} else {
 									$mailchimp_badge_class = 'rw-ga4-badge rw-ga4-badge--unset';
 									$mailchimp_badge_text  = __( 'Not configured', 'restwell-retreats' );
@@ -663,13 +667,20 @@ function restwell_crm_dashboard_page() {
 										class="regular-text"
 										autocomplete="new-password"
 										placeholder="<?php echo esc_attr( $mailchimp_key_masked ); ?>"
+										<?php disabled( $mailchimp_from_constant ); ?>
 									/>
 									<span class="<?php echo esc_attr( $mailchimp_badge_class ); ?>" aria-live="polite">
 										<?php echo esc_html( $mailchimp_badge_text ); ?>
 									</span>
 								</div>
 								<p class="description">
-									<?php esc_html_e( 'Leave blank to keep your existing API key. Add a new key to replace it.', 'restwell-retreats' ); ?>
+									<?php
+									if ( $mailchimp_from_constant ) {
+										esc_html_e( 'RESTWELL_MAILCHIMP_API_KEY is set in wp-config.php (or the environment). The option field is unused while that constant is defined.', 'restwell-retreats' );
+									} else {
+										esc_html_e( 'Preferred: define RESTWELL_MAILCHIMP_API_KEY in wp-config.php (mirrors SMTP constants). This non-autoloaded option is a fallback only. Leave blank to keep an existing key; enter a new key to replace it.', 'restwell-retreats' );
+									}
+									?>
 								</p>
 								<p class="description">
 									<label>

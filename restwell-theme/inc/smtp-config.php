@@ -12,6 +12,12 @@
  *   define( 'RESTWELL_SMTP_FROM', 'hello@restwellretreats.co.uk' ); // optional
  *   define( 'RESTWELL_SMTP_FROM_NAME', 'Restwell Retreats' );       // optional
  *
+ * Optional Mailchimp (preferred over the CRM settings fallback option):
+ *
+ *   define( 'RESTWELL_MAILCHIMP_API_KEY', 'your-key-usXX' );
+ *   define( 'RESTWELL_MAILCHIMP_AUDIENCE_ID', 'audienceid' );       // optional
+ *   define( 'RESTWELL_MAILCHIMP_SERVER_PREFIX', 'us15' );           // optional
+ *
  * DNS (outside WordPress): add SPF, DKIM, and DMARC for the From domain so messages
  * reach inboxes. Use your host or transactional provider’s documentation.
  *
