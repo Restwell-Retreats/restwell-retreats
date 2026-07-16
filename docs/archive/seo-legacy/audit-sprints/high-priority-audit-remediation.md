@@ -1,4 +1,4 @@
-> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`FRONT-PAGE-OPTIMIZATION.md`](../FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/AUDIT.md`](../restwell-theme/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
+> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../../../../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../../../../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/docs/archive/AUDIT.md`](../../../../restwell-theme/docs/archive/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
 
 # High Priority Audit Remediation
 
@@ -23,12 +23,12 @@ Ship a focused remediation pass across the 8 high-priority audit domains using s
 - [x] Task 6: **Performance** - add font preloading for self-hosted Phosphor WOFF2 files and ensure no duplicate icon CSS enqueues. -> Verify: one enqueue path per icon weight and preload hooks output local `.woff2` URLs.
 - [x] Task 7: **Accessibility & UX** - add `aria-sort` state updates for sortable admin enquiry headers and ensure FAQ toggle controls expose expanded state. -> Verify: relevant markup/scripts contain `aria-sort` and `aria-expanded` updates.
 - [x] Task 8: **Keyword Cannibalization (Editorial)** - update target page metadata/content seeds to enforce intent split (Who It's For vs Carers post; Resources vs funding posts) and add linking rule notes in `AUDIT.md`. -> Verify: changed keyphrases/meta descriptions in source and explicit hub/spoke guidance in `AUDIT.md`.
-- [x] Task 9: **Audit Refresh** - update `restwell-theme/AUDIT.md` scores, open issues, and action plan based on completed work above. -> Verify: all 8 domains include current status and no stale references to fixed items.
+- [x] Task 9: **Audit Refresh** - update `restwell-theme/docs/archive/AUDIT.md` scores, open issues, and action plan based on completed work above. -> Verify: all 8 domains include current status and no stale references to fixed items.
 - [x] Task 10: **Verification (LAST)** - run lint/diagnostic pass on touched files and perform a manual source-check checklist (events, meta tags, llms entries, hardening hooks). -> Verify: no new diagnostics introduced and checklist items all pass.
 
 ## Done When
 - [x] All 8 high-priority domains have at least one implemented, verified improvement.
-- [x] `restwell-theme/AUDIT.md` matches repository reality and high-priority backlog is reduced to remaining non-implemented items only.
+- [x] `restwell-theme/docs/archive/AUDIT.md` matches repository reality and high-priority backlog is reduced to remaining non-implemented items only.
 - [x] Tracking/security/SEO/GEO changes are visible in code and discoverable by simple grep checks.
 
 ## Notes

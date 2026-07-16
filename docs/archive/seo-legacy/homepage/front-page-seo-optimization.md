@@ -1,4 +1,4 @@
-> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`FRONT-PAGE-OPTIMIZATION.md`](../FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/AUDIT.md`](../restwell-theme/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
+> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../../../../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../../../../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/docs/archive/AUDIT.md`](../../../../restwell-theme/docs/archive/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
 
 # Front Page SEO & Optimization Plan
 
@@ -387,11 +387,11 @@ Description Option 3: Accessible holidays in Whitstable: adapted bungalow, hoist
 
 | Executed action | Outcome | Verify | Skills (glossary) |
 | --- | --- | --- | --- |
-| **16.1 Technical handoff document** | **`FRONT-PAGE-OPTIMIZATION.md`** (repo root): sections for **summary of changes** (metadata, schema, GEO, content, links, technical SEO, a11y, CRO/analytics, perf/WP, security/quality, testing); **rationale**; **before/after metrics** from plan scores (schema 84/100, E-E-A-T ~72/100, GA4 readiness 87/100, CWV targets); **testing & validation** (in-repo vs staging); **engineering maintenance** (version bump, meta overrides, caching boundaries, Guest Guide noindex); **key file reference table**. | File exists; content matches completed Phases 1–15 tables in this plan. | `/documentation-generation-doc-generate`, `/documentation-templates`, `/writing-plans`, `/wiki-qa` |
-| **16.2 Quarterly maintenance checklist** | **Section 6** in `FRONT-PAGE-OPTIMIZATION.md`: checklist for dates/stats, testimonials, broken links, schema, keywords/GSC, CWV, GA4, robots/llms, a11y spot-check — aligned with original quarterly bullet list. | Owners can tick through each quarter without re-opening the full plan. | `/seo-content-refresher`, `/documentation-templates`, `/plan-writing` |
-| **16.3 Editor training guide** | **Section 7** in `FRONT-PAGE-OPTIMIZATION.md`: **meta tags** (where to edit, length rules, cache); **homepage sections** (hero lock, intro/FAQ behaviour); **images** (format, alt, lazy-load); **a11y** (headings, links, contrast); **SEO** (keywords, banned phrase, internal linking, freshness). | Editors can onboard from one doc; technical file paths point into `restwell-theme/`. | `/documentation-generation-doc-generate`, `/doc-coauthoring`, `/wiki-qa` |
+| **16.1 Technical handoff document** | **`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`**: sections for **summary of changes** (metadata, schema, GEO, content, links, technical SEO, a11y, CRO/analytics, perf/WP, security/quality, testing); **rationale**; **before/after metrics** from plan scores (schema 84/100, E-E-A-T ~72/100, GA4 readiness 87/100, CWV targets); **testing & validation** (in-repo vs staging); **engineering maintenance** (version bump, meta overrides, caching boundaries, Guest Guide noindex); **key file reference table**. | File exists; content matches completed Phases 1–15 tables in this plan. | `/documentation-generation-doc-generate`, `/documentation-templates`, `/writing-plans`, `/wiki-qa` |
+| **16.2 Quarterly maintenance checklist** | **Section 6** in `restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`: checklist for dates/stats, testimonials, broken links, schema, keywords/GSC, CWV, GA4, robots/llms, a11y spot-check — aligned with original quarterly bullet list. | Owners can tick through each quarter without re-opening the full plan. | `/seo-content-refresher`, `/documentation-templates`, `/plan-writing` |
+| **16.3 Editor training guide** | **Section 7** in `restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`: **meta tags** (where to edit, length rules, cache); **homepage sections** (hero lock, intro/FAQ behaviour); **images** (format, alt, lazy-load); **a11y** (headings, links, contrast); **SEO** (keywords, banned phrase, internal linking, freshness). | Editors can onboard from one doc; technical file paths point into `restwell-theme/`. | `/documentation-generation-doc-generate`, `/doc-coauthoring`, `/wiki-qa` |
 
-**Artifact:** [`FRONT-PAGE-OPTIMIZATION.md`](./FRONT-PAGE-OPTIMIZATION.md)
+**Artifact:** [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../../../../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md)
 
 ### Phase 16 — Done when
 
@@ -561,7 +561,7 @@ These stay **[ ]** until someone runs **real checks on a deployed URL** (`/verif
 5. **Phases 10–12** — Content hierarchy (done); site architecture & URLs + analytics instrumentation (**done** 2026-04-12).
 6. **Phases 13–14** — WordPress/theme performance & security (**Phase 13 done** 2026-04-12), PHP/code quality.
 7. **Phase 15** — Cross-browser, mobile, a11y, performance, SEO validation testing.
-8. **Phase 16** — Documentation and editor handoff (**done** 2026-04-12 — `FRONT-PAGE-OPTIMIZATION.md`).
+8. **Phase 16** — Documentation and editor handoff (**done** 2026-04-12 — `restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`).
 
 **Estimated Total Effort:** 3-5 days for comprehensive implementation
 

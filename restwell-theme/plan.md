@@ -27,6 +27,17 @@ Ship **SEO/performance** fixes and **analytics** (aligned with your existing coo
 
 ---
 
+## A. Deployment & technical hygiene
+
+- [ ] **Front page — mobile menu button** - Verify hamburger button is ≥ 44×44px with visible tap target on real device. → Verify: Chrome DevTools + real mobile test.
+- [ ] **Front page — scroll-to-top button** - Add fixed scroll-to-top button in bottom-right at scroll depth > 50% for long mobile pages. → Verify: Appears on scroll, smooth scroll to top.
+- [ ] **Front page — low-end Android test** - Test on simulated slow 4x CPU throttling in DevTools; confirm acceptable performance. → Verify: No jank, page loads in < 5s on slow 3G simulation.
+- [ ] **GA4 live verification** - Run DebugView pass; confirm canonical events/params firing; lock dashboard dimensions to documented event names in [ANALYTICS-EVENT-SCHEMA.md](ANALYTICS-EVENT-SCHEMA.md) → Verify: All enquiry funnel events confirmed in GA4.
+- [ ] **REST hardening smoke test** - Confirm `curl -sI …/wp-json/wp/v2/users` without cookies → `401` on live/staging. → Verify: Authenticated editor access still intact.
+- [ ] **Editorial intent split** - Refine residual overlap around "accessible holiday" language across home/accessibility/guide content cluster. → Verify: No cannibalisation between core pages.
+
+---
+
 ## Priority (when time is tight)
 
 Combined view — see linked docs for verification criteria.

@@ -48,47 +48,158 @@ add_action( 'admin_enqueue_scripts', 'restwell_enqueue_media_for_page_edit' );
 function restwell_page_content_meta_box_callback( $post ) {
 	wp_nonce_field( RESTWELL_META_NONCE_ACTION, RESTWELL_META_NONCE_NAME );
 
-	$fields  = restwell_get_page_content_field_definitions( $post );
-	$current = get_post_meta( $post->ID, '', true );
-	$index   = 0;
+	$fields      = restwell_get_page_content_field_definitions( $post );
+	$current     = get_post_meta( $post->ID, '', true );
+	$index       = 0;
+	$issues      = function_exists( 'restwell_page_content_run_checks' ) ? restwell_page_content_run_checks( $post ) : array();
+	$section_bad = function_exists( 'restwell_page_content_issues_by_section' ) ? restwell_page_content_issues_by_section( $issues ) : array();
+	$required    = function_exists( 'restwell_page_content_required_fields' ) ? restwell_page_content_required_fields( $post ) : array();
+	$h1_key      = function_exists( 'restwell_page_content_h1_meta_key' ) ? restwell_page_content_h1_meta_key( $post ) : '';
+	$seo         = function_exists( 'restwell_page_content_effective_seo' ) ? restwell_page_content_effective_seo( $post ) : array();
+	$seo_edit_url = add_query_arg(
+		array(
+			'page' => 'restwell-seo',
+			'edit' => $post->ID,
+		),
+		admin_url( 'admin.php' )
+	);
+	$error_count = 0;
+	$warn_count  = 0;
+	foreach ( $issues as $issue ) {
+		if ( 'error' === $issue['severity'] ) {
+			++$error_count;
+		} elseif ( 'warn' === $issue['severity'] ) {
+			++$warn_count;
+		}
+	}
 
 	?>
 
-	<div class="restwell-meta-fields" data-post-id="<?php echo esc_attr( (string) $post->ID ); ?>">
-		<h2 class="nav-tab-wrapper">
-			<?php
-			foreach ( array_keys( $fields ) as $section ) {
-				$panel_id = 'restwell-panel-' . $index;
-				$active   = ( 0 === $index ) ? ' nav-tab-active' : '';
-				echo '<a href="#' . esc_attr( $panel_id ) . '" class="nav-tab restwell-nav-tab' . esc_attr( $active ) . '" data-panel="' . esc_attr( $panel_id ) . '" role="tab">' . esc_html( $section ) . '</a>';
-				$index++;
-			}
-			$index = 0;
-			?>
-		</h2>
+	<div
+		class="restwell-meta-fields"
+		data-post-id="<?php echo esc_attr( (string) $post->ID ); ?>"
+		data-h1-field="<?php echo esc_attr( $h1_key ); ?>"
+		data-focus-keyphrase="<?php echo esc_attr( $seo['focus_keyphrase'] ?? '' ); ?>"
+		data-seo-title="<?php echo esc_attr( $seo['meta_title'] ?? '' ); ?>"
+		data-seo-desc="<?php echo esc_attr( $seo['meta_description'] ?? '' ); ?>"
+		data-seo-url="<?php echo esc_url( $seo_edit_url ); ?>"
+		data-required-fields="<?php echo esc_attr( wp_json_encode( array_keys( $required ) ) ); ?>"
+	>
+		<p class="restwell-meta-fields__intro description">
+			<?php esc_html_e( 'Pick a section on the left, edit it on the right. SEO is under SEO in the left menu.', 'restwell-retreats' ); ?>
+		</p>
 
+		<div class="restwell-meta-fields__checklist" id="restwell-content-checklist" aria-live="polite">
+			<div class="restwell-meta-fields__checklist-head">
+				<strong><?php esc_html_e( 'Content & SEO check', 'restwell-retreats' ); ?></strong>
+				<?php if ( empty( $issues ) ) : ?>
+					<span class="restwell-meta-fields__badge restwell-meta-fields__badge--ok"><?php esc_html_e( 'Looking good', 'restwell-retreats' ); ?></span>
+				<?php else : ?>
+					<?php if ( $error_count > 0 ) : ?>
+						<span class="restwell-meta-fields__badge restwell-meta-fields__badge--error">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %d: number of errors */
+									_n( '%d must-fix', '%d must-fix', $error_count, 'restwell-retreats' ),
+									$error_count
+								)
+							);
+							?>
+						</span>
+					<?php endif; ?>
+					<?php if ( $warn_count > 0 ) : ?>
+						<span class="restwell-meta-fields__badge restwell-meta-fields__badge--warn">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %d: number of warnings */
+									_n( '%d suggestion', '%d suggestions', $warn_count, 'restwell-retreats' ),
+									$warn_count
+								)
+							);
+							?>
+						</span>
+					<?php endif; ?>
+				<?php endif; ?>
+			</div>
+			<?php if ( ! empty( $issues ) ) : ?>
+				<ul class="restwell-meta-fields__checklist-list">
+					<?php foreach ( $issues as $issue ) : ?>
+						<li class="restwell-meta-fields__check restwell-meta-fields__check--<?php echo esc_attr( $issue['severity'] ); ?>" data-field="<?php echo esc_attr( $issue['field'] ); ?>">
+							<?php echo esc_html( $issue['message'] ); ?>
+							<?php if ( '' === $issue['field'] ) : ?>
+								<a href="<?php echo esc_url( $seo_edit_url ); ?>"><?php esc_html_e( 'Open SEO', 'restwell-retreats' ); ?></a>
+							<?php endif; ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php else : ?>
+				<p class="description" style="margin:8px 0 0;"><?php esc_html_e( 'Required content is filled, and the focus keyphrase lines up with the H1 and SEO fields.', 'restwell-retreats' ); ?></p>
+			<?php endif; ?>
+			<p class="description restwell-meta-fields__checklist-note">
+				<?php esc_html_e( 'Tip: the on-page H1 and the SEO title do not need to be identical. Both should usually include your focus keyphrase.', 'restwell-retreats' ); ?>
+			</p>
+		</div>
+
+		<div class="restwell-meta-fields__layout">
+			<nav class="restwell-meta-fields__nav" aria-label="<?php esc_attr_e( 'Page sections', 'restwell-retreats' ); ?>">
+				<p class="restwell-meta-fields__nav-label"><?php esc_html_e( 'Sections', 'restwell-retreats' ); ?></p>
+				<ul class="restwell-meta-fields__nav-list" role="tablist">
+					<?php
+					foreach ( array_keys( $fields ) as $section ) {
+						$panel_id = 'restwell-panel-' . $index;
+						$active   = ( 0 === $index ) ? ' is-active' : '';
+						$badges   = isset( $section_bad[ $section ] ) ? (int) $section_bad[ $section ] : 0;
+						echo '<li role="presentation">';
+						echo '<button type="button" class="restwell-nav-tab' . esc_attr( $active ) . '" data-panel="' . esc_attr( $panel_id ) . '" data-section="' . esc_attr( $section ) . '" role="tab" aria-selected="' . ( 0 === $index ? 'true' : 'false' ) . '">';
+						echo '<span class="restwell-nav-tab__label">' . esc_html( $section ) . '</span>';
+						if ( $badges > 0 ) {
+							echo '<span class="restwell-nav-tab__flag" aria-label="' . esc_attr( sprintf( __( '%d issues', 'restwell-retreats' ), $badges ) ) . '">' . esc_html( (string) $badges ) . '</span>';
+						}
+						echo '</button>';
+						echo '</li>';
+						$index++;
+					}
+					$index = 0;
+					?>
+				</ul>
+			</nav>
+
+			<div class="restwell-meta-fields__panels">
 		<?php
 		foreach ( $fields as $section => $items ) {
 			$panel_id = 'restwell-panel-' . $index;
 			$active   = ( 0 === $index ) ? ' active' : '';
 			echo '<div id="' . esc_attr( $panel_id ) . '" class="restwell-tab-panel' . esc_attr( $active ) . '" role="tabpanel" aria-label="' . esc_attr( $section ) . '">';
+			echo '<h3 class="restwell-meta-fields__panel-title">' . esc_html( $section ) . '</h3>';
 
 			foreach ( $items as $key => $field ) {
-				$label = $field['label'];
-				$type  = $field['type'];
-				$value = isset( $current[ $key ][0] ) ? $current[ $key ][0] : '';
-				$id    = 'restwell_' . $key;
-				$name  = $key;
-				echo '<div class="restwell-field">';
+				$label     = $field['label'];
+				$type      = $field['type'];
+				$value     = isset( $current[ $key ][0] ) ? $current[ $key ][0] : '';
+				$id        = 'restwell_' . $key;
+				$name      = $key;
+				$is_req    = isset( $required[ $key ] );
+				$is_empty  = ( trim( (string) $value ) === '' || (string) $value === '0' );
+				$field_cls = 'restwell-field';
+				if ( $is_req ) {
+					$field_cls .= ' restwell-field--required';
+					if ( $is_empty ) {
+						$field_cls .= ' restwell-field--missing';
+					}
+				}
+				echo '<div class="' . esc_attr( $field_cls ) . '" data-field-key="' . esc_attr( $key ) . '">';
+				$req_mark = $is_req ? ' <span class="restwell-field__req">' . esc_html__( 'required', 'restwell-retreats' ) . '</span>' : '';
 
 				if ( 'textarea' === $type ) {
-					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $req_mark escaped above
 					echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="5">' . esc_textarea( $value ) . '</textarea>';
 				} elseif ( 'gallery' === $type ) {
 					$gallery_ids   = restwell_parse_gallery_ids( $value );
 					$gallery_value = implode( ',', $gallery_ids );
 					$input_id      = $id . '_value';
-					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<div class="restwell-gallery-upload" data-field-id="' . esc_attr( $id ) . '">';
 					echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $gallery_value ) . '" />';
 					echo '<ul class="restwell-gallery-preview" role="list">';
@@ -116,7 +227,7 @@ function restwell_page_content_meta_box_callback( $post ) {
 					$allowed_types   = $allows_video ? 'image,video' : 'image';
 					$preview_text    = $is_video ? __( 'Video selected', 'restwell-retreats' ) : '';
 					$input_id        = $id . '_value';
-					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<div class="restwell-image-upload restwell-media-upload" data-allowed-types="' . esc_attr( $allowed_types ) . '">';
 					echo '<input type="hidden" id="' . esc_attr( $input_id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 					echo '<div class="restwell-image-preview"' . ( $has_preview ? '' : ' style="display:none;"' ) . '>';
@@ -132,10 +243,10 @@ function restwell_page_content_meta_box_callback( $post ) {
 					echo '<button type="button" class="button button-link restwell-remove-image"' . ( $has_preview ? '' : ' style="display:none;"' ) . '>' . esc_html__( 'Remove', 'restwell-retreats' ) . '</button>';
 					echo '</div>';
 				} elseif ( 'number' === $type ) {
-					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<input type="number" step="any" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 				} else {
-					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<input type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
 				}
 				echo '</div>';
@@ -144,7 +255,8 @@ function restwell_page_content_meta_box_callback( $post ) {
 			$index++;
 		}
 		?>
-
+			</div><!-- .restwell-meta-fields__panels -->
+		</div><!-- .restwell-meta-fields__layout -->
 	</div>
 	<?php
 }

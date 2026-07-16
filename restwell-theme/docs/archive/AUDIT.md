@@ -262,14 +262,14 @@ No critical implementation gaps currently open from the latest hardening/SEO pas
 2. **Continue editorial query-intent split**
   - Refine residual overlap around "accessible holiday" language across home/accessibility/guide content.
   - Keep hub/spoke internal-link rules consistent in future content updates.
-3. **Access statement PDF** ([plan-seo-ops.md](plan-seo-ops.md) F7 / PERFECT-SITE-PLAN #22)
+3. **Access statement PDF** ([plan-seo-ops.md](../../plan-seo-ops.md) F7 / [PERFECT-SITE-PLAN.md](PERFECT-SITE-PLAN.md) #22)
   - Publish up-to-date PDF; link from Accessibility, Who It's For, FAQ, Enquire.
-4. **Orphaned GA pages** (PERFECT-SITE-PLAN #14)
+4. **Orphaned GA pages** ([PERFECT-SITE-PLAN.md](PERFECT-SITE-PLAN.md) #14)
   - Confirm top orphan URLs in GA; add internal links or redirects as needed.
-5. **Ongoing SEO cadence** (PERFECT-SITE-PLAN #23–25)
+5. **Ongoing SEO cadence** ([PERFECT-SITE-PLAN.md](PERFECT-SITE-PLAN.md) #23–25)
   - Monthly blog (four-pillar plan); first-week SEO QA runbook; CTR sprint on top 5 impression URLs (measure after 28 days).
 
-**Extracted from archived** [`PERFECT-SITE-PLAN.md`](../docs/archive/seo-legacy/audit-sprints/PERFECT-SITE-PLAN.md) **2026-07-05.** Open ⏳ items now owned here and in SSOT §16 B3/B6.
+**Extracted from archived** [`PERFECT-SITE-PLAN.md`](PERFECT-SITE-PLAN.md) **2026-07-05.** Open ⏳ items now owned here and in SSOT §16 B3/B6.
 
 ---
 

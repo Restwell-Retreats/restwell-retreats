@@ -280,18 +280,18 @@ function restwell_crm_dashboard_page() {
 							),
 							array(
 								__( 'SEO title &amp; meta description for a page', 'restwell-retreats' ),
-								__( 'Pages → edit page → Page Content Fields → SEO tab', 'restwell-retreats' ),
-								__( 'Focus keyphrase and meta description are set per-page here, not in a separate plugin.', 'restwell-retreats' ),
+								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-seo', $base_url ) ) . '">' . __( 'SEO → All pages', 'restwell-retreats' ) . '</a>',
+								__( 'Per-page focus keyphrase, SEO title, and social settings.', 'restwell-retreats' ),
 							),
 							array(
-								__( 'GA4 Measurement ID', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-crm', $base_url ) ) . '">' . __( 'Dashboard → Settings (bottom of this page)', 'restwell-retreats' ) . '</a>',
-								__( 'Paste your G-XXXXXXXX ID. Analytics loads site-wide once saved.', 'restwell-retreats' ),
+								__( 'Phone, Google address, GA4, footer CTA, property line', 'restwell-retreats' ),
+								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-seo-sitewide', $base_url ) ) . '">' . __( 'SEO → Site-wide', 'restwell-retreats' ) . '</a>',
+								__( 'Everything that applies to the whole site (search, analytics, and shared website copy).', 'restwell-retreats' ),
 							),
 							array(
-								__( 'Notification email / phone / address', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-crm', $base_url ) ) . '">' . __( 'Dashboard → Notification &amp; Site Settings', 'restwell-retreats' ) . '</a>',
-								__( 'Property line is for internal copy and the 404 page (not public JSON-LD). Business address fields power Organization / LocalBusiness schema and should match Google Business Profile.', 'restwell-retreats' ),
+								__( 'Notify email, Mailchimp, who can use the CRM', 'restwell-retreats' ),
+								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-crm', $base_url ) ) . '">' . __( 'Dashboard → CRM settings (below)', 'restwell-retreats' ) . '</a>',
+								__( 'Enquiry alerts and CRM access only — not SEO or website copy.', 'restwell-retreats' ),
 							),
 							array(
 								__( 'Enquiries (contact form submissions)', 'restwell-retreats' ),
@@ -328,19 +328,32 @@ function restwell_crm_dashboard_page() {
 		</div>
 	</div>
 
-	<!-- Notification settings -->
+	<!-- CRM settings (enquiry notify / Mailchimp / roles only) -->
 		<div class="rw-settings-wrap">
 			<div class="postbox">
 				<div class="postbox-header">
-					<h2 class="hndle"><span><?php esc_html_e( 'Notification Settings', 'restwell-retreats' ); ?></span></h2>
+					<h2 class="hndle"><span><?php esc_html_e( 'CRM settings', 'restwell-retreats' ); ?></span></h2>
 				</div>
 				<div class="inside">
 					<p class="description rw-description--tight-top">
-						<?php esc_html_e( 'New enquiry notification emails are sent to this address.', 'restwell-retreats' ); ?>
+						<?php esc_html_e( 'Who gets enquiry emails, Mailchimp, and which roles can use the CRM.', 'restwell-retreats' ); ?>
 					</p>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'restwell_crm_settings' ); ?>
 						<input type="hidden" name="action" value="restwell_save_settings" />
+						<div class="notice notice-info inline">
+							<p>
+								<?php
+								echo wp_kses_post(
+									sprintf(
+										/* translators: %s: link to SEO site-wide settings */
+										__( 'Phone, Google address, analytics, footer CTA, and the property line are under %s.', 'restwell-retreats' ),
+										'<a href="' . esc_url( admin_url( 'admin.php?page=restwell-seo-sitewide' ) ) . '"><strong>' . esc_html__( 'SEO → Site-wide', 'restwell-retreats' ) . '</strong></a>'
+									)
+								);
+								?>
+							</p>
+						</div>
 						<table class="form-table" role="presentation">
 							<tr>
 								<th scope="row">
@@ -356,280 +369,11 @@ function restwell_crm_dashboard_page() {
 										value="<?php echo esc_attr( (string) get_option( 'restwell_enquiry_notify_email', 'hello@restwellretreats.co.uk' ) ); ?>"
 										class="regular-text"
 									/>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_phone_number">
-										<?php esc_html_e( 'Phone number', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="tel"
-										id="restwell_phone_number"
-										name="restwell_phone_number"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_phone_number', '01622 809881' ) ); ?>"
-										class="regular-text"
-									/>
 									<p class="description">
-										<?php esc_html_e( 'Used in email templates and the site footer.', 'restwell-retreats' ); ?>
+										<?php esc_html_e( 'New enquiry notification emails are sent here.', 'restwell-retreats' ); ?>
 									</p>
 								</td>
 							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_property_address">
-										<?php esc_html_e( 'Property street address', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_property_address"
-										name="restwell_property_address"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_property_address', '101 Russell Drive' ) ); ?>"
-										class="regular-text"
-									/>
-									<p class="description">
-										<?php esc_html_e( 'Shown in on-site copy and the 404 page. Not used in public JSON-LD (use Business address below for Organization / LocalBusiness).', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_property_postcode">
-										<?php esc_html_e( 'Property postcode', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_property_postcode"
-										name="restwell_property_postcode"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_property_postcode', 'CT5 2RQ' ) ); ?>"
-										class="regular-text"
-									/>
-									<p class="description">
-										<?php esc_html_e( 'Matches the property line above for internal copy; not output in public schema.', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row" colspan="2">
-									<strong><?php esc_html_e( 'Business address (JSON-LD)', 'restwell-retreats' ); ?></strong>
-									<p class="description rw-description--tight-top">
-										<?php esc_html_e( 'Used for Organization and LocalBusiness structured data. Keep aligned with your Google Business Profile (default: Vinters Business Park, Maidstone).', 'restwell-retreats' ); ?>
-									</p>
-								</th>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_business_street"><?php esc_html_e( 'Business street', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="restwell_business_street" name="restwell_business_street" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_street', 'Vinters Business Park' ) ); ?>" />
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_business_locality"><?php esc_html_e( 'Business town / city', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="restwell_business_locality" name="restwell_business_locality" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_locality', 'Maidstone' ) ); ?>" />
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_business_region"><?php esc_html_e( 'Business county / region', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="restwell_business_region" name="restwell_business_region" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_region', 'Kent' ) ); ?>" />
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_business_postcode"><?php esc_html_e( 'Business postcode', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="restwell_business_postcode" name="restwell_business_postcode" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_postcode', 'ME14 5NZ' ) ); ?>" />
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_business_geo_lat"><?php esc_html_e( 'Business latitude (optional)', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="restwell_business_geo_lat" name="restwell_business_geo_lat" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_geo_lat', '51.2707' ) ); ?>" />
-									<p class="description"><?php esc_html_e( 'Decimal degrees; used for LocalBusiness geo.', 'restwell-retreats' ); ?></p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_business_geo_lon"><?php esc_html_e( 'Business longitude (optional)', 'restwell-retreats' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="restwell_business_geo_lon" name="restwell_business_geo_lon" class="regular-text" value="<?php echo esc_attr( (string) get_option( 'restwell_business_geo_lon', '0.5207' ) ); ?>" />
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_footer_cta_heading">
-										<?php esc_html_e( 'Footer CTA heading', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_footer_cta_heading"
-										name="restwell_footer_cta_heading"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_footer_cta_heading', '' ) ); ?>"
-										class="regular-text"
-										placeholder="<?php esc_attr_e( 'Ready to plan your break?', 'restwell-retreats' ); ?>"
-									/>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_footer_cta_intro">
-										<?php esc_html_e( 'Footer CTA intro', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<textarea
-										id="restwell_footer_cta_intro"
-										name="restwell_footer_cta_intro"
-										rows="3"
-										class="large-text"
-									><?php echo esc_textarea( (string) get_option( 'restwell_footer_cta_intro', '' ) ); ?></textarea>
-									<p class="description">
-										<?php esc_html_e( 'Short paragraph below the heading. Leave empty to use the theme default.', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_footer_cta_primary_label">
-										<?php esc_html_e( 'Footer CTA primary button', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_footer_cta_primary_label"
-										name="restwell_footer_cta_primary_label"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_footer_cta_primary_label', '' ) ); ?>"
-										class="regular-text"
-										placeholder="<?php esc_attr_e( 'See the property', 'restwell-retreats' ); ?>"
-									/>
-									<p class="description">
-										<label for="restwell_footer_cta_primary_url"><?php esc_html_e( 'URL path or full link', 'restwell-retreats' ); ?></label><br />
-										<input
-											type="text"
-											id="restwell_footer_cta_primary_url"
-											name="restwell_footer_cta_primary_url"
-											value="<?php echo esc_attr( (string) get_option( 'restwell_footer_cta_primary_url', '' ) ); ?>"
-											class="regular-text"
-											placeholder="<?php echo esc_attr( home_url( '/the-property/' ) ); ?>"
-										/>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_footer_cta_btn">
-										<?php esc_html_e( 'Footer CTA secondary button', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_footer_cta_btn"
-										name="restwell_footer_cta_btn"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_footer_cta_btn', '' ) ); ?>"
-										class="regular-text"
-										placeholder="<?php esc_attr_e( 'Ask about your dates', 'restwell-retreats' ); ?>"
-									/>
-									<p class="description">
-										<?php esc_html_e( 'Usually links to the Enquire page.', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_footer_cta_note">
-										<?php esc_html_e( 'Footer CTA reassurance line', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_footer_cta_note"
-										name="restwell_footer_cta_note"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_footer_cta_note', '' ) ); ?>"
-										class="regular-text"
-										placeholder="<?php esc_attr_e( 'No booking commitment. Just a conversation.', 'restwell-retreats' ); ?>"
-									/>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_gsc_verification">
-										<?php esc_html_e( 'Google Search Console verification', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_gsc_verification"
-										name="restwell_gsc_verification"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_gsc_verification', '' ) ); ?>"
-										class="regular-text"
-										placeholder="ABC123..."
-									/>
-									<p class="description">
-										<?php esc_html_e( 'Paste the content value from the Google Search Console HTML meta tag verification method.', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
-						<tr>
-							<th scope="row">
-								<label for="restwell_ga4_measurement_id">
-									<?php esc_html_e( 'Google Analytics 4 Measurement ID', 'restwell-retreats' ); ?>
-								</label>
-							</th>
-							<td>
-								<?php
-								$ga4_current = (string) get_option( 'restwell_ga4_measurement_id', '' );
-								if ( $ga4_current === '' ) {
-									$ga4_badge_class = 'rw-ga4-badge rw-ga4-badge--unset';
-									$ga4_badge_text  = __( 'Not set — analytics inactive', 'restwell-retreats' );
-								} elseif ( preg_match( '/^G-[A-Z0-9]+$/i', $ga4_current ) ) {
-									$ga4_badge_class = 'rw-ga4-badge rw-ga4-badge--active';
-									$ga4_badge_text  = __( 'Active', 'restwell-retreats' );
-								} else {
-									$ga4_badge_class = 'rw-ga4-badge rw-ga4-badge--invalid';
-									$ga4_badge_text  = __( 'Wrong format — should be G-XXXXXXXXXX', 'restwell-retreats' );
-								}
-								?>
-								<div class="rw-ga4-field-wrap">
-									<input
-										type="text"
-										id="restwell_ga4_measurement_id"
-										name="restwell_ga4_measurement_id"
-										value="<?php echo esc_attr( $ga4_current ); ?>"
-										class="regular-text"
-										placeholder="G-XXXXXXXXXX"
-									/>
-									<span class="<?php echo esc_attr( $ga4_badge_class ); ?>" aria-live="polite">
-										<?php echo esc_html( $ga4_badge_text ); ?>
-									</span>
-								</div>
-								<p class="description">
-									<?php esc_html_e( 'Optional. When set, GA4 is loaded according to “Analytics script placement” below (head, deferred footer, or consent-gated).', 'restwell-retreats' ); ?>
-								</p>
-							</td>
-						</tr>
 						<tr>
 							<th scope="row">
 								<label for="restwell_mailchimp_api_key">
@@ -715,115 +459,6 @@ function restwell_crm_dashboard_page() {
 								</p>
 							</td>
 						</tr>
-						<tr>
-							<th scope="row">
-								<label for="restwell_metricool_hash">
-									<?php esc_html_e( 'Metricool tracking hash', 'restwell-retreats' ); ?>
-								</label>
-							</th>
-							<td>
-								<?php
-								$metricool_current = (string) get_option( 'restwell_metricool_hash', '' );
-								if ( $metricool_current === '' ) {
-									$metricool_badge_class = 'rw-ga4-badge rw-ga4-badge--unset';
-									$metricool_badge_text  = __( 'Not set — tracking inactive', 'restwell-retreats' );
-								} elseif ( preg_match( '/^[a-f0-9]{32}$/i', $metricool_current ) ) {
-									$metricool_badge_class = 'rw-ga4-badge rw-ga4-badge--active';
-									$metricool_badge_text  = __( 'Active', 'restwell-retreats' );
-								} else {
-									$metricool_badge_class = 'rw-ga4-badge rw-ga4-badge--invalid';
-									$metricool_badge_text  = __( 'Wrong format — should be a 32-character hash', 'restwell-retreats' );
-								}
-								?>
-								<div class="rw-ga4-field-wrap">
-								<input
-									type="text"
-									id="restwell_metricool_hash"
-									name="restwell_metricool_hash"
-									value="<?php echo esc_attr( $metricool_current ); ?>"
-									class="regular-text"
-									placeholder="0123456789abcdef0123456789abcdef"
-								/>
-									<span class="<?php echo esc_attr( $metricool_badge_class ); ?>" aria-live="polite">
-										<?php echo esc_html( $metricool_badge_text ); ?>
-									</span>
-								</div>
-								<p class="description">
-									<?php esc_html_e( 'Optional. Paste your Metricool 32-character website tracking hash. When valid, tracking loads according to “Analytics script placement”.', 'restwell-retreats' ); ?>
-								</p>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label for="restwell_analytics_load_mode">
-									<?php esc_html_e( 'Analytics script placement', 'restwell-retreats' ); ?>
-								</label>
-							</th>
-							<td>
-								<?php
-								$analytics_mode_current = (string) get_option( 'restwell_analytics_load_mode', 'head' );
-								if ( ! in_array( $analytics_mode_current, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
-									$analytics_mode_current = 'head';
-								}
-								?>
-								<select name="restwell_analytics_load_mode" id="restwell_analytics_load_mode">
-									<option value="head" <?php selected( $analytics_mode_current, 'head' ); ?>>
-										<?php esc_html_e( 'Head — load immediately (default)', 'restwell-retreats' ); ?>
-									</option>
-									<option value="footer_deferred" <?php selected( $analytics_mode_current, 'footer_deferred' ); ?>>
-										<?php esc_html_e( 'Footer — deferred loader (better for Core Web Vitals)', 'restwell-retreats' ); ?>
-									</option>
-									<option value="consent_gated" <?php selected( $analytics_mode_current, 'consent_gated' ); ?>>
-										<?php esc_html_e( 'Consent-gated — load only after CMP / consent (recommended with a cookie banner)', 'restwell-retreats' ); ?>
-									</option>
-								</select>
-								<p class="description">
-									<?php esc_html_e( 'Consent-gated mode outputs Google Consent Mode defaults in the head and loads GA4 and Metricool only after consent — you do not need CookieAdmin Pro; the free plugin is enough. With CookieAdmin (free), the theme reads the cookieadmin_consent cookie (Accept all or Analytics). Other CMPs can call window.restwellGrantAnalyticsConsent() or dispatch document event restwell-analytics-allow. Cookiebot and CookieYes listeners are included; Complianz often works via cmplz_fire_categories when statistics cookies are allowed.', 'restwell-retreats' ); ?>
-								</p>
-								<p class="description">
-									<?php esc_html_e( 'Verify Search Console using the meta tag above or DNS — GA placement no longer affects verification when using deferred or consent modes.', 'restwell-retreats' ); ?>
-								</p>
-							</td>
-						</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_bing_verification">
-										<?php esc_html_e( 'Bing Webmaster verification', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="text"
-										id="restwell_bing_verification"
-										name="restwell_bing_verification"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_bing_verification', '' ) ); ?>"
-										class="regular-text"
-									/>
-									<p class="description">
-										<?php esc_html_e( 'Paste the content value from Bing’s msvalidate.01 meta tag.', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
-							<tr>
-								<th scope="row">
-									<label for="restwell_access_statement_url">
-										<?php esc_html_e( 'Access statement PDF URL', 'restwell-retreats' ); ?>
-									</label>
-								</th>
-								<td>
-									<input
-										type="url"
-										id="restwell_access_statement_url"
-										name="restwell_access_statement_url"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_access_statement_url', '' ) ); ?>"
-										class="regular-text"
-										placeholder="https://"
-									/>
-									<p class="description">
-										<?php esc_html_e( 'Upload the PDF to Media Library, then paste the file URL here. Linked from the footer and Accessibility page.', 'restwell-retreats' ); ?>
-									</p>
-								</td>
-							</tr>
 							<tr>
 								<th scope="row"><?php esc_html_e( 'CRM role access', 'restwell-retreats' ); ?></th>
 								<td>

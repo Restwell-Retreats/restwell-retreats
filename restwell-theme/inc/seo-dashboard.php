@@ -52,22 +52,8 @@ function restwell_seo_dashboard_widget_render() {
 	<?php
 }
 
-/**
- * Admin notice: off-site SEO tasks (directories, GBP) - shown on CRM settings screen once.
+/*
+ * Off-site SEO tip used to print via admin_notices on the CRM dashboard, which
+ * caused a layout flash (notice above the title, then CRM CSS restyled it).
+ * That checklist now lives under SEO → Site-wide only.
  */
-function restwell_seo_local_tasks_notice() {
-	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-	if ( ! $screen || $screen->id !== 'toplevel_page_restwell-crm' ) {
-		return;
-	}
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-	?>
-	<div class="notice notice-info rw-notice--crm">
-		<p><strong><?php esc_html_e( 'Off-site SEO (manual)', 'restwell-retreats' ); ?></strong></p>
-		<p><?php esc_html_e( 'Complete your Google Business Profile (categories, services, photos, Q&A). Submit the site to high-relevance directories when ready: Tourism for All, DisabledHolidays, AccessAble, Euan’s Guide, Visit Kent. Request a footer link from Continuity Group sites.', 'restwell-retreats' ); ?></p>
-	</div>
-	<?php
-}
-add_action( 'admin_notices', 'restwell_seo_local_tasks_notice' );

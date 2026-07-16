@@ -1,14 +1,14 @@
 # SEO documentation consolidation checklist
 
 **Executed:** 2026-07-05  
-**Living operators:** [SEO-INTENT-ONPAGE-PLAN.md](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](../restwell-theme/SEO-PROGRESS-MATRIX.md) · [COPY-PASTE-PROCESS.md](../restwell-theme/COPY-PASTE-PROCESS.md) · [COPY-PASTE-PROMPTS.md](../restwell-theme/COPY-PASTE-PROMPTS.md) · [plan.md](../restwell-theme/plan.md) · [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md)
+**Living operators:** [SEO-INTENT-ONPAGE-PLAN.md](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) · [SEO-PROGRESS-MATRIX.md](../restwell-theme/SEO-PROGRESS-MATRIX.md) · [COPY-PASTE-PROCESS.md](../restwell-theme/COPY-PASTE-PROCESS.md) · [COPY-PASTE-PROMPTS.md](../restwell-theme/COPY-PASTE-PROMPTS.md) · [plan.md](../restwell-theme/plan.md) · [FRONT-PAGE-OPTIMIZATION.md](../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md)
 
 ---
 
 ## Standard archive banner
 
 ```markdown
-> **Archived YYYY-MM-DD.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`FRONT-PAGE-OPTIMIZATION.md`](../FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/AUDIT.md`](../restwell-theme/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
+> **Archived YYYY-MM-DD.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/docs/archive/AUDIT.md`](../restwell-theme/docs/archive/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
 ```
 
 **Archive root:** [`docs/archive/seo-legacy/`](archive/seo-legacy/)
@@ -27,22 +27,22 @@
 | 5 | `restwell-theme/SKILLS_GLOSSARY.md` | 1 | Keep | Reference only | — | README | [x] |
 | 6 | `restwell-theme/README.md` | 1 | Refactor | Two-track SEO doc map | — | — | [x] |
 | 7 | `restwell-seo-section1.md` | 2 | Archive | §2.1/§2.6 already supersede keyword tables | No orphaned P1 keywords | plan-seo-ops.md §F | [x] |
-| 8 | `restwell-seo-sections2-4.md` | 2 | Archive | §13.1 + `seo-content-seed.php` live | Title/meta parity via seeds | — | [x] |
-| 9 | `restwell-seo-sections5-7.md` | 2 | Merge → archive | §19.1 GBP; §3.3/B2 links; skip JSON-LD | GBP Q&A/posts in §19 | plan-seo-ops.md G7/G8 | [x] |
-| 10 | `restwell-seo-sections8-11.md` | 2 | Merge → archive | §8.1 competitors; §19.2 backlinks; §16 B3 calendar; §6.1 a11y | Calendar reconciled with seeds | plan-seo-ops.md G9 | [x] |
+| 8 | `restwell-theme/SEO-INTENT-ONPAGE-PLAN.md` | 2 | Archive | §13.1 + `seo-content-seed.php` live | Title/meta parity via seeds | — | [x] |
+| 9 | `restwell-theme/SEO-INTENT-ONPAGE-PLAN.md` | 2 | Merge → archive | §19.1 GBP; §3.3/B2 links; skip JSON-LD | GBP Q&A/posts in §19 | plan-seo-ops.md G7/G8 | [x] |
+| 10 | `restwell-theme/SEO-INTENT-ONPAGE-PLAN.md` | 2 | Merge → archive | §8.1 competitors; §19.2 backlinks; §16 B3 calendar; §6.1 a11y | Calendar reconciled with seeds | plan-seo-ops.md G9 | [x] |
 | 11 | `restwell-theme/plan.md` | 2 | Refactor | Hub only; CRM → plan-crm-ops.md; SEO → plan-seo-ops.md | — | README, SSOT §0.1 | [x] |
 | 11b | `restwell-theme/plan-crm-ops.md` | 2 | **New** | Sections A–E | — | plan.md | [x] |
 | 11c | `restwell-theme/plan-seo-ops.md` | 2 | **New** | Sections F–G; pointers to SSOT/matrix | — | plan.md, SSOT §19 | [x] |
 | 12 | `front-page-seo-optimization.md` | 3 | Archive | Open checks → FRONT-PAGE §6 + §11.6 | Verification rows logged | FRONT-PAGE | [x] |
-| 13 | `FRONT-PAGE-OPTIMIZATION.md` | 3 | Keep | Linked from §13.1 Home + §16 B4 | — | SSOT | [x] |
+| 13 | `restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md` | 3 | Keep | Linked from §13.1 Home + §16 B4 | — | SSOT | [x] |
 | 14 | `homepage-seo-cro-plan.md` | 3 | Archive | Absorbed in front-page cluster | All tasks done | — | [x] |
 | 15 | `restwell-theme/HOMEPAGE-PIPELINE-DELIVERABLE.md` | 3 | Merge → archive | §13.1 Home preset | Fields + LodgingBusiness table | SSOT | [x] |
-| 16 | `front-page-polish.md` | 3 | Archive | Verification gates → FRONT-PAGE §6 | MFRI historical only | — | [x] |
+| 16 | `restwell-theme/docs/archive/front-page-polish.md` | 3 | Archive | Verification gates → FRONT-PAGE §6 | MFRI historical only | — | [x] |
 | 17 | `restwell-theme/seo-admin-cpt.md` | 4 | Archive | Vision only; live = `inc/seo-admin.php` | — | — | [x] |
 | 18 | `restwell-theme/MEDIA-SEO-DETAILS.md` | 4 | Keep | Open tasks section merged from TODO | Hero derivatives documented | SSOT §6.1 | [x] |
 | 19 | `restwell-theme/MEDIA-OPTIMIZATION-TODO.md` | 4 | **Archived** | Folded into MEDIA-SEO-DETAILS | Reconciled with DETAILS | `prompt-stubs/` | [x] |
-| 20 | `restwell-theme/AUDIT.md` | 5 | Keep | PERFECT-SITE open items extracted | Items #6,14,22–25 | SSOT §16 | [x] |
-| 21 | `restwell-theme/PERFECT-SITE-PLAN.md` | 5 | Extract → archive | → AUDIT + §16 B3/B6 | Open ⏳ owned | AUDIT | [x] |
+| 20 | `restwell-theme/docs/archive/AUDIT.md` | 5 | Keep | PERFECT-SITE open items extracted | Items #6,14,22–25 | SSOT §16 | [x] |
+| 21 | `restwell-theme/docs/archive/PERFECT-SITE-PLAN.md` | 5 | Extract → archive | → AUDIT + §16 B3/B6 | Open ⏳ owned | AUDIT | [x] |
 | 22 | `audit-90-all-domains.md` | 5 | Archive | Outcomes in AUDIT | All `[x]` | — | [x] |
 | 23 | `high-priority-audit-remediation.md` | 5 | Archive | In AUDIT scorecard | All `[x]` | SSOT phone note | [x] |
 | 24 | `critical-audit-fixes.md` | 5 | Archive | OG/Twitter in `seo-social-meta.php` | All `[x]` | — | [x] |
@@ -66,7 +66,7 @@
 | sections5-7 GBP | Read §7 | Merged to SSOT §19.1 | Yes |
 | sections8-11 calendar | §16 B3 + blog seeds | Reconciliation note appended; seeds authoritative | Yes |
 | HOMEPAGE-PIPELINE-DELIVERABLE | §3, §7, §10 | Merged to §13.1 Home preset | Yes |
-| PERFECT-SITE-PLAN open ⏳ | Extract #6,14,22–25 | Owned in AUDIT High + §11.6 | Yes |
+| `restwell-theme/docs/archive/PERFECT-SITE-PLAN.md` open ⏳ | Extract #6,14,22–25 | Owned in AUDIT High + §11.6 | Yes |
 
 ---
 
@@ -94,8 +94,8 @@
 | `restwell-theme/SEO-PROGRESS-MATRIX.md` | COPY-PASTE-PROCESS sync; §18 `x`; meta date |
 | `restwell-theme/COPY-PASTE-PROCESS.md` | Workflow + shared pipeline; inward SSOT/matrix links |
 | `restwell-theme/COPY-PASTE-PROMPTS.md` | Manifests only; `@` COPY-PASTE-PROCESS per run |
-| `restwell-theme/AUDIT.md` | PERFECT-SITE extractions |
-| `FRONT-PAGE-OPTIMIZATION.md` | Live verification checklist |
+| `restwell-theme/docs/archive/AUDIT.md` | PERFECT-SITE extractions |
+| `restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md` | Live verification checklist |
 | `restwell-theme/DESIGN-SYSTEM.md` | Hero follow-up open items table |
 | `restwell-theme/VISUAL-FRONTEND-AUDIT.md` | Remediation status header |
 | `restwell-theme/MEDIA-SEO-DETAILS.md` | Open tasks from TODO |
@@ -107,9 +107,9 @@
 
 | Subfolder | Files |
 |-----------|-------|
-| `legacy-strategy/` | `restwell-seo-section1.md`, `restwell-seo-sections2-4.md`, `restwell-seo-sections5-7.md`, `restwell-seo-sections8-11.md` |
-| `homepage/` | `front-page-seo-optimization.md`, `homepage-seo-cro-plan.md`, `front-page-polish.md`, `HOMEPAGE-PIPELINE-DELIVERABLE.md` |
-| `audit-sprints/` | `audit-90-all-domains.md`, `high-priority-audit-remediation.md`, `critical-audit-fixes.md`, `PERFECT-SITE-PLAN.md` |
+| `legacy-strategy/` | `restwell-seo-section1.md` (sections 2–11 deleted; content in `restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`) |
+| `homepage/` | `front-page-seo-optimization.md`, `homepage-seo-cro-plan.md`, `HOMEPAGE-PIPELINE-DELIVERABLE.md` (`front-page-polish.md` → `restwell-theme/docs/archive/front-page-polish.md`) |
+| `audit-sprints/` | `audit-90-all-domains.md`, `high-priority-audit-remediation.md`, `critical-audit-fixes.md` (`PERFECT-SITE-PLAN.md` → `restwell-theme/docs/archive/PERFECT-SITE-PLAN.md`) |
 | `prompt-stubs/` | `audit.md`, `seo-admin-cpt.md`, `PAGE-RUNS.md`, `MEDIA-OPTIMIZATION-TODO.md` |
 
 ---

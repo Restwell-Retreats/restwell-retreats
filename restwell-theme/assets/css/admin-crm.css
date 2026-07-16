@@ -270,26 +270,6 @@
 	-webkit-overflow-scrolling: touch;
 }
 
-/* CRM notice (e.g. off-site SEO) */
-.notice.rw-notice--crm {
-	margin-top: var(--rw-space-4);
-	margin-bottom: var(--rw-space-5);
-	max-width: 720px;
-	padding: var(--rw-space-4) var(--rw-space-5);
-}
-
-.notice.rw-notice--crm p {
-	margin: 0.5em 0;
-}
-
-.notice.rw-notice--crm p:first-child {
-	margin-top: 0;
-}
-
-.notice.rw-notice--crm p:last-child {
-	margin-bottom: 0;
-}
-
 .restwell-admin .rw-section-card {
 	background: var(--rw-surface);
 	border: 1px solid var(--rw-border);
@@ -355,15 +335,61 @@
 	padding-top: var(--rw-space-4);
 }
 
+.restwell-admin .rw-settings-wrap .notice.inline {
+	margin: 0 0 var(--rw-space-4);
+	padding: 10px 14px;
+	border-radius: 6px;
+}
+
+.restwell-admin .rw-settings-wrap .form-table {
+	margin-top: var(--rw-space-2);
+}
+
+.restwell-admin .rw-settings-wrap .form-table th {
+	width: 200px;
+	padding: 14px 12px 14px 0;
+	font-weight: 600;
+	color: var(--rw-text);
+}
+
+.restwell-admin .rw-settings-wrap .form-table td {
+	padding: 14px 0;
+}
+
+.restwell-admin .rw-settings-wrap .form-table input.regular-text,
+.restwell-admin .rw-settings-wrap .form-table input[type="email"],
+.restwell-admin .rw-settings-wrap .form-table input[type="password"],
+.restwell-admin .rw-settings-wrap .form-table input[type="text"] {
+	width: 100%;
+	max-width: 420px;
+	padding: 8px 11px;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.restwell-admin .rw-settings-wrap .form-table input:focus {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+	outline: none;
+}
+
+.restwell-admin .rw-settings-wrap .form-table .description {
+	margin-top: 6px;
+	color: var(--rw-muted);
+	font-size: 12.5px;
+	line-height: 1.45;
+}
+
 .restwell-admin .postbox {
 	border: 1px solid var(--rw-border);
-	border-radius: var(--rw-radius-md);
+	border-radius: 8px;
 	overflow: hidden;
-	box-shadow: 0 1px 4px rgba(16, 24, 40, 0.05);
+	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
 
 .restwell-admin .postbox .postbox-header {
-	background: #f9fafb;
+	background: #f6f7f7;
 	border-bottom: 1px solid var(--rw-border);
 }
 
@@ -371,15 +397,21 @@
 	padding: 14px 18px !important;
 	margin: 0;
 	line-height: 1.35;
+	font-size: 14px;
+	font-weight: 650;
 }
 
 .restwell-admin .postbox .inside {
 	background: var(--rw-surface);
-	padding: 18px !important;
+	padding: 20px 22px !important;
 }
 
 .restwell-admin .postbox .inside > .description.rw-description--tight-top {
 	margin-top: 0;
+	margin-bottom: var(--rw-space-3);
+	color: var(--rw-muted);
+	font-size: 13px;
+	line-height: 1.5;
 }
 
 .restwell-admin .rw-empty {
@@ -1267,9 +1299,10 @@
 	gap: 0.3rem;
 	font-size: 12px;
 	font-weight: 600;
-	padding: 0.25rem 0.6rem;
-	border-radius: 3px;
+	padding: 0.25rem 0.65rem;
+	border-radius: 999px;
 	white-space: nowrap;
+	line-height: 1.4;
 }
 
 .rw-ga4-badge::before {

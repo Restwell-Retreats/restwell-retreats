@@ -1,18 +1,204 @@
 /**
- * Admin meta fields – tabbed page content metabox styles.
+ * Admin meta fields – section sidebar + panel styles.
  *
  * @package Restwell_Retreats
  */
 
-.restwell-meta-fields .nav-tab-wrapper {
-	margin-bottom: 0;
-	border-bottom: 1px solid #c3c4c7;
+.restwell-meta-fields__intro {
+	margin: 0 0 12px;
+}
+
+.restwell-meta-fields__checklist {
+	margin: 0 0 14px;
+	padding: 12px 14px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+
+.restwell-meta-fields__checklist-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.restwell-meta-fields__badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.restwell-meta-fields__badge--ok {
+	background: #d5f0e0;
+	color: #0a5c36;
+}
+
+.restwell-meta-fields__badge--error {
+	background: #f8d7da;
+	color: #8a1c1c;
+}
+
+.restwell-meta-fields__badge--warn {
+	background: #fff3cd;
+	color: #6b4e00;
+}
+
+.restwell-meta-fields__checklist-list {
+	margin: 10px 0 0;
+	padding-left: 1.2em;
+}
+
+.restwell-meta-fields__check {
+	margin: 0 0 6px;
+}
+
+.restwell-meta-fields__check--error {
+	color: #8a1c1c;
+}
+
+.restwell-meta-fields__check--warn {
+	color: #6b4e00;
+}
+
+.restwell-meta-fields__check--info {
+	color: #3c434a;
+}
+
+.restwell-meta-fields__check a {
+	margin-left: 6px;
+}
+
+.restwell-meta-fields__checklist-note {
+	margin: 10px 0 0;
+}
+
+.restwell-nav-tab__flag {
+	flex: 0 0 auto;
+	min-width: 1.25em;
+	padding: 0 5px;
+	border-radius: 999px;
+	background: #d63638;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.restwell-field--missing {
+	padding: 10px;
+	border: 1px solid #d63638;
+	border-radius: 4px;
+	background: #fcf0f1;
+}
+
+.restwell-field__req {
+	display: inline-block;
+	margin-left: 4px;
+	padding: 0 6px;
+	border-radius: 3px;
+	background: #f0f0f1;
+	color: #646970;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.restwell-field--missing .restwell-field__req {
+	background: #d63638;
+	color: #fff;
+}
+
+.restwell-meta-fields__layout {
+	display: flex;
+	align-items: flex-start;
+	gap: 0;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+	min-height: 280px;
+}
+
+.restwell-meta-fields__nav {
+	flex: 0 0 200px;
+	max-width: 220px;
+	border-right: 1px solid #dcdcde;
+	background: #f6f7f7;
+	padding: 12px 0;
+}
+
+.restwell-meta-fields__nav-label {
+	margin: 0 12px 8px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #646970;
+}
+
+.restwell-meta-fields__nav-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.restwell-meta-fields__nav-list li {
+	margin: 0;
+}
+
+.restwell-meta-fields .restwell-nav-tab {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 8px 14px;
+	border: 0;
+	border-left: 3px solid transparent;
+	background: transparent;
+	color: #1d2327;
+	font-size: 13px;
+	line-height: 1.35;
+	text-align: left;
+	cursor: pointer;
+}
+
+.restwell-meta-fields .restwell-nav-tab:hover,
+.restwell-meta-fields .restwell-nav-tab:focus {
+	background: #fff;
+	color: #135e96;
+	outline: none;
+}
+
+.restwell-meta-fields .restwell-nav-tab.is-active {
+	background: #fff;
+	border-left-color: #2271b1;
+	font-weight: 600;
+	color: #135e96;
+}
+
+.restwell-meta-fields__panels {
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 16px 20px 20px;
+}
+
+.restwell-meta-fields__panel-title {
+	margin: 0 0 16px;
+	padding: 0 0 10px;
+	border-bottom: 1px solid #dcdcde;
+	font-size: 14px;
+	font-weight: 600;
 }
 
 .restwell-meta-fields .restwell-tab-panel {
 	display: none;
-	padding: 1.25rem 0 0;
-	border-top: none;
 }
 
 .restwell-meta-fields .restwell-tab-panel.active {
@@ -125,4 +311,40 @@
 
 .restwell-meta-fields .restwell-remove-image {
 	color: #b32d2e !important;
+}
+
+@media screen and (max-width: 782px) {
+	.restwell-meta-fields__layout {
+		flex-direction: column;
+	}
+
+	.restwell-meta-fields__nav {
+		flex: none;
+		max-width: none;
+		width: 100%;
+		border-right: 0;
+		border-bottom: 1px solid #dcdcde;
+		padding: 8px 0;
+	}
+
+	.restwell-meta-fields__nav-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
+		padding: 0 8px 4px;
+	}
+
+	.restwell-meta-fields .restwell-nav-tab {
+		width: auto;
+		border-left: 0;
+		border-radius: 4px;
+		padding: 6px 10px;
+		background: #fff;
+		border: 1px solid #c3c4c7;
+	}
+
+	.restwell-meta-fields .restwell-nav-tab.is-active {
+		border-color: #2271b1;
+		background: #f0f6fc;
+	}
 }

@@ -4,7 +4,7 @@
 **Scope:** `/restwell-theme/` — PHP (`inc/`, templates, `template-parts/`), JS (`assets/js/`), CSS (`assets/css/`)
 **Method:** Full-file reads across five module areas (CRM, SEO, theme-setup/content-meta, templates, front-end assets), plus an objective `phpcs` run against the WordPress Coding Standards config already in the repo (`phpcs.xml.dist`). Every finding below cites `file:line`. No git history rewriting was needed — the 41-commit history is already linear with clean conventional messages, so `git-advanced-workflows` techniques (rebase/bisect/worktree) aren't required for cleanup; they're noted only where relevant to *how* to land these fixes safely (small commits, `git bisect` if a fix regresses something).
 
-**Headline finding:** `AUDIT.md` currently scores "Code quality / maintainability" at **94/100** and "WordPress standards" at **93/100**. Neither is supported by the code. The modular file-splitting described there is real and was a genuine improvement, but splitting files ≠ removing debt — several of the new files are themselves 700–1,100 line god-modules, there are zero automated tests anywhere in the theme, and an objective linter run finds security-relevant violations (unescaped output, unprepared SQL, global overrides) that a 93–94/100 score should not have.
+**Headline finding:** [`docs/archive/AUDIT.md`](docs/archive/AUDIT.md) currently scores "Code quality / maintainability" at **94/100** and "WordPress standards" at **93/100**. Neither is supported by the code. The modular file-splitting described there is real and was a genuine improvement, but splitting files ≠ removing debt — several of the new files are themselves 700–1,100 line god-modules, there are zero automated tests anywhere in the theme, and an objective linter run finds security-relevant violations (unescaped output, unprepared SQL, global overrides) that a 93–94/100 score should not have.
 
 ---
 
@@ -151,7 +151,7 @@ Methodology differs slightly per module (literal copy-paste vs. structural/near-
 
 ## 5. Architecture: the service layer doesn't do what it claims
 
-`inc/services/` (`Restwell_Crm_Gateway`, `Restwell_Enquiry_Service`) is presented in `AUDIT.md` as a Clean-Architecture-style boundary ("Plugin architecture boundary: 92/100"). In practice:
+`inc/services/` (`Restwell_Crm_Gateway`, `Restwell_Enquiry_Service`) is presented in [`docs/archive/AUDIT.md`](docs/archive/AUDIT.md) as a Clean-Architecture-style boundary ("Plugin architecture boundary: 92/100"). In practice:
 
 - `services/bootstrap.php:6–7` says outright: *"Business logic remains in `inc/crm/*` … services are the stable entry surface."* That's a facade, not dependency inversion — there's no interface, no injection, nothing swappable.
 - Public-facing intake (`wp-content/mu-plugins/restwell-crm/enquire-handler.php`, `inc/faq-question-handler.php`) does go through the service layer correctly.
@@ -247,9 +247,9 @@ To be direct rather than one-sided: the modular `inc/` split is real and worth k
 
 ---
 
-## 11. Scorecard: this audit vs. `AUDIT.md`
+## 11. Scorecard: this audit vs. [`docs/archive/AUDIT.md`](docs/archive/AUDIT.md)
 
-| Dimension | `AUDIT.md` | This audit | Why |
+| Dimension | `docs/archive/AUDIT.md` | This audit | Why |
 |---|---|---|---|
 | Code quality / maintainability | 94/100 | **~60/100** | Multiple 300–850 line functions; ~3,500–4,500 duplicated lines; 3 dead template-parts |
 | WordPress standards | 93/100 | **~75/100** | 1,082 PHPCS violations incl. 11 unescaped-output, 25 global-overrides; 1 inline-script/style violation of the project's own rules |
@@ -257,4 +257,4 @@ To be direct rather than one-sided: the modular `inc/` split is real and worth k
 | Security | implied high (93/100 standards) | **~80/100** | Nonce/capability checks are genuinely solid; 6 unprepared-SQL patterns and 11 escaping gaps keep this from being higher |
 | Test coverage | not scored | **0/100** | Zero automated tests anywhere in the theme |
 
-This isn't a repudiation of the prior audit work — the SEO/schema/analytics/accessibility findings in `AUDIT.md` are largely accurate for what they measure (feature presence). This report measures something different: code structure, duplication, and verifiability, which `AUDIT.md` asserted without the underlying evidence. Both documents can be true at once — the site works and converts, and the code that makes it work carries real maintenance risk.
+This isn't a repudiation of the prior audit work — the SEO/schema/analytics/accessibility findings in [`docs/archive/AUDIT.md`](docs/archive/AUDIT.md) are largely accurate for what they measure (feature presence). This report measures something different: code structure, duplication, and verifiability, which that audit asserted without the underlying evidence. Both documents can be true at once — the site works and converts, and the code that makes it work carries real maintenance risk.

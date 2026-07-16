@@ -1,9 +1,9 @@
-> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`FRONT-PAGE-OPTIMIZATION.md`](../FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/AUDIT.md`](../restwell-theme/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
+> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../../../../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../../../../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/docs/archive/AUDIT.md`](../../../../restwell-theme/docs/archive/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
 
 # Audit 90+ Remediation Plan
 
 ## Goal
-Raise every domain in `restwell-theme/AUDIT.md` to at least 90/100 with code-backed improvements and verification evidence.
+Raise every domain in `restwell-theme/docs/archive/AUDIT.md` to at least 90/100 with code-backed improvements and verification evidence.
 
 ## Tasks
 - [x] Task 1: Add REST user-enumeration hardening in `restwell-theme/functions.php` or a dedicated `inc/security-rest.php` include using `rest_authentication_errors` for unauthenticated `/wp/v2/users` listing requests (skills: `security-auditor`, `code-review-checklist`) -> Verify: code contains the guard, authenticated editor/admin requests still work, anonymous `/wp-json/wp/v2/users` returns blocked response.
@@ -15,11 +15,11 @@ Raise every domain in `restwell-theme/AUDIT.md` to at least 90/100 with code-bac
 - [x] Task 7: Refactor oversized files by splitting concerns from `inc/theme-setup.php`, `inc/seo.php`, and `inc/crm.php` into focused includes under `restwell-theme/inc/` (skills: `code-review-checklist`, `web-performance-optimization`) -> Verify: each original file shrinks materially, behavior unchanged, and includes are loaded in deterministic order.
 - [x] Task 8: Improve theme/plugin architecture boundary by introducing an ops service layer interface (theme-side adapter + isolated domain modules) so business logic is no longer tightly coupled to template lifecycle (skills: `wordpress-theme-classic-meta`, `code-review-checklist`) -> Verify: CRM/business actions route through service functions instead of direct template coupling; boundaries documented in code comments.
 - [x] Task 9: Raise WordPress standards consistency by auditing touched files for escaping/sanitization and normalizing any misses (skills: `code-review-checklist`, `wordpress-theme-classic-meta`) -> Verify: no unescaped output in modified paths; input handling uses appropriate sanitizers.
-- [x] Task 10: Refresh `restwell-theme/AUDIT.md` with rerun evidence, updated scorecard (all domains >= 90 target), and residual risks if any (skills: `seo-audit`, `security-auditor`, `analytics-tracking`) -> Verify: every domain row is updated from repository evidence and open issues list matches actual unresolved items only.
+- [x] Task 10: Refresh `restwell-theme/docs/archive/AUDIT.md` with rerun evidence, updated scorecard (all domains >= 90 target), and residual risks if any (skills: `seo-audit`, `security-auditor`, `analytics-tracking`) -> Verify: every domain row is updated from repository evidence and open issues list matches actual unresolved items only.
 
 ## Done When
 - [x] All remediation tasks above are implemented and verified with code/runtime evidence.
-- [x] `restwell-theme/AUDIT.md` reflects a current-state rerun with each domain at or above 90/100, or explicitly explains any blocked domain with concrete next action.
+- [x] `restwell-theme/docs/archive/AUDIT.md` reflects a current-state rerun with each domain at or above 90/100, or explicitly explains any blocked domain with concrete next action.
 - [x] Verification artifacts exist for security hardening, schema output, analytics conformity, editorial intent split, and refactor integrity.
 
 ## Notes

@@ -121,14 +121,25 @@ add_filter( 'script_loader_tag', 'restwell_defer_analytics_loader_script', 10, 3
 function restwell_enqueue_admin_styles( $hook_suffix ) {
 	$target_hooks = array(
 		'toplevel_page_restwell-crm',
+		'restwell-crm_page_restwell-enquiries',
+		'restwell-crm_page_restwell-mailing-list',
+		'restwell-crm_page_restwell-guest-guide',
+		// Legacy hook prefixes (kept so Local / older WP menus still get styles).
 		'restwell_page_restwell-enquiries',
 		'restwell_page_restwell-guest-guide',
 	);
 
-	$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
+	$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	$crm_pages = array(
+		'restwell-crm',
+		'restwell-enquiries',
+		'restwell-mailing-list',
+		'restwell-guest-guide',
+	);
 
 	$load_crm_screen = in_array( $hook_suffix, $target_hooks, true )
-		|| in_array( $page, array( 'restwell-crm', 'restwell-enquiries', 'restwell-guest-guide' ), true );
+		|| in_array( $page, $crm_pages, true );
 
 	// Guest Guide meta box on page edit: shared form/section classes in admin-crm.css.
 	$page_editor_gg = false;
@@ -147,26 +158,36 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 		return;
 	}
 
-	$theme_uri = get_template_directory_uri();
-	$version   = wp_get_theme()->get( 'Version' );
+	$theme_uri  = get_template_directory_uri();
+	$theme_dir  = get_template_directory();
+	$crm_css    = $theme_dir . '/assets/css/admin-crm.css';
+	$crm_js     = $theme_dir . '/assets/js/admin-crm-actions.js';
+	$meta_css   = $theme_dir . '/assets/css/admin-meta-fields.css';
+	$meta_js    = $theme_dir . '/assets/js/admin-meta-fields.js';
+	$theme_ver  = (string) wp_get_theme()->get( 'Version' );
+	$crm_css_ver = file_exists( $crm_css ) ? (string) filemtime( $crm_css ) : $theme_ver;
 
 	wp_enqueue_style(
 		'restwell-admin-crm',
 		$theme_uri . '/assets/css/admin-crm.css',
 		array(),
-		$version
+		$crm_css_ver
 	);
 
 	// Inline status-change UI — only needed on the enquiries list, not the dashboard or guest guide.
-	$load_enquiries_screen = ( 'restwell_page_restwell-enquiries' === $hook_suffix )
-		|| ( 'restwell-enquiries' === $page );
+	$load_enquiries_screen = in_array(
+		$hook_suffix,
+		array( 'restwell-crm_page_restwell-enquiries', 'restwell_page_restwell-enquiries' ),
+		true
+	) || ( 'restwell-enquiries' === $page );
 
 	if ( $load_enquiries_screen ) {
+		$crm_js_ver = file_exists( $crm_js ) ? (string) filemtime( $crm_js ) : $theme_ver;
 		wp_enqueue_script(
 			'restwell-crm-actions',
 			$theme_uri . '/assets/js/admin-crm-actions.js',
 			array(),
-			$version,
+			$crm_js_ver,
 			true
 		);
 		wp_localize_script(
@@ -181,17 +202,19 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 	}
 
 	if ( $page_editor_gg ) {
+		$meta_css_ver = file_exists( $meta_css ) ? (string) filemtime( $meta_css ) : $theme_ver;
+		$meta_js_ver  = file_exists( $meta_js ) ? (string) filemtime( $meta_js ) : $theme_ver;
 		wp_enqueue_style(
 			'restwell-admin-meta-fields',
 			$theme_uri . '/assets/css/admin-meta-fields.css',
 			array(),
-			$version
+			$meta_css_ver
 		);
 		wp_enqueue_script(
 			'restwell-admin-meta-fields',
 			$theme_uri . '/assets/js/admin-meta-fields.js',
 			array(),
-			$version,
+			$meta_js_ver,
 			true
 		);
 	}

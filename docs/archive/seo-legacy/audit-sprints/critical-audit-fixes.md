@@ -1,9 +1,9 @@
-> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`FRONT-PAGE-OPTIMIZATION.md`](../FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/AUDIT.md`](../restwell-theme/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
+> **Archived 2026-07-05.** Superseded by [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../../../../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) (site SEO SSOT), [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../../../../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md) (homepage), and/or [`restwell-theme/docs/archive/AUDIT.md`](../../../../restwell-theme/docs/archive/AUDIT.md). Open work: SSOT §11.6 / §16 and AUDIT sprint plan. Do not execute tasks from this file.
 
 # Critical Audit Fixes
 
 ## Goal
-Close all **Critical** items listed in `restwell-theme/AUDIT.md` with code changes that are testable in one pass.
+Close all **Critical** items listed in `restwell-theme/docs/archive/AUDIT.md` with code changes that are testable in one pass.
 
 ## Tasks
 - [x] Task 1: Self-host Phosphor icon CSS/fonts in `restwell-theme/assets/` and switch `restwell-theme/inc/enqueue.php` to local `wp_enqueue_style` URLs only. -> Verify: search `inc/enqueue.php` has no `unpkg.com` URL and front-end icons still render.
@@ -11,14 +11,14 @@ Close all **Critical** items listed in `restwell-theme/AUDIT.md` with code chang
 - [x] Task 3: Add `twitter:image:alt` in `restwell-theme/inc/seo-social-meta.php` using image alt meta with a safe fallback (site/title text). -> Verify: page source contains `twitter:image:alt` when social image is present.
 - [x] Task 4: Add XML-RPC hardening in `restwell-theme/functions.php` (or a dedicated include) with `add_filter( 'xmlrpc_enabled', '__return_false' )`. -> Verify: code present and no PHP syntax errors.
 - [x] Task 5: Add author archive enumeration mitigation in `restwell-theme/inc/redirects.php` by redirecting `is_author()` requests to home with 301. -> Verify: code path exists and does not run in admin/AJAX/REST contexts.
-- [x] Task 6: Update `restwell-theme/AUDIT.md` Critical section to mark these items as fixed and move any follow-up work to High/Medium. -> Verify: `Highest Priority Open Issues -> Critical` reflects zero unresolved items for these three categories.
+- [x] Task 6: Update `restwell-theme/docs/archive/AUDIT.md` Critical section to mark these items as fixed and move any follow-up work to High/Medium. -> Verify: `Highest Priority Open Issues -> Critical` reflects zero unresolved items for these three categories.
 - [x] Task 7: Verification (LAST): run lint/syntax checks for changed PHP files and manually inspect generated head tags in source view. -> Verify: no new lints; expected meta tags present; icons load from local theme paths.
 
 ## Done When
 - [x] No external icon CDN remains in `inc/enqueue.php`.
 - [x] Social meta output includes `og:image:width`, `og:image:height`, and `twitter:image:alt`.
 - [x] XML-RPC is explicitly disabled and author archive enumeration mitigation is implemented.
-- [x] `restwell-theme/AUDIT.md` accurately reflects the new critical-item status.
+- [x] `restwell-theme/docs/archive/AUDIT.md` accurately reflects the new critical-item status.
 
 ## Notes
 - Keep implementation minimal and WordPress-native (`restwell_` prefixes, escaped output, sanitized lookups).

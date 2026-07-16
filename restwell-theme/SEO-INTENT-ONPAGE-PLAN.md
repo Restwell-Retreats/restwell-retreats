@@ -14,8 +14,8 @@
 | **SSOT P1–P10** | This file + [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md) | — |
 | **Template COPY-PASTE** | [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) (workflow) + [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) (manifests); **post-run sync required** → §13.1 + matrix | [PAGE-RUNS.md](../docs/archive/seo-legacy/prompt-stubs/PAGE-RUNS.md) |
 | **Ops plans** | [plan.md](plan.md) (index) · [plan-crm-ops.md](plan-crm-ops.md) · [plan-seo-ops.md](plan-seo-ops.md) | — |
-| **Homepage** | [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) | `docs/archive/seo-legacy/homepage/` |
-| **Audit / technical** | [AUDIT.md](AUDIT.md) | `docs/archive/seo-legacy/audit-sprints/` |
+| **Homepage** | [FRONT-PAGE-OPTIMIZATION.md](docs/FRONT-PAGE-OPTIMIZATION.md) | `docs/archive/seo-legacy/homepage/` |
+| **Audit / technical** | [AUDIT.md](docs/archive/AUDIT.md) | `docs/archive/seo-legacy/audit-sprints/` |
 | **Legacy strategy** | Absorbed into §2–§8, §16, §19 | `docs/archive/seo-legacy/legacy-strategy/` |
 | **§2.6 evidence runs** | [`docs/seo-runs/`](../../docs/seo-runs/) | Index in **§2.6** below |
 | **Media SEO** | [MEDIA-SEO-DETAILS.md](MEDIA-SEO-DETAILS.md) | [MEDIA-OPTIMIZATION-TODO.md](../docs/archive/seo-legacy/prompt-stubs/MEDIA-OPTIMIZATION-TODO.md) |
@@ -3567,7 +3567,7 @@ Guest-facing `**/guest-guide/`** stays **noindex** (theme); do not push it in pu
 
 #### Home preset (`/` — from HOMEPAGE-PIPELINE-DELIVERABLE)
 
-**Handoff doc:** [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) · **Sources:** `front-page.php`, `inc/page-meta-definitions.php`, `inc/seo-content-seed.php` (slug `home`), `inc/seo.php`.
+**Handoff doc:** [FRONT-PAGE-OPTIMIZATION.md](docs/FRONT-PAGE-OPTIMIZATION.md) · **Sources:** `front-page.php`, `inc/page-meta-definitions.php`, `inc/seo-content-seed.php` (slug `home`), `inc/seo.php`.
 
 **Page Content Fields (all keys):** `hero_eyebrow`, `hero_heading`, `hero_subheading`, `hero_media_id`, `hero_cta_primary_label`, `hero_cta_primary_url`, `hero_cta_secondary_label`, `hero_cta_secondary_url`, `hero_cta_promise`; `what_restwell_label`, `what_restwell_heading`, `intro_body`; `who_label`, `who_heading`, `who_guest_title`, `who_guest_body`, `who_carer_title`, `who_carer_body`; `property_label`, `property_heading`, `property_body`, `property_cta_label`, `property_cta_url`, `property_image_id`; `why_label`, `why_heading`, `why_item1_title` … `why_item4_desc`; `trust_label`, `trust_heading`, `trust_badge_image_id`, `trust_line`; `testimonial_label`, `testimonial_heading`, `testimonial_1_quote` … `testimonial_5_role`; `cta_heading`, `cta_body`, `cta_primary_label`, `cta_primary_url`, `cta_secondary_label`, `cta_secondary_url`, `cta_promise`, `cta_image_id`.
 
@@ -3710,7 +3710,7 @@ You **cannot** run a rich **B1 classic** until Google has indexed you and Perfor
 
 ### B2 - Intent map & cannibalization
 
-**Living scorecard:** [AUDIT.md](AUDIT.md) §8 hub/spoke table (editorial intent boundaries).
+**Living scorecard:** [AUDIT.md](docs/archive/AUDIT.md) §8 hub/spoke table (editorial intent boundaries).
 
 **Skills:** `/seo-keyword-strategist`, `/seo-cannibalization-detector`, `/seo-meta-optimizer`
 
@@ -3780,7 +3780,7 @@ You **cannot** run a rich **B1 classic** until Google has indexed you and Perfor
 
 ### B4 - On-page upgrades
 
-Execute **§4** end-to-end (including **Step H**). Homepage published baseline: [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md). Money pages first; then URLs that gain impressions in GSC when data exists.
+Execute **§4** end-to-end (including **Step H**). Homepage published baseline: [FRONT-PAGE-OPTIMIZATION.md](docs/FRONT-PAGE-OPTIMIZATION.md). Money pages first; then URLs that gain impressions in GSC when data exists.
 
 ### B5 - Quality, authority, freshness (YMYL-adjacent)
 
@@ -3800,7 +3800,7 @@ Focus: named expertise, consistent org/address (matches JSON-LD / GBP); refresh 
 
 ### B6 - Monthly ranking ritual
 
-**Sync with:** §11.5 monthly compare + §11.6 measurement log; open technical/editorial items in [AUDIT.md](AUDIT.md).
+**Sync with:** §11.5 monthly compare + §11.6 measurement log; open technical/editorial items in [AUDIT.md](docs/archive/AUDIT.md).
 
 **Skills:** `/seo-audit`, `/seo-fundamentals`, `/geo-fundamentals`
 

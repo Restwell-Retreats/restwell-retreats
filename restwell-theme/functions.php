@@ -45,6 +45,7 @@ require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/seo-admin.php';
 require_once get_template_directory() . '/inc/seo-checklist.php';
 require_once get_template_directory() . '/inc/seo-pages-admin.php';
+require_once get_template_directory() . '/inc/seo-sitewide-admin.php';
 require_once get_template_directory() . '/inc/seo-dashboard.php';
 require_once get_template_directory() . '/inc/seo-social-meta.php';
 require_once get_template_directory() . '/inc/sitemap-robots.php';

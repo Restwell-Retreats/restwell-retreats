@@ -9,8 +9,8 @@ Historical SEO markdown moved here during the **2026-07-05** documentation conso
 | Site SEO SSOT | [`restwell-theme/SEO-INTENT-ONPAGE-PLAN.md`](../../restwell-theme/SEO-INTENT-ONPAGE-PLAN.md) |
 | Progress matrix | [`restwell-theme/SEO-PROGRESS-MATRIX.md`](../../restwell-theme/SEO-PROGRESS-MATRIX.md) |
 | Template COPY-PASTE workflow | [`restwell-theme/COPY-PASTE-PROMPTS.md`](../../restwell-theme/COPY-PASTE-PROMPTS.md) |
-| Homepage handoff | [`FRONT-PAGE-OPTIMIZATION.md`](../../FRONT-PAGE-OPTIMIZATION.md) |
-| Living audit scorecard | [`restwell-theme/AUDIT.md`](../../restwell-theme/AUDIT.md) |
+| Homepage handoff | [`restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md`](../../../restwell-theme/docs/FRONT-PAGE-OPTIMIZATION.md) |
+| Living audit scorecard | [`restwell-theme/docs/archive/AUDIT.md`](../../../restwell-theme/docs/archive/AUDIT.md) |
 
 ## Subfolders
 

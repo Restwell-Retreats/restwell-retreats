@@ -127,91 +127,8 @@ function restwell_crm_handle_save_settings() {
 		: '';
 	update_option( 'restwell_enquiry_notify_email', $email );
 
-	$phone = isset( $_POST['restwell_phone_number'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_phone_number'] ) )
-		: '';
-	update_option( 'restwell_phone_number', $phone );
-
-	$address = isset( $_POST['restwell_property_address'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_property_address'] ) )
-		: '';
-	update_option( 'restwell_property_address', $address );
-
-	$postcode = isset( $_POST['restwell_property_postcode'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_property_postcode'] ) )
-		: '';
-	update_option( 'restwell_property_postcode', $postcode );
-
-	$business_street = isset( $_POST['restwell_business_street'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_business_street'] ) )
-		: '';
-	update_option( 'restwell_business_street', $business_street );
-
-	$business_locality = isset( $_POST['restwell_business_locality'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_business_locality'] ) )
-		: '';
-	update_option( 'restwell_business_locality', $business_locality );
-
-	$business_region = isset( $_POST['restwell_business_region'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_business_region'] ) )
-		: '';
-	update_option( 'restwell_business_region', $business_region );
-
-	$business_postcode = isset( $_POST['restwell_business_postcode'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_business_postcode'] ) )
-		: '';
-	update_option( 'restwell_business_postcode', $business_postcode );
-
-	$business_geo_lat = isset( $_POST['restwell_business_geo_lat'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_business_geo_lat'] ) )
-		: '';
-	update_option( 'restwell_business_geo_lat', $business_geo_lat );
-
-	$business_geo_lon = isset( $_POST['restwell_business_geo_lon'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_business_geo_lon'] ) )
-		: '';
-	update_option( 'restwell_business_geo_lon', $business_geo_lon );
-
-	$footer_heading = isset( $_POST['restwell_footer_cta_heading'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_heading'] ) )
-		: '';
-	update_option( 'restwell_footer_cta_heading', $footer_heading );
-
-	$footer_btn = isset( $_POST['restwell_footer_cta_btn'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_btn'] ) )
-		: '';
-	update_option( 'restwell_footer_cta_btn', $footer_btn );
-
-	$footer_intro = isset( $_POST['restwell_footer_cta_intro'] )
-		? sanitize_textarea_field( wp_unslash( $_POST['restwell_footer_cta_intro'] ) )
-		: '';
-	update_option( 'restwell_footer_cta_intro', $footer_intro );
-
-	$footer_primary_label = isset( $_POST['restwell_footer_cta_primary_label'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_primary_label'] ) )
-		: '';
-	update_option( 'restwell_footer_cta_primary_label', $footer_primary_label );
-
-	$footer_primary_url = isset( $_POST['restwell_footer_cta_primary_url'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_primary_url'] ) )
-		: '';
-	update_option( 'restwell_footer_cta_primary_url', $footer_primary_url );
-
-	$footer_note = isset( $_POST['restwell_footer_cta_note'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_note'] ) )
-		: '';
-	update_option( 'restwell_footer_cta_note', $footer_note );
-
-	$gsc = isset( $_POST['restwell_gsc_verification'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_gsc_verification'] ) )
-		: '';
-	update_option( 'restwell_gsc_verification', $gsc );
-
-	$ga4 = isset( $_POST['restwell_ga4_measurement_id'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_ga4_measurement_id'] ) )
-		: '';
-	$ga4 = preg_replace( '/\s+/', '', $ga4 );
-	update_option( 'restwell_ga4_measurement_id', $ga4 );
+	// Phone, schema address, verification, analytics, property line, footer CTA, access PDF:
+	// managed under SEO → Site-wide (restwell_seo_sitewide_handle_save).
 
 	$mailchimp_api_key = isset( $_POST['restwell_mailchimp_api_key'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_api_key'] ) )
@@ -234,31 +151,6 @@ function restwell_crm_handle_save_settings() {
 		? sanitize_key( wp_unslash( $_POST['restwell_mailchimp_server_prefix'] ) )
 		: '';
 	update_option( 'restwell_mailchimp_server_prefix', $mailchimp_server_prefix, false );
-
-	$metricool_hash = isset( $_POST['restwell_metricool_hash'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_metricool_hash'] ) )
-		: '';
-	$metricool_hash = preg_replace( '/[^0-9A-Za-z]/', '', $metricool_hash );
-	$metricool_hash = strtolower( $metricool_hash );
-	update_option( 'restwell_metricool_hash', $metricool_hash );
-
-	$analytics_mode = isset( $_POST['restwell_analytics_load_mode'] )
-		? sanitize_key( wp_unslash( $_POST['restwell_analytics_load_mode'] ) )
-		: 'head';
-	if ( ! in_array( $analytics_mode, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
-		$analytics_mode = 'head';
-	}
-	update_option( 'restwell_analytics_load_mode', $analytics_mode );
-
-	$bing = isset( $_POST['restwell_bing_verification'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_bing_verification'] ) )
-		: '';
-	update_option( 'restwell_bing_verification', preg_replace( '/[^0-9A-Za-z]/', '', $bing ) );
-
-	$access_pdf = isset( $_POST['restwell_access_statement_url'] )
-		? esc_url_raw( wp_unslash( $_POST['restwell_access_statement_url'] ) )
-		: '';
-	update_option( 'restwell_access_statement_url', $access_pdf );
 
 	$raw_cap_roles = isset( $_POST['restwell_crm_cap_roles'] ) ? (array) wp_unslash( $_POST['restwell_crm_cap_roles'] ) : array();
 	$cap_roles     = array_values(

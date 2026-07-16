@@ -176,34 +176,14 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 
 ## Related documentation
 
-### SEO (two tracks)
-
-| Track | Doc | Scope |
-|-------|-----|--------|
-| **SSOT P1–P10** | [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | Strategy, keywords, per-URL on-page work, §13.1 audit trail |
-| **Scoreboard** | [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Symbols only — update after every plan write-back |
-| **Template COPY-PASTE** | [COPY-PASTE-PROCESS.md](./COPY-PASTE-PROCESS.md) + [COPY-PASTE-PROMPTS.md](./COPY-PASTE-PROMPTS.md) | Workflow + per-page manifests; **requires matrix sync** after each run |
-| **Ops plans** | [plan.md](./plan.md) · [plan-crm-ops.md](./plan-crm-ops.md) · [plan-seo-ops.md](./plan-seo-ops.md) | CRM/journey vs SEO cadence (hub links inward to SSOT) |
-| **Homepage handoff** | [FRONT-PAGE-OPTIMIZATION.md](../FRONT-PAGE-OPTIMIZATION.md) | Published homepage baseline for editors and engineering |
-| **Living audit** | [AUDIT.md](./AUDIT.md) | Multi-domain scorecard and open remediation |
-| **Skills index** | [SKILLS_GLOSSARY.md](./SKILLS_GLOSSARY.md) | Auto-generated slash-command index (regenerate; do not hand-edit) |
-| **Media alt text** | [MEDIA-SEO-DETAILS.md](./MEDIA-SEO-DETAILS.md) | Media Library metadata fill-in sheet + open optimization tasks |
-| **Consolidation map** | [docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md](../docs/SEO-DOC-CONSOLIDATION-CHECKLIST.md) | Merge/archive status for all SEO markdown |
-| **Archived legacy** | [docs/archive/seo-legacy/](../docs/archive/seo-legacy/) | Superseded strategy, homepage, and audit sprint docs |
-
-### Design and UX
-
 | Doc | Scope |
-|-----|--------|
+|-----|-------|
 | [DESIGN-SYSTEM.md](./DESIGN-SYSTEM.md) | Colours, type, spacing, components, Tailwind conventions |
 | [VISUAL-FRONTEND-AUDIT.md](./VISUAL-FRONTEND-AUDIT.md) | UI audit notes and remediation tracking |
-
-### Analytics and ops (SEO-adjacent)
-
-| Doc | Scope |
-|-----|--------|
-| [inc/ANALYTICS-PRIMARY-GOAL.md](./inc/ANALYTICS-PRIMARY-GOAL.md) | Primary conversion events and message match with SEO seed |
-| [inc/TESTIMONIAL-COLLECT.md](./inc/TESTIMONIAL-COLLECT.md) | Post-stay testimonial collection SOP |
+| [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | **SSOT** for SEO / AEO / GEO: strategy, keywords, per-URL on-page work |
+| [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Progress scoreboard companion to the SEO plan |
+| [docs/FRONT-PAGE-OPTIMIZATION.md](./docs/FRONT-PAGE-OPTIMIZATION.md) | Front page engineering handoff, editor guide, quarterly maintenance checklist |
+| [docs/archive/](./docs/archive/) | Historical audit and planning docs (AUDIT.md, PERFECT-SITE-PLAN.md, front-page-polish.md) |
 
 ---
 

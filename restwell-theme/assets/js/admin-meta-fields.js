@@ -13,18 +13,24 @@
 	var storeKey = 'restwell_tab_' + postId;
 
 	/**
-	 * Activate a specific tab by its panel ID.
+	 * Activate a specific section by its panel ID.
 	 *
 	 * @param {string} panelId
 	 */
 	function activateTab( panelId ) {
-		tabs.forEach( function ( t ) { t.classList.remove( 'nav-tab-active' ); } );
+		tabs.forEach( function ( t ) {
+			t.classList.remove( 'is-active', 'nav-tab-active' );
+			t.setAttribute( 'aria-selected', 'false' );
+		} );
 		panels.forEach( function ( p ) { p.classList.remove( 'active' ); } );
 
 		var matchTab = wrapper.querySelector( '.restwell-nav-tab[data-panel="' + panelId + '"]' );
 		var matchPanel = wrapper.querySelector( '#' + panelId );
 
-		if ( matchTab ) matchTab.classList.add( 'nav-tab-active' );
+		if ( matchTab ) {
+			matchTab.classList.add( 'is-active' );
+			matchTab.setAttribute( 'aria-selected', 'true' );
+		}
 		if ( matchPanel ) matchPanel.classList.add( 'active' );
 	}
 
@@ -220,4 +226,47 @@
 		}
 		window.addEventListener( 'load', tryInit );
 	}
+
+	/**
+	 * Live required-field highlighting (content completeness).
+	 * SEO keyphrase checks refresh after save (they use saved SEO meta).
+	 */
+	function fieldValue( key ) {
+		var box = wrapper.querySelector( '[data-field-key="' + key + '"]' );
+		if ( ! box ) return '';
+		var input = box.querySelector( 'input[type="text"], input[type="number"], input[type="hidden"], textarea' );
+		return input ? String( input.value || '' ).trim() : '';
+	}
+
+	function refreshRequiredHighlights() {
+		var raw = wrapper.getAttribute( 'data-required-fields' ) || '[]';
+		var required = [];
+		try {
+			required = JSON.parse( raw );
+		} catch ( e ) {
+			required = [];
+		}
+		if ( ! Array.isArray( required ) ) return;
+
+		required.forEach( function ( key ) {
+			var box = wrapper.querySelector( '[data-field-key="' + key + '"]' );
+			if ( ! box ) return;
+			var val = fieldValue( key );
+			if ( ! val || val === '0' ) {
+				box.classList.add( 'restwell-field--missing' );
+			} else {
+				box.classList.remove( 'restwell-field--missing' );
+			}
+		} );
+	}
+
+	wrapper.addEventListener( 'input', function ( e ) {
+		if ( e.target && ( e.target.matches( 'input, textarea' ) ) ) {
+			refreshRequiredHighlights();
+		}
+	} );
+	wrapper.addEventListener( 'change', function () {
+		refreshRequiredHighlights();
+	} );
+	refreshRequiredHighlights();
 } )();
