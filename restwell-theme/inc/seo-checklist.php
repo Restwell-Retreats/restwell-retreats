@@ -341,12 +341,11 @@ function restwell_seo_checklist_badge_label( array $summary ): string {
 		return __( 'Looking good', 'restwell-retreats' );
 	}
 
-	$total = $bad + $warn;
 	if ( $bad > 0 ) {
 		return sprintf(
-			/* translators: %d: number of issues */
-			_n( '%d must-fix', '%d must-fix', $total, 'restwell-retreats' ),
-			$total
+			/* translators: %d: number of must-fix issues */
+			_n( '%d must-fix', '%d must-fix', $bad, 'restwell-retreats' ),
+			$bad
 		);
 	}
 
