@@ -181,22 +181,31 @@ function restwell_get_page_gallery_ids( $post_id, $meta_key, $legacy_keys = arra
 }
 
 /**
- * Property page gallery IDs (full room-by-room set).
+ * Property page gallery IDs (full room-by-room set — shared image pool for the theme).
  *
  * @param int $post_id Property page ID; 0 uses the-property page.
  * @return array<int, int>
  */
 function restwell_get_property_gallery_ids( $post_id = 0 ) {
+	static $cache = array();
+
 	$post_id = (int) $post_id;
+	$cache_key = $post_id > 0 ? (string) $post_id : 'default';
+
+	if ( isset( $cache[ $cache_key ] ) ) {
+		return $cache[ $cache_key ];
+	}
+
 	if ( $post_id <= 0 ) {
 		$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 		$post_id = $page ? (int) $page->ID : 0;
 	}
 	if ( $post_id <= 0 ) {
-		return array();
+		$cache[ $cache_key ] = array();
+		return $cache[ $cache_key ];
 	}
 
-	return restwell_get_page_gallery_ids(
+	$cache[ $cache_key ] = restwell_get_page_gallery_ids(
 		$post_id,
 		'prop_gallery_image_ids',
 		array(
@@ -205,10 +214,12 @@ function restwell_get_property_gallery_ids( $post_id = 0 ) {
 			'prop_gallery_3_image_id',
 		)
 	);
+
+	return $cache[ $cache_key ];
 }
 
 /**
- * Accessibility page feature gallery IDs.
+ * Accessibility page feature gallery IDs (falls back to access-relevant shots from the property gallery pool).
  *
  * @param int $post_id Accessibility page ID; 0 uses current queried object.
  * @return array<int, int>
@@ -222,11 +233,161 @@ function restwell_get_accessibility_gallery_ids( $post_id = 0 ) {
 		$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
 		$post_id = $page ? (int) $page->ID : 0;
 	}
-	if ( $post_id <= 0 ) {
-		return array();
+
+	$ids = array();
+	if ( $post_id > 0 ) {
+		$ids = restwell_get_page_gallery_ids( $post_id, 'acc_gallery_image_ids' );
 	}
 
-	return restwell_get_page_gallery_ids( $post_id, 'acc_gallery_image_ids' );
+	if ( ! empty( $ids ) ) {
+		return $ids;
+	}
+
+	return restwell_get_property_gallery_subset(
+		8,
+		array(
+			'hoist',
+			'wet room',
+			'shower',
+			'profiling bed',
+			'doorway',
+			'entrance',
+			'ramp',
+			'bedroom',
+		)
+	);
+}
+
+/**
+ * Slice of the shared property gallery by keyword relevance (never by hardcoded index alone).
+ *
+ * @param int                $limit    Maximum images to return.
+ * @param array<int, string> $keywords   Keyword phrases for caption/alt matching.
+ * @param int                $post_id  Property page ID; 0 resolves the-property page.
+ * @return array<int, int>
+ */
+function restwell_get_property_gallery_subset( $limit = 3, $keywords = array(), $post_id = 0 ) {
+	static $cache = array();
+
+	$limit   = max( 1, (int) $limit );
+	$post_id = (int) $post_id;
+	$keywords = array_values(
+		array_filter(
+			array_map(
+				static function ( $keyword ) {
+					return trim( (string) $keyword );
+				},
+				is_array( $keywords ) ? $keywords : array()
+			)
+		)
+	);
+	$cache_key = $post_id . ':' . $limit . ':' . implode( '|', $keywords );
+
+	if ( isset( $cache[ $cache_key ] ) ) {
+		return $cache[ $cache_key ];
+	}
+
+	$pool = restwell_get_property_gallery_ids( $post_id );
+
+	if ( empty( $pool ) ) {
+		$cache[ $cache_key ] = array();
+		return $cache[ $cache_key ];
+	}
+
+	$picked     = array();
+	$exclude    = array();
+	$keyword_sets = ! empty( $keywords ) ? $keywords : array( '' );
+
+	foreach ( $keyword_sets as $keyword ) {
+		if ( count( $picked ) >= $limit ) {
+			break;
+		}
+		if ( $keyword === '' ) {
+			continue;
+		}
+		$match = restwell_find_gallery_image_by_keywords( $pool, array( $keyword ), $exclude );
+		if ( $match > 0 ) {
+			$picked[]  = $match;
+			$exclude[] = $match;
+		}
+	}
+
+	if ( count( $picked ) < $limit ) {
+		foreach ( $pool as $attachment_id ) {
+			if ( count( $picked ) >= $limit ) {
+				break;
+			}
+			if ( in_array( (int) $attachment_id, $exclude, true ) ) {
+				continue;
+			}
+			$picked[]  = (int) $attachment_id;
+			$exclude[] = (int) $attachment_id;
+		}
+	}
+
+	$cache[ $cache_key ] = array_values( array_slice( $picked, 0, $limit ) );
+	return $cache[ $cache_key ];
+}
+
+/**
+ * Resolve Who It's For visual slots from the shared property gallery pool.
+ *
+ * @param int $post_id Who It's For page ID (legacy single-image meta used only when gallery pool is empty).
+ * @return array<int, array{id: int, caption: string}>
+ */
+function restwell_get_wif_gallery_slots( $post_id = 0 ) {
+	static $cache = array();
+
+	$post_id = (int) $post_id;
+	if ( isset( $cache[ $post_id ] ) ) {
+		return $cache[ $post_id ];
+	}
+
+	$pool = restwell_get_property_gallery_ids();
+
+	$slots = array(
+		array(
+			'keywords' => array( 'wet room', 'shower', 'bathroom' ),
+			'meta_id'  => 'wif_section_image_1_id',
+		),
+		array(
+			'keywords' => array( 'bedroom', 'hoist', 'profiling', 'living' ),
+			'meta_id'  => 'wif_section_image_2_id',
+		),
+		array(
+			'keywords' => array( 'kitchen', 'conservatory', 'living room' ),
+			'meta_id'  => 'wif_section_image_3_id',
+		),
+	);
+
+	$resolved = array();
+	$exclude  = array();
+
+	foreach ( $slots as $slot ) {
+		$image_id = 0;
+		if ( ! empty( $pool ) ) {
+			$image_id = restwell_find_gallery_image_by_keywords(
+				$pool,
+				(array) ( $slot['keywords'] ?? array() ),
+				$exclude
+			);
+			if ( $image_id > 0 ) {
+				$exclude[] = $image_id;
+			}
+		}
+
+		if ( $image_id <= 0 && $post_id > 0 ) {
+			$image_id = absint( get_post_meta( $post_id, (string) ( $slot['meta_id'] ?? '' ), true ) );
+		}
+
+		$resolved[] = array(
+			'id'      => $image_id,
+			'caption' => $image_id > 0 ? restwell_get_gallery_attachment_alt( $image_id ) : '',
+		);
+	}
+
+	$cache[ $post_id ] = $resolved;
+	return $cache[ $post_id ];
 }
 
 /**

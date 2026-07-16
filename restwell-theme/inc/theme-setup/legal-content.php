@@ -312,6 +312,9 @@ function restwell_theme_setup_format_message( $result ) {
 	if ( ! empty( $result['pages_seed_skipped'] ) ) {
 		$lines[] = '<strong>' . esc_html__( 'Template pages: no missing default fields (unchanged):', 'restwell-retreats' ) . '</strong> ' . esc_html( implode( ', ', $result['pages_seed_skipped'] ) );
 	}
+	if ( ! empty( $result['media_seed_skipped'] ) ) {
+		$lines[] = esc_html__( 'Media seed skipped (checkbox). Logos, partner images, and responsive image regeneration were not run.', 'restwell-retreats' );
+	}
 	if ( ! empty( $result['logos_uploaded'] ) ) {
 		$lines[] = '<strong>' . esc_html__( 'Logos uploaded to Media Library:', 'restwell-retreats' ) . '</strong> ' . esc_html( implode( ', ', $result['logos_uploaded'] ) );
 	}
@@ -356,7 +359,7 @@ function restwell_theme_setup_format_message( $result ) {
 		$lines[] = '<strong>' . esc_html__( 'Blog post seed failed (slug):', 'restwell-retreats' ) . '</strong> ' . esc_html( implode( ', ', $result['blog_posts_failed'] ) );
 	}
 
-	if ( ! empty( $result['image_regen_skipped'] ) ) {
+	if ( ! empty( $result['image_regen_skipped'] ) && empty( $result['media_seed_skipped'] ) ) {
 		$lines[] = esc_html__( 'Responsive image regeneration was skipped (checkbox). Use Theme Setup again or run wp media regenerate on the server.', 'restwell-retreats' );
 	} elseif ( ! empty( $result['image_regen'] ) && is_array( $result['image_regen'] ) ) {
 		$ir = $result['image_regen'];

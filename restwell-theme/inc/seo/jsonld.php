@@ -335,7 +335,7 @@ function restwell_get_default_lodging_amenity_features() {
 }
 
 /**
- * LocalBusiness JSON-LD (postal address matches Google Business Profile; area served Whitstable).
+ * LodgingBusiness JSON-LD (Whitstable letting location; registered office via Organization entity).
  *
  * @param int $page_id Front page context uses 0 to merge property-page gallery images when available.
  */
@@ -346,8 +346,14 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 	$phone     = (string) get_option( 'restwell_phone_number', '' );
 	$email     = (string) get_option( 'restwell_enquiry_notify_email', '' );
 
-	$addr_parts = restwell_get_business_postal_address_parts();
-	$address    = array_merge( array( '@type' => 'PostalAddress' ), $addr_parts );
+	// Confirm in WP: publish full street address?
+	$address = array(
+		'@type'           => 'PostalAddress',
+		'addressLocality' => 'Whitstable',
+		'addressRegion'   => 'Kent',
+		'postalCode'      => 'CT5',
+		'addressCountry'  => 'GB',
+	);
 
 	$desc = get_bloginfo( 'description' );
 	if ( $desc === '' ) {
@@ -399,14 +405,14 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 
 	$schema = array(
 		'@context'            => 'https://schema.org',
-		'@type'               => 'LocalBusiness',
+		'@type'               => 'LodgingBusiness',
 		'@id'                 => restwell_get_local_business_schema_id(),
 		'name'                => $site_name,
 		'description'         => $desc,
 		'url'                 => $site_url,
 		'priceRange'          => $price_range,
 		'address'             => $address,
-		'geo'                 => restwell_get_business_geo_coordinates(),
+		'provider'            => array( '@id' => restwell_get_organization_schema_id() ),
 		'parentOrganization'  => array( '@id' => restwell_get_organization_schema_id() ),
 		'areaServed'          => array(
 			'@type'   => 'Place',
@@ -524,6 +530,7 @@ function restwell_output_jsonld_accommodation_service() {
 			__( 'Accessible travel', 'restwell-retreats' ),
 			__( 'Self-catering holiday', 'restwell-retreats' ),
 		),
+		'amenityFeature' => $amenities,
 	);
 
 	if ( ! empty( $image_urls ) ) {

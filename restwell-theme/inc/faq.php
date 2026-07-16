@@ -68,7 +68,10 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 		 * @param string                                                             $scope  Scope key.
 		 * @param int                                                                $pid    FAQ page ID (0 for homepage).
 		 */
-		return apply_filters( 'restwell_faq_items', $items, $scope, 0 );
+		$items_out = function_exists( 'restwell_apply_property_facts_to_faq_items' )
+			? restwell_apply_property_facts_to_faq_items( $items )
+			: $items;
+		return apply_filters( 'restwell_faq_items', $items_out, $scope, 0 );
 	}
 
 	$pid = restwell_get_faq_page_id();
@@ -121,7 +124,10 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 	 * @param string                                                             $scope  Scope key.
 	 * @param int                                                                $pid    FAQ page ID.
 	 */
-	return apply_filters( 'restwell_faq_items', $items, $scope, $pid );
+	$items_out = function_exists( 'restwell_apply_property_facts_to_faq_items' )
+		? restwell_apply_property_facts_to_faq_items( $items )
+		: $items;
+	return apply_filters( 'restwell_faq_items', $items_out, $scope, $pid );
 }
 
 /**

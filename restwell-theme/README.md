@@ -20,7 +20,7 @@ Custom front end for [Restwell Retreats](https://restwellretreats.co.uk/): acces
 | 3. Develop CSS/JS | `npm run dev` (watches Tailwind; rebuild JS manually or run `npm run build`) |
 | 4. WordPress | Symlink or copy `restwell-theme` into `wp-content/themes/`; activate **Restwell Retreats** |
 | 5. CRM (local) | Ensure `wp-content/mu-plugins/restwell-crm/` is present (theme `functions.php` can bootstrap it from the monorepo sibling path) |
-| 6. First-time content | **WP Admin → Restwell → Theme Setup** — create pages, seed home meta, optional blog seed |
+| 6. First-time content | **WP Admin → Restwell → Theme Setup** — create pages, seed home meta; tick **Seed media** on first install (logos/partners + image sizes) |
 | 7. Deploy | Run `npm run build`, zip the `restwell-theme` folder, **Appearance → Themes → Add New → Upload** |
 
 ---
@@ -69,6 +69,7 @@ Loaded from `functions.php` unless noted. One-line purpose each.
 
 | File | Loaded | Description |
 |------|--------|-------------|
+| `admin/video-compressor.php` | admin only | Media Library “Compress for web” (FFmpeg → MP4 + WebM); requires system `ffmpeg` |
 | `admin-meta-boxes.php` | ✓ | Post editor: always show Excerpt box; meta box order |
 | `blog-categories.php` | ✓ | Canonical blog category slugs, seeding, footer category list |
 | `csp.php` | ✓ | Content-Security-Policy (Report-Only by default; optional enforce) |

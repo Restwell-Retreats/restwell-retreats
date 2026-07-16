@@ -31,7 +31,7 @@ function restwell_theme_setup_performance_docs_section() {
 	?>
 	<div class="card" style="max-width: 52rem; margin-top: 1.5rem;">
 		<h2><?php esc_html_e( 'Performance: static assets & caching', 'restwell-retreats' ); ?></h2>
-		<p><?php esc_html_e( 'After Theme Setup, WordPress regenerates responsive image sizes (unless you skip that step). For CSS/JS/fonts under the theme, set long cache lifetimes at the web server or CDN. Theme enqueue URLs include a version query string so updates bust caches.', 'restwell-retreats' ); ?></p>
+		<p><?php esc_html_e( 'When you tick “Seed media”, WordPress uploads theme logos and partner images and can regenerate responsive image sizes. For CSS/JS/fonts under the theme, set long cache lifetimes at the web server or CDN. Theme enqueue URLs include a version query string so updates bust caches.', 'restwell-retreats' ); ?></p>
 		<p><strong><?php esc_html_e( 'Theme assets path (adjust for your install):', 'restwell-retreats' ); ?></strong> <code><?php echo esc_html( $path ); ?></code></p>
 		<h3><?php esc_html_e( 'nginx (example location)', 'restwell-retreats' ); ?></h3>
 		<pre style="overflow:auto; padding:12px; background:#f6f7f7; border:1px solid #c3c4c7;"><?php echo esc_html( $nginx_block ); ?></pre>
@@ -59,8 +59,9 @@ function restwell_theme_setup_page() {
 			$message = '<div class="notice notice-error"><p>' . esc_html__( 'Security check failed. Please try again.', 'restwell-retreats' ) . '</p></div>';
 		} else {
 			$force            = ! empty( $_POST['restwell_rerun'] );
+			$seed_media       = ! empty( $_POST['restwell_seed_media'] );
 			$skip_image_regen = ! empty( $_POST['restwell_skip_image_regen'] );
-			$result           = restwell_run_theme_setup( $force, $skip_image_regen );
+			$result           = restwell_run_theme_setup( $force, $skip_image_regen, $seed_media );
 			$message          = restwell_theme_setup_format_message( $result );
 		}
 	}
@@ -87,14 +88,20 @@ function restwell_theme_setup_page() {
 				<p>
 					<label>
 						<input type="checkbox" name="restwell_rerun" value="1" />
-						<?php esc_html_e( 'Re-run setup anyway (re-seeds content and overwrites SEO title, meta description, and focus keyphrase from theme defaults). Responsive image regeneration still runs unless you skip it below.', 'restwell-retreats' ); ?>
+						<?php esc_html_e( 'Re-run setup anyway (re-seeds content and overwrites SEO title, meta description, and focus keyphrase from theme defaults).', 'restwell-retreats' ); ?>
 					</label>
 				</p>
 			<?php endif; ?>
 			<p>
 				<label>
+					<input type="checkbox" name="restwell_seed_media" value="1" />
+					<?php esc_html_e( 'Seed media (upload theme logos and partner images from /assets/images/, and regenerate responsive image sizes). Tick on first install or when theme assets change.', 'restwell-retreats' ); ?>
+				</label>
+			</p>
+			<p>
+				<label>
 					<input type="checkbox" name="restwell_skip_image_regen" value="1" />
-					<?php esc_html_e( 'Skip regenerating responsive image sizes (restwell-hero, restwell-cta-bg) for all uploads. Use if this request might time out on a very large Media Library; you can run wp media regenerate later.', 'restwell-retreats' ); ?>
+					<?php esc_html_e( 'When seeding media, skip regenerating responsive image sizes (restwell-hero, restwell-cta-bg) for all uploads. Use if this request might time out on a very large Media Library; you can run wp media regenerate later.', 'restwell-retreats' ); ?>
 				</label>
 			</p>
 			<p>

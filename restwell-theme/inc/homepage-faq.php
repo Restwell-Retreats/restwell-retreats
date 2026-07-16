@@ -31,18 +31,16 @@ function restwell_get_homepage_faq_defaults(): array {
 	$resources_url     = esc_url( home_url( '/resources/' ) );
 	$enquire_url       = esc_url( home_url( '/enquire/' ) );
 
+	$wheelchair_answer = function_exists( 'restwell_get_property_facts_faq_wheelchair_answer' )
+		? restwell_get_property_facts_faq_wheelchair_answer()
+		: __( 'The bungalow is single-storey and step-free throughout, with a 965mm front doorway, 926mm internal doorways, a level-access wet room and a threshold ramp to the garden.', 'restwell-retreats' );
+
 	return array(
 		array(
 			'id'          => 'faq_1',
 			'question'    => __( 'Is the whole house wheelchair accessible?', 'restwell-retreats' ),
-			'answer_html' => __(
-				'The bungalow is single-storey and step-free throughout, with a 965mm front doorway, 926mm internal doorways, a level-access wet room and a threshold ramp to the garden.',
-				'restwell-retreats'
-			),
-			'answer_text' => __(
-				'The bungalow is single-storey and step-free throughout, with a 965mm front doorway, 926mm internal doorways, a level-access wet room and a threshold ramp to the garden.',
-				'restwell-retreats'
-			),
+			'answer_html' => $wheelchair_answer,
+			'answer_text' => $wheelchair_answer,
 			'cat'         => 'about',
 		),
 		array(

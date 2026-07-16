@@ -204,11 +204,3 @@ function restwell_upload_partner_logos( $home_id, array &$result, $force = false
 		$result['partner_logos_uploaded'][] = $matched_filename . ' -> ' . $meta_key;
 	}
 }
-
-/**
- * Run theme setup: create pages, set front page, seed Home meta.
- *
- * @param bool $force               If true, re-seed Home and page content where supported, refresh seeded blog posts, and overwrite SEO meta from theme defaults.
- * @param bool $skip_image_regen    If true, skip regenerating image subsizes (restwell-hero, restwell-cta-bg) for all attachments.
- * @return array<string, mixed> Setup result (created, skipped, seo_meta_applied, seo_meta_forced, etc.).
- */

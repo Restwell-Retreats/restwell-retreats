@@ -9,32 +9,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function restwell_run_theme_setup( $force = false, $skip_image_regen = false ) {
+/**
+ * Create pages, seed content, and optionally upload theme media.
+ *
+ * @param bool $force            If true, re-seed Home and page content where supported, refresh seeded blog posts, and overwrite SEO meta from theme defaults.
+ * @param bool $skip_image_regen If true, skip regenerating image subsizes when media seed is enabled.
+ * @param bool $seed_media       If true, upload logos and partner images and optionally regenerate image subsizes.
+ * @return array<string, mixed> Setup result.
+ */
+function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $seed_media = false ) {
 	$result = array(
-		'created'            => array(),
-		'skipped'            => array(),
-		'front_page_set'     => false,
-		'posts_page_set'     => false,
-		'home_seeded'           => false,
-		'home_meta_keys_written'  => 0,
-		'home_additive_only'      => false,
-		'pages_seeded'       => array(),
-		'pages_seed_skipped' => array(),
-		'hub_seeded'         => array(),
-		'seo_meta_applied'   => false,
-		'seo_meta_forced'    => false,
-		'blog_posts_seeded'  => array(),
-		'blog_posts_failed'  => array(),
-		'logos_uploaded'     => array(),
-		'logos_skipped'      => array(),
-		'logos_missing'      => array(),
-		'logos_failed'         => array(),
+		'created'                => array(),
+		'skipped'                => array(),
+		'front_page_set'         => false,
+		'posts_page_set'         => false,
+		'home_seeded'            => false,
+		'home_meta_keys_written' => 0,
+		'home_additive_only'     => false,
+		'pages_seeded'           => array(),
+		'pages_seed_skipped'     => array(),
+		'hub_seeded'             => array(),
+		'seo_meta_applied'       => false,
+		'seo_meta_forced'        => false,
+		'blog_posts_seeded'      => array(),
+		'blog_posts_failed'      => array(),
+		'media_seed_skipped'     => ! $seed_media,
+		'logos_uploaded'         => array(),
+		'logos_skipped'          => array(),
+		'logos_missing'          => array(),
+		'logos_failed'           => array(),
 		'partner_logos_uploaded' => array(),
 		'partner_logos_skipped'  => array(),
 		'partner_logos_missing'  => array(),
 		'partner_logos_failed'   => array(),
-		'image_regen_skipped'  => false,
-		'image_regen'          => null,
+		'image_regen_skipped'    => false,
+		'image_regen'            => null,
 	);
 
 	$pages = restwell_get_theme_setup_pages();
@@ -130,15 +139,18 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false ) {
 	// Priority blog posts (idempotent; pass $force so re-run updates content).
 	restwell_seed_priority_blog_posts( $result, $force );
 
-	// Upload logos to Media Library so templates can use stable attachment URLs.
-	restwell_upload_theme_logos( $result );
-	restwell_upload_partner_logos( $home_id, $result, $force );
+	// Media seed: logos, partner images, and responsive sizes (opt-in via Theme Setup checkbox).
+	if ( $seed_media ) {
+		restwell_upload_theme_logos( $result );
+		restwell_upload_partner_logos( $home_id, $result, $force );
 
-	// Build restwell-hero / restwell-cta-bg (and other registered sizes) for every image; runs on Theme Setup unless skipped.
-	$run_regen = ! $skip_image_regen && apply_filters( 'restwell_theme_setup_run_image_subsize_regen', true, $force );
-	$result['image_regen_skipped'] = ! $run_regen;
-	if ( $run_regen && function_exists( 'restwell_regenerate_all_image_subsizes' ) ) {
-		$result['image_regen'] = restwell_regenerate_all_image_subsizes();
+		$run_regen = ! $skip_image_regen && apply_filters( 'restwell_theme_setup_run_image_subsize_regen', true, $force, $seed_media );
+		$result['image_regen_skipped'] = ! $run_regen;
+		if ( $run_regen && function_exists( 'restwell_regenerate_all_image_subsizes' ) ) {
+			$result['image_regen'] = restwell_regenerate_all_image_subsizes();
+		}
+	} else {
+		$result['image_regen_skipped'] = true;
 	}
 
 	return $result;

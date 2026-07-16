@@ -54,6 +54,10 @@ require_once get_template_directory() . '/inc/tldr.php';
 require_once get_template_directory() . '/inc/wif-helpers.php';
 require_once get_template_directory() . '/inc/wp-runtime-optimization.php';
 
+if ( is_admin() ) {
+	require_once get_template_directory() . '/inc/admin/video-compressor.php';
+}
+
 // Disable Gutenberg block editor - use classic editor
 add_filter( 'use_block_editor_for_post', '__return_false' );
 add_filter( 'use_widgets_block_editor', '__return_false' );

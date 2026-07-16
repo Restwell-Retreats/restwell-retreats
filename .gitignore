@@ -51,6 +51,15 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.manus-logs/
+
+# Local backups / scratch
+*.bak
+*_backup.*
+*_old.*
+*.tmp
+*.temp
+scratch.*
 
 # Runtime data
 pids
