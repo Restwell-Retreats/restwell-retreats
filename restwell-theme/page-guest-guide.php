@@ -57,18 +57,27 @@ if (
 		$_SESSION['gg_otp_sent']      = time();
 		unset( $_SESSION['gg_verified'], $_SESSION['gg_verified_email'] );
 
+		$mail_failed = false;
 		if ( ! $ip_blocked && $approved ) {
 			// Per-email throttle only runs when we are about to send (it increments).
 			if ( ! restwell_guide_otp_email_throttled( $submitted_email ) ) {
-				restwell_send_guide_otp( $submitted_email );
+				if ( ! restwell_send_guide_otp( $submitted_email ) ) {
+					$mail_failed = true;
+				}
 			}
 		}
 
-		$notice = sprintf(
-			/* translators: %s: phone number */
-			__( "If that email is on our guest list, we'll send a code shortly. Otherwise call us on %s and we'll help.", 'restwell-retreats' ),
-			(string) get_option( 'restwell_phone_number', '01622 809881' )
-		);
+		if ( $mail_failed ) {
+			// Real delivery failure: do not leave the guest waiting on a code that never sent.
+			unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
+			$gg_error = restwell_guide_otp_mail_failed_message();
+		} else {
+			$notice = sprintf(
+				/* translators: %s: phone number */
+				__( "If that email is on our guest list, we'll send a code shortly. Otherwise call us on %s and we'll help.", 'restwell-retreats' ),
+				(string) get_option( 'restwell_phone_number', '01622 809881' )
+			);
+		}
 	}
 }
 
@@ -92,25 +101,33 @@ if (
 		$gg_error = __( 'Your session has expired. Please enter your email again.', 'restwell-retreats' );
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
 	} else {
-		$ip_blocked = restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS );
-		$sent       = false;
+		$ip_blocked  = restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS );
+		$mail_failed = false;
+		$sent        = false;
 
 		if ( ! $ip_blocked && restwell_is_approved_email( $pending_email ) ) {
 			if ( ! restwell_guide_otp_email_throttled( $pending_email ) ) {
 				$sent = restwell_send_guide_otp( $pending_email );
+				if ( ! $sent ) {
+					$mail_failed = true;
+				}
 			}
 		}
 
-		// Same notice whether mail was sent or not (anti-enumeration). Refresh
-		// countdown only when a code was actually issued.
-		if ( $sent ) {
-			$_SESSION['gg_otp_sent'] = time();
+		if ( $mail_failed ) {
+			unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
+			$gg_error = restwell_guide_otp_mail_failed_message();
+		} else {
+			// Same notice whether a code was issued or not (anti-enumeration).
+			if ( $sent ) {
+				$_SESSION['gg_otp_sent'] = time();
+			}
+			$notice = sprintf(
+				/* translators: %s: phone number */
+				__( "If that email is on our guest list, we'll send a code shortly. Otherwise call us on %s and we'll help.", 'restwell-retreats' ),
+				(string) get_option( 'restwell_phone_number', '01622 809881' )
+			);
 		}
-		$notice = sprintf(
-			/* translators: %s: phone number */
-			__( "If that email is on our guest list, we'll send a code shortly. Otherwise call us on %s and we'll help.", 'restwell-retreats' ),
-			(string) get_option( 'restwell_phone_number', '01622 809881' )
-		);
 	}
 }
 
