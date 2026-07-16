@@ -24,10 +24,12 @@ function restwell_migrate_homepage_faq_meta_v1() {
 		return;
 	}
 	if ( ! function_exists( 'restwell_get_homepage_faq_meta_seed_map' ) ) {
+		update_option( 'restwell_home_faq_meta_migrated_v1', '1' );
 		return;
 	}
 	$home_id = (int) get_option( 'page_on_front', 0 );
 	if ( $home_id < 1 ) {
+		update_option( 'restwell_home_faq_meta_migrated_v1', '1' );
 		return;
 	}
 
@@ -53,6 +55,7 @@ function restwell_migrate_property_practical_meta_v1() {
 	}
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_practical_meta_v1', '1' );
 		return;
 	}
 	$page_id  = (int) $page->ID;
@@ -99,6 +102,7 @@ function restwell_migrate_property_sleeps_five_v1() {
 	}
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_sleeps_five_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -118,6 +122,7 @@ function restwell_migrate_property_parking_short_v1() {
 	}
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_parking_short_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -146,6 +151,7 @@ function restwell_migrate_property_bedrooms_parking_v2() {
 	}
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_bedrooms_parking_v2', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -179,6 +185,7 @@ function restwell_migrate_property_parking_detail_v3() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_parking_detail_v3', '1' );
 		return;
 	}
 
@@ -223,6 +230,7 @@ function restwell_migrate_property_headings_v4() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_headings_v4', '1' );
 		return;
 	}
 
@@ -265,6 +273,7 @@ function restwell_migrate_property_labels_v5() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_labels_v5', '1' );
 		return;
 	}
 
@@ -301,6 +310,7 @@ function restwell_migrate_property_wetroom_stat_v6() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_wetroom_stat_v6', '1' );
 		return;
 	}
 
@@ -333,6 +343,7 @@ function restwell_migrate_property_wetroom_walkthrough_v7() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_wetroom_walkthrough_v7', '1' );
 		return;
 	}
 
@@ -361,6 +372,7 @@ function restwell_migrate_homepage_cta_testword_v8() {
 		$home = get_post( (int) get_option( 'page_on_front' ) );
 	}
 	if ( ! $home || (int) $home->ID < 1 ) {
+		update_option( 'restwell_homepage_cta_testword_v8', '1' );
 		return;
 	}
 
@@ -386,6 +398,7 @@ function restwell_migrate_property_wetroom_stat_copy_v9() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_wetroom_stat_copy_v9', '1' );
 		return;
 	}
 
@@ -474,6 +487,7 @@ function restwell_migrate_property_feature_copy_balance_v1() {
 	}
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_feature_copy_balance_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -689,6 +703,7 @@ function restwell_migrate_accessibility_headings_v1() {
 
 	$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_accessibility_headings_v1', '1' );
 		return;
 	}
 
@@ -722,6 +737,7 @@ function restwell_migrate_accessibility_intro_v2() {
 
 	$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_accessibility_intro_v2', '1' );
 		return;
 	}
 
@@ -749,6 +765,7 @@ function restwell_migrate_who_its_for_headings_v1() {
 
 	$page = get_page_by_path( 'who-its-for', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_who_its_for_headings_v1', '1' );
 		return;
 	}
 
@@ -788,6 +805,7 @@ function restwell_migrate_property_headings_v1() {
 
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_headings_v1', '1' );
 		return;
 	}
 
@@ -825,6 +843,7 @@ function restwell_migrate_how_it_works_headings_v1() {
 
 	$page = get_page_by_path( 'how-it-works', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_how_it_works_headings_v1', '1' );
 		return;
 	}
 
@@ -866,6 +885,7 @@ function restwell_migrate_home_lede_v1() {
 	}
 	$home_id = (int) get_option( 'page_on_front', 0 );
 	if ( $home_id < 1 ) {
+		update_option( 'restwell_home_lede_v1', '1' );
 		return;
 	}
 	foreach ( restwell_get_home_lede_refresh_map() as $stale => $next ) {
@@ -898,6 +918,7 @@ function restwell_migrate_property_lede_v1() {
 	}
 	$page = get_page_by_path( 'the-property', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_property_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -934,6 +955,7 @@ function restwell_migrate_wif_lede_v1() {
 	}
 	$page = get_page_by_path( 'who-its-for', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_wif_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -968,6 +990,7 @@ function restwell_migrate_hiw_lede_v1() {
 	}
 	$page = get_page_by_path( 'how-it-works', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_hiw_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -1004,6 +1027,7 @@ function restwell_migrate_faq_lede_v1() {
 	}
 	$page = get_page_by_path( 'faq', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_faq_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -1038,6 +1062,7 @@ function restwell_migrate_resources_lede_v1() {
 	}
 	$page = get_page_by_path( 'resources', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_resources_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -1071,6 +1096,7 @@ function restwell_migrate_wg_lede_v1() {
 	}
 	$page = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_wg_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -1107,6 +1133,7 @@ function restwell_migrate_enq_lede_v1() {
 	}
 	$page = get_page_by_path( 'enquire', OBJECT, 'page' );
 	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_enq_lede_v1', '1' );
 		return;
 	}
 	$page_id = (int) $page->ID;
@@ -1148,6 +1175,7 @@ function restwell_migrate_blog_lede_v1() {
 		$blog_id   = $blog_page ? (int) $blog_page->ID : 0;
 	}
 	if ( $blog_id < 1 ) {
+		update_option( 'restwell_blog_lede_v1', '1' );
 		return;
 	}
 	$next = 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.';
