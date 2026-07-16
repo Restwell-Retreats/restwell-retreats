@@ -46,33 +46,29 @@ if (
 
 	if ( '' === $submitted_email || ! is_email( $submitted_email ) ) {
 		$gg_error = __( 'Please enter a valid email address.', 'restwell-retreats' );
-	} elseif ( ! restwell_is_approved_email( $submitted_email ) ) {
-		$gg_error = sprintf(
-			/* translators: %s phone number */
-			__( 'Sorry, we do not recognise that email address. Please use the address your booking confirmation was sent to. If you have recently changed your email or are unsure which address was used, please call us on %s and we can help.', 'restwell-retreats' ),
-			(string) get_option( 'restwell_phone_number', '01622 809881' )
-		);
-	} elseif (
-		// Per-IP throttle: 5 OTP issuances per IP per hour. Tighter than the
-		// generic 12/hour public-form bucket because a real guest only ever
-		// needs 1–3 codes (initial + occasional resend / start-again).
-		restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS )
-		// Per-email throttle: protects a specific guest's inbox from being
-		// email-bombed by a distributed attacker (multiple IPs, one target).
-		|| restwell_guide_otp_email_throttled( $submitted_email )
-	) {
-		// Deliberately generic message: don't reveal which throttle tripped,
-		// and don't tell the user they're rate-limited as a guest vs. as an IP.
-		$gg_error = sprintf(
-			/* translators: %s phone number */
-			__( "We can't send another code to that address right now. Please wait a little while and try again, or call us on %s if you need help getting in.", 'restwell-retreats' ),
-			(string) get_option( 'restwell_phone_number', '01622 809881' )
-		);
 	} else {
-		restwell_send_guide_otp( $submitted_email );
+		// Anti-enumeration: ONE generic response for unknown, unapproved, and
+		// throttled emails. Always advance to the OTP step with the same copy;
+		// only send mail when the address is approved and under rate limits.
+		$ip_blocked = restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS );
+		$approved   = restwell_is_approved_email( $submitted_email );
+
 		$_SESSION['gg_pending_email'] = $submitted_email;
 		$_SESSION['gg_otp_sent']      = time();
-		unset( $_SESSION['gg_verified'] );
+		unset( $_SESSION['gg_verified'], $_SESSION['gg_verified_email'] );
+
+		if ( ! $ip_blocked && $approved ) {
+			// Per-email throttle only runs when we are about to send (it increments).
+			if ( ! restwell_guide_otp_email_throttled( $submitted_email ) ) {
+				restwell_send_guide_otp( $submitted_email );
+			}
+		}
+
+		$notice = sprintf(
+			/* translators: %s: phone number */
+			__( "If that email is on our guest list, we'll send a code shortly. Otherwise call us on %s and we'll help.", 'restwell-retreats' ),
+			(string) get_option( 'restwell_phone_number', '01622 809881' )
+		);
 	}
 }
 
@@ -95,21 +91,26 @@ if (
 		// them back to the email-entry step rather than silently failing.
 		$gg_error = __( 'Your session has expired. Please enter your email again.', 'restwell-retreats' );
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
-	} elseif (
-		restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS )
-		|| restwell_guide_otp_email_throttled( $pending_email )
-	) {
-		$gg_error = sprintf(
-			/* translators: %s phone number */
-			__( "We can't send another code to that address right now. Please wait a little while and try again, or call us on %s if you need help getting in.", 'restwell-retreats' ),
+	} else {
+		$ip_blocked = restwell_form_rate_limit_exceeded( 'guide_otp', 5, HOUR_IN_SECONDS );
+		$sent       = false;
+
+		if ( ! $ip_blocked && restwell_is_approved_email( $pending_email ) ) {
+			if ( ! restwell_guide_otp_email_throttled( $pending_email ) ) {
+				$sent = restwell_send_guide_otp( $pending_email );
+			}
+		}
+
+		// Same notice whether mail was sent or not (anti-enumeration). Refresh
+		// countdown only when a code was actually issued.
+		if ( $sent ) {
+			$_SESSION['gg_otp_sent'] = time();
+		}
+		$notice = sprintf(
+			/* translators: %s: phone number */
+			__( "If that email is on our guest list, we'll send a code shortly. Otherwise call us on %s and we'll help.", 'restwell-retreats' ),
 			(string) get_option( 'restwell_phone_number', '01622 809881' )
 		);
-	} else {
-		restwell_send_guide_otp( $pending_email );
-		// Refresh the timestamp so the "expires in N minutes" countdown
-		// restarts from the new issuance, not the original one.
-		$_SESSION['gg_otp_sent'] = time();
-		$notice = __( "We've sent you a new code. Please check your inbox (and spam folder).", 'restwell-retreats' );
 	}
 }
 
@@ -136,6 +137,9 @@ if (
 		// the limit itself isn't useful information to an attacker.
 		$gg_error = __( 'Too many attempts. Please wait a little while and try again, or request a new code.', 'restwell-retreats' );
 	} elseif ( restwell_verify_guide_otp( $pending_email, $submitted_code ) ) {
+		if ( PHP_SESSION_ACTIVE === session_status() ) {
+			session_regenerate_id( true );
+		}
 		$_SESSION['gg_verified']       = true;
 		$_SESSION['gg_verified_email'] = $pending_email;
 		unset( $_SESSION['gg_pending_email'], $_SESSION['gg_otp_sent'] );
@@ -331,19 +335,18 @@ get_header();
 						echo wp_kses_post(
 							sprintf(
 								/* translators: %s - partially masked email address */
-								__( 'We sent a 6-digit code to %s, but it has now expired. Please request a new one below.', 'restwell-retreats' ),
+								__( 'Any code sent to %s has now expired. Please request a new one below.', 'restwell-retreats' ),
 								'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>'
 							)
 						);
 					} else {
-						// Honest countdown: based on actual elapsed time, not a static "30 minutes"
-						// that's a lie the moment the page is rendered after issuance.
+						// Honest countdown; wording avoids confirming the email is on the guest list.
 						echo wp_kses_post(
 							sprintf(
 								/* translators: 1: partially masked email address, 2: number of whole minutes remaining */
 								_n(
-									'We have sent a 6-digit code to %1$s. It expires in about %2$d minute.',
-									'We have sent a 6-digit code to %1$s. It expires in about %2$d minutes.',
+									'If %1$s is on our guest list, we\'ll send a code shortly (expires in about %2$d minute). Otherwise call us and we\'ll help.',
+									'If %1$s is on our guest list, we\'ll send a code shortly (expires in about %2$d minutes). Otherwise call us and we\'ll help.',
 									$otp_remaining_minutes,
 									'restwell-retreats'
 								),
