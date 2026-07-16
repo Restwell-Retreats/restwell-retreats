@@ -1,15 +1,9 @@
 <?php
 /**
- * SEO Admin: "Search & Social" meta box for pages and posts.
+ * SEO Admin: "Search & Social" form fields and analysis helpers.
  *
- * Provides:
- *  - Focus keyphrase field
- *  - Meta title + description with character counters and traffic-light colours
- *  - Real-time SERP preview
- *  - OG image upload, og_type select, canonical URL, noindex checkbox
- *  - Social preview panel (Facebook + Twitter/X tabs)
- *  - 8-check live SEO analysis panel
- *  - Schema status indicator
+ * The UI is rendered on the dedicated SEO screens (inc/seo-pages-admin.php).
+ * This file holds the form markup, checks, and save helpers.
  *
  * Fields saved:
  *  focus_keyphrase, meta_title, meta_description, og_image_id,
@@ -26,71 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Registration
 // =============================================================================
 
-/**
- * Register the "Search & Social" meta box on page and post edit screens.
+/*
+ * Search & Social UI lives under the dedicated SEO admin menu
+ * (inc/seo-pages-admin.php). It is intentionally not registered as a
+ * metabox on the normal page/post editors.
  */
-function restwell_seo_admin_register_meta_box() {
-	add_meta_box(
-		'restwell_seo',
-		__( 'Search &amp; Social', 'restwell-retreats' ),
-		'restwell_seo_admin_meta_box_callback',
-		array( 'page', 'post' ),
-		'normal',
-		'high'
-	);
-}
-add_action( 'add_meta_boxes', 'restwell_seo_admin_register_meta_box' );
-
-// =============================================================================
-// Enqueue admin assets (scoped to edit screen only)
-// =============================================================================
-
-/**
- * Enqueue the admin CSS + JS for the SEO meta box.
- *
- * @param string $hook_suffix Current admin page hook.
- */
-function restwell_seo_admin_enqueue( $hook_suffix ) {
-	if ( ! in_array( $hook_suffix, array( 'post.php', 'post-new.php' ), true ) ) {
-		return;
-	}
-	$screen = get_current_screen();
-	if ( ! $screen || ! in_array( $screen->post_type, array( 'page', 'post' ), true ) ) {
-		return;
-	}
-
-	$uri = get_template_directory_uri();
-	$ver = wp_get_theme()->get( 'Version' );
-
-	wp_enqueue_style(
-		'restwell-seo-admin',
-		$uri . '/assets/css/seo-admin.css',
-		array(),
-		$ver
-	);
-
-	wp_enqueue_script(
-		'restwell-seo-admin',
-		$uri . '/assets/js/seo-admin.js',
-		array( 'wp-util', 'jquery' ),
-		$ver,
-		true
-	);
-
-	wp_enqueue_media();
-
-	wp_localize_script(
-		'restwell-seo-admin',
-		'rwSeoAdmin',
-		array(
-			'siteUrl'      => home_url( '/' ),
-			'siteName'     => get_bloginfo( 'name' ),
-			'chooseImage'  => __( 'Choose OG image', 'restwell-retreats' ),
-			'useImage'     => __( 'Use this image', 'restwell-retreats' ),
-		)
-	);
-}
-add_action( 'admin_enqueue_scripts', 'restwell_seo_admin_enqueue' );
 
 // =============================================================================
 // Meta box callback
@@ -371,28 +305,60 @@ function restwell_seo_admin_normalize_for_keyphrase_match( string $text ): strin
 }
 
 /**
- * Build a content string suitable for SEO analysis from a post's meta fields.
+ * Whether a URL points at this site (root-relative or absolute same-host).
  *
- * Template pages use `post_content` only for free-form content added via the
- * block editor, but almost all real content lives in structured meta fields
- * (hero headings, body copy, intro text, FAQ answers, etc.).  For these pages
- * `$post->post_content` is effectively always empty, making checks 6–8 always
- * fail.  This helper aggregates all text-type and textarea-type meta field
- * values into one string so the checks reflect what visitors actually read.
+ * Used only for structural SEO checks — not for sanitising saved meta.
+ *
+ * @param string $url Raw URL from a meta field.
+ * @return bool
+ */
+function restwell_seo_admin_url_is_internal( string $url ): bool {
+	$url = trim( $url );
+	if ( $url === '' ) {
+		return false;
+	}
+	if ( str_starts_with( $url, '/' ) ) {
+		return true;
+	}
+	$home_base = untrailingslashit( home_url() );
+	if ( $home_base === '' ) {
+		return false;
+	}
+	return str_starts_with( untrailingslashit( $url ), $home_base );
+}
+
+/**
+ * Build plain-text and HTML corpora for SEO analysis from a post's content + meta.
+ *
+ * Template pages store almost all copy in structured meta (hero headings, body
+ * copy, FAQ answers, CTA URLs, etc.) rather than `post_content`. Word-count and
+ * keyphrase checks need stripped plain text; heading / internal-link checks need
+ * a corpus that can still contain markup (or synthetic markup derived from known
+ * heading / URL meta keys).
  *
  * @param WP_Post $post Post to analyse.
- * @return string Aggregated plain-text content.
+ * @return array{plain:string,html:string}
  */
-function restwell_get_effective_content_for_seo( WP_Post $post ): string {
-	// Start with whatever the block editor stored (may be empty for templates).
-	$parts = array( wp_strip_all_tags( $post->post_content ) );
+function restwell_get_effective_content_for_seo( WP_Post $post ): array {
+	$plain_parts = array();
+	$html_parts  = array();
 
-	// Pull in all structured meta field values for this post's template.
+	// Block / classic editor body (often empty on template pages).
+	if ( (string) $post->post_content !== '' ) {
+		$html_parts[]  = (string) $post->post_content;
+		$plain_parts[] = wp_strip_all_tags( $post->post_content );
+	}
+
+	$h1_key = function_exists( 'restwell_page_content_h1_meta_key' )
+		? restwell_page_content_h1_meta_key( $post )
+		: '';
+
 	if ( function_exists( 'restwell_get_page_content_field_definitions' ) ) {
 		$groups = restwell_get_page_content_field_definitions( $post );
 		foreach ( $groups as $items ) {
 			foreach ( $items as $key => $field ) {
-				if ( ! in_array( $field['type'], array( 'text', 'textarea' ), true ) ) {
+				$type = isset( $field['type'] ) ? (string) $field['type'] : 'text';
+				if ( ! in_array( $type, array( 'text', 'textarea' ), true ) ) {
 					continue;
 				}
 				// Skip SEO meta fields — those are analysed separately.
@@ -400,14 +366,41 @@ function restwell_get_effective_content_for_seo( WP_Post $post ): string {
 					continue;
 				}
 				$val = (string) get_post_meta( $post->ID, $key, true );
-				if ( $val !== '' ) {
-					$parts[] = wp_strip_all_tags( $val );
+				if ( $val === '' ) {
+					continue;
+				}
+
+				$plain_parts[] = wp_strip_all_tags( $val );
+
+				// Textareas may hold HTML (policy body, rich intros) — keep raw for structure.
+				if ( 'textarea' === $type ) {
+					$html_parts[] = $val;
+				}
+
+				/*
+				 * Plain-text heading fields are rendered as h2/h3 in templates.
+				 * Skip the page H1 key so the "subheading" check stays honest.
+				 */
+				if (
+					$h1_key !== $key
+					&& str_ends_with( $key, '_heading' )
+					&& trim( wp_strip_all_tags( $val ) ) !== ''
+				) {
+					$html_parts[] = '<h2>' . wp_strip_all_tags( $val ) . '</h2>';
+				}
+
+				// CTA / link URL fields that point within this site.
+				if ( str_ends_with( $key, '_url' ) && restwell_seo_admin_url_is_internal( $val ) ) {
+					$html_parts[] = '<a href="' . esc_url( $val ) . '">link</a>';
 				}
 			}
 		}
 	}
 
-	return implode( ' ', array_filter( $parts ) );
+	return array(
+		'plain' => trim( implode( ' ', array_filter( $plain_parts ) ) ),
+		'html'  => implode( "\n", array_filter( $html_parts ) ),
+	);
 }
 
 /**
@@ -441,7 +434,9 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		$meta_desc = (string) $defaults['meta_description'];
 	}
 
-	$content    = restwell_get_effective_content_for_seo( $post );
+	$corpora    = restwell_get_effective_content_for_seo( $post );
+	$plain      = $corpora['plain'];
+	$html       = $corpora['html'];
 	$title      = $meta_title ?: $post->post_title;
 	$desc       = $meta_desc;
 	$kp         = restwell_seo_admin_normalize_for_keyphrase_match( $focus_kp );
@@ -449,7 +444,7 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 	$desc_l     = restwell_seo_admin_normalize_for_keyphrase_match( $desc );
 	$title_len  = mb_strlen( $title );
 	$desc_len   = mb_strlen( $desc );
-	$word_count = str_word_count( wp_strip_all_tags( $content ) );
+	$word_count = str_word_count( $plain );
 	$has_og     = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
 
 	$checks = array();
@@ -525,15 +520,15 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		'state' => $has_og ? 'ok' : 'bad',
 	);
 
-	// 6 - content contains at least one heading.
-	$has_heading = preg_match( '/<h[23]/i', $content ) === 1;
+	// 6 - content contains at least one heading (HTML corpus / derived heading meta).
+	$has_heading = preg_match( '/<h[23]/i', $html ) === 1;
 	$checks[]    = array(
 		'id'    => 'headings',
 		'label' => __( 'Content contains at least one subheading (h2/h3)', 'restwell-retreats' ),
 		'state' => $has_heading ? 'ok' : ( $post->post_type === 'page' ? 'warn' : 'bad' ),
 	);
 
-	// 7 - word count over 300.
+	// 7 - word count over 300 (plain-text corpus only).
 	if ( $word_count >= 300 ) {
 		$state = 'ok';
 	} elseif ( $word_count >= 150 ) {
@@ -551,10 +546,10 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		'state' => $state,
 	);
 
-	// 8 - content contains at least one internal link (root-relative or same-site absolute).
+	// 8 - at least one internal link (HTML corpus / derived URL meta).
 	$home_base    = untrailingslashit( home_url() );
-	$has_internal = preg_match( '/href=["\']\//', $content ) === 1
-		|| ( $home_base !== '' && preg_match( '#href=["\']' . preg_quote( $home_base, '#' ) . '/#', $content ) === 1 );
+	$has_internal = preg_match( '/href=["\']\//', $html ) === 1
+		|| ( $home_base !== '' && preg_match( '#href=["\']' . preg_quote( $home_base, '#' ) . '/#', $html ) === 1 );
 	$checks[]     = array(
 		'id'    => 'internal_links',
 		'label' => __( 'Content contains at least one internal link', 'restwell-retreats' ),
@@ -593,45 +588,31 @@ function restwell_seo_admin_schema_status( WP_Post $post, string $template ): ar
 // =============================================================================
 
 /**
- * Save SEO meta box fields.
+ * Persist SEO fields from a verified request (dedicated SEO screen).
+ *
+ * Caller must verify nonce and capabilities before calling.
  *
  * @param int     $post_id Post ID.
  * @param WP_Post $post    Post object.
  */
-function restwell_seo_admin_save( $post_id, $post ) {
-	if (
-		! isset( $_POST['restwell_seo_nonce'] ) ||
-		! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['restwell_seo_nonce'] ) ), 'restwell_seo_save' )
-	) {
-		return;
-	}
-
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
-
-	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-		return;
-	}
-
-	if ( ! in_array( $post->post_type, array( 'page', 'post' ), true ) ) {
+function restwell_seo_admin_save_fields( $post_id, $post ) {
+	if ( ! $post instanceof WP_Post || ! in_array( $post->post_type, array( 'page', 'post' ), true ) ) {
 		return;
 	}
 
 	$fields = array(
-		'focus_keyphrase' => 'sanitize_text_field',
-		'meta_title'      => 'sanitize_text_field',
+		'focus_keyphrase'  => 'sanitize_text_field',
+		'meta_title'       => 'sanitize_text_field',
 		'meta_description' => 'sanitize_textarea_field',
 	);
 
 	foreach ( $fields as $key => $sanitiser ) {
-		if ( isset( $_POST[ $key ] ) ) {
+		if ( isset( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified by caller
 			update_post_meta( $post_id, $key, call_user_func( $sanitiser, wp_unslash( $_POST[ $key ] ) ) );
 		}
 	}
 
-	// OG image ID.
-	if ( isset( $_POST['og_image_id'] ) ) {
+	if ( isset( $_POST['og_image_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$og_image_id = absint( $_POST['og_image_id'] );
 		if ( $og_image_id > 0 ) {
 			update_post_meta( $post_id, 'og_image_id', $og_image_id );
@@ -640,22 +621,18 @@ function restwell_seo_admin_save( $post_id, $post ) {
 		}
 	}
 
-	// OG type - allow only known values.
-	if ( isset( $_POST['meta_og_type'] ) ) {
+	if ( isset( $_POST['meta_og_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$og_type = sanitize_key( wp_unslash( $_POST['meta_og_type'] ) );
 		if ( in_array( $og_type, array( 'website', 'article' ), true ) ) {
 			update_post_meta( $post_id, 'meta_og_type', $og_type );
 		}
 	}
 
-	// Canonical - store as raw URL.
-	if ( isset( $_POST['meta_canonical'] ) ) {
+	if ( isset( $_POST['meta_canonical'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$canonical = esc_url_raw( wp_unslash( $_POST['meta_canonical'] ) );
 		update_post_meta( $post_id, 'meta_canonical', $canonical );
 	}
 
-	// Noindex checkbox.
-	$noindex = isset( $_POST['meta_noindex'] ) ? absint( $_POST['meta_noindex'] ) : 0;
+	$noindex = isset( $_POST['meta_noindex'] ) ? absint( $_POST['meta_noindex'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	update_post_meta( $post_id, 'meta_noindex', $noindex );
 }
-add_action( 'save_post', 'restwell_seo_admin_save', 10, 2 );
