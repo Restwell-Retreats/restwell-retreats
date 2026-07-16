@@ -15,6 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Transient key for the single-flight video encode lock.
+ */
+const RESTWELL_VIDEO_COMPRESS_LOCK = 'restwell_video_compress_lock';
+
 // ---------------------------------------------------------------------------
 // 1. Attachment detail field — "Compress for web" button
 // ---------------------------------------------------------------------------
@@ -235,7 +240,27 @@ function restwell_video_compressor_register_output( $file_path, $original_id, $m
 }
 
 /**
- * AJAX handler for restwell_compress_video.
+ * Acquire a simple site-wide encode lock (one compression at a time).
+ *
+ * @return bool True when this request holds the lock.
+ */
+function restwell_video_compressor_acquire_lock(): bool {
+	if ( false !== get_transient( RESTWELL_VIDEO_COMPRESS_LOCK ) ) {
+		return false;
+	}
+	set_transient( RESTWELL_VIDEO_COMPRESS_LOCK, get_current_user_id() ?: 1, 5 * MINUTE_IN_SECONDS );
+	return true;
+}
+
+/**
+ * Release the site-wide encode lock.
+ */
+function restwell_video_compressor_release_lock(): void {
+	delete_transient( RESTWELL_VIDEO_COMPRESS_LOCK );
+}
+
+/**
+ * Handle AJAX video compression.
  *
  * Validates the request, runs FFmpeg to produce a compressed MP4 and WebM,
  * registers both as WordPress attachments, and returns JSON.
@@ -285,6 +310,27 @@ function restwell_video_compressor_handle_ajax() {
 			400
 		);
 	}
+
+	if ( ! current_user_can( 'edit_post', $attachment_id ) ) {
+		wp_send_json(
+			array(
+				'success' => false,
+				'message' => __( 'You do not have permission to compress this video.', 'restwell-retreats' ),
+			),
+			403
+		);
+	}
+
+	if ( ! restwell_video_compressor_acquire_lock() ) {
+		wp_send_json(
+			array(
+				'success' => false,
+				'message' => __( 'Another video is being compressed right now. Please wait for it to finish and try again.', 'restwell-retreats' ),
+			),
+			429
+		);
+	}
+	register_shutdown_function( 'restwell_video_compressor_release_lock' );
 
 	// Confirm it is a video/mp4 attachment.
 	if ( 'video/mp4' !== get_post_mime_type( $attachment_id ) ) {
