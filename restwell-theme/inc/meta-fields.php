@@ -44,6 +44,8 @@ add_action( 'admin_enqueue_scripts', 'restwell_enqueue_media_for_page_edit' );
 
 /**
  * Meta box callback: output all input fields in a tabbed interface.
+ *
+ * @param WP_Post $post Current post object.
  */
 function restwell_page_content_meta_box_callback( $post ) {
 	wp_nonce_field( RESTWELL_META_NONCE_ACTION, RESTWELL_META_NONCE_NAME );
@@ -263,6 +265,8 @@ function restwell_page_content_meta_box_callback( $post ) {
 
 /**
  * Save meta box: verify nonce and sanitize all fields for this page's template.
+ *
+ * @param int $post_id Post ID being saved.
  */
 function restwell_save_page_content_meta_box( $post_id ) {
 	if ( ! isset( $_POST[ RESTWELL_META_NONCE_NAME ] ) ||

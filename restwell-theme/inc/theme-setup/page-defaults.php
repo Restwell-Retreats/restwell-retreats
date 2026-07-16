@@ -149,14 +149,9 @@ function restwell_get_theme_setup_defaults() {
 }
 
 /**
- * Merge theme default post meta into a page: overwrite all keys when $force; otherwise only set keys that are not stored yet.
+ * Default meta for the Property page.
  *
- * Preserves intentional edits and empty values; fills gaps when new defaults are added to the theme.
- *
- * @param int   $post_id  Post ID.
- * @param array $defaults Key => value from a restwell_get_*_defaults() map.
- * @param bool  $force    When true, replace every listed key from defaults.
- * @return int Number of meta keys written.
+ * @return array<string, mixed>
  */
 function restwell_get_property_page_defaults() {
 	return array(
