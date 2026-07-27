@@ -34,7 +34,7 @@ Ship **SEO/performance** fixes and **analytics** (aligned with your existing coo
 - [ ] **Front page — low-end Android test** - Test on simulated slow 4x CPU throttling in DevTools; confirm acceptable performance. → Verify: No jank, page loads in < 5s on slow 3G simulation.
 - [ ] **GA4 live verification** - Run DebugView pass; confirm canonical events/params firing; lock dashboard dimensions to documented event names in [ANALYTICS-EVENT-SCHEMA.md](ANALYTICS-EVENT-SCHEMA.md) → Verify: All enquiry funnel events confirmed in GA4.
 - [ ] **REST hardening smoke test** - Confirm `curl -sI …/wp-json/wp/v2/users` without cookies → `401` on live/staging. → Verify: Authenticated editor access still intact.
-- [ ] **Editorial intent split** - Refine residual overlap around "accessible holiday" language across home/accessibility/guide content cluster. → Verify: No cannibalisation between core pages.
+- [x] **Editorial intent split** - One primary keyphrase per indexable page via `inc/seo-keyword-map.php` + lane locks on Home / Property / Accessibility / How It Works / Who It's For (Pricing reserved). → Verify: `restwell_keyword_cannibalisation_audit()` reports zero keyphrase or H1 clashes.
 
 ---
 

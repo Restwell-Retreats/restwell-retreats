@@ -17,14 +17,14 @@ get_header();
 $pid = get_the_ID();
 $restwell_fp_seed        = function_exists( 'restwell_get_theme_setup_defaults' ) ? restwell_get_theme_setup_defaults() : array();
 $hero_eyebrow            = get_post_meta( $pid, 'hero_eyebrow', true ) ?: 'Restwell Retreats';
-$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible self-catering holidays in Whitstable, Kent';
+$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible holidays Whitstable';
 $hero_heading_lines      = preg_split( '/\r\n|\r|\n/', $hero_heading );
 $hero_heading_lines      = array_values( array_filter( array_map( 'trim', $hero_heading_lines ), 'strlen' ) );
 if ( empty( $hero_heading_lines ) ) {
-	$hero_heading_lines = array( 'Accessible self-catering holidays in Whitstable, Kent' );
+	$hero_heading_lines = array( 'Accessible holidays Whitstable' );
 }
 $hero_heading_flat       = trim( preg_replace( '/\s+/', ' ', str_replace( array( "\r\n", "\r", "\n" ), ' ', $hero_heading ) ) );
-$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Wake up to the sea air in Whitstable and shape the day around your own clock. A step-free accessible holiday home with a ceiling track hoist, level-access wet room and optional CQC-regulated care: the whole house is yours.';
+$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Restwell is the brand overview for accessible holidays Whitstable guests can plan with confidence. Start here, then follow links to the bungalow, the access statement, who the stay suits, and how booking works. Enquire when you are ready.';
 $hero_spec_heading       = (string) get_post_meta( $pid, 'hero_spec_heading', true );
 // Optional strip under hero only when this meta is non-empty (no default).
 $hero_lede               = trim( $hero_subheading . ( $hero_spec_heading !== '' ? ' ' . $hero_spec_heading : '' ) );

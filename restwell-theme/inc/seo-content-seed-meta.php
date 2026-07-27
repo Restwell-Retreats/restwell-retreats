@@ -20,29 +20,35 @@ function restwell_get_seo_meta_defaults_by_slug() {
 	// Defaults tuned for 50–60 char titles, 120–160 char descriptions, unique focus keyphrases (cannibalization), and theme SEO admin keyphrase checks.
 	return array(
 		'how-it-works'          => array(
-			'meta_title'       => 'How It Works | Booking an Accessible Holiday | Restwell',
-			'meta_description' => 'How to book an accessible self-catering break with Restwell in Whitstable. Share your access needs, add optional CQC-regulated care and pick your dates.',
-			'focus_keyphrase'  => 'book accessible holiday whitstable',
+			'meta_title'       => 'Accessible Stay Booking Process | Restwell Retreats',
+			'meta_description' => 'An accessible stay with Restwell starts at enquiry: share access needs, confirm dates, add optional CQC-regulated care, then arrive ready.',
+			'focus_keyphrase'  => 'accessible stay',
 		),
 		'home'                  => array(
-			'meta_title'       => 'Accessible Holidays in Whitstable, Kent | Restwell',
-			'meta_description' => 'A step-free accessible holiday bungalow in Whitstable, Kent. Ceiling hoist, profiling bed and level-access wet room, with optional CQC-regulated care.',
+			'meta_title'       => 'Accessible Holidays Whitstable | Restwell Retreats',
+			'meta_description' => 'Accessible holidays Whitstable: a step-free self-catering home on the Kent coast. Explore the bungalow, access statement and how booking works.',
 			'focus_keyphrase'  => 'accessible holidays whitstable',
 		),
 		'the-property'          => array(
-			'meta_title'       => 'Accessible bungalow in Whitstable | Restwell Retreats',
-			'meta_description' => 'A wheelchair-accessible, step-free bungalow in Whitstable. Ceiling hoist, profiling beds, level-access wet room and optional care, minutes from the sea.',
+			'meta_title'       => 'Accessible Bungalow Whitstable | Restwell Retreats',
+			'meta_description' => 'Accessible bungalow Whitstable: single-storey, step-free layout with room-by-room specs, inclusions and optional care for your party.',
 			'focus_keyphrase'  => 'accessible bungalow whitstable',
 		),
 		'accessibility'         => array(
-			'meta_title'       => 'Access Statement | Step-Free Bungalow Whitstable | Restwell',
-			'meta_description' => 'Our full access statement: 965mm front and 926mm internal doorways, a ceiling track hoist, level-access wet room and step-free garden, described room by room.',
-			'focus_keyphrase'  => 'wheelchair accessible bungalow whitstable',
+			'meta_title'       => 'Wheelchair Accessible Holiday Cottage | Restwell Retreats',
+			'meta_description' => 'Wheelchair accessible holiday cottage access statement: ceiling hoist, level-access wet room, door widths 965mm and 926mm, plus parking.',
+			'focus_keyphrase'  => 'wheelchair accessible holiday cottage',
 		),
 		'who-its-for'           => array(
-			'meta_title'       => 'Accessible Holidays for Disabled Guests & Carers | Restwell',
-			'meta_description' => 'Restwell welcomes wheelchair users, families and guests needing respite, with optional care. A calm, step-free Whitstable bungalow with room for carers too.',
-			'focus_keyphrase'  => 'accessible holiday disabled guests carers',
+			'meta_title'       => 'Accessible Stay Suitability | Who It Fits | Restwell',
+			'meta_description' => 'Accessible stay suitability for guests, carers, OTs and commissioners. Check who Restwell suits before you enquire about dates.',
+			'focus_keyphrase'  => 'accessible stay suitability',
+		),
+		// Reserved for Job 11 (template-pricing.php). Do not invent the page here.
+		'pricing'               => array(
+			'meta_title'       => 'Accessible Holiday Pricing Whitstable | Restwell Retreats',
+			'meta_description' => 'Accessible holiday pricing Whitstable: rates, deposit rules, funding routes and care costs explained before you enquire.',
+			'focus_keyphrase'  => 'accessible holiday pricing whitstable',
 		),
 		'whitstable-area-guide' => array(
 			'meta_title'       => 'Whitstable Kent Coast Guide | Days Out | ' . $name,

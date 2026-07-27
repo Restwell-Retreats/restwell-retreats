@@ -35,6 +35,7 @@ function restwell_get_property_heading_refresh_maps() {
 	return array(
 		'prop_hero_heading' => array(
 			'An accessible bungalow in Whitstable, near the beach' => (string) ( $defaults['prop_hero_heading'] ?? '' ),
+			'An accessible bungalow in Whitstable' => (string) ( $defaults['prop_hero_heading'] ?? '' ),
 		),
 		'prop_bungalow_heading' => array(
 			'An accessible bungalow on one level' => (string) ( $defaults['prop_bungalow_heading'] ?? '' ),
