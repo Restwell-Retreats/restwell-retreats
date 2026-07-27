@@ -134,7 +134,7 @@ function restwell_get_request_level_title_fallback() {
 				return restwell_sanitize_seo_title_text( $defaults['meta_title'] );
 			}
 		}
-		return restwell_build_meta_title( __( 'Accessible holidays in Whitstable', 'restwell-retreats' ) );
+		return restwell_build_meta_title( __( 'Accessible holidays Whitstable', 'restwell-retreats' ) );
 	}
 
 	if ( is_home() && ! is_front_page() ) {

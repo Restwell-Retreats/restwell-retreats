@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 1;
+const RESTWELL_SCHEMA_VERSION = 2;
 
 function restwell_migrate_homepage_faq_meta_v1() {
 	if ( get_option( 'restwell_home_faq_meta_migrated_v1', '' ) === '1' ) {
@@ -1195,6 +1195,202 @@ function restwell_migrate_blog_lede_v1() {
 }
 
 /**
+ * One-time: lock Home / Property / Accessibility / How It Works / Who It's For into distinct keyword lanes.
+ *
+ * Updates focus_keyphrase, meta_title, meta_description, H1 and first-100-word ledes when they still
+ * match the previous overlapping defaults. Pricing is reserved in the seed map only (Job 11).
+ */
+function restwell_migrate_keyword_lanes_v1() {
+	if ( get_option( 'restwell_keyword_lanes_v1', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_keyword_lanes_v1', '1' );
+		return;
+	}
+
+	$seo_map = restwell_get_seo_meta_defaults_by_slug();
+
+	$pages = array(
+		'home' => array(
+			'front'    => true,
+			'h1_key'   => 'hero_heading',
+			'lede_key' => 'hero_subheading',
+			'h1_stale' => array(
+				'Accessible self-catering holidays in Whitstable, Kent',
+				'Accessible Holidays in Whitstable, Kent',
+				'Accessible holidays in Whitstable, Kent',
+			),
+			'lede_stale' => array(
+				'Wake up to the sea air in Whitstable and shape the day around your own clock. A step-free accessible holiday home with a ceiling track hoist, level-access wet room and optional CQC-regulated care: the whole house is yours.',
+				'Wake up to the sea air in Whitstable and shape the day around your own clock. Restwell Retreats is a step-free, single-storey accessible holiday home on the Kent coast, ten minutes from the seafront, and the whole house is yours. There\'s a ceiling track hoist over the profiling bed, a level-access wet room already in place, and optional CQC-regulated care if you\'d like it. Come for a holiday or a respite break, and settle in at your own pace.',
+			),
+			'kp_stale' => array(
+				'accessible holidays whitstable',
+			),
+			'title_stale' => array(
+				'Accessible Holidays in Whitstable, Kent | Restwell',
+				'Accessible Holidays in Whitstable, Kent | Restwell Retreats',
+			),
+			'desc_stale' => array(
+				'A step-free accessible holiday bungalow in Whitstable, Kent. Ceiling hoist, profiling bed and level-access wet room, with optional CQC-regulated care.',
+			),
+		),
+		'the-property' => array(
+			'path'     => 'the-property',
+			'h1_key'   => 'prop_hero_heading',
+			'lede_key' => 'prop_hero_subtitle',
+			'h1_stale' => array(
+				'An accessible bungalow in Whitstable',
+				'An accessible bungalow in Whitstable, near the beach',
+			),
+			'lede_stale' => array(
+				'A single-storey wheelchair accessible bungalow in Whitstable, step-free throughout and fully fitted for access. Here is what each room has, so you can check whether it works for you before you enquire.',
+				'A newly adapted single-storey bungalow a few minutes from Tankerton Beach. Step-free throughout, with a full room coverage ceiling hoist, profiling beds and a level-access wet room.',
+			),
+			'kp_stale' => array(
+				'accessible bungalow whitstable',
+				'adapted bungalow whitstable',
+			),
+			'title_stale' => array(
+				'Accessible bungalow in Whitstable | Restwell Retreats',
+			),
+			'desc_stale' => array(
+				'A wheelchair-accessible, step-free bungalow in Whitstable. Ceiling hoist, profiling beds, level-access wet room and optional care, minutes from the sea.',
+			),
+		),
+		'accessibility' => array(
+			'path'     => 'accessibility',
+			'h1_key'   => 'acc_heading',
+			'lede_key' => 'acc_intro',
+			'h1_stale' => array(
+				'Our access statement, room by room',
+			),
+			'lede_stale' => array(
+				'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.',
+			),
+			'kp_stale' => array(
+				'wheelchair accessible bungalow whitstable',
+				'wheelchair accessible holiday cottage',
+			),
+			'title_stale' => array(
+				'Access Statement | Step-Free Bungalow Whitstable | Restwell',
+			),
+			'desc_stale' => array(
+				'Our full access statement: 965mm front and 926mm internal doorways, a ceiling track hoist, level-access wet room and step-free garden, described room by room.',
+			),
+		),
+		'how-it-works' => array(
+			'path'     => 'how-it-works',
+			'h1_key'   => 'hiw_heading',
+			'lede_key' => 'hiw_intro',
+			'h1_stale' => array(
+				'How to book an accessible holiday with care',
+			),
+			'lede_stale' => array(
+				'Booking an accessible holiday with optional care is more straightforward than it sounds. Here is what happens from your first question to arrival, and how care is arranged alongside your stay.',
+				'Booking a break should be the easy part. From your first enquiry to the morning you leave, we keep things clear and unhurried, so you know what\'s in the house, what care is available and how to pay.',
+			),
+			'kp_stale' => array(
+				'book accessible holiday whitstable',
+				'accessible stay',
+			),
+			'title_stale' => array(
+				'How It Works | Booking an Accessible Holiday | Restwell',
+			),
+			'desc_stale' => array(
+				'How to book an accessible self-catering break with Restwell in Whitstable. Share your access needs, add optional CQC-regulated care and pick your dates.',
+			),
+		),
+		'who-its-for' => array(
+			'path'     => 'who-its-for',
+			'h1_key'   => 'wif_heading',
+			'lede_key' => 'wif_intro',
+			'h1_stale' => array(
+				'Built for guests with access needs',
+				'Built for guests with access needs, and everyone travelling with them',
+			),
+			'lede_stale' => array(
+				'Restwell suits anyone planning an accessible holiday, from disabled guests and their carers to families, occupational therapists and commissioners. Open the section that fits your situation for honest detail on who the property works best for.',
+				'Restwell suits anyone who needs a step-free holiday with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.',
+				'Restwell is a wheelchair-accessible holiday in Whitstable for anyone who needs a step-free stay with room to bring family, carers or friends. These are the guests we most often welcome, and the features that matter most to each.',
+			),
+			'kp_stale' => array(
+				'accessible holiday disabled guests carers',
+				'accessible stay suitability',
+			),
+			'title_stale' => array(
+				'Accessible Holidays for Disabled Guests & Carers | Restwell',
+			),
+			'desc_stale' => array(
+				'Restwell welcomes wheelchair users, families and guests needing respite, with optional care. A calm, step-free Whitstable bungalow with room for carers too.',
+			),
+		),
+	);
+
+	$h1_next = array(
+		'home'          => 'Accessible holidays Whitstable',
+		'the-property'  => 'Accessible bungalow Whitstable',
+		'accessibility' => 'Wheelchair accessible holiday cottage',
+		'how-it-works'  => 'How your accessible stay works',
+		'who-its-for'   => 'Accessible stay suitability',
+	);
+
+	$lede_next = array(
+		'home'          => 'Restwell is the brand overview for accessible holidays Whitstable guests can plan with confidence. Start here, then follow links to the bungalow, the access statement, who the stay suits, and how booking works. Enquire when you are ready.',
+		'the-property'  => 'This accessible bungalow Whitstable guests book for a private stay is single-storey and step-free throughout. Here is what each room has, what is included, and how the layout works before you enquire.',
+		'accessibility' => 'This wheelchair accessible holiday cottage access statement covers the ceiling hoist, level-access wet room, door widths of 965mm at the front and 926mm inside, and parking, so you can judge fit before you book.',
+		'how-it-works'  => 'An accessible stay at Restwell follows a clear booking process from first question to arrival. Share what you need, confirm dates, arrange optional care if you want it, then settle in.',
+		'who-its-for'   => 'Use this accessible stay suitability guide to see whether Restwell fits your party: guests and families, carers and support workers, occupational therapists, and commissioners planning funded short breaks.',
+	);
+
+	foreach ( $pages as $slug => $cfg ) {
+		$page_id = 0;
+		if ( ! empty( $cfg['front'] ) ) {
+			$page_id = (int) get_option( 'page_on_front', 0 );
+		} else {
+			$page    = get_page_by_path( (string) ( $cfg['path'] ?? '' ), OBJECT, 'page' );
+			$page_id = $page ? (int) $page->ID : 0;
+		}
+		if ( $page_id < 1 || empty( $seo_map[ $slug ] ) ) {
+			continue;
+		}
+
+		$target = $seo_map[ $slug ];
+
+		$current_kp = trim( (string) get_post_meta( $page_id, 'focus_keyphrase', true ) );
+		if ( $current_kp === '' || in_array( $current_kp, $cfg['kp_stale'], true ) ) {
+			update_post_meta( $page_id, 'focus_keyphrase', $target['focus_keyphrase'] );
+		}
+
+		$current_title = trim( (string) get_post_meta( $page_id, 'meta_title', true ) );
+		if ( $current_title === '' || in_array( $current_title, $cfg['title_stale'], true ) ) {
+			update_post_meta( $page_id, 'meta_title', $target['meta_title'] );
+		}
+
+		$current_desc = trim( (string) get_post_meta( $page_id, 'meta_description', true ) );
+		if ( $current_desc === '' || in_array( $current_desc, $cfg['desc_stale'], true ) ) {
+			update_post_meta( $page_id, 'meta_description', $target['meta_description'] );
+		}
+
+		$h1_key     = (string) $cfg['h1_key'];
+		$current_h1 = trim( (string) get_post_meta( $page_id, $h1_key, true ) );
+		if ( $current_h1 === '' || in_array( $current_h1, $cfg['h1_stale'], true ) ) {
+			update_post_meta( $page_id, $h1_key, $h1_next[ $slug ] );
+		}
+
+		$lede_key     = (string) $cfg['lede_key'];
+		$current_lede = trim( (string) get_post_meta( $page_id, $lede_key, true ) );
+		if ( $current_lede === '' || in_array( $current_lede, $cfg['lede_stale'], true ) ) {
+			update_post_meta( $page_id, $lede_key, $lede_next[ $slug ] );
+		}
+	}
+
+	update_option( 'restwell_keyword_lanes_v1', '1' );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1231,6 +1427,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_wg_lede_v1',
 		'restwell_enq_lede_v1',
 		'restwell_blog_lede_v1',
+		'restwell_keyword_lanes_v1',
 	);
 }
 
@@ -1329,6 +1526,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_enq_lede_v1', 27 );
 	add_action( 'init', 'restwell_migrate_blog_lede_v1', 38 );
 	add_action( 'after_switch_theme', 'restwell_migrate_blog_lede_v1', 28 );
+	add_action( 'init', 'restwell_migrate_keyword_lanes_v1', 39 );
+	add_action( 'after_switch_theme', 'restwell_migrate_keyword_lanes_v1', 29 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

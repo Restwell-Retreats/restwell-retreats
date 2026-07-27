@@ -15,8 +15,8 @@ $pid = get_the_ID();
 
 $hiw_hero_image_id = (int) get_post_meta( $pid, 'hiw_hero_image_id', true );
 $hiw_label          = get_post_meta( $pid, 'hiw_label', true ) ?: '';
-$hiw_heading        = get_post_meta( $pid, 'hiw_heading', true ) ?: 'How to book an accessible holiday with care';
-$hiw_intro          = get_post_meta( $pid, 'hiw_intro', true ) ?: 'Booking an accessible holiday with optional care is more straightforward than it sounds. Here is what happens from your first question to arrival, and how care is arranged alongside your stay.';
+$hiw_heading        = get_post_meta( $pid, 'hiw_heading', true ) ?: 'How your accessible stay works';
+$hiw_intro          = get_post_meta( $pid, 'hiw_intro', true ) ?: 'An accessible stay at Restwell follows a clear booking process from first question to arrival. Share what you need, confirm dates, arrange optional care if you want it, then settle in.';
 $hiw_hero_cta_text           = get_post_meta( $pid, 'hiw_hero_cta_text', true ) ?: 'Ask about your dates';
 $hiw_hero_cta_url            = esc_url( get_post_meta( $pid, 'hiw_hero_cta_url', true ) ?: home_url( '/enquire/' ) );
 $hiw_hero_cta_promise        = get_post_meta( $pid, 'hiw_hero_cta_promise', true ) ?: '';

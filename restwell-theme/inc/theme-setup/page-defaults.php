@@ -34,8 +34,8 @@ function restwell_get_theme_setup_pages() {
 function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
-		'hero_heading'             => 'Accessible self-catering holidays in Whitstable, Kent',
-		'hero_subheading'          => 'Wake up to the sea air in Whitstable and shape the day around your own clock. A step-free accessible holiday home with a ceiling track hoist, level-access wet room and optional CQC-regulated care: the whole house is yours.',
+		'hero_heading'             => 'Accessible holidays Whitstable',
+		'hero_subheading'          => 'Restwell is the brand overview for accessible holidays Whitstable guests can plan with confidence. Start here, then follow links to the bungalow, the access statement, who the stay suits, and how booking works. Enquire when you are ready.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'View the property',
 		'hero_cta_primary_url'     => '/the-property/',
@@ -161,8 +161,8 @@ function restwell_get_property_page_defaults() {
 		'prop_address_postcode' => 'CT5 2RQ',
 
 		'prop_hero_label'               => 'The Property',
-		'prop_hero_heading'             => 'An accessible bungalow in Whitstable',
-		'prop_hero_subtitle'            => 'A single-storey wheelchair accessible bungalow in Whitstable, step-free throughout and fully fitted for access. Here is what each room has, so you can check whether it works for you before you enquire.',
+		'prop_hero_heading'             => 'Accessible bungalow Whitstable',
+		'prop_hero_subtitle'            => 'This accessible bungalow Whitstable guests book for a private stay is single-storey and step-free throughout. Here is what each room has, what is included, and how the layout works before you enquire.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -343,8 +343,8 @@ function restwell_get_property_page_defaults() {
 function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
-		'hiw_heading' => 'How to book an accessible holiday with care',
-		'hiw_intro'   => 'Booking an accessible holiday with optional care is more straightforward than it sounds. Here is what happens from your first question to arrival, and how care is arranged alongside your stay.',
+		'hiw_heading' => 'How your accessible stay works',
+		'hiw_intro'   => 'An accessible stay at Restwell follows a clear booking process from first question to arrival. Share what you need, confirm dates, arrange optional care if you want it, then settle in.',
 
 		'hiw_steps_label'   => 'FOUR-STEP PROCESS',
 		'hiw_steps_heading' => 'Straightforward from start to finish',
@@ -408,8 +408,8 @@ function restwell_get_how_it_works_page_defaults() {
 function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
-		'acc_heading' => 'Our access statement, room by room',
-		'acc_intro'   => 'Our wheelchair-accessible Whitstable bungalow in detail: doorway widths, ceiling-track hoist and wet room measurements so you can decide whether the house works for you.',
+		'acc_heading' => 'Wheelchair accessible holiday cottage',
+		'acc_intro'   => 'This wheelchair accessible holiday cottage access statement covers the ceiling hoist, level-access wet room, door widths of 965mm at the front and 926mm inside, and parking, so you can judge fit before you book.',
 
 		'acc_room_label'      => 'The property',
 		'acc_room_heading'    => 'Room by room',
@@ -561,8 +561,8 @@ function restwell_get_guest_guide_page_defaults() {
 function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'           => 'Who it is for',
-		'wif_heading'         => 'Built for guests with access needs',
-		'wif_intro'           => 'Restwell suits anyone planning an accessible holiday, from disabled guests and their carers to families, occupational therapists and commissioners. Open the section that fits your situation for honest detail on who the property works best for.',
+		'wif_heading'         => 'Accessible stay suitability',
+		'wif_intro'           => 'Use this accessible stay suitability guide to see whether Restwell fits your party: guests and families, carers and support workers, occupational therapists, and commissioners planning funded short breaks.',
 		'wif_hero_image_id'   => 0,
 		'wif_family_title'    => 'For guests and families',
 		'wif_family_body'     => '"Accessible" and "wheelchair friendly" are used loosely by a lot of accommodation. People book in good faith and arrive to find a step at the entrance, a bathroom that is too small to turn, or a hoist that is not actually there. Restwell works the other way: the ceiling track hoist is already fitted in the accessible bedroom, the wet room has a roll-in shower with turning space, and every doorway and corridor is sized for a powerchair. The full measurements are published on our accessibility page. Check them before you enquire, not after. This is a private home, not a converted hotel room. No shared spaces, no clinical layout, and no surprises on arrival.',
