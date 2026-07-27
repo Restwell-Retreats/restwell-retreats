@@ -57,6 +57,7 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 		'Whitstable Guide'   => 'template-whitstable-guide.php',
 		'FAQ'                => 'template-faq.php',
 		'Enquire'            => 'template-enquire.php',
+		'Pricing'            => 'template-pricing.php',
 		'Resources'          => 'template-resources.php',
 		'Guest Guide'          => 'page-guest-guide.php',
 		'Privacy Policy'       => 'template-privacy-policy.php',

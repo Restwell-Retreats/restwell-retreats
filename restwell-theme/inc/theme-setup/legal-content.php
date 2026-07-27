@@ -84,6 +84,14 @@ function restwell_get_terms_conditions_content(): string {
 	$email   = restwell_get_public_enquiry_email();
 	$mailto  = esc_url( 'mailto:' . $email );
 
+	$payment_para = function_exists( 'restwell_get_terms_payment_paragraph' )
+		? restwell_get_terms_payment_paragraph()
+		: esc_html__( 'A 50% deposit secures your dates. The balance is due no later than one week before arrival unless we agree otherwise in writing. We accept bank transfer (BACS) and debit or credit card.', 'restwell-retreats' );
+
+	$timeline  = function_exists( 'restwell_get_payment_timeline' ) ? restwell_get_payment_timeline() : array();
+	$check_in  = isset( $timeline['check_in'] ) ? esc_html( $timeline['check_in'] ) : '15:00';
+	$check_out = isset( $timeline['check_out'] ) ? esc_html( $timeline['check_out'] ) : '11:00';
+
 	return '<h2>The booking</h2>
 <p>These terms apply when you book the adapted self-catering bungalow at 101 Russell Drive, Whitstable, Kent, CT5 2RQ with ' . $entity . '. Your booking is confirmed when you receive written confirmation from us. Until that point, no contract exists and the dates are not reserved. All bookings are subject to availability.</p>
 
@@ -91,7 +99,7 @@ function restwell_get_terms_conditions_content(): string {
 <p>We ask you to share your accessibility and equipment requirements at the time of booking so we can confirm the property is suitable for your needs. Requirements disclosed after written confirmation has been issued may not be possible to meet; we cannot guarantee changes to setup or equipment at short notice.</p>
 
 <h2>Payment</h2>
-<p>A deposit secures your dates; the amount is confirmed at the time of booking. The balance is due no later than six weeks before arrival unless we agree otherwise in writing. We accept bank transfer (BACS) and debit or credit card.</p>
+<p>' . $payment_para . '</p>
 
 <h2>Cancellation by you</h2>
 <p>If you need to cancel, please contact us as soon as possible. Refunds are calculated as follows:</p>
@@ -115,7 +123,7 @@ function restwell_get_terms_conditions_content(): string {
 <p>In the event that we must cancel your booking, you will receive a full refund of all payments made, or the option to rebook on alternative dates.</p>
 
 <h2>Check-in and check-out</h2>
-<p>Check-in is from 15:00. Check-out is by 11:00. If your accessibility requirements mean a different time would help, let us know when booking and we will accommodate where possible.</p>
+<p>Check-in is from ' . $check_in . '. Check-out is by ' . $check_out . '. If your accessibility requirements mean a different time would help, let us know when booking and we will accommodate where possible.</p>
 
 <h2>Number of guests</h2>
 <p>The property has a maximum occupancy confirmed at the time of booking. This number must not be exceeded without prior written agreement.</p>
@@ -244,6 +252,7 @@ function restwell_seed_all_pages_meta( array $created_ids, $force, array &$resul
 		'Whitstable Guide' => 'restwell_get_whitstable_guide_page_defaults',
 		'FAQ'           => 'restwell_get_faq_page_defaults',
 		'Enquire'       => 'restwell_get_enquire_page_defaults',
+		'Pricing'       => 'restwell_get_pricing_page_defaults',
 		'Resources'     => 'restwell_get_resources_page_defaults',
 		'Guest Guide'          => 'restwell_get_guest_guide_page_defaults',
 		'Privacy Policy'       => 'restwell_get_privacy_policy_page_defaults',

@@ -305,24 +305,23 @@ $wg_glance = array(
 	</section>
 	<?php endif; ?>
 
-	<section class="wg-content-section rw-section-y bg-white rw-seam-t" aria-labelledby="wg-related-reading-heading">
-		<div class="container max-w-5xl mx-auto">
-			<div class="wg-section-rail w-full">
-				<div class="wg-section-head mb-8 md:mb-10">
-					<p class="section-label mb-2"><?php echo esc_html( $related_label ); ?></p>
-					<h2 id="wg-related-reading-heading" class="text-3xl md:text-[2rem] font-serif text-[var(--deep-teal)] tracking-tight mb-5 md:mb-6"><?php echo esc_html( $related_heading ); ?></h2>
-					<p class="<?php echo esc_attr( $body_class ); ?> max-w-[65ch]"><?php echo esc_html( $related_intro ); ?></p>
-				</div>
-				<div class="flex flex-col flex-wrap items-stretch gap-4 sm:flex-row sm:items-center md:gap-5">
-				<a class="btn btn-outline w-full sm:w-auto justify-center whitespace-normal text-center leading-snug px-6" href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>"><?php esc_html_e( 'Accessible beaches on the Kent coast', 'restwell-retreats' ); ?></a>
-				<a class="btn btn-outline w-full sm:w-auto justify-center whitespace-normal text-center leading-snug px-6" href="<?php echo esc_url( home_url( '/who-its-for/' ) ); ?>"><?php esc_html_e( 'Who Restwell is for', 'restwell-retreats' ); ?></a>
-				<a class="btn btn-outline w-full sm:w-auto justify-center whitespace-normal text-center leading-snug px-6" href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>"><?php esc_html_e( 'Using direct payments for holidays', 'restwell-retreats' ); ?></a>
-			<a class="btn btn-outline w-full sm:w-auto justify-center whitespace-normal text-center leading-snug px-6" href="<?php echo esc_url( home_url( '/carers-respite-holiday-guide/' ) ); ?>"><?php esc_html_e( "Carers' respite: rights and funding", 'restwell-retreats' ); ?></a>
-			<a class="btn btn-outline w-full sm:w-auto justify-center whitespace-normal text-center leading-snug px-6" href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'Booking and planning FAQs', 'restwell-retreats' ); ?></a>
-			</div>
-			</div>
-		</div>
-	</section>
+	<?php
+	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
+		$wg_related_intro = $related_intro !== ''
+			? $related_intro
+			: __( 'Kent coast guides that sit under this area hub: beaches, parking, travel, and quieter days out.', 'restwell-retreats' );
+		restwell_render_pillar_related_guides(
+			'whitstable-area-guide',
+			array(
+				'heading'         => $related_heading !== '' ? $related_heading : __( 'Related guides', 'restwell-retreats' ),
+				'intro'           => $wg_related_intro,
+				'heading_id'      => 'wg-related-reading-heading',
+				'show_siblings'   => true,
+				'show_conversion' => true,
+			)
+		);
+	}
+	?>
 
 	<section class="wg-content-section rw-section-y bg-[var(--bg-subtle)] rw-seam-t" aria-labelledby="wg-planning-heading">
 		<div class="container max-w-5xl mx-auto">

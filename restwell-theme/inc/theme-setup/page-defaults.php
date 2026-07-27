@@ -18,6 +18,7 @@ function restwell_get_theme_setup_pages() {
 		'Who It\'s For'      => 'who-its-for',
 		'FAQ'                => 'faq',
 		'Enquire'            => 'enquire',
+		'Pricing'            => 'pricing',
 		'Resources'          => 'resources',
 		'Whitstable Guide'   => 'whitstable-area-guide',
 		'Blog'               => 'blog',
@@ -511,6 +512,36 @@ function restwell_get_enquire_page_defaults() {
 }
 
 /**
+ * Default meta for the Pricing page.
+ */
+function restwell_get_pricing_page_defaults() {
+	$faq_defaults = function_exists( 'restwell_get_pricing_faq_defaults' )
+		? restwell_get_pricing_faq_defaults()
+		: array();
+
+	$defaults = array(
+		'pricing_label'         => 'Pricing',
+		'pricing_heading'       => 'Pricing for your accessible Whitstable break',
+		'pricing_subheading'    => 'Transparent accessible holiday pricing in Whitstable: the bungalow, optional care and every funding route explained.',
+		'pricing_intro'         => 'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. Every piece of access equipment is included in the price, so there are no surprise hire fees. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.',
+		'pricing_hero_cta_text' => 'Check dates and care availability',
+		'pricing_hero_cta_url'  => '/enquire/',
+		'pricing_hero_cta_promise' => 'No booking commitment, just a conversation.',
+		'pricing_faq_label'     => 'FAQ',
+		'pricing_faq_heading'   => 'Common questions about pricing',
+	);
+
+	$i = 1;
+	foreach ( $faq_defaults as $row ) {
+		$defaults[ "pricing_faq_{$i}_q" ] = $row['q'];
+		$defaults[ "pricing_faq_{$i}_a" ] = $row['a'];
+		$i++;
+	}
+
+	return $defaults;
+}
+
+/**
  * Default meta for the Resources / Funding & Support page.
  */
 function restwell_get_resources_page_defaults() {
@@ -545,9 +576,17 @@ function restwell_get_resources_page_defaults() {
  * Default meta for the Guest Guide page.
  */
 function restwell_get_guest_guide_page_defaults() {
+	$check_in  = 'from 15:00';
+	$check_out = 'by 11:00';
+	if ( function_exists( 'restwell_get_payment_timeline' ) ) {
+		$timeline  = restwell_get_payment_timeline();
+		$check_in  = 'from ' . $timeline['check_in'];
+		$check_out = 'by ' . $timeline['check_out'];
+	}
+
 	return array(
-		'gg_checkin_time'    => '2:00 pm',
-		'gg_checkout_time'   => '11:00 am',
+		'gg_checkin_time'    => $check_in,
+		'gg_checkout_time'   => $check_out,
 		'gg_house_rules'     => "Please treat the property with care; it is someone's home.\nNo smoking anywhere inside the property.\nDogs are allowed, subject to risk assessment and prior notice. Please keep dogs off the furniture.\nPlease lock all doors and close all windows when you go out.\nReport any damages as soon as possible.",
 		'gg_departure_notes' => "Strip the beds and leave used linen in the laundry room.\nPlace all rubbish in the bins provided.\nReturn all keys and fobs to the key safe (location shared on arrival).\nClose all windows and lock all doors.\nLeave the property in a tidy condition. Thank you!",
 		'gg_parking_info'    => "Two off-road spaces on the private driveway at the property—enough room for most cars and adapted vehicles if you deploy ramps thoughtfully.\nIf you are bringing more than two cars, you can usually park on the road outside. There is no residents permit scheme on this road, and we have not seen time-limited bay controls here—please still check any street signs when you arrive in case local rules change.",

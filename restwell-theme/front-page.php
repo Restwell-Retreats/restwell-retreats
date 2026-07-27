@@ -548,10 +548,10 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 			<h2 id="home-facts-strip-heading" class="sr-only">
 				<?php esc_html_e( 'Accessible holiday home at a glance', 'restwell-retreats' ); ?>
 			</h2>
-			<ul class="home-facts-strip__list m-0 list-none p-0 flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-6" role="list">
+			<ul class="home-facts-strip__list m-0 list-none p-0 flex w-fit mx-auto flex-col items-start gap-2 sm:mx-0 sm:w-full sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-4 sm:gap-y-2 md:gap-x-6" role="list">
 				<?php foreach ( $home_facts_strip as $fact_label ) : ?>
-				<li class="inline-flex items-center gap-2 text-sm sm:text-[0.9375rem] leading-snug text-[var(--deep-teal)]">
-					<span class="text-[var(--warm-gold-text)]" aria-hidden="true"><i class="ph-bold ph-check"></i></span>
+				<li class="flex items-start gap-2 text-sm sm:text-[0.9375rem] leading-snug text-[var(--deep-teal)]">
+					<span class="mt-0.5 shrink-0 text-[var(--warm-gold-text)]" aria-hidden="true"><i class="ph-bold ph-check"></i></span>
 					<span><?php echo esc_html( (string) $fact_label ); ?></span>
 				</li>
 				<?php endforeach; ?>
@@ -641,9 +641,86 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 						<?php endif; ?>
 					</div>
 				</div>
+				<?php
+				$fp_hub_property = get_page_by_path( 'the-property', OBJECT, 'page' );
+				$fp_hub_guide    = isset( $fp_teaser_guide ) ? $fp_teaser_guide : get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
+				$fp_hub_res      = isset( $fp_teaser_res ) ? $fp_teaser_res : get_page_by_path( 'resources', OBJECT, 'page' );
+				if ( $fp_hub_property || $fp_hub_guide || $fp_hub_res ) :
+					?>
+				<nav class="home-pillar-hubs pt-2 md:pt-3" aria-label="<?php esc_attr_e( 'Main topic hubs', 'restwell-retreats' ); ?>">
+					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--deep-teal)]/80 m-0 mb-3"><?php esc_html_e( 'Start from a hub', 'restwell-retreats' ); ?></p>
+					<ul class="m-0 p-0 list-none flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-x-6 sm:gap-y-2">
+						<?php if ( $fp_hub_property ) : ?>
+						<li>
+							<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover">
+								<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
+								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+							</a>
+						</li>
+						<?php endif; ?>
+						<?php if ( $fp_hub_res ) : ?>
+						<li>
+							<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover">
+								<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
+								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+							</a>
+						</li>
+						<?php endif; ?>
+						<?php if ( $fp_hub_guide ) : ?>
+						<li>
+							<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover">
+								<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
+								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+							</a>
+						</li>
+						<?php endif; ?>
+					</ul>
+				</nav>
+				<?php endif; ?>
 		</div>
 	</section>
 	<?php endif; ?>
+
+	<?php
+	// When the area/funding teaser is hidden, still expose the three pillars from home.
+	if ( ! $show_home_teaser ) :
+		$fp_hub_property = get_page_by_path( 'the-property', OBJECT, 'page' );
+		$fp_hub_guide    = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
+		$fp_hub_res      = get_page_by_path( 'resources', OBJECT, 'page' );
+		if ( $fp_hub_property || $fp_hub_guide || $fp_hub_res ) :
+			?>
+	<section class="home-pillar-hubs-solo <?php echo esc_attr( $rw_fp_section_y ); ?> bg-[var(--bg-subtle)]" aria-labelledby="home-pillar-hubs-heading">
+		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
+			<h2 id="home-pillar-hubs-heading" class="text-2xl font-serif text-[var(--deep-teal)] m-0 mb-4"><?php esc_html_e( 'Explore Restwell by topic', 'restwell-retreats' ); ?></h2>
+			<ul class="m-0 p-0 list-none flex flex-col gap-3">
+				<?php if ( $fp_hub_property ) : ?>
+				<li>
+					<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal">
+						<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
+					</a>
+				</li>
+				<?php endif; ?>
+				<?php if ( $fp_hub_res ) : ?>
+				<li>
+					<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal">
+						<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
+					</a>
+				</li>
+				<?php endif; ?>
+				<?php if ( $fp_hub_guide ) : ?>
+				<li>
+					<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal">
+						<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
+					</a>
+				</li>
+				<?php endif; ?>
+			</ul>
+		</div>
+	</section>
+			<?php
+		endif;
+	endif;
+	?>
 
 	<section class="who-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_who_bg ); ?>">
 		<div class="container mx-auto px-6">

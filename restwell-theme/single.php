@@ -46,18 +46,31 @@ if ( $posts_page_id ) {
 }
 $archive_label = $posts_page_id ? get_the_title( $posts_page_id ) : __( 'News & guides', 'restwell-retreats' );
 
-// Related posts: same category, exclude current.
+// Related posts: same cluster category, exclude current (card grid below).
 $related_posts = array();
-if ( $primary_cat_id ) {
+if ( function_exists( 'restwell_get_cluster_sibling_posts' ) ) {
+	foreach ( restwell_get_cluster_sibling_posts( $current_post_id, 3 ) as $sib ) {
+		if ( ! $sib instanceof WP_Post ) {
+			continue;
+		}
+		$related_posts[] = array(
+			'title'     => get_the_title( $sib ),
+			'permalink' => get_permalink( $sib ),
+			'date'      => get_the_date( '', $sib ),
+			'img_src'   => get_the_post_thumbnail_url( $sib, 'medium_large' ),
+			'read_time' => restwell_estimate_read_time( (string) get_post_field( 'post_content', $sib->ID ) ),
+		);
+	}
+} elseif ( $primary_cat_id ) {
 	$related_query = new WP_Query(
 		array(
-			'category__in'             => array( $primary_cat_id ),
-			'post__not_in'             => array( $current_post_id ),
-			'posts_per_page'           => 2,
-			'orderby'                  => 'date',
-			'order'                    => 'DESC',
-			'no_found_rows'            => true,
-			'update_post_meta_cache'   => true,
+			'category__in'           => array( $primary_cat_id ),
+			'post__not_in'           => array( $current_post_id ),
+			'posts_per_page'         => 3,
+			'orderby'                => 'date',
+			'order'                  => 'DESC',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => true,
 		)
 	);
 	if ( $related_query->have_posts() ) {
@@ -145,6 +158,12 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 				</div>
 			<?php endif; ?>
 
+		<?php
+		if ( function_exists( 'restwell_render_post_cluster_links' ) ) {
+			restwell_render_post_cluster_links( $current_post_id );
+		}
+		?>
+
 		<div class="blog-single__back-links">
 				<a href="<?php echo esc_url( $archive_url ); ?>" class="inline-flex items-center gap-2 text-[var(--deep-teal)] text-sm font-semibold hover:underline no-underline">
 					<i class="ph-bold ph-arrow-left text-xs" aria-hidden="true"></i>
@@ -195,7 +214,7 @@ $show_updated = $modified_ts > $published_ts + DAY_IN_SECONDS;
 									<div class="mt-auto pt-4 flex items-center justify-between">
 										<time class="text-xs text-[var(--muted-grey)]"><?php echo esc_html( $rp['date'] ); ?></time>
 										<span class="text-[var(--deep-teal)] text-xs font-semibold inline-flex items-center gap-1">
-											Read <i class="ph-bold ph-arrow-right text-[10px]" aria-hidden="true"></i>
+											<?php esc_html_e( 'Open guide', 'restwell-retreats' ); ?> <i class="ph-bold ph-arrow-right text-[10px]" aria-hidden="true"></i>
 										</span>
 									</div>
 								</div>

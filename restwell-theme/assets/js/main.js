@@ -1540,6 +1540,91 @@
 	}
 
 	/**
+	 * Pricing page: highlight current section in the resources-style TOC
+	 * (mobile pills + desktop rail). Progressive enhancement only.
+	 */
+	function initPricingPageNav() {
+		var root = document.querySelector('.restwell-pricing-page');
+		if (!root) {
+			return;
+		}
+		var links = root.querySelectorAll('a[data-pricing-anchor]');
+		if (!links.length) {
+			return;
+		}
+		var sections = [];
+		var seen = {};
+		links.forEach(function (link) {
+			var id = link.getAttribute('data-pricing-anchor');
+			if (!id || seen[id]) {
+				return;
+			}
+			var el = document.getElementById(id);
+			if (el) {
+				seen[id] = true;
+				sections.push({ id: id, el: el });
+			}
+		});
+		if (!sections.length) {
+			return;
+		}
+
+		function clearActive() {
+			links.forEach(function (a) {
+				a.removeAttribute('aria-current');
+			});
+		}
+
+		function setActive(id) {
+			clearActive();
+			if (!id) {
+				return;
+			}
+			links.forEach(function (a) {
+				if (a.getAttribute('data-pricing-anchor') === id) {
+					a.setAttribute('aria-current', 'true');
+				}
+			});
+		}
+
+		function updateActive() {
+			var vh = window.innerHeight || document.documentElement.clientHeight;
+			var target = 0.32 * vh;
+			var best = null;
+			var bestDist = Infinity;
+			sections.forEach(function (s) {
+				var r = s.el.getBoundingClientRect();
+				if (r.bottom <= 0 || r.top >= vh) {
+					return;
+				}
+				var mid = (r.top + r.bottom) / 2;
+				var dist = Math.abs(mid - target);
+				if (dist < bestDist) {
+					bestDist = dist;
+					best = s;
+				}
+			});
+			setActive(best ? best.id : null);
+		}
+
+		var ticking = false;
+		function onScrollOrResize() {
+			if (ticking) {
+				return;
+			}
+			ticking = true;
+			window.requestAnimationFrame(function () {
+				updateActive();
+				ticking = false;
+			});
+		}
+
+		window.addEventListener('scroll', onScrollOrResize, { passive: true });
+		window.addEventListener('resize', onScrollOrResize, { passive: true });
+		updateActive();
+	}
+
+	/**
 	 * GA4: secondary page-view-style events (property, accessibility spec).
 	 * Micro-conversions: tel / mailto (no PII in parameters).
 	 */
@@ -2121,6 +2206,7 @@
 		safeInit('initEnquiryDraftPersistence', initEnquiryDraftPersistence);
 		safeInit('initWifPersonaNav', initWifPersonaNav);
 		safeInit('initPropPageNav', initPropPageNav);
+		safeInit('initPricingPageNav', initPricingPageNav);
 		safeInit('initHomeComparisonScrollHints', initHomeComparisonScrollHints);
 
 		// Non-critical analytics and reveal effects run after the initial paint window.

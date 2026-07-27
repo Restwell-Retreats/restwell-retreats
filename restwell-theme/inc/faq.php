@@ -5,8 +5,11 @@
  * Homepage scope: Git-managed defaults in inc/homepage-faq.php (see
  * restwell_get_homepage_faq_defaults()).
  *
- * FAQ page and How It Works scopes: canonical FAQ template page meta
+ * FAQ page scope: canonical FAQ template page meta
  * `faq_{N}_q`, `faq_{N}_a`, and `faq_{N}_cat` (up to 14 items).
+ *
+ * How It Works and Pricing scopes: page meta first, then
+ * restwell_get_*_faq_defaults() seeds (same array for accordion + JSON-LD).
  *
  * @package Restwell_Retreats
  */
@@ -44,12 +47,54 @@ function restwell_get_faq_page_id(): int {
 /**
  * Retrieve FAQ items for a given scope.
  *
- * @param string $scope  One of 'faq-page', 'homepage', 'how-it-works'.
+ * @param string $scope  One of 'faq-page', 'homepage', 'how-it-works', 'pricing'.
  * @return array<int, array{q: string, a: string, cat: string, answer_text?: string}>
  *         Each item has 'q' (question), 'a' (answer HTML for templates),
  *         'cat' (category slug), and optional 'answer_text' (plain text for JSON-LD).
  */
 function restwell_get_faq_items( string $scope = 'faq-page' ): array {
+	if ( 'pricing' === $scope ) {
+		$items = array();
+		$pricing_page = get_page_by_path( 'pricing', OBJECT, 'page' );
+		$pricing_pid  = $pricing_page ? (int) $pricing_page->ID : 0;
+
+		if ( $pricing_pid > 0 ) {
+			for ( $i = 1; $i <= 8; $i++ ) {
+				$q = (string) get_post_meta( $pricing_pid, "pricing_faq_{$i}_q", true );
+				$a = (string) get_post_meta( $pricing_pid, "pricing_faq_{$i}_a", true );
+				if ( $q !== '' && $a !== '' ) {
+					$items[] = array(
+						'q'   => $q,
+						'a'   => $a,
+						'cat' => 'booking',
+					);
+				}
+			}
+		}
+
+		if ( empty( $items ) && function_exists( 'restwell_get_pricing_faq_defaults' ) ) {
+			foreach ( restwell_get_pricing_faq_defaults() as $row ) {
+				$items[] = array(
+					'q'   => $row['q'],
+					'a'   => $row['a'],
+					'cat' => isset( $row['cat'] ) ? $row['cat'] : 'booking',
+				);
+			}
+		}
+
+		/**
+		 * Filter pricing FAQ items.
+		 *
+		 * @param array<int, array{q:string,a:string,cat:string}> $items Items.
+		 * @param string                                          $scope Scope key.
+		 * @param int                                             $pid   Pricing page ID.
+		 */
+		$items_out = function_exists( 'restwell_apply_property_facts_to_faq_items' )
+			? restwell_apply_property_facts_to_faq_items( $items )
+			: $items;
+		return apply_filters( 'restwell_faq_items', $items_out, $scope, $pricing_pid );
+	}
+
 	if ( 'homepage' === $scope && function_exists( 'restwell_get_homepage_faq_defaults' ) ) {
 		$items = array();
 		foreach ( restwell_get_homepage_faq_defaults() as $row ) {

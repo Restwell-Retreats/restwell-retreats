@@ -51,6 +51,7 @@ function restwell_get_page_content_field_definitions( $post = null ) {
 		'template-whitstable-guide.php' => 'restwell_get_whitstable_guide_field_definitions',
 		'template-faq.php'        => 'restwell_get_faq_field_definitions',
 		'template-enquire.php'    => 'restwell_get_enquire_field_definitions',
+		'template-pricing.php'    => 'restwell_get_pricing_field_definitions',
 		'template-resources.php'           => 'restwell_get_resources_field_definitions',
 		'template-privacy-policy.php'      => 'restwell_get_legal_policy_field_definitions',
 		'template-terms-and-conditions.php' => 'restwell_get_legal_policy_field_definitions',
@@ -572,6 +573,34 @@ function restwell_get_faq_field_definitions() {
 			'faq_cta_btn'     => restwell_field( __( 'Button label', 'restwell-retreats' ) ),
 			'faq_cta_url'     => restwell_field( __( 'Button URL', 'restwell-retreats' ) ),
 		),
+	);
+}
+
+/**
+ * Pricing page field definitions.
+ */
+function restwell_get_pricing_field_definitions() {
+	$faq = array(
+		'pricing_faq_label'   => restwell_field( __( 'FAQ section eyebrow', 'restwell-retreats' ) ),
+		'pricing_faq_heading' => restwell_field( __( 'FAQ section heading (h2)', 'restwell-retreats' ) ),
+	);
+	for ( $i = 1; $i <= 5; $i++ ) {
+		$faq[ "pricing_faq_{$i}_q" ] = restwell_field( sprintf( /* translators: %d: FAQ number */ __( 'Question %d', 'restwell-retreats' ), $i ) );
+		$faq[ "pricing_faq_{$i}_a" ] = restwell_field( sprintf( /* translators: %d: FAQ number */ __( 'Answer %d', 'restwell-retreats' ), $i ), 'textarea' );
+	}
+
+	return array(
+		'Header' => array(
+			'pricing_hero_image_id'    => restwell_field( __( 'Hero background image (attachment ID, optional)', 'restwell-retreats' ), 'media' ),
+			'pricing_label'            => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
+			'pricing_heading'          => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
+			'pricing_subheading'       => restwell_field( __( 'Hero subheading (under H1)', 'restwell-retreats' ), 'textarea' ),
+			'pricing_intro'            => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'pricing_hero_cta_text'    => restwell_field( __( 'Hero primary CTA label', 'restwell-retreats' ) ),
+			'pricing_hero_cta_url'     => restwell_field( __( 'Hero primary CTA URL', 'restwell-retreats' ) ),
+			'pricing_hero_cta_promise' => restwell_field( __( 'Hero CTA promise line (optional)', 'restwell-retreats' ) ),
+		),
+		'FAQ' => $faq,
 	);
 }
 

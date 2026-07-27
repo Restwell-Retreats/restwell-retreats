@@ -22,12 +22,14 @@ if ( ! function_exists( 'restwell_crm_capability' ) ) {
 
 require_once get_template_directory() . '/inc/admin-meta-boxes.php';
 require_once get_template_directory() . '/inc/blog-categories.php';
+require_once get_template_directory() . '/inc/internal-links.php';
 require_once get_template_directory() . '/inc/csp.php';
 require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/faq.php';
 require_once get_template_directory() . '/inc/faq-question-handler.php';
 require_once get_template_directory() . '/inc/gallery.php';
 require_once get_template_directory() . '/inc/property-facts.php';
+require_once get_template_directory() . '/inc/pricing.php';
 require_once get_template_directory() . '/inc/property-content.php';
 require_once get_template_directory() . '/inc/guest-guide.php';
 require_once get_template_directory() . '/inc/homepage-faq.php';

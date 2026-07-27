@@ -30,7 +30,7 @@ Remaining work for **deployment hygiene**, **customer journey**, **process relia
 
 - [ ] **Enquiry form resilience** — Optional: **draft/save progress** (e.g. `localStorage`) + beforeunload warning for long forms. → Verify: refresh doesn’t wipe multi-step progress where implemented.
 
-- [ ] **Pricing stays enquiry-only** — **No** public rates page or calendar; quotes go through the enquiry flow only. Optional copy tweaks elsewhere (FAQ, property page) to **set expectations** (“we’ll confirm availability and discuss rates when we reply”) without publishing prices. → Verify: messaging matches enquiry-only model; no drift toward a pricing template.
+- [x] **Pricing page shipped** — Public rates at `/pricing/` (`template-pricing.php` + `restwell_get_pricing()`). Enquiry remains the conversion CTA; calculator and PDF fee sheet are follow-ons. (Supersedes the old enquiry-only rates stance.)
 
 ---
 

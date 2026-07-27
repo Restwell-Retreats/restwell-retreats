@@ -677,6 +677,21 @@ $prop_section_bg = static function ( $index ) {
 		</div>
 	</section>
 
+	<?php
+	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
+		restwell_render_pillar_related_guides(
+			'the-property',
+			array(
+				'heading'         => __( 'Related guides', 'restwell-retreats' ),
+				'intro'           => __( 'Practical guides on choosing an accessible self-catering stay, plus sector updates that affect how people book a break.', 'restwell-retreats' ),
+				'heading_id'      => 'prop-related-guides-heading',
+				'show_siblings'   => true,
+				'show_conversion' => true,
+			)
+		);
+	}
+	?>
+
 	<section class="rw-section-y--cta bg-[var(--deep-teal)]" aria-labelledby="prop-cta-heading">
 		<div class="container max-w-5xl text-center">
 			<h2 id="prop-cta-heading" class="text-3xl md:text-4xl font-serif text-white mb-4 tracking-tight text-balance m-0"><?php echo esc_html( $prop_cta_heading ); ?></h2>

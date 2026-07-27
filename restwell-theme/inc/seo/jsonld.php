@@ -130,6 +130,13 @@ function restwell_output_structured_data() {
 		restwell_output_jsonld_faq_page();
 	}
 
+	if ( is_page_template( 'template-pricing.php' ) ) {
+		restwell_output_jsonld_pricing_faq();
+		if ( is_singular( 'page' ) && ! is_front_page() ) {
+			restwell_output_jsonld_local_business( get_queried_object_id() );
+		}
+	}
+
 	if ( is_page_template( 'template-whitstable-guide.php' ) ) {
 		restwell_output_jsonld_tourist_destination();
 	}
@@ -361,6 +368,9 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 	}
 
 	$price_range = (string) get_option( 'restwell_lodging_price_range', '' );
+	if ( $price_range === '' && function_exists( 'restwell_get_pricing_price_range' ) ) {
+		$price_range = restwell_get_pricing_price_range();
+	}
 	$price_range = (string) apply_filters( 'restwell_lodging_price_range', $price_range );
 	$price_range = (string) apply_filters( 'restwell_vacation_rental_price_range', $price_range );
 	if ( $price_range === '' ) {
@@ -436,6 +446,40 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 	}
 	if ( ! empty( $image_urls ) ) {
 		$schema['image'] = count( $image_urls ) === 1 ? $image_urls[0] : $image_urls;
+	}
+
+	if ( function_exists( 'restwell_get_pricing' ) ) {
+		$pricing = restwell_get_pricing();
+		$off     = isset( $pricing['seasons']['off_peak'] ) ? $pricing['seasons']['off_peak'] : array();
+		$peak    = isset( $pricing['seasons']['peak'] ) ? $pricing['seasons']['peak'] : array();
+		if ( ! empty( $off['midweek_night'] ) && ! empty( $peak['full_week'] ) ) {
+			$schema['makesOffer'] = array(
+				array(
+					'@type'             => 'Offer',
+					'name'              => __( 'Off-peak midweek night', 'restwell-retreats' ),
+					'price'             => (string) (int) $off['midweek_night'],
+					'priceCurrency'     => 'GBP',
+					'priceSpecification'=> array(
+						'@type'             => 'UnitPriceSpecification',
+						'price'             => (string) (int) $off['midweek_night'],
+						'priceCurrency'     => 'GBP',
+						'unitText'          => 'NIGHT',
+					),
+				),
+				array(
+					'@type'             => 'Offer',
+					'name'              => __( 'Peak full week (7 nights)', 'restwell-retreats' ),
+					'price'             => (string) (int) $peak['full_week'],
+					'priceCurrency'     => 'GBP',
+					'priceSpecification'=> array(
+						'@type'             => 'UnitPriceSpecification',
+						'price'             => (string) (int) $peak['full_week'],
+						'priceCurrency'     => 'GBP',
+						'unitText'          => 'WEEK',
+					),
+				),
+			);
+		}
 	}
 
 	$schema = restwell_jsonld_with_same_as( $schema );
@@ -993,7 +1037,42 @@ function restwell_output_jsonld_faq_page() {
 			'name'           => wp_strip_all_tags( $pair['q'] ),
 			'acceptedAnswer' => array(
 				'@type' => 'Answer',
-				'text'  => wp_strip_all_tags( $pair['a'] ),
+				'text'  => wp_strip_all_tags( isset( $pair['answer_text'] ) ? $pair['answer_text'] : $pair['a'] ),
+			),
+		);
+	}
+
+	$schema = array(
+		'@context'   => 'https://schema.org',
+		'@type'      => 'FAQPage',
+		'mainEntity' => $main_entity,
+	);
+
+	restwell_print_jsonld( $schema );
+}
+
+/**
+ * FAQPage for the Pricing template (same Q&A as the visible accordion).
+ */
+function restwell_output_jsonld_pricing_faq() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+
+	$faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'pricing' ) : array();
+	if ( empty( $faq_pairs ) ) {
+		return;
+	}
+
+	$main_entity = array();
+	foreach ( $faq_pairs as $pair ) {
+		$main_entity[] = array(
+			'@type'          => 'Question',
+			'name'           => wp_strip_all_tags( $pair['q'] ),
+			'acceptedAnswer' => array(
+				'@type' => 'Answer',
+				'text'  => wp_strip_all_tags( isset( $pair['answer_text'] ) ? $pair['answer_text'] : $pair['a'] ),
 			),
 		);
 	}

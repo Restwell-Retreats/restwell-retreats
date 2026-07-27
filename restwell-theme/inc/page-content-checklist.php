@@ -36,6 +36,7 @@ function restwell_page_content_h1_meta_key( $post = null ) {
 		'template-whitstable-guide.php' => 'wg_heading',
 		'template-faq.php'              => 'faq_heading',
 		'template-enquire.php'          => 'enq_heading',
+		'template-pricing.php'          => 'pricing_heading',
 		'template-resources.php'        => 'res_heading',
 		'template-privacy-policy.php'   => 'legal_heading',
 		'template-terms-and-conditions.php' => 'legal_heading',
@@ -84,6 +85,10 @@ function restwell_page_content_required_fields( $post = null ) {
 			break;
 		case 'template-enquire.php':
 			$required['enq_intro'] = __( 'Intro paragraph', 'restwell-retreats' );
+			break;
+		case 'template-pricing.php':
+			$required['pricing_subheading'] = __( 'Hero subheading', 'restwell-retreats' );
+			$required['pricing_intro']      = __( 'Intro paragraph', 'restwell-retreats' );
 			break;
 		case 'template-faq.php':
 			$required['faq_intro'] = __( 'Intro paragraph', 'restwell-retreats' );

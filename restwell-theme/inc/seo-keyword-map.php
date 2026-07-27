@@ -3,8 +3,7 @@
  * Primary keyphrase map and cannibalisation audit.
  *
  * Source of truth: focus_keyphrase values in restwell_get_seo_meta_defaults_by_slug()
- * (seo-content-seed-meta.php, loaded via seo-content-seed.php). Reserved lanes that
- * Job 11 will build (e.g. pricing) live here until that page exists.
+ * (seo-content-seed-meta.php, loaded via seo-content-seed.php).
  *
  * @package Restwell_Retreats
  */
@@ -29,14 +28,10 @@ function restwell_keyword_map_excluded_slugs() {
 /**
  * Reserved primary keyphrases for pages not yet in the seed map.
  *
- * Pricing is reserved for Job 11 (template-pricing.php); do not invent a page here.
- *
  * @return array<string, string> slug => focus_keyphrase
  */
 function restwell_get_reserved_primary_keyphrases() {
-	return array(
-		'pricing' => 'accessible holiday pricing whitstable',
-	);
+	return array();
 }
 
 /**

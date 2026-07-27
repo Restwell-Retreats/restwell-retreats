@@ -27,10 +27,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Last updated (ISO)** | 2026-07-05 |
+| **Last updated (ISO)** | 2026-07-27 |
 | **Matrix schema** | 2.0 |
-| **P4 catalog URLs** | 34 |
-| **P4 URLs with §13.1 row (worksheet)** | 34 (includes `/contact/`; see plan §13.1) |
+| **P4 catalog URLs** | 35 |
+| **P4 URLs with §13.1 row (worksheet)** | 35 (includes `/contact/` and `/pricing/`; see plan §13.1) |
 | **P4 URLs with column G = `x`** | 0 |
 
 ---
@@ -108,7 +108,7 @@ Keep in sync with **§15** in the main plan (tick here when you tick there).
 | B1-new / B1 classic | ~ | GSC verify + sitemap: human ops; plan §16 B1-new table still empty |
 | B2 Intent map | x | synced 2026-05-10 per plan |
 | B3 Topic cluster and 90-day backlog | x | |
-| B4 On-page upgrades | ~ | `/the-property/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/accessible-parking-whitstable-tankerton/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/travel-insurance-disability-uk-self-catering/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/accessible-eating-out-whitstable-kent/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/holiday-backup-plan-care-worker-change/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/how-to-read-holiday-cottage-access-statement/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/quieter-times-whitstable-low-crowd-access/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/hire-mobility-scooter-equipment-uk-holiday/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/privacy-policy/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/terms-and-conditions/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/accessibility-policy/` P4 Step C logged 2026-05-11 (§13.1 + §4.1) |
+| B4 On-page upgrades | ~ | `/the-property/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/pricing/` shipped 2026-07-27 + consistency 2026-07-27 + signed copy/visual polish 2026-07-27 (subheading keyphrase; interior-hero; resources TOC + scrollspy; rw-table; closing CTA; care review 1 Sep 2026; terms one-week migration); `/accessible-parking-whitstable-tankerton/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/travel-insurance-disability-uk-self-catering/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/accessible-eating-out-whitstable-kent/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/holiday-backup-plan-care-worker-change/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/how-to-read-holiday-cottage-access-statement/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/quieter-times-whitstable-low-crowd-access/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/hire-mobility-scooter-equipment-uk-holiday/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/privacy-policy/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/terms-and-conditions/` P4 Step C logged 2026-05-11 (§13.1 + §4.1); `/accessibility-policy/` P4 Step C logged 2026-05-11 (§13.1 + §4.1) |
 | B5 Quality / authority / freshness | . | |
 | B6 Monthly ranking ritual | . | |
 
@@ -122,37 +122,38 @@ _Plan sync 2026-05-11: P4 Step C outline for `/enquire/` refreshed in `SEO-INTEN
 
 | Path | A | B | C | D | E | F | G |
 |------|---|---|---|---|---|---|---|
-| `/` | x | x | x | x | ~ | . | . |
-| `/the-property/` | x | x | x | . | ~ | ~ | . |
+| `/` | x | x | x | x | x | . | . |
+| `/the-property/` | x | x | x | . | x | ~ | . |
 | `/accessibility/` | x | x | x | x | ~ | ~ | . |
-| `/enquire/` | x | x | x | x | ~ | . | . |
+| `/enquire/` | x | x | x | x | x | . | . |
+| `/pricing/` | x | x | x | x | x | ~ | . |
 | `/contact/` | . | . | . | . | . | . | . |
-| `/resources/` | x | x | x | . | . | . | . |
+| `/resources/` | x | x | x | . | x | . | . |
 | `/how-it-works/` | x | x | x | . | . | . | . |
 | `/who-its-for/` | x | x | x | . | . | . | . |
-| `/whitstable-area-guide/` | x | x | x | . | . | . | . |
+| `/whitstable-area-guide/` | x | x | x | . | x | . | . |
 | `/faq/` | x | x | x | . | . | . | . |
 | `/blog/` | x | x | x | . | . | . | . |
 | `/guest-guide/` | x | x | x | . | . | . | . |
-| `/accessible-beaches-coastal-walks-kent/` | x | x | x | . | . | . | . |
-| `/direct-payment-holiday-accommodation/` | x | x | x | . | . | . | . |
-| `/revitalise-alternatives-accessible-holidays/` | x | x | x | . | . | . | . |
-| `/how-to-choose-accessible-self-catering-holiday/` | x | x | x | . | . | . | . |
-| `/carers-respite-holiday-guide/` | x | x | x | . | . | . | . |
-| `/what-to-pack-accessible-self-catering-uk/` | x | x | x | . | . | . | . |
-| `/accessible-parking-whitstable-tankerton/` | x | x | x | . | . | . | . |
-| `/chc-respite-holiday-accommodation-uk/` | x | x | x | . | . | . | . |
-| `/hire-mobility-scooter-equipment-uk-holiday/` | x | x | x | . | . | . | . |
-| `/accessible-train-travel-whitstable-kent/` | x | x | x | . | . | . | . |
-| `/travel-insurance-disability-uk-self-catering/` | x | x | x | . | . | . | . |
-| `/commissioner-checklist-accessible-respite-stay/` | x | x | x | . | . | . | . |
-| `/personal-budget-short-break-care-act/` | x | x | x | . | . | . | . |
-| `/accessible-eating-out-whitstable-kent/` | x | x | x | . | . | . | . |
-| `/changing-places-toilets-kent-coast-days-out/` | x | x | x | . | . | . | . |
-| `/quieter-times-whitstable-low-crowd-access/` | x | x | x | . | . | . | . |
-| `/holiday-backup-plan-care-worker-change/` | x | x | x | . | . | . | . |
-| `/how-to-read-holiday-cottage-access-statement/` | x | x | x | . | . | . | . |
-| `/fatigue-friendly-whitstable-coastal-day/` | x | x | x | . | . | . | . |
+| `/accessible-beaches-coastal-walks-kent/` | x | x | x | . | x | . | . |
+| `/direct-payment-holiday-accommodation/` | x | x | x | . | x | . | . |
+| `/revitalise-alternatives-accessible-holidays/` | x | x | x | . | x | . | . |
+| `/how-to-choose-accessible-self-catering-holiday/` | x | x | x | . | x | . | . |
+| `/carers-respite-holiday-guide/` | x | x | x | . | x | . | . |
+| `/what-to-pack-accessible-self-catering-uk/` | x | x | x | . | x | . | . |
+| `/accessible-parking-whitstable-tankerton/` | x | x | x | . | x | . | . |
+| `/chc-respite-holiday-accommodation-uk/` | x | x | x | . | x | . | . |
+| `/hire-mobility-scooter-equipment-uk-holiday/` | x | x | x | . | x | . | . |
+| `/accessible-train-travel-whitstable-kent/` | x | x | x | . | x | . | . |
+| `/travel-insurance-disability-uk-self-catering/` | x | x | x | . | x | . | . |
+| `/commissioner-checklist-accessible-respite-stay/` | x | x | x | . | x | . | . |
+| `/personal-budget-short-break-care-act/` | x | x | x | . | x | . | . |
+| `/accessible-eating-out-whitstable-kent/` | x | x | x | . | x | . | . |
+| `/changing-places-toilets-kent-coast-days-out/` | x | x | x | . | x | . | . |
+| `/quieter-times-whitstable-low-crowd-access/` | x | x | x | . | x | . | . |
+| `/holiday-backup-plan-care-worker-change/` | x | x | x | . | x | . | . |
+| `/how-to-read-holiday-cottage-access-statement/` | x | x | x | . | x | . | . |
+| `/fatigue-friendly-whitstable-coastal-day/` | x | x | x | . | x | . | . |
 | `/privacy-policy/` | x | x | x | . | . | . | . |
 | `/terms-and-conditions/` | x | x | x | . | . | . | . |
 | `/accessibility-policy/` | x | x | x | . | . | . | . |

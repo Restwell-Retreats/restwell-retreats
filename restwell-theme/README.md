@@ -121,6 +121,7 @@ WordPress resolves URLs from **page slug** (`post_name`), not the PHP filename. 
 | `template-whitstable-guide.php` | Whitstable Guide | `whitstable-area-guide` | `/whitstable-area-guide/` |
 | `template-faq.php` | FAQ | `faq` | `/faq/` |
 | `template-enquire.php` | Enquire | `enquire` | `/enquire/` |
+| `template-pricing.php` | Pricing | `pricing` | `/pricing/` |
 | `template-resources.php` | Resources | `resources` | `/resources/` |
 | `page-guest-guide.php` | Guest Arrival Guide | `guest-guide` | `/guest-guide/` *(email-gated)* |
 | `template-privacy-policy.php` | Privacy Policy | `privacy-policy` | `/privacy-policy/` *(may follow Settings → Privacy)* |

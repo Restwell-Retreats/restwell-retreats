@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 2;
+const RESTWELL_SCHEMA_VERSION = 4;
 
 function restwell_migrate_homepage_faq_meta_v1() {
 	if ( get_option( 'restwell_home_faq_meta_migrated_v1', '' ) === '1' ) {
@@ -1198,7 +1198,7 @@ function restwell_migrate_blog_lede_v1() {
  * One-time: lock Home / Property / Accessibility / How It Works / Who It's For into distinct keyword lanes.
  *
  * Updates focus_keyphrase, meta_title, meta_description, H1 and first-100-word ledes when they still
- * match the previous overlapping defaults. Pricing is reserved in the seed map only (Job 11).
+ * match the previous overlapping defaults. Pricing lives at /pricing/ (template-pricing.php).
  */
 function restwell_migrate_keyword_lanes_v1() {
 	if ( get_option( 'restwell_keyword_lanes_v1', '' ) === '1' ) {
@@ -1391,6 +1391,144 @@ function restwell_migrate_keyword_lanes_v1() {
 }
 
 /**
+ * One-time: align guest guide check-in / check-out with booking docs (15:00 / 11:00).
+ *
+ * Only overwrites the old 2:00 pm / 11:00 am seed values so manual edits stay intact.
+ */
+function restwell_migrate_guest_guide_checkin_v1() {
+	if ( get_option( 'restwell_guest_guide_checkin_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'guest-guide', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_guest_guide_checkin_v1', '1' );
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = function_exists( 'restwell_get_guest_guide_page_defaults' )
+		? restwell_get_guest_guide_page_defaults()
+		: array(
+			'gg_checkin_time'  => 'from 15:00',
+			'gg_checkout_time' => 'by 11:00',
+		);
+
+	$checkin_stale = array(
+		'2:00 pm',
+		'2:00pm',
+		'2 pm',
+		'From 2:00 pm',
+		'from 2:00 pm',
+		'From 2 pm',
+	);
+	$checkout_stale = array(
+		'11:00 am',
+		'11:00am',
+		'11 am',
+		'By 11:00 am',
+		'by 11:00 am',
+		'By 11 am',
+	);
+
+	$current_in  = trim( (string) get_post_meta( $page_id, 'gg_checkin_time', true ) );
+	$current_out = trim( (string) get_post_meta( $page_id, 'gg_checkout_time', true ) );
+	$next_in     = trim( (string) ( $defaults['gg_checkin_time'] ?? 'from 15:00' ) );
+	$next_out    = trim( (string) ( $defaults['gg_checkout_time'] ?? 'by 11:00' ) );
+
+	if ( $next_in !== '' && ( $current_in === '' || in_array( $current_in, $checkin_stale, true ) ) ) {
+		update_post_meta( $page_id, 'gg_checkin_time', $next_in );
+	}
+	if ( $next_out !== '' && ( $current_out === '' || in_array( $current_out, $checkout_stale, true ) ) ) {
+		update_post_meta( $page_id, 'gg_checkout_time', $next_out );
+	}
+
+	update_option( 'restwell_guest_guide_checkin_v1', '1' );
+}
+
+/**
+ * One-time: replace stale "six weeks before arrival" balance wording in stored Terms body.
+ *
+ * Theme fallback already uses restwell_get_terms_payment_paragraph() (one-week rule).
+ * This only rewrites legal_body_html when it still contains the outdated six-week phrase.
+ */
+function restwell_migrate_terms_balance_one_week_v1() {
+	if ( get_option( 'restwell_terms_balance_one_week_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_terms_balance_one_week_v1', '1' );
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+	$body    = (string) get_post_meta( $page_id, 'legal_body_html', true );
+	if ( $body === '' ) {
+		update_option( 'restwell_terms_balance_one_week_v1', '1' );
+		return;
+	}
+
+	$replacements = array(
+		'six weeks before arrival'  => 'one week before arrival',
+		'Six weeks before arrival'  => 'One week before arrival',
+		'six weeks before you arrive' => 'one week before you arrive',
+		'no later than six weeks before arrival' => 'no later than one week before arrival',
+		'no later than six weeks before you arrive' => 'no later than one week before you arrive',
+	);
+
+	$updated = str_replace( array_keys( $replacements ), array_values( $replacements ), $body );
+	if ( $updated !== $body ) {
+		update_post_meta( $page_id, 'legal_body_html', $updated );
+	}
+
+	update_option( 'restwell_terms_balance_one_week_v1', '1' );
+}
+
+/**
+ * One-time: refresh Pricing page hero intro / subheading when still on Job 11 launch defaults.
+ */
+function restwell_migrate_pricing_hero_copy_v1() {
+	if ( get_option( 'restwell_pricing_hero_copy_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'pricing', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_pricing_hero_copy_v1', '1' );
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = function_exists( 'restwell_get_pricing_page_defaults' )
+		? restwell_get_pricing_page_defaults()
+		: array();
+
+	$stale_intro = 'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. Every piece of access equipment is part of the price, so there are no surprise hire fees waiting for you on arrival. This page explains exactly what is included, how payment works, the three funding routes our guests use most, and what else you might want to budget for. If anything here is unclear, we are always happy to talk it through before you commit.';
+
+	$current_intro = trim( (string) get_post_meta( $page_id, 'pricing_intro', true ) );
+	$next_intro    = isset( $defaults['pricing_intro'] ) ? (string) $defaults['pricing_intro'] : '';
+	if ( $next_intro !== '' && ( $current_intro === '' || $current_intro === $stale_intro ) ) {
+		update_post_meta( $page_id, 'pricing_intro', $next_intro );
+	}
+
+	$current_sub = trim( (string) get_post_meta( $page_id, 'pricing_subheading', true ) );
+	$next_sub    = isset( $defaults['pricing_subheading'] ) ? (string) $defaults['pricing_subheading'] : '';
+	if ( $next_sub !== '' && $current_sub === '' ) {
+		update_post_meta( $page_id, 'pricing_subheading', $next_sub );
+	}
+
+	$current_promise = trim( (string) get_post_meta( $page_id, 'pricing_hero_cta_promise', true ) );
+	$next_promise    = isset( $defaults['pricing_hero_cta_promise'] ) ? (string) $defaults['pricing_hero_cta_promise'] : '';
+	if ( $next_promise !== '' && $current_promise === '' ) {
+		update_post_meta( $page_id, 'pricing_hero_cta_promise', $next_promise );
+	}
+
+	update_option( 'restwell_pricing_hero_copy_v1', '1' );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1428,6 +1566,9 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_enq_lede_v1',
 		'restwell_blog_lede_v1',
 		'restwell_keyword_lanes_v1',
+		'restwell_guest_guide_checkin_v1',
+		'restwell_terms_balance_one_week_v1',
+		'restwell_pricing_hero_copy_v1',
 	);
 }
 
@@ -1528,6 +1669,12 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_blog_lede_v1', 28 );
 	add_action( 'init', 'restwell_migrate_keyword_lanes_v1', 39 );
 	add_action( 'after_switch_theme', 'restwell_migrate_keyword_lanes_v1', 29 );
+	add_action( 'init', 'restwell_migrate_guest_guide_checkin_v1', 40 );
+	add_action( 'after_switch_theme', 'restwell_migrate_guest_guide_checkin_v1', 30 );
+	add_action( 'init', 'restwell_migrate_terms_balance_one_week_v1', 41 );
+	add_action( 'after_switch_theme', 'restwell_migrate_terms_balance_one_week_v1', 31 );
+	add_action( 'init', 'restwell_migrate_pricing_hero_copy_v1', 42 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_hero_copy_v1', 32 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

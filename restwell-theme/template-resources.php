@@ -189,50 +189,20 @@ $res_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_
 		</div>
 	</section>
 
-	<section class="rw-section-y--compact bg-white border-t border-gray-100" aria-labelledby="res-related-heading">
-		<div class="container max-w-3xl">
-			<h2 id="res-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-6"><?php esc_html_e( 'Related guides', 'restwell-retreats' ); ?></h2>
-			<p class="text-gray-600 mb-6 leading-relaxed"><?php esc_html_e( 'This page is the funding hub. Use the links below for deeper, single-topic articles.', 'restwell-retreats' ); ?></p>
-		<ul class="space-y-3">
-			<li>
-				<a href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>" class="rw-link-prose">
-					<?php esc_html_e( 'Accessible beaches and coastal walks in Kent', 'restwell-retreats' ); ?>
-				</a>
-				<span class="text-gray-500">: <?php esc_html_e( 'level promenades, Beach Within Reach, Herne Bay, Whitstable, and Margate — with realistic access notes.', 'restwell-retreats' ); ?></span>
-			</li>
-			<li>
-				<a href="<?php echo esc_url( home_url( '/who-its-for/' ) ); ?>" class="rw-link-prose">
-					<?php esc_html_e( 'Who this stay is for (audience fit guide)', 'restwell-retreats' ); ?>
-				</a>
-				<span class="text-gray-500">: <?php esc_html_e( 'guest, family, carer, and referrer suitability without funding detail.', 'restwell-retreats' ); ?></span>
-			</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'How to use your direct payment for a holiday', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'what direct payments cover on holiday, how to make the case, and what to watch out for.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/carers-respite-holiday-guide/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'Carers taking holidays: respite rights, funding, and planning', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'carers assessments, replacement care, and funding options for a break.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'How to choose an accessible self-catering holiday property', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'a checklist of questions to ask before you book.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/revitalise-alternatives-accessible-holidays/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'Revitalise, grants, and other ways to fund a break', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'charitable routes and accessible alternatives if centre breaks are not the right fit.', 'restwell-retreats' ); ?></span>
-				</li>
-			</ul>
-		</div>
-	</section>
+	<?php
+	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
+		restwell_render_pillar_related_guides(
+			'resources',
+			array(
+				'heading'         => __( 'Related guides', 'restwell-retreats' ),
+				'intro'           => __( 'This page is the funding hub. Use the links below for deeper, single-topic articles on care funding and respite.', 'restwell-retreats' ),
+				'heading_id'      => 'res-related-heading',
+				'show_siblings'   => true,
+				'show_conversion' => true,
+			)
+		);
+	}
+	?>
 
 </main>
 <?php get_footer(); ?>

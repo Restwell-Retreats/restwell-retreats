@@ -866,11 +866,11 @@ function restwell_guest_guide_field_definitions() {
 				'type'  => 'text',
 			),
 			'gg_checkin_time'  => array(
-				'label' => __( 'Check-in time (e.g. From 3 pm)', 'restwell-retreats' ),
+				'label' => __( 'Check-in time (e.g. from 15:00)', 'restwell-retreats' ),
 				'type'  => 'text',
 			),
 			'gg_checkout_time' => array(
-				'label' => __( 'Check-out time (e.g. By 10 am)', 'restwell-retreats' ),
+				'label' => __( 'Check-out time (e.g. by 11:00)', 'restwell-retreats' ),
 				'type'  => 'text',
 			),
 		),

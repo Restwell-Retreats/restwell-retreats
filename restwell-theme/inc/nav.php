@@ -147,6 +147,10 @@ function restwell_get_primary_nav_structure() {
 					'label' => __( 'Who It\'s For', 'restwell-retreats' ),
 					'slug' => 'who-its-for',
 				),
+				array(
+					'label' => __( 'Pricing', 'restwell-retreats' ),
+					'slug' => 'pricing',
+				),
 			),
 		),
 		array(

@@ -356,8 +356,15 @@ $label_class = 'block text-sm font-semibold text-[var(--deep-teal)] mb-1.5';
 					<?php endif; ?>
 
 					<?php
-					$enq_who_page = get_page_by_path( 'who-its-for', OBJECT, 'page' );
-					$enq_who_url  = $enq_who_page ? get_permalink( $enq_who_page ) : home_url( '/who-its-for/' );
+					$enq_who_page     = get_page_by_path( 'who-its-for', OBJECT, 'page' );
+					$enq_who_url      = $enq_who_page ? get_permalink( $enq_who_page ) : home_url( '/who-its-for/' );
+					$enq_contact_page = get_page_by_path( 'contact', OBJECT, 'page' );
+					$enq_contact_url  = ( $enq_contact_page && 'publish' === $enq_contact_page->post_status )
+						? get_permalink( $enq_contact_page )
+						: '';
+					$enq_property_url = function_exists( 'restwell_get_pillar_url' )
+						? restwell_get_pillar_url( 'the-property' )
+						: home_url( '/the-property/' );
 					?>
 					<div class="<?php echo esc_attr( $sidebar_card_base ); ?>">
 						<h3 class="<?php echo esc_attr( $sidebar_card_heading ); ?>"><?php esc_html_e( 'Funding your stay', 'restwell-retreats' ); ?></h3>
@@ -369,6 +376,16 @@ $label_class = 'block text-sm font-semibold text-[var(--deep-teal)] mb-1.5';
 							<a href="<?php echo esc_url( $enq_who_url ); ?>" class="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full border border-[var(--deep-teal)]/25 px-4 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
 								<?php esc_html_e( 'Who it\'s for', 'restwell-retreats' ); ?>
 							</a>
+							<?php if ( $enq_property_url !== '' ) : ?>
+							<a href="<?php echo esc_url( $enq_property_url ); ?>" class="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full border border-[var(--deep-teal)]/25 px-4 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
+								<?php esc_html_e( 'See the adapted bungalow', 'restwell-retreats' ); ?>
+							</a>
+							<?php endif; ?>
+							<?php if ( $enq_contact_url !== '' ) : ?>
+							<a href="<?php echo esc_url( $enq_contact_url ); ?>" class="inline-flex items-center justify-center gap-2 min-h-[44px] rounded-full border border-[var(--deep-teal)]/25 px-4 text-[var(--deep-teal)] font-medium text-sm hover:border-[var(--deep-teal)]/45 hover:bg-[var(--sea-glass)]/20 transition-colors">
+								<?php esc_html_e( 'Other contact options', 'restwell-retreats' ); ?>
+							</a>
+							<?php endif; ?>
 						</div>
 					</div>
 

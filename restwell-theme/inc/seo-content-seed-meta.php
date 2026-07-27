@@ -44,10 +44,10 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'meta_description' => 'Accessible stay suitability for guests, carers, OTs and commissioners. Check who Restwell suits before you enquire about dates.',
 			'focus_keyphrase'  => 'accessible stay suitability',
 		),
-		// Reserved for Job 11 (template-pricing.php). Do not invent the page here.
+		// Deck meta for /pricing/ (template-pricing.php). Focus keyphrase owned by this URL only.
 		'pricing'               => array(
-			'meta_title'       => 'Accessible Holiday Pricing Whitstable | Restwell Retreats',
-			'meta_description' => 'Accessible holiday pricing Whitstable: rates, deposit rules, funding routes and care costs explained before you enquire.',
+			'meta_title'       => 'Accessible Holiday Pricing in Whitstable | Restwell Retreats',
+			'meta_description' => 'How pricing works for an accessible self-catering break at Restwell in Whitstable, with private, case-managed and NHS CHC funding routes and deposits explained.',
 			'focus_keyphrase'  => 'accessible holiday pricing whitstable',
 		),
 		'whitstable-area-guide' => array(
