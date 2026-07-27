@@ -112,7 +112,7 @@ $sections = array(
 
 $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-readable text-gray-600 leading-relaxed prose prose-sm max-w-none prose-a:text-[var(--deep-teal)] prose-a:underline hover:prose-a:no-underline prose-strong:text-[var(--deep-teal)]';
 ?>
-<main class="flex-1 restwell-pricing-page pb-24 md:pb-0" id="main-content">
+<main class="flex-1 restwell-pricing-page" id="main-content">
 <?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
 	<?php
@@ -135,10 +135,11 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 	get_template_part( 'template-parts/interior-hero' );
 	?>
 
-	<div class="md:hidden bg-white border-b border-gray-100 py-4 overflow-x-auto sticky top-0 z-20" aria-label="<?php esc_attr_e( 'Jump to section', 'restwell-retreats' ); ?>">
+	<?php /* Mobile TOC: horizontal chips only — not sticky, so it does not fight the bottom CTA. */ ?>
+	<div class="md:hidden bg-white/95 border-b border-gray-100 py-3 overflow-x-auto" data-pricing-toc="mobile" aria-label="<?php esc_attr_e( 'Jump to section', 'restwell-retreats' ); ?>">
 		<div class="container">
 			<p class="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--muted-grey)] mb-2"><?php esc_html_e( 'On this page', 'restwell-retreats' ); ?></p>
-			<div class="flex gap-2 min-w-max" data-pricing-toc="mobile">
+			<div class="flex gap-2 min-w-max">
 				<?php foreach ( $sections as $section ) : ?>
 					<a href="#<?php echo esc_attr( $section['id'] ); ?>"
 					   data-pricing-anchor="<?php echo esc_attr( $section['id'] ); ?>"
@@ -169,7 +170,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 					</ul>
 				</nav>
 
-				<div class="space-y-16 md:space-y-20 min-w-0 overflow-x-hidden">
+				<div class="space-y-12 md:space-y-20 min-w-0 overflow-x-hidden">
 
 					<div id="pricing-rates" class="scroll-mt-24 rw-card-elevated rw-card-pad">
 						<div class="rw-stack">
@@ -181,7 +182,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 								<p><?php esc_html_e( 'You book the whole bungalow, and the rate depends on the time of year and whether your nights fall midweek or at the weekend. Midweek nights are Monday to Thursday, and weekend nights are Friday, Saturday and Sunday.', 'restwell-retreats' ); ?></p>
 							</div>
 							<?php if ( ! empty( $off_peak ) && ! empty( $peak ) ) : ?>
-							<div class="overflow-x-auto">
+							<div class="rw-table-wrap">
 								<table class="rw-table rw-table--stack w-full text-left text-sm">
 									<caption class="sr-only"><?php esc_html_e( 'Bungalow rates by season', 'restwell-retreats' ); ?></caption>
 									<thead class="border-b border-gray-200">
@@ -348,7 +349,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 							<div class="<?php echo esc_attr( $prose_class ); ?>">
 								<p><?php esc_html_e( 'Most guests book through one of three routes. The table gives the quick version, and the notes below add the detail.', 'restwell-retreats' ); ?></p>
 							</div>
-							<div class="overflow-x-auto">
+							<div class="rw-table-wrap">
 								<table class="rw-table rw-table--stack w-full text-left text-sm">
 									<caption class="sr-only"><?php esc_html_e( 'Funding routes for a Restwell stay', 'restwell-retreats' ); ?></caption>
 									<thead class="border-b border-gray-200">
@@ -451,7 +452,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 								6 => 'fixed',
 							);
 							?>
-							<div class="overflow-x-auto">
+							<div class="rw-table-wrap">
 								<table class="rw-table rw-table--stack rw-table--care w-full text-left text-sm">
 									<caption class="sr-only"><?php esc_html_e( 'Continuity of Care Services guide rates (from / guide)', 'restwell-retreats' ); ?></caption>
 									<thead class="border-b border-gray-200">
@@ -615,7 +616,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 	}
 	?>
 
-	<div class="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-gray-100 bg-white/95 backdrop-blur-sm px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))]" role="region" aria-label="<?php esc_attr_e( 'Quick booking action', 'restwell-retreats' ); ?>">
+	<div class="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-gray-100 bg-white/95 backdrop-blur-sm px-4 pt-2.5 pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]" data-pricing-sticky-cta role="region" aria-label="<?php esc_attr_e( 'Quick booking action', 'restwell-retreats' ); ?>">
 		<a href="<?php echo esc_url( $enquire_url ); ?>" class="btn btn-gold w-full justify-center min-h-11" data-cta="pricing-sticky-mobile">
 			<?php esc_html_e( 'Check dates and care availability', 'restwell-retreats' ); ?>
 			<i class="ph-bold ph-caret-right" aria-hidden="true"></i>

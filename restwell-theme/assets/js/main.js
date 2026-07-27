@@ -1701,43 +1701,6 @@
 		);
 	}
 
-	function initHomeComparisonScrollHints() {
-		var scrollEl = document.querySelector('[data-home-comparison-scroll]');
-		var leftFade = document.querySelector('[data-home-comparison-fade="left"]');
-		var rightFade = document.querySelector('[data-home-comparison-fade="right"]');
-		if (!scrollEl || !leftFade || !rightFade) {
-			return;
-		}
-
-		function update() {
-			if (window.matchMedia('(min-width: 768px)').matches) {
-				leftFade.classList.add('opacity-0');
-				rightFade.classList.add('opacity-0');
-				return;
-			}
-			var sw = scrollEl.scrollWidth;
-			var cw = scrollEl.clientWidth;
-			var sl = scrollEl.scrollLeft;
-			var epsilon = 3;
-			var scrollable = sw > cw + epsilon;
-			if (!scrollable) {
-				leftFade.classList.add('opacity-0');
-				rightFade.classList.add('opacity-0');
-				return;
-			}
-			var atStart = sl <= epsilon;
-			var atEnd = sl + cw >= sw - epsilon;
-			leftFade.classList.toggle('opacity-0', atStart);
-			leftFade.classList.toggle('opacity-100', !atStart);
-			rightFade.classList.toggle('opacity-0', atEnd);
-			rightFade.classList.toggle('opacity-100', !atEnd);
-		}
-
-		scrollEl.addEventListener('scroll', update, { passive: true });
-		window.addEventListener('resize', update, { passive: true });
-		update();
-	}
-
 	function initRevealAnimations() {
 		var els = document.querySelectorAll('.rw-reveal');
 		if (!els.length) {
@@ -2207,7 +2170,6 @@
 		safeInit('initWifPersonaNav', initWifPersonaNav);
 		safeInit('initPropPageNav', initPropPageNav);
 		safeInit('initPricingPageNav', initPricingPageNav);
-		safeInit('initHomeComparisonScrollHints', initHomeComparisonScrollHints);
 
 		// Non-critical analytics and reveal effects run after the initial paint window.
 		runWhenIdle(function () {

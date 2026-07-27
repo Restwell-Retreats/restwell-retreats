@@ -649,28 +649,34 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					?>
 				<nav class="home-pillar-hubs pt-2 md:pt-3" aria-label="<?php esc_attr_e( 'Main topic hubs', 'restwell-retreats' ); ?>">
 					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--deep-teal)]/80 m-0 mb-3"><?php esc_html_e( 'Start from a hub', 'restwell-retreats' ); ?></p>
-					<ul class="m-0 p-0 list-none flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-x-6 sm:gap-y-2">
+					<ul class="m-0 list-none divide-y divide-gray-100 p-0 sm:flex sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2 sm:divide-y-0" role="list">
 						<?php if ( $fp_hub_property ) : ?>
-						<li>
-							<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover">
-								<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+						<li class="m-0">
+							<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover w-full justify-start text-left sm:w-auto">
+								<span>
+									<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
+									<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
+								</span>
 							</a>
 						</li>
 						<?php endif; ?>
 						<?php if ( $fp_hub_res ) : ?>
-						<li>
-							<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover">
-								<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+						<li class="m-0">
+							<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover w-full justify-start text-left sm:w-auto">
+								<span>
+									<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
+									<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
+								</span>
 							</a>
 						</li>
 						<?php endif; ?>
 						<?php if ( $fp_hub_guide ) : ?>
-						<li>
-							<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover">
-								<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
+						<li class="m-0">
+							<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover w-full justify-start text-left sm:w-auto">
+								<span>
+									<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
+									<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
+								</span>
 							</a>
 						</li>
 						<?php endif; ?>
@@ -692,25 +698,34 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 	<section class="home-pillar-hubs-solo <?php echo esc_attr( $rw_fp_section_y ); ?> bg-[var(--bg-subtle)]" aria-labelledby="home-pillar-hubs-heading">
 		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
 			<h2 id="home-pillar-hubs-heading" class="text-2xl font-serif text-[var(--deep-teal)] m-0 mb-4"><?php esc_html_e( 'Explore Restwell by topic', 'restwell-retreats' ); ?></h2>
-			<ul class="m-0 p-0 list-none flex flex-col gap-3">
+			<ul class="m-0 list-none divide-y divide-gray-100 p-0" role="list">
 				<?php if ( $fp_hub_property ) : ?>
-				<li>
-					<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal">
-						<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
+				<li class="m-0">
+					<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal w-full justify-start text-left">
+						<span>
+							<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
+							<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
+						</span>
 					</a>
 				</li>
 				<?php endif; ?>
 				<?php if ( $fp_hub_res ) : ?>
-				<li>
-					<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal">
-						<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
+				<li class="m-0">
+					<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal w-full justify-start text-left">
+						<span>
+							<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
+							<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
+						</span>
 					</a>
 				</li>
 				<?php endif; ?>
 				<?php if ( $fp_hub_guide ) : ?>
-				<li>
-					<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal">
-						<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
+				<li class="m-0">
+					<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal w-full justify-start text-left">
+						<span>
+							<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
+							<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
+						</span>
 					</a>
 				</li>
 				<?php endif; ?>
@@ -1015,20 +1030,34 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 				<?php endif; ?>
 			</header>
 			<p id="home-comparison-summary" class="sr-only"><?php echo esc_html( $home_comparison_heading_resolved ); ?>: <?php esc_html_e( 'four-row comparison of Restwell and hotel or care setting.', 'restwell-retreats' ); ?></p>
-			<p id="home-comparison-scroll-hint" class="m-0 mt-3 flex justify-center md:hidden">
-				<span class="inline-flex max-w-[min(100%,20rem)] items-center gap-2 rounded-full border border-[var(--deep-teal)]/10 bg-white/70 px-3.5 py-1.5 text-center text-[0.6875rem] font-medium leading-tight tracking-wide text-[var(--deep-teal)]/75 shadow-[0_1px_0_rgba(255,255,255,0.9)_inset]">
-					<i class="ph-bold ph-arrows-out-line-horizontal shrink-0 text-[0.875rem] text-[var(--deep-teal)]/65" aria-hidden="true"></i>
-					<span class="text-balance"><?php esc_html_e( 'Scroll sideways for the full comparison', 'restwell-retreats' ); ?></span>
-				</span>
-			</p>
-			<div class="relative mt-2 md:mt-4">
-				<div
-					class="overflow-x-auto rounded-2xl border border-[var(--deep-teal)]/12 bg-white shadow-sm [-webkit-overflow-scrolling:touch] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)]"
-					data-home-comparison-scroll
-					tabindex="0"
-					aria-label="<?php esc_attr_e( 'Comparison table: use arrow keys to scroll sideways on narrow screens', 'restwell-retreats' ); ?>"
-				>
-				<table class="m-0 w-full min-w-[560px] text-left text-sm text-[var(--body-secondary)]">
+			<?php
+			$rw_cmp_check_svg = '<span class="inline-flex shrink-0 pt-0.5" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" class="h-6 w-6 shrink-0"><circle cx="12" cy="12" r="11" fill="var(--sea-glass)" fill-opacity="0.95" /><path fill="none" stroke="var(--deep-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m7 12 3.5 3.5L17 8.5" /></svg></span>';
+			$rw_cmp_cross_svg = '<span class="inline-flex shrink-0 pt-0.5" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" class="h-6 w-6 shrink-0"><circle cx="12" cy="12" r="10.25" fill="#fff" stroke="var(--muted-grey)" stroke-opacity="0.35" stroke-width="1" /><path fill="none" stroke="var(--deep-teal)" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" d="M8.5 8.5 15.5 15.5M15.5 8.5 8.5 15.5" /></svg></span>';
+			?>
+			<div class="mt-6 rw-stack md:hidden" role="list">
+				<?php foreach ( $home_comparison_rows as $hcr_row ) : ?>
+				<article class="rw-compare-card rw-card-pad rw-stack rw-stack--tight" role="listitem">
+					<h3 class="m-0 font-serif text-sm font-semibold leading-snug text-[var(--deep-teal)]"><?php echo esc_html( $hcr_row['feature'] ); ?></h3>
+					<div class="flex items-start gap-2 rounded-lg bg-[var(--sea-glass)]/15 px-3 py-2">
+						<?php echo $rw_cmp_check_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
+						<p class="m-0 min-w-0 flex-1 text-base leading-relaxed text-[var(--body-secondary)]">
+							<span class="font-semibold text-[var(--deep-teal)]"><?php esc_html_e( 'Restwell:', 'restwell-retreats' ); ?></span>
+							<?php echo esc_html( ' ' . $hcr_row['restwell'] ); ?>
+						</p>
+					</div>
+					<div class="flex items-start gap-2">
+						<?php echo $rw_cmp_cross_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
+						<p class="m-0 min-w-0 flex-1 text-base leading-relaxed text-[var(--body-secondary)]">
+							<span class="font-semibold text-[var(--deep-teal)]"><?php esc_html_e( 'Hotel / care:', 'restwell-retreats' ); ?></span>
+							<?php echo esc_html( ' ' . $hcr_row['other'] ); ?>
+						</p>
+					</div>
+				</article>
+				<?php endforeach; ?>
+			</div>
+			<div class="relative mt-2 hidden md:mt-4 md:block">
+				<div class="overflow-hidden rounded-2xl border border-[var(--deep-teal)]/12 bg-white shadow-sm">
+				<table class="m-0 w-full text-left text-sm text-[var(--body-secondary)]">
 					<caption class="sr-only">
 						<?php
 						echo esc_html(
@@ -1061,23 +1090,13 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 							</th>
 							<td class="min-h-[52px] bg-[var(--sea-glass)]/35 px-4 py-3 align-top text-base leading-relaxed text-[var(--body-secondary)] md:px-5 md:py-4">
 								<div class="flex min-h-[2.5rem] items-start gap-2.5">
-									<span class="inline-flex shrink-0 pt-0.5" aria-hidden="true">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" class="h-6 w-6 shrink-0">
-											<circle cx="12" cy="12" r="11" fill="var(--sea-glass)" fill-opacity="0.95" />
-											<path fill="none" stroke="var(--deep-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m7 12 3.5 3.5L17 8.5" />
-										</svg>
-									</span>
+									<?php echo $rw_cmp_check_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
 									<span class="min-w-0 flex-1 text-[1rem] leading-relaxed text-[var(--body-secondary)]"><?php echo esc_html( $hcr_row['restwell'] ); ?></span>
 								</div>
 							</td>
 							<td class="min-h-[52px] bg-white px-4 py-3 align-top text-base leading-relaxed text-[var(--body-secondary)] md:px-5 md:py-4">
 								<div class="flex min-h-[2.5rem] items-start gap-2.5">
-									<span class="inline-flex shrink-0 pt-0.5" aria-hidden="true">
-										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" class="h-6 w-6 shrink-0">
-											<circle cx="12" cy="12" r="10.25" fill="#fff" stroke="var(--muted-grey)" stroke-opacity="0.35" stroke-width="1" />
-											<path fill="none" stroke="var(--deep-teal)" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" d="M8.5 8.5 15.5 15.5M15.5 8.5 8.5 15.5" />
-										</svg>
-									</span>
+									<?php echo $rw_cmp_cross_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
 									<span class="min-w-0 flex-1 leading-relaxed text-[var(--body-secondary)]"><?php echo esc_html( $hcr_row['other'] ); ?></span>
 								</div>
 							</td>
@@ -1086,8 +1105,6 @@ $rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trus
 					</tbody>
 				</table>
 				</div>
-				<div class="pointer-events-none absolute inset-y-0 left-0 z-[1] w-6 bg-[linear-gradient(to_right,hsla(0,0%,100%,0.72)_0%,hsla(0,0%,100%,0.22)_52%,transparent_100%)] opacity-0 transition-opacity duration-300 motion-reduce:transition-none md:hidden" data-home-comparison-fade="left" aria-hidden="true"></div>
-				<div class="pointer-events-none absolute inset-y-0 right-0 z-[1] w-6 bg-[linear-gradient(to_left,hsla(0,0%,100%,0.72)_0%,hsla(0,0%,100%,0.22)_52%,transparent_100%)] opacity-100 transition-opacity duration-300 motion-reduce:transition-none md:hidden" data-home-comparison-fade="right" aria-hidden="true"></div>
 			</div>
 		</div>
 	</section>

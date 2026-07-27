@@ -433,6 +433,16 @@
   }
 
   /*
+   * Comparison stack card — homepage mobile comparison band; reusable for
+   * pricing (and similar) stacked mobile tables. Pair with .rw-card-pad.
+   * No hover lift: data cards should stay still (unlike .rw-card-solid).
+   */
+  .rw-compare-card {
+    @apply rounded-2xl border border-gray-100;
+    background-color: var(--bg-subtle);
+  }
+
+  /*
    * Elevated white card — editorial shadow used on contact, accessibility, guest guide, etc.
    * Replaces repeated `shadow-[0_8px_30px_rgb(0,0,0,0.04)]` utility strings.
    */
@@ -465,6 +475,12 @@
     border-collapse: collapse;
   }
 
+  /* Desktop/tablet: allow wide tables to scroll; stack mode disables this below. */
+  .rw-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .rw-table thead {
     background-color: var(--bg-subtle);
   }
@@ -491,6 +507,11 @@
   }
 
   @media (max-width: 767px) {
+    /* Stacked cards need no horizontal scroll — overflow would fight readable layout. */
+    .rw-table-wrap:has(.rw-table--stack) {
+      overflow-x: visible;
+    }
+
     .rw-table.rw-table--stack,
     .rw-table.rw-table--stack thead,
     .rw-table.rw-table--stack tbody,
@@ -501,16 +522,9 @@
       width: 100%;
     }
 
+    /* Hide column headers; each cell shows its own data-label instead. */
     .rw-table.rw-table--stack thead {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
+      display: none;
     }
 
     .rw-table.rw-table--stack tbody {
@@ -537,22 +551,27 @@
       text-align: left;
     }
 
+    /* Label above value — readable without side-by-side squeeze on ~375px. */
     .rw-table.rw-table--stack tbody td {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: var(--space-3);
-      padding: 0.4rem 0;
-      text-align: right;
+      display: block;
+      padding: 0.5rem 0;
+      text-align: left;
       border: 0;
     }
 
     .rw-table.rw-table--stack tbody td::before {
       content: attr(data-label);
-      flex: 1 1 auto;
-      text-align: left;
+      display: block;
+      margin-bottom: 0.2rem;
+      font-size: 0.8125rem;
+      line-height: 1.35;
       font-weight: 600;
       color: var(--deep-teal);
+      text-align: left;
+    }
+
+    .rw-table.rw-table--stack tbody td:last-child {
+      padding-bottom: 0;
     }
   }
 
@@ -566,6 +585,40 @@
   @media (prefers-reduced-motion: reduce) {
     .restwell-pricing-page a[data-pricing-anchor] {
       transition: none;
+    }
+  }
+
+  /*
+   * Pricing page mobile UX: clear sticky CTA, readable prose, lighter TOC strip.
+   */
+  @media (max-width: 767px) {
+    /* Ensure pricing content clears mobile sticky CTA (bar + safe-area). */
+    .restwell-pricing-page {
+      padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .restwell-pricing-page .restwell-prose-readable.prose {
+      font-size: 1rem; /* 16px floor — prose-sm alone is too small on phones */
+      line-height: 1.65;
+    }
+
+    .restwell-pricing-page .restwell-prose-readable.prose :where(p, ul, ol) {
+      margin-top: 0.75em;
+      margin-bottom: 0.75em;
+    }
+
+    .restwell-pricing-page .restwell-prose-readable.prose :where(p, ul, ol):first-child {
+      margin-top: 0;
+    }
+
+    .restwell-pricing-page .restwell-prose-readable.prose :where(p, ul, ol):last-child {
+      margin-bottom: 0;
+    }
+
+    /* FAQ answers: match body readability on small screens. */
+    .restwell-pricing-page #pricing-faq .text-sm {
+      font-size: 1rem;
+      line-height: 1.65;
     }
   }
 
