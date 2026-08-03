@@ -146,7 +146,7 @@ Format: **Pass** only if design + **375 / 768 / 1024 / 1280** all good. Note Fix
 
 ### Next
 
-- [x] How it works — Pass · R: Pass (390 / 768 / 1024 / 1280; subnav, process split, arrival, calm care trust, trimmed booking FAQ)
+- [x] How it works — Pass · R: Pass (390 / 768 / 1024 / 1280; subnav, process/arrival/care, no middot dividers, mobile step spacing)
 - [ ] Accessibility — Pass / Fix: ________ · R: ________
 - [ ] Who it’s for — Pass / Fix: ________ · R: ________
 - [ ] Whitstable — Pass / Fix: ________ · R: ________

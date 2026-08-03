@@ -181,7 +181,8 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 |-----|-------|
 | [DESIGN-SYSTEM.md](./DESIGN-SYSTEM.md) | Colours, type, spacing, components, Tailwind conventions |
 | [VISUAL-FRONTEND-AUDIT.md](./VISUAL-FRONTEND-AUDIT.md) | UI audit notes and remediation tracking |
-| [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | **SSOT** for SEO / AEO / GEO: strategy, keywords, per-URL on-page work |
+| [docs/seo/](./docs/seo/) | **Agent entry pack** — `@` this folder; lanes + source pointers |
+| [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | Deep SEO / AEO / GEO warehouse (not the daily brief) |
 | [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Progress scoreboard companion to the SEO plan |
 | [docs/FRONT-PAGE-OPTIMIZATION.md](./docs/FRONT-PAGE-OPTIMIZATION.md) | Front page engineering handoff, editor guide, quarterly maintenance checklist |
 | [docs/archive/](./docs/archive/) | Historical audit and planning docs (AUDIT.md, PERFECT-SITE-PLAN.md, front-page-polish.md) |

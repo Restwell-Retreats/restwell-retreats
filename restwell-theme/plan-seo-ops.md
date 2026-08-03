@@ -6,7 +6,7 @@ Last updated: March 2026
 
 Remaining **SEO execution** and **operating cadence** work. Strategy, keywords, per-URL specs, and audit trail live in the SSOT — this file only tracks open checklist items and monthly rituals.
 
-**Canonical playbook:** [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) §1–§16 + **§19** (GBP / authority). **Scoreboard:** [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md). Legacy `restwell-seo-section*.md` → `docs/archive/seo-legacy/legacy-strategy/`.
+**Agent entry pack:** [docs/seo/](docs/seo/) (`@` this for skills). **Deep playbook:** [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) §1–§16 + **§19** (GBP / authority). **Scoreboard:** [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md). Legacy `restwell-seo-section*.md` → `docs/archive/seo-legacy/legacy-strategy/`.
 
 **Template runs:** [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) + [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) — post-run sync to §13.1 + matrix required.
 

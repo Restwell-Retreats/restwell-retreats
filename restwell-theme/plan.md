@@ -19,8 +19,9 @@ Ship **SEO/performance** fixes and **analytics** (aligned with your existing coo
 | Concern | Doc | Sections |
 |---------|-----|----------|
 | **CRM, journey, staff, deployment** | [plan-crm-ops.md](plan-crm-ops.md) | A–E |
+| **SEO agent pack (start here)** | [docs/seo/](docs/seo/) | README · LANES · SOURCES |
 | **SEO execution + monthly cadence** | [plan-seo-ops.md](plan-seo-ops.md) | F–G |
-| **SEO strategy + per-URL specs** | [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) | SSOT §1–§19 |
+| **SEO strategy + per-URL specs** | [SEO-INTENT-ONPAGE-PLAN.md](SEO-INTENT-ONPAGE-PLAN.md) | Warehouse §1–§19 |
 | **SEO scoreboard** | [SEO-PROGRESS-MATRIX.md](SEO-PROGRESS-MATRIX.md) | Symbols A–G |
 | **Template COPY-PASTE workflow** | [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) | Process + sync |
 | **Template COPY-PASTE manifests** | [COPY-PASTE-PROMPTS.md](COPY-PASTE-PROMPTS.md) | Per-page blocks |
