@@ -201,75 +201,75 @@
   var hero = document.querySelector('.hero');
   var isInterior = document.body.classList.contains('page--interior');
 
-  if (!toggle || !panel || !header) return;
+  if (toggle && panel && header) {
+    function closeMenu() {
+      panel.classList.remove('is-open');
+      header.classList.remove('is-menu-open');
+      document.body.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+    }
 
-  function closeMenu() {
-    panel.classList.remove('is-open');
-    header.classList.remove('is-menu-open');
-    document.body.classList.remove('nav-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-label', 'Open menu');
+    function openMenu() {
+      panel.classList.add('is-open');
+      header.classList.add('is-menu-open');
+      document.body.classList.add('nav-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+    }
+
+    function updateSolidHeader() {
+      if (isInterior) {
+        header.classList.add('is-solid');
+        return;
+      }
+      /*
+       * Solidify when hero copy is about to pass under the fixed header —
+       * same probe on mobile and desktop. Use the visible copy, not
+       * .hero__content (its padding-top sits under the header at rest).
+       */
+      var probe = hero
+        ? (hero.querySelector('.hero__text') || hero.querySelector('.hero__content'))
+        : null;
+      if (probe) {
+        var headerBottom = header.getBoundingClientRect().bottom;
+        var probeTop = probe.getBoundingClientRect().top;
+        header.classList.toggle('is-solid', probeTop <= headerBottom + 16);
+        return;
+      }
+      header.classList.toggle('is-solid', window.scrollY > 48);
+    }
+
+    toggle.addEventListener('click', function () {
+      if (panel.classList.contains('is-open')) closeMenu();
+      else openMenu();
+    });
+
+    panel.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && panel.classList.contains('is-open')) {
+        closeMenu();
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener('click', function (event) {
+      if (
+        panel.classList.contains('is-open') &&
+        !panel.contains(event.target) &&
+        !toggle.contains(event.target)
+      ) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener('scroll', updateSolidHeader, { passive: true });
+    window.addEventListener('resize', updateSolidHeader);
+    updateSolidHeader();
   }
-
-  function openMenu() {
-    panel.classList.add('is-open');
-    header.classList.add('is-menu-open');
-    document.body.classList.add('nav-open');
-    toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-label', 'Close menu');
-  }
-
-  function updateSolidHeader() {
-    if (isInterior) {
-      header.classList.add('is-solid');
-      return;
-    }
-    /*
-     * Solidify when hero copy is about to pass under the fixed header —
-     * same probe on mobile and desktop. Use the visible copy, not
-     * .hero__content (its padding-top sits under the header at rest).
-     */
-    var probe = hero
-      ? (hero.querySelector('.hero__text') || hero.querySelector('.hero__content'))
-      : null;
-    if (probe) {
-      var headerBottom = header.getBoundingClientRect().bottom;
-      var probeTop = probe.getBoundingClientRect().top;
-      header.classList.toggle('is-solid', probeTop <= headerBottom + 16);
-      return;
-    }
-    header.classList.toggle('is-solid', window.scrollY > 48);
-  }
-
-  toggle.addEventListener('click', function () {
-    if (panel.classList.contains('is-open')) closeMenu();
-    else openMenu();
-  });
-
-  panel.querySelectorAll('a').forEach(function (link) {
-    link.addEventListener('click', closeMenu);
-  });
-
-  document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape' && panel.classList.contains('is-open')) {
-      closeMenu();
-      toggle.focus();
-    }
-  });
-
-  document.addEventListener('click', function (event) {
-    if (
-      panel.classList.contains('is-open') &&
-      !panel.contains(event.target) &&
-      !toggle.contains(event.target)
-    ) {
-      closeMenu();
-    }
-  });
-
-  window.addEventListener('scroll', updateSolidHeader, { passive: true });
-  window.addEventListener('resize', updateSolidHeader);
-  updateSolidHeader();
 
   /* ---------- Soft scroll reveal ---------- */
   var revealNodes = document.querySelectorAll('[data-reveal]');

@@ -126,17 +126,27 @@ Leave-list from credibility critique — do not regress:
 - [ ] Path cards OK (two next steps); speech-bubble or heavy panel testimonial cards not — plain quote + attribution
 - [ ] Single-property framing only — no multi-property “find the house”
 
+### Client ready bar (reference pages)
+
+These four are the visual standard. Bring other concepts up to them — not “polished in place.”
+
+- Homepage (marketing exception)
+- Property
+- Pricing
+- Optional care (interior template with Pricing)
+
 ### Priority
 
 Format: **Pass** only if design + **375 / 768 / 1024 / 1280** all good. Note Fix + breakpoint if not.
 
-- [ ] Homepage — Pass / Fix: ________ · R: ________
-- [ ] Property — Pass / Fix: ________ · R: ________
-- [ ] Pricing — Pass / Fix: ________ · R: ________
+- [x] Homepage — Pass · R: Pass
+- [x] Property — Pass · R: Pass (390 / 768 / 1024 / 1280; photo room splits, gallery, light care trust row, location; SEO H1)
+- [x] Pricing — Pass · R: Pass
+- [x] Optional care — Pass · R: Pass
 
 ### Next
 
-- [ ] How it works — Pass / Fix: ________ · R: ________
+- [x] How it works — Pass · R: Pass (390 / 768 / 1024 / 1280; subnav, process split, arrival, calm care trust, trimmed booking FAQ)
 - [ ] Accessibility — Pass / Fix: ________ · R: ________
 - [ ] Who it’s for — Pass / Fix: ________ · R: ________
 - [ ] Whitstable — Pass / Fix: ________ · R: ________
