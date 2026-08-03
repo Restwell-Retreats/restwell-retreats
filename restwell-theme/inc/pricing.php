@@ -305,17 +305,17 @@ function restwell_get_pricing_faq_defaults(): array {
 	return array(
 		array(
 			'q'   => 'How much does an accessible holiday at Restwell cost?',
-			'a'   => 'You book the whole step-free bungalow in Whitstable, with all access equipment included. A full week starts at £1,300 off-peak and £1,400 in peak season, with single nights from £185. A 50% deposit secures your dates and the balance is due one week before arrival.',
+			'a'   => 'You book the whole step-free bungalow in Whitstable, with the listed on-site access equipment included. A full week starts at £1,300 off-peak and £1,400 in peak season, with single nights from £185. A 50% deposit secures your dates and the balance is due one week before arrival.',
 			'cat' => 'booking',
 		),
 		array(
 			'q'   => 'Is care included in the price?',
-			'a'   => 'No. The price covers the whole bungalow and all its access equipment. Care is optional and quoted separately through our sister company, Continuity of Care Services.',
+			'a'   => 'No. The price covers the whole bungalow and the listed on-site access equipment. Care is optional and quoted separately through our sister company, Continuity of Care Services.',
 			'cat' => 'care',
 		),
 		array(
 			'q'   => 'Are there extra charges for using the equipment?',
-			'a'   => 'No. The hoists, profiling beds and wet room equipment are part of the price, with no separate hire fees.',
+			'a'   => 'The hoists, profiling beds and wet room equipment already on site are part of the bungalow rate. Extra specialist kit we need to hire in is charged separately — tell us when you enquire.',
 			'cat' => 'booking',
 		),
 		array(

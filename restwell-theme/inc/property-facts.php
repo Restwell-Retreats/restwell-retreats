@@ -86,19 +86,26 @@ function restwell_get_property_facts_flat(): array {
 }
 
 /**
- * Homepage "at a glance" access strip (short, scannable subset).
+ * Homepage “already in place” summary — one sentence, not a feature list.
+ *
+ * @return string
+ */
+function restwell_get_property_facts_glance_summary(): string {
+	return 'Step-free throughout, with a ceiling track hoist over the profiling bed, a level-access wet room, two bedrooms sleeping up to five, and driveway parking for two.';
+}
+
+/**
+ * @deprecated Use restwell_get_property_facts_glance_summary().
  *
  * @return array<int, string>
  */
 function restwell_get_property_facts_glance_strip(): array {
-	$facts = restwell_get_property_facts();
-
 	return array(
-		$facts['access'][0],
-		$facts['access'][4],
-		$facts['access'][3],
-		$facts['sleeping'][0],
-		$facts['practical'][0],
+		'Step-free throughout',
+		'Ceiling track hoist over profiling bed',
+		'Level-access wet room',
+		'Two bedrooms, sleeps five',
+		'Driveway parking for two',
 	);
 }
 

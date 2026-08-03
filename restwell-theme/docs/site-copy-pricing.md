@@ -9,7 +9,7 @@
 
 **Subheading (under H1):** Transparent accessible holiday pricing in Whitstable: the bungalow, optional care and every funding route explained.
 
-Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. Every piece of access equipment is included in the price, so there are no surprise hire fees. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.
+Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. The access equipment listed on this page is included in the bungalow rate. Extra kit we need to hire in is charged separately. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.
 
 ## Our rates
 
@@ -38,11 +38,11 @@ One booking gives you the entire bungalow and grounds, with all of the following
 - A private driveway for two cars, with additional street parking
 - A welcome hamper on arrival, and a dog-friendly home throughout
 
-## Access equipment is always included
+## On-site access equipment is included
 
-At many holiday properties the room rate is only the start, and hoists, profiling beds and shower chairs are charged as hire extras. At Restwell the equipment listed above is part of the price every time. You should never receive a separate invoice for using the hoist, the profiling beds or the wet room equipment. Guests bring their own slings for hygiene reasons. If you need any other specialist item we do not hold, tell us when you enquire and we will help you arrange hire locally.
+At many holiday properties the room rate is only the start, and hoists, profiling beds and shower chairs are charged as hire extras. At Restwell the equipment listed above is part of the bungalow rate. Guests bring their own slings for hygiene reasons. If you need any other specialist item we do not hold, tell us when you enquire and we can help arrange hire — those hire costs are charged separately.
 
-**Confirm in WP:** resolved - slings are bring-your-own; other specialist hire arranged on enquire.
+**Confirm in WP:** resolved - slings are bring-your-own; extra specialist hire arranged on enquire and charged separately.
 
 ## How payment works
 
@@ -100,7 +100,7 @@ Beyond the stay itself, it helps to plan for:
 
 - Travel to Whitstable and any accessible transport you need on arrival
 - Optional care support, if you would like it
-- Hire of any specialist equipment we do not already provide
+- Hire of any specialist equipment we do not already provide (charged separately)
 - Food and days out, though the kitchen means you can self-cater as much as you like
 
 ## Booking is built to be accessible too
@@ -112,7 +112,7 @@ We answer access questions in writing, in plain language, before you pay anythin
 No booking commitment, just a conversation. Tell us your dates and what support would help, and we will confirm availability, answer your access questions in writing and put together a clear quote.
 
 - Transparent pricing with no hidden fees
-- Step-free bungalow with every piece of access equipment included
+- Step-free bungalow with listed on-site access equipment included
 - Optional CQC-regulated care arranged alongside your stay
 
 **Primary CTA:** Check dates and care availability -> /enquire/
@@ -120,13 +120,13 @@ No booking commitment, just a conversation. Tell us your dates and what support 
 ## FAQ - full set (visible text and FAQPage JSON-LD must match word for word)
 
 **Q: How much does an accessible holiday at Restwell cost?**
-A: You book the whole step-free bungalow in Whitstable, with all access equipment included. A full week starts at £1,300 off-peak and £1,400 in peak season, with single nights from £185. A 50% deposit secures your dates and the balance is due one week before arrival.
+A: You book the whole step-free bungalow in Whitstable, with the listed on-site access equipment included. A full week starts at £1,300 off-peak and £1,400 in peak season, with single nights from £185. A 50% deposit secures your dates and the balance is due one week before arrival.
 
 **Q: Is care included in the price?**
-A: No. The price covers the whole bungalow and all its access equipment. Care is optional and quoted separately through our sister company, Continuity of Care Services.
+A: No. The price covers the whole bungalow and the listed on-site access equipment. Care is optional and quoted separately through our sister company, Continuity of Care Services.
 
 **Q: Are there extra charges for using the equipment?**
-A: No. The hoists, profiling beds and wet room equipment are part of the price, with no separate hire fees.
+A: The hoists, profiling beds and wet room equipment already on site are part of the bungalow rate. Extra specialist kit we need to hire in is charged separately — tell us when you enquire.
 
 **Q: How much deposit do I pay to secure my dates?**
 A: A 50% deposit secures your chosen dates, with the remaining balance due no later than one week before you arrive.

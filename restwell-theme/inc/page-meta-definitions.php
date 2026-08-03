@@ -141,10 +141,10 @@ function restwell_get_front_page_field_definitions() {
 		'Who it\'s for' => array(
 			'who_label'        => restwell_field( __( 'Section label', 'restwell-retreats' ) ),
 			'who_heading'      => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
-			'who_guest_title'  => restwell_field( __( 'Guest card title', 'restwell-retreats' ) ),
-			'who_guest_body'   => restwell_field( __( 'Guest card body', 'restwell-retreats' ), 'textarea' ),
-			'who_carer_title'  => restwell_field( __( 'Carer card title', 'restwell-retreats' ) ),
-			'who_carer_body'   => restwell_field( __( 'Carer card body', 'restwell-retreats' ), 'textarea' ),
+			'who_guest_title'  => restwell_field( __( 'First card title (access / space)', 'restwell-retreats' ) ),
+			'who_guest_body'   => restwell_field( __( 'First card body', 'restwell-retreats' ), 'textarea' ),
+			'who_carer_title'  => restwell_field( __( 'Second card title (care / support)', 'restwell-retreats' ) ),
+			'who_carer_body'   => restwell_field( __( 'Second card body', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Property snapshot' => array(
 			'property_label'      => restwell_field( __( 'Section label', 'restwell-retreats' ) ),

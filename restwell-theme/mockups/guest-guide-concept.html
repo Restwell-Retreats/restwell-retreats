@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guest Guide · Restwell concept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css?v=1785753719" />
+  
+</head>
+<body class="page--interior">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header is-solid">
+    <div class="container site-header__inner">
+      <a class="logo" href="homepage-concept.html">Restwell</a>
+      <nav aria-label="Primary">
+        <ul class="nav">
+          <li><a href="homepage-concept.html">Home</a></li>
+          <li class="nav__item nav__item--has-dropdown">
+            <button type="button" class="nav__trigger" aria-expanded="false" aria-controls="nav-stay-menu" id="nav-stay-trigger">The Bungalow</button>
+            <ul class="nav__dropdown" id="nav-stay-menu" role="list" aria-labelledby="nav-stay-trigger">
+              <li><a href="property-concept.html">The Property</a></li>
+              <li><a href="accessibility-concept.html">Accessibility</a></li>
+              <li><a href="pricing-concept.html">Pricing</a></li>
+              <li><a href="how-it-works-concept.html">How It Works</a></li>
+            </ul>
+          </li>
+          <li class="nav__item nav__item--has-dropdown">
+            <button type="button" class="nav__trigger" aria-expanded="false" aria-controls="nav-plan-menu" id="nav-plan-trigger">Plan your trip</button>
+            <ul class="nav__dropdown" id="nav-plan-menu" role="list" aria-labelledby="nav-plan-trigger">
+              <li><a href="who-its-for-concept.html">Who It’s For</a></li>
+              <li><a href="whitstable-guide-concept.html">Whitstable</a></li>
+              <li><a href="resources-concept.html">Funding &amp; Support</a></li>
+              <li><a href="care-concept.html">Optional care</a></li>
+            </ul>
+          </li>
+          <li><a href="faq-concept.html">FAQ</a></li>
+          <li><a href="blog-concept.html">Blog</a></li>
+        </ul>
+      </nav>
+      <div class="site-header__actions">
+        <a class="btn btn-gold" href="enquire-concept.html">Enquire Now</a>
+        <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+          <span class="nav-toggle__icon" aria-hidden="true"><span></span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+      <ul class="mobile-nav__list">
+        <li><a href="homepage-concept.html">Home</a></li>
+        <li><span class="mobile-nav__group-label">The Bungalow</span></li>
+        <li><a href="property-concept.html">The Property</a></li>
+        <li><a href="accessibility-concept.html">Accessibility</a></li>
+        <li><a href="pricing-concept.html">Pricing</a></li>
+        <li><a href="how-it-works-concept.html">How It Works</a></li>
+        <li class="mobile-nav__rule" aria-hidden="true"></li>
+        <li><span class="mobile-nav__group-label">Plan your trip</span></li>
+        <li><a href="who-its-for-concept.html">Who It’s For</a></li>
+        <li><a href="whitstable-guide-concept.html">Whitstable</a></li>
+        <li><a href="resources-concept.html">Funding &amp; Support</a></li>
+        <li><a href="care-concept.html">Optional care</a></li>
+        <li class="mobile-nav__rule" aria-hidden="true"></li>
+        <li><span class="mobile-nav__group-label">Help</span></li>
+        <li><a href="faq-concept.html">FAQ</a></li>
+        <li><a href="blog-concept.html">Blog</a></li>
+      </ul>
+      <div class="mobile-nav__cta">
+        <a class="btn btn-gold" href="enquire-concept.html">Enquire Now</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="homepage-concept.html">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Guest Guide</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">Your arrival guide</h1>
+            <p>Everything for a comfortable stay — verified guests only. Use the email on your booking confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y band-white" id="gate">
+      <div class="container container--sm">
+        <header class="section-head">
+          <p class="eyebrow">Step 1</p>
+          <h2>Verify your email</h2>
+          <p class="lede">Enter the email address used for your booking. We’ll send a one-time code.</p>
+        </header>
+        <form class="form-stack" action="#otp" method="get">
+          <div class="field"><label for="gg-email">Booking email</label><input id="gg-email" name="email" type="email" required autocomplete="email" /></div>
+          <div class="form-actions"><button class="btn btn-gold" type="submit">Send code</button></div>
+        </form>
+      </div>
+    </section>
+    <section class="section-y band-subtle" id="otp">
+      <div class="container container--sm">
+        <header class="section-head">
+          <p class="eyebrow">Step 2</p>
+          <h2>Enter your 6-digit code</h2>
+          <p class="lede">Mockup state — paste any digits to preview the authenticated guide below.</p>
+        </header>
+        <form class="form-stack" action="#guide" method="get">
+          <div class="field">
+            <label for="otp-1">One-time code</label>
+            <div class="otp-box" role="group" aria-label="Six digit code">
+              <input id="otp-1" maxlength="1" inputmode="numeric" aria-label="Digit 1" />
+              <input maxlength="1" inputmode="numeric" aria-label="Digit 2" />
+              <input maxlength="1" inputmode="numeric" aria-label="Digit 3" />
+              <input maxlength="1" inputmode="numeric" aria-label="Digit 4" />
+              <input maxlength="1" inputmode="numeric" aria-label="Digit 5" />
+              <input maxlength="1" inputmode="numeric" aria-label="Digit 6" />
+            </div>
+          </div>
+          <div class="form-actions"><button class="btn btn-gold" type="submit">Unlock guide</button></div>
+        </form>
+      </div>
+    </section>
+    <section class="section-y band-white" id="guide">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Authenticated</p>
+          <h2>About your stay</h2>
+          <p class="lede">Arrival-day voice — orientation, not sales. If anything in the house disagrees with your booking confirmation, call the number on that confirmation first.</p>
+        </header>
+        <div class="card-grid card-grid--2">
+          <article class="info-card"><h3>Welcome</h3><p>The whole property is yours: your party only. 101 Russell Drive is a self-catering bungalow on a quiet street, about ten minutes from the seafront.</p></article>
+          <article class="info-card"><h3>Arrival details</h3><p><strong>Address:</strong> 101 Russell Drive, Whitstable CT5 2RQ<br /><strong>what3words:</strong> ///taker.paints.called<br /><strong>Check-in:</strong> from 15:00 · <strong>Check-out:</strong> by 11:00</p></article>
+          <article class="info-card"><h3>Getting in</h3><p>Access via key safe — code shared on your confirmation before arrival. Level driveway to the front door. Portable front-door ramps available if needed.</p></article>
+          <article class="info-card"><h3>Wi‑Fi</h3><p><strong>Network:</strong> Russell Drive<br /><strong>Password:</strong> shared on confirmation / welcome pack<br />If it still fails after two careful tries, call 01622 809881.</p></article>
+          <article class="info-card"><h3>Parking</h3><p>Two off-road spaces on the driveway. Overflow on the street outside — no residents’ permit scheme; still check signs on arrival.</p></article>
+          <article class="info-card"><h3>House rules</h3><p>Dogs welcome with prior notice. No smoking or vaping inside. Keep noise low 10pm–8am. Maximum five guests. Keep walkways clear. Report damage straight away.</p></article>
+          <article class="info-card"><h3>Bathroom note</h3><p>Please only flush toilet paper. Wipes, continence products and nappies go in the bathroom bin — plumbing blocks easily.</p></article>
+          <article class="info-card"><h3>Before you leave</h3><p>No deep clean needed. Switch off lights/heating/appliances, close windows, leave used towels in the bathroom, pop bins out if it’s a collection day, lock up and return the key to the safe.</p></article>
+          <article class="info-card"><h3>Local area</h3><p>Town centre ~15 minutes on foot. Tankerton promenade ~15 minutes for level coast. Tesco Extra ~7 minutes’ drive. Ask us for equipment hire contacts.</p></article>
+          <article class="info-card"><h3>Emergencies</h3><p>999 first in an emergency, then tell us. Non-emergency medical: 111. Closest A&amp;E options include QEQM Margate and Kent &amp; Canterbury. Host line: 01622 809881 · hello@restwellretreats.co.uk</p></article>
+          <article class="info-card"><h3>Your host</h3><p>Victoria Walker — Restwell Retreats. We’re here if heating, keys, Wi‑Fi or equipment need a hand during your stay.</p></article>
+          <article class="info-card info-card--sand"><h3>Print / confirm</h3><p>Print this guide for the fridge if you like.</p>
+            <label><input type="checkbox" /> I’ve read the guide</label>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__brand">
+        <a class="logo" href="homepage-concept.html">Restwell</a>
+        <p class="site-footer__partner-line">
+          Care partner: <a href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer">Continuity of Care Services<span class="sr-only"> (opens in new tab)</span></a>
+          <span class="site-footer__sep" aria-hidden="true">·</span>
+          <a href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer">CQC inspection profile<span class="sr-only"> (opens in new tab)</span></a>
+        </p>
+        <p class="site-footer__partner-line">Accessible holidays, Whitstable, Kent</p>
+      </div>
+      <div class="site-footer__bottom">
+        <nav class="site-footer__legal" aria-label="Legal">
+          <a href="#" target="_blank" rel="noopener noreferrer">Access statement (PDF)<span class="sr-only"> (opens in new tab)</span></a>
+          <span class="site-footer__legal-sep" aria-hidden="true">·</span>
+          <a href="faq-concept.html">FAQ</a>
+          <span class="site-footer__legal-sep" aria-hidden="true">·</span>
+          <a href="privacy-concept.html">Privacy Policy</a>
+          <span class="site-footer__legal-sep" aria-hidden="true">·</span>
+          <a href="terms-concept.html">Terms &amp; Conditions</a>
+          <span class="site-footer__legal-sep" aria-hidden="true">·</span>
+          <a href="accessibility-policy-concept.html">Website accessibility</a>
+        </nav>
+        <p class="site-footer__copyright">&copy; 2026 Homely Housing Investments Ltd t/a Restwell Retreats. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="shared.js?v=1785747898"></script>
+  
+</body>
+</html>

@@ -19,7 +19,7 @@ $pricing_hero_image_id = (int) get_post_meta( $pid, 'pricing_hero_image_id', tru
 $pricing_label         = get_post_meta( $pid, 'pricing_label', true ) ?: 'Pricing';
 $pricing_heading       = get_post_meta( $pid, 'pricing_heading', true ) ?: 'Pricing for your accessible Whitstable break';
 $pricing_subheading    = get_post_meta( $pid, 'pricing_subheading', true ) ?: 'Transparent accessible holiday pricing in Whitstable: the bungalow, optional care and every funding route explained.';
-$pricing_intro         = get_post_meta( $pid, 'pricing_intro', true ) ?: 'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. Every piece of access equipment is included in the price, so there are no surprise hire fees. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.';
+$pricing_intro         = get_post_meta( $pid, 'pricing_intro', true ) ?: 'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. The access equipment listed on this page is included in the bungalow rate. Extra kit we need to hire in is charged separately. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.';
 
 $pricing_hero_cta_text    = get_post_meta( $pid, 'pricing_hero_cta_text', true ) ?: 'Check dates and care availability';
 $pricing_hero_cta_url     = esc_url( get_post_meta( $pid, 'pricing_hero_cta_url', true ) ?: home_url( '/enquire/' ) );
@@ -76,7 +76,7 @@ $sections = array(
 	array(
 		'id'      => 'pricing-equipment',
 		'label'   => 'Access equipment',
-		'eyebrow' => 'No hire extras',
+		'eyebrow' => 'On-site kit',
 	),
 	array(
 		'id'      => 'pricing-payment',
@@ -267,10 +267,10 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 						<div class="rw-stack">
 							<div class="rw-section-head rw-section-head--left">
 								<p class="section-label"><?php echo esc_html( $sections[2]['eyebrow'] ); ?></p>
-								<h2 class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'Access equipment is always included', 'restwell-retreats' ); ?></h2>
+								<h2 class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'On-site access equipment is included', 'restwell-retreats' ); ?></h2>
 							</div>
 							<div class="<?php echo esc_attr( $prose_class ); ?>">
-								<p><?php esc_html_e( 'At many holiday properties the room rate is only the start, and hoists, profiling beds and shower chairs are charged as hire extras. At Restwell the equipment listed above is part of the price every time. You should never receive a separate invoice for using the hoist, the profiling beds or the wet room equipment. Guests bring their own slings for hygiene reasons. If you need any other specialist item we do not hold, tell us when you enquire and we will help you arrange hire locally.', 'restwell-retreats' ); ?></p>
+								<p><?php esc_html_e( 'At many holiday properties the room rate is only the start, and hoists, profiling beds and shower chairs are charged as hire extras. At Restwell the equipment listed above is part of the bungalow rate. Guests bring their own slings for hygiene reasons. If you need any other specialist item we do not hold, tell us when you enquire and we can help arrange hire — those hire costs are charged separately.', 'restwell-retreats' ); ?></p>
 							</div>
 						</div>
 					</div>
@@ -509,7 +509,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 								<ul>
 									<li><?php esc_html_e( 'Travel to Whitstable and any accessible transport you need on arrival', 'restwell-retreats' ); ?></li>
 									<li><?php esc_html_e( 'Optional care support, if you would like it', 'restwell-retreats' ); ?></li>
-									<li><?php esc_html_e( 'Hire of any specialist equipment we do not already provide', 'restwell-retreats' ); ?></li>
+									<li><?php esc_html_e( 'Hire of any specialist equipment we do not already provide (charged separately)', 'restwell-retreats' ); ?></li>
 									<li><?php esc_html_e( 'Food and days out, though the kitchen means you can self-cater as much as you like', 'restwell-retreats' ); ?></li>
 								</ul>
 							</div>
@@ -590,7 +590,7 @@ $prose_class = 'restwell-resources-body restwell-prose-readable rw-measure-reada
 					</li>
 					<li class="flex gap-2.5 items-start">
 						<span class="mt-0.5 shrink-0 text-[var(--deep-teal)]" aria-hidden="true"><i class="ph-bold ph-check" aria-hidden="true"></i></span>
-						<span><?php esc_html_e( 'Step-free bungalow with every piece of access equipment included', 'restwell-retreats' ); ?></span>
+						<span><?php esc_html_e( 'Step-free bungalow with listed on-site access equipment included', 'restwell-retreats' ); ?></span>
 					</li>
 					<li class="flex gap-2.5 items-start">
 						<span class="mt-0.5 shrink-0 text-[var(--deep-teal)]" aria-hidden="true"><i class="ph-bold ph-check" aria-hidden="true"></i></span>

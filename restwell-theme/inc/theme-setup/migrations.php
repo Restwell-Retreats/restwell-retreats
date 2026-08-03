@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 4;
+const RESTWELL_SCHEMA_VERSION = 5;
 
 function restwell_migrate_homepage_faq_meta_v1() {
 	if ( get_option( 'restwell_home_faq_meta_migrated_v1', '' ) === '1' ) {
@@ -1529,6 +1529,51 @@ function restwell_migrate_pricing_hero_copy_v1() {
 }
 
 /**
+ * One-time: correct Pricing intro + FAQ that implied all equipment (including hired extras) is free.
+ */
+function restwell_migrate_pricing_equipment_hire_copy_v1() {
+	if ( get_option( 'restwell_pricing_equipment_hire_copy_v1', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'pricing', OBJECT, 'page' );
+	if ( ! $page || (int) $page->ID < 1 ) {
+		update_option( 'restwell_pricing_equipment_hire_copy_v1', '1' );
+		return;
+	}
+
+	$page_id  = (int) $page->ID;
+	$defaults = function_exists( 'restwell_get_pricing_page_defaults' )
+		? restwell_get_pricing_page_defaults()
+		: array();
+
+	$stale_intros = array(
+		'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. Every piece of access equipment is part of the price, so there are no surprise hire fees waiting for you on arrival. This page explains exactly what is included, how payment works, the three funding routes our guests use most, and what else you might want to budget for. If anything here is unclear, we are always happy to talk it through before you commit.',
+		'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. Every piece of access equipment is included in the price, so there are no surprise hire fees. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.',
+	);
+	$next_intro = isset( $defaults['pricing_intro'] ) ? (string) $defaults['pricing_intro'] : '';
+	$current_intro = trim( (string) get_post_meta( $page_id, 'pricing_intro', true ) );
+	if ( $next_intro !== '' && ( $current_intro === '' || in_array( $current_intro, $stale_intros, true ) ) ) {
+		update_post_meta( $page_id, 'pricing_intro', $next_intro );
+	}
+
+	$stale_faq = array(
+		1 => 'You book the whole step-free bungalow in Whitstable, with all access equipment included. A full week starts at £1,300 off-peak and £1,400 in peak season, with single nights from £185. A 50% deposit secures your dates and the balance is due one week before arrival.',
+		2 => 'No. The price covers the whole bungalow and all its access equipment. Care is optional and quoted separately through our sister company, Continuity of Care Services.',
+		3 => 'No. The hoists, profiling beds and wet room equipment are part of the price, with no separate hire fees.',
+	);
+	foreach ( $stale_faq as $i => $old_a ) {
+		$key = "pricing_faq_{$i}_a";
+		$cur = trim( (string) get_post_meta( $page_id, $key, true ) );
+		if ( $cur === $old_a && isset( $defaults[ $key ] ) ) {
+			update_post_meta( $page_id, $key, $defaults[ $key ] );
+		}
+	}
+
+	update_option( 'restwell_pricing_equipment_hire_copy_v1', '1' );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1569,6 +1614,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_guest_guide_checkin_v1',
 		'restwell_terms_balance_one_week_v1',
 		'restwell_pricing_hero_copy_v1',
+		'restwell_pricing_equipment_hire_copy_v1',
 	);
 }
 
@@ -1675,6 +1721,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_terms_balance_one_week_v1', 31 );
 	add_action( 'init', 'restwell_migrate_pricing_hero_copy_v1', 42 );
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_hero_copy_v1', 32 );
+	add_action( 'init', 'restwell_migrate_pricing_equipment_hire_copy_v1', 43 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_equipment_hire_copy_v1', 33 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
