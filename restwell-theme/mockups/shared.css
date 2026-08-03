@@ -1584,6 +1584,28 @@ body.page--interior .site-header::before { opacity: 0; }
   padding-top: var(--band-teal-actions-pt);
 }
 .band-teal__actions > * { margin: 0; }
+@media (min-width: 900px) {
+  .band-teal {
+    --band-teal-stack-gap: var(--space-5);
+    --band-teal-checklist-gap: var(--space-4);
+    --band-teal-actions-gap: var(--space-3);
+    --band-teal-actions-mt: var(--space-2);
+  }
+  .band-teal .split {
+    align-items: center;
+  }
+  .band-teal .split--cover {
+    align-items: stretch;
+  }
+  .band-teal__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .band-teal__actions .btn {
+    width: auto;
+  }
+}
 
 /*
  * Narrow viewports: drop the split photo. On phones the band already sits
@@ -1887,6 +1909,27 @@ body.page--interior .site-header::before { opacity: 0; }
   border-radius: var(--radius-lg);
   background: var(--driftwood);
 }
+/* Tall copy column: fill the media cell so the photo matches text height */
+@media (min-width: 900px) {
+  .split--cover {
+    align-items: stretch;
+  }
+  .split--cover > .split__media {
+    position: relative;
+    min-height: 22rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--driftwood);
+  }
+  .split--cover > .split__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+}
 
 .checklist {
   display: grid;
@@ -2029,6 +2072,19 @@ body.page--interior .site-header::before { opacity: 0; }
   .fact-dl > div {
     border-bottom: 0;
   }
+}
+/* Inside a split column, keep facts stacked — the 3-up sheet fights the measure. */
+.split .fact-dl {
+  grid-template-columns: 1fr;
+  border-bottom: 0;
+  --fact-dl-gap: 0;
+  --fact-dt-size: var(--text-lg);
+}
+.split .fact-dl > div {
+  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.split .fact-dl > div:last-child {
+  border-bottom: 0;
 }
 
 /*
@@ -3136,16 +3192,19 @@ body:has(.subnav) {
   --process-media-radius: var(--radius-lg);
   --process-layout-gap: var(--space-8);
   --process-step-gap: var(--space-6);
-  --process-body-gap: var(--space-3);
+  --process-body-gap: var(--space-4);
   --process-item-gap: var(--space-5);
   --process-marker: 2.5rem;
   --process-rail: color-mix(in srgb, var(--deep-teal) 16%, transparent);
   --process-marker-bg: var(--soft-sand);
   --process-marker-fg: var(--deep-teal);
+  /* Head → photo/timeline: one step above the shared after-head (was cramped) */
+  --process-after-head: var(--space-10);
 }
 .process__head {
   max-width: var(--rw-readable);
   margin-inline: auto;
+  margin-bottom: var(--process-after-head);
 }
 .process__layout {
   display: flex;
@@ -3255,14 +3314,15 @@ body:has(.subnav) {
   .process {
     --process-layout-gap: var(--space-12);
     --process-step-gap: var(--space-8);
-    --process-body-gap: var(--space-3);
+    --process-body-gap: var(--space-4);
     --process-item-gap: var(--space-5);
     --process-marker: 2.75rem;
+    --process-after-head: var(--space-12);
   }
   .process__layout {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    align-items: stretch;
+    align-items: start;
     gap: var(--process-layout-gap);
   }
   .process__media,
@@ -3271,8 +3331,9 @@ body:has(.subnav) {
   }
   .process__media {
     position: relative;
-    min-height: 100%;
+    /* Match timeline height; don’t center steps (that pulled 01 under the lede) */
     align-self: stretch;
+    min-height: 28rem;
   }
   .process__media img {
     position: absolute;
@@ -3284,7 +3345,7 @@ body:has(.subnav) {
     object-position: center 40%;
   }
   .process-list {
-    align-self: center;
+    align-self: start;
   }
   .process-list__index {
     font-size: var(--text-md);
