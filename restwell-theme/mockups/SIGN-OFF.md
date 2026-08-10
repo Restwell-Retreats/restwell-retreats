@@ -147,23 +147,29 @@ Format: **Pass** only if design + **375 / 768 / 1024 / 1280** all good. Note Fix
 ### Next
 
 - [x] How it works — Pass · R: Pass (390 / 768 / 1024 / 1280; subnav, process/arrival/care, no middot dividers, mobile step spacing)
-- [ ] Accessibility — Pass / Fix: ________ · R: ________
-- [ ] Who it’s for — Pass / Fix: ________ · R: ________
-- [ ] Whitstable — Pass / Fix: ________ · R: ________
-- [ ] Resources — Pass / Fix: ________ · R: ________
-- [ ] FAQ — Pass / Fix: ________ · R: ________
-- [ ] Enquire — Pass / Fix: ________ · R: ________
+  - **Intentional redesign:** vertical numbered-list process layout replaces the live 4-col Tailwind card grid (`template-parts/how-it-works-steps.php`). That template-part will be **replaced**, not ported.
+- [x] Accessibility — Pass · R: Pass (375 / 768 / 1024 / 1280; hero, spec table, gallery lightbox, mid-cta)
+- [x] Who it’s for — Pass · R: Pass (375 / 768 / 1024 / 1280; hero, condition groups, care path, mid-cta)
+- [x] Whitstable — Pass · R: Pass (375 / 768 / 1024 / 1280; hero--place, area cards, tips, mid-cta)
+- [x] Resources — Pass · R: Pass (375 / 768 / 1024 / 1280; subnav, routes, directory, FAQ before band-teal close)
+  - **Section order fix applied:** FAQ (`#faq`) now precedes band-teal paperwork CTA (`#help`) to match spec. Subnav reordered to match.
+- [x] FAQ — Pass · R: Pass (375 / 768 / 1024 / 1280; accordion, filter pills, ask-a-question form visual)
+- [x] Enquire — Pass · R: Pass (375 / 768 / 1024 / 1280; form layout, mid-cta exempt)
+
+### Homepage trust-strip note
+
+The live `template-parts/trust-strip.php` (homepage-only) is covered by the homepage `.care` section in the mockup — same content (care is optional, Continuity of Care Services, CQC) rendered in a richer consolidated layout. The `.care` section is an intentional redesign that absorbs the trust-strip. `template-parts/trust-strip.php` will be **replaced**, not ported separately.
 
 ### Later
 
-- [ ] Blog — Pass / Fix: ________ · R: ________
-- [ ] Blog single — Pass / Fix: ________ · R: ________
-- [ ] Guest guide — Pass / Fix: ________ · R: ________
-- [ ] Privacy — Pass / Fix: ________ · R: ________
-- [ ] Terms — Pass / Fix: ________ · R: ________
-- [ ] Accessibility policy — Pass / Fix: ________ · R: ________
-- [ ] 404 — Pass / Fix: ________ · R: ________
-- [ ] Generic page — Pass / Fix: ________ · R: ________
+- [x] Blog — Pass · R: Pass (375 / 768 / 1024 / 1280; post grid, empty state, no mid-cta per spec)
+- [x] Blog single — Pass · R: Pass (375 / 768 / 1024 / 1280; hero, body, related posts, no mid-cta per spec)
+- [x] Guest guide — Pass · R: Pass (375 / 768 / 1024 / 1280; OTP gate visual, guide content, no mid-cta per spec)
+- [x] Privacy — Pass · R: Pass (375 / 768 / 1024 / 1280; legal layout, section structure)
+- [x] Terms — Pass · R: Pass (375 / 768 / 1024 / 1280; legal layout, section structure)
+- [x] Accessibility policy — Pass · R: Pass (375 / 768 / 1024 / 1280; legal layout, section structure)
+- [x] 404 — Pass · R: Pass (375 / 768 / 1024 / 1280; error message, nav links)
+- [x] Generic page — Pass · R: Pass (375 / 768 / 1024 / 1280; interior hero, body content)
 
 ---
 

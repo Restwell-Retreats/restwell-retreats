@@ -6,12 +6,12 @@
  *   [ 'subject' => string, 'body' => string, 'headers' => array ]
  * ready to be passed directly to wp_mail().
  *
- * Design tokens (matching input.css):
- *   Deep teal  #1B4D5C
- *   Warm gold  #D4A853
- *   Sea glass  #A8D5D0
- *   Soft sand  #F5EDE0
- *   Muted grey #6B6355
+ * Design tokens (matching restwell-theme/mockups/shared.css):
+ *   Deep teal   #1B4D5C   (--deep-teal)
+ *   Warm gold   #D4A853   (--warm-gold)
+ *   Driftwood   #E8DFD0   (--driftwood; email header accent, replaces retired sea-glass)
+ *   Soft sand   #F5EDE0   (--soft-sand)
+ *   Muted grey  #3A5A63   (--muted-grey)
  *
  * @package Restwell_CRM
  */
@@ -97,7 +97,7 @@ function restwell_email_wrap( string $content, string $preview = '' ): string {
       <td bgcolor="#1B4D5C" style="background-color:#1B4D5C;padding:36px 40px 0 40px;text-align:center;">
         <a href="' . $home . '" style="text-decoration:none;">
           <p style="margin:0;font-family:\'Lora\',Georgia,serif;font-size:26px;font-weight:normal;letter-spacing:0.04em;color:#FFFFFF;line-height:1.2;">' . esc_html( $site ) . '</p>
-          <p style="margin:6px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#A8D5D0;">Accessible holidays &middot; Whitstable, Kent</p>
+          <p style="margin:6px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#E8DFD0;">Accessible holidays &middot; Whitstable, Kent</p>
         </a>
         <!-- gold rule -->
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top:28px;">
@@ -117,7 +117,7 @@ function restwell_email_wrap( string $content, string $preview = '' ): string {
     <tr>
       <td bgcolor="#F5EDE0" style="background-color:#F5EDE0;padding:24px 40px;text-align:center;border-top:1px solid #E8DFD0;">
         <p style="margin:0 0 6px 0;font-family:\'Lora\',Georgia,serif;font-size:14px;color:#1B4D5C;font-weight:normal;">' . esc_html( $site ) . '</p>
-        <p style="margin:0 0 10px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:12px;color:#6B6355;line-height:1.6;">
+        <p style="margin:0 0 10px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:12px;color:#3A5A63;line-height:1.6;">
           hello@restwellretreats.co.uk &nbsp;&bull;&nbsp; ' . $phone . '
         </p>
         <p style="margin:0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;color:#9E9589;line-height:1.6;">
@@ -260,14 +260,14 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
     Thank you for getting in touch. Your enquiry is with our team and someone will be back to you - usually within 48 hours.
   </p>'
 		. $urgent_note
-		. '<p style="margin:0 0 12px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#6B6355;">What happens next</p>
+		. '<p style="margin:0 0 12px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#3A5A63;">What happens next</p>
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">'
 		. $steps_html
 		. '</table>
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:20px 0;">
     <tr>
       <td style="background-color:#F5EDE0;border-radius:3px;padding:18px 20px;text-align:center;">
-        <p style="margin:0 0 4px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#6B6355;">Questions? Reach us directly</p>
+        <p style="margin:0 0 4px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#3A5A63;">Questions? Reach us directly</p>
         <p style="margin:0;font-family:\'Lora\',Georgia,serif;font-size:20px;color:#1B4D5C;">' . esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) ) . '</p>
       </td>
     </tr>
@@ -328,7 +328,7 @@ function restwell_email_guest_guide_invite( string $email, string $name, string 
   </p>'
 		. restwell_email_info_table( $how_to_rows )
 		. restwell_email_button( $guide_url, 'Open My Arrival Guide →' )
-		. '<p style="margin:28px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#6B6355;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
+		. '<p style="margin:28px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
     If you have any questions before your stay, please don\'t hesitate to reach out.<br>
     Call us on <strong style="color:#1B4D5C;">' . esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) ) . '</strong> or reply to this email - we\'re happy to help.
   </p>'
@@ -392,10 +392,10 @@ function restwell_email_otp( string $email, string $code ): array {
       </td>
     </tr>
   </table>
-  <p style="margin:0 0 8px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#6B6355;line-height:1.7;">
+  <p style="margin:0 0 8px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
     If you didn\'t request this code, please disregard this email - your account has not been accessed.
   </p>
-  <p style="margin:0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#6B6355;line-height:1.7;">
+  <p style="margin:0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
     Need help? Call us on <strong style="color:#1B4D5C;">' . esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) ) . '</strong>.
   </p>'
 		. restwell_email_signoff();
@@ -441,9 +441,9 @@ function restwell_email_booking_confirmed( string $name, string $email ): array 
 		. '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:24px 0 0 0;">
     <tr>
       <td style="background-color:#F5EDE0;border-radius:3px;padding:18px 20px;text-align:center;">
-        <p style="margin:0 0 4px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#6B6355;">Questions before your stay?</p>
+        <p style="margin:0 0 4px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#3A5A63;">Questions before your stay?</p>
         <p style="margin:0;font-family:\'Lora\',Georgia,serif;font-size:20px;color:#1B4D5C;">' . esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) ) . '</p>
-        <p style="margin:4px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:12px;color:#6B6355;">Or reply to this email - we\'re always happy to help.</p>
+        <p style="margin:4px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:12px;color:#3A5A63;">Or reply to this email - we\'re always happy to help.</p>
       </td>
     </tr>
   </table>'
@@ -498,11 +498,11 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
   <p style="margin:0 0 16px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:14px;color:#2d4a52;line-height:1.7;">
     Should you wish to visit us again - for yourself or someone close to you - we\'d love to welcome you back. You\'re always welcome here.
   </p>
-  <p style="margin:0 0 8px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#6B6355;line-height:1.7;">
+  <p style="margin:0 0 8px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
     If you are happy to share your experience - even a sentence or two - it helps other families decide whether Restwell is right for them. You can reply to this email with your thoughts, or let us know if you would prefer us to send a short form.
   </p>'
 		. restwell_email_button( $enquire, 'Enquire About a Return Stay', '#D4A853' )
-		. '<p style="margin:28px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#6B6355;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
+		. '<p style="margin:28px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
     If there is anything we could do better, please reply to this email. Honest feedback helps us improve for every guest who follows.
   </p>'
 		. restwell_email_signoff();

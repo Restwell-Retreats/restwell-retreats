@@ -268,11 +268,12 @@ def home_schema():
 </script>'''
 
 
-def hero(label, h1, lede, crumbs=None, ctas=None, h1_id="page-h", media=False):
+def hero(label, h1, lede, crumbs=None, ctas=None, h1_id="page-h", media=False, tldr=""):
     """Interior page intro — same .hero / .hero__content / .hero__text as homepage, no CTAs.
 
     media=True: show the coastal photo plane (hero--place). Default interiors stay
     solid teal — only place/area guides should opt in.
+    tldr: optional extraction-friendly summary paragraph rendered below the lede.
     """
     crumbs = crumbs or []
     # ctas ignored — interior heroes are copy-only; enquire lives in header / mid-cta
@@ -289,13 +290,14 @@ def hero(label, h1, lede, crumbs=None, ctas=None, h1_id="page-h", media=False):
         crumb_html = f'<ol class="breadcrumb">{"".join(items)}</ol>'
     place_cls = " hero--place" if media else ""
     media_html = '      <div class="hero__media" aria-hidden="true"></div>\n' if media else ""
+    tldr_html = f'\n            <p class="hero__tldr">{tldr}</p>' if tldr else ""
     return f'''    <section class="hero hero--interior{place_cls}" aria-labelledby="{h1_id}">
 {media_html}      <div class="container">
         <div class="hero__content">
           {crumb_html}
           <div class="hero__text">
             <h1 id="{h1_id}">{h1}</h1>
-            <p>{lede}</p>
+            <p>{lede}</p>{tldr_html}
           </div>
         </div>
       </div>
@@ -2022,8 +2024,8 @@ def body_resources():
         <ul class="subnav__list">
           <li><a href="#routes">Routes</a></li>
           <li><a href="#directory">Grants &amp; contacts</a></li>
-          <li><a href="#help">Paperwork</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="#help">Paperwork</a></li>
         </ul>
       </div>
     </nav>
@@ -2124,6 +2126,24 @@ def body_resources():
       </div>
     </section>
 
+{faq_block(
+        "Funding pathways",
+        "Funding FAQ",
+        [
+            ("res-q1", "Can NHS Continuing Healthcare funding be used for a holiday?", "Eligible care hours away from home can be covered if your CHC team agrees in writing — the cottage rent rarely is. Ask which invoice lines they will pay before anyone pays a deposit. Restwell can supply access evidence; funding decisions sit with the commissioner.", True),
+            ("res-q2", "How does NHS CHC holiday funding work?", "CHC can cover assessed health and care needs during a short break. Accommodation is usually personal funds, direct payments or LA rules unless a panel explicitly agrees. Contact your CHC coordinator early with Restwell’s specs and care-provider details."),
+            ("res-q3", "Can I get an NHS-funded holiday in the UK?", "There is no general “NHS pays for holidays” scheme. Assessed care (and some respite frameworks) can continue during a break. Treat lodging, travel and care as separate lines and get each clarified in writing."),
+            ("res-q4", "How do I use NHS CHC funding for a short break?", "Speak to your CHC coordinator; ask which care tasks they will fund away from the usual address; share risk assessments and provider details; book the property separately with an access pack ready; align invoice contacts so care and lodging don’t get mixed."),
+            ("res-q5", "How does Continuing Healthcare relate to a respite break?", "CHC-related respite continues eligible care and carer relief under health funding rules. Restwell is the place — a private adapted bungalow. “Respite” and “holiday rent” are not the same budget line. Clarify locally before booking."),
+            ("res-q6", "Can I use direct payments for a short break?", "Yes when it fits your support plan. Ask your local authority what the payment can buy, what evidence they need, and how to record care vs lodging. Rules vary by council."),
+            ("res-q7", "How can direct payments help fund a holiday?", "They can support care during a holiday-related package; the cottage rent is not always allowed. Get written clarity before booking. Restwell keeps the same bungalow tariff on every funding route and can invoice as agreed."),
+            ("res-q8", "Can a personal budget support a holiday or short break?", "A Care Act personal budget (or personal health budget) can support assessed care needs during a break. Separate care costs from general holiday spending. Discuss wording with your social worker; we can supply property and access evidence."),
+            ("res-q9", "How do I fund an accessible holiday with a personal budget?", "Talk to your social worker or care coordinator; explain outcomes the break supports; bring Restwell’s access specs and draft care hours; ask what the budget can and cannot pay; keep invoices clean."),
+            ("res-q10", "Can I use my direct payments to pay for a holiday in England?", "Yes if the break meets assessed outcomes and your local authority’s direct payment rules allow it. Check your individual care plan; do not assume rent is covered. Ask in writing before you pay a deposit."),
+        ],
+        lede="Confirm CHC, direct payments or personal budgets with your coordinator before any deposit.",
+        band="band-subtle",
+    )}
     <section class="section-y band-teal" id="help" aria-labelledby="help-h">
       <div class="container">
         <div class="split">
@@ -2147,24 +2167,6 @@ def body_resources():
         </div>
       </div>
     </section>
-{faq_block(
-        "Funding pathways",
-        "Funding FAQ",
-        [
-            ("res-q1", "Can NHS Continuing Healthcare funding be used for a holiday?", "Eligible care hours away from home can be covered if your CHC team agrees in writing — the cottage rent rarely is. Ask which invoice lines they will pay before anyone pays a deposit. Restwell can supply access evidence; funding decisions sit with the commissioner.", True),
-            ("res-q2", "How does NHS CHC holiday funding work?", "CHC can cover assessed health and care needs during a short break. Accommodation is usually personal funds, direct payments or LA rules unless a panel explicitly agrees. Contact your CHC coordinator early with Restwell’s specs and care-provider details."),
-            ("res-q3", "Can I get an NHS-funded holiday in the UK?", "There is no general “NHS pays for holidays” scheme. Assessed care (and some respite frameworks) can continue during a break. Treat lodging, travel and care as separate lines and get each clarified in writing."),
-            ("res-q4", "How do I use NHS CHC funding for a short break?", "Speak to your CHC coordinator; ask which care tasks they will fund away from the usual address; share risk assessments and provider details; book the property separately with an access pack ready; align invoice contacts so care and lodging don’t get mixed."),
-            ("res-q5", "How does Continuing Healthcare relate to a respite break?", "CHC-related respite continues eligible care and carer relief under health funding rules. Restwell is the place — a private adapted bungalow. “Respite” and “holiday rent” are not the same budget line. Clarify locally before booking."),
-            ("res-q6", "Can I use direct payments for a short break?", "Yes when it fits your support plan. Ask your local authority what the payment can buy, what evidence they need, and how to record care vs lodging. Rules vary by council."),
-            ("res-q7", "How can direct payments help fund a holiday?", "They can support care during a holiday-related package; the cottage rent is not always allowed. Get written clarity before booking. Restwell keeps the same bungalow tariff on every funding route and can invoice as agreed."),
-            ("res-q8", "Can a personal budget support a holiday or short break?", "A Care Act personal budget (or personal health budget) can support assessed care needs during a break. Separate care costs from general holiday spending. Discuss wording with your social worker; we can supply property and access evidence."),
-            ("res-q9", "How do I fund an accessible holiday with a personal budget?", "Talk to your social worker or care coordinator; explain outcomes the break supports; bring Restwell’s access specs and draft care hours; ask what the budget can and cannot pay; keep invoices clean."),
-            ("res-q10", "Can I use my direct payments to pay for a holiday in England?", "Yes if the break meets assessed outcomes and your local authority’s direct payment rules allow it. Check your individual care plan; do not assume rent is covered. Ask in writing before you pay a deposit."),
-        ],
-        lede="Confirm CHC, direct payments or personal budgets with your coordinator before any deposit.",
-        band="band-subtle",
-    )}
 '''
 
 

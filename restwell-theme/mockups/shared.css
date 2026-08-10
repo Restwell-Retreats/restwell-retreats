@@ -889,6 +889,13 @@ body.nav-open { overflow: hidden; }
   text-justify: auto;
   word-spacing: normal;
 }
+.hero__tldr {
+  color: rgba(255, 255, 255, 0.9);
+  max-width: var(--hero-measure);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  margin-top: var(--space-3);
+}
 .hero__ctas {
   display: flex;
   flex-wrap: wrap;
