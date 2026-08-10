@@ -2245,6 +2245,11 @@ body:has(.subnav) {
     --subnav-h: 4.25rem;
   }
 }
+/* Strip container gutter inside subnav so the scrollable list can fill the full
+   nav width — gutter is restored via padding-inline on the list itself. */
+.subnav .container {
+  padding-inline: 0;
+}
 .subnav__list {
   --subnav-gap: var(--space-1);
   --subnav-pad-y: var(--space-2);
@@ -2252,11 +2257,15 @@ body:has(.subnav) {
   gap: var(--subnav-gap);
   overflow-x: auto;
   margin: 0;
-  padding: var(--subnav-pad-y) 0;
+  padding: var(--subnav-pad-y)
+           max(var(--rw-gutter-x), env(safe-area-inset-right))
+           var(--subnav-pad-y)
+           max(var(--rw-gutter-x), env(safe-area-inset-left));
   list-style: none;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
+.subnav__list::-webkit-scrollbar { display: none; }
 @media (min-width: 768px) {
   .subnav__list {
     --subnav-gap: var(--space-2);
@@ -3082,11 +3091,21 @@ body:has(.subnav) {
 
 .pill-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
   gap: var(--space-2);
   margin: 0 0 var(--space-6);
   padding: 0;
   list-style: none;
+}
+.pill-tabs::-webkit-scrollbar { display: none; }
+@media (min-width: 640px) {
+  .pill-tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
 }
 .pill-tabs button {
   appearance: none;
@@ -3096,6 +3115,7 @@ body:has(.subnav) {
   font: inherit;
   font-size: var(--text-sm);
   font-weight: 600;
+  white-space: nowrap;
   min-height: 2.5rem;
   padding: var(--space-2) var(--space-4);
   border-radius: 999px;

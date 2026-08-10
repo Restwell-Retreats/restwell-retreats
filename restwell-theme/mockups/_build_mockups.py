@@ -650,7 +650,6 @@ def body_home():
             </header>
             <div class="care__intro-body">
               <p class="lede">You book your stay through Restwell. If you also need care while you’re here, we’ll discuss that with you by phone and arrange agreed support separately through Continuity of Care Services.</p>
-              <p class="lede">Care can include:</p>
             </div>
           </div>
           <ul class="care__types" aria-label="What Continuity can arrange">
@@ -1034,7 +1033,6 @@ def body_hiw():
             </header>
             <div class="care__intro-body">
               <p class="lede">Ask about Continuity of Care Services when you enquire — or bring your own team. Care is never bundled into the bungalow rate.</p>
-              <p class="lede">Care can include:</p>
             </div>
           </div>
           <ul class="care__types" aria-label="What Continuity can arrange">
@@ -1386,7 +1384,7 @@ def body_who():
 
 
 def body_care():
-    return f'''{hero("Optional care", "Optional care during your Restwell stay", "If you need support while staying at Restwell, you can ask about care from Continuity of Care Services when you enquire. Care is optional, arranged separately, and never built into the bungalow rate.", [("homepage-concept.html", "Home"), (None, "Optional care")])}
+    return f'''{hero("Optional care", "Optional care during your Restwell stay", "Ask about Continuity of Care Services when you enquire — never automatic, never part of the bungalow rate.", [("homepage-concept.html", "Home"), (None, "Optional care")])}
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
         <ul class="subnav__list">
@@ -1402,7 +1400,7 @@ def body_care():
       <div class="container">
         <header class="section-head section-head--tight">
           <p class="eyebrow">Sister company</p>
-          <h2 id="sister-company-h">One conversation if you need both the bungalow and care</h2>
+          <h2 id="sister-company-h">Bungalow and care in one conversation</h2>
         </header>
         <dl class="comparison-list">
           <div class="comparison-list__item">
@@ -1443,18 +1441,14 @@ def body_care():
           <p class="eyebrow">Support options</p>
           <h2 id="what-we-arrange-h">What Continuity can arrange</h2>
         </header>
-        <dl class="comparison-list comparison-list--2">
+        <dl class="comparison-list">
           <div class="comparison-list__item">
             <dt>Personal care</dt>
-            <dd>Support with washing, dressing and daily routines on your schedule.</dd>
+            <dd>Washing, dressing and daily routines at agreed times.</dd>
           </div>
           <div class="comparison-list__item">
             <dt>Visiting care</dt>
-            <dd>Short daytime visits, or support for a promenade or town trip.</dd>
-          </div>
-          <div class="comparison-list__item">
-            <dt>Overnight cover</dt>
-            <dd>Sleep-in or waking night support when daytime visits are not enough.</dd>
+            <dd>Short daytime visits or support for a promenade or town trip. Sleep-in and waking night cover when needed.</dd>
           </div>
           <div class="comparison-list__item">
             <dt>Mobility and hoisting</dt>
@@ -2196,10 +2190,6 @@ def body_faq():
     return f'''{hero("FAQ", "Restwell accessible holiday FAQs", "Short answers on the bungalow, access, bookings, care, funding and the local area — with links to the full detail where it matters.", [("homepage-concept.html", "Home"), (None, "FAQ")])}
     <section class="faq section-y band-white">
       <div class="container">
-        <header class="section-head">
-          <p class="eyebrow">Common questions</p>
-          <h2>Filter by topic</h2>
-        </header>
         <ul class="pill-tabs" data-faq-filters role="tablist" aria-label="FAQ categories">
           <li><button type="button" data-filter="all" class="is-active" aria-selected="true">All</button></li>
           <li><button type="button" data-filter="property" aria-selected="false">About the property</button></li>
