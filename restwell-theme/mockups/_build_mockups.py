@@ -1152,11 +1152,20 @@ def body_accessibility():
             <p class="eyebrow">Local coast</p>
             <h2>What to expect in Whitstable</h2>
           </header>
-          <ul class="checklist">
-            <li><strong>Level coast:</strong> Tankerton promenade is flat and paved for miles, with Marine Parade parking and harbour accessible WCs nearby.</li>
-            <li><strong>Town limits:</strong> Harbour Street pavements can be narrow; some shop entrances are stepped; harbour surfaces can be uneven.</li>
-            <li><strong>Beach:</strong> The shingle itself is not wheelchair-friendly. Use the promenade above for sea air.</li>
-          </ul>
+          <dl class="comparison-list">
+            <div class="comparison-list__item">
+              <dt>Level coast</dt>
+              <dd>Tankerton promenade is flat and paved for miles, with Marine Parade parking and harbour accessible WCs nearby.</dd>
+            </div>
+            <div class="comparison-list__item">
+              <dt>Town limits</dt>
+              <dd>Harbour Street pavements can be narrow; some shop entrances are stepped; harbour surfaces can be uneven.</dd>
+            </div>
+            <div class="comparison-list__item">
+              <dt>Beach</dt>
+              <dd>The shingle itself is not wheelchair-friendly. Use the promenade above for sea air.</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>
@@ -1284,13 +1293,13 @@ def body_who():
       <div class="container">
         <div class="split">
           <div class="band-teal__stack">
-            <p class="eyebrow eyebrow--on-dark">Add support</p>
-            <h2 id="care-h">Optional Continuity care while you stay</h2>
-            <p class="lede">Continuity of Care Services — our sister company, CQC-rated Good — shares 01622 809881. Care is never part of the Restwell bungalow fee. Bring your own team if you prefer.</p>
+            <p class="eyebrow eyebrow--on-dark">Optional care</p>
+            <h2 id="care-h">Continuity of Care Services — on site if you need them</h2>
+            <p class="lede">Our sister company, CQC-rated Good, shares 01622 809881. Care is never part of the bungalow fee — ask when you enquire, or bring your own team.</p>
             <ul class="checklist">
-              <li><strong>Personal care:</strong> washing, dressing and daily routines on agreed times</li>
-              <li><strong>Visiting care:</strong> short daytime visits, or support for a promenade or town trip</li>
-              <li><strong>Mobility &amp; hoisting:</strong> transfers with the on-site ceiling track and wet-room kit</li>
+              <li>Personal care &mdash; washing, dressing and daily routines at agreed times</li>
+              <li>Visiting care &mdash; daytime visits or support for a promenade or town trip</li>
+              <li>Mobility and hoisting &mdash; ceiling-track transfers and wet-room kit already on site</li>
             </ul>
             <div class="band-teal__actions">
               <a class="btn btn-gold" href="care-concept.html">Learn about optional care</a>
