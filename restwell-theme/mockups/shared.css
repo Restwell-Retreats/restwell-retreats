@@ -3467,7 +3467,7 @@ fieldset.form-stack {
   font-size: var(--text-xs);
   color: var(--muted-grey);
 }
-.field input:not([type="checkbox"]):not([type="radio"]),
+.field input:where(:not([type="checkbox"]):not([type="radio"])),
 .field select,
 .field textarea {
   width: 100%;
