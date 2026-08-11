@@ -2143,7 +2143,12 @@ body.page--interior .site-header::before { opacity: 0; }
   .care-rates__footer {
     --care-footer-pad: var(--space-5) var(--space-6);
     --care-footer-gap: var(--space-5);
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    /* Fixed width (not auto/min-content) on the ctas column: a flex
+       child's intrinsic-size contribution is based on its content's
+       own min-content, which for a nowrap button+link is still wide
+       enough to crush the note column even though ctas visually wraps
+       to two lines. A fixed width sized for the button forces that. */
+    grid-template-columns: auto minmax(0, 1fr) 12rem;
     align-items: center;
     column-gap: var(--space-6);
   }
