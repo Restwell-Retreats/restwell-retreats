@@ -2275,6 +2275,9 @@ body:has(.subnav) {
   list-style: none;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  /* Fade the trailing edge so a cut-off item reads as "more to scroll", not clipping */
+  mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
 }
 .subnav__list::-webkit-scrollbar { display: none; }
 @media (min-width: 768px) {
@@ -3110,12 +3113,17 @@ body:has(.subnav) {
   margin: 0 0 var(--space-6);
   padding: 0;
   list-style: none;
+  /* Fade the trailing edge so a cut-off pill reads as "more to scroll", not clipping */
+  mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
 }
 .pill-tabs::-webkit-scrollbar { display: none; }
 @media (min-width: 640px) {
   .pill-tabs {
     flex-wrap: wrap;
     overflow-x: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 }
 .pill-tabs button {
@@ -3454,7 +3462,7 @@ fieldset.form-stack {
   font-size: var(--text-xs);
   color: var(--muted-grey);
 }
-.field input,
+.field input:not([type="checkbox"]):not([type="radio"]),
 .field select,
 .field textarea {
   width: 100%;
@@ -3473,6 +3481,21 @@ fieldset.form-stack {
   outline: 2px solid var(--deep-teal);
   outline-offset: 2px;
   border-color: var(--deep-teal);
+}
+.field label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-weight: 400;
+  cursor: pointer;
+}
+.field input[type="checkbox"] {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--deep-teal);
+  cursor: pointer;
 }
 .form-actions {
   display: flex;
