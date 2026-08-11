@@ -2354,6 +2354,9 @@ def body_guest():
 
 
 def body_blog():
+    # .empty-state (shared.css) is a real component for the WP conditional
+    # template (zero posts matching a filter) — not demoed here since this
+    # static mockup always has articles, and showing both contradicted.
     return f'''{hero("Guides &amp; articles", "Accessible travel guides", "Access notes for Whitstable and the Kent coast, written for wheelchair users, carers and people planning funded stays.", [("homepage-concept.html", "Home"), (None, "Blog")])}
     <section class="section-y band-white">
       <div class="container">
@@ -2379,19 +2382,6 @@ def body_blog():
             <h3><a href="blog-single-concept.html">Direct payments and short breaks: a plain overview</a></h3>
             <p>How families and carers often start the conversation with their local authority.</p>
           </article>
-        </div>
-      </div>
-    </section>
-    <section class="section-y band-subtle">
-      <div class="container">
-        <header class="section-head section-head--center">
-          <p class="eyebrow">Empty state</p>
-          <h2>No articles in this filter yet</h2>
-        </header>
-        <div class="empty-state">
-          <h2>Guides coming soon</h2>
-          <p>New posts will cover access, funding and the Kent coast. Until then, the property and Whitstable pages hold the current detail.</p>
-          <a class="btn btn-gold" href="whitstable-guide-concept.html">Read the Whitstable guide</a>
         </div>
       </div>
     </section>
