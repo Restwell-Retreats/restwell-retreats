@@ -346,12 +346,29 @@
         setActiveToc(current);
       }
 
+      /*
+       * The subnav has no bounded containing block (its tab sections are
+       * plain <main> siblings alongside whatever follows, e.g. a mid-cta),
+       * so native sticky release never happens. Hide it once the last
+       * tracked section has scrolled fully past, so it can't overlap
+       * unrelated content below.
+       */
+      function syncSubnavVisibility() {
+        var header = document.querySelector('.site-header');
+        var headerH = header ? header.offsetHeight : 0;
+        var subnavH = tocRoot.offsetHeight || 0;
+        var lastSection = tocSections[tocSections.length - 1];
+        var pastEnd = lastSection.getBoundingClientRect().bottom <= headerH + subnavH;
+        tocRoot.classList.toggle('is-past-content', pastEnd);
+      }
+
       var tocTicking = false;
       function requestTocSync() {
         if (tocTicking) return;
         tocTicking = true;
         window.requestAnimationFrame(function () {
           syncActiveToc();
+          syncSubnavVisibility();
           tocTicking = false;
         });
       }
@@ -369,6 +386,7 @@
         });
       });
       syncActiveToc();
+      syncSubnavVisibility();
     }
   }
 

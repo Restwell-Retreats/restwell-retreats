@@ -2230,6 +2230,17 @@ body.page--interior .site-header::before { opacity: 0; }
   /* Solid white — frosted glass tinted the band underneath and read as a seam */
   background: var(--white);
   border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.15s ease;
+}
+/* Its tab sections have no bounded containing block, so native sticky
+   release never fires — shared.js toggles this once scrolled past the
+   last tracked section, so the bar can't overlap content below it. */
+.subnav.is-past-content {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 @media (min-width: 768px) {
   .subnav {
@@ -4694,16 +4705,21 @@ body.lightbox-open {
   width: 7.5rem;
   height: 5rem;
   text-decoration: none;
-  opacity: 0.95;
-  transition: opacity 0.2s ease;
 }
-.partners__link:hover { opacity: 0.7; }
 .partners__link img {
   max-height: 4.5rem;
   max-width: 7.25rem;
   width: auto;
   height: auto;
   object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.6;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+.partners__link:hover img,
+.partners__link:focus-visible img {
+  filter: grayscale(0);
+  opacity: 1;
 }
 @media (min-width: 720px) {
   .partners__grid {
