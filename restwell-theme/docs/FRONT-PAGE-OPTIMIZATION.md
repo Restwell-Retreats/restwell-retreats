@@ -16,7 +16,7 @@ This document consolidates the work completed across **Phases 1–15** of the ho
 | **SEO & metadata** | Home defaults for title, description, and focus keyphrase; duplicate site name stripped from `<title>` when the resolved title already ends with the blog name; single meta description path; canonical + OG/Twitter aligned on `/`. |
 | **Schema** | WebSite + SearchAction; global LodgingBusiness; homepage FAQ UI + FAQPage JSON-LD when visible; WebPage JSON-LD with dates on home; freshness signals in OG article times. |
 | **GEO / AI** | `robots.txt` allows listed AI crawlers; `llms.txt` served at `/llms.txt`; default intro uses three AI-extractable paragraphs when legacy/empty; brand mention strategy documented in plan. |
-| **Content** | Non-hero defaults refined; E-E-A-T-oriented copy; 50-keyword list for internal linking / gaps; no “fully accessible” in defaults. |
+| **Content** | Non-hero defaults refined; E-E-A-T-oriented copy; 50-keyword list for internal linking / gaps; no “fully accessible” in defaults. “Respite” and “wheelchair friendly” are allowed (2026-08-13). |
 | **Internal linking** | Contextual links in default intro; footer link to Contact when page exists; property quick-link labels de-duplicated for anchors. |
 | **Technical SEO** | Sitemap line in robots; indexability rules documented; mobile viewport; JS not required for critical SEO HTML. |
 | **Accessibility** | Skip link, landmarks, focus patterns documented; enquiry form validated on its template. |
@@ -143,7 +143,7 @@ Use **`/documentation-generation-doc-generate`**, **`/doc-coauthoring`**, **`/wi
 ### 7.5 SEO practices for editors (short list)
 
 - Align with **Phase 1** keyword tiers; avoid repeating the same phrase unnaturally.
-- **No** phrase “fully accessible” in marketing copy — describe specific features instead.
+- **No** phrase “fully accessible” in marketing copy — describe specific features instead. “Wheelchair friendly” and “respite” are allowed (2026-08-13); still publish millimetres/kit, and do not call Restwell a care home or respite centre.
 - **Internal links:** Use varied, descriptive anchors; link to Property, Accessibility, How it Works, Area guide, Resources as appropriate.
 - **Freshness:** Meaningful edits update `post_modified` — the theme can show “Last updated” and schema dates on the homepage.
 

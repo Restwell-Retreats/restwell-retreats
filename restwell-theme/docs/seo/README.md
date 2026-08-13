@@ -9,10 +9,15 @@
 3. **Mockups** (`mockups/*-concept.html`, `_build_mockups.py`) are **design only** unless the user says they are changing SEO lanes
 4. **Do not** treat [`SEO-INTENT-ONPAGE-PLAN.md`](../../SEO-INTENT-ONPAGE-PLAN.md) as the daily brief — it is a research warehouse
 5. **Ignore** [`docs/archive/seo-legacy/`](../../../docs/archive/seo-legacy/) — archived; do not execute tasks from it
+6. **Copy language (2026-08-13):** “respite” and “wheelchair friendly” are allowed. Never write “fully accessible”. Restwell is not a care home or respite centre. Wheelchair-friendly claims still need millimetres/kit beside them.
 
 ## Files here
 
 | File | Use |
-|------|-----|
-| [LANES.md](LANES.md) | URL → job → primary → don’t steal |
+|------|------|
+| [HANDOFF.md](HANDOFF.md) | 13 Aug 2026 — paste into a new chat; do not lock lanes yet |
+| [LANES.md](LANES.md) | URL → job → primary → don’t steal (old map until rebuilt) |
 | [SOURCES.md](SOURCES.md) | Pointers to code + optional deep docs |
+| [GEMINI-DEEP-RESEARCH.md](GEMINI-DEEP-RESEARCH.md) | Paste into Gemini Deep Research: customer search and intent (not a site plan) |
+| [aug-research.md](aug-research.md) | Two Gemini runs, Aug 2026 (listing language + searcher journeys). Evidence only; do not lock lanes from this alone |
+| [GEMINI-SEARCHER-JOURNEY.md](GEMINI-SEARCHER-JOURNEY.md) | Follow-up Deep Research paste: searcher journeys, not Restwell pages |

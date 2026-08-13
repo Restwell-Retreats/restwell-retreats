@@ -4,6 +4,8 @@ One primary keyphrase per indexable URL. Other pages may mention the topic; they
 
 Primaries below match `focus_keyphrase` in [`inc/seo-content-seed-meta.php`](../../inc/seo-content-seed-meta.php). Update that file if you change a lane.
 
+**Language (2026-08-13):** “respite” and “wheelchair friendly” are allowed in copy, titles, and metas. Never use “fully accessible”. Do not describe Restwell as a care home or respite centre. Wheelchair-friendly claims sit next to millimetres and kit, not instead of them.
+
 ## Core money pages
 
 | URL | Job | Primary | Don’t own |

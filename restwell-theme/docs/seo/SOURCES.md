@@ -7,6 +7,9 @@
 | Titles, metas, `focus_keyphrase` | [`inc/seo-content-seed-meta.php`](../../inc/seo-content-seed-meta.php) |
 | Keyword map + clash audit | [`inc/seo-keyword-map.php`](../../inc/seo-keyword-map.php) |
 | Lane rules for skills | [`LANES.md`](LANES.md) |
+| Copy language | [`.cursor/rules/copy-voice.mdc`](../../../.cursor/rules/copy-voice.mdc) — respite and wheelchair friendly allowed; never “fully accessible” |
+| Journey research prompt | [`GEMINI-DEEP-RESEARCH.md`](GEMINI-DEEP-RESEARCH.md) |
+| Aug 2026 search/intent evidence | [`aug-research.md`](aug-research.md) |
 
 ## Optional (don’t load by default)
 

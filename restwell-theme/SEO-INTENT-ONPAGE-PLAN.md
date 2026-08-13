@@ -84,7 +84,7 @@ Also use: `/seo-structure-architect` (headings), `/seo-cannibalization-detector`
 Applies to every agent answer written into this plan and to titles, meta, FAQ drafts, and body suggestions implied by these prompts.
 
 1. **No fabrication:** Do not invent property facts (layout, equipment coverage, distances, policies, NHS wording). Use only what is **verbatim or clearly implied** in repo files (`template-*.php`, `template-parts/`, `inc/`, ACF-backed strings) or text the editor pasted in the same thread. If a detail is not in the source, write `Confirm in WP: …` instead of guessing. Example: do not describe a hoist as running through the whole property unless the source states that scope (bedroom-only stays bedroom-only).
-2. **Banned phrase:** Never use `fully accessible` in any form (headings, body, meta, FAQs, tables).
+2. **Banned phrase:** Never use `fully accessible` in any form (headings, body, meta, FAQs, tables, alt, schema). **Allowed (2026-08-13):** `respite` / respite break / respite holiday, and `wheelchair friendly` / `wheelchair-friendly`. Do not call Restwell a care home or respite centre. Wheelchair-friendly claims must sit next to millimetres and kit.
 3. **No em dash in agent outputs:** Do not use the Unicode em dash character (U+2014) in anything you append or suggest for publish. Use commas, colons, parentheses, or a normal ASCII hyphen. (This plan is being normalized the same way in copy-paste blocks so prompts model the rule.)
 4. `**/avoid-ai-writing`:** Before saving customer-facing strings, self-check against `/avoid-ai-writing` (remove AI-isms, empty intensifiers, template transitions, promotional filler); rewrite in plain British English.
 
@@ -162,7 +162,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules (escape output, ACF fallbacks, no React/npm).
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -197,7 +197,7 @@ Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Research depth:** Follow **§2.0** in `SEO-INTENT-ONPAGE-PLAN.md`. Invoke **`/seo-aeo-keyword-research`** for methodology; combine with **live UK SERPs**, **`/seo-dataforseo`**, or **web search MCP** when the session supports it. Tables must be **evidence-led** (Evidence column), not filler from memory alone.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -252,7 +252,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules; no inline scripts in templates.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -287,7 +287,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -333,7 +333,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -375,7 +375,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -414,7 +414,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -450,7 +450,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -486,7 +486,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -525,7 +525,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -559,7 +559,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -950,7 +950,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -988,7 +988,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -1019,7 +1019,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -1053,7 +1053,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -1091,7 +1091,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -1126,7 +1126,7 @@ Context for this session:
 Constraints:
 - WordPress theme only; follow .cursorrules.
 - **Facts:** No invented property or equipment scope; use repo files or editor-pasted text only. If unsure, write `Confirm in WP: …` (example: do not claim hoist coverage beyond what the source states).
-- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs).
+- **Banned phrase:** Never use `fully accessible` anywhere (titles, meta, body, FAQs). **Allowed (2026-08-13):** `respite`, `wheelchair friendly`. Not a care home or respite centre.
 - **Punctuation:** Do not output Unicode em dash (U+2014); use commas, colons, parentheses, or ASCII hyphen in everything you add to the plan or suggest for publish.
 - **Prose:** Self-check customer-facing strings with `/avoid-ai-writing` before saving.
 
@@ -1698,7 +1698,7 @@ No orphans: every cluster article links up to `/` at least once and has at least
 
 Order: **keyword strategist → meta optimizer → headings → snippets → body polish → links → publish.**
 
-**Global guardrails (human editors too):** Use only verifiable facts from the theme or WP (do not invent equipment scope, e.g. hoist coverage). Never use `fully accessible`. Avoid Unicode em dash (U+2014) in new titles, meta, and body. Self-check prose with `/avoid-ai-writing`. Full wording lives under **§How to run → Global fact and style constraints**.
+**Global guardrails (human editors too):** Use only verifiable facts from the theme or WP (do not invent equipment scope, e.g. hoist coverage). Never use `fully accessible`. `respite` and `wheelchair friendly` are allowed (2026-08-13); do not call Restwell a care home or respite centre. Avoid Unicode em dash (U+2014) in new titles, meta, and body. Self-check prose with `/avoid-ai-writing`. Full wording lives under **§How to run → Global fact and style constraints**.
 
 ### Step A - Intent & vocabulary (`/seo-keyword-strategist`)
 
@@ -3244,7 +3244,7 @@ Place directly under the H1 band or in the first answer block for "What Restwell
   10. **Care on your terms** (trust strip when shown; default `trust_heading`).
 - **Optional hero band:** Confirm in WP: non-empty `hero_spec_heading` exposes an sr-only **H2** for the equipment strip; keep claims to that field and verified hero copy only (bedroom-scoped hoist in highlights, not whole-property hoist claims).
 - **AEO alignment (§2.6 table):** definition or what-is Restwell (FAQ plus property band); wheelchair self-catering plus hoist (highlights, comparison row, FAQ slice, link to `/accessibility/`); DP or CHC (funding H3 plus FAQ); book whole property for guest and carer (who band plus booking FAQ); equipment checklist tone (highlights plus FAQ answers, PDF or measurements on hub URLs).
-- **Banned phrase:** never use `fully accessible` in headings or body.
+- **Banned phrase:** never use `fully accessible` in headings or body. **Allowed (2026-08-13):** `respite`, `wheelchair friendly`.
 
 #### URL [https://restwellretreats.co.uk/the-property/](https://restwellretreats.co.uk/the-property/) (`template-property.php`) - 2026-05-10
 

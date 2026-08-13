@@ -48,7 +48,7 @@ cd .. && python3 -m http.server 8765
 - [ ] Body sections use `.section-y` + `.band-*` (see allowed non-band namespaces below)
 - [ ] Multi-section pages use `.section-head` (+ `.eyebrow` / `.lede`) — except FAQ intro (see below)
 - [ ] Primary CTAs use `.btn*` (`.btn-gold`, `.btn-outline-*`, etc.); `.text-link` allowed for secondary links
-- [ ] Spacing follows the system in `shared.css` (see **Spacing system** below) — `--space-*` / roles / component tokens only; no new raw padding/margin/gap rem in components
+- [ ] Spacing follows the system in `shared.css` (see **Spacing system** below) — `--space-*` / roles / component tokens only; no new raw padding/margin/gap rem in components; HTML has no `u-mt-*` space-step classes
 - [ ] Type follows the system in `shared.css` (see **Type system** below) — roles / `--text-*` only; no new raw `font-size` rem in components
 - [ ] Prefer zero `style=` in bodies; any leftovers listed and justified
 
@@ -74,11 +74,11 @@ Canonical definition lives at the top of `shared.css`. Rules:
 
 1. **Primitives** (`--space-1`…`--space-20`) — fixed 4px grid. Use for component gaps/pads. Never remap in `@media`. Never invent off-grid rem (`0.65rem`, `1.1rem`) — pick the nearest step.
 2. **Rhythm ladder** (`--rhythm-*-0`…`3`, plus `*-dense`) — page-structure values. Edit numbers only here.
-3. **Semantic roles** (`--section-y*`, `--section-after-head`, `--section-head-gap`, `--grid-gap`, `--panel-pad`, `--rw-gutter-x`, `--hero-pad-*`, `--hero-*-gap`) — what CSS consumes. Point at ladder steps.
+3. **Semantic roles** (`--section-y*`, `--section-after-head`, `--section-stack-gap`, `--section-head-gap`, `--grid-gap`, `--panel-pad`, `--rw-gutter-x`, `--hero-pad-*`, `--hero-*-gap`) — what CSS consumes. Point at ladder steps.
 4. **Component tokens** — define `--component-*` on the component root; consume via `gap` / `padding` / `margin`. In `@media`, remap the token (`--split-gap: var(--space-10)`), never sprinkle `padding-block: 2rem`.
 5. **Density** — `body.page--interior` remaps roles to denser steps below `md`, then rejoins the shared ladder at `768px` / `1024px`.
 6. **Breakpoints (spacing only):** default `<640` · `sm ≥640` · `md ≥768` · `lg ≥1024`. Column breaks (`700` / `900` / etc.) are layout, not spacing steps.
-7. **Utilities:** `.section-y` / `--compact` / `--cta` + `.section-head*` + `.u-mt-*` only. No second padding scale.
+7. **HTML:** `.section-y` / `--compact` / `--cta` + `.section-head*` + sibling follow-ons (or `.section-follow` if a pair is missing). Never a space-step class (`u-mt-8`). Page-structure gaps consume `--section-stack-gap` so they remap with the ladder.
 8. **Allowed non-scale:** `0` / `auto`, hairline `±1px`, relative `em` tied to type, safe-area `env()`, and layout measures (`min()`, `svh`, radii, icon boxes).
 
 ```css

@@ -42,6 +42,11 @@ Never modify anything in /client/, /server/, /shared/, or /patches/.
 - Preserve existing Map.tsx logic - translate to vanilla JS
 - Use wp_localize_script() to pass PHP data to JS (not inline scripts)
 
+## Copy language (owner, 2026-08-13)
+- **Allowed:** “respite” (and respite break / respite holiday). Restwell is not a respite centre or care home — say the bungalow + optional Continuity care when that distinction matters.
+- **Allowed:** “wheelchair friendly” / “wheelchair-friendly”. Always back it with millimetres and kit; do not use it as the only access claim.
+- **Banned:** “fully accessible” / “fully-accessible” in any form (titles, body, meta, FAQs, alt, schema). Describe features instead.
+
 ## Do Not
 - Do not add page builders or Gutenberg block dependencies
 - Do not use any WordPress starter themes as a base - build from scratch
