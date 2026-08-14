@@ -2570,7 +2570,7 @@ def body_guest():
           <article class="info-card"><h3>Emergencies</h3><p>999 first in an emergency, then tell us. Non-emergency medical: 111. Closest A&amp;E options include QEQM Margate and Kent &amp; Canterbury. Host line: 01622 809881 · hello@restwellretreats.co.uk</p></article>
           <article class="info-card"><h3>Your host</h3><p>Victoria Walker — Restwell Retreats. We’re here if heating, keys, Wi‑Fi or equipment need a hand during your stay.</p></article>
           <article class="info-card info-card--sand"><h3>Print / confirm</h3><p>Print this guide for the fridge if you like.</p>
-            <label><input type="checkbox" /> I’ve read the guide</label>
+            <div class="field"><label><input type="checkbox" /> I’ve read the guide</label></div>
           </article>
         </div>
       </div>
@@ -2586,24 +2586,33 @@ def body_blog():
     <section class="section-y band-white">
       <div class="container">
         <article class="blog-featured">
-          <img src="{S}/restwell-whitstable-coastline-panorama.webp" alt="Whitstable coastline" width="1000" height="625" loading="lazy" />
-          <div>
-            <p class="blog-meta"><span class="tag">Area guide</span><span>8 min read</span></p>
+          <a class="blog-featured__media" href="blog-single-concept.html" aria-hidden="true" tabindex="-1">
+            <img src="{S}/restwell-whitstable-coastline-panorama.webp" alt="Whitstable coastline" width="1000" height="625" loading="lazy" />
+            <span class="blog-featured__scrim" aria-hidden="true"></span>
+            <span class="tag blog-featured__tag">Area guide</span>
+          </a>
+          <div class="blog-featured__overlay">
+            <p class="blog-meta blog-meta--overlay">8 min read</p>
             <h2><a href="blog-single-concept.html">Accessible beaches and promenades near Whitstable</a></h2>
-            <p class="lede">Where the paved coast works for chairs — and where shingle means choosing the promenade instead.</p>
-            <a class="text-link" href="blog-single-concept.html">Read article</a>
+            <p class="blog-featured__excerpt">Where the paved coast works for chairs — and where shingle means choosing the promenade instead.</p>
           </div>
         </article>
-        <div class="card-grid card-grid--2">
+        <div class="card-grid card-grid--2" data-reveal>
           <article class="media-card">
-            <img src="{S}/restwell-whitstable-marina-sunset.webp" alt="Marina at sunset" width="640" height="480" loading="lazy" />
-            <p class="blog-meta"><span class="tag">Planning</span><span>5 min</span></p>
+            <a class="media-card__image" href="blog-single-concept.html" aria-hidden="true" tabindex="-1">
+              <img src="{S}/restwell-whitstable-marina-sunset.webp" alt="Marina at sunset" width="640" height="480" loading="lazy" />
+              <span class="tag media-card__tag">Planning</span>
+            </a>
+            <p class="blog-meta">5 min read</p>
             <h3><a href="blog-single-concept.html">What to pack for an accessible coastal stay</a></h3>
             <p>A short list that assumes the hoist and wet room are already waiting.</p>
           </article>
           <article class="media-card">
-            <img src="{S}/restwell-whitstable-drone-aerial-view.webp" alt="Aerial view of Whitstable" width="640" height="480" loading="lazy" />
-            <p class="blog-meta"><span class="tag">Funding</span><span>6 min</span></p>
+            <a class="media-card__image" href="blog-single-concept.html" aria-hidden="true" tabindex="-1">
+              <img src="{S}/restwell-whitstable-drone-aerial-view.webp" alt="Aerial view of Whitstable" width="640" height="480" loading="lazy" />
+              <span class="tag media-card__tag">Funding</span>
+            </a>
+            <p class="blog-meta">6 min read</p>
             <h3><a href="blog-single-concept.html">Direct payments and short breaks: a plain overview</a></h3>
             <p>How families and carers often start the conversation with their local authority.</p>
           </article>
@@ -2638,9 +2647,9 @@ def body_blog_single():
       <div class="container">
         <header class="section-head"><h2>Related reading</h2></header>
         <div class="card-grid card-grid--3">
-          <article class="media-card"><img src="{S}/restwell-whitstable-beach-relaxation.webp" alt="" width="640" height="480" loading="lazy" /><h3><a href="blog-single-concept.html">What to pack</a></h3></article>
-          <article class="media-card"><img src="{B}/WHIT-SEAFRONT-2-LS.jpg" alt="" width="640" height="480" loading="lazy" /><h3><a href="whitstable-guide-concept.html">Whitstable guide</a></h3></article>
-          <article class="media-card"><img src="{B}/entrance.png" alt="" width="640" height="480" loading="lazy" /><h3><a href="property-concept.html">The property</a></h3></article>
+          <article class="media-card"><img src="{S}/restwell-whitstable-beach-relaxation.webp" alt="Guest relaxing on the Whitstable seafront" width="640" height="480" loading="lazy" /><h3><a href="blog-single-concept.html">What to pack</a></h3></article>
+          <article class="media-card"><img src="{B}/WHIT-SEAFRONT-2-LS.jpg" alt="Whitstable seafront view from the promenade" width="640" height="480" loading="lazy" /><h3><a href="whitstable-guide-concept.html">Whitstable guide</a></h3></article>
+          <article class="media-card"><img src="{B}/entrance.png" alt="Step-free entrance to the Restwell bungalow" width="640" height="480" loading="lazy" /><h3><a href="property-concept.html">The property</a></h3></article>
         </div>
       </div>
     </section>

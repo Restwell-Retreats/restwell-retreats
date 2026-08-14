@@ -3788,32 +3788,106 @@ fieldset.form-stack {
   background: var(--driftwood);
 }
 
+/*
+ * Featured post — full-bleed photo with headline overlaid on a scrim,
+ * reusing .hero's photo-plus-gradient language so the blog's top story
+ * reads as an extension of the brand rather than a bolted-on card style.
+ */
 .blog-featured {
-  display: grid;
-  gap: var(--space-6);
-  align-items: center;
-}
-@media (min-width: 860px) {
-  .blog-featured { grid-template-columns: 1.2fr 1fr; }
-}
-.blog-featured img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  position: relative;
   border-radius: var(--radius-lg);
+  overflow: hidden;
+  isolation: isolate;
+}
+.blog-featured__media {
+  position: relative;
+  display: block;
+  /* Taller on narrow screens — a wrapped 3-line title + excerpt needs the
+     room, or it collides with the tag chip pinned at the top. */
+  aspect-ratio: 3 / 4;
+}
+@media (min-width: 700px) {
+  .blog-featured__media { aspect-ratio: 21 / 9; }
+}
+.blog-featured__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   background: var(--driftwood);
+  transition: transform 0.4s ease;
 }
-.blog-featured h2 {
-  margin: var(--space-3) 0;
+@media (hover: hover) and (pointer: fine) {
+  .blog-featured__media:hover img { transform: scale(1.035); }
 }
-.blog-featured h2 a,
+.blog-featured__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 35, 42, 0) 32%, rgba(12, 35, 42, 0.6) 72%, rgba(12, 35, 42, 0.88) 100%);
+}
+.blog-featured__tag {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+}
+.blog-featured__overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: var(--space-5) var(--space-6) var(--space-6);
+  color: var(--white);
+  pointer-events: none;
+}
+.blog-featured__overlay h2 {
+  margin: var(--space-2) 0;
+  color: var(--white);
+}
+.blog-featured__excerpt {
+  margin: 0;
+  max-width: 40rem;
+  color: rgba(255, 255, 255, 0.86);
+}
+/* Card photo doubles as a link to the article — aria-hidden/tabindex="-1" in
+   markup so screen readers hit the one real (title) link, not a duplicate. */
+.media-card__image {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .media-card__image:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgb(15 35 42 / 0.1);
+  }
+}
+.media-card__tag {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+}
+.blog-featured__overlay h2 a,
 .media-card h3 a {
   text-decoration: none;
   color: inherit;
 }
-.blog-featured h2 a:hover,
+.blog-featured__overlay h2 a {
+  pointer-events: auto;
+}
 .media-card h3 a:hover {
-  color: var(--deep-teal);
+  color: var(--warm-gold-text);
+  text-decoration: underline;
+  text-decoration-color: var(--warm-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.blog-featured__overlay h2 a:hover {
+  color: var(--warm-gold-hero);
+  text-decoration: underline;
+  text-decoration-color: var(--warm-gold-hero);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 .blog-meta {
   display: flex;
@@ -3823,6 +3897,7 @@ fieldset.form-stack {
   color: var(--muted-grey);
   margin: 0;
 }
+.blog-meta--overlay { color: rgba(255, 255, 255, 0.78); }
 .tag {
   display: inline-flex;
   align-items: center;
@@ -3833,6 +3908,13 @@ fieldset.form-stack {
   color: var(--deep-teal);
   font-size: var(--text-2xs);
   font-weight: 600;
+}
+.blog-featured__tag,
+.media-card__tag {
+  /* Overlaid on a photo — the near-white default .tag wash disappears against
+     light sky/sand; solid + shadow keeps it legible on any image. */
+  background: var(--white);
+  box-shadow: 0 2px 8px rgb(15 35 42 / 0.18);
 }
 
 .empty-state {
