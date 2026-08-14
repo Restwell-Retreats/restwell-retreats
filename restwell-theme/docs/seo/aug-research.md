@@ -411,7 +411,7 @@ Record the Planner UI date. Do not paste guesses into `LANES.md`.
 | BYOS, millimetres, split invoice as product facts | DP often pays the worker, not the room [J22][J30] | £450–£650/day from [J27]; ADA as UK evidence |
 | | Forum panic phrasing as *voice*, not as titles to rank for | Children’s short-breaks policy pages as Restwell’s product |
 
-Next: a real SERP/PAA pass, then rebuild `LANES.md`. Do not write titles from Run A’s URL map alone.
+Next: SERP/PAA is in [`uk-serp-2026-08-13.md`](uk-serp-2026-08-13.md). Planner is **unavailable**. Forum-named substitutes: [`uk-tools-forums-2026-08-13.md`](uk-tools-forums-2026-08-13.md). Do not rebuild `LANES.md` or write titles from Run A’s URL map alone.
 
 ---
 

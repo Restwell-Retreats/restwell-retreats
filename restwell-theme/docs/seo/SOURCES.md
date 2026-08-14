@@ -10,6 +10,10 @@
 | Copy language | [`.cursor/rules/copy-voice.mdc`](../../../.cursor/rules/copy-voice.mdc) — respite and wheelchair friendly allowed; never “fully accessible” |
 | Journey research prompt | [`GEMINI-DEEP-RESEARCH.md`](GEMINI-DEEP-RESEARCH.md) |
 | Aug 2026 search/intent evidence | [`aug-research.md`](aug-research.md) |
+| Dated UK SERP / autocomplete (13 Aug 2026) | [`uk-serp-2026-08-13.md`](uk-serp-2026-08-13.md) — used with journeys to rebuild [`LANES.md`](LANES.md) |
+| AlsoAsked + Trends substitute (13 Aug 2026) | [`uk-keywords-no-planner-2026-08-13.md`](uk-keywords-no-planner-2026-08-13.md) — relative interest only |
+| Forum-named tools (13 Aug 2026) | [`uk-tools-forums-2026-08-13.md`](uk-tools-forums-2026-08-13.md) — KE / Mangools / GSC; no Ads |
+| Keywords Everywhere capture (13 Aug 2026) | [`uk-keywords-everywhere-2026-08-13.md`](uk-keywords-everywhere-2026-08-13.md) — waiting on Ellie paste |
 
 ## Optional (don’t load by default)
 

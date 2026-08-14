@@ -44,16 +44,16 @@ Two Gemini Deep Research runs, tidied into [`aug-research.md`](aug-research.md).
 
 Citations: Run A `[1]`–`[43]`. Run B `[J1]`–`[J37]`. Different source lists.
 
-`LANES.md` is the **old** map (Whitstable-heavy cluster mill). Do not execute it as the new strategy.
+[`LANES.md`](LANES.md) rebuilt **13 Aug 2026** from the UK SERP + journeys (not Run A’s URL table). Titles/metas in `inc/seo-content-seed-meta.php` still have the old Whitstable primaries — do not ship them until that file is updated.
 
 ## What is missing (do this before locking lanes)
 
 Not another Gemini market essay. Live **United Kingdom** Google evidence.
 
-1. Dated **google.co.uk** pass. Region: **United Kingdom** (not London, not Kent). Autocomplete (type, don’t Enter), People Also Ask, Related, page 1. Note whether Restwell appears.
-2. **Keyword Planner** export, location **United Kingdom**, English, UI date on the sheet. Expect ranges if not spending on ads.
-3. Whether **wheelchair friendly** actually appears in those SERPs vs wheelchair accessible.
-4. Unseeded place: start from the *job*, see if Google offers a town without being typed.
+1. Dated **google.co.uk** pass. Region: **United Kingdom** (not London, not Kent). Autocomplete (type, don’t Enter), People Also Ask, Related, page 1. Note whether Restwell appears. **Done 13 Aug 2026** — [`uk-serp-2026-08-13.md`](uk-serp-2026-08-13.md). Caveat: IP city was Maidstone; country was UK. Restwell absent on all five page-1s. Whitstable never offered unseeded.
+2. **Keyword Planner** — **unavailable** (no Ads). **Keywords Everywhere** — Ellie has it but **cannot use (paid)** as of 13 Aug 2026 evening. Do not ask again. AlsoAsked + Trends: [`uk-keywords-no-planner-2026-08-13.md`](uk-keywords-no-planner-2026-08-13.md). Wordtracker / Ubersuggest peeks (proprietary, conflicting volumes): [`uk-tools-forums-2026-08-13.md`](uk-tools-forums-2026-08-13.md).
+3. Whether **wheelchair friendly** actually appears in those SERPs vs wheelchair accessible. **Both appear** (see the 13 Aug file).
+4. Unseeded place: start from the *job*, see if Google offers a town without being typed. **Yes** — Bournemouth, North Berwick, and other coasts; not Whitstable. Kent Coast only as caravans in one AI Overview.
    - `accessible holiday by the sea`
    - `wheelchair friendly seaside holiday`
    - `accessible holiday cottage coast`
@@ -64,18 +64,18 @@ Not another Gemini market essay. Live **United Kingdom** Google evidence.
 
 **Do not collect more of:** directory filter URLs, council short-breaks PDFs, a third operator memo from Restwell’s kit list.
 
-Free tools: google.co.uk, [trends.google.com](https://trends.google.com) (geo=GB), [alsoasked.com](https://alsoasked.com) (3/day, set UK), [ads.google.com Keyword Planner](https://ads.google.com/home/lib_zulu/keyword-planner/), Search Console, Perplexity (quote AI answers, don’t summarise).
+Free tools we can actually use: google.co.uk, [trends.google.com](https://trends.google.com) (geo=GB), [alsoasked.com](https://alsoasked.com) (3/day, set UK), Search Console (if they share it), Perplexity (quote AI answers, don’t summarise). Forum-named next steps (KE / Mangools / Keysearch): [`uk-tools-forums-2026-08-13.md`](uk-tools-forums-2026-08-13.md). No Planner.
 
 ## How to work in Cursor
 
 - Theme only: write/edit inside `restwell-theme/`. Vanilla PHP/HTML/CSS/JS. No React, no npm.
-- **In-app browser:** use Cursor’s browser MCP (`cursor-ide-browser`, `browser_navigate` with `position: "active"`). Do **not** `open` URLs in Safari/Chrome. Previous chat did that by mistake; this session had no browser MCP wired (only Notion).
+- **In-app browser:** use Cursor’s browser MCP (`cursor-ide-browser`, `browser_navigate` with `position: "active"`). Do **not** `open` URLs in Safari/Chrome. 13 Aug 2026 pass used the in-app browser.
 - Notion hub (facts): https://app.notion.com/p/Restwell-Retreats-5a026f337a084357804c679b04eade39
 - Equipment register: https://app.notion.com/p/82676e5789b340d1b29ca7f485ffc709
 
 ## Next chat — do / don’t
 
-**Do (after the UK SERP/Planner pass, or if the user pastes captures):**
+**Do (after the user asks to lock lanes, or pastes GSC / KE captures):**
 
 1. Rebuild `LANES.md` from journeys + live SERP, not from Run A’s URL table.
 2. Then titles/metas in `inc/seo-content-seed-meta.php`.
@@ -98,11 +98,11 @@ Restwell is one private adapted holiday bungalow in Whitstable. Audience = UK pe
 
 Copy (2026-08-13): respite and wheelchair friendly allowed (with mm/kit). Never “fully accessible”. Not a care home / nursing home / respite centre.
 
-Two Gemini runs are tidied in aug-research.md. Do not lock LANES.md from those alone.
+Two Gemini runs are tidied in aug-research.md. Live UK SERP is in uk-serp-2026-08-13.md. AlsoAsked + Trends in uk-keywords-no-planner-2026-08-13.md. Forum tool list in uk-tools-forums-2026-08-13.md.
 
-We still need a dated google.co.uk + Keyword Planner pass with location United Kingdom (not London, not Kent). Unseeded queries: accessible holiday by the sea; wheelchair friendly seaside holiday; accessible holiday cottage coast; disabled holiday seaside UK; respite holiday by the sea.
+Keyword Planner is unavailable (no Ads). Do not ask for it. Do not lock LANES.md from Gemini alone.
 
 Use Cursor’s in-app browser (browser MCP, visible). Do not open the system browser.
 
-Only edit restwell-theme/. Do not write copy or rebuild lanes until we have that live UK evidence (or I paste captures).
+Only edit restwell-theme/. Do not write copy or rebuild lanes until asked (or I paste GSC / Keywords Everywhere captures).
 ```
