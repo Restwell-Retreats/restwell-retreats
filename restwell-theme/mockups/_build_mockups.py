@@ -878,15 +878,15 @@ def body_property():
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
         <ul class="subnav__list">
-          <li><a href="#rooms" title="Bedrooms">Bedrooms</a></li>
-          <li><a href="#wetroom" title="Wet room">Wet room</a></li>
-          <li><a href="#living" title="Living room">Living</a></li>
-          <li><a href="#kitchen" title="Kitchen">Kitchen</a></li>
-          <li><a href="#conservatory" title="Conservatory">Conservatory</a></li>
-          <li><a href="#garden" title="Outside">Outside</a></li>
-          <li><a href="#photos" title="Photos">Photos</a></li>
-          <li><a href="#care" title="Optional care">Care</a></li>
-          <li><a href="#location" title="Location">Location</a></li>
+          <li><a href="#rooms">Bedrooms</a></li>
+          <li><a href="#wetroom">Wet room</a></li>
+          <li><a href="#living">Living</a></li>
+          <li><a href="#kitchen">Kitchen</a></li>
+          <li><a href="#conservatory">Conservatory</a></li>
+          <li><a href="#garden">Outside</a></li>
+          <li><a href="#photos">Photos</a></li>
+          <li><a href="#care">Care</a></li>
+          <li><a href="#location">Location</a></li>
         </ul>
       </div>
     </nav>
@@ -1047,10 +1047,10 @@ def body_hiw():
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
         <ul class="subnav__list">
-          <li><a href="#process" title="The process">Process</a></li>
-          <li><a href="#arrival" title="Arrival day">Arrival</a></li>
-          <li><a href="#care" title="Optional care">Care</a></li>
-          <li><a href="#faq" title="FAQ">FAQ</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#arrival">Arrival</a></li>
+          <li><a href="#care">Care</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
     </nav>
@@ -1217,18 +1217,18 @@ def body_accessibility():
           <p class="eyebrow">Room by room</p>
           <h2>Room-by-room access notes</h2>
         </header>
-        <div class="card-grid card-grid--3">
-          <article class="media-card"><img src="{B}/FD-1-LS.jpg" alt="Front door with a wide, level threshold" width="640" height="480" loading="lazy" decoding="async" /><h3>Arrival &amp; entrance</h3><p>Private driveway for two cars, step-free path, 965mm clear front opening, level threshold. We keep portable fold-up ramps for the front if you need them.</p></article>
-          <article class="media-card"><img src="{B}/LR-2-LS.jpg" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>Single storey throughout. Internal doorways measure 926mm clear. Hall routes stay clear for chair turning.</p></article>
-          <article class="media-card"><img src="{B}/BD1-1-LS.jpg" alt="Accessible bedroom with a profiling bed" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>Profiling beds with a pressure-relieving mattress and full-room ceiling track. We also keep a mobile hoist and Sara Stedy on site. Second bedroom is a double; conservatory sofa bed sleeps a fifth guest.</p></article>
-          <article class="media-card"><img src="{B}/WR-1-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>Level-access shower, grab rails, shower chair, height-adjustable basin, wash-dry WC. Care Spaces adapted this room.</p></article>
-          <article class="media-card"><img src="{B}/KT-1-LS.jpg" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>Reachable and wheel-under worksurfaces, stocked basics, gas hob (not induction) — tell us if that affects your plans.</p></article>
-          <article class="media-card"><img src="{B}/GRDEN-1-LS.jpg" alt="Level garden and patio beyond the conservatory" width="640" height="480" loading="lazy" decoding="async" /><h3>Outdoor spaces</h3><p>A threshold ramp leads to a level patio and enclosed garden, with BBQ space and French doors from the conservatory.</p></article>
-        </div>
-        <div class="card-grid card-grid--2">
-          <article class="info-card info-card--sand info-card--flat"><h3>Specific requirement?</h3><p>Email what you need early. We can’t promise every aid on short notice, but we’d rather hear from you than have you worry.</p><a class="text-link" href="enquire-concept.html">Send details</a></article>
-          <article class="info-card info-card--sand info-card--flat"><h3>Need precise measurements?</h3><p>Door widths and key specs are published here. If you need unpublished clearances, ask and we will measure.</p><a class="text-link" href="enquire-concept.html">Request measurements</a></article>
-        </div>
+        <ul class="card-grid card-grid--3" role="list">
+          <li><article class="media-card"><img src="{B}/FD-1-LS.jpg" alt="Front door with a wide, level threshold" width="640" height="480" loading="lazy" decoding="async" /><h3>Arrival &amp; entrance</h3><p>Private driveway for two cars, step-free path, 965mm clear front opening, level threshold. We keep portable fold-up ramps for the front if you need them.</p></article></li>
+          <li><article class="media-card"><img src="{B}/LR-2-LS.jpg" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>Single storey throughout. Internal doorways measure 926mm clear. Hall routes stay clear for chair turning.</p></article></li>
+          <li><article class="media-card"><img src="{B}/BD1-1-LS.jpg" alt="Accessible bedroom with a profiling bed" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>Profiling beds with a pressure-relieving mattress and full-room ceiling track. We also keep a mobile hoist and Sara Stedy on site. Second bedroom is a double; conservatory sofa bed sleeps a fifth guest.</p></article></li>
+          <li><article class="media-card"><img src="{B}/WR-1-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>Level-access shower, grab rails, shower chair, height-adjustable basin, wash-dry WC. Care Spaces adapted this room.</p></article></li>
+          <li><article class="media-card"><img src="{B}/KT-1-LS.jpg" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>Reachable and wheel-under worksurfaces, stocked basics, gas hob (not induction) — tell us if that affects your plans.</p></article></li>
+          <li><article class="media-card"><img src="{B}/GRDEN-1-LS.jpg" alt="Level garden and patio beyond the conservatory" width="640" height="480" loading="lazy" decoding="async" /><h3>Outdoor spaces</h3><p>A threshold ramp leads to a level patio and enclosed garden, with BBQ space and French doors from the conservatory.</p></article></li>
+        </ul>
+        <ul class="card-grid card-grid--2" role="list">
+          <li><article class="info-card info-card--sand info-card--flat"><h3>Specific requirement?</h3><p>Email what you need early. We can’t promise every aid on short notice, but we’d rather hear from you than have you worry.</p><a class="text-link" href="enquire-concept.html">Send details</a></article></li>
+          <li><article class="info-card info-card--sand info-card--flat"><h3>Need precise measurements?</h3><p>Door widths and key specs are published here. If you need unpublished clearances, ask and we will measure.</p><a class="text-link" href="enquire-concept.html">Request measurements</a></article></li>
+        </ul>
       </div>
     </section>
     <section class="section-y band-subtle" data-gallery>
@@ -1377,11 +1377,11 @@ def body_who():
           <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
           <p class="lede">These three items are on site before arrival — not hired for the week.</p>
         </header>
-        <div class="card-grid card-grid--3">
-          <article class="media-card"><img src="{B}/WR-3-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin — Care Spaces adapted.</p></article>
-          <article class="media-card"><img src="{B}/BD2-6-LS.jpg" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article>
-          <article class="media-card"><img src="{B}/kitchen.png" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article>
-        </div>
+        <ul class="card-grid card-grid--3" role="list">
+          <li><article class="media-card"><img src="{B}/WR-3-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin — Care Spaces adapted.</p></article></li>
+          <li><article class="media-card"><img src="{B}/BD2-6-LS.jpg" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
+          <li><article class="media-card"><img src="{B}/kitchen.png" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
+        </ul>
         <p><a class="text-link" href="accessibility-concept.html">Full accessibility details</a></p>
       </div>
     </section>
@@ -1498,12 +1498,12 @@ def body_care():
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
         <ul class="subnav__list">
-          <li><a href="#sister-company" title="Sister company">About</a></li>
-          <li><a href="#what-we-arrange" title="What we can arrange">Support</a></li>
-          <li><a href="#bring-your-own-carer" title="Bringing your own carer">Own carer</a></li>
-          <li><a href="#how-care-works" title="How it works">Steps</a></li>
-          <li><a href="#cqc-regulated" title="What CQC-regulated means">CQC</a></li>
-          <li><a href="#for-professionals" title="For OTs, case managers and commissioners">Professionals</a></li>
+          <li><a href="#sister-company">About</a></li>
+          <li><a href="#what-we-arrange">Support</a></li>
+          <li><a href="#bring-your-own-carer">Own carer</a></li>
+          <li><a href="#how-care-works">Steps</a></li>
+          <li><a href="#cqc-regulated">CQC</a></li>
+          <li><a href="#for-professionals">Professionals</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
@@ -2174,26 +2174,26 @@ def body_whitstable():
           <h2 id="days-out-h">Wildwood, Dreamland and Canterbury</h2>
           <p class="lede">Check each venue’s site for scooter hire, companion tickets and parking for your dates.</p>
         </header>
-        <div class="card-grid card-grid--3">
-          <article class="media-card">
+        <ul class="card-grid card-grid--3" role="list">
+          <li><article class="media-card">
             <img src="{S}/whitstable-days-out.webp" alt="Woodland day out near the Kent coast" width="640" height="480" loading="lazy" />
             <h3>{ext_a("https://kent.wildwoodtrust.org/", "Wildwood, Herne Bay", "media-card__title-link")}</h3>
             <p>~30 minutes. Mostly accessible woodland paths; scooters bookable ahead on 01227 209621.</p>
             <p class="place-list__actions">{ext_a("https://kent.wildwoodtrust.org/plan-your-visit/", "Plan your visit", "text-link")}</p>
-          </article>
-          <article class="media-card">
+          </article></li>
+          <li><article class="media-card">
             <img src="{S}/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
             <h3>{ext_a("https://www.dreamland.co.uk/", "Dreamland, Margate", "media-card__title-link")}</h3>
             <p>Wheelchair accessible park; Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
             <p class="place-list__actions">{ext_a("https://www.dreamland.co.uk/", "Dreamland website", "text-link")}</p>
-          </article>
-          <article class="media-card">
+          </article></li>
+          <li><article class="media-card">
             <img src="{S}/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
             <h3>{ext_a("https://www.canterbury-cathedral.org/", "Canterbury", "media-card__title-link")}</h3>
             <p>~20 minutes by car. Cathedral Welcome Centre lends wheelchairs; riverside and Westgate Gardens are smoother than the cobbles.</p>
             <p class="place-list__actions">{ext_a("https://www.canterbury-cathedral.org/visit/", "Cathedral visit info", "text-link")}</p>
-          </article>
-        </div>
+          </article></li>
+        </ul>
       </div>
     </section>
 {faq_block(
@@ -2235,8 +2235,8 @@ def body_resources():
           <h2 id="routes-h">Local authority, NHS CHC, or private pay</h2>
           <p class="lede">Restwell’s price stays the same on every route — only who we invoice changes.</p>
         </header>
-        <div class="card-grid card-grid--3" data-reveal>
-          <article class="info-card info-card--route" id="local-authority">
+        <ul class="card-grid card-grid--3" role="list" data-reveal>
+          <li><article class="info-card info-card--route" id="local-authority">
             <div class="info-card__head">{icon_circle("bank")}<h3>Local authority</h3></div>
             <p>Ask Kent County Council for a <strong>Carer’s Assessment</strong> and, where relevant, a <strong>Care Needs Assessment</strong>. Direct payments can cover a short break that meets assessed needs.</p>
             <div class="info-card__steps">
@@ -2247,8 +2247,8 @@ def body_resources():
                 <li>Nominate who Restwell should invoice</li>
               </ul>
             </div>
-          </article>
-          <article class="info-card info-card--route" id="nhs">
+          </article></li>
+          <li><article class="info-card info-card--route" id="nhs">
             <div class="info-card__head">{icon_circle("heartbeat")}<h3>NHS / CHC</h3></div>
             <p>Contact Kent &amp; Medway ICB about Continuing Healthcare or a personal health budget. We confirm cover with your funding contact, then invoice the funder before the stay.</p>
             <div class="info-card__steps">
@@ -2259,8 +2259,8 @@ def body_resources():
                 <li>Request Restwell details for the pack</li>
               </ul>
             </div>
-          </article>
-          <article class="info-card info-card--route" id="private">
+          </article></li>
+          <li><article class="info-card info-card--route" id="private">
             <div class="info-card__head">{icon_circle("wallet")}<h3>Grants &amp; private</h3></div>
             <p>Book and pay Restwell directly, or combine with a charity award. Eligibility varies — apply early and keep award letters with your enquiry.</p>
             <div class="info-card__steps">
@@ -2271,8 +2271,8 @@ def body_resources():
                 <li>Pay deposit to secure dates</li>
               </ul>
             </div>
-            </article>
-        </div>
+            </article></li>
+        </ul>
       </div>
     </section>
 
@@ -2557,22 +2557,22 @@ def body_guest():
           <h2>About your stay</h2>
           <p class="lede">If anything in the house disagrees with your booking confirmation, call the number on that confirmation first.</p>
         </header>
-        <div class="card-grid card-grid--2">
-          <article class="info-card"><h3>Welcome</h3><p>The whole property is yours: your party only. Restwell is a self-catering bungalow on a quiet street, about ten minutes from the seafront.</p></article>
-          <article class="info-card"><h3>Arrival details</h3><p><strong>Address:</strong> shared on your booking confirmation<br /><strong>what3words:</strong> shared on confirmation<br /><strong>Check-in:</strong> from 15:00 · <strong>Check-out:</strong> by 11:00</p></article>
-          <article class="info-card"><h3>Getting in</h3><p>Access via key safe — code shared on your confirmation before arrival. Level driveway to the front door. Portable front-door ramps available if needed.</p></article>
-          <article class="info-card"><h3>Wi‑Fi</h3><p><strong>Network:</strong> Russell Drive<br /><strong>Password:</strong> shared on confirmation / welcome pack<br />If it still fails after two careful tries, call 01622 809881.</p></article>
-          <article class="info-card"><h3>Parking</h3><p>Two off-road spaces on the driveway. Overflow on the street outside — no residents’ permit scheme; still check signs on arrival.</p></article>
-          <article class="info-card"><h3>House rules</h3><p>Dogs welcome with prior notice. No smoking or vaping inside. Keep noise low 10pm–8am. Maximum five guests. Keep walkways clear. Report damage straight away.</p></article>
-          <article class="info-card"><h3>Bathroom note</h3><p>Please only flush toilet paper. Wipes, continence products and nappies go in the bathroom bin — plumbing blocks easily.</p></article>
-          <article class="info-card"><h3>Before you leave</h3><p>No deep clean needed. Switch off lights/heating/appliances, close windows, leave used towels in the bathroom, pop bins out if it’s a collection day, lock up and return the key to the safe.</p></article>
-          <article class="info-card"><h3>Local area</h3><p>Town centre ~15 minutes on foot. Tankerton promenade ~15 minutes for level coast. Tesco Extra ~7 minutes’ drive. Ask us for equipment hire contacts.</p></article>
-          <article class="info-card"><h3>Emergencies</h3><p>999 first in an emergency, then tell us. Non-emergency medical: 111. Closest A&amp;E options include QEQM Margate and Kent &amp; Canterbury. Host line: 01622 809881 · hello@restwellretreats.co.uk</p></article>
-          <article class="info-card"><h3>Your host</h3><p>Victoria Walker — Restwell Retreats. We’re here if heating, keys, Wi‑Fi or equipment need a hand during your stay.</p></article>
-          <article class="info-card info-card--sand"><h3>Print / confirm</h3><p>Print this guide for the fridge if you like.</p>
+        <ul class="card-grid card-grid--2" role="list">
+          <li><article class="info-card"><h3>Welcome</h3><p>The whole property is yours: your party only. Restwell is a self-catering bungalow on a quiet street, about ten minutes from the seafront.</p></article></li>
+          <li><article class="info-card"><h3>Arrival details</h3><p><strong>Address:</strong> shared on your booking confirmation<br /><strong>what3words:</strong> shared on confirmation<br /><strong>Check-in:</strong> from 15:00 · <strong>Check-out:</strong> by 11:00</p></article></li>
+          <li><article class="info-card"><h3>Getting in</h3><p>Access via key safe — code shared on your confirmation before arrival. Level driveway to the front door. Portable front-door ramps available if needed.</p></article></li>
+          <li><article class="info-card"><h3>Wi‑Fi</h3><p><strong>Network:</strong> Russell Drive<br /><strong>Password:</strong> shared on confirmation / welcome pack<br />If it still fails after two careful tries, call 01622 809881.</p></article></li>
+          <li><article class="info-card"><h3>Parking</h3><p>Two off-road spaces on the driveway. Overflow on the street outside — no residents’ permit scheme; still check signs on arrival.</p></article></li>
+          <li><article class="info-card"><h3>House rules</h3><p>Dogs welcome with prior notice. No smoking or vaping inside. Keep noise low 10pm–8am. Maximum five guests. Keep walkways clear. Report damage straight away.</p></article></li>
+          <li><article class="info-card"><h3>Bathroom note</h3><p>Please only flush toilet paper. Wipes, continence products and nappies go in the bathroom bin — plumbing blocks easily.</p></article></li>
+          <li><article class="info-card"><h3>Before you leave</h3><p>No deep clean needed. Switch off lights/heating/appliances, close windows, leave used towels in the bathroom, pop bins out if it’s a collection day, lock up and return the key to the safe.</p></article></li>
+          <li><article class="info-card"><h3>Local area</h3><p>Town centre ~15 minutes on foot. Tankerton promenade ~15 minutes for level coast. Tesco Extra ~7 minutes’ drive. Ask us for equipment hire contacts.</p></article></li>
+          <li><article class="info-card"><h3>Emergencies</h3><p>999 first in an emergency, then tell us. Non-emergency medical: 111. Closest A&amp;E options include QEQM Margate and Kent &amp; Canterbury. Host line: 01622 809881 · hello@restwellretreats.co.uk</p></article></li>
+          <li><article class="info-card"><h3>Your host</h3><p>Victoria Walker — Restwell Retreats. We’re here if heating, keys, Wi‑Fi or equipment need a hand during your stay.</p></article></li>
+          <li><article class="info-card info-card--sand"><h3>Print / confirm</h3><p>Print this guide for the fridge if you like.</p>
             <div class="field"><label><input type="checkbox" /> I’ve read the guide</label></div>
-          </article>
-        </div>
+          </article></li>
+        </ul>
       </div>
     </section>
 '''
@@ -2597,8 +2597,8 @@ def body_blog():
             <p class="blog-featured__excerpt">Where the paved coast works for chairs — and where shingle means choosing the promenade instead.</p>
           </div>
         </article>
-        <div class="card-grid card-grid--2" data-reveal>
-          <article class="media-card">
+        <ul class="card-grid card-grid--2" role="list" data-reveal>
+          <li><article class="media-card">
             <a class="media-card__image" href="blog-single-concept.html" aria-hidden="true" tabindex="-1">
               <img src="{S}/restwell-whitstable-marina-sunset.webp" alt="Marina at sunset" width="640" height="480" loading="lazy" />
               <span class="tag media-card__tag">Planning</span>
@@ -2606,8 +2606,8 @@ def body_blog():
             <p class="blog-meta">5 min read</p>
             <h3><a href="blog-single-concept.html">What to pack for an accessible coastal stay</a></h3>
             <p>A short list that assumes the hoist and wet room are already waiting.</p>
-          </article>
-          <article class="media-card">
+          </article></li>
+          <li><article class="media-card">
             <a class="media-card__image" href="blog-single-concept.html" aria-hidden="true" tabindex="-1">
               <img src="{S}/restwell-whitstable-drone-aerial-view.webp" alt="Aerial view of Whitstable" width="640" height="480" loading="lazy" />
               <span class="tag media-card__tag">Funding</span>
@@ -2615,8 +2615,8 @@ def body_blog():
             <p class="blog-meta">6 min read</p>
             <h3><a href="blog-single-concept.html">Direct payments and short breaks: a plain overview</a></h3>
             <p>How families and carers often start the conversation with their local authority.</p>
-          </article>
-        </div>
+          </article></li>
+        </ul>
       </div>
     </section>
 '''
@@ -2646,11 +2646,11 @@ def body_blog_single():
     <section class="section-y band-subtle">
       <div class="container">
         <header class="section-head"><h2>Related reading</h2></header>
-        <div class="card-grid card-grid--3">
-          <article class="media-card"><img src="{S}/restwell-whitstable-beach-relaxation.webp" alt="Guest relaxing on the Whitstable seafront" width="640" height="480" loading="lazy" /><h3><a href="blog-single-concept.html">What to pack</a></h3></article>
-          <article class="media-card"><img src="{B}/WHIT-SEAFRONT-2-LS.jpg" alt="Whitstable seafront view from the promenade" width="640" height="480" loading="lazy" /><h3><a href="whitstable-guide-concept.html">Whitstable guide</a></h3></article>
-          <article class="media-card"><img src="{B}/entrance.png" alt="Step-free entrance to the Restwell bungalow" width="640" height="480" loading="lazy" /><h3><a href="property-concept.html">The property</a></h3></article>
-        </div>
+        <ul class="card-grid card-grid--3" role="list">
+          <li><article class="media-card"><img src="{S}/restwell-whitstable-beach-relaxation.webp" alt="Guest relaxing on the Whitstable seafront" width="640" height="480" loading="lazy" /><h3><a href="blog-single-concept.html">What to pack</a></h3></article></li>
+          <li><article class="media-card"><img src="{B}/WHIT-SEAFRONT-2-LS.jpg" alt="Whitstable seafront view from the promenade" width="640" height="480" loading="lazy" /><h3><a href="whitstable-guide-concept.html">Whitstable guide</a></h3></article></li>
+          <li><article class="media-card"><img src="{B}/entrance.png" alt="Step-free entrance to the Restwell bungalow" width="640" height="480" loading="lazy" /><h3><a href="property-concept.html">The property</a></h3></article></li>
+        </ul>
       </div>
     </section>
 '''
@@ -2738,6 +2738,7 @@ def body_404():
     return f'''{hero("404", "We couldn’t find that page", "The link may be out of date. Try the bungalow, enquire form, or booking steps.", [])}
     <section class="section-y band-white">
       <div class="container">
+        <h2 class="sr-only">Helpful links</h2>
         <div class="help-links">
           <article class="info-card"><h3>The Property</h3><p>Rooms, equipment and photos of the Whitstable bungalow.</p><a class="text-link" href="property-concept.html">View the bungalow</a></article>
           <article class="info-card"><h3>Enquire</h3><p>Dates, access needs, funding questions.</p><a class="text-link" href="enquire-concept.html">Send an enquiry</a></article>

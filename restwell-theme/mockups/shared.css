@@ -1758,7 +1758,8 @@ body.page--interior .site-header::before { opacity: 0; }
 .btn-outline-teal {
   background: transparent;
   color: var(--deep-teal);
-  border-color: color-mix(in srgb, var(--deep-teal) 30%, transparent);
+  /* 65% (not 30%) — WCAG 1.4.11 needs 3:1 against white; 30% only measured ~1.69:1 */
+  border-color: color-mix(in srgb, var(--deep-teal) 65%, transparent);
 }
 .btn-outline-teal:hover {
   border-color: var(--deep-teal);
@@ -1793,6 +1794,9 @@ body.page--interior .site-header::before { opacity: 0; }
 .card-grid {
   display: grid;
   gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 @media (min-width: 700px) {
   .card-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -3583,13 +3587,30 @@ fieldset.form-stack {
   width: 100%;
   min-height: 2.75rem;
   padding: var(--space-3) var(--space-3);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  /* 65% (not 22%) — WCAG 1.4.11 needs 3:1 against white; 22% only measured ~1.45:1 */
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 65%, transparent);
   border-radius: 0.65rem;
   background: var(--white);
   color: var(--deep-teal);
   font: inherit;
+  /* select ignores inherited body line-height (1.65) in every engine, input/textarea
+     don't — that mismatch alone was rendering inputs ~10px taller than selects. */
+  line-height: 1.2;
 }
 .field textarea { min-height: 8rem; resize: vertical; }
+/* Swap the native select arrow (browser-default position/style, clashing with
+   every other hand-drawn icon on the site) for one that matches .nav__trigger's
+   chevron — same shape, deep-teal, precisely placed instead of wherever the OS puts it. */
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: var(--space-10);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5l3.5 3.5 3.5-3.5' fill='none' stroke='%231B4D5C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  background-size: 0.75rem;
+}
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
@@ -3705,7 +3726,8 @@ fieldset.form-stack {
   height: 2.3rem;
   flex: none;
   border-radius: 999px;
-  border: 2px solid color-mix(in srgb, var(--deep-teal) 24%, transparent);
+  /* 65% (not 24%) — WCAG 1.4.11 needs 3:1 against white; 24% only measured ~1.51:1 */
+  border: 2px solid color-mix(in srgb, var(--deep-teal) 65%, transparent);
   background: var(--white);
   color: var(--muted-grey);
   font-size: var(--text-sm);
@@ -3941,7 +3963,8 @@ fieldset.form-stack {
   text-align: center;
   font-size: var(--text-xl);
   font-weight: 600;
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  /* 65% (not 22%) — WCAG 1.4.11 needs 3:1 against white; 22% only measured ~1.45:1 */
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 65%, transparent);
   border-radius: 0.65rem;
 }
 
@@ -4530,7 +4553,8 @@ body.lightbox-open {
 .property__cta-row .btn-outline-teal {
   background: transparent;
   color: var(--deep-teal);
-  border-color: color-mix(in srgb, var(--deep-teal) 35%, transparent);
+  /* 65% (not 35%) — WCAG 1.4.11 needs 3:1 against white; 35% only measured ~1.86:1 */
+  border-color: color-mix(in srgb, var(--deep-teal) 65%, transparent);
 }
 .property__cta-row .btn-outline-teal:hover {
   border-color: var(--deep-teal);
