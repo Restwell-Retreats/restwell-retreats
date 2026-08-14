@@ -390,4 +390,129 @@
     }
   }
 
+  /* ---------- Multi-step enquiry form ---------- */
+  var multistep = document.querySelector('[data-multistep]');
+  if (multistep) {
+    var msForm = multistep.querySelector('[data-multistep-form]');
+    var msPanels = Array.prototype.slice.call(multistep.querySelectorAll('.form-step'));
+    var msIndicatorItems = Array.prototype.slice.call(multistep.querySelectorAll('[data-step-item]'));
+    var msConnectors = Array.prototype.slice.call(multistep.querySelectorAll('.step-indicator__connector'));
+    var msSuccess = multistep.querySelector('[data-step-success]');
+    var msCurrent = 1;
+
+    function msPanelFor(step) {
+      return msPanels.filter(function (panel) {
+        return Number(panel.getAttribute('data-step-panel')) === step;
+      })[0];
+    }
+
+    /*
+     * Marks every failing [required] field in the panel — red border/outline
+     * plus its paired .field-error (via aria-describedby) un-hidden — rather
+     * than relying only on the browser's reportValidity() bubble, which is
+     * inconsistent across browsers and easy to miss on a checkbox.
+     * Returns the first invalid field, or null if the panel is clean.
+     */
+    function msValidatePanel(panel) {
+      if (!panel) return null;
+      var fields = Array.prototype.slice.call(panel.querySelectorAll('[required]'));
+      var firstInvalid = null;
+      fields.forEach(function (input) {
+        var wrapper = input.closest('.field');
+        var ok = input.checkValidity();
+        if (wrapper) wrapper.classList.toggle('is-invalid', !ok);
+        input.setAttribute('aria-invalid', ok ? 'false' : 'true');
+        var errorId = input.getAttribute('aria-describedby');
+        var errorEl = errorId ? document.getElementById(errorId) : null;
+        if (errorEl) errorEl.hidden = ok;
+        if (!ok && !firstInvalid) firstInvalid = input;
+      });
+      return firstInvalid;
+    }
+
+    multistep.addEventListener('input', msClearFieldError);
+    multistep.addEventListener('change', msClearFieldError);
+    function msClearFieldError(event) {
+      var input = event.target;
+      var wrapper = input.closest ? input.closest('.field') : null;
+      if (!wrapper || !wrapper.classList.contains('is-invalid') || !input.checkValidity()) return;
+      wrapper.classList.remove('is-invalid');
+      input.setAttribute('aria-invalid', 'false');
+      var errorId = input.getAttribute('aria-describedby');
+      var errorEl = errorId ? document.getElementById(errorId) : null;
+      if (errorEl) errorEl.hidden = true;
+    }
+
+    function msGoToStep(step) {
+      msCurrent = step;
+      msPanels.forEach(function (panel) {
+        panel.hidden = Number(panel.getAttribute('data-step-panel')) !== step;
+      });
+      msIndicatorItems.forEach(function (item) {
+        var n = Number(item.getAttribute('data-step-item'));
+        item.classList.toggle('is-current', n === step);
+        item.classList.toggle('is-complete', n < step);
+        if (n === step) item.setAttribute('aria-current', 'step');
+        else item.removeAttribute('aria-current');
+      });
+      msConnectors.forEach(function (connector, i) {
+        connector.classList.toggle('is-complete', i < step - 1);
+      });
+      var panel = msPanelFor(step);
+      var firstField = panel ? panel.querySelector('input, select, textarea') : null;
+      if (firstField) window.setTimeout(function () { firstField.focus(); }, 10);
+      multistep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    multistep.addEventListener('click', function (event) {
+      var next = event.target.closest('[data-step-next]');
+      var prev = event.target.closest('[data-step-prev]');
+      if (next) {
+        var invalid = msValidatePanel(msPanelFor(msCurrent));
+        if (invalid) {
+          invalid.focus();
+          return;
+        }
+        msGoToStep(msCurrent + 1);
+      } else if (prev) {
+        msGoToStep(msCurrent - 1);
+      }
+    });
+
+    if (msForm) {
+      msForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var invalid = msValidatePanel(msPanelFor(msCurrent));
+        if (invalid) {
+          invalid.focus();
+          return;
+        }
+        msIndicatorItems.forEach(function (item) {
+          item.classList.add('is-complete');
+          item.classList.remove('is-current');
+          item.removeAttribute('aria-current');
+        });
+        msConnectors.forEach(function (connector) { connector.classList.add('is-complete'); });
+        msForm.hidden = true;
+        if (msSuccess) {
+          msSuccess.hidden = false;
+          msSuccess.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          msSuccess.focus();
+        }
+      });
+    }
+
+    var msRestart = msSuccess ? msSuccess.querySelector('[data-step-restart]') : null;
+    if (msRestart) {
+      msRestart.addEventListener('click', function () {
+        if (msForm) {
+          msForm.reset();
+          msForm.hidden = false;
+        }
+        msSuccess.hidden = true;
+        msGoToStep(1);
+      });
+    }
+  }
+
 })();

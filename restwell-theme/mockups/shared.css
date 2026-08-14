@@ -19,6 +19,9 @@
      which fails WCAG AA (4.5:1) at the button's actual 15px/600 size. This measures ~6.2:1. */
   --ink-on-gold: #12313C;
 
+  /* Form validation — #B3261E on white measures ~6.5:1, clears AA for text + UI outlines. */
+  --error-red: #B3261E;
+
   --font-sans: Inter, system-ui, sans-serif;
   --font-serif: Lora, Georgia, serif;
 
@@ -3534,6 +3537,7 @@ body:has(.subnav) {
   flex-direction: column;
   gap: var(--space-5);
 }
+.form-stack[hidden] { display: none !important; }
 fieldset.form-stack {
   border: 0;
   margin: 0;
@@ -3608,33 +3612,152 @@ fieldset.form-stack {
   accent-color: var(--deep-teal);
   cursor: pointer;
 }
+
+/* Validation — shared.js toggles is-invalid + un-hides the paired .field-error
+   on a failed Continue/Send, and clears both as soon as the field is fixed. */
+.field-error {
+  margin: 0;
+  color: var(--error-red);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+.field.is-invalid input:where(:not([type="checkbox"]):not([type="radio"])),
+.field.is-invalid select,
+.field.is-invalid textarea {
+  border-color: var(--error-red);
+}
+.field.is-invalid input:focus-visible,
+.field.is-invalid select:focus-visible,
+.field.is-invalid textarea:focus-visible {
+  outline-color: var(--error-red);
+  border-color: var(--error-red);
+}
+.field.is-invalid input[type="checkbox"] {
+  outline: 2px solid var(--error-red);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
 .form-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
 }
-.form-progress {
-  display: flex;
-  gap: var(--space-2);
-  margin-bottom: var(--space-6);
-  flex-wrap: wrap;
+.form-actions--split { justify-content: space-between; }
+.form-actions--end { justify-content: flex-end; }
+.step-hint {
+  margin: 0;
+  color: var(--muted-grey);
+  font-size: var(--text-sm);
 }
-.form-progress span {
+
+/*
+ * Multi-step enquiry form — shared.js goToStep() shows one .form-step at a
+ * time and toggles is-current/is-complete here + on the step indicator.
+ */
+.multistep { min-width: 0; }
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  animation: step-in 0.25s ease both;
+}
+.form-step[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .form-step { animation: none; }
+}
+@keyframes step-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.step-indicator {
+  display: flex;
+  align-items: flex-start;
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+}
+.step-indicator__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 0 1 auto;
+  min-width: 4.25rem;
+  text-align: center;
+}
+.step-indicator__connector {
+  flex: 1 1 auto;
+  align-self: flex-start;
+  height: 2px;
+  min-width: var(--space-4);
+  margin-top: 1.15rem; /* waiver: half of __marker's 2.3rem so the line hits its vertical center */
+  background: color-mix(in srgb, var(--deep-teal) 14%, transparent);
+  transition: background 0.25s ease;
+}
+.step-indicator__connector.is-complete { background: var(--warm-gold); }
+.step-indicator__marker {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
-  padding: var(--space-1) var(--space-3);
+  justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  flex: none;
   border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--deep-teal) 24%, transparent);
+  background: var(--white);
+  color: var(--muted-grey);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+.step-indicator__check {
+  display: none;
+  width: 52%;
+  height: 52%;
+}
+.step-indicator__label {
   font-size: var(--text-xs);
   font-weight: 600;
-  background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
   color: var(--muted-grey);
 }
-.form-progress span.is-current {
+.step-indicator__item.is-current .step-indicator__marker {
   background: var(--deep-teal);
+  border-color: var(--deep-teal);
   color: var(--white);
 }
+.step-indicator__item.is-current .step-indicator__label { color: var(--deep-teal); }
+.step-indicator__item.is-complete .step-indicator__marker {
+  background: var(--warm-gold);
+  border-color: var(--warm-gold);
+  color: var(--ink-on-gold);
+}
+.step-indicator__item.is-complete .step-indicator__label { color: var(--deep-teal); }
+.step-indicator__item.is-complete .step-indicator__num { display: none; }
+.step-indicator__item.is-complete .step-indicator__check { display: block; }
+
+.step-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-5);
+  text-align: center;
+  animation: step-in 0.3s ease both;
+}
+.step-success[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .step-success { animation: none; }
+}
+.step-success .icon-circle {
+  background: color-mix(in srgb, var(--warm-gold) 20%, var(--white));
+  color: var(--warm-gold-text);
+  margin-bottom: var(--space-2);
+}
+.step-success h2 { margin: 0; }
+.step-success .lede { margin: 0; max-width: 32rem; text-align: center; }
+.step-success .btn { margin-top: var(--space-2); }
 
 .gallery-grid {
   display: grid;

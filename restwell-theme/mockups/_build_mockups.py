@@ -485,6 +485,7 @@ ICON_PATHS = {
     "clock": '<circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5V12l3.2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
     "moon": '<path d="M15.8 3.6a8.4 8.4 0 1 0 4.9 15.2A8.4 8.4 0 0 1 15.8 3.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
     "hoist": '<path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    "check": '<path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
 }
 
 
@@ -2405,60 +2406,97 @@ def body_faq():
 '''
 
 
+def step_indicator(steps):
+    """Connected numbered step indicator (list of (id, label)). See
+    .step-indicator in shared.css and the multi-step module in shared.js —
+    goToStep() toggles is-current/is-complete and the connector fills."""
+    parts = ['<ol class="step-indicator" data-step-indicator role="list" aria-label="Enquiry form progress">']
+    for i, (step_id, label) in enumerate(steps, start=1):
+        if i > 1:
+            parts.append('  <li class="step-indicator__connector" aria-hidden="true"></li>')
+        current_cls = " is-current" if i == 1 else ""
+        current_attr = ' aria-current="step"' if i == 1 else ""
+        parts.append(f'''  <li class="step-indicator__item{current_cls}" data-step-item="{i}"{current_attr}>
+    <span class="step-indicator__marker" aria-hidden="true">
+      <span class="step-indicator__num">{i}</span>
+      <svg class="step-indicator__check" viewBox="0 0 24 24" focusable="false">{ICON_PATHS["check"]}</svg>
+    </span>
+    <span class="step-indicator__label">{label}</span>
+  </li>''')
+    parts.append('</ol>')
+    return "\n".join(parts)
+
+
 def body_enquire():
     return f'''{hero("Get in touch", "Contact Restwell about your stay", "Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.", [("homepage-concept.html", "Home"), (None, "Enquire")])}
     <section class="section-y band-white">
       <div class="container layout-sidebar">
-        <div>
-          <div class="form-progress" aria-label="Form progress">
-            <span class="is-current">1 · About you</span>
-            <span>2 · Your stay</span>
-            <span>3 · Your needs</span>
-          </div>
-          <form class="form-stack" action="enquire-concept.html" method="get">
-            <input type="hidden" name="step" value="1" />
-            <fieldset class="form-stack">
-              <legend class="sr-only">About you</legend>
-              <div class="form-grid form-grid--2">
-                <div class="field"><label for="enq-name">Full name *</label><input id="enq-name" name="name" required autocomplete="name" /></div>
-                <div class="field"><label for="enq-email">Email *</label><input id="enq-email" name="email" type="email" required autocomplete="email" /></div>
-                <div class="field"><label for="enq-phone">Phone *</label><input id="enq-phone" name="phone" type="tel" required autocomplete="tel" /></div>
-                <div class="field"><label for="enq-pref">Contact preference</label>
-                  <select id="enq-pref" name="pref"><option>Email</option><option>Phone</option><option>Either</option></select>
+        <div class="multistep" data-multistep>
+          {step_indicator([("1", "About you"), ("2", "Your stay"), ("3", "Your needs")])}
+          <form class="form-stack" data-multistep-form action="enquire-concept.html" method="get" novalidate>
+            <div class="form-step" data-step-panel="1">
+              <fieldset class="form-stack">
+                <legend class="form-legend">About you</legend>
+                <div class="form-grid form-grid--2">
+                  <div class="field"><label for="enq-name">Full name *</label><input id="enq-name" name="name" required autocomplete="name" aria-describedby="enq-name-error" /><p class="field-error" id="enq-name-error" role="alert" hidden>Enter your full name.</p></div>
+                  <div class="field"><label for="enq-email">Email *</label><input id="enq-email" name="email" type="email" required autocomplete="email" aria-describedby="enq-email-error" /><p class="field-error" id="enq-email-error" role="alert" hidden>Enter a valid email address.</p></div>
+                  <div class="field"><label for="enq-phone">Phone *</label><input id="enq-phone" name="phone" type="tel" required autocomplete="tel" aria-describedby="enq-phone-error" /><p class="field-error" id="enq-phone-error" role="alert" hidden>Enter your phone number.</p></div>
+                  <div class="field"><label for="enq-pref">Contact preference</label>
+                    <select id="enq-pref" name="pref"><option>Email</option><option>Phone</option><option>Either</option></select>
+                  </div>
                 </div>
+                <div class="field"><label for="enq-time">Best time to call</label><input id="enq-time" name="best_time" placeholder="e.g. weekday mornings" /></div>
+              </fieldset>
+              <div class="form-actions form-actions--end">
+                <button class="btn btn-gold" type="button" data-step-next>Continue</button>
               </div>
-              <div class="field"><label for="enq-time">Best time to call</label><input id="enq-time" name="best_time" placeholder="e.g. weekday mornings" /></div>
-            </fieldset>
-            <fieldset class="form-stack">
-              <legend class="form-legend">Your stay</legend>
-              <div class="form-grid form-grid--2">
-                <div class="field"><label for="enq-from">Arrival (optional)</label><input id="enq-from" name="arrive" type="date" /></div>
-                <div class="field"><label for="enq-to">Departure (optional)</label><input id="enq-to" name="depart" type="date" /></div>
-                <div class="field"><label for="enq-guests">Guests</label><input id="enq-guests" name="guests" type="number" min="1" max="5" value="2" /></div>
-                <div class="field"><label for="enq-fund">Funding type</label>
-                  <select id="enq-fund" name="funding">
-                    <option>Self-funded</option>
-                    <option>Local authority / KCC</option>
-                    <option>NHS Continuing Healthcare</option>
-                    <option>Direct payment / PHB</option>
-                    <option>Not sure yet</option>
-                  </select>
+            </div>
+            <div class="form-step" data-step-panel="2" hidden>
+              <fieldset class="form-stack">
+                <legend class="form-legend">Your stay</legend>
+                <div class="form-grid form-grid--2">
+                  <div class="field"><label for="enq-from">Arrival (optional)</label><input id="enq-from" name="arrive" type="date" /></div>
+                  <div class="field"><label for="enq-to">Departure (optional)</label><input id="enq-to" name="depart" type="date" /></div>
+                  <div class="field"><label for="enq-guests">Guests</label><input id="enq-guests" name="guests" type="number" min="1" max="5" value="2" /></div>
+                  <div class="field"><label for="enq-fund">Funding type</label>
+                    <select id="enq-fund" name="funding">
+                      <option>Self-funded</option>
+                      <option>Local authority / KCC</option>
+                      <option>NHS Continuing Healthcare</option>
+                      <option>Direct payment / PHB</option>
+                      <option>Not sure yet</option>
+                    </select>
+                  </div>
                 </div>
+                <div class="field"><label><input type="checkbox" name="urgent" /> This enquiry is time-sensitive</label></div>
+              </fieldset>
+              <div class="form-actions form-actions--split">
+                <button class="btn btn-outline-teal" type="button" data-step-prev>Back</button>
+                <button class="btn btn-gold" type="button" data-step-next>Continue</button>
               </div>
-              <div class="field"><label><input type="checkbox" name="urgent" /> This enquiry is time-sensitive</label></div>
-            </fieldset>
-            <fieldset class="form-stack">
-              <legend class="form-legend">Your needs</legend>
-              <div class="field"><label for="enq-care">Care requirements</label><textarea id="enq-care" name="care" placeholder="Optional — e.g. morning personal care, overnight support"></textarea></div>
-              <div class="field"><label for="enq-access">Accessibility needs</label><textarea id="enq-access" name="access" placeholder="Equipment, doorway clearances, vehicle access…"></textarea></div>
-              <div class="field"><label for="enq-msg">Message *</label><textarea id="enq-msg" name="message" required></textarea></div>
-              <div class="field"><label><input type="checkbox" name="marketing" /> Keep me updated about Restwell (optional)</label></div>
-            </fieldset>
-            <div class="form-actions">
-              <button class="btn btn-gold" type="submit">Send enquiry</button>
-              <p class="hint">Mockup only — does not submit. Live success uses ?sent=1 on this same page.</p>
+            </div>
+            <div class="form-step" data-step-panel="3" hidden>
+              <fieldset class="form-stack">
+                <legend class="form-legend">Your needs</legend>
+                <div class="field"><label for="enq-care">Care requirements</label><textarea id="enq-care" name="care" placeholder="Optional — e.g. morning personal care, overnight support"></textarea></div>
+                <div class="field"><label for="enq-access">Accessibility needs</label><textarea id="enq-access" name="access" placeholder="Equipment, doorway clearances, vehicle access…"></textarea></div>
+                <div class="field"><label for="enq-msg">Message *</label><textarea id="enq-msg" name="message" required aria-describedby="enq-msg-error"></textarea><p class="field-error" id="enq-msg-error" role="alert" hidden>Add a short message so we know what you need.</p></div>
+                <div class="field"><label><input type="checkbox" name="consent" required aria-describedby="enq-consent-error" /> <span>I agree to Restwell contacting me about this enquiry and to my information being handled as set out in the <a class="text-link" href="privacy-concept.html">Privacy Policy</a> *</span></label><p class="field-error" id="enq-consent-error" role="alert" hidden>Check this box so we can contact you about your enquiry.</p></div>
+                <div class="field"><label><input type="checkbox" name="marketing" /> Keep me updated about Restwell (optional)</label></div>
+              </fieldset>
+              <div class="form-actions form-actions--split">
+                <button class="btn btn-outline-teal" type="button" data-step-prev>Back</button>
+                <button class="btn btn-gold" type="submit">Send enquiry</button>
+              </div>
+              <p class="step-hint">Mockup only — shows a preview confirmation below, nothing is sent.</p>
             </div>
           </form>
+          <div class="step-success" data-step-success hidden tabindex="-1">
+            {icon_circle("check", size="3.5rem")}
+            <h2>We&rsquo;ve got your enquiry</h2>
+            <p class="lede">We reply within 48 hours on most enquiries — call <a href="tel:01622809881">01622 809881</a> if you&rsquo;d rather talk it through.</p>
+            <button class="btn btn-outline-teal" type="button" data-step-restart>Send another enquiry</button>
+          </div>
         </div>
         <aside class="sidebar-card" aria-label="Contact details">
           <h2>Talk to us</h2>
