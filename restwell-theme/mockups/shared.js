@@ -92,6 +92,18 @@
 
   /* ---------- FAQ accordion ---------- */
   var faqRoot = document.querySelector('[data-faq-accordion]');
+
+  function setFaqItemOpen(item, isOpen) {
+    var trigger = item.querySelector('.faq-item__trigger');
+    var panel = item.querySelector('.faq-item__panel');
+    item.classList.toggle('is-open', isOpen);
+    if (trigger) trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (panel) {
+      if (isOpen) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
+    }
+  }
+
   if (faqRoot) {
     faqRoot.addEventListener('click', function (event) {
       var trigger = event.target.closest('.faq-item__trigger');
@@ -101,17 +113,7 @@
       var willOpen = !item.classList.contains('is-open');
 
       faqRoot.querySelectorAll('.faq-item').forEach(function (other) {
-        var otherTrigger = other.querySelector('.faq-item__trigger');
-        var otherPanel = other.querySelector('.faq-item__panel');
-        var isTarget = other === item && willOpen;
-        other.classList.toggle('is-open', isTarget);
-        if (otherTrigger) {
-          otherTrigger.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
-        }
-        if (otherPanel) {
-          if (isTarget) otherPanel.removeAttribute('hidden');
-          else otherPanel.setAttribute('hidden', '');
-        }
+        setFaqItemOpen(other, other === item && willOpen);
       });
     });
   }
@@ -119,6 +121,7 @@
   /* ---------- FAQ category pills ---------- */
   var pillRoot = document.querySelector('[data-faq-filters]');
   if (pillRoot && faqRoot) {
+    var faqCols = faqRoot.querySelectorAll('.faq-list__col');
     pillRoot.addEventListener('click', function (event) {
       var btn = event.target.closest('button[data-filter]');
       if (!btn) return;
@@ -128,12 +131,74 @@
         b.classList.toggle('is-active', on);
         b.setAttribute('aria-selected', on ? 'true' : 'false');
       });
+      var visible = [];
       faqRoot.querySelectorAll('.faq-item').forEach(function (item) {
         var cat = item.getAttribute('data-cat') || 'all';
         var show = filter === 'all' || cat === filter;
         item.hidden = !show;
+        if (show) visible.push(item);
+        /* Switching category shouldn't leave a stray item expanded from
+           the previous view — collapse everything back to a clean list. */
+        setFaqItemOpen(item, false);
       });
+      /* Two static columns in markup — rebalance the *visible* items across
+         them on every filter change, or one column goes blank while the
+         other keeps every match (items never move columns otherwise). */
+      if (faqCols.length === 2) {
+        var mid = Math.ceil(visible.length / 2);
+        visible.forEach(function (item, i) {
+          faqCols[i < mid ? 0 : 1].appendChild(item);
+        });
+      }
     });
+  }
+
+  /* ---------- Wheelchair-width fit-check ---------- */
+  var fitCheck = document.querySelector('[data-fit-check]');
+  if (fitCheck) {
+    var fitInput = fitCheck.querySelector('[data-fit-input]');
+    var fitValueOut = fitCheck.querySelector('[data-fit-value]');
+    var fitGauges = fitCheck.querySelectorAll('[data-fit-gauge]');
+
+    var renderFit = function () {
+      var chairWidth = parseInt(fitInput.value, 10);
+      fitValueOut.textContent = chairWidth + 'mm';
+      fitGauges.forEach(function (gauge) {
+        var doorWidth = parseInt(gauge.getAttribute('data-door-width'), 10);
+        var scale = parseFloat(gauge.getAttribute('data-scale'));
+        var centerX = parseFloat(gauge.getAttribute('data-center-x'));
+        var floorY = parseFloat(gauge.getAttribute('data-floor-y'));
+        var lineY = parseFloat(gauge.getAttribute('data-line-y'));
+        var icon = gauge.querySelector('[data-fit-icon]');
+        var measure = gauge.querySelector('[data-fit-measure]');
+        var result = gauge.querySelector('[data-fit-result]');
+
+        var chairSpan = Math.max(chairWidth * scale, 0);
+        var iconX = centerX - chairSpan / 2;
+        var iconY = floorY - chairSpan;
+        icon.setAttribute('transform', 'translate(' + iconX + ' ' + iconY + ') scale(' + (chairSpan / 24) + ')');
+        measure.setAttribute('x1', iconX);
+        measure.setAttribute('x2', iconX + chairSpan);
+        measure.setAttribute('y1', lineY);
+        measure.setAttribute('y2', lineY);
+
+        var clearance = doorWidth - chairWidth;
+        var fits = clearance >= 0;
+        var tight = fits && clearance < 50;
+        gauge.classList.toggle('fit-gauge--tight', tight);
+        gauge.classList.toggle('fit-gauge--no', !fits);
+        if (!fits) {
+          result.textContent = 'Doesn’t fit: ' + Math.abs(clearance) + 'mm too wide.';
+        } else if (tight) {
+          result.textContent = 'Snug fit: ' + clearance + 'mm clearance.';
+        } else {
+          result.textContent = 'Fits with ' + clearance + 'mm clearance.';
+        }
+      });
+    };
+
+    fitInput.addEventListener('input', renderFit);
+    renderFit();
   }
 
   /* ---------- Desktop dropdowns (The Bungalow, Plan your trip) ---------- */

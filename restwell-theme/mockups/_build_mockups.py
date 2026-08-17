@@ -204,6 +204,7 @@ def home_schema():
   "@graph": [
     {
       "@type": "LodgingBusiness",
+      "@id": "https://restwellretreats.co.uk/#local-business",
       "name": "Restwell",
       "description": "Restwell is a private, step-free holiday bungalow on the Kent coast, designed for wheelchair users, carers and families who need to know a stay will work before they travel.",
       "address": {
@@ -232,6 +233,16 @@ def home_schema():
           "@type": "LocationFeatureSpecification",
           "name": "Off-street parking",
           "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Front door clear opening",
+          "value": "965mm"
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Internal door clear width",
+          "value": "926mm"
         }
       ]
     },
@@ -359,6 +370,47 @@ def care_schema():
           }
         }
       ]
+    }
+  ]
+}
+</script>'''
+
+
+def accessibility_schema():
+    """WebPage + BreadcrumbList for the accessibility page.
+
+    Points "about" at the site's single LodgingBusiness (@id set in home_schema)
+    instead of minting a second LocalBusiness entity. Door widths and hoist live
+    as amenityFeature on that LodgingBusiness. No FAQPage here: Google restricts
+    FAQ rich results to a narrow set of sites, so it buys nothing on this page.
+    """
+    return '''  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://restwellretreats.co.uk/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Accessibility",
+          "item": "https://restwellretreats.co.uk/accessibility/"
+        }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "name": "Wheelchair Accessible Holiday Cottage | Restwell Retreats",
+      "url": "https://restwellretreats.co.uk/accessibility/",
+      "description": "Wheelchair accessible holiday cottage access statement: ceiling hoist, level-access wet room, door widths 965mm and 926mm, plus parking.",
+      "about": { "@id": "https://restwellretreats.co.uk/#local-business" }
     }
   ]
 }
@@ -495,6 +547,67 @@ def icon_circle(name, size="2.75rem"):
     path = ICON_PATHS[name]
     style = f' style="--icon-circle-size: {size};"' if size != "2.75rem" else ""
     return f'<span class="icon-circle"{style} aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false">{path}</svg></span>'
+
+
+FIT_SCALE = 0.08  # SVG units per mm — deliberately small: the wheelchair
+# icon itself is what scales with width now, and an icon needs to stay
+# compact even at 1050mm, or the whole graphic balloons in height.
+FIT_VIEW_W = 120
+FIT_CENTER_X = FIT_VIEW_W / 2
+FIT_JAMB_TOP = 22
+FIT_FLOOR_Y = 112
+FIT_LINE_Y = FIT_FLOOR_Y + 8
+FIT_VIEW_H = FIT_LINE_Y + 12
+
+# Tabler Icons (MIT licence, https://tabler.io/icons) "wheelchair" glyph,
+# native 24x24 viewBox, credited here rather than on-page (MIT doesn't
+# require visible attribution). Uniformly scaled — never stretched on one
+# axis only — so it stays recognisable at every width.
+FIT_WHEELCHAIR_PATHS = '''<path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+                  <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
+                  <path d="M3 3h1a2 2 0 0 1 2 2v6" />
+                  <path d="M6 8h11" />
+                  <path d="M15 8v6" />'''
+
+
+def fit_gauge_scene(label, door_mm):
+    """Clearance-diagram scene for the accessibility fit-check widget.
+
+    Two open jambs (stroked, not filled) mark the doorway; nothing fills
+    the gap between them, so the opening itself is the visual. The
+    wheelchair icon sits centred in the gap, floor-aligned, scaled
+    uniformly by width so it never distorts; a measurement line directly
+    beneath it spans exactly the icon's current width. shared.js only
+    rewrites the icon's transform and the line's x1/x2 from the slider
+    value, reading the scale constants back off data-fit-*.
+    """
+    door_span = door_mm * FIT_SCALE
+    door_left_x = FIT_CENTER_X - door_span / 2
+    door_right_x = FIT_CENTER_X + door_span / 2
+    chair_mm = 700  # initial paint only; shared.js overwrites on load
+    chair_span = chair_mm * FIT_SCALE
+    icon_scale = chair_span / 24
+    icon_x = FIT_CENTER_X - chair_span / 2
+    icon_y = FIT_FLOOR_Y - chair_span
+    line_left = FIT_CENTER_X - chair_span / 2
+    line_right = FIT_CENTER_X + chair_span / 2
+    return f'''            <div class="fit-gauge" data-fit-gauge data-door-width="{door_mm}" data-center-x="{FIT_CENTER_X}" data-scale="{FIT_SCALE}" data-floor-y="{FIT_FLOOR_Y}" data-line-y="{FIT_LINE_Y}">
+              <div class="fit-gauge__head">
+                <span class="fit-gauge__label">{label}</span>
+              </div>
+              <p class="fit-gauge__opening-label">Door opening: {door_mm}mm</p>
+              <svg class="fit-gauge__svg" viewBox="0 0 {FIT_VIEW_W:.0f} {FIT_VIEW_H:.0f}" role="img" aria-hidden="true">
+                <line class="fit-gauge__jamb" x1="{door_left_x:.1f}" y1="{FIT_JAMB_TOP}" x2="{door_left_x:.1f}" y2="{FIT_FLOOR_Y}"></line>
+                <line class="fit-gauge__jamb" x1="{door_right_x:.1f}" y1="{FIT_JAMB_TOP}" x2="{door_right_x:.1f}" y2="{FIT_FLOOR_Y}"></line>
+                <g class="fit-gauge__icon" data-fit-icon transform="translate({icon_x:.1f} {icon_y:.1f}) scale({icon_scale:.3f})" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  {FIT_WHEELCHAIR_PATHS}
+                </g>
+                <line class="fit-gauge__measure" data-fit-measure x1="{line_left:.1f}" y1="{FIT_LINE_Y}" x2="{line_right:.1f}" y2="{FIT_LINE_Y}"></line>
+              </svg>
+              <p class="fit-gauge__result" data-fit-result aria-live="polite"></p>
+            </div>
+'''
 
 
 def faq_item(qid, q, a, open_=False, cat=""):
@@ -720,7 +833,7 @@ def body_home():
           </div>
           <div class="comparison-list__item">
             <dt>Optional care support</dt>
-            <dd>If you need care during the stay, Continuity of Care Services can arrange it separately — never bundled into the bungalow rate.</dd>
+            <dd>If you need care during the stay, Continuity of Care Services can arrange it separately, never bundled into the bungalow rate.</dd>
           </div>
         </dl>
       </div>
@@ -735,7 +848,7 @@ def body_home():
         <ul class="testimonials__grid" role="list">
           <li>
             <article class="testimonial-card">
-              <blockquote class="testimonial-card__quote">Keelie was tremendously helpful in explaining all the facilities, equipment and care help they could provide. The bungalow is modern and spotless — fully equipped for both the person you are caring for, and for the carer. It was a home from home.</blockquote>
+              <blockquote class="testimonial-card__quote">Keelie was tremendously helpful in explaining all the facilities, equipment and care help they could provide. The bungalow is modern and spotless, fully equipped for both the person you are caring for, and for the carer. It was a home from home.</blockquote>
               <footer class="testimonial-card__name">M.H.<span class="testimonial-card__role">Family carer · Facebook review</span></footer>
             </article>
           </li>
@@ -801,8 +914,8 @@ def body_home():
         "Common questions",
         [
             ("home-q1", "Is Restwell suitable for wheelchair users?", "Restwell is a private, step-free accessible holiday bungalow in Whitstable, Kent, with a ceiling track hoist, profiling bed, level-access wet room, driveway parking, and access measurements available before you enquire.", True),
-            ("home-q2", "What makes accessible self-catering work well?", "Equipment that matches how you transfer — hoist, wet room, door widths — written in millimetres, not labelled “wheelchair friendly.” Restwell includes the listed on-site kit in the bungalow rate."),
-            ("home-q3", "Is this disabled holiday accommodation in Kent?", "Yes — a specialist accessible bungalow in Whitstable for guests who need door widths, hoist and wet-room detail before they travel. Those specs live on the Accessibility page."),
+            ("home-q2", "What makes accessible self-catering work well?", "Equipment that matches how you transfer (hoist, wet room, door widths), written in millimetres, not labelled “wheelchair friendly.” Restwell includes the listed on-site kit in the bungalow rate."),
+            ("home-q3", "Is this disabled holiday accommodation in Kent?", "Yes, a specialist accessible bungalow in Whitstable for guests who need door widths, hoist and wet-room detail before they travel. Those specs live on the Accessibility page."),
         ],
         lede="",
         band="",
@@ -817,11 +930,11 @@ def body_home():
 
 def body_index():
     ready = [
-        ("homepage-concept.html", "Homepage", "Client ready — marketing shell"),
-        ("property-concept.html", "The Property", "Client ready — rooms, gallery, care, location"),
-        ("pricing-concept.html", "Pricing", "Client ready — rates, payment, care guides, FAQ"),
-        ("care-concept.html", "Optional care", "Client ready — Continuity, steps, FAQ"),
-        ("how-it-works-concept.html", "How It Works", "Pass — process, arrival, care trust, booking FAQ"),
+        ("homepage-concept.html", "Homepage", "Client ready: marketing shell"),
+        ("property-concept.html", "The Property", "Client ready: rooms, gallery, care, location"),
+        ("pricing-concept.html", "Pricing", "Client ready: rates, payment, care guides, FAQ"),
+        ("care-concept.html", "Optional care", "Client ready: Continuity, steps, FAQ"),
+        ("how-it-works-concept.html", "How It Works", "Pass: process, arrival, care trust, booking FAQ"),
     ]
     rest = [
         ("accessibility-concept.html", "Accessibility", "Room-by-room + equipment gallery"),
@@ -903,6 +1016,7 @@ def body_property():
             <p class="lede">The accessible bedroom is set up for comfortable transfers and restful nights, with a full-room ceiling track hoist and one or two adjustable profiling beds.</p>
           </header>
           <p class="lede">A second double bedroom sits next door, and the conservatory has a double sofa bed for occasional overnight stays. A mobile hoist and stand-aid, often known as a Sara Stedy, are also available.</p>
+          <p class="lede">The bungalow sleeps five in total across the accessible bedroom, the second double, and the conservatory sofa bed. On-site hoists, profiling beds and wet-room kit are already included in the bungalow rate, with no separate hire fee unless you need specialist equipment we don't stock.</p>
           <p><a class="text-link" href="accessibility-concept.html">Door widths and equipment notes</a></p>
         </div>
       </div>
@@ -920,6 +1034,7 @@ def body_property():
             <p class="lede">The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.</p>
           </header>
           <p class="lede">It’s designed to make washing, toileting, and transfers more manageable during your stay.</p>
+          <p class="lede">Everything listed is already fitted in the bungalow, so there’s nothing to hire in or set up before you arrive.</p>
         </div>
       </div>
     </section>
@@ -936,6 +1051,7 @@ def body_property():
             <p class="lede">After time by the sea, the living room gives everyone space to settle in.</p>
           </header>
           <p class="lede">There’s a rise-and-recline armchair, a sofa with pull-out footrests, and a TV with Netflix. The open-plan layout helps wheelchair users, family members, and carers move around without the room feeling crowded.</p>
+          <p class="lede">The room seats the whole party comfortably, with clear floor space kept between the sofa and armchair for wheelchair turning circles.</p>
         </div>
       </div>
     </section>
@@ -952,6 +1068,7 @@ def body_property():
             <p class="lede">The kitchen includes a lowered wheel-under worksurface, slide-under oven, microwave, fridge, dishwasher, plates, cutlery, utensils, and cooking basics.</p>
           </header>
           <p class="lede">It’s practical for simple breakfasts, family meals, and relaxed evenings in.</p>
+          <p class="lede">The hob is gas rather than induction, worth knowing if that affects your cooking plans.</p>
         </div>
       </div>
     </section>
@@ -959,7 +1076,7 @@ def body_property():
     <section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
       <div class="container split">
         <div class="split__media">
-          <img src="{B}/conservatory-patio-doors.png" alt="Sunny conservatory with level access to the patio and garden" width="900" height="675" loading="lazy" />
+          <img src="{B}/GRDEN-2-LS.jpg" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -983,7 +1100,7 @@ def body_property():
             <h2 id="garden-h">Level patio, enclosed garden, and private driveway</h2>
             <p class="lede">French doors open onto a level patio through a non-slip threshold ramp.</p>
           </header>
-          <p class="lede">The fully enclosed, dog-friendly garden has outdoor seating, a BBQ, and fairy lights, so you can eat outside or let the dog out safely.</p>
+          <p class="lede">The fully enclosed, dog-friendly garden has outdoor seating, a BBQ, and fairy lights, so you can eat outside or let the dog out safely. Water bowls and a toileting area are provided for assistance and pet dogs; just tell us in advance so we can complete a quick risk assessment.</p>
           <p class="lede">At the front, the resin-bound level-access driveway has parking for two cars and has been tested with two wheelchair accessible vehicles. Portable ramps are stored in the outdoor box beside the front door, ready to use around the property or take out during your stay.</p>
         </div>
       </div>
@@ -1032,6 +1149,7 @@ def body_property():
             <p class="lede">The bungalow sits on a quiet street, a short walk from The Plough pub and around 10–15 minutes from Tankerton promenade.</p>
           </header>
           <p class="lede">The beach is shingle, but the wide, paved promenade offers a step-free route along the coast and forms part of the King Charles III England Coast Path.</p>
+          <p class="lede">JoJo’s and the Marine Hotel are also close by on Tankerton, and the town centre is around 15 minutes away on a flat, paved route if you’d rather explore further afield.</p>
           <p class="lede">For practical route notes, local recommendations, and access information, read our <a class="text-link" href="whitstable-guide-concept.html">Whitstable accessibility guide</a>.</p>
         </div>
         <div class="split__media">
@@ -1064,7 +1182,7 @@ def body_hiw():
         </header>
         <div class="process__layout">
           <div class="process__media" data-reveal>
-            <img src="{B}/conservatory-patio-doors.png" alt="Open conservatory doors onto the level patio and garden at Restwell" width="900" height="1200" loading="lazy" />
+            <img src="{B}/patio-1.png" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
           </div>
           <ol class="process-list">
             <li>
@@ -1142,7 +1260,7 @@ def body_hiw():
               <h2 id="care-h">Add care only if you need it</h2>
             </header>
             <div class="care__intro-body">
-              <p class="lede">Ask about Continuity of Care Services when you enquire — or bring your own team. Care is never bundled into the bungalow rate.</p>
+              <p class="lede">Ask about Continuity of Care Services when you enquire, or bring your own team. Care is never bundled into the bungalow rate.</p>
             </div>
           </div>
           <ul class="care__types" aria-label="What Continuity can arrange">
@@ -1200,13 +1318,35 @@ def body_hiw():
 
 
 def body_accessibility():
-    return f'''{hero("Accessibility", "Wheelchair access details for the Restwell bungalow", "Door widths, step-free routes, wet-room notes, hoist details and parking information — written plainly so you can check whether Restwell fits before you enquire.", [("homepage-concept.html", "Home"), (None, "Accessibility")])}
+    return f'''{hero("Accessibility", "A wheelchair accessible holiday cottage in Whitstable", "Door widths, step-free routes, wet-room notes, hoist details and parking information, written plainly so you can check whether Restwell fits before you enquire.", [("homepage-concept.html", "Home"), (None, "Accessibility")])}
     <section class="section-y section-y--compact band-white" aria-label="Key measurements">
       <div class="container">
         <div class="stat-row">
           <div class="stat"><p class="stat__value">965mm</p><p class="stat__label">Clear opening, front door</p></div>
           <div class="stat"><p class="stat__value">926mm</p><p class="stat__label">Clear width, internal doors</p></div>
           <div class="stat"><p class="stat__value">Full-room</p><p class="stat__label">Ceiling track hoist over the bed</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y band-subtle" id="fit-check" aria-labelledby="fit-check-h">
+      <div class="container">
+        <div class="fit-check" data-fit-check>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Try it yourself</p>
+            <h2 id="fit-check-h">Will your wheelchair fit through our doors?</h2>
+            <p class="lede">Drag to your chair’s overall width (check the spec sheet, or measure the widest point including hand rims) and see the clearance at each doorway.</p>
+          </header>
+          <div class="fit-check__control">
+            <label for="fit-check-input">Wheelchair width</label>
+            <input type="range" id="fit-check-input" min="500" max="1050" step="10" value="700" data-fit-input aria-describedby="fit-check-value" />
+            <output id="fit-check-value" for="fit-check-input" data-fit-value>700mm</output>
+          </div>
+          <div class="fit-check__gauges">
+            {fit_gauge_scene("Front door", 965)}
+            {fit_gauge_scene("Internal doors", 926)}
+          </div>
+          <p class="fit-check__note">Rough guide only: always confirm your chair’s exact width with us before booking, especially for powered or bariatric chairs. Once through, allow roughly 300mm beyond the doorway to complete the turn.</p>
         </div>
       </div>
     </section>
@@ -1218,11 +1358,11 @@ def body_accessibility():
           <h2>Room-by-room access notes</h2>
         </header>
         <ul class="card-grid card-grid--3" role="list">
-          <li><article class="media-card"><img src="{B}/FD-1-LS.jpg" alt="Front door with a wide, level threshold" width="640" height="480" loading="lazy" decoding="async" /><h3>Arrival &amp; entrance</h3><p>Private driveway for two cars, step-free path, 965mm clear front opening, level threshold. We keep portable fold-up ramps for the front if you need them.</p></article></li>
+          <li><article class="media-card"><img src="{B}/FD-1-LS.jpg" alt="Front door with a wide, level threshold" width="640" height="480" loading="eager" fetchpriority="high" decoding="async" /><h3>Arrival &amp; entrance</h3><p>Private driveway for two cars, step-free path, 965mm clear front opening, level threshold. We keep portable fold-up ramps for the front if you need them.</p></article></li>
           <li><article class="media-card"><img src="{B}/LR-2-LS.jpg" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>Single storey throughout. Internal doorways measure 926mm clear. Hall routes stay clear for chair turning.</p></article></li>
-          <li><article class="media-card"><img src="{B}/BD1-1-LS.jpg" alt="Accessible bedroom with a profiling bed" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>Profiling beds with a pressure-relieving mattress and full-room ceiling track. We also keep a mobile hoist and Sara Stedy on site. Second bedroom is a double; conservatory sofa bed sleeps a fifth guest.</p></article></li>
+          <li><article class="media-card"><img src="{B}/BD2-2-LS.jpg" alt="Adjustable profiling beds in the accessible bedroom" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>Profiling beds with a pressure-relieving mattress in the hoist-equipped accessible bedroom, plus a second double bedroom next door. Conservatory sofa bed sleeps a fifth guest.</p></article></li>
           <li><article class="media-card"><img src="{B}/WR-1-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>Level-access shower, grab rails, shower chair, height-adjustable basin, wash-dry WC. Care Spaces adapted this room.</p></article></li>
-          <li><article class="media-card"><img src="{B}/KT-1-LS.jpg" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>Reachable and wheel-under worksurfaces, stocked basics, gas hob (not induction) — tell us if that affects your plans.</p></article></li>
+          <li><article class="media-card"><img src="{B}/KT-1-LS.jpg" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>Reachable and wheel-under worksurfaces, stocked basics, gas hob (not induction); tell us if that affects your plans.</p></article></li>
           <li><article class="media-card"><img src="{B}/GRDEN-1-LS.jpg" alt="Level garden and patio beyond the conservatory" width="640" height="480" loading="lazy" decoding="async" /><h3>Outdoor spaces</h3><p>A threshold ramp leads to a level patio and enclosed garden, with BBQ space and French doors from the conservatory.</p></article></li>
         </ul>
         <ul class="card-grid card-grid--2" role="list">
@@ -1290,21 +1430,21 @@ def body_accessibility():
         "Equipment &amp; access",
         "Access FAQ",
         [
-            ("a11y-q1", "Can I find a holiday cottage with a ceiling hoist in England?", "Yes — they are uncommon. Confirm fixed ceiling track vs mobile only, coverage, safe working load, sling policy, and bed position under the track. Restwell has a ceiling track hoist over the profiling bed; full specs are on this page.", True),
-            ("a11y-q2", "What is a ceiling track hoist in holiday accommodation?", "A hoist fixed to the ceiling that moves a person in a sling along a rail — less bulky than many mobile units. Most guests bring their own slings. Ask about coverage and who may operate it before arrival."),
+            ("a11y-q1", "Can I find a holiday cottage with a ceiling hoist in England?", "Yes, they are uncommon. Confirm fixed ceiling track vs mobile only, coverage, safe working load, sling policy, and bed position under the track. Restwell has an Amico GoLift 400 ceiling track hoist over the profiling bed, safe working load 181kg; full specs are on this page.", True),
+            ("a11y-q2", "What is a ceiling track hoist in holiday accommodation?", "A hoist fixed to the ceiling that moves a person in a sling along a rail, less bulky than many mobile units. Most guests bring their own slings. Ask about coverage and who may operate it before arrival."),
             ("a11y-q3", "What should I check before booking a hoist-equipped holiday let?", "Hoist type and SWL, bed under the track, same-level wet-room access, space for a second carer, parking, and what is included versus hire. Restwell includes listed on-site hoist and wet-room kit in the bungalow rate."),
-            ("a11y-q4", "Can I find a holiday cottage with a profiling bed in the UK?", "Yes — confirm the bed is on site, not only “available to hire.” Ask about mattress type, dimensions, transfer height, and hoist clearance. Restwell’s accessible bedroom includes a profiling bed with a pressure-relieving mattress."),
-            ("a11y-q5", "Can I find a holiday cottage with a hospital-style or profiling bed?", "Searchers looking for a “hospital bed holiday cottage” typically need an adjustable profiling bed at a safe transfer height — in a normal bedroom, not a ward. Restwell’s accessible bedroom has that bed, with the ceiling track above it."),
+            ("a11y-q4", "Can I find a holiday cottage with a profiling bed in the UK?", "Yes, confirm the bed is on site, not only “available to hire.” Ask about mattress type, dimensions, transfer height, and hoist clearance. Restwell’s accessible bedroom includes a profiling bed with a pressure-relieving mattress."),
+            ("a11y-q5", "Can I find a holiday cottage with a hospital-style or profiling bed?", "Searchers looking for a “hospital bed holiday cottage” typically need an adjustable profiling bed at a safe transfer height, in a normal bedroom, not a ward. Restwell’s accessible bedroom has that bed, with the ceiling track above it."),
             ("a11y-q6", "Why does an adjustable or profiling bed matter on an accessible holiday?", "Positioning, pressure care, safer transfers, and overnight care routines when a fixed divan is not safe. At Restwell, check controls, side-rail policy, and carer space beside the bed against your own plan."),
-            ("a11y-q7", "What accessible equipment should I expect in a specialist holiday let?", "Ask for a published inventory. Restwell lists a profiling bed, ceiling and mobile hoist, level-access wet room with seat and grab rails, height-adjustable basin, threshold ramps, and parking notes — never assume “accessible” means a hoist is fitted."),
-            ("a11y-q8", "What should “wheelchair friendly holiday cottage” mean?", "Step-free routes, usable door widths for your chair, a bathroom you can use, and parking that works — in millimetres and photos. If a listing only says “wheelchair friendly,” ask for an access statement or walk away."),
+            ("a11y-q7", "What accessible equipment should I expect in a specialist holiday let?", "Ask for a published inventory. Restwell lists a profiling bed, ceiling and mobile hoist, level-access wet room with seat and grab rails, height-adjustable basin, threshold ramps, and parking notes; never assume “accessible” means a hoist is fitted."),
+            ("a11y-q8", "What should “wheelchair friendly holiday cottage” mean?", "Step-free routes, usable door widths for your chair, a bathroom you can use, and parking that works: in millimetres and photos. If a listing only says “wheelchair friendly,” ask for an access statement or walk away."),
             ("a11y-q9", "What do I need to check before booking an accessible holiday cottage?", "Clear door openings, step-free route from parking, wet room vs adapted bath, hoist type, bed type, turning space, recent entrance and bathroom photos, sling policy, and whether <a class=\"text-link\" href=\"care-concept.html\">care can be arranged separately</a>. Restwell publishes those figures on this page."),
             ("a11y-q10", "What makes an accessible bungalow in the UK suitable for complex needs?", "Single storey helps, but complex needs also need doorway widths, wet room, parking, and often a hoist and profiling bed. Restwell is step-free throughout with those published on this page."),
         ],
         lede="Ceiling hoist SWL questions, profiling beds, and the millimetre detail behind “wheelchair friendly.”",
         band="band-white",
     )}
-{mid_cta("Ask about your equipment and clearances", "Door widths, hoist limits, wet-room kit or care — we’ll answer straight.", secondary=("property-concept.html", "Tour the property"))}
+{mid_cta("Ask about your equipment and clearances", "Door widths, hoist limits, wet-room kit or care: we’ll answer straight.", secondary=("property-concept.html", "Tour the property"))}
 '''
 
 
@@ -1331,7 +1471,7 @@ def body_who():
           <header class="section-head section-head--tight">
             <p class="eyebrow">Your situation</p>
             <h2 id="situations-h">Who Restwell is built for</h2>
-            <p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list — then decide if Russell Drive fits before they travel.</p>
+            <p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if Russell Drive fits before they travel.</p>
           </header>
           <ul class="persona-list" role="list">
             <li class="persona-list__item">
@@ -1352,7 +1492,7 @@ def body_who():
               {icon_circle("clipboard")}
               <div>
                 <h3>Occupational therapists</h3>
-                <p>Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances — we’ll measure.</p>
+                <p>Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.</p>
               </div>
             </li>
             <li class="persona-list__item">
@@ -1375,10 +1515,10 @@ def body_who():
         <header class="section-head">
           <p class="eyebrow">See the access</p>
           <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
-          <p class="lede">These three items are on site before arrival — not hired for the week.</p>
+          <p class="lede">These three items are on site before arrival, not hired for the week.</p>
         </header>
         <ul class="card-grid card-grid--3" role="list">
-          <li><article class="media-card"><img src="{B}/WR-3-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin — Care Spaces adapted.</p></article></li>
+          <li><article class="media-card"><img src="{B}/WR-3-LS.jpg" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
           <li><article class="media-card"><img src="{B}/BD2-6-LS.jpg" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
           <li><article class="media-card"><img src="{B}/kitchen.png" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
         </ul>
@@ -1457,7 +1597,7 @@ def body_who():
               <div class="process-list__body">
                 <h3>Confirm suitability</h3>
                 <p class="process-list__meta">We reply</p>
-                <p>We check doorway widths and on-site kit against your party — and say if Restwell is the wrong house.</p>
+                <p>We check doorway widths and on-site kit against your party, and say if Restwell is the wrong house.</p>
               </div>
             </li>
             <li>
@@ -1479,22 +1619,22 @@ def body_who():
             ("wif-q1", "How do I plan a holiday when someone has complex care needs?", "Work in this order: match published access specs to the person’s equipment; set staffing (daytime, sleep-in vs waking night, backup); decide who pays lodging vs care; get kit confirmation in writing; sort medication, transport and emergency contacts. Only lock dates once those are clear.", True),
             ("wif-q2", "How do I plan a holiday if I have complex care needs?", "Start on the Accessibility page for Restwell’s door widths and hoist. Then coordinate carers or Continuity, confirm slings, sort prescriptions, build buffer into travel, and agree a backup if a carer is ill. Enquire with dates and care needs once that list is drafted."),
             ("wif-q3", "How should I prepare for an accessible holiday?", "Confirm access details in writing; pack slings, meds, chargers and comfort items the house won’t supply; share care plans with anyone covering the stay; note nearest accessible parking, toilets and pharmacy; keep Restwell and care-provider numbers to hand."),
-            ("wif-q4", "What belongs on a disabled holiday checklist?", "Five lists: access needs; medical; care rota and backup; documents (funding letters, insurance, access statement); comfort and daily living. Tick each against Restwell’s published kit so you don’t pack what is already on site — or assume kit that isn’t."),
+            ("wif-q4", "What belongs on a disabled holiday checklist?", "Five lists: access needs; medical; care rota and backup; documents (funding letters, insurance, access statement); comfort and daily living. Tick each against Restwell’s published kit so you don’t pack what is already on site, or assume kit that isn’t."),
             ("wif-q5", "Is a holiday possible if someone has complex needs?", "Yes, if doorway widths, overnight staffing and transfers match before you travel. Start with measurements and the care rota, not brochure photos. This page and Accessibility are the fit check before you enquire."),
             ("wif-q6", "Is a holiday cottage better than a respite care placement for disabled adults?", "Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break."),
-            ("wif-q7", "Can we take a disabled holiday instead of care-home respite?", "Yes when risk, staffing and equipment fit a private bungalow — Restwell with optional Continuity care is one such option. It is not a substitute for registered residential care when that is clinically required."),
-            ("wif-q8", "How does an accessible holiday let compare with respite care?", "Compare environment (private home vs care setting), independence, how care is delivered, cost lines, family involvement and clinical suitability. Restwell is a private adapted bungalow with optional Continuity care — not a care home."),
-            ("wif-q9", "What is the difference between a respite break and an accessible holiday?", "Respite usually means planned carer relief or continued formal care under funding language. An accessible holiday describes a place a disabled traveller can use. Many Restwell stays are both — but the paperwork answers different questions."),
+            ("wif-q7", "Can we take a disabled holiday instead of care-home respite?", "Yes when risk, staffing and equipment fit a private bungalow: Restwell with optional Continuity care is one such option. It is not a substitute for registered residential care when that is clinically required."),
+            ("wif-q8", "How does an accessible holiday let compare with respite care?", "Compare environment (private home vs care setting), independence, how care is delivered, cost lines, family involvement and clinical suitability. Restwell is a private adapted bungalow with optional Continuity care, not a care home."),
+            ("wif-q9", "What is the difference between a respite break and an accessible holiday?", "Respite usually means planned carer relief or continued formal care under funding language. An accessible holiday describes a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions."),
         ],
-        lede="Complex-care planning order, and when a private bungalow beats care-home respite — or doesn’t.",
+        lede="Complex-care planning order, and when a private bungalow beats care-home respite, or doesn’t.",
         band="band-white",
     )}
-{mid_cta("Describe the party and equipment", "We’ll say straight whether Russell Drive fits — or where it doesn’t.", secondary=("accessibility-concept.html", "Read accessibility"))}
+{mid_cta("Describe the party and equipment", "We’ll say straight whether Russell Drive fits, or where it doesn’t.", secondary=("accessibility-concept.html", "Read accessibility"))}
 '''
 
 
 def body_care():
-    return f'''{hero("Care during your stay", "Care during your stay, only if you want it", "Optional, CQC-regulated care from Continuity of Care Services, arranged separately when you enquire — or bring your own carer. Never built into the bungalow rate.", [("homepage-concept.html", "Home"), (None, "Care during your stay")])}
+    return f'''{hero("Care during your stay", "Care during your stay, only if you want it", "Optional, CQC-regulated care from Continuity of Care Services, arranged separately when you enquire, or bring your own carer. Never built into the bungalow rate.", [("homepage-concept.html", "Home"), (None, "Care during your stay")])}
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
         <ul class="subnav__list">
@@ -1526,7 +1666,7 @@ def body_care():
           </div>
           <div class="comparison-list__item">
             <dt>Bring your own team</dt>
-            <dd>Familiar carers are welcome — the layout works with visiting Continuity staff or your own rota.</dd>
+            <dd>Familiar carers are welcome; the layout works with visiting Continuity staff or your own rota.</dd>
           </div>
         </dl>
         <div class="care-page__trust">
@@ -1596,7 +1736,7 @@ def body_care():
         <dl class="comparison-list">
           <div class="comparison-list__item">
             <dt>No extra fee</dt>
-            <dd>Bring your own carer or PA at no extra charge — the bungalow rate is the same either way.</dd>
+            <dd>Bring your own carer or PA at no extra charge; the bungalow rate is the same either way.</dd>
           </div>
           <div class="comparison-list__item">
             <dt>Separate sleeping space</dt>
@@ -1615,7 +1755,7 @@ def body_care():
         <header class="section-head section-head--tight">
           <p class="eyebrow">Getting started</p>
           <h2 id="how-care-works-h">How care is arranged</h2>
-          <p class="lede">This is the care conversation specifically — see <a class="text-link" href="how-it-works-concept.html">How It Works</a> for the full booking journey from enquiry to arrival.</p>
+          <p class="lede">This is the care conversation specifically; see <a class="text-link" href="how-it-works-concept.html">How It Works</a> for the full booking journey from enquiry to arrival.</p>
         </header>
         <ol class="payment-steps">
           <li class="payment-steps__item">
@@ -1650,8 +1790,8 @@ def body_care():
           <h2 id="cqc-regulated-h">What CQC-regulated means</h2>
         </header>
         <div class="prose">
-          <p>The Care Quality Commission (CQC) inspects and rates health and social care providers in England against standards of safety, effectiveness and leadership. Continuity of Care Services holds a CQC rating of Good — read the published report yourself rather than take our word for it.</p>
-          <p>Restwell is the accommodation, not the regulated care provider. When care is arranged during your stay, Continuity of Care Services delivers it under that CQC registration — the accountability of a regulated provider, not an informal or unregistered introduction.</p>
+          <p>The Care Quality Commission (CQC) inspects and rates health and social care providers in England against standards of safety, effectiveness and leadership. Continuity of Care Services holds a CQC rating of Good; read the published report yourself rather than take our word for it.</p>
+          <p>Restwell is the accommodation, not the regulated care provider. When care is arranged during your stay, Continuity of Care Services delivers it under that CQC registration: the accountability of a regulated provider, not an informal or unregistered introduction.</p>
           <p>{ext_a("https://www.cqc.org.uk/location/1-2624556588", "Read the CQC inspection profile", "text-link")}</p>
         </div>
       </div>
@@ -1662,20 +1802,20 @@ def body_care():
         <header class="section-head section-head--tight">
           <p class="eyebrow">For professionals</p>
           <h2 id="for-professionals-h">For OTs, case managers and commissioners</h2>
-          <p class="lede">Restwell and Continuity can support a funded short break with care alongside it — here’s what each side provides. See <a class="text-link" href="who-its-for-concept.html">Who It’s For</a> for guest, carer and professional-referrer suitability at a glance.</p>
+          <p class="lede">Restwell and Continuity can support a funded short break with care alongside it: here’s what each side provides. See <a class="text-link" href="who-its-for-concept.html">Who It’s For</a> for guest, carer and professional-referrer suitability at a glance.</p>
         </header>
         <dl class="comparison-list comparison-list--2">
           <div class="comparison-list__item">
             <dt>Access evidence</dt>
-            <dd>Published door widths, hoist and wet-room specs — we’ll measure unpublished clearances on request. See <a class="text-link" href="accessibility-concept.html">Accessibility</a>.</dd>
+            <dd>Published door widths, hoist and wet-room specs; we’ll measure unpublished clearances on request. See <a class="text-link" href="accessibility-concept.html">Accessibility</a>.</dd>
           </div>
           <div class="comparison-list__item">
             <dt>Care documentation</dt>
-            <dd>Continuity confirms the care plan and cost once hours and tasks are agreed — the detail a funding panel needs to approve a break.</dd>
+            <dd>Continuity confirms the care plan and cost once hours and tasks are agreed: the detail a funding panel needs to approve a break.</dd>
           </div>
           <div class="comparison-list__item">
             <dt>Funding routes</dt>
-            <dd>Care Act short breaks, direct payments, personal health budgets or NHS CHC — the bungalow rate is the same whoever we invoice. See <a class="text-link" href="resources-concept.html">Funding &amp; Support</a>.</dd>
+            <dd>Care Act short breaks, direct payments, personal health budgets or NHS CHC: the bungalow rate is the same whoever we invoice. See <a class="text-link" href="resources-concept.html">Funding &amp; Support</a>.</dd>
           </div>
           <div class="comparison-list__item">
             <dt>One number for both</dt>
@@ -1814,7 +1954,7 @@ def body_pricing():
         <header class="section-head">
           <p class="eyebrow">Deposits and balance</p>
           <h2 id="payment-h">How payment works</h2>
-          <p class="lede">BACS or card. Same rates on every funding route — <a class="text-link" href="resources-concept.html">Funding &amp; Support</a> covers who we invoice.</p>
+          <p class="lede">BACS or card. Same rates on every funding route; <a class="text-link" href="resources-concept.html">Funding &amp; Support</a> covers who we invoice.</p>
         </header>
         <ol class="payment-steps">
           <li class="payment-steps__item">
@@ -1911,14 +2051,14 @@ def body_pricing():
         "Pricing FAQ",
         [
             ("pr-q1", "Is care included in the bungalow price?", "No. The bungalow rate covers the house and on-site access equipment. Care is optional through Continuity of Care Services. See guide rates above.", True),
-            ("pr-q2", "Are there extra charges for equipment?", "On-site hoists, profiling beds and wet-room kit are included. Hired-in specialist kit is charged separately — tell us when you enquire. Bring your own slings."),
-            ("pr-q3", "Do prices change with funding?", "No. Same rates for every guest. Funding only changes who we invoice — see <a class=\"text-link\" href=\"resources-concept.html\">Funding &amp; Support</a>."),
+            ("pr-q2", "Are there extra charges for equipment?", "On-site hoists, profiling beds and wet-room kit are included. Hired-in specialist kit is charged separately; tell us when you enquire. Bring your own slings."),
+            ("pr-q3", "Do prices change with funding?", "No. Same rates for every guest. Funding only changes who we invoice. See <a class=\"text-link\" href=\"resources-concept.html\">Funding &amp; Support</a>."),
             ("pr-q4", "When do care guide rates go up?", "Weekends, bank holidays and complex care cost more. Continuity reviews rates periodically; the next review date is shown with the guide rates above. Continuity quotes your care cost once hours and tasks are agreed."),
         ],
         lede="What the bungalow rate covers, Continuity guide rates, and why funding never changes the published price.",
         band="band-subtle",
     )}
-{mid_cta("Enquire about dates and care", "Tell us arrival dates, access needs and whether you want Continuity support — no deposit until you decide.", primary=("enquire-concept.html", "Enquire Now"), secondary=("how-it-works-concept.html", "How booking works"))}
+{mid_cta("Enquire about dates and care", "Tell us arrival dates, access needs and whether you want Continuity support: no deposit until you decide.", primary=("enquire-concept.html", "Enquire Now"), secondary=("how-it-works-concept.html", "How booking works"))}
 '''
 
 
@@ -1969,7 +2109,7 @@ def place_item(title, body, href=None, tel=None, maps=None, meta="", img=None, i
 def body_whitstable():
     castle = place_item(
         "Whitstable Castle &amp; Gardens",
-        "Paved grounds and Orangery Tearooms with an accessible loo — a level stop about halfway along the promenade.",
+        "Paved grounds and Orangery Tearooms with an accessible loo, a level stop about halfway along the promenade.",
         href="https://whitstablecastle.co.uk/",
         tel="01227 281726",
         meta="Promenade stop",
@@ -1978,7 +2118,7 @@ def body_whitstable():
     )
     harbour = place_item(
         "Whitstable Harbour",
-        "Working oyster port. South Quay Shed has a lift to a quieter upper floor. Surfaces can be uneven — take it steady at peak times.",
+        "Working oyster port. South Quay Shed has a lift to a quieter upper floor. Surfaces can be uneven, take it steady at peak times.",
         href="https://www.canterbury.co.uk/whitstable-harbour/",
         maps="https://maps.google.com/?q=Whitstable+Harbour",
         meta="Town &amp; seafood",
@@ -1987,7 +2127,7 @@ def body_whitstable():
     )
     neptune = place_item(
         "The Old Neptune",
-        "Pub on the shingle. The terrace on firm ground is the realistic option — sloping floors inside, no step-free entrance.",
+        "Pub on the shingle. The terrace on firm ground is the realistic option: sloping floors inside, no step-free entrance.",
         href="https://www.thepubonthebeach.co.uk/",
         maps="https://maps.google.com/?q=The+Old+Neptune+Whitstable",
         meta="Beach pub",
@@ -1996,14 +2136,14 @@ def body_whitstable():
     )
     plough = place_item(
         "The Plough Inn, Swalecliffe",
-        "Around the corner via the footpath between 71 and 73 Russell Drive. Step-free entry; no accessible toilet — confirm on the day if that matters.",
+        "Around the corner via the footpath between 71 and 73 Russell Drive. Step-free entry; no accessible toilet, confirm on the day if that matters.",
         tel="01227 794636",
         maps="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable",
         meta="Nearest pub · CT5 2RN",
     )
     jojos = place_item(
         "JoJo’s, Tankerton",
-        "Clifftop Mediterranean favourite. Wheelchair access and accessible toilet. Book ahead — it fills quickly.",
+        "Clifftop Mediterranean favourite. Wheelchair access and accessible toilet. Book ahead: it fills quickly.",
         href="https://jojosrestaurant.co.uk/",
         tel="01227 274591",
         meta="2 Herne Bay Road · CT5 2LQ",
@@ -2034,7 +2174,7 @@ def body_whitstable():
       <div class="container">
         <div class="stat-row">
           <div class="stat"><p class="stat__value">~90 min</p><p class="stat__label">Drive from London (M2 / A299)</p></div>
-          <div class="stat"><p class="stat__value">75–90 min</p><p class="stat__label">Direct train — check National Rail</p></div>
+          <div class="stat"><p class="stat__value">75–90 min</p><p class="stat__label">Direct train, check National Rail</p></div>
           <div class="stat"><p class="stat__value">15 min</p><p class="stat__label">Walk to Tankerton promenade</p></div>
         </div>
       </div>
@@ -2046,12 +2186,12 @@ def body_whitstable():
           <header class="section-head section-head--tight">
             <p class="eyebrow">Coastal walk</p>
             <h2 id="promenade-h">Tankerton promenade</h2>
-            <p class="lede">About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep — stick to the promenade for level sea air.</p>
+            <p class="lede">About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep, stick to the promenade for level sea air.</p>
           </header>
           <ul class="checklist">
             <li>Wide, surfaced path with weather shelters and benches</li>
-            <li>At low tide you can watch The Street spit — loose shingle, not a wheelchair route</li>
-            <li>Level route from Restwell — no steps on the approach</li>
+            <li>At low tide you can watch The Street spit: loose shingle, not a wheelchair route</li>
+            <li>Level route from Restwell: no steps on the approach</li>
           </ul>
         </div>
         <div class="split__media">
@@ -2074,7 +2214,7 @@ def body_whitstable():
           <dl class="comparison-list">
             <div class="comparison-list__item">
               <dt>At Restwell</dt>
-              <dd>Two off-road spaces on the private driveway — level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</dd>
+              <dd>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</dd>
             </div>
             <div class="comparison-list__item">
               <dt>Marine Parade &amp; Tankerton</dt>
@@ -2111,7 +2251,7 @@ def body_whitstable():
           <header class="section-head section-head--tight">
             <p class="eyebrow">Places to eat</p>
             <h2 id="eat-h">Pubs and restaurants near the house</h2>
-            <p class="lede">The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings — call ahead if access is critical.</p>
+            <p class="lede">The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings, call ahead if access is critical.</p>
           </header>
           <div class="place-list place-list--stack">
 {plough}
@@ -2136,7 +2276,7 @@ def body_whitstable():
           <li>Behind the sailing club at the foot of the slopes</li>
           <li>By the Marine Parade cafe at the top</li>
           <li>Under the promenade cafe near the castle</li>
-          <li>Changing Places — Whitstable Harbour WC, Harbour Road</li>
+          <li>Changing Places: Whitstable Harbour WC, Harbour Road</li>
           <li>JoJo’s Tankerton and Marine Hotel (venue accessible loos)</li>
         </ul>
         <p>{ext_a("https://www.changing-places.org/find", "Changing Places map", "text-link")}</p>
@@ -2153,11 +2293,11 @@ def body_whitstable():
         <dl class="fact-dl">
           <div>
             <dt>Station</dt>
-            <dd>Whitstable station access varies by platform — check {ext_a("https://www.nationalrail.co.uk/", "National Rail")} before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</dd>
+            <dd>Whitstable station access varies by platform, check {ext_a("https://www.nationalrail.co.uk/", "National Rail")} before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</dd>
           </div>
           <div>
             <dt>Buses</dt>
-            <dd>{ext_a("https://www.stagecoachbus.com/", "Stagecoach South East")} route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary — same-day check.</dd>
+            <dd>{ext_a("https://www.stagecoachbus.com/", "Stagecoach South East")} route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</dd>
           </div>
           <div>
             <dt>Accessible taxis</dt>
@@ -2201,17 +2341,17 @@ def body_whitstable():
         "Whitstable &amp; coast FAQ",
         [
             ("whit-q1", "Is Whitstable accessible for disabled visitors?", "With planning, yes for paved routes. Tankerton’s level promenade works well; loose shingle and some older streets do not. Use Blue Badge parking notes, the harbour RADAR toilet, and a step-free base like Restwell.", True),
-            ("whit-q2", "What is Whitstable like for wheelchair users?", "Compact seaside town with harbour and independents; surfaces vary. From Restwell, town centre is roughly 15 minutes on a flat paved route; Tankerton promenade about 15 minutes — wide, level and fully surfaced. Stay on the paved path; grassy slopes above are steep."),
+            ("whit-q2", "What is Whitstable like for wheelchair users?", "Compact seaside town with harbour and independents; surfaces vary. From Restwell, town centre is roughly 15 minutes on a flat paved route; Tankerton promenade about 15 minutes, wide, level and fully surfaced. Stay on the paved path; grassy slopes above are steep."),
             ("whit-q3", "Is Whitstable suitable for wheelchair users?", "Yes if you plan parking, toilets and seafront routes first. Tankerton promenade is the main long level coastal stretch. Restwell’s step-free bungalow with driveway parking removes the hardest accommodation barrier."),
             ("whit-q4", "Where can I find step-free routes on the Kent coast?", "Favour paved promenades over shingle or steep slips. Tankerton’s promenade near Restwell is the local stretch we use most. A step-free bungalow means the day is about the route, not stairs at the house."),
             ("whit-q5", "How do I plan a wheelchair coastal holiday near Whitstable?", "Secure step-free accommodation first; use Tankerton promenade for sea air; check accessible toilets and parking; leave rest days in the plan. This guide lists the local detail from Russell Drive."),
-            ("whit-q6", "What makes an accessible beach day work here?", "Level promenade, nearby parking and toilets — and knowing the shingle beach itself is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs; ask locally if you need one."),
+            ("whit-q6", "What makes an accessible beach day work here?", "Level promenade, nearby parking and toilets, and knowing the shingle beach itself is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs; ask locally if you need one."),
             ("whit-q7", "What should I look for in an accessible seaside holiday in Kent?", "A private adapted base, known level routes, quieter timing if crowds are hard, and a backup indoor plan for weather. Restwell is that base on the Kent coast, with optional Continuity care if you need it."),
         ],
         lede="Tankerton promenade, Blue Badge parking, and what the shingle beach can and can’t do.",
         band="band-white",
     )}
-{mid_cta("Ask for route notes for your party", "Tell us chair size and energy levels — then see the bungalow on Russell Drive.", secondary=("property-concept.html", "See the bungalow"))}
+{mid_cta("Ask for route notes for your party", "Tell us chair size and energy levels, then see the bungalow on Russell Drive.", secondary=("property-concept.html", "See the bungalow"))}
 '''
 
 
@@ -2233,7 +2373,7 @@ def body_resources():
         <header class="section-head section-head--tight">
           <p class="eyebrow">Start here</p>
           <h2 id="routes-h">Local authority, NHS CHC, or private pay</h2>
-          <p class="lede">Restwell’s price stays the same on every route — only who we invoice changes.</p>
+          <p class="lede">Restwell’s price stays the same on every route: only who we invoice changes.</p>
         </header>
         <ul class="card-grid card-grid--3" role="list" data-reveal>
           <li><article class="info-card info-card--route" id="local-authority">
@@ -2262,7 +2402,7 @@ def body_resources():
           </article></li>
           <li><article class="info-card info-card--route" id="private">
             <div class="info-card__head">{icon_circle("wallet")}<h3>Grants &amp; private</h3></div>
-            <p>Book and pay Restwell directly, or combine with a charity award. Eligibility varies — apply early and keep award letters with your enquiry.</p>
+            <p>Book and pay Restwell directly, or combine with a charity award. Eligibility varies, apply early and keep award letters with your enquiry.</p>
             <div class="info-card__steps">
               <h4>Next steps</h4>
               <ul class="checklist">
@@ -2322,7 +2462,7 @@ def body_resources():
           <div class="band-teal__stack">
             <p class="eyebrow eyebrow--on-dark">What we can send</p>
             <h2 id="help-h">Quotes, access packs and invoice contacts</h2>
-            <p class="lede">Tell us your funding route and paperwork stage — we send what your coordinator usually asks for.</p>
+            <p class="lede">Tell us your funding route and paperwork stage; we send what your coordinator usually asks for.</p>
             <ul class="checklist">
               <li>Written quote at published rates</li>
               <li>Access statement and equipment list</li>
@@ -2343,14 +2483,14 @@ def body_resources():
         "Funding pathways",
         "Funding FAQ",
         [
-            ("res-q1", "Can NHS Continuing Healthcare funding be used for a holiday?", "Eligible care hours away from home can be covered if your CHC team agrees in writing — the cottage rent rarely is. Ask which invoice lines they will pay before anyone pays a deposit. Restwell can supply access evidence; funding decisions sit with the commissioner.", True),
+            ("res-q1", "Can NHS Continuing Healthcare funding be used for a holiday?", "Eligible care hours away from home can be covered if your CHC team agrees in writing; the cottage rent rarely is. Ask which invoice lines they will pay before anyone pays a deposit. Restwell can supply access evidence; funding decisions sit with the commissioner.", True),
             ("res-q2", "How does NHS CHC holiday funding work?", "CHC can cover assessed health and care needs during a short break. Accommodation is usually personal funds, direct payments or LA rules unless a panel explicitly agrees. Contact your CHC coordinator early with Restwell’s specs and care-provider details."),
             ("res-q3", "Can I get an NHS-funded holiday in the UK?", "There is no general “NHS pays for holidays” scheme. Assessed care (and some respite frameworks) can continue during a break. Treat lodging, travel and care as separate lines and get each clarified in writing."),
             ("res-q4", "How do I use NHS CHC funding for a short break?", "Speak to your CHC coordinator; ask which care tasks they will fund away from the usual address; share risk assessments and provider details; book the property separately with an access pack ready; align invoice contacts so care and lodging don’t get mixed."),
-            ("res-q5", "How does Continuing Healthcare relate to a respite break?", "CHC-related respite continues eligible care and carer relief under health funding rules. Restwell is the place — a private adapted bungalow. “Respite” and “holiday rent” are not the same budget line. Clarify locally before booking."),
+            ("res-q5", "How does Continuing Healthcare relate to a respite break?", "CHC-related respite continues eligible care and carer relief under health funding rules. Restwell is the place: a private adapted bungalow. “Respite” and “holiday rent” are not the same budget line. Clarify locally before booking."),
             ("res-q6", "Can I use direct payments for a short break?", "Yes when it fits your support plan. Ask your local authority what the payment can buy, what evidence they need, and how to record care vs lodging. Rules vary by council."),
             ("res-q7", "How can direct payments help fund a holiday?", "They can support care during a holiday-related package; the cottage rent is not always allowed. Get written clarity before booking. Restwell keeps the same bungalow tariff on every funding route and can invoice as agreed."),
-            ("res-q8", "Can a personal budget support a holiday or short break?", "A Care Act personal budget (or personal health budget) can support assessed care needs during a break. Separate care costs from general holiday spending — see <a class=\"text-link\" href=\"care-concept.html\">how care is arranged and costed</a>. Discuss wording with your social worker; we can supply property and access evidence."),
+            ("res-q8", "Can a personal budget support a holiday or short break?", "A Care Act personal budget (or personal health budget) can support assessed care needs during a break. Separate care costs from general holiday spending, see <a class=\"text-link\" href=\"care-concept.html\">how care is arranged and costed</a>. Discuss wording with your social worker; we can supply property and access evidence."),
             ("res-q9", "How do I fund an accessible holiday with a personal budget?", "Talk to your social worker or care coordinator; explain outcomes the break supports; bring Restwell’s access specs and draft care hours; ask what the budget can and cannot pay; keep invoices clean."),
             ("res-q10", "Can I use my direct payments to pay for a holiday in England?", "Yes if the break meets assessed outcomes and your local authority’s direct payment rules allow it. Check your individual care plan; do not assume rent is covered. Ask in writing before you pay a deposit."),
             ("res-q11", "What if my funding application is refused?", "For a local authority decision, appeal to Kent County Council, then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way."),
@@ -2363,19 +2503,31 @@ def body_resources():
 
 def body_faq():
     items = [
-        ("faq-q1", "Is Restwell open for bookings?", "Yes — we take bookings for 2026 and 2027. Send dates and access needs via the enquire form.", True, "booking"),
+        ("faq-q1", "Is Restwell open for bookings?", "Yes, we take bookings for 2026 and 2027. Send dates and access needs via the enquire form.", True, "booking"),
         ("faq-q2", "Do you allow assistance dogs?", "Yes. The bungalow is dog-friendly and welcomes assistance dogs. Please tell us in advance so we can complete a risk assessment. Water bowls and a toileting area are provided.", False, "property"),
-        ("faq-q3", "Is parking available at the bungalow?", "Yes — driveway parking for two cars on a level surface. Adapted vehicles with ramps or side lifts usually fit; tell us your vehicle length when you enquire. Overflow often works on the street outside; check signs on arrival.", False, "property"),
+        ("faq-q3", "Is parking available at the bungalow?", "Yes, driveway parking for two cars on a level surface. Adapted vehicles with ramps or side lifts usually fit; tell us your vehicle length when you enquire. Overflow often works on the street outside; check signs on arrival.", False, "property"),
         ("faq-q4", "Where are hoist, wet-room and door-width details?", "On the <a class=\"text-link\" href=\"accessibility-concept.html\">Accessibility</a> page. We keep those answers there so they aren’t copied across the site.", False, "property"),
-        ("faq-q5", "How do I arrange optional CQC care?", "See <a class=\"text-link\" href=\"care-concept.html\">Care during your stay</a> for arranging Continuity of Care Services. Care is never bundled into the bungalow rate — guide figures live on <a class=\"text-link\" href=\"pricing-concept.html#care-rates\">Pricing</a>.", False, "care"),
-        ("faq-q6", "Is there a step-free train to Whitstable?", "Whitstable station has step-free access to both platforms via separate street-level entrances. It’s a short taxi ride from the bungalow — there’s a taxi office by the station exit. Ask us about accessible taxi notice periods.", False, "area"),
-        ("faq-q7", "Is there a Changing Places or RADAR toilet nearby?", "Yes — at Whitstable Harbour on Harbour Road. A RADAR key is required. More local routes are on the <a class=\"text-link\" href=\"whitstable-guide-concept.html#faq\">Whitstable guide</a>.", False, "area"),
-        ("faq-q8", "Can funding change the bungalow price?", "No. Same published rates for every guest — only who we invoice changes. Pathway questions (CHC, direct payments, personal budgets) are answered on <a class=\"text-link\" href=\"resources-concept.html#faq\">Funding &amp; Support</a>.", False, "funding"),
+        ("faq-q5", "How do I arrange optional CQC care?", "See <a class=\"text-link\" href=\"care-concept.html\">Care during your stay</a> for arranging Continuity of Care Services. Care is never bundled into the bungalow rate; guide figures live on <a class=\"text-link\" href=\"pricing-concept.html#care-rates\">Pricing</a>.", False, "care"),
+        ("faq-q6", "Is there a step-free train to Whitstable?", "Whitstable station has step-free access to both platforms via separate street-level entrances. It’s a short taxi ride from the bungalow; there’s a taxi office by the station exit. Ask us about accessible taxi notice periods.", False, "area"),
+        ("faq-q7", "Is there a Changing Places or RADAR toilet nearby?", "Yes, at Whitstable Harbour on Harbour Road. A RADAR key is required. More local routes are on the <a class=\"text-link\" href=\"whitstable-guide-concept.html#faq\">Whitstable guide</a>.", False, "area"),
+        ("faq-q8", "Can funding change the bungalow price?", "No. Same published rates for every guest; only who we invoice changes. Pathway questions (CHC, direct payments, personal budgets) are answered on <a class=\"text-link\" href=\"resources-concept.html#faq\">Funding &amp; Support</a>.", False, "funding"),
         ("faq-q9", "How does bungalow payment work?", "50% deposit to secure dates; balance due one week before arrival. BACS or card. See <a class=\"text-link\" href=\"pricing-concept.html#payment\">Pricing</a> for the full payment steps.", False, "funding"),
-        ("faq-q10", "Cottage stay or care-home respite — which is right?", "That suitability comparison lives on <a class=\"text-link\" href=\"who-its-for-concept.html#faq\">Who It’s For</a>, with complex-care planning checklists there too.", False, "care"),
+        ("faq-q10", "Cottage stay or care-home respite: which is right?", "That suitability comparison lives on <a class=\"text-link\" href=\"who-its-for-concept.html#faq\">Who It’s For</a>, with complex-care planning checklists there too.", False, "care"),
+        ("faq-q11", "What time is check-in and check-out?", "Check-in is from 3pm via the key-safe. Check-out time is on your booking confirmation, with flexible timing for access or care reasons often possible on request.", False, "booking"),
+        ("faq-q12", "What’s your cancellation policy?", "More than 30 days before arrival your deposit is refundable minus an admin fee; 14–30 days sees partial forfeiture; inside 14 days the balance is typically due. See <a class=\"text-link\" href=\"terms-concept.html\">Terms &amp; Conditions</a> for the full policy.", False, "booking"),
+        ("faq-q13", "How many guests can stay at Restwell?", "Maximum occupancy is five guests across the two bedrooms and the conservatory sofa bed, unless agreed with us in writing. See <a class=\"text-link\" href=\"property-concept.html\">The Property</a> for the room-by-room layout.", False, "booking"),
+        ("faq-q14", "How do I check availability and book?", "Send your dates and access needs through the enquire form or by phone. There’s no online checkout; a 50% deposit confirms your dates once we’ve checked the house fits. See <a class=\"text-link\" href=\"how-it-works-concept.html\">How It Works</a>.", False, "booking"),
+        ("faq-q15", "Is the whole bungalow step-free and single storey?", "Yes. Restwell is single storey throughout with step-free routes between rooms. See <a class=\"text-link\" href=\"accessibility-concept.html\">Accessibility</a> for door widths and room-by-room notes.", False, "property"),
+        ("faq-q16", "Is there Wi-Fi at the bungalow?", "Yes. The network name and password are shared on your booking confirmation and in the guest guide.", False, "property"),
+        ("faq-q17", "Do I have to book care, or can I just book the bungalow?", "You can book the bungalow alone as a self-catering stay; most guests need no additional support. Continuity of Care Services is optional. See <a class=\"text-link\" href=\"care-concept.html\">Care during your stay</a>.", False, "care"),
+        ("faq-q18", "Can I bring my own carer instead of using Continuity?", "Yes. The layout supports familiar routines with separate sleeping space, and bringing your own carer or PA costs nothing extra. See <a class=\"text-link\" href=\"care-concept.html\">Care during your stay</a>.", False, "care"),
+        ("faq-q19", "Is Whitstable beach accessible by wheelchair?", "The shingle beach itself isn’t wheelchair-friendly, but the paved Tankerton promenade nearby gives a long, level route for sea air. See the <a class=\"text-link\" href=\"whitstable-guide-concept.html\">Whitstable guide</a>.", False, "area"),
+        ("faq-q20", "Where can I park in Whitstable town, not just at the house?", "Free Blue Badge bays run along Marine Parade, and Tankerton Road Car Park gives three hours free with a physical badge. See the <a class=\"text-link\" href=\"whitstable-guide-concept.html\">Whitstable guide</a>.", False, "area"),
+        ("faq-q21", "Can I use NHS Continuing Healthcare funding for a stay?", "Eligible care hours away from home can sometimes be covered if your CHC team agrees in writing, though the cottage rent rarely is. See <a class=\"text-link\" href=\"resources-concept.html\">Funding &amp; Support</a>.", False, "funding"),
+        ("faq-q22", "Can direct payments or a personal budget cover the cost?", "They can support assessed care needs during a break, but accommodation and care are usually separate budget lines. See <a class=\"text-link\" href=\"resources-concept.html\">Funding &amp; Support</a>.", False, "funding"),
     ]
     list_html = faq_list_markup(items, measure=True)
-    return f'''{hero("FAQ", "Restwell accessible holiday FAQs", "Short answers on the bungalow, access, bookings, care, funding and the local area — with links to the full detail where it matters.", [("homepage-concept.html", "Home"), (None, "FAQ")])}
+    return f'''{hero("FAQ", "Restwell accessible holiday FAQs", "Short answers on the bungalow, access, bookings, care, funding and the local area, with links to the full detail where it matters.", [("homepage-concept.html", "Home"), (None, "FAQ")])}
     <section class="faq section-y band-white">
       <div class="container">
         <ul class="pill-tabs" data-faq-filters role="tablist" aria-label="FAQ categories">
@@ -2391,7 +2543,7 @@ def body_faq():
     <section class="section-y band-subtle">
       <div class="container container--md">
         <header class="section-head">
-          <p class="eyebrow">Not on the list?</p>
+          <p class="eyebrow">Can’t find your answer?</p>
           <h2>Ask us directly</h2>
         </header>
         <form class="form-stack" action="#" method="get">
@@ -2402,7 +2554,7 @@ def body_faq():
         </form>
       </div>
     </section>
-{mid_cta("Send dates and access needs", "We reply within 48 hours on most enquiries — phone 01622 809881 if you need to talk it through.", secondary=("enquire-concept.html", "Go to enquire form"))}
+{mid_cta("Send dates and access needs", "We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.", secondary=("enquire-concept.html", "Go to enquire form"))}
 '''
 
 
@@ -2478,7 +2630,7 @@ def body_enquire():
             <div class="form-step" data-step-panel="3" hidden>
               <fieldset class="form-stack">
                 <legend class="form-legend">Your needs</legend>
-                <div class="field"><label for="enq-care">Care requirements</label><textarea id="enq-care" name="care" placeholder="Optional — e.g. morning personal care, overnight support"></textarea></div>
+                <div class="field"><label for="enq-care">Care requirements</label><textarea id="enq-care" name="care" placeholder="Optional, e.g. morning personal care, overnight support"></textarea></div>
                 <div class="field"><label for="enq-access">Accessibility needs</label><textarea id="enq-access" name="access" placeholder="Equipment, doorway clearances, vehicle access…"></textarea></div>
                 <div class="field"><label for="enq-msg">Message *</label><textarea id="enq-msg" name="message" required aria-describedby="enq-msg-error"></textarea><p class="field-error" id="enq-msg-error" role="alert" hidden>Add a short message so we know what you need.</p></div>
                 <div class="field"><label><input type="checkbox" name="consent" required aria-describedby="enq-consent-error" /> <span>I agree to Restwell contacting me about this enquiry and to my information being handled as set out in the <a class="text-link" href="privacy-concept.html">Privacy Policy</a> *</span></label><p class="field-error" id="enq-consent-error" role="alert" hidden>Check this box so we can contact you about your enquiry.</p></div>
@@ -2488,13 +2640,13 @@ def body_enquire():
                 <button class="btn btn-outline-teal" type="button" data-step-prev>Back</button>
                 <button class="btn btn-gold" type="submit">Send enquiry</button>
               </div>
-              <p class="step-hint">Mockup only — shows a preview confirmation below, nothing is sent.</p>
+              <p class="step-hint">Mockup only: shows a preview confirmation below, nothing is sent.</p>
             </div>
           </form>
           <div class="step-success" data-step-success hidden tabindex="-1">
             {icon_circle("check", size="3.5rem")}
             <h2>We&rsquo;ve got your enquiry</h2>
-            <p class="lede">We reply within 48 hours on most enquiries — call <a href="tel:01622809881">01622 809881</a> if you&rsquo;d rather talk it through.</p>
+            <p class="lede">We reply within 48 hours on most enquiries; call <a href="tel:01622809881">01622 809881</a> if you&rsquo;d rather talk it through.</p>
             <button class="btn btn-outline-teal" type="button" data-step-restart>Send another enquiry</button>
           </div>
         </div>
@@ -2532,7 +2684,7 @@ def body_guest():
         <header class="section-head">
           <p class="eyebrow">Step 2</p>
           <h2>Enter your 6-digit code</h2>
-          <p class="lede">Mockup state — paste any digits to preview the authenticated guide below.</p>
+          <p class="lede">Mockup state: paste any digits to preview the authenticated guide below.</p>
         </header>
         <form class="form-stack" action="#guide" method="get">
           <div class="field">
@@ -2560,15 +2712,15 @@ def body_guest():
         <ul class="card-grid card-grid--2" role="list">
           <li><article class="info-card"><h3>Welcome</h3><p>The whole property is yours: your party only. Restwell is a self-catering bungalow on a quiet street, about ten minutes from the seafront.</p></article></li>
           <li><article class="info-card"><h3>Arrival details</h3><p><strong>Address:</strong> shared on your booking confirmation<br /><strong>what3words:</strong> shared on confirmation<br /><strong>Check-in:</strong> from 15:00 · <strong>Check-out:</strong> by 11:00</p></article></li>
-          <li><article class="info-card"><h3>Getting in</h3><p>Access via key safe — code shared on your confirmation before arrival. Level driveway to the front door. Portable front-door ramps available if needed.</p></article></li>
+          <li><article class="info-card"><h3>Getting in</h3><p>Access via key safe: code shared on your confirmation before arrival. Level driveway to the front door. Portable front-door ramps available if needed.</p></article></li>
           <li><article class="info-card"><h3>Wi‑Fi</h3><p><strong>Network:</strong> Russell Drive<br /><strong>Password:</strong> shared on confirmation / welcome pack<br />If it still fails after two careful tries, call 01622 809881.</p></article></li>
-          <li><article class="info-card"><h3>Parking</h3><p>Two off-road spaces on the driveway. Overflow on the street outside — no residents’ permit scheme; still check signs on arrival.</p></article></li>
+          <li><article class="info-card"><h3>Parking</h3><p>Two off-road spaces on the driveway. Overflow on the street outside, no residents’ permit scheme; still check signs on arrival.</p></article></li>
           <li><article class="info-card"><h3>House rules</h3><p>Dogs welcome with prior notice. No smoking or vaping inside. Keep noise low 10pm–8am. Maximum five guests. Keep walkways clear. Report damage straight away.</p></article></li>
-          <li><article class="info-card"><h3>Bathroom note</h3><p>Please only flush toilet paper. Wipes, continence products and nappies go in the bathroom bin — plumbing blocks easily.</p></article></li>
+          <li><article class="info-card"><h3>Bathroom note</h3><p>Please only flush toilet paper. Wipes, continence products and nappies go in the bathroom bin; plumbing blocks easily.</p></article></li>
           <li><article class="info-card"><h3>Before you leave</h3><p>No deep clean needed. Switch off lights/heating/appliances, close windows, leave used towels in the bathroom, pop bins out if it’s a collection day, lock up and return the key to the safe.</p></article></li>
           <li><article class="info-card"><h3>Local area</h3><p>Town centre ~15 minutes on foot. Tankerton promenade ~15 minutes for level coast. Tesco Extra ~7 minutes’ drive. Ask us for equipment hire contacts.</p></article></li>
           <li><article class="info-card"><h3>Emergencies</h3><p>999 first in an emergency, then tell us. Non-emergency medical: 111. Closest A&amp;E options include QEQM Margate and Kent &amp; Canterbury. Host line: 01622 809881 · hello@restwellretreats.co.uk</p></article></li>
-          <li><article class="info-card"><h3>Your host</h3><p>Victoria Walker — Restwell Retreats. We’re here if heating, keys, Wi‑Fi or equipment need a hand during your stay.</p></article></li>
+          <li><article class="info-card"><h3>Your host</h3><p>Victoria Walker, Restwell Retreats. We’re here if heating, keys, Wi‑Fi or equipment need a hand during your stay.</p></article></li>
           <li><article class="info-card info-card--sand"><h3>Print / confirm</h3><p>Print this guide for the fridge if you like.</p>
             <div class="field"><label><input type="checkbox" /> I’ve read the guide</label></div>
           </article></li>
@@ -2594,7 +2746,7 @@ def body_blog():
           <div class="blog-featured__overlay">
             <p class="blog-meta blog-meta--overlay">8 min read</p>
             <h2><a href="blog-single-concept.html">Accessible beaches and promenades near Whitstable</a></h2>
-            <p class="blog-featured__excerpt">Where the paved coast works for chairs — and where shingle means choosing the promenade instead.</p>
+            <p class="blog-featured__excerpt">Where the paved coast works for chairs, and where shingle means choosing the promenade instead.</p>
           </div>
         </article>
         <ul class="card-grid card-grid--2" role="list" data-reveal>
@@ -2628,13 +2780,13 @@ def body_blog_single():
       <div class="container">
         <p class="blog-meta"><span class="tag">Area guide</span><span>8 min read</span><span>Restwell team</span></p>
         <div class="prose prose--wide">
-          <p>If you use a wheelchair or mobility scooter, aim for Whitstable’s paved promenade — not the shingle. Tankerton’s seafront path is wide, level and long enough for a proper coastal outing from Restwell.</p>
+          <p>If you use a wheelchair or mobility scooter, aim for Whitstable’s paved promenade, not the shingle. Tankerton’s seafront path is wide, level and long enough for a proper coastal outing from Restwell.</p>
           <h2>Start at Tankerton</h2>
           <p>From Restwell, Tankerton promenade is about a 15-minute walk. The path is wide, level and surfaced for several miles. The grassy slopes above are steep; stay on the paved seafront route. Free parking is often available along Marine Parade at the top.</p>
           <h2>Harbour and town</h2>
           <p>Harbour Street can be narrow, and some shop entrances are stepped. The harbour has a Changing Places toilet (RADAR key) and uneven surfaces in places. Take it steady, and call venues ahead if you need a table with step-free access.</p>
           <h2>About the beach</h2>
-          <p>The beach itself is shingle. Chairs don’t roll well on it. Guests who want sea air without fighting the stones use the promenade above — the same route we map on the Whitstable guide.</p>
+          <p>The beach itself is shingle. Chairs don’t roll well on it. Guests who want sea air without fighting the stones use the promenade above, the same route we map on the Whitstable guide.</p>
           <p class="link-stack">
             <a class="text-link" href="whitstable-guide-concept.html">Full Whitstable guide</a>
             <a class="text-link" href="accessibility-concept.html">Property accessibility</a>
@@ -2750,7 +2902,7 @@ def body_404():
 
 
 def body_page():
-    return f'''{hero("Page", "About Restwell Retreats", "A private accessible bungalow in Whitstable, Kent — step-free, with published access details and optional Continuity care.", [("homepage-concept.html", "Home"), (None, "Sample page")])}
+    return f'''{hero("Page", "About Restwell Retreats", "A private accessible bungalow in Whitstable, Kent: step-free, with published access details and optional Continuity care.", [("homepage-concept.html", "Home"), (None, "Sample page")])}
     <section class="section-y band-white">
       <div class="container prose prose--wide">
         <p>Restwell is a single-storey holiday bungalow on Russell Drive. Guests who need a ceiling hoist, level-access wet room and driveway parking can check those details before they enquire.</p>
@@ -2813,8 +2965,8 @@ def main():
         "property",
         body_property(),
         after=gallery_lightbox(),
-        document_title="Inside the Accessible Bungalow in Whitstable | Restwell Retreats",
-        description="A room-by-room look at Restwell: bedrooms, wet room, living spaces, kitchen, garden and access equipment already in place.",
+        document_title="Accessible Bungalow Whitstable | Restwell Retreats",
+        description="Accessible bungalow Whitstable: single-storey, step-free layout with room-by-room specs, inclusions and optional care for your party.",
     )
     write_page(
         "how-it-works-concept.html",
@@ -2830,8 +2982,9 @@ def main():
         "accessibility",
         body_accessibility(),
         after=gallery_lightbox(),
-        document_title="Wheelchair Access Details for Restwell | Restwell Retreats",
-        description="Wheelchair access details for the Restwell bungalow: door widths, step-free routes, wet-room notes, hoist details and parking — so you can check fit before you enquire.",
+        document_title="Wheelchair Accessible Holiday Cottage | Restwell Retreats",
+        description="Wheelchair accessible holiday cottage access statement: ceiling hoist, level-access wet room, door widths 965mm and 926mm, plus parking.",
+        extra_head=accessibility_schema(),
     )
     write_page(
         "who-its-for-concept.html",

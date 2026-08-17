@@ -280,6 +280,10 @@
     --hero-min-h: min(90svh, 50rem);
     /* Keep in sync with .site-header: pad-block + 2.75rem nav row (was 4.5 — clipped subnav) */
     --header-offset: 4.75rem;
+    /* Let the lede/tldr measure breathe with the viewport instead of
+       staying pinned at the mobile 34rem cap — it was reading noticeably
+       narrower than the hero content column it sits in. */
+    --hero-measure: clamp(30rem, 58vw, 38rem);
   }
 }
 
@@ -294,6 +298,7 @@
     --hero-pad-bottom: var(--rhythm-hero-pad-bottom-3);
     --hero-min-h: min(92svh, 54rem);
     --hero-interior-min-h: min(42svh, 26rem);
+    --hero-measure: clamp(34rem, 50vw, 46rem);
   }
 }
 
@@ -1187,7 +1192,7 @@ body.nav-open { overflow: hidden; }
   flex-direction: column;
   min-width: 0;
 }
-.faq-list--split > .faq-list__col:first-child {
+.faq-list--split > .faq-list__col:first-child:has(.faq-item:not([hidden])) {
   border-top: 1px solid var(--faq-rule, color-mix(in srgb, var(--deep-teal) 12%, transparent));
 }
 @media (min-width: 900px) {
@@ -1203,7 +1208,7 @@ body.nav-open { overflow: hidden; }
     gap: 0 var(--space-10);
     align-items: start;
   }
-  .faq-list--split > .faq-list__col {
+  .faq-list--split > .faq-list__col:has(.faq-item:not([hidden])) {
     border-top: 1px solid var(--faq-rule, color-mix(in srgb, var(--deep-teal) 12%, transparent));
   }
 }
@@ -2126,6 +2131,105 @@ body.page--interior .site-header::before { opacity: 0; }
     font-size: var(--text-sm);
     line-height: 1.4;
   }
+}
+
+/*
+ * Wheelchair-width fit-check — interactive gauge comparing a chair width
+ * to the two published door measurements. Scale is 0-1000mm across the
+ * full track width; the marker line sits at the door's clear-opening
+ * position, and the chair bar's colour signals fit/tight/no-fit.
+ */
+.fit-check {
+  max-width: 42rem;
+}
+.fit-check__control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: var(--space-4);
+  row-gap: var(--space-2);
+  margin-top: var(--space-6);
+}
+.fit-check__control label {
+  grid-column: 1;
+  grid-row: 1;
+  font-weight: 600;
+  color: var(--deep-teal);
+}
+.fit-check__control input[type="range"] {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 100%;
+  accent-color: var(--deep-teal);
+  min-height: 2.75rem;
+}
+.fit-check__control output {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--deep-teal);
+  min-width: 5ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.fit-check__gauges {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.fit-gauge__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.fit-gauge__label {
+  font-weight: 600;
+  color: var(--deep-teal);
+}
+.fit-gauge__opening-label {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+}
+.fit-gauge__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.fit-gauge__jamb {
+  stroke: var(--muted-grey);
+  stroke-width: 2;
+}
+.fit-gauge__icon {
+  color: var(--deep-teal);
+  transition: color 0.2s ease;
+}
+.fit-gauge__measure {
+  stroke: var(--deep-teal);
+  stroke-width: 1.5;
+  transition: stroke 0.2s ease;
+}
+.fit-gauge--tight .fit-gauge__icon { color: var(--warm-gold-text); }
+.fit-gauge--tight .fit-gauge__measure { stroke: var(--warm-gold-text); }
+.fit-gauge--no .fit-gauge__icon { color: var(--error-red); }
+.fit-gauge--no .fit-gauge__measure { stroke: var(--error-red); }
+.fit-gauge__result {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+}
+.fit-gauge--tight .fit-gauge__result { color: var(--warm-gold-text); font-weight: 600; }
+.fit-gauge--no .fit-gauge__result { color: var(--error-red); font-weight: 600; }
+.fit-check__note {
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
 }
 
 /*
@@ -3239,6 +3343,7 @@ body:has(.subnav) {
 @media (min-width: 640px) {
   .pill-tabs {
     flex-wrap: wrap;
+    justify-content: center;
     overflow-x: visible;
     mask-image: none;
     -webkit-mask-image: none;
