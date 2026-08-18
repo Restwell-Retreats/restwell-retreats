@@ -5033,6 +5033,11 @@ body.lightbox-open {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+@media (min-width: 1024px) {
+  .testimonials__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 .testimonials__grid > li {
   display: flex;
   min-height: 0;
