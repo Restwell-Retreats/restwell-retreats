@@ -508,6 +508,55 @@
     }
   }
 
+  /* ---------- OTP code inputs (guest guide) ---------- */
+  var otpGroups = document.querySelectorAll('[data-otp-group]');
+  if (otpGroups.length) {
+    otpGroups.forEach(function (group) {
+      var otpInputs = Array.prototype.slice.call(group.querySelectorAll('input'));
+      if (!otpInputs.length) return;
+
+      otpInputs.forEach(function (input, index) {
+        input.addEventListener('input', function () {
+          input.value = input.value.replace(/[^0-9]/g, '').slice(0, 1);
+          if (!input.value) return;
+          var next = otpInputs[index + 1];
+          if (next) {
+            next.focus();
+          } else {
+            var form = group.closest('form');
+            if (form && otpInputs.every(function (i) { return i.value; })) {
+              form.requestSubmit ? form.requestSubmit() : form.submit();
+            }
+          }
+        });
+
+        input.addEventListener('keydown', function (event) {
+          if (event.key === 'Backspace' && !input.value && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+
+        input.addEventListener('paste', function (event) {
+          var pasted = (event.clipboardData || window.clipboardData).getData('text');
+          var digits = (pasted || '').replace(/[^0-9]/g, '').split('');
+          if (!digits.length) return;
+          event.preventDefault();
+          otpInputs.forEach(function (i) { i.value = ''; });
+          digits.slice(0, otpInputs.length).forEach(function (digit, i) {
+            otpInputs[i].value = digit;
+          });
+          var lastFilled = Math.min(digits.length, otpInputs.length) - 1;
+          if (lastFilled === otpInputs.length - 1) {
+            var form = group.closest('form');
+            if (form) form.requestSubmit ? form.requestSubmit() : form.submit();
+          } else if (lastFilled >= 0) {
+            otpInputs[lastFilled + 1].focus();
+          }
+        });
+      });
+    });
+  }
+
   /* ---------- Multi-step enquiry form ---------- */
   var multistep = document.querySelector('[data-multistep]');
   if (multistep) {

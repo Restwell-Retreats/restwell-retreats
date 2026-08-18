@@ -1261,6 +1261,10 @@ body.nav-open { overflow: hidden; }
 .faq-list__col > .faq-item:first-child {
   border-top: 0;
 }
+.faq-item__heading {
+  margin: 0;
+  font: inherit;
+}
 .faq-item__trigger {
   width: 100%;
   appearance: none;
@@ -1885,6 +1889,9 @@ body.page--interior .site-header::before { opacity: 0; }
   width: 48%;
   height: 48%;
 }
+.icon-circle--lg {
+  --icon-circle-size: 3.5rem;
+}
 .info-card__head {
   display: flex;
   align-items: center;
@@ -2238,7 +2245,8 @@ body.page--interior .site-header::before { opacity: 0; }
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: 1;
-  min-height: 2.5rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
   padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   cursor: pointer;
@@ -2626,7 +2634,7 @@ body:has(.subnav) {
 .subnav a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.25rem;
+  min-height: 2.75rem;
   padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   text-decoration: none;
@@ -2635,11 +2643,6 @@ body:has(.subnav) {
   color: var(--muted-grey);
   white-space: nowrap;
   scroll-snap-align: start;
-}
-@media (min-width: 768px) {
-  .subnav a {
-    min-height: 2.5rem;
-  }
 }
 .subnav a:hover,
 .subnav a:focus-visible,
@@ -3218,10 +3221,9 @@ body:has(.subnav) {
 }
 .peak-dates__list li {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: var(--peak-item-gap);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
   padding-block: var(--peak-item-pad-y);
   border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
   color: var(--deep-teal);
@@ -3232,11 +3234,7 @@ body:has(.subnav) {
 }
 .peak-dates__list li:last-child { border-bottom: 0; }
 .peak-dates__label {
-  flex: 1 1 auto;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: var(--peak-label-size);
   font-weight: var(--type-eyebrow-weight);
   letter-spacing: 0.04em;
@@ -3244,9 +3242,7 @@ body:has(.subnav) {
   color: color-mix(in srgb, var(--muted-grey) 88%, transparent);
 }
 .peak-dates__range {
-  flex: 0 1 auto;
   min-width: 0;
-  text-align: right;
   color: var(--deep-teal);
   /* Allow wrap so open peak can't force .rates-block wider than max-width */
   white-space: normal;
@@ -3257,13 +3253,7 @@ body:has(.subnav) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: var(--space-6);
   }
-  .peak-dates__list li {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.15rem;
-  }
   .peak-dates__range {
-    text-align: left;
     white-space: nowrap;
   }
   .peak-dates__list li:nth-last-child(2):nth-child(odd) {
@@ -3850,6 +3840,8 @@ fieldset.form-stack {
   display: flex;
   align-items: flex-start;
   gap: var(--space-2);
+  min-height: 2.75rem;
+  padding-block: 0.35rem;
   font-weight: 400;
   cursor: pointer;
 }
