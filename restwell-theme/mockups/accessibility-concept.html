@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="shared.css?v=1786958734" />
+  <link rel="stylesheet" href="shared.css?v=1786991080" />
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -135,56 +135,62 @@
             <h2 id="fit-check-h">Will your wheelchair fit through our doors?</h2>
             <p class="lede">Drag to your chair’s overall width (check the spec sheet, or measure the widest point including hand rims) and see the clearance at each doorway.</p>
           </header>
-          <div class="fit-check__control">
-            <label for="fit-check-input">Wheelchair width</label>
-            <input type="range" id="fit-check-input" min="500" max="1050" step="10" value="700" data-fit-input aria-describedby="fit-check-value" />
-            <output id="fit-check-value" for="fit-check-input" data-fit-value>700mm</output>
-          </div>
-          <div class="fit-check__gauges">
-                        <div class="fit-gauge" data-fit-gauge data-door-width="965" data-center-x="60.0" data-scale="0.08" data-floor-y="112" data-line-y="120">
-              <div class="fit-gauge__head">
-                <span class="fit-gauge__label">Front door</span>
+          <div class="fit-check__panel">
+            <div class="fit-check__control">
+              <div class="fit-check__control-row">
+                <label for="fit-check-input">Wheelchair width</label>
+                <div class="fit-check__control-right">
+                  <div class="fit-check__unit-toggle" role="group" aria-label="Units">
+                    <button type="button" data-fit-unit="mm" aria-pressed="true">mm</button>
+                    <button type="button" data-fit-unit="in" aria-pressed="false">in</button>
+                  </div>
+                  <output id="fit-check-value" for="fit-check-input" data-fit-value>700mm</output>
+                </div>
               </div>
-              <p class="fit-gauge__opening-label">Door opening: 965mm</p>
-              <svg class="fit-gauge__svg" viewBox="0 0 120 132" role="img" aria-hidden="true">
-                <line class="fit-gauge__jamb" x1="21.4" y1="22" x2="21.4" y2="112"></line>
-                <line class="fit-gauge__jamb" x1="98.6" y1="22" x2="98.6" y2="112"></line>
-                <g class="fit-gauge__icon" data-fit-icon transform="translate(32.0 56.0) scale(2.333)" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
-                  <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                  <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
-                  <path d="M3 3h1a2 2 0 0 1 2 2v6" />
-                  <path d="M6 8h11" />
-                  <path d="M15 8v6" />
-                </g>
-                <line class="fit-gauge__measure" data-fit-measure x1="32.0" y1="120" x2="88.0" y2="120"></line>
-              </svg>
-              <p class="fit-gauge__result" data-fit-result aria-live="polite"></p>
+              <input type="range" id="fit-check-input" min="500" max="1050" step="10" value="700" data-fit-input aria-describedby="fit-check-value fit-check-summary" />
+              <p class="fit-check__summary" id="fit-check-summary" data-fit-summary aria-live="polite"></p>
             </div>
-
-                        <div class="fit-gauge" data-fit-gauge data-door-width="926" data-center-x="60.0" data-scale="0.08" data-floor-y="112" data-line-y="120">
-              <div class="fit-gauge__head">
-                <span class="fit-gauge__label">Internal doors</span>
+            <div class="fit-check__bars">
+              <div class="fit-bar" data-fit-gauge data-door-width="965" data-fit-name="the front door">
+                <div class="fit-bar__head">
+                  <svg class="fit-bar__icon" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+                    <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
+                    <path d="M3 3h1a2 2 0 0 1 2 2v6" />
+                    <path d="M6 8h11" />
+                    <path d="M15 8v6" />
+                  </svg>
+                  <span class="fit-bar__label">Front door</span>
+                </div>
+                <div class="fit-bar__track" data-fit-track>
+                  <span class="fit-bar__door-mark" aria-hidden="true"><span class="fit-bar__door-mark-label" data-fit-spec></span></span>
+                  <span class="fit-bar__fill" data-fit-fill></span>
+                </div>
+                <p class="fit-bar__result" data-fit-result></p>
               </div>
-              <p class="fit-gauge__opening-label">Door opening: 926mm</p>
-              <svg class="fit-gauge__svg" viewBox="0 0 120 132" role="img" aria-hidden="true">
-                <line class="fit-gauge__jamb" x1="23.0" y1="22" x2="23.0" y2="112"></line>
-                <line class="fit-gauge__jamb" x1="97.0" y1="22" x2="97.0" y2="112"></line>
-                <g class="fit-gauge__icon" data-fit-icon transform="translate(32.0 56.0) scale(2.333)" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
-                  <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                  <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
-                  <path d="M3 3h1a2 2 0 0 1 2 2v6" />
-                  <path d="M6 8h11" />
-                  <path d="M15 8v6" />
-                </g>
-                <line class="fit-gauge__measure" data-fit-measure x1="32.0" y1="120" x2="88.0" y2="120"></line>
-              </svg>
-              <p class="fit-gauge__result" data-fit-result aria-live="polite"></p>
-            </div>
 
+              <div class="fit-bar" data-fit-gauge data-door-width="926" data-fit-name="the internal doors">
+                <div class="fit-bar__head">
+                  <svg class="fit-bar__icon" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+                    <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
+                    <path d="M3 3h1a2 2 0 0 1 2 2v6" />
+                    <path d="M6 8h11" />
+                    <path d="M15 8v6" />
+                  </svg>
+                  <span class="fit-bar__label">Internal doors</span>
+                </div>
+                <div class="fit-bar__track" data-fit-track>
+                  <span class="fit-bar__door-mark" aria-hidden="true"><span class="fit-bar__door-mark-label" data-fit-spec></span></span>
+                  <span class="fit-bar__fill" data-fit-fill></span>
+                </div>
+                <p class="fit-bar__result" data-fit-result></p>
+              </div>
+            </div>
+            <p class="fit-check__note">Rough guide only. We recommend at least 50mm clearance where possible, and please confirm your exact chair width with us before booking.</p>
           </div>
-          <p class="fit-check__note">Rough guide only: always confirm your chair’s exact width with us before booking, especially for powered or bariatric chairs. Once through, allow roughly 300mm beyond the doorway to complete the turn.</p>
         </div>
       </div>
     </section>
@@ -275,15 +281,6 @@
             </div>
           </dl>
         </div>
-      </div>
-    </section>
-    <section class="section-y band-subtle" id="statement">
-      <div class="container">
-        <header class="section-head section-head--tight">
-          <p class="eyebrow">Document</p>
-          <h2>Access statement</h2>
-          <p class="lede">Door widths, wet-room and hoist notes, parking and the on-site equipment list are published on this page so you can share them with an OT, carer or anyone helping you plan. A printable PDF will be linked here when it is ready.</p>
-        </header>
       </div>
     </section>
     <section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
@@ -460,7 +457,7 @@
     </div>
   </div>
 
-  <script src="shared.js?v=1786958695"></script>
+  <script src="shared.js?v=1786991080"></script>
   
 </body>
 </html>

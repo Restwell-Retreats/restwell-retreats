@@ -158,46 +158,94 @@
   if (fitCheck) {
     var fitInput = fitCheck.querySelector('[data-fit-input]');
     var fitValueOut = fitCheck.querySelector('[data-fit-value]');
+    var fitSummary = fitCheck.querySelector('[data-fit-summary]');
     var fitGauges = fitCheck.querySelectorAll('[data-fit-gauge]');
+    var fitUnitBtns = fitCheck.querySelectorAll('[data-fit-unit]');
+    var FIT_TRACK_MAX = 1100; /* mm — a little headroom past the 1050mm slider max */
+    var MM_PER_IN = 25.4;
+    var fitUnit = 'mm';
+
+    var formatLength = function (mm) {
+      if (fitUnit === 'in') {
+        return (mm / MM_PER_IN).toFixed(1) + 'in';
+      }
+      return Math.round(mm) + 'mm';
+    };
+
+    var joinList = function (items) {
+      if (items.length === 1) return items[0];
+      return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
+    };
 
     var renderFit = function () {
       var chairWidth = parseInt(fitInput.value, 10);
-      fitValueOut.textContent = chairWidth + 'mm';
+      fitValueOut.textContent = formatLength(chairWidth);
+
+      var totalDoors = fitGauges.length;
+      var failing = [];
+      var tightOnes = [];
+
       fitGauges.forEach(function (gauge) {
         var doorWidth = parseInt(gauge.getAttribute('data-door-width'), 10);
-        var scale = parseFloat(gauge.getAttribute('data-scale'));
-        var centerX = parseFloat(gauge.getAttribute('data-center-x'));
-        var floorY = parseFloat(gauge.getAttribute('data-floor-y'));
-        var lineY = parseFloat(gauge.getAttribute('data-line-y'));
-        var icon = gauge.querySelector('[data-fit-icon]');
-        var measure = gauge.querySelector('[data-fit-measure]');
+        var track = gauge.querySelector('[data-fit-track]');
+        var fill = gauge.querySelector('[data-fit-fill]');
+        var spec = gauge.querySelector('[data-fit-spec]');
         var result = gauge.querySelector('[data-fit-result]');
+        var name = gauge.getAttribute('data-fit-name');
 
-        var chairSpan = Math.max(chairWidth * scale, 0);
-        var iconX = centerX - chairSpan / 2;
-        var iconY = floorY - chairSpan;
-        icon.setAttribute('transform', 'translate(' + iconX + ' ' + iconY + ') scale(' + (chairSpan / 24) + ')');
-        measure.setAttribute('x1', iconX);
-        measure.setAttribute('x2', iconX + chairSpan);
-        measure.setAttribute('y1', lineY);
-        measure.setAttribute('y2', lineY);
+        var doorPct = Math.min((doorWidth / FIT_TRACK_MAX) * 100, 100);
+        var fillPct = Math.min((chairWidth / FIT_TRACK_MAX) * 100, 100);
+        track.style.setProperty('--door-pct', doorPct + '%');
+        fill.style.width = fillPct + '%';
+        spec.textContent = formatLength(doorWidth);
 
         var clearance = doorWidth - chairWidth;
         var fits = clearance >= 0;
         var tight = fits && clearance < 50;
-        gauge.classList.toggle('fit-gauge--tight', tight);
-        gauge.classList.toggle('fit-gauge--no', !fits);
+        gauge.classList.toggle('fit-bar--tight', tight);
+        gauge.classList.toggle('fit-bar--no', !fits);
         if (!fits) {
-          result.textContent = 'Doesn’t fit: ' + Math.abs(clearance) + 'mm too wide.';
+          result.textContent = 'Doesn’t fit: ' + formatLength(Math.abs(clearance)) + ' too wide.';
+          failing.push(name);
         } else if (tight) {
-          result.textContent = 'Snug fit: ' + clearance + 'mm clearance.';
+          result.textContent = 'Snug fit: ' + formatLength(clearance) + ' clearance.';
+          tightOnes.push(name);
         } else {
-          result.textContent = 'Fits with ' + clearance + 'mm clearance.';
+          result.textContent = formatLength(clearance) + ' clearance.';
         }
       });
+
+      var summaryState = 'ok';
+      var summaryText = 'Fits all doors comfortably.';
+      if (failing.length) {
+        summaryState = 'no';
+        summaryText = failing.length === totalDoors
+          ? 'Won’t fit through either door.'
+          : 'Won’t fit through ' + joinList(failing) + '.';
+      } else if (tightOnes.length) {
+        summaryState = 'tight';
+        summaryText = tightOnes.length === totalDoors
+          ? 'Tight fit at both doors.'
+          : 'Tight fit at ' + joinList(tightOnes) + '.';
+      }
+      fitSummary.textContent = summaryText;
+      fitSummary.classList.toggle('fit-check__summary--tight', summaryState === 'tight');
+      fitSummary.classList.toggle('fit-check__summary--no', summaryState === 'no');
     };
 
     fitInput.addEventListener('input', renderFit);
+
+    fitUnitBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.getAttribute('data-fit-unit') === fitUnit) return;
+        fitUnit = btn.getAttribute('data-fit-unit');
+        fitUnitBtns.forEach(function (b) {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        renderFit();
+      });
+    });
+
     renderFit();
   }
 
@@ -345,6 +393,11 @@
         node.classList.add('is-inview');
       });
     } else {
+      /* threshold requires that fraction of the ELEMENT's own height to be
+         visible, not the viewport's — a tall mobile-stacked section (e.g. a
+         3-card grid) can sit visibly on screen yet never reach 15% of its
+         own height, leaving it permanently opacity:0. threshold:0 fires on
+         any overlap instead, so height no longer matters. */
       var revealObserver = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
@@ -353,7 +406,7 @@
             revealObserver.unobserve(entry.target);
           });
         },
-        { rootMargin: '0px 0px -8% 0px', threshold: 0.15 }
+        { rootMargin: '0px 0px -8% 0px', threshold: 0 }
       );
       revealNodes.forEach(function (node) {
         revealObserver.observe(node);
