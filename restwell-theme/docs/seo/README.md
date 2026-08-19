@@ -6,7 +6,7 @@
 
 1. **Titles, metas, primary keyphrases that ship** → [`inc/seo-content-seed-meta.php`](../../inc/seo-content-seed-meta.php)
 2. **Who owns which intent** → [`LANES.md`](LANES.md) in this folder
-3. **Mockups** (`mockups/*-concept.html`, `_build_mockups.py`) are **design only** unless the user says they are changing SEO lanes
+3. **Mockups** (`mockups/*-concept.html`) are **design only** unless the user says they are changing SEO lanes. Edit the HTML directly — there is no mockup builder.
 4. **Do not** treat [`SEO-INTENT-ONPAGE-PLAN.md`](../../SEO-INTENT-ONPAGE-PLAN.md) as the daily brief — it is a research warehouse
 5. **Ignore** [`docs/archive/seo-legacy/`](../../../docs/archive/seo-legacy/) — archived; do not execute tasks from it
 6. **Copy language (2026-08-13):** “respite” and “wheelchair friendly” are allowed. Never write “fully accessible”. Restwell is not a care home or respite centre. Wheelchair-friendly claims still need millimetres/kit beside them.

@@ -126,6 +126,9 @@
    *    whitelist: values under 0.25rem / 4px (optical nudges), hairline
    *    borders (≤2px), and fixed-chrome measurements that carry an inline
    *    comment stating what chrome they clear.
+   *    Also allowed (do not remap in @media): .fit-bar__door-mark top/bottom
+   *    overhang (0.25rem / 0.375rem); checkbox-label padding-block 0.35rem
+   *    (44px hit area).
    * C. Media queries remap tokens, never spacing-property literals —
    *    e.g. --split-gap: var(--space-10); not gap: 2.5rem;. Same whitelist
    *    as B.
@@ -444,8 +447,10 @@ div[id] {
   transform: translateY(0);
   /* Real outline (not just box-shadow) so the ring survives forced-colors
      mode, where box-shadow is stripped — this is the primary keyboard
-     accessibility control on every page, it can't lose its focus ring. */
-  outline: 3px solid var(--warm-gold);
+     accessibility control on every page, it can't lose its focus ring.
+     deep-teal, not warm-gold: this ring sits on --soft-sand, where gold
+     only reaches ~1.9:1 — fails WCAG 1.4.11's 3:1 non-text minimum. */
+  outline: 3px solid var(--deep-teal);
   outline-offset: 2px;
   box-shadow: 0 10px 28px rgba(9, 26, 32, 0.14);
 }

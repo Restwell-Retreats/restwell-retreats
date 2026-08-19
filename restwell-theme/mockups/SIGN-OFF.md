@@ -2,31 +2,31 @@
 
 Tickable checklist. Finish this before WordPress conversion / Tailwind teardown.
 
-**Rule:** never hand-edit generated `*-concept.html` except for temporary review. Change `_build_mockups.py`, `shared.css`, or `shared.js`, then regenerate.
+**Rule:** `*-concept.html` is the source of truth. Edit those files, `shared.css`, and `shared.js` directly. There is no mockup builder — do not add `_build_mockups.py` (or any generator) back. Do not regenerate pages from Python.
+
+Keep chrome consistent by copying header/footer from an existing concept page when you add a new one. Shared behaviour stays in `shared.js`; shared look stays in `shared.css`.
 
 ```bash
-cd restwell-theme/mockups && python3 _build_mockups.py
 # Serve from theme root so ../assets/images resolves (not from mockups/)
-cd .. && python3 -m http.server 8765
+cd restwell-theme && python3 -m http.server 8765
 # Open: http://localhost:8765/mockups/
 ```
 
 ---
 
-## 0. Preconditions (fix first)
+## 0. Preconditions (done)
 
-- [x] Bring homepage into `_build_mockups.py` `main()` (`interior=False`)
-- [x] Regenerate writes `homepage-concept.html` from the builder
-- [x] Move homepage gallery lightbox JS into `shared.js`
-- [x] Align homepage mid-cta with helper (`mid-cta--plain` or document intentional photo variant in CSS)
-- [x] Replace repeated `style=` in the builder with shared utility classes (patterns used 2+ times)
+- [x] Homepage is a normal `homepage-concept.html` file (same chrome as other pages)
+- [x] Homepage gallery lightbox JS lives in `shared.js`
+- [x] Homepage mid-cta uses shared classes (`mid-cta--plain` or documented photo variant in CSS)
+- [x] Repeated `style=` replaced with shared utility classes (patterns used 2+ times)
 
 ---
 
-## 1. Regenerate
+## 1. Source of truth
 
-- [x] Run `python3 _build_mockups.py`
-- [x] Confirm no hand-edited drift in concept HTML after regenerate
+- [x] Mockup builder retired. Concept HTML is edited by hand.
+- [x] Do not reintroduce `_build_mockups.py`
 
 ---
 
@@ -34,17 +34,17 @@ cd .. && python3 -m http.server 8765
 
 ### Shared chrome
 
-- [x] Header/footer only defined via `header()` / `footer()` in `_build_mockups.py`
+- [x] Header/footer markup matches across pages (copy from an existing concept; keep `site-header` / `site-footer`)
 - [x] No duplicate chrome blocks inside page bodies
 - [x] Every `*-concept.html` includes `shared.css`, `shared.js`, `site-header`, `site-footer`
 - [x] No page-local nav / FAQ / solidify scripts (only `shared.js`)
-- [x] Active nav: `aria-current="page"` / `is-active` set via builder `active` key
+- [x] Active nav: `aria-current="page"` / `is-active` on the current page
 
 ### Shared bands
 
-- [ ] Heroes cover three patterns: homepage hero (full-bleed + CTAs), interior `hero()` (`.hero--interior` — including property), policy/legal hero (same interior helper — privacy, terms, a11y-policy, and similar long-copy pages)
-- [ ] Marketing pages that end with enquire use `mid_cta()` (see exemptions below)
-- [ ] FAQ blocks use `faq_item()`
+- [ ] Heroes cover three patterns: homepage hero (full-bleed + CTAs), interior `.hero--interior` (including property), policy/legal hero (privacy, terms, a11y-policy, and similar long-copy pages)
+- [ ] Marketing pages that end with enquire use `.mid-cta` (see exemptions below)
+- [ ] FAQ blocks use the shared `.faq-item` markup
 - [ ] Body sections use `.section-y` + `.band-*` (see allowed non-band namespaces below)
 - [ ] Multi-section pages use `.section-head` (+ `.eyebrow` / `.lede`) — except FAQ intro (see below)
 - [ ] Primary CTAs use `.btn*` (`.btn-gold`, `.btn-outline-*`, etc.); `.text-link` allowed for secondary links
@@ -94,17 +94,15 @@ Canonical definition lives at the top of `shared.css`. Rules:
 - [ ] Header markup matches `shared.js` selectors (`.nav__trigger`, `#mobile-nav`, `.nav-toggle`, `.site-header`)
 - [ ] Gallery lightbox comes from `shared.js` (homepage, property, accessibility — no page-local script)
 
-### Grep audit (after regenerate)
+### Grep audit (after HTML edits)
 
 ```bash
 rg -L "site-header|site-footer|shared\\.css|shared\\.js" restwell-theme/mockups/*-concept.html
-rg -n "def header|def footer|def hero|def mid_cta|def faq_item" restwell-theme/mockups/_build_mockups.py
 rg -n "<style|<script" restwell-theme/mockups/*-concept.html
 ```
 
 - [ ] Chrome grep clean (no missing files)
-- [ ] Helpers still defined in builder
-- [ ] No unexpected `<style>` / `<script>` in generated HTML (lightbox must not be inline)
+- [ ] No unexpected `<style>` / `<script>` in concept HTML (lightbox must not be inline; JSON-LD in `<head>` is allowed)
 
 ---
 
@@ -225,11 +223,11 @@ Test on homepage + FAQ + one interior page + pricing:
 
 ## 6. Sign-off gate (before WordPress)
 
-- [ ] Homepage generated from the builder like every other page
+- [x] Homepage is a concept HTML file like every other page (no builder)
 - [ ] Structural greps clean
 - [ ] Every public page has Pass on section-order audit
 - [ ] Responsive matrix done on home, property, pricing, FAQ, enquire at all four widths
 - [ ] Interaction checklist green
 - [ ] Design tokens/components only in `shared.css`; behaviour only in `shared.js`
 
-**When all ticked:** port `shared.css` / `shared.js` → WP `header.php` / `footer.php` + template-parts (`interior-hero`, `section-head`, `mid-cta`, `faq-list`) → page templates from `body_*()`. No Tailwind for these surfaces.
+**When all ticked:** port `shared.css` / `shared.js` → WP `header.php` / `footer.php` + template-parts (`interior-hero`, `section-head`, `mid-cta`, `faq-list`) → page templates from the concept HTML. No Tailwind for these surfaces.

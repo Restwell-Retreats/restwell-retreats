@@ -4,6 +4,8 @@
 Rules (see SPACING SYSTEM comment in shared.css):
   A. Every non-ladder --rhythm-* token needs a justification comment.
   B. Component rules consume tokens only (literal whitelist applies).
+     Frozen exceptions: .fit-bar__door-mark top/bottom 0.25rem|0.375rem;
+     checkbox-label padding-block 0.35rem.
   C. @media blocks remap tokens — never spacing-property literals.
 
 Exit 0 when clean, 1 when violations are found.
@@ -77,6 +79,41 @@ def is_whitelisted_length(num: str, unit: str) -> bool:
     return False
 
 
+# Component-local geometry — not page rhythm. Do not remap in @media.
+# Values must match shared.css exactly; a different rem still fails Rule B.
+FIT_BAR_MARK_SEL = ".fit-bar__door-mark"
+FIT_BAR_MARK_PROPS = {"top", "bottom"}
+FIT_BAR_MARK_REM = {0.25, 0.375}  # track overhang + cap sit
+CHECKBOX_LABEL_NEEDLE = "label:has(input[type="  # quotes stripped in parser
+CHECKBOX_LABEL_PROP = "padding-block"
+CHECKBOX_LABEL_REM = {0.35}  # with min-height 2.75rem → 44px hit
+
+
+def _rem_literals(value: str) -> list[float] | None:
+    """Return rem magnitudes, or None if the value mixes other length units."""
+    found: list[float] = []
+    for m in LENGTH_RE.finditer(value):
+        unit = m.group("unit").lower()
+        if unit != "rem":
+            return None
+        found.append(float(m.group("num")))
+    return found
+
+
+def is_component_optical(selector: str, prop: str, value: str) -> bool:
+    """True for the two frozen widgets the checker must not nag."""
+    rem_vals = _rem_literals(value)
+    if not rem_vals:
+        return False
+    prop = prop.lower()
+    sel = re.sub(r"\s+", " ", selector)
+    if FIT_BAR_MARK_SEL in sel and prop in FIT_BAR_MARK_PROPS:
+        return all(v in FIT_BAR_MARK_REM for v in rem_vals)
+    if CHECKBOX_LABEL_NEEDLE in sel and prop == CHECKBOX_LABEL_PROP:
+        return all(v in CHECKBOX_LABEL_REM for v in rem_vals)
+    return False
+
+
 def spacing_literals(value: str) -> list[tuple[str, str]]:
     return [(m.group("num"), m.group("unit")) for m in LENGTH_RE.finditer(value)]
 
@@ -103,6 +140,7 @@ def parse_css(text: str) -> list[dict]:
     media_depth = None
     root_depth = None
     in_block_comment = False
+    selector_stack: list[str] = []
 
     for i, raw in enumerate(lines):
         code_chars: list[str] = []
@@ -149,6 +187,7 @@ def parse_css(text: str) -> list[dict]:
                     in_root = True
                     root_depth = depth
                     opens_root = False
+                selector_stack.append(sel_src)
             line_in_root = in_root
             line_in_media = in_media
 
@@ -158,6 +197,7 @@ def parse_css(text: str) -> list[dict]:
                 "text": raw,
                 "in_root": line_in_root,
                 "in_media": line_in_media,
+                "selector": selector_stack[-1] if selector_stack else "",
             }
         )
 
@@ -169,6 +209,8 @@ def parse_css(text: str) -> list[dict]:
                 if root_depth is not None and depth == root_depth:
                     in_root = False
                     root_depth = None
+                if selector_stack:
+                    selector_stack.pop()
                 depth = max(0, depth - 1)
 
     return results
@@ -219,6 +261,8 @@ def check_file(path: Path) -> list[str]:
             continue
 
         value = code_part.split(":", 1)[1].rstrip(";").strip()
+        if is_component_optical(entry.get("selector", ""), prop_match.group("prop"), value):
+            continue
         if not declaration_violates(value, raw):
             continue
 
