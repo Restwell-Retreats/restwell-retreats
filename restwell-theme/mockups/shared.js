@@ -682,4 +682,15 @@
     }
   }
 
+  /* Keep focused chips in view inside horizontally scrolling subnav / FAQ filters. */
+  document.addEventListener('focusin', function (event) {
+    var el = event.target;
+    if (!el || !el.closest) return;
+    var scroller = el.closest('.subnav__list, .pill-tabs');
+    if (!scroller) return;
+    if (typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+    }
+  });
+
 })();

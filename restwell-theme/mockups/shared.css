@@ -2637,6 +2637,7 @@ body:has(.subnav) {
   }
 }
 .subnav a {
+  scroll-margin-inline: var(--space-4);
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
@@ -3454,6 +3455,7 @@ body:has(.subnav) {
   }
 }
 .pill-tabs button {
+  scroll-margin-inline: var(--space-4);
   appearance: none;
   border: 1px solid color-mix(in srgb, var(--deep-teal) 16%, transparent);
   background: var(--white);

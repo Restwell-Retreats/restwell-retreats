@@ -168,6 +168,7 @@ The live `template-parts/trust-strip.php` (homepage-only) is covered by the home
 - [x] Accessibility policy — Pass · R: Pass (375 / 768 / 1024 / 1280; legal layout, section structure)
 - [x] 404 — Pass · R: Pass (375 / 768 / 1024 / 1280; error message, nav links)
 - [x] Generic page — Pass · R: Pass (375 / 768 / 1024 / 1280; interior hero, body content)
+- [x] Our Story — Pass · R: Pass (375 / 768 / 1024 / 1280; interior hero, subnav chips, split bands, teal specialists, mid-cta)
 
 ---
 
@@ -225,7 +226,7 @@ Test on homepage + FAQ + one interior page + pricing:
 
 - [x] Homepage is a concept HTML file like every other page (no builder)
 - [ ] Structural greps clean
-- [ ] Every public page has Pass on section-order audit
+- [x] Every public page has Pass on section-order audit
 - [ ] Responsive matrix done on home, property, pricing, FAQ, enquire at all four widths
 - [ ] Interaction checklist green
 - [ ] Design tokens/components only in `shared.css`; behaviour only in `shared.js`
