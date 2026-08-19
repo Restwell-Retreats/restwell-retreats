@@ -1,9 +1,6 @@
 <?php
 /**
- * Homepage template (static front page).
- *
- * Meta-driven layout: get_post_meta() with defaults from restwell_get_theme_setup_defaults() where needed,
- * same pattern as template-how-it-works.php / template-who-its-for.php.
+ * Concept port from mockups — Homepage.
  *
  * @package Restwell_Retreats
  */
@@ -13,1247 +10,282 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$pid = get_the_ID();
-$restwell_fp_seed        = function_exists( 'restwell_get_theme_setup_defaults' ) ? restwell_get_theme_setup_defaults() : array();
-$hero_eyebrow            = get_post_meta( $pid, 'hero_eyebrow', true ) ?: 'Restwell Retreats';
-$hero_heading            = get_post_meta( $pid, 'hero_heading', true ) ?: 'Accessible holidays Whitstable';
-$hero_heading_lines      = preg_split( '/\r\n|\r|\n/', $hero_heading );
-$hero_heading_lines      = array_values( array_filter( array_map( 'trim', $hero_heading_lines ), 'strlen' ) );
-if ( empty( $hero_heading_lines ) ) {
-	$hero_heading_lines = array( 'Accessible holidays Whitstable' );
-}
-$hero_heading_flat       = trim( preg_replace( '/\s+/', ' ', str_replace( array( "\r\n", "\r", "\n" ), ' ', $hero_heading ) ) );
-$hero_subheading         = get_post_meta( $pid, 'hero_subheading', true ) ?: 'Restwell is the brand overview for accessible holidays Whitstable guests can plan with confidence. Start here, then follow links to the bungalow, the access statement, who the stay suits, and how booking works. Enquire when you are ready.';
-$hero_spec_heading       = (string) get_post_meta( $pid, 'hero_spec_heading', true );
-// Optional strip under hero only when this meta is non-empty (no default).
-$hero_lede               = trim( $hero_subheading . ( $hero_spec_heading !== '' ? ' ' . $hero_spec_heading : '' ) );
-$hero_lede_paragraph     = $hero_subheading;
-$show_hero_spec_strip    = trim( (string) $hero_spec_heading ) !== '';
-$hero_cta_primary_label  = get_post_meta( $pid, 'hero_cta_primary_label', true ) ?: 'View the property';
-$hero_cta_primary_url    = get_post_meta( $pid, 'hero_cta_primary_url', true ) ?: '/the-property/';
-$hero_cta_secondary_label = get_post_meta( $pid, 'hero_cta_secondary_label', true ) ?: 'Send an enquiry';
-$hero_cta_secondary_url  = get_post_meta( $pid, 'hero_cta_secondary_url', true ) ?: '/enquire/';
-// Optional line under hero CTAs: unset meta → default; saved empty string → hidden; non-empty → override.
-$hero_cta_reassurance_default = __( 'Usually reply within 48 hours · No obligation', 'restwell-retreats' );
-$hero_cta_reassurance_display  = $hero_cta_reassurance_default;
-if ( metadata_exists( 'post', $pid, 'hero_cta_reassurance' ) ) {
-	$hero_cta_reassurance_raw = get_post_meta( $pid, 'hero_cta_reassurance', true );
-	if ( trim( (string) $hero_cta_reassurance_raw ) === '' ) {
-		$hero_cta_reassurance_display = '';
-	} else {
-		$hero_cta_reassurance_display = trim( (string) $hero_cta_reassurance_raw );
-	}
-}
-$hero_media_alt          = $hero_heading_flat;
-if ( $hero_lede !== '' ) {
-	$combined_alt = $hero_heading_flat . ': ' . $hero_lede;
-	if ( strlen( $combined_alt ) <= 200 ) {
-		$hero_media_alt = $combined_alt;
-	}
-}
-
-$home_hero_describedby = array();
-if ( trim( (string) $hero_lede_paragraph ) !== '' ) {
-	$home_hero_describedby[] = 'home-hero-lede';
-}
-
-$home_teaser_label_meta = get_post_meta( $pid, 'home_teaser_label', true );
-$show_home_teaser       = ! ( metadata_exists( 'post', $pid, 'home_teaser_label' ) && $home_teaser_label_meta === '' );
-$home_teaser_label      = $home_teaser_label_meta !== '' ? $home_teaser_label_meta : 'Area & funding';
-$home_teaser_area_title    = get_post_meta( $pid, 'home_teaser_area_title', true ) ?: 'Whitstable & the Kent coast';
-$home_teaser_area_body     = get_post_meta( $pid, 'home_teaser_area_body', true ) ?: 'Single-storey bungalow on the Kent coast: harbour, promenade, and day trips with realistic access notes. We focus on step-free routes, parking, and venues where access is described clearly, so you can match the route to a wheelchair, scooter, or walking frame.';
-$home_teaser_funding_title = get_post_meta( $pid, 'home_teaser_funding_title', true ) ?: 'Funding your stay';
-$home_teaser_funding_body  = get_post_meta( $pid, 'home_teaser_funding_body', true ) ?: 'Many guests use personal budgets, direct payments, NHS Continuing Healthcare, or local authority funding. Our guides explain common routes in plain English: what to ask your social worker, and what paperwork helps.';
-
-// Homepage comparison (Phase 10): clear "heading" in Page Content Fields and save to hide.
-$home_comparison_heading_meta = get_post_meta( $pid, 'home_comparison_heading', true );
-if ( ! metadata_exists( 'post', $pid, 'home_comparison_heading' ) ) {
-	$home_comparison_heading_resolved = isset( $restwell_fp_seed['home_comparison_heading'] )
-		? (string) $restwell_fp_seed['home_comparison_heading']
-		: __( 'Restwell vs. a typical hotel stay', 'restwell-retreats' );
-} else {
-	$home_comparison_heading_resolved = trim( (string) $home_comparison_heading_meta );
-}
-$show_home_comparison = $home_comparison_heading_resolved !== '';
-$home_comparison_label = trim( (string) get_post_meta( $pid, 'home_comparison_label', true ) );
-if ( $home_comparison_label === '' ) {
-	$home_comparison_label = isset( $restwell_fp_seed['home_comparison_label'] )
-		? (string) $restwell_fp_seed['home_comparison_label']
-		: __( 'Compare options', 'restwell-retreats' );
-}
-$home_comparison_intro = get_post_meta( $pid, 'home_comparison_intro', true );
-if ( ! metadata_exists( 'post', $pid, 'home_comparison_intro' ) ) {
-	$home_comparison_intro = isset( $restwell_fp_seed['home_comparison_intro'] ) ? (string) $restwell_fp_seed['home_comparison_intro'] : '';
-} else {
-	$home_comparison_intro = trim( (string) $home_comparison_intro );
-}
-$home_comparison_rows = array();
-for ( $rw_i = 1; $rw_i <= 4; $rw_i++ ) {
-	$fk = 'home_comparison_row' . $rw_i . '_feature';
-	$rk = 'home_comparison_row' . $rw_i . '_restwell';
-	$ok = 'home_comparison_row' . $rw_i . '_other';
-	$df = isset( $restwell_fp_seed[ $fk ] ) ? (string) $restwell_fp_seed[ $fk ] : '';
-	$dr = isset( $restwell_fp_seed[ $rk ] ) ? (string) $restwell_fp_seed[ $rk ] : '';
-	$do = isset( $restwell_fp_seed[ $ok ] ) ? (string) $restwell_fp_seed[ $ok ] : '';
-	$fv = trim( (string) get_post_meta( $pid, $fk, true ) );
-	$rv = trim( (string) get_post_meta( $pid, $rk, true ) );
-	$ov = trim( (string) get_post_meta( $pid, $ok, true ) );
-	$home_comparison_rows[] = array(
-		'feature'  => $fv !== '' ? $fv : $df,
-		'restwell' => $rv !== '' ? $rv : $dr,
-		'other'    => $ov !== '' ? $ov : $do,
-	);
-}
-
-$home_faq_label_meta   = get_post_meta( $pid, 'home_faq_label', true );
-$home_faq_heading_meta = get_post_meta( $pid, 'home_faq_heading', true );
-$show_home_faq         = ! ( metadata_exists( 'post', $pid, 'home_faq_heading' ) && $home_faq_heading_meta === '' );
-$home_faq_label        = $home_faq_label_meta !== '' ? $home_faq_label_meta : __( 'Quick answers', 'restwell-retreats' );
-$home_faq_heading      = $home_faq_heading_meta !== '' ? $home_faq_heading_meta : __( 'Common questions', 'restwell-retreats' );
-$home_faq_pairs        = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'homepage' ) : array();
-
-$trust_label           = get_post_meta( $pid, 'trust_label', true ) ?: '';
-$trust_heading         = get_post_meta( $pid, 'trust_heading', true ) ?: '';
-$trust_badge_image_id  = (int) get_post_meta( $pid, 'trust_badge_image_id', true );
-$trust_line            = get_post_meta( $pid, 'trust_line', true ) ?: 'Support from Continuity of Care Services · CQC regulated';
-$trust_partner_url     = get_post_meta( $pid, 'trust_partner_url', true ) ?: 'https://www.continuitycareservices.co.uk/';
-$trust_cqc_meta_raw = get_post_meta( $pid, 'trust_cqc_profile_url', true );
-if ( metadata_exists( 'post', $pid, 'trust_cqc_profile_url' ) ) {
-	$trust_cqc_profile_url = trim( (string) $trust_cqc_meta_raw );
-} else {
-	$trust_cqc_profile_url = 'https://www.cqc.org.uk/location/1-2624556588';
-}
-$trust_line_parts     = array_map( 'trim', explode( '·', $trust_line, 2 ) );
-$trust_line_primary   = isset( $trust_line_parts[0] ) ? $trust_line_parts[0] : '';
-$trust_line_secondary = isset( $trust_line_parts[1] ) ? $trust_line_parts[1] : '';
-$trust_badge_src      = $trust_badge_image_id ? wp_get_attachment_image_url( $trust_badge_image_id, 'medium' ) : '';
-$show_trust_cqc_card  = $trust_cqc_profile_url !== '';
-$show_trust_partner   = $trust_line !== '';
-$show_trust_block     = $trust_line !== '' || $trust_badge_src !== '' || $show_trust_cqc_card;
-
-$testimonial_label  = get_post_meta( $pid, 'testimonial_label', true ) ?: '';
-$testimonial_heading = get_post_meta( $pid, 'testimonial_heading', true ) ?: 'What guests say';
-$testimonials = array();
-for ( $i = 1; $i <= 5; $i++ ) {
-	$q = get_post_meta( $pid, "testimonial_{$i}_quote", true );
-	if ( $q !== '' ) {
-		$testimonials[] = array(
-			'quote' => $q,
-			'name'  => get_post_meta( $pid, "testimonial_{$i}_name", true ) ?: '',
-			'role'  => get_post_meta( $pid, "testimonial_{$i}_role", true ) ?: '',
-		);
-	}
-}
-$show_testimonials = ! empty( $testimonials );
-
-$hero_media_id = absint( get_post_meta( $pid, 'hero_media_id', true ) );
-$hero_media_mime = $hero_media_id ? get_post_mime_type( $hero_media_id ) : '';
-$hero_is_video  = $hero_media_mime && strpos( $hero_media_mime, 'video/' ) === 0;
-$hero_img_size   = function_exists( 'restwell_pick_attachment_size' ) ? restwell_pick_attachment_size( $hero_media_id, 'restwell-hero' ) : 'full';
-$hero_media_url  = $hero_media_id ? ( $hero_is_video ? wp_get_attachment_url( $hero_media_id ) : wp_get_attachment_image_url( $hero_media_id, $hero_img_size ) ) : '';
-$hero_video_desktop_url = $hero_is_video ? $hero_media_url : '';
-$hero_mobile_video_id   = absint( get_post_meta( $pid, 'hero_mobile_video_id', true ) );
-$hero_video_poster_id   = absint( get_post_meta( $pid, 'hero_video_poster_id', true ) );
-$hero_mobile_video_mime = $hero_mobile_video_id ? get_post_mime_type( $hero_mobile_video_id ) : '';
-$hero_video_mobile_url  = ( $hero_is_video && $hero_mobile_video_mime && strpos( $hero_mobile_video_mime, 'video/' ) === 0 ) ? wp_get_attachment_url( $hero_mobile_video_id ) : '';
-$hero_video_poster_url  = ( $hero_is_video && $hero_video_poster_id && wp_attachment_is_image( $hero_video_poster_id ) ) ? wp_get_attachment_image_url( $hero_video_poster_id, 'full' ) : '';
-
-/*
- * Homepage layout tokens: vertical padding from CSS (.rw-section-y / .rw-section-y--cta); see DESIGN-SYSTEM.md.
- * Area & funding teaser adds .rw-section-y--eyebrow-split (label + flex gap above cards for optical balance).
- */
-$rw_fp_section_y           = 'rw-section-y';
-/** Conversion CTA spacing tier (4-tier CTA tokens). */
-$rw_fp_section_y_emphasis = 'rw-section-y--cta';
-$rw_fp_inner          = 'max-w-5xl mx-auto';
-$rw_fp_inner_narrow   = 'max-w-3xl mx-auto';
-$rw_fp_head_block     = 'rw-mb-section';
-$rw_fp_head_tight     = 'rw-mb-section-tight';
-$rw_fp_stack_gap      = 'rw-gap-grid';
-$rw_fp_stack_gap_lg   = 'rw-gap-grid-lg';
-$rw_fp_cta_mt         = 'mt-8 md:mt-10';
-/** Solid white card shell + padding — see .rw-card-solid / .rw-card-pad in input.css */
-$rw_fp_card_shell     = 'rw-card-solid rw-card-pad';
-/** Comparison feature checklist (wider for 3-column grid) */
-$rw_fp_inner_comparison = 'max-w-5xl mx-auto';
-
-$rw_fp_resolve_href = static function ( $url ) {
-	$url = trim( (string) $url );
-	if ( $url === '' ) {
-		return home_url( '/' );
-	}
-	if ( preg_match( '#^https?://#i', $url ) ) {
-		return $url;
-	}
-	return home_url( $url );
-};
-
-// Merged front-page meta (theme defaults when a key is empty).
-$fp_meta = array();
-foreach ( $restwell_fp_seed as $key => $default ) {
-	$v = get_post_meta( $pid, $key, true );
-	if ( 'property_image_id' === $key || 'cta_image_id' === $key ) {
-		$vid         = (int) $v;
-		$fp_meta[ $key ] = $vid > 0 ? $vid : (int) $default;
-		continue;
-	}
-	if ( $v === '' || null === $v ) {
-		$fp_meta[ $key ] = $default;
-	} else {
-		$fp_meta[ $key ] = $v;
-	}
-}
-
-/*
- * Remap legacy guest/carer audience framing when saved meta still matches old defaults.
- * Cards describe the stay (access / care choice), not people as market segments.
- */
-$rw_fp_who_legacy = array(
-	'who_label'       => array( "Who it's for" ),
-	'who_heading'     => array(
-		'Two people. One break.',
-		'A private home that works for the whole group',
-		'A private accessible home for your whole group',
-		'Privacy and accessibility for the whole group',
-	),
-	'who_guest_title' => array(
-		'For the guest',
-		'Access that works',
-	),
-	'who_carer_title' => array(
-		'For the carer',
-		'Care on your terms',
-	),
-	'who_carer_body'  => array(
-		'The layout supports care routines: separate sleeping, practical bathroom access, and space to assist. Optional CQC-regulated support is available through Continuity of Care Services, or bring your own carer. Either way, the environment is set up for real routines, day and night, so you are not improvising.',
-	),
-);
-foreach ( $rw_fp_who_legacy as $rw_fp_who_key => $rw_fp_who_olds ) {
-	$rw_fp_who_current = isset( $fp_meta[ $rw_fp_who_key ] ) ? trim( (string) $fp_meta[ $rw_fp_who_key ] ) : '';
-	if ( $rw_fp_who_current !== '' && in_array( $rw_fp_who_current, $rw_fp_who_olds, true ) && isset( $restwell_fp_seed[ $rw_fp_who_key ] ) ) {
-		$fp_meta[ $rw_fp_who_key ] = $restwell_fp_seed[ $rw_fp_who_key ];
-	}
-}
-
-$property_image_id         = (int) ( $fp_meta['property_image_id'] ?? 0 );
-if ( $property_image_id <= 0 ) {
-	$property_gallery_fallback = restwell_get_property_gallery_ids();
-	if ( ! empty( $property_gallery_fallback ) ) {
-		$property_image_id = (int) $property_gallery_fallback[0];
-	}
-}
-$property_heading          = isset( $fp_meta['property_heading'] ) ? (string) $fp_meta['property_heading'] : '';
-$property_body             = isset( $fp_meta['property_body'] ) ? (string) $fp_meta['property_body'] : '';
-$property_body_canonical   = isset( $restwell_fp_seed['property_body'] ) ? trim( (string) $restwell_fp_seed['property_body'] ) : '';
-$property_body_trimmed     = trim( $property_body );
-
-$fp_acc   = get_page_by_path( 'accessibility', OBJECT, 'page' );
-$fp_who   = get_page_by_path( 'who-its-for', OBJECT, 'page' );
-$fp_guide = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
-$fp_faq   = get_page_by_path( 'faq', OBJECT, 'page' );
-/** Homepage property card only: keep the list short (full site nav still covers other pages). */
-$fp_quick_items = array();
-if ( $fp_acc ) {
-	$fp_quick_items[] = array(
-		'href'  => get_permalink( $fp_acc ),
-		'label' => __( 'Specification & measurements', 'restwell-retreats' ),
-	);
-}
-if ( $fp_who ) {
-	$fp_quick_items[] = array(
-		'href'  => get_permalink( $fp_who ),
-		'label' => __( 'Who it\'s for', 'restwell-retreats' ),
-	);
-}
-if ( $fp_guide ) {
-	$fp_quick_items[] = array(
-		'href'  => get_permalink( $fp_guide ),
-		'label' => __( 'Town, harbour & coast', 'restwell-retreats' ),
-	);
-}
-if ( $fp_faq ) {
-	$fp_quick_items[] = array(
-		'href'  => get_permalink( $fp_faq ),
-		'label' => __( 'FAQ', 'restwell-retreats' ),
-	);
-}
-
-$cta_image_id = (int) ( $fp_meta['cta_image_id'] ?? 0 );
-
-$hero_cta_primary_href   = $rw_fp_resolve_href( $hero_cta_primary_url );
-$hero_cta_secondary_href = $rw_fp_resolve_href( $hero_cta_secondary_url );
-
-$home_partners_label   = trim( (string) ( $fp_meta['home_partners_label'] ?? 'Trusted partners' ) );
-$home_partners_heading = trim( (string) ( $fp_meta['home_partners_heading'] ?? 'Specialist Partners' ) );
-$home_partners_intro   = trim( (string) ( $fp_meta['home_partners_intro'] ?? 'These are the specialist teams behind Restwell: adaptation, equipment, and ongoing care support for guests.' ) );
-/*
- * Keep partners copy clear even when older seeded meta is still present.
- * Only remap when values exactly match the legacy defaults.
- */
-if (
-	$home_partners_heading === 'Our partners'
-	|| $home_partners_heading === 'Built with specialist partners'
-	|| $home_partners_heading === 'Specialist partners behind Restwell'
-) {
-	$home_partners_heading = __( 'Specialist Partners', 'restwell-retreats' );
-}
-if ( $home_partners_intro === 'The full story of how we adapted Restwell, who built it, and who supports guests today.' ) {
-	$home_partners_intro = __( 'These are the specialist teams behind Restwell: adaptation, equipment, and ongoing care support for guests.', 'restwell-retreats' );
-}
-$home_partner_items    = array(
-	array(
-		'name'    => trim( (string) ( $fp_meta['home_partner_1_name'] ?? 'Care Spaces' ) ),
-		'url'     => trim( (string) ( $fp_meta['home_partner_1_url'] ?? 'https://www.carespaces.co.uk/' ) ),
-		'logo_id' => absint( $fp_meta['home_partner_1_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $fp_meta['home_partner_1_blurb'] ?? 'Specialist design and installation for changing places, hygiene rooms, and accessible care environments.' ) ),
-		'scale'   => (float) ( $fp_meta['home_partner_1_logo_scale'] ?? 1.75 ),
-	),
-	array(
-		'name'    => trim( (string) ( $fp_meta['home_partner_2_name'] ?? 'Thor Carpentry' ) ),
-		'url'     => trim( (string) ( $fp_meta['home_partner_2_url'] ?? 'https://thorcarpenter.co.uk/' ) ),
-		'logo_id' => absint( $fp_meta['home_partner_2_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $fp_meta['home_partner_2_blurb'] ?? 'Bespoke carpentry and practical adaptation works that help make the property function day to day.' ) ),
-		'scale'   => (float) ( $fp_meta['home_partner_2_logo_scale'] ?? 1.85 ),
-	),
-	array(
-		'name'    => trim( (string) ( $fp_meta['home_partner_3_name'] ?? 'Wealden Rehab' ) ),
-		'url'     => trim( (string) ( $fp_meta['home_partner_3_url'] ?? 'https://www.wealdenrehab.com/' ) ),
-		'logo_id' => absint( $fp_meta['home_partner_3_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $fp_meta['home_partner_3_blurb'] ?? 'Care equipment specialists supporting bathing, moving and handling, and seating solutions.' ) ),
-		'scale'   => (float) ( $fp_meta['home_partner_3_logo_scale'] ?? 1.7 ),
-	),
-	array(
-		'name'    => trim( (string) ( $fp_meta['home_partner_4_name'] ?? 'Continuity of Care Services' ) ),
-		'url'     => trim( (string) ( $fp_meta['home_partner_4_url'] ?? 'https://www.continuitycareservices.co.uk/' ) ),
-		'logo_id' => absint( $fp_meta['home_partner_4_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $fp_meta['home_partner_4_blurb'] ?? 'CQC-regulated care partner providing domiciliary, respite, complex and palliative care in Kent.' ) ),
-		'scale'   => (float) ( $fp_meta['home_partner_4_logo_scale'] ?? 1.65 ),
-	),
-	array(
-		'name'    => trim( (string) ( $fp_meta['home_partner_5_name'] ?? 'Continuity Training Academy' ) ),
-		'url'     => trim( (string) ( $fp_meta['home_partner_5_url'] ?? 'https://www.continuitytrainingacademy.co.uk/' ) ),
-		'logo_id' => absint( $fp_meta['home_partner_5_logo_id'] ?? 0 ),
-		'blurb'   => trim( (string) ( $fp_meta['home_partner_5_blurb'] ?? 'CPD-accredited care training provider supporting safer, compliant practice across care teams.' ) ),
-		'scale'   => (float) ( $fp_meta['home_partner_5_logo_scale'] ?? 1.6 ),
-	),
-);
-$home_partner_items = array_values(
-	array_filter(
-		$home_partner_items,
-		static function ( $partner ) {
-			return is_array( $partner )
-				&& ! empty( $partner['name'] )
-				&& ! empty( $partner['url'] );
-		}
-	)
-);
-$home_partner_items = array_map(
-	static function ( $partner ) {
-		if ( ! is_array( $partner ) ) {
-			return $partner;
-		}
-		if ( isset( $partner['url'] ) && $partner['url'] === 'https://thorcarpentry.co.uk/' ) {
-			$partner['url'] = 'https://thorcarpenter.co.uk/';
-		}
-		$partner['scale'] = isset( $partner['scale'] ) ? (float) $partner['scale'] : 1.0;
-		/*
-		 * Legacy seeded values were tuned for tightly-cropped logos (~1.0).
-		 * New transparent exports have larger canvas padding, so auto-upscale
-		 * small legacy values to keep perceived logo size consistent.
-		 */
-		if ( $partner['scale'] <= 1.25 ) {
-			$partner['scale'] = $partner['scale'] * 1.65;
-		}
-		if ( $partner['scale'] < 0.85 ) {
-			$partner['scale'] = 0.85;
-		} elseif ( $partner['scale'] > 2.2 ) {
-			$partner['scale'] = 2.2;
-		}
-		return $partner;
-	},
-	$home_partner_items
-);
-$show_home_partners = ( $home_partners_heading !== '' ) && ! empty( $home_partner_items );
-
-$rw_fp_cta_heading_display = trim( (string) ( $fp_meta['cta_heading'] ?? '' ) );
-$rw_fp_cta_body_display    = trim( (string) ( $fp_meta['cta_body'] ?? '' ) );
-
-/*
- * Keep homepage CTA distinct from footer CTA even on older seeded meta.
- * Only remap when values still match legacy defaults exactly.
- */
-if ( $rw_fp_cta_heading_display === 'Ready to plan your accessible stay?' ) {
-	$rw_fp_cta_heading_display = __( 'Need exact access details first?', 'restwell-retreats' );
-}
-if ( $rw_fp_cta_body_display === 'Ask about hoist limits, door widths, or funding. No pressure: we reply with specifics you can use.' ) {
-	$rw_fp_cta_body_display = __( 'Tell us your dates and practical needs. We will reply with clear measurements, equipment details, and next steps.', 'restwell-retreats' );
-} elseif ( stripos( $rw_fp_cta_body_display, 'testword' ) !== false ) {
-	$rw_fp_cta_body_display = __( 'Tell us your dates and practical needs. We will reply with clear measurements, equipment details, and next steps.', 'restwell-retreats' );
-}
-
-$rw_fp_cta_promise_display = isset( $fp_meta['cta_promise'] ) ? trim( (string) $fp_meta['cta_promise'] ) : '';
-if ( $rw_fp_cta_promise_display === '' ) {
-	$rw_fp_cta_promise_display = __( 'No pressure to book. Useful answers, usually within 48 hours.', 'restwell-retreats' );
-} elseif ( $rw_fp_cta_promise_display === 'No booking commitment. Replies usually within one working day.' ) {
-	$rw_fp_cta_promise_display = __( 'No pressure to book. Useful answers, usually within 48 hours.', 'restwell-retreats' );
-}
-
-/*
- * Zebra section backgrounds: alternate white and theme soft-sand for each *rendered* major band (skips hidden sections).
- */
-$rw_fp_bg_white = 'bg-white';
-$rw_fp_bg_sand  = 'bg-[var(--soft-sand)]';
-$rw_fp_major_bands = array();
-if ( $show_home_teaser ) {
-	$rw_fp_major_bands[] = 'teaser';
-}
-$rw_fp_major_bands[] = 'who';
-$rw_fp_major_bands[] = 'property';
-if ( $show_testimonials ) {
-	$rw_fp_major_bands[] = 'testimonials';
-}
-$rw_fp_major_bands[] = 'features';
-if ( $show_home_comparison ) {
-	$rw_fp_major_bands[] = 'comparison';
-}
-if ( $show_home_faq && ! empty( $home_faq_pairs ) ) {
-	$rw_fp_major_bands[] = 'faq';
-}
-if ( $show_trust_block ) {
-	$rw_fp_major_bands[] = 'trust';
-}
-$rw_fp_band_bg = array();
-foreach ( $rw_fp_major_bands as $rw_fp_bi => $rw_fp_band_id ) {
-	$rw_fp_band_bg[ $rw_fp_band_id ] = ( 0 === ( $rw_fp_bi % 2 ) ) ? $rw_fp_bg_white : $rw_fp_bg_sand;
-}
-$rw_fp_teaser_bg       = isset( $rw_fp_band_bg['teaser'] ) ? $rw_fp_band_bg['teaser'] : '';
-$rw_fp_who_bg          = $rw_fp_band_bg['who'] ?? $rw_fp_bg_sand;
-$rw_fp_property_bg     = $rw_fp_band_bg['property'] ?? $rw_fp_bg_white;
-$rw_fp_testimonials_bg = isset( $rw_fp_band_bg['testimonials'] ) ? $rw_fp_band_bg['testimonials'] : '';
-$rw_fp_features_bg     = $rw_fp_band_bg['features'] ?? $rw_fp_bg_sand;
-$rw_fp_comparison_bg   = isset( $rw_fp_band_bg['comparison'] ) ? $rw_fp_band_bg['comparison'] : '';
-$rw_fp_faq_bg          = isset( $rw_fp_band_bg['faq'] ) ? $rw_fp_band_bg['faq'] : '';
-$rw_fp_trust_bg        = isset( $rw_fp_band_bg['trust'] ) ? $rw_fp_band_bg['trust'] : '';
 ?>
-<main class="flex-1" id="main-content">
-	<?php
-	/*
-	 * Layout order: hero → spec strip → area/funding teaser → who → property spotlight
-	 *              → testimonials → why Restwell → partners → comparison → bottom CTA → FAQ → trust.
-	 */
-	?>
-	<section class="hero home-hero relative flex overflow-hidden <?php echo ( $hero_media_id && $hero_media_url ) ? 'hero--has-media' : ''; ?> <?php echo ( $hero_media_id && $hero_is_video ) ? 'hero--has-video' : ''; ?> <?php echo $hero_media_id ? '' : 'bg-[var(--deep-teal)]'; ?>" aria-labelledby="home-hero-heading"<?php echo ! empty( $home_hero_describedby ) ? ' aria-describedby="' . esc_attr( implode( ' ', $home_hero_describedby ) ) . '"' : ''; ?>>
-		<?php if ( $hero_media_id && $hero_media_url ) : ?>
-			<?php if ( $hero_is_video ) : ?>
-				<div class="home-hero__media home-hero__media--video absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
-				<video
-					class="home-hero__video absolute inset-0 h-full w-full min-h-full min-w-full object-cover"
-					autoplay
-					muted
-					loop
-					playsinline
-					preload="metadata"
-					disablepictureinpicture
-					disableremoteplayback
-					aria-hidden="true"
-					<?php echo $hero_video_poster_url ? 'poster="' . esc_url( $hero_video_poster_url ) . '"' : ''; ?>
-				>
-					<?php if ( $hero_video_mobile_url ) : ?>
-						<source src="<?php echo esc_url( $hero_video_mobile_url ); ?>" type="<?php echo esc_attr( $hero_mobile_video_mime ); ?>" media="(max-width: 767px)">
-					<?php endif; ?>
-					<source src="<?php echo esc_url( $hero_video_desktop_url ); ?>" type="<?php echo esc_attr( $hero_media_mime ); ?>">
-				</video>
-				</div>
-			<?php else : ?>
-				<?php
-				echo wp_get_attachment_image(
-					$hero_media_id,
-					$hero_img_size,
-					false,
-					array(
-						'class'         => 'absolute inset-0 w-full h-full object-cover -z-10',
-						'alt'           => $hero_media_alt,
-						'loading'       => 'eager',
-						'fetchpriority' => 'high',
-						'decoding'      => 'async',
-						'sizes'         => '100vw',
-					)
-				);
-				?>
-			<?php endif; ?>
-		<?php endif; ?>
-		<div class="relative z-10 container w-full">
-			<div class="home-hero__copy w-full">
-				<div class="home-hero__main-cluster">
-					<div class="home-hero__text-stack">
-						<?php if ( $hero_eyebrow !== '' ) : ?>
-						<span class="home-hero__eyebrow block text-xs uppercase tracking-[0.2em] font-sans">
-							<?php echo esc_html( $hero_eyebrow ); ?>
-						</span>
-						<?php endif; ?>
-						<h1 id="home-hero-heading" class="home-hero__heading m-0 text-white">
-							<span class="home-hero__title-lines block space-y-2 font-serif">
-								<?php foreach ( $hero_heading_lines as $hero_heading_line ) : ?>
-								<span class="block"><?php echo esc_html( $hero_heading_line ); ?></span>
-								<?php endforeach; ?>
-							</span>
-						</h1>
-						<?php
-						$home_tldr_markup = function_exists( 'restwell_get_tldr_markup' )
-							? restwell_get_tldr_markup( $pid, '' )
-							: '';
-						if ( $home_tldr_markup !== '' ) :
-							?>
-							<?php echo $home_tldr_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<?php endif; ?>
-						<?php if ( trim( (string) $hero_lede_paragraph ) !== '' ) : ?>
-						<p id="home-hero-lede" class="home-hero__lede max-w-prose text-white [text-shadow:0_2px_4px_rgba(0,0,0,0.3)] font-sans text-base sm:text-lg md:text-xl font-normal leading-relaxed tracking-normal sm:tracking-tight text-balance m-0">
-							<?php echo esc_html( $hero_lede_paragraph ); ?>
-						</p>
-						<?php endif; ?>
-					</div>
-					<div class="home-hero__cta-stack">
-						<a
-							id="hero-cta-primary"
-							href="<?php echo esc_url( $hero_cta_primary_href ); ?>"
-							class="btn btn-gold cursor-pointer"
-							data-cta="hero-primary"
-						>
-							<?php echo esc_html( $hero_cta_primary_label ); ?>
-							<i class="ph-bold ph-caret-right" aria-hidden="true"></i>
-						</a>
-						<a
-							id="hero-cta-secondary"
-							href="<?php echo esc_url( $hero_cta_secondary_href ); ?>"
-							class="home-hero__cta-secondary btn cursor-pointer"
-							data-cta="hero-secondary"
-						>
-							<?php echo esc_html( $hero_cta_secondary_label ); ?>
-						</a>
-					</div>
-					<?php if ( $hero_cta_reassurance_display !== '' ) : ?>
-					<p id="home-hero-reassurance" class="home-hero__reassurance m-0 text-white/90 text-sm font-sans leading-snug [text-shadow:0_1px_2px_rgba(0,0,0,0.35)]">
-						<?php echo esc_html( $hero_cta_reassurance_display ); ?>
-					</p>
-					<?php endif; ?>
-					<p class="home-hero__scroll-hint m-0 text-center">
-						<a href="#restwell-main-after-hero" class="home-hero__scroll-link">
-							<span class="home-hero__scroll-link-text"><?php esc_html_e( 'Scroll to explore', 'restwell-retreats' ); ?></span>
-							<i class="ph-bold ph-caret-down home-hero__scroll-icon" aria-hidden="true"></i>
-						</a>
-					</p>
-				</div>
-			</div>
-		</div>
-	</section>
-	<div id="restwell-main-after-hero" class="home-hero__scroll-anchor" tabindex="-1"></div>
 
-	<?php if ( $show_hero_spec_strip ) : ?>
-	<section
-		class="home-hero-equipment-strip py-0 bg-[var(--soft-sand)]"
-		aria-labelledby="home-hero-spec-strip-heading"
-	>
-		<div class="container py-[var(--space-4)] md:py-[var(--space-5)]">
-			<h2 id="home-hero-spec-strip-heading" class="sr-only">
-				<?php esc_html_e( 'On-site equipment and booking detail', 'restwell-retreats' ); ?>
-			</h2>
-			<p class="home-hero-equipment-strip__text m-0 text-[var(--deep-teal)] font-sans text-sm sm:text-base leading-relaxed max-w-4xl mx-auto">
-				<?php echo esc_html( $hero_spec_heading ); ?>
-			</p>
-		</div>
-	</section>
-	<?php endif; ?>
 
-	<?php
-	$home_glance_summary = function_exists( 'restwell_get_property_facts_glance_summary' )
-		? restwell_get_property_facts_glance_summary()
-		: '';
-	$home_glance_link    = ( $fp_acc instanceof WP_Post )
-		? get_permalink( $fp_acc )
-		: home_url( '/accessibility/' );
-	?>
-	<?php if ( $home_glance_summary !== '' ) : ?>
-	<section
-		class="home-facts-strip rw-section-y--compact bg-[var(--soft-sand)]"
-		aria-labelledby="home-facts-strip-heading"
-	>
-		<div class="container max-w-2xl text-center">
-			<header class="home-facts-strip__head rw-section-head rw-section-head--center rw-section-head--tight">
-				<p class="section-label m-0"><?php esc_html_e( 'At a glance', 'restwell-retreats' ); ?></p>
-				<h2 id="home-facts-strip-heading" class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 leading-tight">
-					<?php esc_html_e( 'What is already in place', 'restwell-retreats' ); ?>
-				</h2>
-			</header>
-			<p class="home-facts-strip__summary m-0">
-				<?php echo esc_html( $home_glance_summary ); ?>
-			</p>
-			<a href="<?php echo esc_url( $home_glance_link ); ?>" class="restwell-tap-link restwell-tap-link--teal mx-auto mt-5">
-				<?php esc_html_e( 'Read the access details', 'restwell-retreats' ); ?>
-				<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
-			</a>
-		</div>
-	</section>
-	<?php endif; ?>
+<main id="main-content">
+<section class="hero" aria-labelledby="hero-h">
+      <div class="hero__media" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero__content">
+          <div class="hero__text">
+            <h1 id="hero-h">Accessible holidays in Whitstable</h1>
+            <p>Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.</p>
+          </div>
+          <div class="hero__ctas">
+            <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Get in touch</a>
+            <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">See the bungalow</a>
+          </div>
+          <p class="hero__note">We aim to reply within 48 hours, and you’re under no obligation to book</p>
+          <p class="hero__scroll-hint">
+            <a class="hero__scroll-link" href="#property">
+              <span>Take a look inside</span>
+              <svg class="hero__scroll-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </p>
+        </div>
+      </div>
+    </section>
 
-	<?php
-	$home_gallery_ids        = restwell_get_property_gallery_ids();
-	$home_gallery_teaser_ids = array_slice( $home_gallery_ids, 0, 6 );
-	$fp_property_page        = get_page_by_path( 'the-property', OBJECT, 'page' );
-	$home_gallery_link       = $fp_property_page ? get_permalink( $fp_property_page ) . '#property-gallery' : home_url( '/the-property/#property-gallery' );
-	?>
-	<?php if ( ! empty( $home_gallery_teaser_ids ) ) : ?>
-	<section class="home-gallery-teaser rw-section-y--compact bg-white" aria-labelledby="home-gallery-teaser-heading">
-		<div class="container max-w-6xl">
-			<header class="home-gallery-teaser__head rw-section-head rw-section-head--center rw-section-head--tight">
-				<p class="section-label m-0"><?php esc_html_e( 'Inside the property', 'restwell-retreats' ); ?></p>
-				<h2 id="home-gallery-teaser-heading" class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] m-0 leading-tight"><?php esc_html_e( 'A glimpse of the space', 'restwell-retreats' ); ?></h2>
-				<a href="<?php echo esc_url( $home_gallery_link ); ?>" class="restwell-tap-link restwell-tap-link--teal mx-auto">
-					<?php esc_html_e( 'View full gallery', 'restwell-retreats' ); ?>
-					<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
-				</a>
-			</header>
-			<?php
-			restwell_render_gallery(
-				$home_gallery_teaser_ids,
-				array(
-					'layout'     => 'teaser',
-					'lightbox'   => false,
-					'link_url'   => $home_gallery_link,
-					'image_size' => 'medium_large',
-					'aria_label' => __( 'Property photo preview (first six images)', 'restwell-retreats' ),
-				)
-			);
-			?>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="property section-y" id="property" aria-labelledby="property-h">
+      <div class="container">
+        <div class="property__layout">
+          <div class="property__media-wrap">
+            <img class="property__media" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/EX-1-LS.jpg' ); ?>" alt="Restwell bungalow exterior on Russell Drive" width="640" height="480" loading="lazy" decoding="async" />
+          </div>
+          <div class="property__copy">
+            <p class="eyebrow">The Bungalow</p>
+            <h2 id="property-h">The details, before you book</h2>
+            <p class="lede">It’s not easy to find a private holiday house that actually works for a wheelchair and a care routine. Guests often tell us this one is worth the journey.</p>
+            <p class="lede">Restwell is a bungalow on Russell Drive in Whitstable, about an hour from London. You have the whole house. Access measurements and kit notes are published before you book.</p>
+            <ul class="property__facts">
+              <li>Private, single-storey house</li>
+              <li>Driveway parking</li>
+              <li>Access details published before you book</li>
+            </ul>
+            <div class="property__cta-row">
+              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">View the property</a>
+              <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access statement</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( $show_home_teaser ) : ?>
-	<section
-		class="home-teaser-area-funding <?php echo esc_attr( $rw_fp_section_y . ' rw-section-y--eyebrow-split ' . $rw_fp_teaser_bg ); ?>"
-		aria-label="<?php echo esc_attr( $home_teaser_label ); ?>"
-	>
-		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?> rw-stack">
-				<header class="text-left m-0">
-					<h2 class="sr-only"><?php echo esc_html( $home_teaser_label ); ?></h2>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $home_teaser_label ) ); ?>
-				</header>
-				<div class="home-teaser__grid who-section__grid grid grid-cols-1 md:grid-cols-2 items-stretch <?php echo esc_attr( $rw_fp_stack_gap ); ?>">
-					<div class="flex h-full flex-col rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
-						<h3 id="home-teaser-area-heading" class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] leading-tight m-0 text-balance"><?php echo esc_html( $home_teaser_area_title ); ?></h3>
-						<p class="text-[var(--muted-grey)] leading-relaxed m-0 max-w-prose text-base flex-1"><?php echo esc_html( $home_teaser_area_body ); ?></p>
-						<?php
-						$fp_teaser_guide = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
-						if ( $fp_teaser_guide ) :
-							?>
-						<p class="m-0">
-							<a
-								href="<?php echo esc_url( get_permalink( $fp_teaser_guide ) ); ?>"
-								class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover"
-							>
-								<?php esc_html_e( 'Whitstable & Kent guide', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
-							</a>
-						</p>
-						<?php endif; ?>
-					</div>
-					<div class="flex h-full flex-col rw-stack <?php echo esc_attr( $rw_fp_card_shell ); ?>">
-						<h3 id="home-teaser-funding-heading" class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] leading-tight m-0 text-balance"><?php echo esc_html( $home_teaser_funding_title ); ?></h3>
-						<p class="text-[var(--muted-grey)] leading-relaxed m-0 max-w-prose text-base flex-1"><?php echo esc_html( $home_teaser_funding_body ); ?></p>
-						<?php
-						$fp_teaser_res = get_page_by_path( 'resources', OBJECT, 'page' );
-						if ( $fp_teaser_res ) :
-							?>
-						<p class="m-0">
-							<a
-								href="<?php echo esc_url( get_permalink( $fp_teaser_res ) ); ?>"
-								class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover"
-							>
-								<?php esc_html_e( 'Funding & support', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-caret-right text-sm" aria-hidden="true"></i>
-							</a>
-						</p>
-						<?php endif; ?>
-					</div>
-				</div>
-				<?php
-				$fp_hub_property = get_page_by_path( 'the-property', OBJECT, 'page' );
-				$fp_hub_guide    = isset( $fp_teaser_guide ) ? $fp_teaser_guide : get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
-				$fp_hub_res      = isset( $fp_teaser_res ) ? $fp_teaser_res : get_page_by_path( 'resources', OBJECT, 'page' );
-				if ( $fp_hub_property || $fp_hub_guide || $fp_hub_res ) :
-					?>
-				<nav class="home-pillar-hubs pt-2 md:pt-3" aria-label="<?php esc_attr_e( 'Main topic hubs', 'restwell-retreats' ); ?>">
-					<p class="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--deep-teal)]/80 m-0 mb-3"><?php esc_html_e( 'Start from a hub', 'restwell-retreats' ); ?></p>
-					<ul class="m-0 list-none divide-y divide-gray-100 p-0 sm:flex sm:flex-row sm:flex-wrap sm:gap-x-6 sm:gap-y-2 sm:divide-y-0" role="list">
-						<?php if ( $fp_hub_property ) : ?>
-						<li class="m-0">
-							<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover w-full justify-start text-left sm:w-auto">
-								<span>
-									<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
-									<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
-								</span>
-							</a>
-						</li>
-						<?php endif; ?>
-						<?php if ( $fp_hub_res ) : ?>
-						<li class="m-0">
-							<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover w-full justify-start text-left sm:w-auto">
-								<span>
-									<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
-									<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
-								</span>
-							</a>
-						</li>
-						<?php endif; ?>
-						<?php if ( $fp_hub_guide ) : ?>
-						<li class="m-0">
-							<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal restwell-tap-link--gold-hover w-full justify-start text-left sm:w-auto">
-								<span>
-									<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
-									<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
-								</span>
-							</a>
-						</li>
-						<?php endif; ?>
-					</ul>
-				</nav>
-				<?php endif; ?>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="gallery section-y" aria-labelledby="gallery-h" data-gallery>
+      <div class="container">
+        <header class="section-head section-head--center section-head--tight">
+          <p class="eyebrow">Inside the property</p>
+          <h2 id="gallery-h">Living room, bedroom and wet room</h2>
+          <button type="button" class="text-link" data-gallery-open data-gallery-index="0">View photos</button>
+        </header>
+        <ul class="gallery__grid" role="list" aria-label="Property photo preview">
+          <li class="gallery__item">
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Open-plan living room with wide, step-free walkways between furniture">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/living-room-2.png' ); ?>" alt="Open-plan living room with wide, step-free walkways between furniture" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li class="gallery__item">
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-3-LS.jpg' ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li class="gallery__item">
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/wet-room-shower.png' ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-	<?php
-	// When the area/funding teaser is hidden, still expose the three pillars from home.
-	if ( ! $show_home_teaser ) :
-		$fp_hub_property = get_page_by_path( 'the-property', OBJECT, 'page' );
-		$fp_hub_guide    = get_page_by_path( 'whitstable-area-guide', OBJECT, 'page' );
-		$fp_hub_res      = get_page_by_path( 'resources', OBJECT, 'page' );
-		if ( $fp_hub_property || $fp_hub_guide || $fp_hub_res ) :
-			?>
-	<section class="home-pillar-hubs-solo <?php echo esc_attr( $rw_fp_section_y ); ?> bg-[var(--bg-subtle)]" aria-labelledby="home-pillar-hubs-heading">
-		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
-			<h2 id="home-pillar-hubs-heading" class="text-2xl font-serif text-[var(--deep-teal)] m-0 mb-4"><?php esc_html_e( 'Explore Restwell by topic', 'restwell-retreats' ); ?></h2>
-			<ul class="m-0 list-none divide-y divide-gray-100 p-0" role="list">
-				<?php if ( $fp_hub_property ) : ?>
-				<li class="m-0">
-					<a href="<?php echo esc_url( get_permalink( $fp_hub_property ) ); ?>" class="restwell-tap-link restwell-tap-link--teal w-full justify-start text-left">
-						<span>
-							<?php esc_html_e( 'The Property: adapted bungalow in Whitstable', 'restwell-retreats' ); ?>
-							<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
-						</span>
-					</a>
-				</li>
-				<?php endif; ?>
-				<?php if ( $fp_hub_res ) : ?>
-				<li class="m-0">
-					<a href="<?php echo esc_url( get_permalink( $fp_hub_res ) ); ?>" class="restwell-tap-link restwell-tap-link--teal w-full justify-start text-left">
-						<span>
-							<?php esc_html_e( 'Resources: care funding and respite routes', 'restwell-retreats' ); ?>
-							<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
-						</span>
-					</a>
-				</li>
-				<?php endif; ?>
-				<?php if ( $fp_hub_guide ) : ?>
-				<li class="m-0">
-					<a href="<?php echo esc_url( get_permalink( $fp_hub_guide ) ); ?>" class="restwell-tap-link restwell-tap-link--teal w-full justify-start text-left">
-						<span>
-							<?php esc_html_e( 'Whitstable Area Guide: Kent coast planning', 'restwell-retreats' ); ?>
-							<i class="ph-bold ph-caret-right ml-1 text-sm" aria-hidden="true"></i>
-						</span>
-					</a>
-				</li>
-				<?php endif; ?>
-			</ul>
-		</div>
-	</section>
-			<?php
-		endif;
-	endif;
-	?>
+    <section class="paths section-y" id="paths" aria-labelledby="paths-h">
+      <div class="container">
+        <header class="section-head">
+          <h2 id="paths-h">Plan your stay</h2>
+          <p class="lede">Before you contact us, it helps to read about what it’s really like to get around the area and how funding could help with costs.</p>
+        </header>
+        <div class="paths__grid">
+          <article class="path-card path-card--area">
+            <h3>Whitstable and the Kent coast</h3>
+            <p>Harbour, promenade, and day trips — with honest notes on what is actually workable, not just labelled that way.</p>
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable access notes</a>
+          </article>
+          <article class="path-card path-card--funding">
+            <h3>Ways to help fund your stay</h3>
+            <p>Some stays are paid for through a funder. We can tell you who we invoice, and point you to the pathway guides.</p>
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Read funding guides</a>
+          </article>
+        </div>
+      </div>
+    </section>
 
-	<section class="who-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_who_bg ); ?>">
-		<div class="container mx-auto px-6">
-			<div class="text-center max-w-3xl mx-auto rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
-				<?php
-				$who_label_out = isset( $fp_meta['who_label'] ) ? trim( (string) $fp_meta['who_label'] ) : '';
-				if ( $who_label_out !== '' ) {
-					get_template_part( 'template-parts/section-label', null, array( 'label' => $who_label_out ) );
-				}
-				?>
-				<h2 class="text-3xl md:text-4xl section-heading m-0 text-balance"><?php echo esc_html( $fp_meta['who_heading'] ?? '' ); ?></h2>
-			</div>
-			<div class="who-section__grid grid grid-cols-1 md:grid-cols-2 <?php echo esc_attr( $rw_fp_stack_gap ); ?> items-stretch">
-				<article class="who-card who-card-layout <?php echo esc_attr( $rw_fp_card_shell ); ?>">
-					<div class="who-card__stack flex w-full flex-col items-start text-left rw-stack">
-						<span class="who-card__icon" aria-hidden="true">
-							<i class="ph-bold ph-house" aria-hidden="true"></i>
-						</span>
-						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['who_guest_title'] ?? '' ); ?></h3>
-						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $fp_meta['who_guest_body'] ?? '' ); ?></p>
-					</div>
-				</article>
-				<article class="who-card who-card-layout <?php echo esc_attr( $rw_fp_card_shell ); ?>">
-					<div class="who-card__stack flex w-full flex-col items-start text-left rw-stack">
-						<span class="who-card__icon who-card__icon--warm" aria-hidden="true">
-							<i class="ph-bold ph-handshake" aria-hidden="true"></i>
-						</span>
-						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['who_carer_title'] ?? '' ); ?></h3>
-						<p class="who-card__body text-[var(--muted-grey)] leading-relaxed m-0 w-full text-pretty"><?php echo esc_html( $fp_meta['who_carer_body'] ?? '' ); ?></p>
-					</div>
-				</article>
-			</div>
-			<?php if ( $fp_who ) : ?>
-			<p class="text-center text-sm text-[var(--muted-grey)] <?php echo esc_attr( $rw_fp_cta_mt ); ?> m-0">
-				<a href="<?php echo esc_url( get_permalink( $fp_who ) ); ?>"
-					class="who-section__cta restwell-tap-link restwell-tap-link--underline-cta">
-					<?php esc_html_e( 'Find out if Restwell is right for you →', 'restwell-retreats' ); ?>
-				</a>
-			</p>
-			<?php endif; ?>
-		</div>
-	</section>
+    <section class="partners section-y" id="partners" aria-labelledby="partners-h">
+      <div class="container">
+        <header class="section-head partners__head">
+          <p class="eyebrow">Who fitted the house</p>
+          <h2 id="partners-h">Who helped adapt the bungalow?</h2>
+          <p class="lede">Specialist firms helped adapt the house. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'our-story' ) ); ?>">Read the full story</a>.</p>
+        </header>
+        <ul class="partners__grid" role="list">
+          <li class="partners__item">
+            <a class="partners__link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Care Spaces (opens in a new tab)">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/care-spaces.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li class="partners__item">
+            <a class="partners__link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Thor Carpentry (opens in a new tab)">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/thor-carpentry.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li class="partners__item">
+            <a class="partners__link" href="https://wealdenrehab.com/" target="_blank" rel="noopener noreferrer" aria-label="Wealden Rehab (opens in a new tab)">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/wealden-rehab.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li class="partners__item">
+            <a class="partners__link" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li class="partners__item">
+            <a class="partners__link" href="https://www.continuitytrainingacademy.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity Training Academy (opens in a new tab)">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-training-academy.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-	<section class="property-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_property_bg ); ?>" aria-labelledby="home-property-heading">
-		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
-			<div class="property-grid property-grid--home grid grid-cols-1 gap-x-0 gap-y-9 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:items-start md:gap-x-10 md:gap-y-0">
-				<div class="property-grid__media w-full md:min-h-0">
-					<figure class="property-section__figure relative m-0 flex min-h-[min(65vw,18rem)] flex-col overflow-hidden rounded-2xl bg-[var(--driftwood)] shadow-[0_8px_30px_rgb(0,0,0,0.06)] ring-1 ring-black/[0.04] md:min-h-[24rem]">
-					<?php if ( $property_image_id ) : ?>
-						<?php
-						$property_img_size = function_exists( 'restwell_pick_attachment_size' ) ? restwell_pick_attachment_size( $property_image_id, 'restwell-hero', 'large' ) : 'large';
-						echo wp_get_attachment_image(
-							$property_image_id,
-							$property_img_size,
-							false,
-							array(
-								'class'    => 'property-section__photo aspect-[4/3] w-full object-cover md:absolute md:inset-0 md:aspect-auto md:h-full md:min-h-full md:w-full',
-								'alt'      => $property_heading,
-								'loading'  => 'lazy',
-								'decoding' => 'async',
-								'sizes'    => '(min-width: 768px) 48vw, 100vw',
-							)
-						);
-						?>
-					<?php else : ?>
-						<div class="property-section__placeholder relative z-[1] flex min-h-[min(65vw,18rem)] flex-col items-center justify-center gap-2.5 px-5 py-10 text-center md:min-h-[24rem]">
-							<i class="ph-bold ph-image text-3xl text-[var(--deep-teal)]/45" aria-hidden="true"></i>
-							<span class="max-w-[20rem] text-base leading-relaxed text-[var(--muted-grey)]"><?php esc_html_e( 'Add a property image in the homepage editor to show the bungalow here.', 'restwell-retreats' ); ?></span>
-						</div>
-					<?php endif; ?>
-					</figure>
-				</div>
-				<div class="property-grid__text w-full min-w-0">
-					<div class="property-section__panel rw-card-pad rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-						<div class="property-section__panel-inner rw-stack--regions">
-					<div class="property-section__intro rw-stack max-w-prose">
-					<?php
-					$property_label_out = isset( $fp_meta['property_label'] ) ? trim( (string) $fp_meta['property_label'] ) : '';
-					if ( $property_label_out !== '' ) {
-						get_template_part( 'template-parts/section-label', null, array( 'label' => $property_label_out ) );
-					}
-					?>
-					<h2 id="home-property-heading" class="text-3xl md:text-4xl section-heading m-0 text-balance leading-tight"><?php echo esc_html( $property_heading ); ?></h2>
-					<div class="property-section__body rw-stack">
-					<?php if ( $property_body_canonical !== '' && $property_body_trimmed === $property_body_canonical ) : ?>
-						<p class="m-0 text-pretty text-base leading-relaxed text-[var(--muted-grey)] sm:text-[1.05rem]"><?php esc_html_e( 'An adapted single-storey property in Whitstable: level approach from the street, off-street parking for adapted vehicles, and a flat route toward the Tankerton promenade.', 'restwell-retreats' ); ?></p>
-						<ul class="property-section__highlights rw-stack m-0 list-none p-0 text-[0.98rem] leading-relaxed text-[var(--muted-grey)] sm:text-[1rem]" role="list">
-							<li class="flex gap-2.5">
-								<span class="property-section__check mt-0.5 shrink-0 text-[var(--deep-teal)]" aria-hidden="true"><i class="ph-bold ph-check text-[1.05rem]" aria-hidden="true"></i></span>
-								<span class="text-pretty"><?php esc_html_e( 'Flat route toward the Tankerton promenade and practical access from parking to the door.', 'restwell-retreats' ); ?></span>
-							</li>
-							<li class="flex gap-2.5">
-								<span class="property-section__check mt-0.5 shrink-0 text-[var(--deep-teal)]" aria-hidden="true"><i class="ph-bold ph-check text-[1.05rem]" aria-hidden="true"></i></span>
-								<span class="text-pretty"><?php esc_html_e( 'Whitstable town centre (harbour, seafood restaurants, and the waterfront) is close enough for day trips without stressful route planning.', 'restwell-retreats' ); ?></span>
-							</li>
-						</ul>
-					<?php else : ?>
-						<p class="text-[var(--muted-grey)] leading-relaxed m-0 text-pretty"><?php echo esc_html( $property_body ); ?></p>
-					<?php endif; ?>
-					</div>
-					</div>
+    <section class="comparison section-y" id="comparison" aria-labelledby="comparison-h">
+      <div class="container">
+        <header class="section-head section-head--center">
+          <h2 id="comparison-h">Why families choose Restwell</h2>
+        </header>
+        <dl class="comparison-list">
+          <div class="comparison-list__item">
+            <dt>Access details published</dt>
+            <dd>Measurements and kit notes live on the access statement, before you book.</dd>
+          </div>
+          <div class="comparison-list__item">
+            <dt>A private bungalow, not a hotel corridor</dt>
+            <dd>Your group has the whole place to yourselves. There are no shared lifts, lobbies, or public spaces between the bedroom and wet room.</dd>
+          </div>
+          <div class="comparison-list__item">
+            <dt>Optional care support</dt>
+            <dd>Continuity of Care Services can arrange CQC-regulated support during the same call as your booking, or, if you prefer, you can bring your own carer.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
 
-					<?php if ( ! empty( $fp_quick_items ) ) : ?>
-					<div class="property-section__explore border-t border-stone-200/70">
-						<p id="property-explore-label" class="property-section__explore-label text-sm font-semibold leading-snug text-[var(--deep-teal)]"><?php esc_html_e( 'Explore further', 'restwell-retreats' ); ?></p>
-						<nav class="property-section__quick-nav" aria-labelledby="property-explore-label">
-							<ul class="property-section__linklist m-0 list-none divide-y divide-stone-200/80 border-y border-stone-200/70 p-0" role="list">
-								<?php foreach ( $fp_quick_items as $fp_quick_item ) : ?>
-								<li class="m-0">
-									<a
-										href="<?php echo esc_url( $fp_quick_item['href'] ); ?>"
-										class="property-section__quick-link group flex min-h-[48px] items-center justify-between gap-3 py-3 text-left text-[0.9375rem] font-medium leading-snug text-[var(--muted-grey)] transition-colors duration-200 hover:text-[var(--deep-teal)] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)] cursor-pointer"
-									>
-										<span class="min-w-0 flex-1"><?php echo esc_html( $fp_quick_item['label'] ); ?></span>
-										<i class="ph-bold ph-caret-right shrink-0 text-[var(--deep-teal)]/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--deep-teal)]/70 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0" aria-hidden="true"></i>
-									</a>
-								</li>
-								<?php endforeach; ?>
-							</ul>
-						</nav>
-					</div>
-					<?php endif; ?>
+    <section class="testimonials section-y" aria-labelledby="testimonials-h">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow eyebrow--on-dark">What guests say</p>
+          <h2 id="testimonials-h">What guests wrote after staying</h2>
+        </header>
+        <ul class="testimonials__grid" role="list">
+          <li>
+            <article class="testimonial-card">
+              <blockquote class="testimonial-card__quote">Keelie was tremendously helpful in explaining all the facilities, equipment and care help they could provide. The bungalow is modern and spotless, fully equipped for both the person you are caring for, and for the carer. It was a home from home.</blockquote>
+              <footer class="testimonial-card__name">M.H.<span class="testimonial-card__role">Family carer · Facebook review</span></footer>
+            </article>
+          </li>
+          <li>
+            <article class="testimonial-card">
+              <blockquote class="testimonial-card__quote">From the minute I rolled my wheelchair out the car, I smiled. Widened hallways, ceiling track hoist, a wet room that should be in a gallery. With the complex care I need, this is worth its weight in gold.</blockquote>
+              <footer class="testimonial-card__name">M.P.<span class="testimonial-card__role">Wheelchair user · Google review</span></footer>
+            </article>
+          </li>
+          <li>
+            <article class="testimonial-card">
+              <blockquote class="testimonial-card__quote">The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.</blockquote>
+              <footer class="testimonial-card__name">M.Z.<span class="testimonial-card__role">Guest · Google review</span></footer>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-					<a
-						href="<?php echo esc_url( $rw_fp_resolve_href( isset( $fp_meta['property_cta_url'] ) ? (string) $fp_meta['property_cta_url'] : '' ) ); ?>"
-						class="property-section__cta inline-flex w-full min-h-[48px] items-center justify-center gap-2 rounded-xl bg-[var(--deep-teal)] px-5 py-3 text-center text-[0.98rem] font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-[#163f4d] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)] cursor-pointer sm:w-auto sm:min-w-[14rem]"
-						data-cta="property-explore"
-					>
-						<?php echo esc_html( $fp_meta['property_cta_label'] ?? '' ); ?>
-						<i class="ph-bold ph-arrow-right text-lg" aria-hidden="true"></i>
-					</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="care section-y" id="care" aria-labelledby="care-h">
+      <div class="container">
+        <div class="care__panel">
+          <div class="care__intro">
+            <header class="section-head">
+              <p class="eyebrow">If you need support while you stay</p>
+              <h2 id="care-h">Optional care during your stay</h2>
+            </header>
+            <div class="care__intro-body">
+              <p class="lede">You book the bungalow with Restwell. Optional CQC-regulated support is arranged separately with Continuity of Care Services if you want it — never bundled into the house rate.</p>
+            </div>
+          </div>
+          <div class="care__foot">
+            <div class="care__foot-copy">
+              <p class="care__note">Nothing is added to your stay until you agree the plan.</p>
+              <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+            </div>
+            <div class="care__brand" aria-label="Care partner and CQC rating">
+              <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services-long.png' ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
+              </a>
+              <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/cqc-rating-good.jpg' ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( $show_testimonials ) : ?>
-	<section class="testimonials-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_testimonials_bg ); ?>" aria-labelledby="home-testimonials-heading">
-		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
-			<div class="text-center max-w-3xl mx-auto rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
-				<?php if ( $testimonial_label !== '' ) : ?>
-					<p class="section-label"><?php echo esc_html( $testimonial_label ); ?></p>
-				<?php endif; ?>
-				<h2 id="home-testimonials-heading" class="text-3xl md:text-4xl section-heading m-0 text-balance"><?php echo esc_html( $testimonial_heading ); ?></h2>
-			</div>
-			<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 <?php echo esc_attr( $rw_fp_stack_gap_lg ); ?> list-none p-0 m-0" role="list">
-				<?php foreach ( $testimonials as $t ) : ?>
-				<li>
-					<article class="h-full flex flex-col <?php echo esc_attr( $rw_fp_card_shell ); ?>">
-						<blockquote class="m-0 flex flex-1 flex-col rw-stack">
-							<p class="restwell-prose-readable text-[var(--muted-grey)] leading-relaxed flex-1 m-0 text-pretty"><?php echo esc_html( $t['quote'] ); ?></p>
-							<footer class="text-[var(--deep-teal)] font-medium m-0">
-								<?php echo esc_html( $t['name'] ); ?>
-								<?php if ( $t['role'] !== '' ) : ?>
-									<span class="block text-sm font-normal text-[var(--muted-grey)]"><?php echo esc_html( $t['role'] ); ?></span>
-								<?php endif; ?>
-							</footer>
-						</blockquote>
-					</article>
-				</li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="faq section-y" id="faq" aria-labelledby="faq-h">
+      <div class="container">
+        <div class="faq__layout">
+          <header class="faq__intro">
+            <p class="eyebrow">Quick answers</p>
+            <h2 id="faq-h">Questions you might have</h2>
+          </header>
+          <div class="faq-list" data-faq-accordion>
+            <div class="faq-item is-open">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="true" id="home-q1" aria-controls="home-q1-a">
+                <span>Is Restwell suitable for wheelchair users?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="home-q1-a" role="region" aria-labelledby="home-q1">
+                <p>Yes. Restwell is a private, step-free house. Measurements and kit notes are on the Accessibility page, before you book.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="home-q2" aria-controls="home-q2-a">
+                <span>What makes accessible self-catering work well?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="home-q2-a" role="region" aria-labelledby="home-q2" hidden>
+                <p>Published access details, not a vague label. On-site equipment is included in the house rate. Measurements and kit notes are on the Accessibility page.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="home-q3" aria-controls="home-q3-a">
+                <span>Is this disabled holiday accommodation in Kent?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="home-q3-a" role="region" aria-labelledby="home-q3" hidden>
+                <p>Yes. It’s a specialist accessible holiday in Whitstable, Kent. Measurements and kit notes are on the Accessibility page.</p>
+              </div>
+            </div>
+          </div>
+          <aside class="faq-cta" aria-label="More questions">
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'faq' ) ); ?>">Browse the FAQ</a>
+          </aside>
+        </div>
+      </div>
+    </section>
 
-	<?php // Why band: dense text grid only — compact pad, no icons/cards. ?>
-	<section class="features-section rw-section-y--compact <?php echo esc_attr( $rw_fp_features_bg ); ?>" aria-labelledby="home-why-restwell-heading">
-		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
-			<header class="rw-stack rw-stack--dense mb-6 md:mb-8">
-				<span class="section-label block"><?php echo esc_html( $fp_meta['why_label'] ?? '' ); ?></span>
-				<h2 id="home-why-restwell-heading" class="text-3xl md:text-4xl section-heading m-0 text-balance max-w-3xl"><?php echo esc_html( $fp_meta['why_heading'] ?? '' ); ?></h2>
-			</header>
-			<ul class="features-section__grid m-0 grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-6" role="list">
-				<li class="feature-item feature-item--text rw-stack rw-stack--dense">
-					<h3 class="text-lg md:text-xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['why_item1_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed m-0 text-pretty"><?php echo esc_html( $fp_meta['why_item1_desc'] ?? '' ); ?></p>
-				</li>
-				<li class="feature-item feature-item--text rw-stack rw-stack--dense">
-					<h3 class="text-lg md:text-xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['why_item2_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed m-0 text-pretty"><?php echo esc_html( $fp_meta['why_item2_desc'] ?? '' ); ?></p>
-				</li>
-				<li class="feature-item feature-item--text rw-stack rw-stack--dense">
-					<h3 class="text-lg md:text-xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['why_item3_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed m-0 text-pretty"><?php echo esc_html( $fp_meta['why_item3_desc'] ?? '' ); ?></p>
-				</li>
-				<li class="feature-item feature-item--text rw-stack rw-stack--dense">
-					<h3 class="text-lg md:text-xl font-serif text-[var(--deep-teal)] m-0 text-balance"><?php echo esc_html( $fp_meta['why_item4_title'] ?? '' ); ?></h3>
-					<p class="feature-item__body text-base text-[var(--muted-grey)] leading-relaxed m-0 text-pretty"><?php echo esc_html( $fp_meta['why_item4_desc'] ?? '' ); ?></p>
-				</li>
-			</ul>
-		</div>
-	</section>
-
-	<?php if ( $show_home_partners ) : ?>
-	<section class="rw-section-y--compact bg-[var(--bg-subtle)]" aria-labelledby="home-partners-heading">
-		<div class="container <?php echo esc_attr( $rw_fp_inner ); ?>">
-				<header class="home-partners__head rw-section-head rw-section-head--center rw-section-head--tight">
-					<?php if ( $home_partners_label !== '' ) : ?>
-						<p class="section-label m-0">
-							<?php echo esc_html( $home_partners_label ); ?>
-						</p>
-					<?php endif; ?>
-
-					<h2 id="home-partners-heading" class="section-heading home-partners__heading m-0 text-3xl md:text-3xl font-serif text-[var(--deep-teal)]">
-						<?php echo esc_html( $home_partners_heading ); ?>
-					</h2>
-
-					<?php if ( $home_partners_intro !== '' ) : ?>
-						<p class="m-0 max-w-prose mx-auto text-sm leading-relaxed text-[var(--muted-grey)]">
-							<?php echo esc_html( $home_partners_intro ); ?>
-						</p>
-					<?php endif; ?>
-
-				</header>
-
-				<ul class="home-partners__grid m-0 mx-auto flex w-full max-w-3xl list-none flex-wrap items-center justify-center gap-x-8 gap-y-6 p-0 sm:gap-x-10 sm:gap-y-8">
-					<?php foreach ( $home_partner_items as $partner ) : ?>
-						<li class="m-0 flex basis-[7.5rem] items-center justify-center sm:basis-[8.5rem]">
-							<a
-								class="group flex h-16 w-full items-center justify-center p-2 transition-opacity duration-300 hover:opacity-70 sm:h-[4.5rem]"
-								href="<?php echo esc_url( $rw_fp_resolve_href( (string) $partner['url'] ) ); ?>"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<?php if ( ! empty( $partner['logo_id'] ) ) : ?>
-									<?php
-									echo wp_get_attachment_image(
-										(int) $partner['logo_id'],
-										'medium',
-										false,
-										array(
-											'class' => 'h-auto max-h-11 w-auto max-w-full object-contain sm:max-h-[3.25rem]',
-											'alt'   => sprintf( __( '%s logo', 'restwell-retreats' ), (string) $partner['name'] ),
-											'style' => sprintf( 'transform: scale(%.2F);', (float) $partner['scale'] ),
-										)
-									);
-									?>
-								<?php else : ?>
-									<span class="text-center text-sm font-medium text-[var(--deep-teal)]">
-										<?php echo esc_html( (string) $partner['name'] ); ?>
-									</span>
-								<?php endif; ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-		</div>
-	</section>
-	<?php endif; ?>
-
-	<?php if ( $show_home_comparison ) : ?>
-	<section class="home-comparison-section <?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_comparison_bg ); ?>" aria-labelledby="home-comparison-heading" aria-describedby="home-comparison-summary">
-		<div class="container <?php echo esc_attr( $rw_fp_inner_comparison ); ?>">
-			<header class="text-center rw-section-head rw-section-head--center rw-section-head--tight max-w-2xl mx-auto">
-				<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $home_comparison_label ) ); ?>
-				<h2 id="home-comparison-heading" class="text-3xl md:text-4xl section-heading m-0 text-balance text-[var(--deep-teal)]"><?php echo esc_html( $home_comparison_heading_resolved ); ?></h2>
-				<?php if ( $home_comparison_intro !== '' ) : ?>
-				<p class="text-[var(--body-secondary)] leading-relaxed max-w-prose m-0 mx-auto text-center text-pretty md:text-lg md:leading-relaxed"><?php echo esc_html( $home_comparison_intro ); ?></p>
-				<?php endif; ?>
-			</header>
-			<p id="home-comparison-summary" class="sr-only"><?php echo esc_html( $home_comparison_heading_resolved ); ?>: <?php esc_html_e( 'four-row comparison of Restwell and hotel or care setting.', 'restwell-retreats' ); ?></p>
-			<?php
-			$rw_cmp_check_svg = '<span class="rw-cmp-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="11" fill="var(--sea-glass)" fill-opacity="0.95" /><path fill="none" stroke="var(--deep-teal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m7 12 3.5 3.5L17 8.5" /></svg></span>';
-			$rw_cmp_cross_svg = '<span class="rw-cmp-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.25" fill="#fff" stroke="var(--muted-grey)" stroke-opacity="0.35" stroke-width="1" /><path fill="none" stroke="var(--deep-teal)" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" d="M8.5 8.5 15.5 15.5M15.5 8.5 8.5 15.5" /></svg></span>';
-			?>
-			<div class="home-comparison-mobile md:hidden" role="list">
-				<div class="home-comparison-mobile__legend" aria-hidden="true">
-					<span class="home-comparison-mobile__legend-item home-comparison-mobile__legend-item--yes">
-						<?php echo $rw_cmp_check_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
-						<span><?php esc_html_e( 'Restwell', 'restwell-retreats' ); ?></span>
-					</span>
-					<span class="home-comparison-mobile__legend-item home-comparison-mobile__legend-item--no">
-						<?php echo $rw_cmp_cross_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
-						<span><?php esc_html_e( 'Hotel / care', 'restwell-retreats' ); ?></span>
-					</span>
-				</div>
-				<?php foreach ( $home_comparison_rows as $hcr_row ) : ?>
-				<article class="home-comparison-mobile__row" role="listitem">
-					<h3 class="home-comparison-mobile__feature"><?php echo esc_html( $hcr_row['feature'] ); ?></h3>
-					<div class="home-comparison-mobile__values">
-						<p class="home-comparison-mobile__value home-comparison-mobile__value--yes">
-							<span class="sr-only"><?php esc_html_e( 'Restwell:', 'restwell-retreats' ); ?> </span>
-							<?php echo $rw_cmp_check_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
-							<span><?php echo esc_html( $hcr_row['restwell'] ); ?></span>
-						</p>
-						<p class="home-comparison-mobile__value home-comparison-mobile__value--no">
-							<span class="sr-only"><?php esc_html_e( 'Hotel / care:', 'restwell-retreats' ); ?> </span>
-							<?php echo $rw_cmp_cross_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
-							<span><?php echo esc_html( $hcr_row['other'] ); ?></span>
-						</p>
-					</div>
-				</article>
-				<?php endforeach; ?>
-			</div>
-			<div class="relative hidden md:block">
-				<div class="overflow-hidden rounded-2xl border border-[var(--deep-teal)]/12 bg-white shadow-sm">
-				<table class="m-0 w-full text-left text-sm text-[var(--body-secondary)]">
-					<caption class="sr-only">
-						<?php
-						echo esc_html(
-							sprintf(
-								/* translators: %s: section heading text. */
-								__( 'Table: %s. Three columns: area, Restwell, hotel or care setting.', 'restwell-retreats' ),
-								$home_comparison_heading_resolved
-							)
-						);
-						?>
-					</caption>
-					<thead>
-						<tr>
-							<th scope="col" class="w-[26%] min-w-[6.75rem] border-b border-[var(--deep-teal)]/12 bg-[var(--bg-subtle)] px-4 py-3 text-left text-[0.8125rem] font-semibold uppercase tracking-[0.08em] text-[var(--deep-teal)] md:w-[22%] md:px-5 md:py-4">
-								<?php esc_html_e( 'Area', 'restwell-retreats' ); ?>
-							</th>
-							<th scope="col" class="w-[37%] border-b border-[var(--deep-teal)]/12 bg-[var(--sea-glass)] px-4 py-3 text-left text-[0.9375rem] font-semibold leading-snug text-[var(--deep-teal)] md:px-5 md:py-4">
-								<?php esc_html_e( 'Restwell', 'restwell-retreats' ); ?>
-							</th>
-							<th scope="col" class="w-[37%] border-b border-[var(--deep-teal)]/12 bg-[var(--bg-subtle)] px-4 py-3 text-left text-[0.9375rem] font-semibold leading-snug text-[var(--deep-teal)] md:px-5 md:py-4">
-								<?php esc_html_e( 'Hotel / Care Setting', 'restwell-retreats' ); ?>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ( $home_comparison_rows as $hcr_row ) : ?>
-						<tr class="border-b border-[var(--deep-teal)]/10">
-							<th scope="row" class="bg-white px-4 py-3 text-left text-sm font-semibold leading-snug text-[var(--deep-teal)] align-top md:px-5 md:py-4 md:text-[0.9375rem]">
-								<?php echo esc_html( $hcr_row['feature'] ); ?>
-							</th>
-							<td class="min-h-[52px] bg-[var(--sea-glass)]/35 px-4 py-3 align-top text-base leading-relaxed text-[var(--body-secondary)] md:px-5 md:py-4">
-								<div class="flex min-h-[2.5rem] items-start gap-2.5">
-									<?php echo $rw_cmp_check_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
-									<span class="min-w-0 flex-1 text-[1rem] leading-relaxed text-[var(--body-secondary)]"><?php echo esc_html( $hcr_row['restwell'] ); ?></span>
-								</div>
-							</td>
-							<td class="min-h-[52px] bg-white px-4 py-3 align-top text-base leading-relaxed text-[var(--body-secondary)] md:px-5 md:py-4">
-								<div class="flex min-h-[2.5rem] items-start gap-2.5">
-									<?php echo $rw_cmp_cross_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?>
-									<span class="min-w-0 flex-1 leading-relaxed text-[var(--body-secondary)]"><?php echo esc_html( $hcr_row['other'] ); ?></span>
-								</div>
-							</td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-				</div>
-			</div>
-		</div>
-	</section>
-	<?php endif; ?>
-
-	<section class="cta-section home-cta-band relative <?php echo esc_attr( $rw_fp_section_y_emphasis ); ?> overflow-hidden">
-		<?php if ( $cta_image_id ) : ?>
-			<?php
-			echo wp_get_attachment_image(
-				$cta_image_id,
-				'full',
-				false,
-				array(
-					'class'       => 'absolute inset-0 w-full h-full object-cover -z-10',
-					'alt'         => '',
-					'loading'     => 'lazy',
-					'decoding'    => 'async',
-					'sizes'       => '100vw',
-					'aria-hidden' => 'true',
-				)
-			);
-			?>
-		<?php endif; ?>
-		<div class="absolute inset-0 bg-[var(--deep-teal)]/75" aria-hidden="true"></div>
-		<div class="relative container <?php echo esc_attr( $rw_fp_inner ); ?>">
-			<div class="home-cta-band__grid">
-				<div class="home-cta-band__copy">
-					<h2 class="home-cta-band__heading"><?php echo esc_html( $rw_fp_cta_heading_display ); ?></h2>
-					<p class="home-cta-band__body">
-						<?php echo esc_html( $rw_fp_cta_body_display ); ?>
-					</p>
-					<ul class="home-cta-band__list">
-						<li>
-							<i class="ph-bold ph-check-circle" aria-hidden="true"></i>
-							<span><?php esc_html_e( 'Private whole-property stay with care arranged only if you choose it', 'restwell-retreats' ); ?></span>
-						</li>
-						<li>
-							<i class="ph-bold ph-check-circle" aria-hidden="true"></i>
-							<span><?php esc_html_e( 'Adaptations and access details explained clearly before you book', 'restwell-retreats' ); ?></span>
-						</li>
-					</ul>
-				</div>
-				<aside class="home-cta-band__actions">
-					<p class="home-cta-band__actions-label"><?php esc_html_e( 'Get exact details', 'restwell-retreats' ); ?></p>
-					<div class="home-cta-band__buttons">
-						<a
-							id="bottom-cta-enquire"
-							href="<?php echo esc_url( $rw_fp_resolve_href( isset( $fp_meta['cta_primary_url'] ) ? (string) $fp_meta['cta_primary_url'] : '' ) ); ?>"
-							class="btn btn-gold w-full justify-center"
-							data-cta="cta-enquire"
-						>
-							<?php echo esc_html( $fp_meta['cta_primary_label'] ?? '' ); ?>
-						</a>
-						<a
-							href="<?php echo esc_url( $rw_fp_resolve_href( isset( $fp_meta['cta_secondary_url'] ) ? (string) $fp_meta['cta_secondary_url'] : '' ) ); ?>"
-							class="home-cta-band__secondary"
-							data-cta="cta-property"
-						>
-							<?php echo esc_html( $fp_meta['cta_secondary_label'] ?? '' ); ?>
-						</a>
-					</div>
-					<p class="home-cta-band__promise"><?php echo esc_html( $rw_fp_cta_promise_display ); ?></p>
-				</aside>
-			</div>
-		</div>
-	</section>
-
-	<?php if ( $show_home_faq && ! empty( $home_faq_pairs ) ) : ?>
-		<?php // Accordion markup/classes mirror template-faq.php; FAQPage JSON-LD is output by inc/seo.php. ?>
-	<section class="<?php echo esc_attr( $rw_fp_section_y . ' ' . $rw_fp_faq_bg ); ?>" aria-labelledby="home-faq-heading">
-		<div class="container <?php echo esc_attr( $rw_fp_inner_narrow ); ?> text-left">
-			<header class="max-w-3xl mx-auto text-center rw-stack <?php echo esc_attr( $rw_fp_head_block ); ?>">
-				<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $home_faq_label ) ); ?>
-				<h2 id="home-faq-heading" class="text-3xl md:text-4xl section-heading m-0 text-balance text-center text-[var(--deep-teal)]"><?php echo esc_html( $home_faq_heading ); ?></h2>
-			</header>
-			<div id="home-faq-accordion" class="space-y-4 faq-list m-0 max-w-3xl mx-auto">
-				<?php foreach ( $home_faq_pairs as $faq ) : ?>
-					<?php
-					if ( empty( $faq['q'] ) || empty( $faq['a'] ) ) {
-						continue;
-					}
-					?>
-				<details class="faq-item rw-faq-shell group" data-category="all">
-					<summary class="text-[var(--deep-teal)] font-medium text-lg py-4 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2">
-						<span><?php echo esc_html( $faq['q'] ); ?></span>
-						<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
-							<i class="ph-bold ph-caret-down"></i>
-						</span>
-					</summary>
-					<div class="text-gray-600 text-base leading-relaxed pb-6">
-						<?php echo wp_kses_post( wpautop( $faq['a'] ) ); ?>
-					</div>
-				</details>
-				<?php endforeach; ?>
-			</div>
-			<?php
-			$home_faq_more = get_page_by_path( 'faq', OBJECT, 'page' );
-			if ( $home_faq_more ) :
-				?>
-			<p class="home-faq-more m-0 max-w-3xl mx-auto text-center">
-				<a
-					href="<?php echo esc_url( get_permalink( $home_faq_more ) ); ?>"
-					class="restwell-tap-link group/faqmore inline-flex items-center justify-center gap-2 rounded-lg text-[var(--deep-teal)] font-semibold underline-offset-4 hover:underline hover:text-[var(--warm-gold-text)] transition-colors duration-300 no-underline cursor-pointer px-1 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--deep-teal)]"
-				>
-					<?php esc_html_e( 'More on the full FAQ page', 'restwell-retreats' ); ?>
-					<i class="ph-bold ph-caret-right text-sm motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/faqmore:translate-x-0.5" aria-hidden="true"></i>
-				</a>
-			</p>
-			<?php endif; ?>
-		</div>
-	</section>
-	<?php endif; ?>
-
-	<?php if ( $show_trust_block ) : ?>
-		<?php
-		set_query_var(
-			'args',
-			array(
-				'section_class'          => trim( $rw_fp_trust_bg . ' ' . $rw_fp_section_y ),
-				'container_class'        => $rw_fp_inner,
-				'trust_label'            => $trust_label,
-				'trust_heading'          => $trust_heading,
-				'trust_badge_image_id'   => $trust_badge_image_id,
-				'show_trust_partner'     => $show_trust_partner,
-				'show_trust_cqc_card'    => $show_trust_cqc_card,
-				'trust_line_primary'     => $trust_line_primary,
-				'trust_line'             => $trust_line,
-				'trust_line_secondary'   => $trust_line_secondary,
-				'trust_partner_url'      => $trust_partner_url,
-				'trust_cqc_profile_url'  => $trust_cqc_profile_url,
-			)
-		);
-		get_template_part( 'template-parts/trust-strip' );
-		?>
-	<?php endif; ?>
+    <section class="mid-cta mid-cta--plain section-y--cta" id="enquire" aria-labelledby="mid-cta-h">
+      <div class="mid-cta__media" aria-hidden="true"></div>
+      <div class="mid-cta__inner">
+        <h2 id="mid-cta-h">Not sure it’s the right fit?</h2>
+        <p>You can look through the FAQ, or just send us your dates and access needs. We’ll let you know quickly if it’s not the right fit.</p>
+        <div class="mid-cta__btns">
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire now</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access statement</a>
+        </div>
+      </div>
+    </section>
 
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

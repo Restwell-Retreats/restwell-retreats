@@ -1,0 +1,48 @@
+/**
+ * WordPress-only overlays on top of shared.css (concept system).
+ * Keep mockup shared.css untouched — logo image live in .logo, etc.
+ */
+
+.logo {
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+}
+
+.logo img,
+.logo .site-logo__img {
+	display: block;
+	height: 2.75rem;
+	width: auto;
+	max-width: 12rem;
+	object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+	.logo img,
+	.logo .site-logo__img {
+		height: 2.75rem;
+		max-width: 14rem;
+	}
+}
+
+/* Footer wordmark uses the same image treatment. */
+.site-footer .logo img,
+.site-footer .logo .site-logo__img {
+	height: 2.5rem;
+	max-width: 11rem;
+}
+
+/*
+ * Neutralize legacy Tailwind chrome while unported page bodies still load
+ * tailwind.css. Concept markup uses .logo / .nav-toggle / .site-header__inner —
+ * kill the old sticky white header / Phosphor menu rules that target removed classes.
+ */
+.site-header.scrolled {
+	box-shadow: none;
+}
+.site-header .site-nav,
+.site-header .mobile-menu-btn,
+.site-header .site-logo {
+	display: none !important;
+}

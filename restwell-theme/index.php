@@ -1,8 +1,6 @@
 <?php
 /**
- * Blog archive / posts index template.
- * Used when WordPress is configured with a static front page and a separate
- * "page for posts". Falls back gracefully when no posts exist.
+ * Concept port from mockups — Blog index.
  *
  * @package Restwell_Retreats
  */
@@ -12,226 +10,60 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-// Pull the "page for posts" if set, to allow editors to set a title/excerpt
-// in the WordPress admin for the default archive hero.
-$posts_page_id = (int) get_option( 'page_for_posts' );
-$archive_title  = $posts_page_id ? get_the_title( $posts_page_id ) : __( 'Guides & articles', 'restwell-retreats' );
-$archive_intro  = $posts_page_id ? get_the_excerpt( $posts_page_id ) : __( 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.', 'restwell-retreats' );
-$archive_label  = __( 'From the blog', 'restwell-retreats' );
-
-// Category/tag/date archives should expose their own identity in the hero.
-if ( is_category() ) {
-	$category_obj = get_queried_object();
-	if ( $category_obj && ! is_wp_error( $category_obj ) ) {
-		$archive_title = single_cat_title( '', false );
-		$archive_intro = trim( wp_strip_all_tags( (string) category_description( (int) $category_obj->term_id ) ) );
-		$archive_label = __( 'Category', 'restwell-retreats' );
-		if ( $archive_intro === '' ) {
-			$archive_intro = sprintf(
-				/* translators: %s: category name */
-				__( 'Articles filed under %s.', 'restwell-retreats' ),
-				$archive_title
-			);
-		}
-	}
-} elseif ( is_tag() ) {
-	$tag_obj = get_queried_object();
-	if ( $tag_obj && ! is_wp_error( $tag_obj ) ) {
-		$archive_title = single_tag_title( '', false );
-		$archive_intro = trim( wp_strip_all_tags( (string) tag_description( (int) $tag_obj->term_id ) ) );
-		$archive_label = __( 'Tag', 'restwell-retreats' );
-		if ( $archive_intro === '' ) {
-			$archive_intro = sprintf(
-				/* translators: %s: tag name */
-				__( 'Articles tagged %s.', 'restwell-retreats' ),
-				$archive_title
-			);
-		}
-	}
-} elseif ( is_date() ) {
-	$archive_title = get_the_archive_title();
-	$archive_intro = __( 'Archive by publication date.', 'restwell-retreats' );
-	$archive_label = __( 'Archive', 'restwell-retreats' );
-}
-
-$archive_hero_media = 0;
-if ( $posts_page_id ) {
-	$archive_hero_media = absint( get_post_meta( $posts_page_id, 'page_hero_image_id', true ) );
-	if ( ! $archive_hero_media ) {
-		$archive_hero_media = (int) get_post_thumbnail_id( $posts_page_id );
-	}
-}
-
-// Separate the first post (featured) from the rest.
-$first_post      = null;
-$remaining_posts = array();
-
-if ( have_posts() ) {
-	$post_index = 0;
-	while ( have_posts() ) {
-		the_post();
-		if ( $post_index === 0 ) {
-			$first_post = array(
-				'id'        => get_the_ID(),
-				'title'     => get_the_title(),
-				'permalink' => get_permalink(),
-				'excerpt'   => get_the_excerpt(),
-				'date'      => get_the_date(),
-				'date_iso'  => get_the_date( 'c' ),
-				'img_id'    => get_post_thumbnail_id(),
-				'img_src'   => get_the_post_thumbnail_url( null, 'large' ),
-				'category'  => restwell_get_primary_category(),
-				'read_time' => restwell_estimate_read_time( (string) get_post_field( 'post_content', get_the_ID() ) ),
-			);
-		} else {
-			$remaining_posts[] = array(
-				'id'        => get_the_ID(),
-				'title'     => get_the_title(),
-				'permalink' => get_permalink(),
-				'excerpt'   => get_the_excerpt(),
-				'date'      => get_the_date(),
-				'date_iso'  => get_the_date( 'c' ),
-				'img_id'    => get_post_thumbnail_id(),
-				'img_src'   => get_the_post_thumbnail_url( null, 'medium_large' ),
-				'category'  => restwell_get_primary_category(),
-				'read_time' => restwell_estimate_read_time( (string) get_post_field( 'post_content', get_the_ID() ) ),
-			);
-		}
-		$post_index++;
-	}
-}
 ?>
-<main class="flex-1 blog-archive-main" id="main-content">
 
-	<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id' => 'archive-hero-heading',
-			'label'      => $archive_label,
-			'heading'    => $archive_title,
-			'intro'      => $archive_intro,
-			'media_id'   => $archive_hero_media,
-			'image_alt'  => $archive_title,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
+<main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Blog</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">Accessible travel guides</h1>
+            <p>Access notes for Whitstable and the Kent coast, written for wheelchair users, carers and anyone planning a disability-friendly holiday or a funded stay.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<div class="bg-[var(--bg-subtle)] rw-section-y">
-		<div class="container">
-
-			<?php if ( $first_post ) : ?>
-
-				<article class="group mb-14 md:mb-20" aria-label="<?php echo esc_attr( $first_post['title'] ); ?>">
-					<a href="<?php echo esc_url( $first_post['permalink'] ); ?>"
-					   class="grid md:grid-cols-2 gap-0 bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-gray-100 no-underline hover:shadow-[0_12px_40px_rgb(0,0,0,0.09)] transition-shadow duration-300"
-					   aria-label="<?php echo esc_attr( sprintf( /* translators: %s post title */ __( 'Continue reading: %s', 'restwell-retreats' ), $first_post['title'] ) ); ?>"
-					   tabindex="0">
-						<div class="relative overflow-hidden min-h-[16rem] md:min-h-[22rem] bg-[var(--deep-teal)]/10">
-							<?php if ( $first_post['img_src'] ) : ?>
-								<img src="<?php echo esc_url( $first_post['img_src'] ); ?>"
-									 alt=""
-									 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-									 loading="eager" />
-							<?php else : ?>
-								<div class="absolute inset-0 flex items-center justify-center">
-									<i class="ph-bold ph-newspaper text-[var(--deep-teal)]/20 text-6xl" aria-hidden="true"></i>
-								</div>
-							<?php endif; ?>
-						</div>
-					<div class="flex flex-col justify-between p-8 md:p-10">
-							<div>
-								<div class="flex flex-wrap items-center gap-3 mb-4">
-									<?php if ( $first_post['category'] ) : ?>
-										<span class="inline-block bg-[var(--sea-glass)]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full"><?php echo esc_html( $first_post['category'] ); ?></span>
-									<?php endif; ?>
-									<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $first_post['date'] ); ?></span>
-									<span class="text-[var(--muted-grey)] text-xs" aria-hidden="true">&bull;</span>
-									<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $first_post['read_time'] ); ?> min read</span>
-								</div>
-								<h2 class="text-2xl md:text-3xl font-serif text-[var(--deep-teal)] leading-snug mb-4 group-hover:underline decoration-[var(--deep-teal)]/30 underline-offset-4"><?php echo esc_html( $first_post['title'] ); ?></h2>
-								<p class="text-gray-600 leading-relaxed text-base line-clamp-4"><?php echo esc_html( $first_post['excerpt'] ); ?></p>
-							</div>
-							<div class="flex items-center justify-end mt-6 pt-6 border-t border-gray-100">
-								<span class="inline-flex items-center gap-1.5 text-[var(--deep-teal)] text-sm font-semibold">
-									<?php esc_html_e( 'Continue reading', 'restwell-retreats' ); ?> <i class="ph-bold ph-arrow-right text-xs" aria-hidden="true"></i>
-								</span>
-							</div>
-						</div>
-					</a>
-				</article>
-
-				<?php if ( ! empty( $remaining_posts ) ) : ?>
-					<div class="grid sm:grid-cols-2 gap-6 lg:gap-8">
-						<?php foreach ( $remaining_posts as $rp ) : ?>
-							<article class="group" aria-label="<?php echo esc_attr( $rp['title'] ); ?>">
-								<a href="<?php echo esc_url( $rp['permalink'] ); ?>"
-								   class="flex flex-col bg-white rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 no-underline hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:hover:translate-y-0 h-full"
-								   aria-label="<?php echo esc_attr( sprintf( /* translators: %s post title */ __( 'Continue reading: %s', 'restwell-retreats' ), $rp['title'] ) ); ?>">
-									<div class="relative overflow-hidden aspect-[16/9] bg-[var(--deep-teal)]/10">
-										<?php if ( $rp['img_src'] ) : ?>
-											<img src="<?php echo esc_url( $rp['img_src'] ); ?>"
-												 alt=""
-												 class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-												 loading="lazy" />
-										<?php else : ?>
-											<div class="absolute inset-0 flex items-center justify-center">
-												<i class="ph-bold ph-newspaper text-[var(--deep-teal)]/20 text-4xl" aria-hidden="true"></i>
-											</div>
-										<?php endif; ?>
-									</div>
-									<div class="flex flex-col flex-1 p-6">
-										<div class="flex items-center gap-2 mb-3">
-											<?php if ( $rp['category'] ) : ?>
-												<span class="inline-block bg-[var(--sea-glass)]/30 text-[var(--deep-teal)] text-xs font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full"><?php echo esc_html( $rp['category'] ); ?></span>
-											<?php endif; ?>
-											<span class="text-[var(--muted-grey)] text-xs"><?php echo esc_html( $rp['read_time'] ); ?> min read</span>
-										</div>
-										<h2 class="text-lg font-serif text-[var(--deep-teal)] leading-snug mb-3 group-hover:underline decoration-[var(--deep-teal)]/30 underline-offset-4"><?php echo esc_html( $rp['title'] ); ?></h2>
-										<p class="text-gray-600 text-sm leading-relaxed flex-1 line-clamp-3"><?php echo esc_html( $rp['excerpt'] ); ?></p>
-										<div class="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
-											<time class="text-xs text-[var(--muted-grey)]" datetime="<?php echo esc_attr( $rp['date_iso'] ); ?>"><?php echo esc_html( $rp['date'] ); ?></time>
-											<span class="inline-flex items-center gap-1 text-[var(--deep-teal)] text-xs font-semibold">
-												<?php esc_html_e( 'Continue', 'restwell-retreats' ); ?> <i class="ph-bold ph-arrow-right text-[10px]" aria-hidden="true"></i>
-											</span>
-										</div>
-									</div>
-								</a>
-							</article>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php
-				the_posts_pagination(
-					array(
-						'mid_size'           => 2,
-						'prev_text'          => '<i class="ph-bold ph-arrow-left" aria-hidden="true"></i> ' . __( 'Newer', 'restwell-retreats' ),
-						'next_text'          => __( 'Older', 'restwell-retreats' ) . ' <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>',
-						'screen_reader_text' => __( 'Articles navigation', 'restwell-retreats' ),
-						'class'              => 'mt-14 md:mt-20',
-					)
-				);
-				?>
-
-			<?php else : ?>
-
-				<div class="text-center py-16 max-w-md mx-auto">
-					<div class="w-16 h-16 bg-[var(--sea-glass)]/30 rounded-full flex items-center justify-center mx-auto mb-6" aria-hidden="true">
-						<i class="ph-bold ph-pen-nib text-[var(--deep-teal)] text-2xl"></i>
-					</div>
-					<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-3"><?php esc_html_e( 'Guides coming soon', 'restwell-retreats' ); ?></h2>
-					<p class="text-gray-600 leading-relaxed"><?php esc_html_e( 'We are working on practical guides to accessible holidays, the Whitstable area, and funding your stay. Check back soon, or enquire now and we will send you updates.', 'restwell-retreats' ); ?></p>
-				</div>
-
-			<?php endif; ?>
-
-		</div>
-	</div>
+    <section class="section-y band-white">
+      <div class="container">
+        <article class="blog-featured">
+          <a class="blog-featured__media" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" aria-hidden="true" tabindex="-1">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastline-panorama.webp' ); ?>" alt="Whitstable coastline" width="1000" height="625" loading="lazy" />
+            <span class="blog-featured__scrim" aria-hidden="true"></span>
+            <span class="tag blog-featured__tag">Area guide</span>
+          </a>
+          <div class="blog-featured__overlay">
+            <p class="blog-meta blog-meta--overlay">8 min read</p>
+            <h2><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Accessible beaches and promenades near Whitstable</a></h2>
+            <p class="blog-featured__excerpt">Where the paved coast works for chairs, and where shingle means choosing the promenade instead.</p>
+          </div>
+        </article>
+        <ul class="card-grid card-grid--2" role="list" data-reveal>
+          <li><article class="media-card">
+            <a class="media-card__image" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" aria-hidden="true" tabindex="-1">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-marina-sunset.webp' ); ?>" alt="Marina at sunset" width="640" height="480" loading="lazy" />
+              <span class="tag media-card__tag">Planning</span>
+            </a>
+            <p class="blog-meta">5 min read</p>
+            <h3><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">What to pack for an accessible coastal stay</a></h3>
+            <p>A short list that assumes the hoist and wet room are already waiting.</p>
+          </article></li>
+          <li><article class="media-card">
+            <a class="media-card__image" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" aria-hidden="true" tabindex="-1">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-drone-aerial-view.webp' ); ?>" alt="Aerial view of Whitstable" width="640" height="480" loading="lazy" />
+              <span class="tag media-card__tag">Funding</span>
+            </a>
+            <p class="blog-meta">6 min read</p>
+            <h3><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Direct payments and short breaks: a plain overview</a></h3>
+            <p>How families and carers often start the conversation with their local authority.</p>
+          </article></li>
+        </ul>
+      </div>
+    </section>
 
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

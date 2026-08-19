@@ -2,6 +2,8 @@
 /**
  * Template Name: How It Works
  *
+ * Concept port from mockups — How It Works.
+ *
  * @package Restwell_Retreats
  */
 
@@ -10,303 +12,234 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$pid = get_the_ID();
-
-$hiw_hero_image_id = (int) get_post_meta( $pid, 'hiw_hero_image_id', true );
-$hiw_label          = get_post_meta( $pid, 'hiw_label', true ) ?: '';
-$hiw_heading        = get_post_meta( $pid, 'hiw_heading', true ) ?: 'How your accessible stay works';
-$hiw_intro          = get_post_meta( $pid, 'hiw_intro', true ) ?: 'An accessible stay at Restwell follows a clear booking process from first question to arrival. Share what you need, confirm dates, arrange optional care if you want it, then settle in.';
-$hiw_hero_cta_text           = get_post_meta( $pid, 'hiw_hero_cta_text', true ) ?: 'Ask about your dates';
-$hiw_hero_cta_url            = esc_url( get_post_meta( $pid, 'hiw_hero_cta_url', true ) ?: home_url( '/enquire/' ) );
-$hiw_hero_cta_promise        = get_post_meta( $pid, 'hiw_hero_cta_promise', true ) ?: '';
-$hiw_hero_cta_secondary_text = get_post_meta( $pid, 'hiw_hero_cta_secondary_text', true ) ?: '';
-$hiw_hero_cta_secondary_url  = esc_url( get_post_meta( $pid, 'hiw_hero_cta_secondary_url', true ) ?: home_url( '/enquire/' ) );
-$hiw_tldr_markup             = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
-
-$hiw_steps_label   = get_post_meta( $pid, 'hiw_steps_label', true ) ?: 'FOUR-STEP PROCESS';
-$hiw_steps_heading = get_post_meta( $pid, 'hiw_steps_heading', true ) ?: 'Straightforward from start to finish';
-$hiw_steps_intro   = get_post_meta( $pid, 'hiw_steps_intro', true ) ?: '';
-$steps = array();
-for ( $i = 1; $i <= 4; $i++ ) {
-	$step_title = get_post_meta( $pid, "hiw_step{$i}_title", true );
-	$body       = get_post_meta( $pid, "hiw_step{$i}_body", true );
-	if ( $i === 1 && ! $step_title ) {
-		$step_title = 'Enquire';
-		$body       = $body ?: 'Tell us your dates and your access needs.';
-	}
-	if ( $i === 2 && ! $step_title ) {
-		$step_title = 'Confirm';
-		$body       = $body ?: 'We talk through what\'s in the house and any care you\'d like.';
-	}
-	if ( $i === 3 && ! $step_title ) {
-		$step_title = 'Book';
-		$body       = $body ?: 'You secure your dates.';
-	}
-	if ( $i === 4 && ! $step_title ) {
-		$step_title = 'Arrive';
-		$body       = $body ?: 'You come home to a step-free house that is ready for you.';
-	}
-	$steps[] = array(
-		'title' => $step_title ?: '',
-		'body'  => $body ?: '',
-	);
-}
-
-$hiw_care_cta_label   = get_post_meta( $pid, 'hiw_care_cta_label', true ) ?: 'CARE SUPPORT';
-$hiw_care_cta_heading = get_post_meta( $pid, 'hiw_care_cta_heading', true ) ?: 'Care fits around your routine';
-$hiw_care_cta_body    = get_post_meta( $pid, 'hiw_care_cta_body', true ) ?: 'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.';
-$hiw_care_cta_btn     = get_post_meta( $pid, 'hiw_care_cta_btn', true ) ?: 'Learn about care support';
-$hiw_care_cta_url     = esc_url( get_post_meta( $pid, 'hiw_care_cta_url', true ) ?: home_url( '/accessibility/' ) );
-
-// What's included (card grid - inspiration: Bed linen & towels, Welcome pack, Full kitchen, Private garden, Fast Wi-Fi, Accessible parking)
-$hiw_included_label   = get_post_meta( $pid, 'hiw_included_label', true ) ?: 'WHAT\'S INCLUDED';
-$hiw_included_heading = get_post_meta( $pid, 'hiw_included_heading', true ) ?: "What's included in every stay";
-$hiw_included_intro   = get_post_meta( $pid, 'hiw_included_intro', true ) ?: 'No hidden extras. These come with every booking as standard.';
-$included_items = array(
-	array(
-		'title' => 'Bed linen & towels',
-		'desc' => 'Freshly laundered bed linen and towels, prepared before you arrive.',
-		'icon' => 'linen',
-	),
-	array(
-		'title' => 'Welcome pack',
-		'desc' => 'House guide, local contacts, plus tea, coffee, and basic arrival essentials.',
-		'icon' => 'gift',
-	),
-	array(
-		'title' => 'Full kitchen',
-		'desc' => 'Fully equipped kitchen so you can cook comfortably at your own pace.',
-		'icon' => 'kitchen',
-	),
-	array(
-		'title' => 'Private garden',
-		'desc' => 'Private use of the whole bungalow, with no shared spaces.',
-		'icon' => 'garden',
-	),
-	array(
-		'title' => 'Fast Wi-Fi',
-		'desc' => 'Reliable Wi-Fi coverage across the property for guests and carers.',
-		'icon' => 'wifi',
-	),
-	array(
-		'title' => 'Accessible parking',
-		'desc' => 'Two off-road spaces on the private drive, with nearby on-street overflow.',
-		'icon' => 'parking',
-	),
-);
-for ( $i = 1; $i <= 6; $i++ ) {
-	$t = get_post_meta( $pid, "hiw_included_{$i}_title", true );
-	$d = get_post_meta( $pid, "hiw_included_{$i}_desc", true );
-	if ( $t ) {
-		$included_items[ $i - 1 ]['title'] = $t;
-		$included_items[ $i - 1 ]['desc']  = $d ?: '';
-	}
-}
-
-$hiw_cta_label            = get_post_meta( $pid, 'hiw_cta_label', true ) ?: '';
-$hiw_cta_heading          = get_post_meta( $pid, 'hiw_cta_heading', true ) ?: 'Ready to plan your break?';
-$hiw_cta_body             = get_post_meta( $pid, 'hiw_cta_body', true ) ?: 'Get in touch and we\'ll answer any questions, check availability, and take it from there.';
-$hiw_cta_primary_label     = get_post_meta( $pid, 'hiw_cta_primary_label', true ) ?: 'Enquire now';
-$hiw_cta_primary_url      = esc_url( get_post_meta( $pid, 'hiw_cta_primary_url', true ) ?: home_url( '/enquire/' ) );
-$hiw_cta_promise          = get_post_meta( $pid, 'hiw_cta_promise', true ) ?: 'No obligation. Ask us anything.';
-$hiw_cta_secondary_label  = get_post_meta( $pid, 'hiw_cta_secondary_label', true ) ?: 'See the property';
-$hiw_cta_secondary_url    = esc_url( get_post_meta( $pid, 'hiw_cta_secondary_url', true ) ?: home_url( '/the-property/' ) );
-
-$hiw_faq_label   = get_post_meta( $pid, 'hiw_faq_label', true ) ?: 'HAVE QUESTIONS?';
-$hiw_faq_heading = get_post_meta( $pid, 'hiw_faq_heading', true ) ?: 'Common questions about booking';
-$hiw_faq_intro   = get_post_meta( $pid, 'hiw_faq_intro', true ) ?: 'Answers to the things people ask us most. Anything else: just get in touch.';
-// Use centralised helper so How It Works shows the same FAQs as the FAQ page.
-$faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'how-it-works' ) : array();
 ?>
-<main class="flex-1" id="main-content">
-<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id'    => 'page-hero-heading',
-			'label'         => $hiw_label,
-			'heading'       => $hiw_heading,
-			'intro'         => $hiw_intro,
-			'media_id'      => $hiw_hero_image_id,
-			'append_after_h1_html' => $hiw_tldr_markup,
-			'cta_primary'   => $hiw_hero_cta_text !== '' ? array(
-				'label' => $hiw_hero_cta_text,
-				'url'   => $hiw_hero_cta_url,
-			) : array(),
-			'cta_secondary' => $hiw_hero_cta_secondary_text !== '' ? array(
-				'label' => $hiw_hero_cta_secondary_text,
-				'url'   => $hiw_hero_cta_secondary_url,
-			) : array(),
-			'cta_promise'   => $hiw_hero_cta_promise,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
 
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'steps_label'   => $hiw_steps_label,
-			'steps_heading' => $hiw_steps_heading,
-			'steps_intro'   => $hiw_steps_intro,
-			'steps'         => $steps,
-		)
-	);
-	get_template_part( 'template-parts/how-it-works-steps' );
-	?>
 
-	<section class="rw-section-y bg-[var(--deep-teal)]" aria-labelledby="care-cta-heading">
-		<div class="container max-w-3xl text-center">
-			<div class="rw-section-head rw-section-head--center rw-section-head--tight mx-auto">
-				<?php if ( $hiw_care_cta_label !== '' ) : ?>
-					<p class="text-[var(--warm-gold-hero)] text-xs font-semibold uppercase tracking-[0.2em] font-sans"><?php echo esc_html( $hiw_care_cta_label ); ?></p>
-				<?php endif; ?>
-				<h2 id="care-cta-heading" class="text-3xl md:text-4xl font-serif text-white m-0"><?php echo esc_html( $hiw_care_cta_heading ); ?></h2>
-			</div>
-			<p class="text-white/85 text-lg leading-relaxed mb-8 max-w-2xl mx-auto"><?php echo esc_html( $hiw_care_cta_body ); ?></p>
-			<a href="<?php echo esc_url( $hiw_care_cta_url ); ?>" class="btn btn-gold">
-				<?php echo esc_html( $hiw_care_cta_btn ); ?>
-				<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-			</a>
-		</div>
-	</section>
+<main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">How It Works</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">How an accessible stay works</h1>
+            <p>Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="hiw-included-heading">
-		<div class="container">
-			<div class="rw-section-head rw-section-head--center mx-auto">
-				<p class="section-label"><?php echo esc_html( $hiw_included_label ); ?></p>
-				<h2 id="hiw-included-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php echo esc_html( $hiw_included_heading ); ?></h2>
-			</div>
-			<?php if ( $hiw_included_intro !== '' ) : ?>
-			<p class="text-gray-600 text-lg leading-relaxed text-center max-w-prose mx-auto mb-10"><?php echo esc_html( $hiw_included_intro ); ?></p>
-			<?php endif; ?>
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-5xl mx-auto">
-				<?php foreach ( $included_items as $item ) : ?>
-				<div class="rw-card-elevated rw-card-elevated--interactive p-8
-							flex flex-col items-center text-center">
-					<div class="text-[var(--deep-teal)] mb-5" aria-hidden="true">
-						<?php
-						switch ( $item['icon'] ) {
-							case 'house':
-								echo '<i class="ph-bold ph-house text-3xl"></i>';
-								break;
-							case 'linen':
-								echo '<i class="ph-bold ph-bed text-3xl"></i>';
-								break;
-							case 'gift':
-								echo '<i class="ph-bold ph-gift text-3xl"></i>';
-								break;
-							case 'kitchen':
-								echo '<i class="ph-bold ph-cooking-pot text-3xl"></i>';
-								break;
-							case 'accessibility':
-								echo '<i class="ph-bold ph-wheelchair text-3xl"></i>';
-								break;
-							case 'garden':
-								echo '<i class="ph-bold ph-plant text-3xl"></i>';
-								break;
-							case 'wifi':
-								echo '<i class="ph-bold ph-wifi-high text-3xl"></i>';
-								break;
-							case 'parking':
-								echo '<i class="ph-bold ph-garage text-3xl"></i>';
-								break;
-							case 'clock':
-							default:
-								echo '<i class="ph-bold ph-clock text-3xl"></i>';
-								break;
-						}
-						?>
-					</div>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] mb-3 leading-tight"><?php echo esc_html( $item['title'] ); ?></h3>
-					<?php if ( ! empty( $item['desc'] ) ) : ?>
-					<p class="text-gray-600 leading-relaxed text-sm md:text-base"><?php echo esc_html( $item['desc'] ); ?></p>
-					<?php endif; ?>
-				</div>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
+    <nav class="subnav" aria-label="On this page" data-toc>
+      <div class="container">
+        <ul class="subnav__list">
+          <li><a href="#process">Process</a></li>
+          <li><a href="#arrival">Arrival</a></li>
+          <li><a href="#care">Care</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </nav>
 
-	<section class="rw-section-y bg-[var(--soft-sand)]" aria-labelledby="hiw-cta-heading">
-		<div class="container max-w-3xl text-center">
-			<div class="rw-section-head rw-section-head--center rw-section-head--tight mx-auto">
-			<?php if ( $hiw_cta_label !== '' ) : ?>
-				<p class="section-label"><?php echo esc_html( $hiw_cta_label ); ?></p>
-			<?php endif; ?>
-			<h2 id="hiw-cta-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php echo esc_html( $hiw_cta_heading ); ?></h2>
-			</div>
-			<?php if ( $hiw_cta_body !== '' ) : ?>
-				<p class="text-center text-gray-600 text-lg leading-relaxed mb-8 max-w-prose mx-auto mt-0"><?php echo esc_html( $hiw_cta_body ); ?></p>
-			<?php endif; ?>
-		<div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-			<a href="<?php echo esc_url( $hiw_cta_primary_url ); ?>" class="btn btn-primary">
-				<?php echo esc_html( $hiw_cta_primary_label ); ?>
-				<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-			</a>
-			<a href="<?php echo esc_url( $hiw_cta_secondary_url ); ?>" class="btn btn-outline">
-				<?php echo esc_html( $hiw_cta_secondary_label ); ?>
-			</a>
-		</div>
-			<?php if ( $hiw_cta_promise !== '' ) : ?>
-				<p class="text-gray-600 text-sm mt-4"><?php echo esc_html( $hiw_cta_promise ); ?></p>
-			<?php endif; ?>
-		</div>
-	</section>
+    <section class="section-y band-white process" id="process" aria-labelledby="process-h">
+      <div class="container">
+        <header class="section-head section-head--center process__head">
+          <p class="eyebrow">How it works</p>
+          <h2 id="process-h">Enquire, confirm, deposit, arrive.</h2>
+          <p class="lede">There are four steps from your first message to arriving at the key safe. There is no online checkout, and you only pay a deposit after we have agreed on your dates.</p>
+        </header>
+        <div class="process__layout">
+          <div class="process__media" data-reveal>
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/patio-1.png' ); ?>" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
+          </div>
+          <ol class="process-list">
+            <li>
+              <span class="process-list__index" aria-hidden="true">01</span>
+              <div class="process-list__body">
+                <h3>Enquire</h3>
+                <p>Tell us your travel dates, who’s coming, and what equipment you need.</p>
+              </div>
+            </li>
+            <li>
+              <span class="process-list__index" aria-hidden="true">02</span>
+              <div class="process-list__body">
+                <h3>Confirm</h3>
+                <p>We will set up the house for your group, including the bed layout. If you want, we can also start a Continuity care conversation using the same phone number.</p>
+              </div>
+            </li>
+            <li>
+              <span class="process-list__index" aria-hidden="true">03</span>
+              <div class="process-list__body">
+                <h3>Deposit</h3>
+                <p>Pay a 50% deposit to reserve your bungalow. The rest is due one week before you arrive.</p>
+              </div>
+            </li>
+            <li>
+              <span class="process-list__index" aria-hidden="true">04</span>
+              <div class="process-list__body">
+                <h3>Arrive</h3>
+                <p>Arrive any time after 3pm and use the key-safe. The step-free house and all your equipment will be ready for your group.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
 
-	<?php // Accordion markup mirrors template-faq.php (no filter pills; simpler variant). ?>
-	<?php if ( ! empty( $faq_pairs ) ) : ?>
-	<section class="rw-section-y bg-white" aria-labelledby="hiw-faq-heading">
-		<div class="container max-w-3xl">
-			<div class="rw-stack rw-mb-section max-w-prose">
-			<p class="section-label"><?php echo esc_html( $hiw_faq_label ); ?></p>
-			<h2 id="hiw-faq-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php echo esc_html( $hiw_faq_heading ); ?></h2>
-			<?php if ( $hiw_faq_intro !== '' ) : ?>
-				<p class="text-gray-600 text-lg leading-relaxed m-0"><?php echo esc_html( $hiw_faq_intro ); ?></p>
-			<?php endif; ?>
-			</div>
-			<div class="space-y-3">
-				<?php foreach ( $faq_pairs as $faq ) : ?>
-					<details class="bg-white rounded-2xl px-8 shadow-[0_4px_20px_rgb(0,0,0,0.05)] border border-gray-100 group">
-						<summary class="text-[var(--deep-teal)] font-medium text-base py-5 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2">
-							<span><?php echo esc_html( $faq['q'] ); ?></span>
-							<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true"><i class="ph-bold ph-caret-down"></i></span>
-						</summary>
-						<div class="text-gray-600 text-sm leading-relaxed pb-6"><?php echo wp_kses_post( wpautop( $faq['a'] ) ); ?></div>
-					</details>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="section-y band-subtle" id="arrival" aria-labelledby="arrival-h">
+      <div class="container split split--flip split--cover">
+        <div class="split__media" data-reveal>
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance to the Restwell bungalow on Russell Drive" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Arrival day</p>
+            <h2 id="arrival-h">Key-safe from 3pm</h2>
+            <p class="lede">There is no reception desk. Park in the driveway, open the key safe, and settle into a house that is already set up for your group.</p>
+          </header>
+          <dl class="comparison-list">
+            <div class="comparison-list__item">
+              <dt>Check-in</dt>
+              <dd>From 3pm via the key-safe · departure by 11am</dd>
+            </div>
+            <div class="comparison-list__item">
+              <dt>Parking</dt>
+              <dd>Level driveway for two cars, including accessible vehicles</dd>
+            </div>
+            <div class="comparison-list__item">
+              <dt>Ready for you</dt>
+              <dd>Step-free routes and kit set from your enquiry · guest notes after dates are confirmed</dd>
+            </div>
+          </dl>
+          <p class="link-stack">
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and kit notes</a>
+          </p>
+        </div>
+      </div>
+    </section>
 
-	<section class="rw-section-y--compact bg-[var(--bg-subtle)] border-t border-gray-100" aria-labelledby="hiw-related-heading">
-		<div class="container max-w-3xl">
-			<h2 id="hiw-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-4"><?php esc_html_e( 'Useful guides for planning your stay', 'restwell-retreats' ); ?></h2>
-			<ul class="space-y-3 text-gray-700">
-				<li>
-					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'How to use your direct payment for a holiday', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'whether your care funding can cover support during a holiday stay.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'How to choose an accessible self-catering holiday property', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'a checklist of questions to ask before you commit to any property.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/who-its-for/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'Who Restwell is for', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'guests, carers, families, and professional referrers.', 'restwell-retreats' ); ?></span>
-				</li>
-			</ul>
-		</div>
-	</section>
+    <section class="care section-y band-white" id="care" aria-labelledby="care-h">
+      <div class="container">
+        <div class="care__panel">
+          <div class="care__intro">
+            <header class="section-head">
+              <p class="eyebrow">Optional care</p>
+              <h2 id="care-h">Add care only if you need it</h2>
+            </header>
+            <div class="care__intro-body">
+              <p class="lede">Ask about Continuity of Care Services when you enquire, or bring your own team. Care can be arranged in the same conversation as your booking.</p>
+            </div>
+          </div>
+          <ul class="care__types" aria-label="What Continuity can arrange">
+            <li>
+              <span class="care__type-title">Personal care</span>
+              <span class="care__type-text">Washing, dressing and daily routines on agreed times.</span>
+            </li>
+            <li>
+              <span class="care__type-title">Visiting care</span>
+              <span class="care__type-text">Short daytime visits, or support for a promenade or town trip.</span>
+            </li>
+            <li>
+              <span class="care__type-title">Mobility and hoisting</span>
+              <span class="care__type-text">Transfers with the on-site ceiling track and wet-room kit.</span>
+            </li>
+          </ul>
+          <div class="care__foot">
+            <div class="care__foot-copy">
+              <p class="care__note">We do not add anything until you agree to the support package.</p>
+              <p class="link-stack">
+                <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+                <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#care-rates' ); ?>">See care guide rates</a>
+              </p>
+            </div>
+            <div class="care__brand" aria-label="Care partner and CQC rating">
+              <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services-long.png' ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
+              </a>
+              <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
+                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/cqc-rating-good.jpg' ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
+      <div class="container">
+        <div class="faq__layout">
+          <header class="faq__intro">
+            <p class="eyebrow">Booking</p>
+            <h2 id="faq-h">Before you enquire</h2>
+            <p class="lede">We will explain when to pay the deposit, who we invoice, arrival details, and how optional care works with a self-catering stay.</p>
+          </header>
+          <div class="faq-list faq-list--split" data-faq-accordion>
+            <div class="faq-list__col">
+            <div class="faq-item is-open" data-cat="booking">
+              <button type="button" class="faq-item__trigger" aria-expanded="true" id="hiw-q1" aria-controls="hiw-q1-a">
+                <span>How do I book a stay?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="hiw-q1-a" role="region" aria-labelledby="hiw-q1">
+                <p>Send an enquiry with your dates and access needs. We will confirm availability and what the house offers, then send booking details. A 50% deposit secures your dates.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="booking">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q2" aria-controls="hiw-q2-a">
+                <span>How can I pay for the bungalow?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="hiw-q2-a" role="region" aria-labelledby="hiw-q2" hidden>
+                <p>You can pay by bank transfer or debit/credit card. The balance is due no later than one week before arrival. If you arrange care, Continuity will send quotes and invoices separately.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="funding">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q3" aria-controls="hiw-q3-a">
+                <span>Can a local authority or NHS team book for me?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="hiw-q3-a" role="region" aria-labelledby="hiw-q3" hidden>
+                <p>Yes. We invoice the same rates regardless of funding route. Tell us who should receive the invoice when you enquire. Funding &amp; Support sets out the paperwork routes.</p>
+              </div>
+            </div>
+            </div>
+            <div class="faq-list__col">
+            <div class="faq-item" data-cat="booking">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q4" aria-controls="hiw-q4-a">
+                <span>What time can we arrive?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="hiw-q4-a" role="region" aria-labelledby="hiw-q4" hidden>
+                <p>Check in with the key-safe from 3pm on your arrival day. Departure is by 11am unless we agree on a different time in writing.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="care">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q5" aria-controls="hiw-q5-a">
+                <span>Can I arrange optional care with the stay?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="hiw-q5-a" role="region" aria-labelledby="hiw-q5" hidden>
+                <p>Yes. You can bring your usual team, or ask about Continuity of Care Services on 01622 809881 when you enquire. Care is not included in the bungalow price. Details and guide rates are on Optional Care and Pricing.</p>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+      <div class="mid-cta__media" aria-hidden="true"></div>
+      <div class="mid-cta__inner">
+        <h2 id="mid-cta-h">Send dates and access needs.</h2>
+        <p>We will reply with measurements, equipment notes, and your next steps.</p>
+        <div class="mid-cta__btns">
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">View the property</a>
+        </div>
+      </div>
+    </section>
+
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

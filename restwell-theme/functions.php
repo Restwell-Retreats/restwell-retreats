@@ -25,6 +25,7 @@ require_once get_template_directory() . '/inc/blog-categories.php';
 require_once get_template_directory() . '/inc/internal-links.php';
 require_once get_template_directory() . '/inc/csp.php';
 require_once get_template_directory() . '/inc/enqueue.php';
+require_once get_template_directory() . '/inc/concept-surfaces.php';
 require_once get_template_directory() . '/inc/faq.php';
 require_once get_template_directory() . '/inc/faq-question-handler.php';
 require_once get_template_directory() . '/inc/gallery.php';

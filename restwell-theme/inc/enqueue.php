@@ -34,12 +34,16 @@ function restwell_enqueue_scripts() {
 	// Serve minified assets in production; fall back to unminified when SCRIPT_DEBUG is on.
 	$use_min = ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
 
+	wp_enqueue_style(
+		'restwell-fonts',
+		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500;600&display=swap',
+		array(),
+		null
+	);
+
 	/*
-	 * Phosphor Icons (@phosphor-icons/web): regular = `.ph` + `.ph-{name}`, bold = `.ph-bold` + `.ph-{name}`.
-	 * Note: there is no single `src/index.css` in this package; per-weight styles are the supported entry points.
-	 *
-	 * Output normal <link rel="stylesheet"> tags only. Print/onload deferral was removed: Google Rich Results Test
-	 * and LiteSpeed CSS combine/minify often fail on non-standard markup, producing "resources could not be loaded".
+	 * Phosphor Icons (@phosphor-icons/web): kept for unported Tailwind surfaces / legacy icons.
+	 * Concept chrome uses CSS hamburger (shared.css), not Phosphor.
 	 */
 	wp_enqueue_style(
 		'phosphor-icons-regular',
@@ -55,6 +59,7 @@ function restwell_enqueue_scripts() {
 	);
 
 	// tailwind.css is always built minified via `npm run build` (Tailwind CLI --minify).
+	// Dequeued on concept surfaces via restwell_dequeue_tailwind_on_concept().
 	wp_enqueue_style(
 		'restwell-tailwind',
 		$theme_uri . '/assets/css/tailwind.css',
@@ -62,16 +67,59 @@ function restwell_enqueue_scripts() {
 		restwell_theme_asset_version( '/assets/css/tailwind.css' )
 	);
 
+	// Mockup design system — global chrome. Enqueued after Tailwind so it wins on cascade
+	// when both load; does not depend on Tailwind so it survives concept hard-cut dequeue.
+	wp_enqueue_style(
+		'restwell-shared',
+		$theme_uri . '/assets/css/shared.css',
+		array( 'restwell-fonts' ),
+		restwell_theme_asset_version( '/assets/css/shared.css' )
+	);
+	wp_enqueue_style(
+		'restwell-shared-wp',
+		$theme_uri . '/assets/css/shared-wp.css',
+		array( 'restwell-shared' ),
+		restwell_theme_asset_version( '/assets/css/shared-wp.css' )
+	);
+
+	wp_enqueue_script(
+		'restwell-shared',
+		$theme_uri . '/assets/js/shared.js',
+		array(),
+		restwell_theme_asset_version( '/assets/js/shared.js' ),
+		true
+	);
+
 	$main_js = $use_min ? '/assets/js/main.min.js' : '/assets/js/main.js';
 	wp_enqueue_script(
 		'restwell-main',
 		$theme_uri . $main_js,
-		array(),
+		array( 'restwell-shared' ),
 		restwell_theme_asset_version( $main_js ),
 		true
 	);
 }
 add_action( 'wp_enqueue_scripts', 'restwell_enqueue_scripts' );
+
+/**
+ * Defer shared.js with main.js.
+ *
+ * @param string $tag    Script HTML.
+ * @param string $handle Handle.
+ * @param string $src    Src (unused).
+ * @return string
+ */
+function restwell_defer_shared_script( $tag, $handle, $src ) {
+	unset( $src );
+	if ( 'restwell-shared' !== $handle ) {
+		return $tag;
+	}
+	if ( false !== strpos( $tag, ' defer' ) ) {
+		return $tag;
+	}
+	return str_replace( '<script ', '<script defer ', $tag );
+}
+add_filter( 'script_loader_tag', 'restwell_defer_shared_script', 10, 3 );
 
 /**
  * Load main.js with defer (non-blocking) for better LCP / main-thread work.

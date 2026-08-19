@@ -1,7 +1,8 @@
 <?php
 /**
  * Template Name: The Property
- * Page template for the property page with editable meta fields.
+ *
+ * Concept port from mockups — The Property.
  *
  * @package Restwell_Retreats
  */
@@ -11,704 +12,238 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$GLOBALS['restwell_hide_footer_cta'] = true;
-
-$pid = get_the_ID();
-$d   = restwell_get_property_page_defaults();
-$prop_meta   = function ( $key ) use ( $pid, $d ) {
-	return restwell_post_meta_or_default( $pid, $key, $d );
-};
-$m_url = function ( $key ) use ( $pid, $d ) {
-	return restwell_post_meta_url( $pid, $key, $d );
-};
-
-$prop_hero_label              = $prop_meta( 'prop_hero_label' );
-$prop_hero_heading            = function_exists( 'restwell_get_property_heading' )
-	? restwell_get_property_heading( $pid, 'prop_hero_heading' )
-	: $prop_meta( 'prop_hero_heading' );
-$prop_hero_subtitle           = $prop_meta( 'prop_hero_subtitle' );
-$prop_hero_cta_text           = $prop_meta( 'prop_hero_cta_text' );
-$prop_hero_cta_url            = esc_url( $m_url( 'prop_hero_cta_url' ) );
-$prop_hero_cta_promise        = $prop_meta( 'prop_hero_cta_promise' );
-$prop_hero_cta_secondary_text = $prop_meta( 'prop_hero_cta_secondary_text' );
-$prop_hero_cta_secondary_url  = esc_url( $m_url( 'prop_hero_cta_secondary_url' ) );
-
-$prop_hero_image_id = function_exists( 'restwell_resolve_property_hero_image_id' )
-	? restwell_resolve_property_hero_image_id( $pid )
-	: (int) $prop_meta( 'prop_hero_image_id' );
-
-$prop_bungalow_label    = $prop_meta( 'prop_bungalow_label' );
-$prop_bungalow_heading  = function_exists( 'restwell_get_property_heading' )
-	? restwell_get_property_heading( $pid, 'prop_bungalow_heading' )
-	: $prop_meta( 'prop_bungalow_heading' );
-$prop_bungalow_body     = $prop_meta( 'prop_bungalow_body' );
-$prop_bungalow_image_id = (int) $prop_meta( 'prop_bungalow_image_id' );
-
-$prop_features_label = function_exists( 'restwell_sanitize_property_section_label' )
-	? restwell_sanitize_property_section_label( $prop_meta( 'prop_features_label' ) )
-	: trim( (string) $prop_meta( 'prop_features_label' ) );
-
-$prop_gallery_label   = $prop_meta( 'prop_gallery_label' );
-$prop_gallery_heading = function_exists( 'restwell_get_property_heading' )
-	? restwell_get_property_heading( $pid, 'prop_gallery_heading' )
-	: $prop_meta( 'prop_gallery_heading' );
-$prop_gallery_ids     = restwell_get_property_gallery_ids( $pid );
-
-$prop_cta_heading = $prop_meta( 'prop_cta_heading' );
-$prop_cta_body    = $prop_meta( 'prop_cta_body' );
-$prop_cta_btn     = $prop_meta( 'prop_cta_btn' );
-$prop_cta_url     = esc_url( $m_url( 'prop_cta_url' ) );
-$prop_cta_promise = $prop_meta( 'prop_cta_promise' );
-
-$prop_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
-
-$prop_primary_cta = array(
-	'label' => $prop_hero_cta_text,
-	'url'   => $prop_hero_cta_url,
-);
-
-$prop_room_tour = function_exists( 'restwell_get_property_room_tour_with_features' )
-	? restwell_get_property_room_tour_with_features( $pid )
-	: array();
-
-$prop_care_heading     = function_exists( 'restwell_get_property_heading' )
-	? restwell_get_property_heading( $pid, 'prop_care_heading' )
-	: $prop_meta( 'prop_care_heading' );
-$prop_care_body        = $prop_meta( 'prop_care_body' );
-$prop_location_heading = function_exists( 'restwell_get_property_heading' )
-	? restwell_get_property_heading( $pid, 'prop_location_heading' )
-	: $prop_meta( 'prop_location_heading' );
-$prop_location_body    = $prop_meta( 'prop_location_body' );
-$prop_location_image_id = (int) $prop_meta( 'prop_location_image_id' );
-$prop_location_has_photo = $prop_location_image_id > 0 && wp_attachment_is_image( $prop_location_image_id );
-
-$prop_practical_label   = function_exists( 'restwell_sanitize_property_section_label' )
-	? restwell_sanitize_property_section_label( $prop_meta( 'prop_practical_label' ) )
-	: trim( (string) $prop_meta( 'prop_practical_label' ) );
-$prop_practical_heading = function_exists( 'restwell_get_property_practical_heading' )
-	? restwell_get_property_practical_heading( $pid )
-	: $prop_meta( 'prop_practical_heading' );
-$prop_essentials_stats  = function_exists( 'restwell_get_property_essentials_stats' )
-	? restwell_get_property_essentials_stats( $pid )
-	: array();
-$prop_confirm_details_url = esc_url( $m_url( 'prop_confirm_details_url' ) );
-
-$prop_verified_facts = function_exists( 'restwell_get_property_facts' )
-	? restwell_get_property_facts()
-	: array();
-
-$prop_nearby_label   = $prop_meta( 'prop_nearby_label' );
-$prop_nearby_heading = function_exists( 'restwell_get_property_heading' )
-	? restwell_get_property_heading( $pid, 'prop_nearby_heading' )
-	: trim( (string) $prop_meta( 'prop_nearby_heading' ) );
-$prop_nearby_places = function_exists( 'restwell_get_property_nearby_places' )
-	? restwell_get_property_nearby_places( $pid )
-	: array();
-$prop_nearby_cta_label = $prop_meta( 'prop_nearby_cta_label' );
-$prop_nearby_cta_url   = esc_url( $m_url( 'prop_nearby_cta_url' ) );
-
-$area_guide_url = esc_url( home_url( '/whitstable-area-guide/' ) );
-$access_url     = esc_url( home_url( '/accessibility/' ) );
-$enquire_url    = esc_url( home_url( '/enquire/' ) );
-
-$prop_nav_items = array(
-	array(
-		'id'    => 'prop-overview',
-		'label' => __( 'Overview', 'restwell-retreats' ),
-	),
-);
-if ( ! empty( $prop_room_tour ) ) {
-	foreach ( $prop_room_tour as $tour_nav ) {
-		$room_nav_key = (string) ( $tour_nav['key'] ?? '' );
-		if ( $room_nav_key === '' ) {
-			continue;
-		}
-		$prop_nav_items[] = array(
-			'id'    => 'prop-room-' . $room_nav_key,
-			'label' => function_exists( 'restwell_get_property_room_nav_label' )
-				? restwell_get_property_room_nav_label( $tour_nav )
-				: (string) ( $tour_nav['heading'] ?? '' ),
-		);
-	}
-}
-if ( ! empty( $prop_essentials_stats ) ) {
-	$prop_nav_items[] = array(
-		'id'    => 'prop-numbers',
-		'label' => __( 'Capacity', 'restwell-retreats' ),
-	);
-}
-if ( ! empty( $prop_gallery_ids ) ) {
-	$prop_nav_items[] = array(
-		'id'    => 'property-gallery',
-		'label' => __( 'Photos', 'restwell-retreats' ),
-	);
-}
-if ( $prop_care_heading !== '' || $prop_care_body !== '' ) {
-	$prop_nav_items[] = array(
-		'id'    => 'prop-care',
-		'label' => __( 'Care', 'restwell-retreats' ),
-	);
-}
-if ( $prop_location_heading !== '' || $prop_location_body !== '' ) {
-	$prop_nav_items[] = array(
-		'id'    => 'prop-location',
-		'label' => __( 'Location', 'restwell-retreats' ),
-	);
-}
-if ( ! empty( $prop_nearby_places ) ) {
-	$prop_nav_items[] = array(
-		'id'    => 'prop-nearby',
-		'label' => __( 'Nearby', 'restwell-retreats' ),
-	);
-}
-
-$prop_hero_secondary = array();
-if ( $prop_hero_cta_secondary_text !== '' ) {
-	$prop_hero_secondary = array(
-		'label' => $prop_hero_cta_secondary_text,
-		'url'   => $prop_hero_cta_secondary_url,
-	);
-} elseif ( ! empty( $prop_gallery_ids ) ) {
-	$prop_hero_secondary = array(
-		'label' => __( 'View photos', 'restwell-retreats' ),
-		'url'   => '#property-gallery',
-	);
-}
-
-$prop_band_index = 0;
-$prop_section_bg = static function ( $index ) {
-	return function_exists( 'restwell_get_property_section_bg_class' )
-		? restwell_get_property_section_bg_class( $index )
-		: ( 0 === ( (int) $index % 2 ) ? 'bg-white' : 'bg-[var(--bg-subtle)]' );
-};
 ?>
-<main class="flex-1 prop-page" id="main-content">
-<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id'           => 'page-hero-heading',
-			'label'                => $prop_hero_label,
-			'heading'              => $prop_hero_heading,
-			'intro'                => $prop_hero_subtitle,
-			'media_id'             => $prop_hero_image_id,
-			'image_alt'            => $prop_hero_heading,
-			'append_after_h1_html' => $prop_tldr_markup,
-			'cta_primary'          => $prop_primary_cta['label'] !== '' ? $prop_primary_cta : array(),
-			'cta_secondary'        => $prop_hero_secondary,
-			'cta_promise'          => $prop_hero_cta_promise,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
 
-	<?php if ( count( $prop_nav_items ) > 1 ) : ?>
-	<nav class="prop-page-nav sticky z-30 border-b border-[var(--prop-subnav-border)] bg-white/95 backdrop-blur-sm shadow-[0_1px_0_rgba(0,0,0,0.04)]" aria-label="<?php esc_attr_e( 'On this page: section navigation', 'restwell-retreats' ); ?>">
-		<div class="container max-w-5xl px-0 sm:px-4">
-			<p class="sr-only"><?php esc_html_e( 'Jump to a section on this page', 'restwell-retreats' ); ?></p>
-			<p class="prop-page-nav__hint md:hidden" id="prop-page-nav-hint">
-				<?php esc_html_e( 'Swipe sideways to see every section.', 'restwell-retreats' ); ?>
-			</p>
-			<div class="prop-page-nav__track">
-				<ul class="prop-page-nav__list">
-					<?php foreach ( $prop_nav_items as $nav_item ) : ?>
-					<li>
-						<a class="prop-page-nav__link" href="<?php echo esc_url( '#' . $nav_item['id'] ); ?>" data-prop-anchor="<?php echo esc_attr( $nav_item['id'] ); ?>">
-							<?php echo esc_html( $nav_item['label'] ); ?>
-						</a>
-					</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<?php endif; ?>
 
-	<section id="prop-overview" class="prop-page__anchor rw-section-y <?php echo esc_attr( $prop_section_bg( $prop_band_index++ ) ); ?> scroll-mt-28" aria-labelledby="prop-intro-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-section-head rw-section-head--center">
-				<?php if ( $prop_bungalow_label !== '' ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $prop_bungalow_label ) ); ?>
-				<?php endif; ?>
-				<h2 id="prop-intro-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( $prop_bungalow_heading ); ?></h2>
-			</div>
-			<div class="prop-page__intro-split <?php echo $prop_bungalow_image_id > 0 ? 'md:grid md:grid-cols-2 md:items-center rw-gap-grid' : ''; ?>">
-				<div class="prop-page__intro-copy max-w-prose <?php echo $prop_bungalow_image_id > 0 ? 'prop-page__copy--column' : 'mx-auto prop-page__copy--center'; ?>">
-					<div class="rw-copy-body rw-prose-stack leading-relaxed">
-						<?php echo wp_kses_post( wpautop( $prop_bungalow_body ) ); ?>
-					</div>
-				</div>
-				<?php if ( $prop_bungalow_image_id > 0 ) : ?>
-				<div class="prop-page__intro-media mt-10 md:mt-0">
-					<?php
-					if ( function_exists( 'restwell_get_property_attachment_image' ) ) {
-						echo restwell_get_property_attachment_image(
-							$prop_bungalow_image_id,
-							'intro',
-							array(
-								'class' => 'prop-page__intro-img w-full aspect-[4/3] object-cover rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]',
-								'alt'   => $prop_bungalow_heading,
-							)
-						);
-					} else {
-						echo wp_get_attachment_image(
-							$prop_bungalow_image_id,
-							'large',
-							false,
-							array(
-								'class'    => 'prop-page__intro-img w-full aspect-[4/3] object-cover rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]',
-								'alt'      => $prop_bungalow_heading,
-								'loading'  => 'lazy',
-								'decoding' => 'async',
-							)
-						);
-					}
-					?>
-				</div>
-				<?php endif; ?>
-			</div>
-		</div>
-	</section>
+<main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">The Property</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">Inside the accessible bungalow in Whitstable</h1>
+            <p>Take a room-by-room tour of Restwell. See the bedrooms, wet room, living areas, kitchen, garden, and the access equipment already in place.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( ! empty( $prop_room_tour ) ) : ?>
-		<?php
-		foreach ( $prop_room_tour as $tour_index => $tour ) :
-			$room_key       = (string) ( $tour['key'] ?? '' );
-			if ( $room_key === '' ) {
-				continue;
-			}
-			$section_id     = 'prop-room-' . $room_key;
-			$heading_id     = $section_id . '-heading';
-			$image_first    = 0 === ( $tour_index % 2 );
-			$image_id       = (int) ( $tour['image_id'] ?? 0 );
-			$image_confirm  = (string) ( $tour['image_confirm'] ?? 'room photo' );
-			$highlights     = is_array( $tour['highlights'] ?? null ) ? $tour['highlights'] : array();
-			$section_bg     = $prop_section_bg( $prop_band_index++ );
-			$room_eyebrow   = function_exists( 'restwell_get_property_room_nav_label' )
-				? restwell_get_property_room_nav_label( $tour )
-				: '';
-			$highlights_class = 'prop-room-tour__highlights m-0 list-none p-0';
-			if ( ! empty( $tour['body'] ) ) {
-				$highlights_class .= ' mt-6';
-			}
-			?>
-	<section id="<?php echo esc_attr( $section_id ); ?>" class="prop-page__anchor prop-page__room-section rw-section-y <?php echo esc_attr( $section_bg ); ?> scroll-mt-28" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
-		<div class="container max-w-5xl">
-			<div class="rw-section-head rw-section-head--center">
-				<?php if ( 0 === $tour_index && $prop_features_label !== '' ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $prop_features_label ) ); ?>
-				<?php elseif ( $room_eyebrow !== '' ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $room_eyebrow ) ); ?>
-				<?php elseif ( 0 === $tour_index ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => __( 'Around the house', 'restwell-retreats' ) ) ); ?>
-				<?php endif; ?>
-				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( (string) ( $tour['heading'] ?? '' ) ); ?></h2>
-			</div>
-			<div class="prop-room-tour__layout grid gap-8 lg:gap-12 items-center md:grid-cols-2">
-				<?php if ( $image_id > 0 ) : ?>
-					<div class="<?php echo esc_attr( $image_first ? 'order-1' : 'order-1 md:order-2' ); ?>">
-							<div class="prop-room-tour__figure">
-								<?php
-								if ( function_exists( 'restwell_get_property_attachment_image' ) ) {
-									echo restwell_get_property_attachment_image(
-										$image_id,
-										'room',
-										array(
-											'class' => 'prop-room-tour__img',
-											'alt'   => (string) ( $tour['heading'] ?? '' ),
-										)
-									);
-								} else {
-									echo wp_get_attachment_image(
-										$image_id,
-										'large',
-										false,
-										array(
-											'class'    => 'prop-room-tour__img',
-											'alt'      => (string) ( $tour['heading'] ?? '' ),
-											'loading'  => 'lazy',
-											'decoding' => 'async',
-										)
-									);
-								}
-								?>
-							</div>
-					</div>
-				<?php else : ?>
-					<!-- Confirm in WP: needs a <?php echo esc_html( $image_confirm ); ?>. -->
-					<div class="<?php echo esc_attr( $image_first ? 'order-1' : 'order-1 md:order-2' ); ?>" aria-hidden="true">
-						<div class="prop-room-tour__figure prop-room-tour__figure--empty"></div>
-					</div>
-				<?php endif; ?>
-				<div class="<?php echo esc_attr( $image_first ? 'order-2' : 'order-2 md:order-1' ); ?>">
-					<?php if ( ! empty( $tour['body'] ) ) : ?>
-					<div class="rw-copy-body max-w-prose leading-relaxed prop-page__copy--column">
-						<?php echo wp_kses_post( wpautop( (string) ( $tour['body'] ?? '' ) ) ); ?>
-					</div>
-					<?php endif; ?>
-					<?php if ( ! empty( $highlights ) ) : ?>
-					<ul class="<?php echo esc_attr( $highlights_class ); ?>" role="list">
-						<?php foreach ( $highlights as $highlight ) : ?>
-						<li class="prop-room-tour__highlight">
-							<span class="prop-room-tour__highlight-icon" aria-hidden="true">
-								<i class="ph-bold ph-check"></i>
-							</span>
-							<div class="prop-room-tour__highlight-copy">
-								<strong class="prop-room-tour__highlight-title"><?php echo esc_html( (string) ( $highlight['title'] ?? '' ) ); ?></strong>
-								<?php if ( ! empty( $highlight['desc'] ) ) : ?>
-								<span class="prop-room-tour__highlight-desc"><?php echo esc_html( (string) $highlight['desc'] ); ?></span>
-								<?php endif; ?>
-							</div>
-						</li>
-						<?php endforeach; ?>
-					</ul>
-					<?php endif; ?>
-				</div>
-			</div>
-		</div>
-	</section>
-		<?php endforeach; ?>
-	<?php endif; ?>
+    <nav class="subnav" aria-label="On this page" data-toc>
+      <div class="container">
+        <ul class="subnav__list">
+          <li><a href="#rooms">Bedrooms</a></li>
+          <li><a href="#wetroom">Wet room</a></li>
+          <li><a href="#living">Living</a></li>
+          <li><a href="#kitchen">Kitchen</a></li>
+          <li><a href="#conservatory">Conservatory</a></li>
+          <li><a href="#garden">Outside</a></li>
+          <li><a href="#photos">Photos</a></li>
+          <li><a href="#care">Care</a></li>
+          <li><a href="#location">Location</a></li>
+        </ul>
+      </div>
+    </nav>
 
-	<?php if ( ! empty( $prop_essentials_stats ) ) : ?>
-	<section id="prop-numbers" class="prop-page__anchor rw-section-y <?php echo esc_attr( $prop_section_bg( $prop_band_index++ ) ); ?> scroll-mt-28" aria-labelledby="prop-numbers-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-section-head rw-section-head--center">
-				<?php if ( $prop_practical_label !== '' ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $prop_practical_label ) ); ?>
-				<?php endif; ?>
-				<h2 id="prop-numbers-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( $prop_practical_heading ); ?></h2>
-			</div>
+    <section class="section-y band-white" id="rooms" aria-labelledby="rooms-h">
+      <div class="container split">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-6-LS.jpg' ); ?>" alt="Amico ceiling track hoist in the accessible bedroom" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Bedrooms</p>
+            <h2 id="rooms-h">Ceiling hoist and adjustable profiling beds</h2>
+            <p class="lede">The accessible bedroom is designed for easy transfers and a good night’s sleep. It includes a ceiling-track hoist that reaches the whole room and can have one or two adjustable profiling beds, depending on what your group needs. There’s a second double bedroom next door, and the conservatory has a double sofa bed for extra guests. We also have a mobile hoist and a stand-aid, also known as a Sara Stedy.</p>
+          </header>
+          <p class="lede">The bungalow can sleep up to five people using the accessible bedroom, the second double, and the conservatory sofa bed. Hoists, profiling beds, and wet-room equipment are all included in the price, unless you need something very specific that we don’t have. When you get in touch, we’ll ask about your group and accessibility needs so we can set up the room for you, with one or two profiling beds as needed. For example, a guest once asked us to match her mum’s bedroom layout from home, and we were happy to help.</p>
+          <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and equipment notes</a></p>
+        </div>
+      </div>
+    </section>
 
-			<div class="prop-page__essentials-open">
-					<?php
-					foreach ( $prop_essentials_stats as $stat ) :
-						if ( $stat['value'] === '' ) {
-							continue;
-						}
-						?>
-					<div class="prop-page__essential-tile flex flex-col items-center text-center gap-3 p-6 md:p-7 h-full">
-						<span class="prop-page__essential-icon" aria-hidden="true">
-							<i class="ph-bold ph-<?php echo esc_attr( $stat['icon'] ); ?>"></i>
-						</span>
-						<p class="prop-page__essential-value m-0 font-serif text-3xl md:text-4xl text-[var(--deep-teal)] leading-none"><?php echo esc_html( $stat['value'] ); ?></p>
-						<p class="prop-page__essential-label m-0 text-sm font-semibold text-[var(--deep-teal)] leading-snug"><?php echo esc_html( $stat['label'] ); ?></p>
-						<?php if ( ! empty( $stat['detail'] ) || ! empty( $stat['detail_html'] ) ) : ?>
-						<p class="prop-page__essential-detail m-0 text-sm leading-relaxed text-[var(--muted-grey)]">
-							<?php
-							if ( ! empty( $stat['detail_html'] ) ) {
-								echo wp_kses_post( (string) $stat['detail_html'] );
-							} else {
-								echo esc_html( (string) $stat['detail'] );
-							}
-							?>
-						</p>
-						<?php endif; ?>
-					</div>
-					<?php endforeach; ?>
-			</div>
+    <section class="section-y band-subtle" id="wetroom" aria-labelledby="wetroom-h">
+      <div class="container split split--flip">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-1-LS.jpg' ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Wet room</p>
+            <h2 id="wetroom-h">Roll-in shower and accessible washroom</h2>
+            <p class="lede">The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.</p>
+          </header>
+          <p class="lede">The wet room is arranged to make washing, using the toilet, and transfers easier while you’re here.</p>
+          <p class="lede">All the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.</p>
+        </div>
+      </div>
+    </section>
 
-			<?php if ( ! empty( $prop_verified_facts ) ) : ?>
-			<div class="prop-page__verified-facts mt-10 md:mt-12 max-w-4xl mx-auto">
-				<h3 class="text-xl font-serif text-[var(--deep-teal)] m-0 mb-6 text-center"><?php esc_html_e( 'Verified specs', 'restwell-retreats' ); ?></h3>
-				<div class="grid sm:grid-cols-3 rw-gap-grid">
-					<?php
-					$fact_groups = array(
-						'access'    => __( 'Access', 'restwell-retreats' ),
-						'sleeping'  => __( 'Sleeping', 'restwell-retreats' ),
-						'practical' => __( 'Practical', 'restwell-retreats' ),
-					);
-					foreach ( $fact_groups as $group_key => $group_label ) :
-						$group_facts = isset( $prop_verified_facts[ $group_key ] ) && is_array( $prop_verified_facts[ $group_key ] )
-							? $prop_verified_facts[ $group_key ]
-							: array();
-						if ( empty( $group_facts ) ) {
-							continue;
-						}
-						?>
-					<div class="prop-page__verified-facts-group rounded-2xl border border-gray-100 bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-						<p class="section-label m-0 mb-4"><?php echo esc_html( $group_label ); ?></p>
-						<ul class="m-0 list-none space-y-3 p-0 text-sm leading-relaxed text-[var(--muted-grey)]" role="list">
-							<?php foreach ( $group_facts as $fact_label ) : ?>
-							<li class="flex items-start gap-3">
-								<span class="prop-room-tour__highlight-icon shrink-0" aria-hidden="true">
-									<i class="ph-bold ph-check"></i>
-								</span>
-								<span class="min-w-0"><?php echo esc_html( (string) $fact_label ); ?></span>
-							</li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
-			<?php endif; ?>
+    <section class="section-y band-white" id="living" aria-labelledby="living-h">
+      <div class="container split">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/LR-1-LS.jpg' ); ?>" alt="Open-plan living room with rise-and-recline chair and wide walkways" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Living room</p>
+            <h2 id="living-h">A comfortable place to come back to</h2>
+            <p class="lede">After time by the sea, the living room gives everyone space to settle in.</p>
+          </header>
+          <p class="lede">You’ll find a rise-and-recline armchair, a sofa with pull-out footrests, and a TV with Netflix. The open-plan layout makes it easy for wheelchair users, families, and carers to move around comfortably.</p>
+          <p class="lede">There’s enough seating for everyone, and we keep the space between the sofa and armchair clear so wheelchairs can turn easily.</p>
+        </div>
+      </div>
+    </section>
 
-			<p class="text-center text-[var(--muted-grey)] text-sm md:text-base mt-8 mb-0 max-w-prose mx-auto">
-				<?php esc_html_e( 'Full measurements and equipment detail:', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $access_url ); ?>" class="rw-link-prose rw-link-prose--focus"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
-				<?php esc_html_e( 'Questions?', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $prop_confirm_details_url ); ?>" class="rw-link-prose rw-link-prose--focus"><?php esc_html_e( 'Get in touch', 'restwell-retreats' ); ?></a>.
-			</p>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="section-y band-subtle" id="kitchen" aria-labelledby="kitchen-h">
+      <div class="container split split--flip">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/KT-1-LS.jpg' ); ?>" alt="Kitchen with lowered wheel-under worksurface" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Kitchen</p>
+            <h2 id="kitchen-h">Wheel-under kitchen, ready for everyday meals</h2>
+            <p class="lede">The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.</p>
+          </header>
+          <p class="lede">It’s set up for easy breakfasts, family meals, and relaxed evenings at home.</p>
+          <p class="lede">The hob is gas, not induction, which might be useful to know for your cooking plans.</p>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( ! empty( $prop_gallery_ids ) ) : ?>
-	<section id="property-gallery" class="prop-page__anchor rw-section-y <?php echo esc_attr( $prop_section_bg( $prop_band_index++ ) ); ?> scroll-mt-28" aria-labelledby="property-gallery-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-section-head rw-section-head--center">
-				<?php if ( $prop_gallery_label !== '' ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $prop_gallery_label ) ); ?>
-				<?php endif; ?>
-				<h2 id="property-gallery-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( $prop_gallery_heading ); ?></h2>
-			</div>
-			<?php
-			restwell_render_gallery(
-				$prop_gallery_ids,
-				array(
-					'layout'              => 'carousel',
-					'aria_label'          => __( 'Property photo carousel', 'restwell-retreats' ),
-					'all_grid_aria_label' => __( 'All property photos', 'restwell-retreats' ),
-					'class'               => 'prop-page__gallery-carousel',
-				)
-			);
-			?>
-			<?php if ( $prop_primary_cta['label'] !== '' && $prop_primary_cta['url'] !== '' ) : ?>
-			<div class="prop-page__gallery-cta text-center">
-				<a href="<?php echo esc_url( $prop_primary_cta['url'] ); ?>" class="btn btn-primary">
-					<?php echo esc_html( $prop_primary_cta['label'] ); ?>
-					<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-				</a>
-			</div>
-			<?php endif; ?>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
+      <div class="container split">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/GRDEN-2-LS.jpg' ); ?>" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Conservatory</p>
+            <h2 id="conservatory-h">Sunny dining space with level garden access</h2>
+            <p class="lede">The conservatory is a bright space where you can eat, read, or enjoy the garden view.</p>
+          </header>
+          <p class="lede">It has a fold-out dining table, a double sofa bed, level access to the patio, and laundry cupboards with a washing machine and tumble dryer.</p>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( $prop_care_heading !== '' || $prop_care_body !== '' ) : ?>
-	<section id="prop-care" class="prop-page__anchor rw-section-y <?php echo esc_attr( $prop_section_bg( $prop_band_index++ ) ); ?> scroll-mt-28" aria-labelledby="prop-care-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-section-head rw-section-head--center">
-				<?php get_template_part( 'template-parts/section-label', null, array( 'label' => __( 'Care', 'restwell-retreats' ) ) ); ?>
-				<?php if ( $prop_care_heading !== '' ) : ?>
-				<h2 id="prop-care-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( $prop_care_heading ); ?></h2>
-				<?php endif; ?>
-			</div>
-			<?php if ( $prop_care_body !== '' ) : ?>
-			<div class="prop-page__feature-band max-w-3xl mx-auto">
-				<div class="rw-copy-body rw-prose-stack max-w-prose mx-auto leading-relaxed prop-page__copy--center">
-					<?php echo wp_kses_post( wpautop( $prop_care_body ) ); ?>
-				</div>
-			</div>
-			<?php endif; ?>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="section-y band-subtle" id="garden" aria-labelledby="garden-h">
+      <div class="container split split--flip">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/PT-1-LS.jpg' ); ?>" alt="Level patio and enclosed dog-friendly garden" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Outside</p>
+            <h2 id="garden-h">Level patio, enclosed garden, and private driveway</h2>
+            <p class="lede">French doors open onto a level patio with a non-slip ramp at the threshold.</p>
+          </header>
+          <p class="lede">The garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.</p>
+          <p class="lede">At the front, there’s a resin-bound, level-access driveway with space for two cars. It’s been tested with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, ready for you to use around the property or take with you during your stay.</p>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( $prop_location_heading !== '' || $prop_location_body !== '' ) : ?>
-		<?php
-		$prop_location_section_class = 'prop-page__anchor prop-page__location rw-section-y scroll-mt-28';
-		if ( $prop_location_has_photo ) {
-			$prop_location_section_class .= ' prop-page__location--photo';
-		} else {
-			$prop_location_section_class .= ' ' . $prop_section_bg( $prop_band_index++ );
-		}
-		$prop_location_panel_class = 'prop-page__feature-band max-w-3xl mx-auto';
-		if ( $prop_location_has_photo ) {
-			$prop_location_panel_class .= ' prop-page__location-panel prop-page__location-panel--frosted';
-			$prop_band_index++;
-		}
-		$prop_location_image_size = function_exists( 'restwell_pick_property_visual_size' )
-			? restwell_pick_property_visual_size( $prop_location_image_id )
-			: 'restwell-cta-bg';
-		$prop_location_image_alt = $prop_location_heading !== ''
-			? $prop_location_heading
-			: __( 'Whitstable and the Kent coast', 'restwell-retreats' );
-		?>
-	<section id="prop-location" class="<?php echo esc_attr( $prop_location_section_class ); ?>" aria-labelledby="prop-location-heading">
-		<?php if ( $prop_location_has_photo ) : ?>
-		<div class="prop-page__location-media" aria-hidden="true">
-			<?php
-			echo wp_get_attachment_image(
-				$prop_location_image_id,
-				$prop_location_image_size,
-				false,
-				array(
-					'class'    => 'prop-page__location-img',
-					'alt'      => '',
-					'loading'  => 'lazy',
-					'decoding' => 'async',
-					'sizes'    => function_exists( 'restwell_get_property_visual_sizes_attr' )
-						? restwell_get_property_visual_sizes_attr( 'hero' )
-						: '100vw',
-				)
-			);
-			?>
-		</div>
-		<div class="prop-page__location-scrim" aria-hidden="true"></div>
-		<?php endif; ?>
-		<div class="container max-w-5xl prop-page__location-inner">
-			<div class="<?php echo esc_attr( $prop_location_panel_class ); ?>">
-				<div class="rw-section-head rw-section-head--center">
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => __( 'Location', 'restwell-retreats' ) ) ); ?>
-					<?php if ( $prop_location_heading !== '' ) : ?>
-					<h2 id="prop-location-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( $prop_location_heading ); ?></h2>
-					<?php endif; ?>
-				</div>
-				<?php if ( $prop_location_body !== '' ) : ?>
-				<div class="rw-copy-body rw-prose-stack max-w-prose mx-auto leading-relaxed prop-page__copy--center">
-						<?php
-						$area_guide_needle = 'area guide';
-						$location_parts    = explode( $area_guide_needle, $prop_location_body, 2 );
-						if ( count( $location_parts ) === 2 ) {
-							$location_html = esc_html( $location_parts[0] )
-								. '<a href="' . esc_url( $area_guide_url ) . '" class="rw-link-prose rw-link-prose--focus">'
-								. esc_html__( 'area guide', 'restwell-retreats' )
-								. '</a>'
-								. esc_html( $location_parts[1] );
-							echo wp_kses_post( wpautop( $location_html ) );
-						} else {
-							echo wp_kses_post( wpautop( $prop_location_body ) );
-						}
-						?>
-					</div>
-					<?php endif; ?>
-				<p class="m-0 mt-6 text-center">
-					<a href="<?php echo esc_url( $area_guide_url ); ?>" class="inline-flex min-h-[2.75rem] items-center gap-2 text-sm font-semibold text-[var(--deep-teal)] no-underline hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded-sm">
-						<?php esc_html_e( 'Whitstable area guide', 'restwell-retreats' ); ?>
-						<i class="ph-bold ph-arrow-right text-xs" aria-hidden="true"></i>
-					</a>
-				</p>
-			</div>
-		</div>
-		<?php if ( $prop_location_has_photo ) : ?>
-		<span class="sr-only"><?php echo esc_html( $prop_location_image_alt ); ?></span>
-		<?php endif; ?>
-	</section>
-	<?php endif; ?>
+    <section class="section-y band-white" id="photos" data-gallery>
+      <div class="container">
+        <header class="section-head section-head--tight">
+          <p class="eyebrow">Photos</p>
+          <h2>See more of the bungalow.</h2>
+        </header>
+        <ul class="gallery-grid" role="list" aria-label="Property photos">
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/wet-room-shower.png' ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-3-LS.jpg' ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Second double bedroom">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD1-1-LS.jpg' ); ?>" alt="Second double bedroom" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="3" aria-label="View full size: Kitchen with wheel-under worksurface">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/KT-1-LS.jpg' ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="4" aria-label="View full size: Open-plan living room with wide walkways">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/living-room-2.png' ); ?>" alt="Open-plan living room with wide walkways" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="5" aria-label="View full size: Rise-and-recline armchair in the living room">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/RAR-1-LS.jpg' ); ?>" alt="Rise-and-recline armchair in the living room" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="6" aria-label="View full size: Conservatory doors opening toward the living space">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/conservatory-doors.png' ); ?>" alt="Conservatory doors opening toward the living space" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="7" aria-label="View full size: Enclosed garden and level patio">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/GRDEN-1-LS.jpg' ); ?>" alt="Enclosed garden and level patio" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+          <li>
+            <button type="button" class="gallery__open" data-gallery-open data-gallery-index="8" aria-label="View full size: Step-free entrance doors to the bungalow">
+              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance doors to the bungalow" width="640" height="480" loading="lazy" decoding="async" />
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-	<?php if ( ! empty( $prop_nearby_places ) ) : ?>
-	<section id="prop-nearby" class="prop-page__anchor rw-section-y <?php echo esc_attr( $prop_section_bg( $prop_band_index++ ) ); ?> scroll-mt-28" aria-labelledby="prop-nearby-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-section-head rw-section-head--center">
-				<?php if ( $prop_nearby_label !== '' ) : ?>
-					<?php get_template_part( 'template-parts/section-label', null, array( 'label' => $prop_nearby_label ) ); ?>
-				<?php endif; ?>
-				<h2 id="prop-nearby-heading" class="text-3xl md:text-4xl font-serif text-[var(--deep-teal)] m-0 leading-tight text-balance"><?php echo esc_html( $prop_nearby_heading ); ?></h2>
-				<p class="text-[var(--muted-grey)] leading-relaxed m-0 max-w-prose mx-auto prop-page__copy--center"><?php esc_html_e( 'Places and services near the property. Filter by what matters to you.', 'restwell-retreats' ); ?></p>
-			</div>
+    <section class="section-y band-subtle" id="care" aria-labelledby="care-h">
+      <div class="container">
+        <header class="section-head section-head--tight">
+          <p class="eyebrow">Optional care</p>
+          <h2 id="care-h">Care support is available if you need it</h2>
+          <p class="lede">Professional care support is available on site through Continuity, our CQC-regulated sister company.</p>
+        </header>
+        <p class="lede">Just ask when you enquire, and care can be arranged at the same time as your booking. Or, if you prefer, you can bring your own carer.</p>
+        <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a></p>
+      </div>
+    </section>
 
-			<div class="explore-whitstable-filter flex flex-wrap justify-center gap-2 mb-6 md:mb-8" role="group" aria-label="<?php esc_attr_e( 'Filter nearby places', 'restwell-retreats' ); ?>">
-				<button type="button" class="explore-filter-pill rounded-full px-3 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 ease-out motion-reduce:transition-none bg-white text-[var(--deep-teal)] border-2 border-gray-200 hover:border-[var(--deep-teal)]/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--deep-teal)] min-h-[2.75rem]" data-filter="all" aria-pressed="true"><?php esc_html_e( 'All', 'restwell-retreats' ); ?></button>
-				<button type="button" class="explore-filter-pill rounded-full px-3 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 ease-out motion-reduce:transition-none bg-white text-[var(--deep-teal)] border-2 border-gray-200 hover:border-[var(--deep-teal)]/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--deep-teal)] min-h-[2.75rem]" data-filter="wheelchair-friendly" aria-pressed="false"><?php esc_html_e( 'Wheelchair-friendly', 'restwell-retreats' ); ?></button>
-				<button type="button" class="explore-filter-pill rounded-full px-3 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 ease-out motion-reduce:transition-none bg-white text-[var(--deep-teal)] border-2 border-gray-200 hover:border-[var(--deep-teal)]/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--deep-teal)] min-h-[2.75rem]" data-filter="quieter" aria-pressed="false"><?php esc_html_e( 'Quieter', 'restwell-retreats' ); ?></button>
-				<button type="button" class="explore-filter-pill rounded-full px-3 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-medium transition-all duration-200 ease-out motion-reduce:transition-none bg-white text-[var(--deep-teal)] border-2 border-gray-200 hover:border-[var(--deep-teal)]/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--deep-teal)] min-h-[2.75rem]" data-filter="practical" aria-pressed="false"><?php esc_html_e( 'Practical', 'restwell-retreats' ); ?></button>
-			</div>
-			<p id="explore-filter-status" class="explore-filter-status text-center text-[var(--muted-grey)] text-xs min-h-0 mb-6" aria-live="polite" aria-atomic="true"></p>
-
-			<div id="explore-empty-state" class="hidden text-center py-12 px-4 max-w-md mx-auto" aria-live="polite" aria-atomic="true">
-				<p class="text-[var(--muted-grey)] leading-relaxed mb-4"><?php esc_html_e( 'No places match this filter. Try another or show all.', 'restwell-retreats' ); ?></p>
-				<button type="button" class="explore-filter-show-all inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium bg-[var(--deep-teal)] text-white border-2 border-[var(--deep-teal)] min-h-[2.75rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--deep-teal)]" aria-label="<?php esc_attr_e( 'Show all places', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Show all', 'restwell-retreats' ); ?></button>
-			</div>
-
-			<div class="grid sm:grid-cols-2 rw-gap-grid max-w-4xl mx-auto" role="list" id="explore-whitstable-list">
-				<?php foreach ( $prop_nearby_places as $place ) : ?>
-				<article class="explore-card" role="listitem" data-filter="<?php echo esc_attr( $place['filter'] ); ?>">
-					<header class="explore-card__head">
-						<?php if ( $place['type'] !== '' ) : ?>
-						<p class="explore-card__category"><?php echo esc_html( $place['type'] ); ?></p>
-						<?php endif; ?>
-						<?php if ( $place['distance'] !== '' ) : ?>
-						<p class="explore-card__distance"><?php echo esc_html( $place['distance'] ); ?></p>
-						<?php endif; ?>
-						<h3 class="explore-card__title">
-							<?php if ( $place['map_url'] !== '' ) : ?>
-							<a href="<?php echo esc_url( $place['map_url'] ); ?>" target="_blank" rel="noopener noreferrer" class="explore-card__title-link">
-								<?php echo esc_html( $place['title'] ); ?>
-								<i class="ph-bold ph-arrow-square-out explore-card__link-icon" aria-hidden="true"></i>
-								<span class="sr-only"><?php esc_html_e( '(opens in Google Maps)', 'restwell-retreats' ); ?></span>
-							</a>
-							<?php else : ?>
-								<?php echo esc_html( $place['title'] ); ?>
-							<?php endif; ?>
-						</h3>
-					</header>
-					<div class="explore-card__body">
-						<?php echo wp_kses_post( wpautop( $place['body'] ) ); ?>
-					</div>
-					<?php if ( $place['acc'] !== '' ) : ?>
-					<footer class="explore-card__foot">
-						<p class="explore-card__acc">
-							<span class="explore-card__acc-label"><?php esc_html_e( 'Access', 'restwell-retreats' ); ?></span>
-							<?php echo esc_html( $place['acc'] ); ?>
-						</p>
-					</footer>
-					<?php endif; ?>
-				</article>
-				<?php endforeach; ?>
-
-				<?php if ( $prop_nearby_cta_label !== '' && $prop_nearby_cta_url !== '' ) : ?>
-				<article class="explore-card explore-card--cta" role="listitem" data-filter="all">
-					<i class="ph-bold ph-envelope-simple explore-card--cta-icon" aria-hidden="true"></i>
-					<p class="explore-card--cta-text"><?php echo esc_html( $prop_nearby_cta_label ); ?></p>
-					<a href="<?php echo esc_url( $prop_nearby_cta_url ); ?>" class="btn btn-primary btn-sm min-h-[2.75rem]"><?php esc_html_e( 'Get in touch', 'restwell-retreats' ); ?></a>
-				</article>
-				<?php else : ?>
-				<article class="explore-card explore-card--cta" role="listitem" data-filter="all">
-					<i class="ph-bold ph-wheelchair explore-card--cta-icon" aria-hidden="true"></i>
-					<p class="explore-card--cta-text"><?php esc_html_e( 'Questions about access?', 'restwell-retreats' ); ?></p>
-					<a href="<?php echo esc_url( $enquire_url ); ?>" class="btn btn-primary btn-sm min-h-[2.75rem]"><?php esc_html_e( 'Get in touch', 'restwell-retreats' ); ?></a>
-				</article>
-				<?php endif; ?>
-			</div>
-		</div>
-	</section>
-	<?php endif; ?>
-
-	<section class="rw-section-y--compact <?php echo esc_attr( $prop_section_bg( $prop_band_index++ ) ); ?>" aria-label="<?php esc_attr_e( 'Accessibility detail', 'restwell-retreats' ); ?>">
-		<div class="container max-w-5xl">
-			<p class="rw-copy-body text-sm md:text-base mb-0 max-w-prose mx-auto text-center">
-				<?php esc_html_e( 'Full measurements, equipment detail and floor plans:', 'restwell-retreats' ); ?>
-				<a href="<?php echo esc_url( $access_url ); ?>" class="rw-link-prose rw-link-prose--focus"><?php esc_html_e( 'accessibility page', 'restwell-retreats' ); ?></a>.
-			</p>
-		</div>
-	</section>
-
-	<?php
-	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
-		restwell_render_pillar_related_guides(
-			'the-property',
-			array(
-				'heading'         => __( 'Related guides', 'restwell-retreats' ),
-				'intro'           => __( 'Practical guides on choosing an accessible self-catering stay, plus sector updates that affect how people book a break.', 'restwell-retreats' ),
-				'heading_id'      => 'prop-related-guides-heading',
-				'show_siblings'   => true,
-				'show_conversion' => true,
-			)
-		);
-	}
-	?>
-
-	<section class="rw-section-y--cta bg-[var(--deep-teal)]" aria-labelledby="prop-cta-heading">
-		<div class="container max-w-5xl text-center">
-			<h2 id="prop-cta-heading" class="text-3xl md:text-4xl font-serif text-white mb-4 tracking-tight text-balance m-0"><?php echo esc_html( $prop_cta_heading ); ?></h2>
-			<?php if ( $prop_cta_body !== '' ) : ?>
-				<p class="text-white/85 text-lg leading-relaxed mb-8 max-w-2xl mx-auto text-pretty m-0"><?php echo esc_html( $prop_cta_body ); ?></p>
-			<?php endif; ?>
-			<?php if ( $prop_cta_btn !== '' && $prop_cta_url !== '' ) : ?>
-				<a href="<?php echo esc_url( $prop_cta_url ); ?>" class="btn btn-gold">
-					<?php echo esc_html( $prop_cta_btn ); ?>
-					<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-				</a>
-			<?php endif; ?>
-			<?php if ( $prop_cta_promise !== '' ) : ?>
-				<p class="text-white/75 text-sm mt-5 mb-0"><?php echo esc_html( $prop_cta_promise ); ?></p>
-			<?php endif; ?>
-		</div>
-	</section>
+    <section class="section-y band-white" id="location" aria-labelledby="location-h">
+      <div class="container split">
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Location</p>
+            <h2 id="location-h">A quiet place to stay in Whitstable, close to the coast path</h2>
+            <p class="lede">The bungalow sits on a quiet street, a short walk from The Plough pub and around 10–15 minutes from Tankerton promenade.</p>
+          </header>
+          <p class="lede">The beach is shingle, but the wide, paved promenade offers a step-free route along the coast and forms part of the King Charles III England Coast Path.</p>
+          <p class="lede">JoJo’s and the Marine Hotel are also nearby on Tankerton, and the town centre is about 15 minutes away on a flat, paved route if you want to explore further.</p>
+          <p class="lede">For route tips, local recommendations, and access details, check our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable accessibility guide</a>.</p>
+        </div>
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WHIT-SEAFRONT-1-LS.jpg' ); ?>" alt="Tankerton promenade and Whitstable seafront" width="900" height="675" loading="lazy" />
+        </div>
+      </div>
+    </section>
+    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+      <div class="mid-cta__media" aria-hidden="true"></div>
+      <div class="mid-cta__inner">
+        <h2 id="mid-cta-h">See if the bungalow fits your group.</h2>
+        <p>Tell us your preferred dates, group size, and any access or equipment needs.</p>
+        <p>We’ll reply with availability, measurements, equipment details, and your next steps.</p>
+        <div class="mid-cta__btns">
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read accessibility details</a>
+        </div>
+      </div>
+    </section>
 
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

@@ -1,6 +1,6 @@
 <?php
 /**
- * Header template.
+ * Header template — mockup chrome (shared.css / shared.js).
  *
  * @package Restwell_Retreats
  */
@@ -8,6 +8,14 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'enquire' ) : home_url( '/enquire/' );
+$header_class = 'site-header';
+if ( ! is_front_page() ) {
+	$header_class .= ' is-solid';
+}
+$logo_url = function_exists( 'restwell_get_logo_url' ) ? restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) : '';
+$brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_brand_lockup() : get_bloginfo( 'name' );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
@@ -18,71 +26,40 @@ if ( ! defined( 'ABSPATH' ) ) {
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<header class="site-header">
-	<div class="container">
-		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" aria-label="<?php echo esc_attr( sprintf( __( '%s home', 'restwell-retreats' ), restwell_site_brand_lockup() ) ); ?>">
-			<img
-				src="<?php echo esc_url( restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) ); ?>"
-				alt="<?php echo esc_attr( restwell_site_brand_lockup() ); ?>"
-				class="site-logo__img"
-				width="282"
-				height="44"
-			>
+<a href="#main-content" class="skip-link"><?php esc_html_e( 'Skip to main content', 'restwell-retreats' ); ?></a>
+<header class="<?php echo esc_attr( $header_class ); ?>">
+	<div class="container site-header__inner">
+		<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<?php if ( $logo_url ) : ?>
+				<img
+					src="<?php echo esc_url( $logo_url ); ?>"
+					alt="<?php echo esc_attr( $brand ); ?>"
+					class="site-logo__img"
+					width="282"
+					height="44"
+				>
+			<?php else : ?>
+				<?php echo esc_html( $brand ); ?>
+			<?php endif; ?>
 		</a>
 
-		<nav class="site-nav" aria-label="Main navigation">
-		<?php
-		if ( has_nav_menu( 'primary' ) ) {
-			wp_nav_menu(
-				array(
-					'theme_location' => 'primary',
-					'container'      => '',
-					'menu_class'     => 'site-nav-list',
-					'items_wrap'     => '<ul class="site-nav-list">%3$s</ul>',
-					'depth'          => 2,
-				)
-			);
-		} else {
+		<nav aria-label="<?php esc_attr_e( 'Primary', 'restwell-retreats' ); ?>">
+			<?php
+			// Prefer concept fallback IA (mockup source of truth). Assigned Primary menus
+			// can be re-enabled with Restwell_Concept_Nav_Walker once curated in WP admin.
 			restwell_render_primary_nav_fallback();
-		}
-		?>
+			?>
 		</nav>
 
-		<button
-			type="button"
-			class="mobile-menu-btn"
-			aria-expanded="false"
-			aria-controls="mobile-nav"
-			aria-label="Open menu"
-		>
-			<i class="ph-bold ph-list js-menu-icon-open" aria-hidden="true"></i>
-			<i class="ph-bold ph-x js-menu-icon-close" aria-hidden="true"></i>
-		</button>
+		<div class="site-header__actions">
+			<a class="btn btn-gold" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Enquire Now', 'restwell-retreats' ); ?></a>
+			<button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'restwell-retreats' ); ?>">
+				<span class="nav-toggle__icon" aria-hidden="true"><span></span></span>
+			</button>
+		</div>
 	</div>
 
-	<nav id="mobile-nav" class="mobile-nav" aria-hidden="true" aria-label="Mobile navigation">
-		<div class="container">
-		<?php
-		if ( has_nav_menu( 'primary' ) ) {
-			wp_nav_menu(
-				array(
-					'theme_location' => 'primary',
-					'container'      => '',
-					'menu_class'     => 'mobile-nav-list',
-					'items_wrap'     => '<ul class="mobile-nav-list">%3$s</ul>',
-					'depth'          => 2,
-				)
-			);
-		} else {
-			echo '<ul class="mobile-nav-list">';
-			foreach ( restwell_get_primary_nav_links() as $item ) {
-				$class = ! empty( $item['is_cta'] ) ? ' mobile-nav-cta' : '';
-				echo '<li><a href="' . esc_url( $item['url'] ) . '" class="' . esc_attr( trim( $class ) ) . '">' . esc_html( $item['label'] ) . '</a></li>';
-			}
-			echo '</ul>';
-		}
-		?>
-		</div>
+	<nav class="mobile-nav" id="mobile-nav" aria-label="<?php esc_attr_e( 'Mobile', 'restwell-retreats' ); ?>">
+		<?php restwell_render_mobile_nav(); ?>
 	</nav>
 </header>

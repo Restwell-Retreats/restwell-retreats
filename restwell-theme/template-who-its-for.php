@@ -2,6 +2,8 @@
 /**
  * Template Name: Who It's For
  *
+ * Concept port from mockups — Who It's For.
+ *
  * @package Restwell_Retreats
  */
 
@@ -10,417 +12,294 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$pid = get_the_ID();
-
-$hero_image_id = (int) get_post_meta( $pid, 'wif_hero_image_id', true );
-$label          = (string) get_post_meta( $pid, 'wif_label', true ) ?: 'Who it is for';
-$heading        = (string) get_post_meta( $pid, 'wif_heading', true ) ?: 'Accessible stay suitability';
-$intro          = (string) get_post_meta( $pid, 'wif_intro', true ) ?: 'Use this accessible stay suitability guide to see whether Restwell fits your party: guests and families, carers and support workers, occupational therapists, and commissioners planning funded short breaks.';
-
-$audience_heading = (string) get_post_meta( $pid, 'wif_audience_heading', true ) ?: 'Which of these sounds like you?';
-$audience_intro   = (string) get_post_meta( $pid, 'wif_audience_intro', true ) ?: 'Open the section that fits your situation. We have set out what usually matters, in plain language, with a clear next step when you are ready.';
-
-$default_family_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
-	? restwell_get_property_facts_persona_bullets( 'family' )
-	: array(
-		'Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower and height-adjustable washbasin, already in place.',
-		'Published access measurements before you commit to anything.',
-		'A private self-catering layout: your daily routines run on your schedule.',
-	);
-$default_carers_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
-	? restwell_get_property_facts_persona_bullets( 'carers' )
-	: array(
-		'Separate sleeping area for the support worker or carer.',
-		'Wet room designed for assisted personal care, not adapted from a standard bathroom.',
-		'You have a legal right to a Carer\'s Assessment under the Care Act 2014. Ask your council.',
-	);
-$default_ot_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
-	? restwell_get_property_facts_persona_bullets( 'ot' )
-	: array(
-		'Doorway widths, turning circles, hoist specs, and wet room measurements on request.',
-		'Transfer clearances and equipment positioning confirmed if not already published.',
-		'Referral conversations welcomed before any booking commitment.',
-	);
-$default_commissioners_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
-	? restwell_get_property_facts_persona_bullets( 'commissioners' )
-	: array(
-		'Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.',
-		'Documentation provided: property spec, access measurements, and CQC-registered care provider confirmation.',
-		'Direct payments, personal health budgets, and CHC pathways all supported.',
-	);
-
-$personas = array(
-	array(
-		'id'               => 'wif-guests',
-		'jump_label'       => (string) get_post_meta( $pid, 'wif_nav_family_label', true ) ?: __( "I'm a guest or family", 'restwell-retreats' ),
-		'icon'             => 'users',
-		'featured'         => true,
-		'title'            => (string) get_post_meta( $pid, 'wif_family_title', true ) ?: 'For guests and families',
-		'body'             => restwell_wif_persona_intro_body(
-			$pid,
-			'wif_family_body',
-			'wif_family_detail_body',
-			"\"Accessible\" and \"wheelchair friendly\" are used loosely by a lot of accommodation. People book in good faith and arrive to find a step at the entrance, a bathroom that is too small to turn, or a hoist that is not actually there. Restwell works the other way: the ceiling track hoist is already fitted in the accessible bedroom, the wet room has a roll-in shower with turning space, and every doorway and corridor is sized for a powerchair.\n\nThe full measurements are published on our accessibility page. Check them before you enquire, not after.\n\nThis is a private home, not a converted hotel room. No shared spaces, no clinical layout, and no surprises on arrival."
-		),
-		'bullets'          => restwell_wif_bullet_list( $pid, 'wif_family_detail_bullets', $default_family_bullets ),
-		'inline_cta_label' => (string) get_post_meta( $pid, 'wif_family_inline_cta_label', true ) ?: __( 'Read accessibility specification', 'restwell-retreats' ),
-		'inline_cta_url'   => (string) get_post_meta( $pid, 'wif_family_inline_cta_url', true ) ?: '/accessibility/',
-	),
-	array(
-		'id'               => 'wif-carers',
-		'jump_label'       => (string) get_post_meta( $pid, 'wif_nav_carers_label', true ) ?: __( "I'm a carer", 'restwell-retreats' ),
-		'icon'             => 'hand-heart',
-		'featured'         => false,
-		'title'            => (string) get_post_meta( $pid, 'wif_carers_title', true ) ?: 'For carers and support workers',
-		'body'             => restwell_wif_persona_intro_body(
-			$pid,
-			'wif_carers_body',
-			'wif_carers_detail_body',
-			"The ceiling hoist is already fitted in the accessible bedroom; the wet room is designed for assisted personal care on the same level; and there is a separate sleeping area for the support worker. The layout is practical, not just manageable.\n\nIf your client has complex needs, check the suitability details with us before you commit. We will give you specifics, not a brochure.\n\nOne thing many carers do not know: you have a legal right to a Carer's Assessment under the Care Act 2014. Your local council must carry one out if you ask. It can open up direct payment routes to fund a holiday or short break, so it is worth requesting if you have not had one."
-		),
-		'bullets'          => restwell_wif_bullet_list( $pid, 'wif_carers_detail_bullets', $default_carers_bullets ),
-		'inline_cta_label' => (string) get_post_meta( $pid, 'wif_carers_inline_cta_label', true ) ?: __( 'Ask a suitability question', 'restwell-retreats' ),
-		'inline_cta_url'   => (string) get_post_meta( $pid, 'wif_carers_inline_cta_url', true ) ?: '/enquire/',
-	),
-	array(
-		'id'               => 'wif-ot',
-		'jump_label'       => (string) get_post_meta( $pid, 'wif_nav_ot_label', true ) ?: __( "I'm an OT / case manager", 'restwell-retreats' ),
-		'icon'             => 'clipboard-text',
-		'featured'         => false,
-		'title'            => (string) get_post_meta( $pid, 'wif_ot_title', true ) ?: 'For occupational therapists and case managers',
-		'body'             => restwell_wif_persona_intro_body(
-			$pid,
-			'wif_ot_body',
-			'wif_ot_detail_body',
-			"Our accessibility page publishes doorway widths, turning circle dimensions, bedroom ceiling track hoist specifications, profiling bed measurements, and wet room dimensions: the specifics that matter for a clinical recommendation.\n\nIf you need something we have not published (transfer clearances, approach gradients, equipment positioning), ask and we will measure it.\n\nWe understand a poor recommendation reflects on you. We would rather give you a straight answer than lose your trust, and we welcome referral conversations before any booking commitment."
-		),
-		'bullets'          => restwell_wif_bullet_list( $pid, 'wif_ot_detail_bullets', $default_ot_bullets ),
-		'inline_cta_label' => (string) get_post_meta( $pid, 'wif_ot_inline_cta_label', true ) ?: __( 'Review accessibility details', 'restwell-retreats' ),
-		'inline_cta_url'   => (string) get_post_meta( $pid, 'wif_ot_inline_cta_url', true ) ?: '/accessibility/',
-	),
-	array(
-		'id'               => 'wif-commissioners',
-		'jump_label'       => (string) get_post_meta( $pid, 'wif_nav_commissioners_label', true ) ?: __( "I'm a commissioner", 'restwell-retreats' ),
-		'icon'             => 'buildings',
-		'featured'         => false,
-		'title'            => (string) get_post_meta( $pid, 'wif_commissioners_title', true ) ?: 'For commissioners and social care teams',
-		'body'             => restwell_wif_persona_intro_body(
-			$pid,
-			'wif_commissioners_body',
-			'wif_commissioners_detail_body',
-			"Under the Care Act 2014, short breaks at a private adapted setting can be included in a care and support plan where the property meets the person's assessed needs. Restwell supports direct payment stays, personal health budgets, and CHC-funded packages.\n\nWe can provide the documentation a referral process typically requires: property specification, access measurements, equipment inventory, and written confirmation of our connection to Continuity of Care Services, a CQC-registered provider.\n\nMost local authority funding decisions require evidence. We provide it."
-		),
-		'bullets'          => restwell_wif_bullet_list( $pid, 'wif_commissioners_detail_bullets', $default_commissioners_bullets ),
-		'inline_cta_label' => (string) get_post_meta( $pid, 'wif_commissioners_inline_cta_label', true ) ?: __( 'Enquire about a funded stay', 'restwell-retreats' ),
-		'inline_cta_url'   => (string) get_post_meta( $pid, 'wif_commissioners_inline_cta_url', true ) ?: '/enquire/',
-	),
-);
-
-$funding_heading = (string) get_post_meta( $pid, 'wif_funding_heading', true ) ?: 'How funding can work';
-$funding_body    = (string) get_post_meta( $pid, 'wif_funding_body', true ) ?: 'Many guests use direct payments, personal budgets, or CHC pathways. Most funded stays begin with a Care and Support Assessment, which is a right under the Care Act 2014. In Kent, that means contacting Kent County Council Adult Social Care. The three routes below explain how each pathway works.';
-
-$default_fund_la_bullets = array(
-	__( 'Begins with a Care and Support Assessment. Unpaid carers can request a Carer\'s Assessment too (Care Act 2014).', 'restwell-retreats' ),
-	__( 'Direct payments: you receive the funding and choose your provider.', 'restwell-retreats' ),
-	__( 'Capital limits 2024/25: above £23,250 you pay in full; below £14,250 is usually ignored.', 'restwell-retreats' ),
-);
-$default_fund_phb_bullets = array(
-	__( 'Available for people with continuing healthcare needs, subject to eligibility assessment.', 'restwell-retreats' ),
-	__( 'Your ICB or NHS continuing healthcare team manages the application.', 'restwell-retreats' ),
-	__( 'A private adapted setting can be written into a care and support plan where clinically appropriate.', 'restwell-retreats' ),
-);
-$default_fund_private_bullets = array(
-	__( 'The same clear accessibility information and direct answers as for funded guests.', 'restwell-retreats' ),
-	__( 'Documentation for insurers or employers if you need it.', 'restwell-retreats' ),
-	__( 'No pressure: we tell you plainly whether the property is a good fit.', 'restwell-retreats' ),
-);
-
-$funding_routes = array(
-	array(
-		'icon'    => 'bank',
-		'title'   => (string) get_post_meta( $pid, 'wif_fund_la_title', true ) ?: __( 'Local authority & direct payments', 'restwell-retreats' ),
-		'bullets' => restwell_wif_bullet_list( $pid, 'wif_fund_la_bullets', $default_fund_la_bullets ),
-		'cta_label' => (string) get_post_meta( $pid, 'wif_fund_la_cta_label', true ) ?: __( 'Direct payments guide', 'restwell-retreats' ),
-		'cta_url'   => (string) get_post_meta( $pid, 'wif_fund_la_cta_url', true ) ?: '/direct-payment-holiday-accommodation/',
-	),
-	array(
-		'icon'    => 'heartbeat',
-		'title'   => (string) get_post_meta( $pid, 'wif_fund_phb_title', true ) ?: __( 'Personal health budget', 'restwell-retreats' ),
-		'bullets' => restwell_wif_bullet_list( $pid, 'wif_fund_phb_bullets', $default_fund_phb_bullets ),
-		'cta_label' => (string) get_post_meta( $pid, 'wif_fund_phb_cta_label', true ) ?: __( 'PHB and funding overview', 'restwell-retreats' ),
-		'cta_url'   => (string) get_post_meta( $pid, 'wif_fund_phb_cta_url', true ) ?: '/resources/',
-	),
-	array(
-		'icon'    => 'wallet',
-		'title'   => (string) get_post_meta( $pid, 'wif_fund_private_title', true ) ?: __( 'Private / self-funded', 'restwell-retreats' ),
-		'bullets' => restwell_wif_bullet_list( $pid, 'wif_fund_private_bullets', $default_fund_private_bullets ),
-		'cta_label' => (string) get_post_meta( $pid, 'wif_fund_private_cta_label', true ) ?: __( 'Ask about your dates', 'restwell-retreats' ),
-		'cta_url'   => (string) get_post_meta( $pid, 'wif_fund_private_cta_url', true ) ?: '/enquire/',
-	),
-);
-
-$wif_visual_intro = (string) get_post_meta( $pid, 'wif_visual_intro', true ) ?: __( 'Real photos help you judge fit before you book: layout, circulation space, and how equipment sits in the room. Pair these with our accessibility specification for verified measurements and features.', 'restwell-retreats' );
-
-$wif_gallery_slots = function_exists( 'restwell_get_wif_gallery_slots' )
-	? restwell_get_wif_gallery_slots( $pid )
-	: array();
-$wif_tldr_markup = function_exists( 'restwell_get_tldr_markup' ) ? restwell_get_tldr_markup( $pid, '' ) : '';
-
 ?>
-<main class="flex-1 restwell-wif-page" id="main-content">
-	<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id' => 'wif-hero-heading',
-			'label'      => $label,
-			'heading'    => $heading,
-			'intro'      => $intro,
-			'media_id'   => $hero_image_id,
-			'image_alt'  => $heading,
-			'append_after_h1_html' => $wif_tldr_markup,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
 
-	<nav class="wif-persona-nav sticky z-30 border-b border-[var(--wif-subnav-border)] bg-white/95 backdrop-blur-sm shadow-[0_1px_0_rgba(0,0,0,0.04)]" aria-label="<?php esc_attr_e( 'On this page: section navigation', 'restwell-retreats' ); ?>">
-		<div class="container max-w-5xl px-0 sm:px-4">
-			<p class="sr-only"><?php esc_html_e( 'Jump to a section on this page', 'restwell-retreats' ); ?></p>
-			<div class="wif-persona-nav__track">
-				<ul class="wif-persona-nav__list">
-					<?php foreach ( $personas as $p ) : ?>
-						<li>
-							<a class="wif-persona-nav__link" href="<?php echo esc_url( '#' . $p['id'] ); ?>" data-wif-anchor="<?php echo esc_attr( $p['id'] ); ?>">
-								<?php echo esc_html( $p['jump_label'] ); ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-					<li>
-						<a class="wif-persona-nav__link" href="<?php echo esc_url( '#wif-funding' ); ?>" data-wif-anchor="wif-funding">
-							<?php esc_html_e( 'Funding', 'restwell-retreats' ); ?>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<p class="wif-persona-nav__hint md:hidden" id="wif-persona-nav-hint">
-				<?php esc_html_e( 'Swipe sideways to see every section.', 'restwell-retreats' ); ?>
-			</p>
-		</div>
-	</nav>
+<main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Who It’s For</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">Is Restwell right for your group?</h1>
+            <p>A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="wif-audience-heading">
-		<div class="container max-w-5xl">
-			<div class="max-w-3xl rw-stack rw-mb-section">
-				<p class="section-label"><?php esc_html_e( 'Your situation', 'restwell-retreats' ); ?></p>
-				<h2 id="wif-audience-heading" class="wif-audience-section__title text-3xl md:text-4xl font-serif leading-tight text-[var(--deep-teal)] m-0"><?php echo esc_html( $audience_heading ); ?></h2>
-				<p class="m-0 text-left text-[var(--muted-grey)] leading-relaxed max-w-prose"><?php echo esc_html( $audience_intro ); ?></p>
-			</div>
+    <nav class="subnav" aria-label="On this page">
+      <div class="container">
+        <ul class="subnav__list">
+          <li><a href="#situations">Situations</a></li>
+          <li><a href="#access">Access</a></li>
+          <li><a href="#care">Care</a></li>
+          <li><a href="#funding">Funding</a></li>
+          <li><a href="#next">Next steps</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </nav>
 
-			<div class="flex flex-col rw-stack rw-stack--loose">
-				<?php foreach ( $personas as $card ) : ?>
-					<details id="<?php echo esc_attr( $card['id'] ); ?>" class="wif-persona-card scroll-mt-28 rounded-2xl border border-gray-100/90 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-[box-shadow,border-color] duration-300 ease-out hover:border-gray-200/90 hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] motion-reduce:transition-none group">
-						<summary class="wif-persona-card__inner flex items-center gap-4 sm:gap-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2 rounded-2xl">
-							<div class="wif-icon-circle w-11 h-11 sm:w-12 sm:h-12 shrink-0" aria-hidden="true">
-								<i class="ph-bold ph-<?php echo esc_attr( $card['icon'] ); ?> text-lg sm:text-xl"></i>
-							</div>
-							<h3 class="text-xl sm:text-2xl font-serif text-[var(--deep-teal)] m-0 leading-tight flex-1 min-w-0" id="wif-heading-<?php echo esc_attr( $card['id'] ); ?>">
-								<?php echo esc_html( $card['title'] ); ?>
-							</h3>
-							<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
-								<i class="ph-bold ph-caret-down"></i>
-							</span>
-						</summary>
-						<div class="wif-persona-card__body border-t border-gray-200/80 px-5 sm:px-8 lg:px-10 pt-6 md:pt-7 pb-6 sm:pb-8">
-							<div class="wif-persona-card__split flex flex-col gap-7 lg:flex-row lg:items-stretch lg:gap-8 xl:gap-10">
-								<div class="wif-persona-card__prose min-w-0 w-full max-w-prose flex-1 space-y-4 text-[var(--muted-grey)] text-[15px] sm:text-base leading-[1.65] sm:leading-relaxed lg:pt-1">
-								<?php foreach ( restwell_wif_split_body_paragraphs( $card['body'] ) as $para ) : ?>
-									<p class="m-0"><?php echo esc_html( $para ); ?></p>
-								<?php endforeach; ?>
-								</div>
-								<aside class="wif-persona-card__aside w-full shrink-0 lg:flex lg:min-h-0 lg:max-w-sm lg:flex-col xl:max-w-md">
-									<div class="wif-persona-card__highlights flex flex-col rounded-2xl border border-gray-100/90 bg-[var(--bg-subtle)] p-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:p-6 lg:h-full lg:min-h-0">
-										<ul class="wif-persona-card__bullets m-0 list-none space-y-3.5 p-0 text-sm leading-snug text-[var(--muted-grey)] sm:leading-relaxed">
-											<?php foreach ( $card['bullets'] as $item ) : ?>
-												<li class="grid grid-cols-[1.25rem_minmax(0,1fr)] items-start gap-x-2 text-left">
-													<span class="wif-icon-circle wif-icon-circle--muted h-5 w-5 shrink-0" aria-hidden="true">
-														<i class="ph-bold ph-check text-[10px]"></i>
-													</span>
-													<div class="min-w-0"><?php echo esc_html( $item ); ?></div>
-												</li>
-											<?php endforeach; ?>
-										</ul>
-										<div class="wif-persona-card__cta mt-4 border-t border-gray-200/60 pt-4 lg:mt-auto">
-											<a class="inline-flex min-h-[2.75rem] w-full items-center justify-center gap-2 rounded-2xl bg-[var(--deep-teal)] px-6 py-3 text-center text-sm font-semibold text-white whitespace-normal no-underline transition-[opacity,transform] duration-300 ease-in-out hover:-translate-y-0.5 hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0" href="<?php echo esc_url( home_url( $card['inline_cta_url'] ) ); ?>">
-												<?php echo esc_html( $card['inline_cta_label'] ); ?>
-												<i class="ph-bold ph-arrow-right text-xs" aria-hidden="true"></i>
-											</a>
-										</div>
-									</div>
-								</aside>
-							</div>
-						</div>
-					</details>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-white" id="situations" aria-labelledby="situations-h">
+      <div class="container split">
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Your situation</p>
+            <h2 id="situations-h">Who Restwell is built for</h2>
+            <p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if Russell Drive fits before they travel.</p>
+          </header>
+          <ul class="persona-list" role="list">
+            <li class="persona-list__item">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div>
+                <h3>Guests and families</h3>
+                <p>Hoist and wet room already fitted; measurements published; a private home, not a hotel room.</p>
+              </div>
+            </li>
+            <li class="persona-list__item">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.2-5 5-5s5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 19c.2-2.6 1.9-4.5 4.3-4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+              <div>
+                <h3>Carers and support workers</h3>
+                <p>Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.</p>
+              </div>
+            </li>
+            <li class="persona-list__item">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="4.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4.5V3.8A1.8 1.8 0 0 1 10.8 2h2.4A1.8 1.8 0 0 1 15 3.8v.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 12.2l2 2 4-4.5M8.5 17h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div>
+                <h3>Occupational therapists</h3>
+                <p>Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.</p>
+              </div>
+            </li>
+            <li class="persona-list__item">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 21V6.5L12 3l8 3.5V21M9 21v-5h6v5M4 21h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <div>
+                <h3>Commissioners &amp; social care</h3>
+                <p>Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="split__media" data-reveal>
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/LR-1-LS.jpg' ); ?>" alt="Open-plan living space in the accessible bungalow" width="900" height="675" loading="lazy" />
+        </div>
+      </div>
+    </section>
 
-	<section class="rw-section-y bg-white" aria-labelledby="wif-visual-trust-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-stack rw-mb-section max-w-prose">
-				<p class="section-label"><?php esc_html_e( 'The property', 'restwell-retreats' ); ?></p>
-				<h2 id="wif-visual-trust-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'See the access for yourself', 'restwell-retreats' ); ?></h2>
-				<p class="text-gray-600 m-0 leading-relaxed max-w-prose"><?php echo esc_html( $wif_visual_intro ); ?></p>
-			</div>
-			<div class="grid md:grid-cols-3 rw-gap-grid">
-				<?php foreach ( $wif_gallery_slots as $slot ) : ?>
-					<?php
-					$slot_id  = (int) ( $slot['id'] ?? 0 );
-					$slot_cap = trim( (string) ( $slot['caption'] ?? '' ) );
-					?>
-					<figure class="m-0 flex flex-col rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-[0_10px_40px_rgb(0,0,0,0.08)] hover:shadow-[0_14px_48px_rgb(0,0,0,0.1)] transition-shadow duration-300">
-						<?php if ( $slot_id > 0 ) : ?>
-							<div class="aspect-[4/3] overflow-hidden bg-[var(--bg-subtle)]">
-								<?php
-								if ( function_exists( 'restwell_get_property_attachment_image' ) ) {
-									echo restwell_get_property_attachment_image(
-										$slot_id,
-										'grid',
-										array(
-											'class' => 'w-full h-full object-cover',
-										)
-									);
-								} else {
-									echo wp_get_attachment_image(
-										$slot_id,
-										'large',
-										false,
-										array(
-											'class'    => 'w-full h-full object-cover',
-											'loading'  => 'lazy',
-											'decoding' => 'async',
-											'sizes'    => '(max-width: 767px) 100vw, 33vw',
-										)
-									);
-								}
-								?>
-							</div>
-						<?php else : ?>
-							<!-- Confirm in WP: assign property gallery images with wet room, bedroom, and kitchen alt text. -->
-							<div class="restwell-image-placeholder aspect-[4/3] flex flex-col items-center justify-center gap-3 text-center px-4 py-8 text-[var(--muted-grey)]" role="img" aria-label="<?php esc_attr_e( 'Property photo placeholder', 'restwell-retreats' ); ?>">
-								<i class="ph-bold ph-image text-2xl opacity-60" aria-hidden="true"></i>
-								<span class="text-xs leading-snug max-w-[14rem]"><?php esc_html_e( 'Add images to the property gallery to show verified shots here.', 'restwell-retreats' ); ?></span>
-							</div>
-						<?php endif; ?>
-						<?php if ( $slot_cap !== '' ) : ?>
-						<figcaption class="px-4 py-3.5 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-[var(--bg-subtle)]/50"><?php echo esc_html( $slot_cap ); ?></figcaption>
-						<?php endif; ?>
-					</figure>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-subtle" id="access" aria-labelledby="access-h">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">See the access</p>
+          <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
+          <p class="lede">These three items are on site before arrival, not hired for the week.</p>
+        </header>
+        <ul class="card-grid card-grid--3" role="list">
+          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-3-LS.jpg' ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-6-LS.jpg' ); ?>" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/kitchen.png' ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
+        </ul>
+        <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
+      </div>
+    </section>
 
-	<section class="rw-section-y bg-[var(--soft-sand)] scroll-mt-28" id="wif-funding" aria-labelledby="wif-funding-heading">
-		<div class="container max-w-5xl">
-		<div class="rw-stack rw-mb-section max-w-2xl mx-auto text-center">
-			<p class="section-label text-center"><?php esc_html_e( 'Funding', 'restwell-retreats' ); ?></p>
-			<h2 id="wif-funding-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0 text-center"><?php echo esc_html( $funding_heading ); ?></h2>
-			<p class="text-gray-600 m-0 leading-relaxed text-center"><?php echo esc_html( $funding_body ); ?></p>
-		</div>
-		<div class="wif-funding-routes grid sm:grid-cols-2 lg:grid-cols-3 rw-gap-grid mb-12 md:mb-14 items-stretch">
-			<?php foreach ( $funding_routes as $route ) : ?>
-				<article class="flex h-full min-h-0 flex-col rounded-2xl border border-gray-100 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 ease-out hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0 overflow-hidden">
-				<header class="shrink-0 flex items-start gap-4 px-6 pt-7 pb-5 md:px-7">
-						<div class="wif-icon-circle wif-icon-circle--feature h-11 w-11 shrink-0 mt-0.5" aria-hidden="true">
-							<i class="ph-bold ph-<?php echo esc_attr( $route['icon'] ); ?> text-base"></i>
-						</div>
-						<h3 class="m-0 text-[1.05rem] font-serif leading-snug text-[var(--deep-teal)]"><?php echo esc_html( $route['title'] ); ?></h3>
-					</header>
-					<div class="flex min-h-0 flex-1 flex-col border-t border-gray-100/80 px-6 py-5 md:px-7">
-						<ul class="m-0 list-none space-y-3.5 p-0 text-sm leading-relaxed text-gray-600">
-							<?php foreach ( $route['bullets'] as $bullet ) : ?>
-								<li class="flex items-start gap-3 text-left">
-									<span class="wif-icon-circle wif-icon-circle--muted h-5 w-5 shrink-0 mt-0.5" aria-hidden="true">
-										<i class="ph-bold ph-check text-[10px]"></i>
-									</span>
-									<span class="min-w-0"><?php echo esc_html( $bullet ); ?></span>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<footer class="shrink-0 border-t border-gray-100 px-6 py-5 md:px-7">
-						<a class="btn btn-outline btn-sm w-full whitespace-normal text-center leading-snug" href="<?php echo esc_url( home_url( $route['cta_url'] ) ); ?>">
-							<?php echo esc_html( $route['cta_label'] ); ?>
-						</a>
-					</footer>
-				</article>
-			<?php endforeach; ?>
-		</div>
-			<div class="rounded-2xl border border-[var(--deep-teal)]/15 bg-white/80 p-8 md:p-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] max-w-2xl mx-auto">
-				<p class="text-gray-600 leading-relaxed mb-6 m-0"><?php esc_html_e( 'Step-by-step timelines, Kent-specific context, and practical guidance on using assessments and personal budgets, all in one place.', 'restwell-retreats' ); ?></p>
-				<a class="inline-flex items-center justify-center gap-2 bg-[var(--deep-teal)] text-white font-semibold px-8 py-3.5 rounded-2xl text-base hover:opacity-90 hover:-translate-y-0.5 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--deep-teal)] no-underline" href="<?php echo esc_url( home_url( '/resources/' ) ); ?>">
-					<?php esc_html_e( 'Open the funding & support hub', 'restwell-retreats' ); ?>
-					<i class="ph-bold ph-arrow-right text-sm" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-white" aria-labelledby="quote-h">
+      <div class="container">
+        <h2 id="quote-h" class="sr-only">What guests say</h2>
+        <figure class="pull-quote">
+          <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
+          <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad&rsquo;s complex needs. Vicky and Keeley could not do enough for us. Our stay was comfortable and a home away from home.</blockquote>
+          <figcaption class="pull-quote__cite">M.W.<span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
+        </figure>
+      </div>
+    </section>
 
-	<section class="rw-section-y bg-white" aria-labelledby="wif-process-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-stack rw-mb-section max-w-prose">
-				<p class="section-label"><?php esc_html_e( 'How we work', 'restwell-retreats' ); ?></p>
-				<h2 id="wif-process-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'From first question to arrival', 'restwell-retreats' ); ?></h2>
-				<p class="text-gray-600 m-0 leading-relaxed max-w-prose"><?php esc_html_e( 'You do not need everything decided before you contact us. We will help you work through fit, dates, and any support details.', 'restwell-retreats' ); ?></p>
-			</div>
-			<div class="grid md:grid-cols-3 rw-gap-grid items-stretch">
-				<div class="flex h-full min-h-0 flex-col bg-[var(--bg-subtle)] rounded-2xl p-8 md:p-10 border border-gray-100">
-					<p class="mb-5 shrink-0">
-						<span class="sr-only"><?php esc_html_e( 'Step 1 of 3', 'restwell-retreats' ); ?></span>
-						<span class="wif-process-step-num text-4xl md:text-[2.75rem] font-bold leading-none text-[var(--deep-teal)] font-serif select-none" aria-hidden="true">&#x2776;</span>
-					</p>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] mb-3 shrink-0"><?php esc_html_e( 'Share your requirements', 'restwell-retreats' ); ?></h3>
-					<p class="text-gray-600 leading-relaxed m-0 flex-1"><?php esc_html_e( 'Tell us your access needs, preferred dates, and who is travelling. You do not need to have everything figured out; just give us enough to tell you whether the property is likely to be a good fit.', 'restwell-retreats' ); ?></p>
-				</div>
-				<div class="flex h-full min-h-0 flex-col bg-[var(--bg-subtle)] rounded-2xl p-8 md:p-10 border border-gray-100">
-					<p class="mb-5 shrink-0">
-						<span class="sr-only"><?php esc_html_e( 'Step 2 of 3', 'restwell-retreats' ); ?></span>
-						<span class="wif-process-step-num text-4xl md:text-[2.75rem] font-bold leading-none text-[var(--deep-teal)] font-serif select-none" aria-hidden="true">&#x2777;</span>
-					</p>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] mb-3 shrink-0"><?php esc_html_e( 'Confirm suitability', 'restwell-retreats' ); ?></h3>
-					<p class="text-gray-600 leading-relaxed m-0 flex-1"><?php esc_html_e( 'We answer practical questions directly (door widths, shower specifications, transfer space, equipment compatibility) so you can decide with confidence. If the property is not right for your needs, we will say so.', 'restwell-retreats' ); ?></p>
-				</div>
-				<div class="flex h-full min-h-0 flex-col bg-[var(--bg-subtle)] rounded-2xl p-8 md:p-10 border border-gray-100">
-					<p class="mb-5 shrink-0">
-						<span class="sr-only"><?php esc_html_e( 'Step 3 of 3', 'restwell-retreats' ); ?></span>
-						<span class="wif-process-step-num text-4xl md:text-[2.75rem] font-bold leading-none text-[var(--deep-teal)] font-serif select-none" aria-hidden="true">&#x2778;</span>
-					</p>
-					<h3 class="text-xl font-serif text-[var(--deep-teal)] mb-3 shrink-0"><?php esc_html_e( 'Book and prepare', 'restwell-retreats' ); ?></h3>
-					<p class="text-gray-600 leading-relaxed m-0 flex-1"><?php esc_html_e( 'Once dates are agreed, we confirm everything in writing and send you a guest arrival guide covering check-in, the property layout, local area information, and anything specific to your stay.', 'restwell-retreats' ); ?></p>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-teal" id="care" aria-labelledby="care-h">
+      <div class="container">
+        <div class="split">
+          <div class="band-teal__stack">
+            <p class="eyebrow eyebrow--on-dark">Optional care</p>
+            <h2 id="care-h">Care on site, only if you want it</h2>
+            <p class="lede">Our sister company, Continuity of Care Services, is CQC-rated Good and shares our enquiry line, 01622 809881, so care can start in the same conversation as your booking. Bring your own team instead, if that works better.</p>
+            <ul class="checklist">
+              <li>Personal care: washing, dressing and daily routines at agreed times</li>
+              <li>Visiting care: daytime visits or support for a promenade or town trip</li>
+              <li>Mobility and hoisting: ceiling-track transfers and wet-room kit already on site</li>
+            </ul>
+            <div class="band-teal__actions">
+              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">Learn about optional care</a>
+              <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Ask about care options</a>
+            </div>
+          </div>
+          <div class="split__media" data-reveal>
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/RAR-1-LS.jpg' ); ?>" alt="Rise and recline chair providing extra support during a stay" width="900" height="675" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="wif-related-reading-heading">
-		<div class="container max-w-5xl">
-			<div class="rw-stack rw-mb-section max-w-prose">
-				<p class="section-label"><?php esc_html_e( 'Related reading', 'restwell-retreats' ); ?></p>
-				<h2 id="wif-related-reading-heading" class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'Guides for families and referrers', 'restwell-retreats' ); ?></h2>
-				<p class="text-gray-600 m-0 leading-relaxed max-w-prose"><?php esc_html_e( 'This page is the audience-fit hub. For funding decisions, use the dedicated funding hub and then read topic-specific funding articles.', 'restwell-retreats' ); ?></p>
-			</div>
-			<div class="flex flex-wrap gap-3">
-				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/resources/' ) ); ?>"><?php esc_html_e( 'Funding & support hub', 'restwell-retreats' ); ?></a>
-				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/whitstable-area-guide/' ) ); ?>"><?php esc_html_e( 'Whitstable area guide', 'restwell-retreats' ); ?></a>
-				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>"><?php esc_html_e( 'Accessible beaches and coastal walks', 'restwell-retreats' ); ?></a>
-				<a class="btn btn-outline btn-sm" href="<?php echo esc_url( home_url( '/revitalise-alternatives-accessible-holidays/' ) ); ?>"><?php esc_html_e( 'Revitalise alternatives', 'restwell-retreats' ); ?></a>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-white" id="funding" aria-labelledby="funding-h">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Funding</p>
+          <h2 id="funding-h">Who we can invoice</h2>
+          <p class="lede">If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.</p>
+        </header>
+        <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; support hub</a></p>
+      </div>
+    </section>
+
+    <section class="section-y band-subtle process" id="next" aria-labelledby="next-h">
+      <div class="container">
+        <header class="section-head section-head--center process__head">
+          <p class="eyebrow">Next steps</p>
+          <h2 id="next-h">Enquire, match the house, then deposit</h2>
+          <p class="lede">No online checkout maze. You get a straight yes/no on kit fit before any money changes hands.</p>
+        </header>
+        <div class="process__layout">
+          <div class="process__media" data-reveal>
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
+          </div>
+          <ol class="process-list">
+            <li>
+              <span class="process-list__index" aria-hidden="true">01</span>
+              <div class="process-list__body">
+                <h3>Share requirements</h3>
+                <p class="process-list__meta">Start here</p>
+                <p>Dates, chair/hoist needs, funding contact, and whether you want Continuity care.</p>
+              </div>
+            </li>
+            <li>
+              <span class="process-list__index" aria-hidden="true">02</span>
+              <div class="process-list__body">
+                <h3>Confirm suitability</h3>
+                <p class="process-list__meta">We reply</p>
+                <p>We check doorway widths and on-site kit against your party, and say if Restwell is the wrong house.</p>
+              </div>
+            </li>
+            <li>
+              <span class="process-list__index" aria-hidden="true">03</span>
+              <div class="process-list__body">
+                <h3>Book and prepare</h3>
+                <p class="process-list__meta">When you’re ready</p>
+                <p>50% deposit, welcome pack, and a Continuity intro only if you asked for care.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+      <div class="container">
+        <div class="faq__layout">
+          <header class="faq__intro">
+            <p class="eyebrow">Suitability</p>
+            <h2 id="faq-h">Planning &amp; respite FAQ</h2>
+            <p class="lede">Complex-care planning order, and when a private bungalow beats care-home respite, or doesn’t.</p>
+          </header>
+          <div class="faq-list faq-list--split" data-faq-accordion>
+            <div class="faq-list__col">
+            <div class="faq-item is-open">
+              <button type="button" class="faq-item__trigger" aria-expanded="true" id="wif-q1" aria-controls="wif-q1-a">
+                <span>How do I plan a holiday when someone has complex care needs?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q1-a" role="region" aria-labelledby="wif-q1">
+                <p>Work in this order: match published access specs to the person’s equipment; set staffing (daytime, sleep-in vs waking night, backup); decide who pays lodging vs care; get kit confirmation in writing; sort medication, transport and emergency contacts. Only lock dates once those are clear.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q2" aria-controls="wif-q2-a">
+                <span>How do I plan a holiday if I have complex care needs?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q2-a" role="region" aria-labelledby="wif-q2" hidden>
+                <p>Start on the Accessibility page for Restwell’s door widths and hoist. Then coordinate carers or Continuity, confirm slings, sort prescriptions, build buffer into travel, and agree a backup if a carer is ill. Enquire with dates and care needs once that list is drafted.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q3" aria-controls="wif-q3-a">
+                <span>How should I prepare for an accessible holiday?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q3-a" role="region" aria-labelledby="wif-q3" hidden>
+                <p>Confirm access details in writing; pack slings, meds, chargers and comfort items the house won’t supply; share care plans with anyone covering the stay; note nearest accessible parking, toilets and pharmacy; keep Restwell and care-provider numbers to hand.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q4" aria-controls="wif-q4-a">
+                <span>What belongs on a disabled holiday checklist?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q4-a" role="region" aria-labelledby="wif-q4" hidden>
+                <p>Five lists: access needs; medical; care rota and backup; documents (funding letters, insurance, access statement); comfort and daily living. Tick each against Restwell’s published kit so you don’t pack what is already on site, or assume kit that isn’t.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q5" aria-controls="wif-q5-a">
+                <span>Is a holiday possible if someone has complex needs?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q5-a" role="region" aria-labelledby="wif-q5" hidden>
+                <p>Yes, if doorway widths, overnight staffing and transfers match before you travel. Start with measurements and the care rota, not brochure photos. This page and Accessibility are the fit check before you enquire.</p>
+              </div>
+            </div>
+            </div>
+            <div class="faq-list__col">
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q6" aria-controls="wif-q6-a">
+                <span>Is a holiday cottage better than a respite care placement for disabled adults?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
+                <p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q7" aria-controls="wif-q7-a">
+                <span>Can we take a disabled holiday instead of care-home respite?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q7-a" role="region" aria-labelledby="wif-q7" hidden>
+                <p>Yes when risk, staffing and equipment fit a private bungalow: Restwell with optional Continuity care is one such option. It is not a substitute for registered residential care when that is clinically required.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q8" aria-controls="wif-q8-a">
+                <span>How does an accessible holiday let compare with respite care?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q8-a" role="region" aria-labelledby="wif-q8" hidden>
+                <p>Compare environment (private home vs care setting), independence, how care is delivered, cost lines, family involvement and clinical suitability. Restwell is a private adapted bungalow with optional Continuity care, not a care home.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q9" aria-controls="wif-q9-a">
+                <span>What is the difference between a respite break and an accessible holiday?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="wif-q9-a" role="region" aria-labelledby="wif-q9" hidden>
+                <p>Respite usually means planned carer relief or continued formal care under funding language. An accessible holiday describes a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions.</p>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+      <div class="mid-cta__media" aria-hidden="true"></div>
+      <div class="mid-cta__inner">
+        <h2 id="mid-cta-h">Describe the party and equipment</h2>
+        <p>We’ll say straight whether Russell Drive fits, or where it doesn’t.</p>
+        <div class="mid-cta__btns">
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read accessibility</a>
+        </div>
+      </div>
+    </section>
+
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

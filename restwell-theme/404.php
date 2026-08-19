@@ -1,10 +1,6 @@
 <?php
 /**
- * 404 - Page not found template.
- *
- * Shown whenever WordPress cannot match a URL to a page, post, or archive.
- * Sends the correct HTTP 404 status (WordPress handles this automatically
- * for 404.php). Uses the same site footer as other templates.
+ * Concept port from mockups — 404.
  *
  * @package Restwell_Retreats
  */
@@ -16,111 +12,32 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
+
 <main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          
+          <div class="hero__text">
+            <h1 id="page-h">We couldn’t find that page</h1>
+            <p>The link’s out of date. Here’s the quickest way to what you were probably after.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<?php
-	$decor_404 = '<span aria-hidden="true" class="pointer-events-none select-none absolute inset-0 z-[5] flex items-center justify-center font-serif leading-none text-[18rem] md:text-[24rem] text-white/[0.04]">404</span>';
-	set_query_var(
-		'args',
-		array(
-			'heading_id'         => 'error-404-heading',
-			'label'              => __( 'Page not found', 'restwell-retreats' ),
-			'heading'            => __( "We couldn't find that page.", 'restwell-retreats' ),
-			'intro'              => __( 'It may have moved, or the address was mistyped. Here are a few places to start from.', 'restwell-retreats' ),
-			'media_id'           => 0,
-			'section_decor_html' => $decor_404,
-			'cta_primary'        => array(
-				'label' => __( 'Back to home', 'restwell-retreats' ),
-				'url'   => home_url( '/' ),
-			),
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
-
-	<section
-		class="rw-section-y bg-[var(--soft-sand)]"
-		aria-label="<?php esc_attr_e( 'Helpful pages', 'restwell-retreats' ); ?>"
-	>
-		<div class="container">
-			<div class="grid sm:grid-cols-3 gap-6 lg:gap-8 max-w-4xl mx-auto">
-
-				<div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-start gap-4">
-					<div class="feature-icon-wrapper">
-						<div class="feature-icon-blob"></div>
-						<i class="ph-bold ph-house feature-icon-svg text-[var(--deep-teal)]" aria-hidden="true"></i>
-					</div>
-					<div class="flex-1">
-						<h2 class="text-xl font-serif text-[var(--deep-teal)] mb-2">
-							<?php esc_html_e( 'The property', 'restwell-retreats' ); ?>
-						</h2>
-						<p class="text-sm text-[var(--body-secondary)] leading-relaxed">
-							<?php
-							printf(
-							/* translators: %s - property address */
-								esc_html__( 'See %s - our accessible Whitstable home.', 'restwell-retreats' ),
-								esc_html( (string) get_option( 'restwell_property_address', '101 Russell Drive' ) )
-							);
-							?>
-						</p>
-					</div>
-					<a
-						href="<?php echo esc_url( home_url( '/the-property/' ) ); ?>"
-						class="inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold text-sm hover:text-[var(--warm-gold-text)] hover:underline transition-colors duration-300 no-underline"
-					>
-						<?php esc_html_e( 'View the property', 'restwell-retreats' ); ?>
-						<i class="ph-bold ph-caret-right text-xs" aria-hidden="true"></i>
-					</a>
-				</div>
-
-				<div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-start gap-4">
-					<div class="feature-icon-wrapper">
-						<div class="feature-icon-blob"></div>
-						<i class="ph-bold ph-envelope-simple feature-icon-svg text-[var(--deep-teal)]" aria-hidden="true"></i>
-					</div>
-					<div class="flex-1">
-						<h2 class="text-xl font-serif text-[var(--deep-teal)] mb-2">
-							<?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?>
-						</h2>
-						<p class="text-sm text-[var(--body-secondary)] leading-relaxed">
-							<?php esc_html_e( 'Ask about availability, dates, or anything at all.', 'restwell-retreats' ); ?>
-						</p>
-					</div>
-					<a
-						href="<?php echo esc_url( home_url( '/enquire/' ) ); ?>"
-						class="inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold text-sm hover:text-[var(--warm-gold-text)] hover:underline transition-colors duration-300 no-underline"
-					>
-						<?php esc_html_e( 'Get in touch', 'restwell-retreats' ); ?>
-						<i class="ph-bold ph-caret-right text-xs" aria-hidden="true"></i>
-					</a>
-				</div>
-
-				<div class="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-start gap-4">
-					<div class="feature-icon-wrapper">
-						<div class="feature-icon-blob"></div>
-						<i class="ph-bold ph-info feature-icon-svg text-[var(--deep-teal)]" aria-hidden="true"></i>
-					</div>
-					<div class="flex-1">
-						<h2 class="text-xl font-serif text-[var(--deep-teal)] mb-2">
-							<?php esc_html_e( 'How it works', 'restwell-retreats' ); ?>
-						</h2>
-						<p class="text-sm text-[var(--body-secondary)] leading-relaxed">
-							<?php esc_html_e( 'How booking works - from first enquiry to arrival day.', 'restwell-retreats' ); ?>
-						</p>
-					</div>
-					<a
-						href="<?php echo esc_url( home_url( '/how-it-works/' ) ); ?>"
-						class="inline-flex items-center gap-2 text-[var(--deep-teal)] font-semibold text-sm hover:text-[var(--warm-gold-text)] hover:underline transition-colors duration-300 no-underline"
-					>
-						<?php esc_html_e( 'Find out more', 'restwell-retreats' ); ?>
-						<i class="ph-bold ph-caret-right text-xs" aria-hidden="true"></i>
-					</a>
-				</div>
-
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-white">
+      <div class="container">
+        <h2 class="sr-only">Helpful links</h2>
+        <div class="help-links">
+          <article class="info-card"><h3>The Property</h3><p>Rooms, equipment and photos of the Whitstable bungalow.</p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">View the bungalow</a></article>
+          <article class="info-card"><h3>Enquire</h3><p>Dates, access needs, funding questions.</p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Send an enquiry</a></article>
+          <article class="info-card"><h3>How it works</h3><p>Enquire, deposit, key-safe arrival from 3pm.</p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'how-it-works' ) ); ?>">See the process</a></article>
+        </div>
+      </div>
+    </section>
 
 </main>
 
-<?php get_footer(); ?>
+<?php
+get_footer();

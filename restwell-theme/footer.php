@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer template.
+ * Footer template — mockup chrome (partner + legal; mid-cta lives on pages).
  *
  * @package Restwell_Retreats
  */
@@ -8,10 +8,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$enquire_url          = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'enquire' ) : home_url( '/enquire/' );
-$property_url         = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'the-property' ) : home_url( '/the-property/' );
-$access_statement_url = function_exists( 'restwell_get_access_statement_url' ) ? restwell_get_access_statement_url() : '';
-$legal_entity_name    = (string) get_option( 'restwell_footer_legal_name', __( 'Homely Housing Investments Ltd t/a Restwell Retreats', 'restwell-retreats' ) );
+
+$legal_entity_name = (string) get_option( 'restwell_footer_legal_name', __( 'Homely Housing Investments Ltd t/a Restwell Retreats', 'restwell-retreats' ) );
 
 $footer_partner_url = trim( (string) get_option( 'restwell_footer_partner_url', 'https://www.continuitycareservices.co.uk/' ) );
 if ( $footer_partner_url === '' ) {
@@ -22,192 +20,81 @@ if ( $footer_cqc_profile_url === '' ) {
 	$footer_cqc_profile_url = 'https://www.cqc.org.uk/location/1-2624556588';
 }
 
-$social_profiles = function_exists( 'restwell_get_social_profile_urls' ) ? restwell_get_social_profile_urls() : array();
+$logo_url = function_exists( 'restwell_get_logo_url' ) ? restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) : '';
+$brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_brand_lockup() : get_bloginfo( 'name' );
 
-$footer_cta_heading = trim( (string) get_option( 'restwell_footer_cta_heading', '' ) );
-if ( $footer_cta_heading === '' ) {
-	$footer_cta_heading = __( 'Ready to plan your break?', 'restwell-retreats' );
-}
-
-$footer_cta_intro = trim( (string) get_option( 'restwell_footer_cta_intro', '' ) );
-if ( $footer_cta_intro === '' ) {
-	$footer_cta_intro = __( 'Tell us what you need - dates, accessibility, or a look around the property - and we will help you plan with confidence.', 'restwell-retreats' );
-}
-
-$footer_cta_primary_label = trim( (string) get_option( 'restwell_footer_cta_primary_label', '' ) );
-if ( $footer_cta_primary_label === '' ) {
-	$footer_cta_primary_label = __( 'See the property', 'restwell-retreats' );
-}
-$footer_cta_primary_raw = trim( (string) get_option( 'restwell_footer_cta_primary_url', '' ) );
-if ( $footer_cta_primary_raw === '' ) {
-	$footer_cta_primary_url = $property_url;
-} elseif ( preg_match( '#^https?://#i', $footer_cta_primary_raw ) ) {
-	$footer_cta_primary_url = esc_url( $footer_cta_primary_raw );
-} else {
-	$footer_cta_primary_url = esc_url( home_url( '/' . ltrim( $footer_cta_primary_raw, '/' ) ) );
-}
-$footer_cta_secondary_label = trim( (string) get_option( 'restwell_footer_cta_btn', '' ) );
-if ( $footer_cta_secondary_label === '' ) {
-	$footer_cta_secondary_label = __( 'Ask about your dates', 'restwell-retreats' );
-}
-
-$footer_cta_note = trim( (string) get_option( 'restwell_footer_cta_note', '' ) );
-if ( $footer_cta_note === '' ) {
-	$footer_cta_note = __( 'No booking commitment. Just a conversation.', 'restwell-retreats' );
-}
-
-/*
- * Footer blog categories should reflect actual post assignments.
- * Prefer canonical Restwell categories with posts.
- */
-$footer_blog_categories = function_exists( 'restwell_get_footer_blog_categories' )
-	? restwell_get_footer_blog_categories( 4 )
-	: array();
-
-// Contact panel: primary CTA to the enquiry page (phone and email are on that page).
-$footer_contact_url = function_exists( 'restwell_nav_resolve_page_url' )
-	? restwell_nav_resolve_page_url( 'enquire' )
-	: $enquire_url;
-$footer_contact_cta = __( 'Send an enquiry', 'restwell-retreats' );
-
-global $restwell_hide_footer_contact;
-$restwell_show_footer_contact = empty( $restwell_hide_footer_contact );
-/* Same URL is already on-page; skip redundant mini-CTA. */
-if ( $restwell_show_footer_contact && function_exists( 'is_page_template' ) ) {
-	if ( is_page_template( 'template-enquire.php' ) || is_page_template( 'template-contact.php' ) ) {
-		$restwell_show_footer_contact = false;
-	}
-}
+$faq_url      = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'faq' ) : home_url( '/faq/' );
+$privacy_url  = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'privacy-policy' ) : home_url( '/privacy-policy/' );
+$terms_url    = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'terms-and-conditions' ) : home_url( '/terms-and-conditions/' );
+$a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'accessibility-policy' ) : home_url( '/accessibility-policy/' );
 ?>
-<footer class="site-footer" role="contentinfo">
-	<?php global $restwell_hide_footer_cta; ?>
-	<?php if ( empty( $restwell_hide_footer_cta ) ) : ?>
-	<div class="footer-cta">
-		<div class="container">
-			<h2 class="footer-cta__heading"><?php echo esc_html( $footer_cta_heading ); ?></h2>
-			<p class="footer-cta__intro"><?php echo esc_html( $footer_cta_intro ); ?></p>
-			<div class="footer-cta__actions">
-				<a href="<?php echo esc_url( $footer_cta_primary_url ); ?>" class="footer-cta__btn footer-cta__btn--primary" data-cta="footer-cta-property"><?php echo esc_html( $footer_cta_primary_label ); ?> <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></a>
-				<a href="<?php echo esc_url( $enquire_url ); ?>" class="footer-cta__btn footer-cta__btn--ghost" data-cta="footer-cta-enquire"><?php echo esc_html( $footer_cta_secondary_label ); ?> <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></a>
-			</div>
-			<p class="footer-cta__note"><?php echo esc_html( $footer_cta_note ); ?></p>
-		</div>
-	</div>
-	<?php endif; ?>
+<footer class="site-footer">
 	<div class="container">
-		<div class="footer-grid <?php echo $restwell_show_footer_contact ? 'footer-grid--with-contact' : 'footer-grid--no-contact'; ?>">
-			<div class="footer-brand">
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" aria-label="<?php echo esc_attr( sprintf( __( '%s home', 'restwell-retreats' ), restwell_site_brand_lockup() ) ); ?>">
+		<div class="site-footer__brand">
+			<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+				<?php if ( $logo_url ) : ?>
 					<img
-						src="<?php echo esc_url( restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) ); ?>"
-						alt="<?php echo esc_attr( restwell_site_brand_lockup() ); ?>"
+						src="<?php echo esc_url( $logo_url ); ?>"
+						alt="<?php echo esc_attr( $brand ); ?>"
 						class="site-logo__img"
 						width="282"
 						height="44"
 					>
-				</a>
-				<p class="footer-description">
-					<?php esc_html_e( 'Care partner:', 'restwell-retreats' ); ?>
-					<a href="<?php echo esc_url( $footer_partner_url ); ?>" class="footer-description__link" target="_blank" rel="noopener noreferrer" data-cta="footer-care-partner"><?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?><span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a>
-					<span class="footer-description__sep" aria-hidden="true"> · </span>
-					<a href="<?php echo esc_url( $footer_cqc_profile_url ); ?>" class="footer-description__link" target="_blank" rel="noopener noreferrer" data-cta="footer-cqc-profile"><?php esc_html_e( 'CQC inspection profile', 'restwell-retreats' ); ?><span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a>
-				</p>
-				<p class="footer-legal-name"><?php echo esc_html( $legal_entity_name ); ?></p>
-				<?php if ( ! empty( $social_profiles ) ) : ?>
-					<nav class="footer-social" aria-label="<?php esc_attr_e( 'Social media', 'restwell-retreats' ); ?>">
-						<ul class="footer-social__list">
-							<?php if ( ! empty( $social_profiles['facebook'] ) ) : ?>
-								<li>
-									<a class="footer-social__link" href="<?php echo esc_url( $social_profiles['facebook'] ); ?>" rel="noopener noreferrer" target="_blank" data-cta="footer-social-facebook">
-										<i class="ph-bold ph-facebook-logo footer-social__icon" aria-hidden="true"></i>
-										<span class="footer-social__label"><?php esc_html_e( 'Facebook', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></span>
-									</a>
-								</li>
-							<?php endif; ?>
-							<?php if ( ! empty( $social_profiles['instagram'] ) ) : ?>
-								<li>
-									<a class="footer-social__link" href="<?php echo esc_url( $social_profiles['instagram'] ); ?>" rel="noopener noreferrer" target="_blank" data-cta="footer-social-instagram">
-										<i class="ph-bold ph-instagram-logo footer-social__icon" aria-hidden="true"></i>
-										<span class="footer-social__label"><?php esc_html_e( 'Instagram', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></span>
-									</a>
-								</li>
-							<?php endif; ?>
-							<?php if ( ! empty( $social_profiles['linkedin'] ) ) : ?>
-								<li>
-									<a class="footer-social__link" href="<?php echo esc_url( $social_profiles['linkedin'] ); ?>" rel="noopener noreferrer" target="_blank" data-cta="footer-social-linkedin">
-										<i class="ph-bold ph-linkedin-logo footer-social__icon" aria-hidden="true"></i>
-										<span class="footer-social__label"><?php esc_html_e( 'LinkedIn', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></span>
-									</a>
-								</li>
-							<?php endif; ?>
-						</ul>
-					</nav>
+				<?php else : ?>
+					<?php echo esc_html( $brand ); ?>
 				<?php endif; ?>
-			</div>
-
-			<div class="footer-explore">
-				<h3 class="footer-heading"><?php esc_html_e( 'Explore', 'restwell-retreats' ); ?></h3>
-				<nav aria-label="<?php esc_attr_e( 'Footer navigation', 'restwell-retreats' ); ?>">
-					<ul class="footer-nav-list footer-nav-list--explore">
-						<?php foreach ( restwell_get_primary_nav_links() as $item ) : ?>
-							<li><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li>
-						<?php endforeach; ?>
-					</ul>
-				</nav>
-			</div>
-
-			<div class="footer-blog">
-				<h3 class="footer-heading"><?php esc_html_e( 'Blog categories', 'restwell-retreats' ); ?></h3>
-				<nav class="footer-topic-nav" aria-label="<?php esc_attr_e( 'Blog categories', 'restwell-retreats' ); ?>">
-					<ul class="footer-nav-list footer-nav-list--topics">
-						<?php if ( ! empty( $footer_blog_categories ) ) : ?>
-							<?php foreach ( $footer_blog_categories as $footer_blog_category ) : ?>
-								<?php
-								$footer_blog_url = get_category_link( $footer_blog_category->term_id );
-								if ( is_wp_error( $footer_blog_url ) ) {
-									continue;
-								}
-								?>
-								<li>
-									<a href="<?php echo esc_url( $footer_blog_url ); ?>">
-										<?php echo esc_html( $footer_blog_category->name ); ?>
-									</a>
-								</li>
-							<?php endforeach; ?>
-						<?php else : ?>
-							<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'Browse all blog posts', 'restwell-retreats' ); ?></a></li>
-						<?php endif; ?>
-					</ul>
-				</nav>
-			</div>
-			<?php if ( $restwell_show_footer_contact ) : ?>
-			<div class="footer-contact" role="region" aria-labelledby="footer-contact-heading">
-				<h3 id="footer-contact-heading" class="footer-heading"><?php esc_html_e( 'Contact', 'restwell-retreats' ); ?></h3>
-				<a href="<?php echo esc_url( $footer_contact_url ); ?>" class="footer-cta__btn footer-cta__btn--ghost" data-cta="footer-contact-primary">
-					<?php echo esc_html( $footer_contact_cta ); ?> <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
+			</a>
+			<p class="site-footer__partner-line">
+				<?php esc_html_e( 'Care partner:', 'restwell-retreats' ); ?>
+				<a href="<?php echo esc_url( $footer_partner_url ); ?>" target="_blank" rel="noopener noreferrer">
+					<?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span>
 				</a>
-			</div>
-			<?php endif; ?>
+			</p>
+			<p class="site-footer__partner-line">
+				<a href="<?php echo esc_url( $footer_cqc_profile_url ); ?>" target="_blank" rel="noopener noreferrer">
+					<?php esc_html_e( 'CQC inspection profile', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span>
+				</a>
+			</p>
+			<p class="site-footer__partner-line"><?php esc_html_e( 'Accessible holidays, Whitstable, Kent', 'restwell-retreats' ); ?></p>
 		</div>
-
 		<div class="site-footer__bottom">
 			<nav class="site-footer__legal" aria-label="<?php esc_attr_e( 'Legal', 'restwell-retreats' ); ?>">
-				<?php if ( $access_statement_url !== '' ) : ?>
-					<a href="<?php echo esc_url( $access_statement_url ); ?>" rel="noopener noreferrer" target="_blank"><?php esc_html_e( 'Access statement (PDF)', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
-					<span class="site-footer__legal-sep" aria-hidden="true">/</span>
-				<?php endif; ?>
-				<a href="<?php echo esc_url( function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'faq' ) : home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a>
-				<span class="site-footer__legal-sep" aria-hidden="true">/</span>
-				<a href="<?php echo esc_url( function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'privacy-policy' ) : home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>
-				<span class="site-footer__legal-sep" aria-hidden="true">/</span>
-				<a href="<?php echo esc_url( function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'terms-and-conditions' ) : home_url( '/terms-and-conditions/' ) ); ?>"><?php esc_html_e( 'Terms &amp; Conditions', 'restwell-retreats' ); ?></a>
-				<span class="site-footer__legal-sep" aria-hidden="true">/</span>
-				<a href="<?php echo esc_url( function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'accessibility-policy' ) : home_url( '/accessibility-policy/' ) ); ?>"><?php esc_html_e( 'Website accessibility', 'restwell-retreats' ); ?></a>
+				<a href="<?php echo esc_url( $faq_url ); ?>"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a>
+				<a href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>
+				<a href="<?php echo esc_url( $terms_url ); ?>"><?php esc_html_e( 'Terms &amp; Conditions', 'restwell-retreats' ); ?></a>
+				<a href="<?php echo esc_url( $a11y_pol_url ); ?>"><?php esc_html_e( 'Website accessibility', 'restwell-retreats' ); ?></a>
 			</nav>
 			<p class="site-footer__copyright">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( $legal_entity_name ); ?>. <?php esc_html_e( 'All rights reserved.', 'restwell-retreats' ); ?></p>
 		</div>
 	</div>
 	<?php wp_footer(); ?>
 </footer>
+<div class="lightbox" id="gallery-lightbox" hidden role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Photo gallery', 'restwell-retreats' ); ?>">
+	<button type="button" class="lightbox__close" data-lightbox-close>
+		<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+			<path d="M3.2 3.2l9.6 9.6M12.8 3.2L3.2 12.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+		</svg>
+		<?php esc_html_e( 'Close', 'restwell-retreats' ); ?>
+	</button>
+	<div class="lightbox__stage">
+		<button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="<?php esc_attr_e( 'Previous image', 'restwell-retreats' ); ?>">
+			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<path d="M15 5L8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</button>
+		<figure class="lightbox__figure">
+			<img class="lightbox__image" data-lightbox-image src="" alt="" decoding="async" />
+		</figure>
+		<button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="<?php esc_attr_e( 'Next image', 'restwell-retreats' ); ?>">
+			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</button>
+	</div>
+	<div class="lightbox__meta">
+		<p class="lightbox__status" data-lightbox-status aria-live="polite"></p>
+		<p class="lightbox__caption" data-lightbox-caption></p>
+	</div>
+</div>
 </body>
 </html>

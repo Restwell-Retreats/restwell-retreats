@@ -2,6 +2,8 @@
 /**
  * Template Name: Whitstable Guide
  *
+ * Concept port from mockups — Whitstable Guide.
+ *
  * @package Restwell_Retreats
  */
 
@@ -10,394 +12,332 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$pid = get_the_ID();
-
-$hero_image_id = (int) get_post_meta( $pid, 'wg_hero_image_id', true );
-$label            = (string) get_post_meta( $pid, 'wg_label', true ) ?: 'Whitstable & Kent coast';
-$heading          = (string) get_post_meta( $pid, 'wg_heading', true ) ?: 'A practical local guide for your stay.';
-$intro            = (string) get_post_meta( $pid, 'wg_intro', true ) ?: 'Whitstable is a genuinely lovely town, and most of it is more accessible than it first appears. This guide covers the seafront, parking, eating out and quieter times, written for wheelchair users and visitors with access needs.';
-$hero_heading_id = 'wg-hero-heading';
-
-$sections = array(
-	array(
-		'key'     => 'walk',
-		'eyebrow' => 'Coastal walk',
-		'heading' => (string) get_post_meta( $pid, 'wg_about_heading', true ) ?: 'The promenade from Tankerton Slopes',
-		'body'    => (string) get_post_meta( $pid, 'wg_about_body', true ) ?: "A paved promenade route of about two miles, west from the property at the top of Tankerton Slopes. Marine Parade clifftop is wide and flat with weather shelters and benches. At the right tide you can watch The Street, a natural shingle spit, emerge almost 800 metres into the estuary.\nSloped paths down to the beach are steep and easier with a companion for manual wheelchair users. The lower promenade then runs unbroken west past the painted beach huts to Whitstable Castle gardens, town and harbour.",
-		'bg'      => 'bg-white',
-	),
-	array(
-		'key'     => 'parking',
-		'eyebrow' => 'Practical',
-		'heading' => (string) get_post_meta( $pid, 'wg_getting_here_heading', true ) ?: 'Parking, plainly',
-		'body'    => (string) get_post_meta( $pid, 'wg_getting_here_body', true ) ?: "Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.\nHeads-up: the harbour car parks (Gorrell Tank, Keam's Yard) use ANPR and need your vehicle and Blue Badge registered online beforehand. Parking at Tankerton Road and rolling along the promenade is usually easier.",
-		'bg'      => 'bg-[var(--bg-subtle)] rw-seam-t',
-	),
-	array(
-		'key'     => 'further',
-		'eyebrow' => 'Day trips',
-		'heading' => (string) get_post_meta( $pid, 'wg_towns_heading', true ) ?: 'Further afield',
-		'body'    => (string) get_post_meta( $pid, 'wg_towns_body', true ) ?: "Wildwood Trust, Herne Bay: mostly accessible woodland paths, scooters to borrow on request. Book ahead on 01227 209621.\nDreamland, Margate: wheelchair accessible with accessible toilets. Nimbus Access Card and Essential Companion scheme accepted.\nCanterbury: Cathedral Welcome Centre lends wheelchairs; the cathedral is mostly step-free. Some cobbled streets in the centre; riverside routes and Westgate Gardens are smoother under wheels.",
-		'bg'      => 'bg-white',
-	),
-);
-
-$access_cards = array(
-	array(
-		'title' => 'Whitstable Castle & Gardens',
-		'body'  => 'Paved paths through the grounds. Orangery Tearooms are step-free with an accessible loo. Dogs welcome.',
-		'note'  => 'A natural pause halfway along the promenade walk.',
-		'icon'  => 'castle',
-	),
-	array(
-		'title' => 'Whitstable Harbour',
-		'body'  => 'Working oyster port. South Quay Shed has a lift to a quieter upper floor. Changing Places at Whitstable Harbour WC on Harbour Road (RADAR key).',
-		'note'  => 'Busier at weekends; weekday mornings are usually quieter.',
-		'icon'  => 'anchor',
-	),
-	array(
-		'title' => 'The Old Neptune',
-		'body'  => 'Timber pub on the shingle. Best enjoyed from the terrace on firm ground.',
-		'note'  => 'Sloping floors inside and no step-free entrance. The terrace is the practical option.',
-		'icon'  => 'beer-stein',
-	),
-);
-
-$access_label   = (string) get_post_meta( $pid, 'wg_access_label', true ) ?: 'Along the route';
-$access_heading = (string) get_post_meta( $pid, 'wg_access_heading', true ) ?: 'Three good stops';
-$access_intro   = (string) get_post_meta( $pid, 'wg_access_intro', true ) ?: 'Each stop sits on or just off the promenade route, with access notes woven in so you can plan before you set off.';
-
-$spotlight_label   = (string) get_post_meta( $pid, 'wg_spotlight_label', true ) ?: 'Visual guide';
-$spotlight_heading = (string) get_post_meta( $pid, 'wg_spotlight_heading', true ) ?: 'Key local areas at a glance';
-$spotlight_intro   = (string) get_post_meta( $pid, 'wg_spotlight_intro', true ) ?: 'Photos help you picture routes and surfaces before you arrive.';
-
-$related_label   = (string) get_post_meta( $pid, 'wg_related_label', true ) ?: 'Related reading';
-$related_heading = (string) get_post_meta( $pid, 'wg_related_heading', true ) ?: 'Plan your stay with connected guides';
-$related_intro   = (string) get_post_meta( $pid, 'wg_related_intro', true ) ?: 'If you are comparing locations and practical suitability, these pages answer the next common questions.';
-
-$planning_label          = (string) get_post_meta( $pid, 'wg_planning_label', true ) ?: 'Practical stops';
-$planning_heading        = (string) get_post_meta( $pid, 'wg_planning_heading', true ) ?: 'Loos along the way';
-$planning_intro          = (string) get_post_meta( $pid, 'wg_planning_intro', true ) ?: 'Public toilets on and near the promenade route, including a Changing Places facility at the harbour.';
-$planning_before_heading = (string) get_post_meta( $pid, 'wg_planning_before_heading', true ) ?: '';
-$planning_day_heading    = (string) get_post_meta( $pid, 'wg_planning_day_heading', true ) ?: '';
-$planning_before_bullets = (string) get_post_meta( $pid, 'wg_planning_before_bullets', true ) ?: "Behind the sailing club at the foot of the slopes.\nBy the Marine Parade cafe at the top.\nUnder the promenade cafe near the castle.\nChanging Places at Whitstable Harbour WC, Harbour Road.";
-$planning_day_bullets    = (string) get_post_meta( $pid, 'wg_planning_day_bullets', true ) ?: '';
-
-$eating_label   = (string) get_post_meta( $pid, 'wg_eating_label', true ) ?: 'Eating out';
-$eating_heading = (string) get_post_meta( $pid, 'wg_eating_heading', true ) ?: 'Places to eat near the property';
-$eating_intro   = (string) get_post_meta( $pid, 'wg_eating_intro', true ) ?: 'Three nearby options with honest access notes. Confirm details with the venue before you travel if access is critical to your plans.';
-$eating_body    = (string) get_post_meta( $pid, 'wg_eating_body', true ) ?: "<strong>The Plough Inn, Swalecliffe</strong> (100 St John's Road, CT5 2RN, 01227 794636): step-free entry, no accessible toilet. Confirm in WP: full access details.\n<strong>JoJo's, Tankerton</strong> (2 Herne Bay Road, CT5 2LQ, 01227 274591): wheelchair access and accessible toilet.\n<strong>Marine Hotel, Tankerton</strong> (32-33 Marine Parade, CT5 2BE, 01227 272672): ground-floor step-free dining, accessible toilet by reception.";
-
-$cta_heading         = (string) get_post_meta( $pid, 'wg_cta_heading', true ) ?: 'Planning your coastal break?';
-$cta_body            = (string) get_post_meta( $pid, 'wg_cta_body', true ) ?: 'If you have dates in mind, get in touch and we will help you plan a stay that works for your access needs.';
-$cta_primary_label   = (string) get_post_meta( $pid, 'wg_cta_primary_label', true ) ?: 'See the property';
-$cta_primary_url     = (string) get_post_meta( $pid, 'wg_cta_primary_url', true ) ?: '/the-property/';
-$cta_secondary_label = (string) get_post_meta( $pid, 'wg_cta_secondary_label', true ) ?: 'Ask about your dates';
-$cta_secondary_url   = (string) get_post_meta( $pid, 'wg_cta_secondary_url', true ) ?: '/enquire/';
-$cta_blog_label      = (string) get_post_meta( $pid, 'wg_cta_blog_label', true ) ?: 'Read local articles';
-$cta_blog_url        = (string) get_post_meta( $pid, 'wg_cta_blog_url', true ) ?: '/blog/';
-
-$restwell_wg_resolve_url = static function ( $path ) {
-	$path = trim( (string) $path );
-	if ( $path === '' ) {
-		return '';
-	}
-	if ( 0 === strpos( $path, 'http' ) ) {
-		return $path;
-	}
-	return home_url( $path );
-};
-
-$spotlight_images = array();
-for ( $i = 1; $i <= 3; $i++ ) {
-	$image_id = (int) get_post_meta( $pid, "wg_spotlight_image_{$i}_id", true );
-	if ( ! $image_id ) {
-		continue;
-	}
-	$image_src = wp_get_attachment_image_url( $image_id, 'large' );
-	if ( ! $image_src ) {
-		continue;
-	}
-	$image_alt = trim( wp_strip_all_tags( (string) get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ) );
-	$caption   = (string) get_post_meta( $pid, "wg_spotlight_image_{$i}_caption", true );
-	$spotlight_images[] = array(
-		'src'     => $image_src,
-		'alt'     => $image_alt,
-		'caption' => $caption,
-	);
-}
-
-$card_hover = 'rw-surface-card rw-card-hover-lift motion-reduce:transition-none motion-reduce:hover:translate-y-0';
-$body_class = 'rw-copy-body font-sans text-base leading-relaxed';
-$link_class = 'text-[var(--deep-teal)] font-medium underline underline-offset-2 hover:bg-[var(--deep-teal)]/5 rounded-sm cursor-pointer transition-colors duration-200 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-[3px]';
-
-$wg_glance = array(
-	array(
-		'stat'  => __( '~90 min', 'restwell-retreats' ),
-		'label' => __( 'Typical drive from London (M2 / A299)', 'restwell-retreats' ),
-		'icon'  => 'car',
-	),
-	array(
-		'stat'  => __( '75–90 min', 'restwell-retreats' ),
-		'label' => __( 'Direct trains from Victoria or St Pancras', 'restwell-retreats' ),
-		'icon'  => 'train',
-	),
-	array(
-		'stat'  => __( '20–30 min', 'restwell-retreats' ),
-		'label' => __( 'Approx. walk from the property to Whitstable station (paved routes; exact time varies). Check station access with National Rail before you travel.', 'restwell-retreats' ),
-		'icon'  => 'map-pin',
-	),
-);
-
 ?>
-<main class="flex-1 page-whitstable-guide" id="main-content">
-	<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id'      => $hero_heading_id,
-			'label'           => $label,
-			'heading'         => $heading,
-			'intro'           => $intro,
-			'media_id'        => $hero_image_id,
-			'image_alt' => $heading,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
 
-	<section class="wg-glance py-0 bg-[var(--bg-subtle)] rw-seam-y-soft" aria-label="<?php esc_attr_e( 'Whitstable and travel at a glance', 'restwell-retreats' ); ?>">
-		<div class="container max-w-5xl mx-auto py-10 md:py-12">
-			<div class="grid w-full grid-cols-1 gap-0 divide-y divide-[var(--deep-teal)]/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-				<?php foreach ( $wg_glance as $glance ) : ?>
-					<?php $g_icon = isset( $glance['icon'] ) ? $glance['icon'] : 'dot'; ?>
-					<div class="wg-glance-item flex flex-col sm:flex-row sm:items-start gap-4 py-8 text-center sm:px-6 sm:py-6 sm:first:pl-0 sm:last:pr-0 sm:text-left">
-						<span class="wg-glance-item__icon flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--sea-glass)_30%,transparent)] text-[var(--deep-teal)] mx-auto sm:mx-0" aria-hidden="true">
-							<i class="ph-bold ph-<?php echo esc_attr( $g_icon ); ?> text-lg text-[var(--deep-teal)]"></i>
-						</span>
-						<dl class="min-w-0 flex-1 m-0">
-							<dt class="font-serif text-2xl md:text-[1.65rem] text-[var(--deep-teal)] tracking-tight leading-tight"><?php echo esc_html( $glance['stat'] ); ?></dt>
-							<dd class="mt-2 text-sm font-sans leading-snug text-[var(--muted-grey)] m-0"><?php echo esc_html( $glance['label'] ); ?></dd>
-						</dl>
-					</div>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</section>
+<main id="main-content">
+<section class="hero hero--interior hero--place" aria-labelledby="page-h">
+      <div class="hero__media" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Whitstable</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">Whitstable Kent coast access guide</h1>
+            <p>Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<?php foreach ( $sections as $section ) : ?>
-		<section class="wg-content-section rw-section-y <?php echo esc_attr( $section['bg'] ); ?>">
-			<div class="container max-w-5xl mx-auto">
-				<div class="wg-section-rail w-full">
-					<div class="wg-section-head mb-6 md:mb-8">
-						<p class="section-label mb-2"><?php echo esc_html( $section['eyebrow'] ); ?></p>
-						<h2 class="text-3xl md:text-[2rem] font-serif text-[var(--deep-teal)] tracking-tight"><?php echo esc_html( $section['heading'] ); ?></h2>
-					</div>
-					<div class="wg-content-body <?php echo esc_attr( $body_class ); ?> space-y-5">
-						<?php foreach ( preg_split( "/\\r\\n|\\r|\\n/", (string) $section['body'] ) as $line ) : ?>
-							<?php if ( trim( $line ) !== '' ) : ?>
-								<p class="m-0"><?php echo esc_html( $line ); ?></p>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</div>
-					<?php if ( 'walk' === $section['key'] ) : ?>
-						<p class="<?php echo esc_attr( $body_class ); ?> mt-8 pt-6 border-t border-[var(--deep-teal)]/10 m-0"><?php esc_html_e( 'Read more:', 'restwell-retreats' ); ?>
-							<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>"><?php esc_html_e( 'A guide to accessible beaches and coastal walks in Kent', 'restwell-retreats' ); ?></a>
-						</p>
-						<p class="<?php echo esc_attr( $body_class ); ?> mt-6 m-0 max-w-[65ch]">
-							<?php esc_html_e( 'Staying at Restwell puts Whitstable on your doorstep. For kit, access, and layout,', 'restwell-retreats' ); ?>
-							<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/the-property/' ) ); ?>"><?php esc_html_e( 'see the adapted bungalow', 'restwell-retreats' ); ?></a><?php esc_html_e( '. When you are ready,', 'restwell-retreats' ); ?>
-							<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/enquire/' ) ); ?>"><?php esc_html_e( 'get in touch about your stay', 'restwell-retreats' ); ?></a>.
-						</p>
-					<?php endif; ?>
-				<?php if ( 'parking' === $section['key'] ) : ?>
-					<?php
-					$wg_property_travel_facts = function_exists( 'restwell_get_property_facts_area_travel' )
-						? restwell_get_property_facts_area_travel()
-						: array();
-					?>
-					<?php if ( ! empty( $wg_property_travel_facts ) ) : ?>
-					<div class="<?php echo esc_attr( $body_class ); ?> mt-8 pt-6 border-t border-[var(--deep-teal)]/10">
-						<p class="m-0 mb-3 font-semibold text-[var(--deep-teal)]"><?php esc_html_e( 'At the property', 'restwell-retreats' ); ?></p>
-						<ul class="m-0 list-none space-y-2 p-0" role="list">
-							<?php foreach ( $wg_property_travel_facts as $travel_fact ) : ?>
-							<li class="flex items-start gap-2">
-								<span class="text-[var(--warm-gold-text)] shrink-0" aria-hidden="true"><i class="ph-bold ph-check"></i></span>
-								<span><?php echo esc_html( (string) $travel_fact ); ?></span>
-							</li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-					<?php endif; ?>
-					<p class="<?php echo esc_attr( $body_class ); ?> mt-8 pt-6 border-t border-[var(--deep-teal)]/10 m-0"><?php esc_html_e( 'For more on Blue Badge bays and harbour car parks, see our', 'restwell-retreats' ); ?>
-						<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/accessible-parking-whitstable-tankerton/' ) ); ?>"><?php esc_html_e( 'accessible parking guide for Whitstable and Tankerton', 'restwell-retreats' ); ?></a>.
-					</p>
-				<?php endif; ?>
-				</div>
-			</div>
-		</section>
-	<?php endforeach; ?>
+    <nav class="subnav" aria-label="On this page">
+      <div class="container">
+        <ul class="subnav__list">
+          <li><a href="#promenade">Promenade</a></li>
+          <li><a href="#parking">Parking</a></li>
+          <li><a href="#eat">Eat</a></li>
+          <li><a href="#toilets">Toilets</a></li>
+          <li><a href="#days-out">Days out</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </nav>
 
-	<section class="wg-content-section rw-section-y bg-[var(--bg-subtle)] rw-seam-t" aria-labelledby="wg-access-heading">
-		<div class="container max-w-5xl mx-auto">
-			<div class="wg-section-rail w-full">
-				<div class="wg-section-head mb-10 md:mb-12">
-					<p class="section-label mb-2"><?php echo esc_html( $access_label ); ?></p>
-					<h2 id="wg-access-heading" class="text-3xl md:text-[2rem] font-serif text-[var(--deep-teal)] tracking-tight mb-5 md:mb-6"><?php echo esc_html( $access_heading ); ?></h2>
-					<p class="<?php echo esc_attr( $body_class ); ?> max-w-[65ch]"><?php echo esc_html( $access_intro ); ?></p>
-				</div>
-				<div class="grid grid-cols-1 gap-7 md:gap-8 md:grid-cols-3 sm:items-stretch">
-				<?php
-				$wg_card_i = 0;
-				foreach ( $access_cards as $card ) :
-					++$wg_card_i;
-					$icon = isset( $card['icon'] ) ? $card['icon'] : 'dot';
-					?>
-					<div class="wg-access-card min-w-0 bg-white rounded-2xl p-8 md:p-9 h-full flex flex-col <?php echo esc_attr( $card_hover ); ?>">
-						<div class="flex gap-4">
-							<span class="wg-access-card__icon flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[color-mix(in_srgb,var(--sea-glass)_35%,transparent)] text-[var(--deep-teal)] shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]" aria-hidden="true">
-								<i class="ph-bold ph-<?php echo esc_attr( $icon ); ?> text-lg text-[var(--deep-teal)]"></i>
-							</span>
-							<div class="min-w-0 flex-1">
-								<p class="section-label mb-2 !text-xs !tracking-[0.18em]"><?php echo esc_html( sprintf( '%02d', $wg_card_i ) ); ?></p>
-								<h3 class="text-xl font-serif text-[var(--deep-teal)] mb-4"><?php echo esc_html( $card['title'] ); ?></h3>
-								<p class="<?php echo esc_attr( $body_class ); ?> mb-4"><?php echo esc_html( $card['body'] ); ?></p>
-							</div>
-						</div>
-						<p class="text-sm text-[var(--muted-grey)] leading-relaxed border-t border-[var(--deep-teal)]/10 pt-4 mt-auto pl-0 sm:pl-16"><?php echo esc_html( $card['note'] ); ?></p>
-					</div>
-				<?php endforeach; ?>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="section-y section-y--compact band-white" aria-label="Travel times">
+      <div class="container">
+        <div class="stat-row">
+          <div class="stat"><p class="stat__value">~90 min</p><p class="stat__label">Drive from London (M2 / A299)</p></div>
+          <div class="stat"><p class="stat__value">75–90 min</p><p class="stat__label">Direct train, check National Rail</p></div>
+          <div class="stat"><p class="stat__value">15 min</p><p class="stat__label">Walk to Tankerton promenade</p></div>
+        </div>
+      </div>
+    </section>
 
-	<?php if ( ! empty( $spotlight_images ) ) : ?>
-	<section class="wg-content-section rw-section-y bg-[var(--soft-sand)] rw-seam-t" aria-labelledby="wg-visual-guide-heading">
-		<div class="container max-w-5xl mx-auto">
-			<div class="wg-section-rail w-full">
-				<div class="wg-section-head mb-10 md:mb-12">
-					<p class="section-label mb-2"><?php echo esc_html( $spotlight_label ); ?></p>
-					<h2 id="wg-visual-guide-heading" class="text-3xl md:text-[2rem] font-serif text-[var(--deep-teal)] tracking-tight mb-5 md:mb-6"><?php echo esc_html( $spotlight_heading ); ?></h2>
-					<p class="<?php echo esc_attr( $body_class ); ?> max-w-[65ch]"><?php echo esc_html( $spotlight_intro ); ?></p>
-				</div>
-				<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-				<?php foreach ( $spotlight_images as $image ) : ?>
-					<?php
-					$img_alt = $image['alt'];
-					if ( $img_alt === '' ) {
-						$img_alt = $image['caption'] !== '' ? $image['caption'] : __( 'Local area photo', 'restwell-retreats' );
-					}
-					?>
-					<figure class="bg-white rounded-2xl overflow-hidden <?php echo esc_attr( $card_hover ); ?>">
-						<img src="<?php echo esc_url( $image['src'] ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" class="w-full aspect-[4/3] object-cover" loading="lazy" decoding="async" />
-						<?php if ( $image['caption'] !== '' ) : ?>
-							<figcaption class="px-5 py-4 text-sm text-[var(--body-secondary)] leading-relaxed"><?php echo esc_html( $image['caption'] ); ?></figcaption>
-						<?php endif; ?>
-					</figure>
-				<?php endforeach; ?>
-				</div>
-			</div>
-		</div>
-	</section>
-	<?php endif; ?>
+    <section class="section-y band-subtle" id="promenade" aria-labelledby="promenade-h">
+      <div class="container split">
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Coastal walk</p>
+            <h2 id="promenade-h">Tankerton promenade</h2>
+            <p class="lede">About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep, stick to the promenade for level sea air.</p>
+          </header>
+          <ul class="checklist">
+            <li>Wide, surfaced path with weather shelters and benches</li>
+            <li>At low tide you can watch The Street spit: loose shingle, not a wheelchair route</li>
+            <li>Level route from Restwell: no steps on the approach</li>
+          </ul>
+        </div>
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastal-pathway.webp' ); ?>" alt="Level coastal pathway at Whitstable" width="900" height="675" loading="lazy" />
+        </div>
+      </div>
+    </section>
 
-	<?php
-	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
-		$wg_related_intro = $related_intro !== ''
-			? $related_intro
-			: __( 'Kent coast guides that sit under this area hub: beaches, parking, travel, and quieter days out.', 'restwell-retreats' );
-		restwell_render_pillar_related_guides(
-			'whitstable-area-guide',
-			array(
-				'heading'         => $related_heading !== '' ? $related_heading : __( 'Related guides', 'restwell-retreats' ),
-				'intro'           => $wg_related_intro,
-				'heading_id'      => 'wg-related-reading-heading',
-				'show_siblings'   => true,
-				'show_conversion' => true,
-			)
-		);
-	}
-	?>
+    <section class="section-y band-white" id="parking" aria-labelledby="parking-h">
+      <div class="container split split--flip split--media-first">
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/russell-drive-whitstable.webp' ); ?>" alt="Russell Drive neighbourhood near Tankerton" width="900" height="675" loading="lazy" />
+        </div>
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Parking, plainly</p>
+            <h2 id="parking-h">At the house and in town</h2>
+            <p class="lede">Start from the driveway when you can. Harbour ANPR is the one that catches people out.</p>
+          </header>
+          <dl class="comparison-list">
+            <div class="comparison-list__item">
+              <dt>At Restwell</dt>
+              <dd>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</dd>
+            </div>
+            <div class="comparison-list__item">
+              <dt>Marine Parade &amp; Tankerton</dt>
+              <dd>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</dd>
+            </div>
+          </dl>
+          <aside class="download-panel">
+            <h3>Harbour ANPR</h3>
+            <p>Gorrell Tank and Keam’s Yard need your vehicle and Blue Badge pre-registered online. Parking at Tankerton Road and rolling the promenade is usually easier.</p>
+            <p class="place-list__actions"><a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register Blue Badge for ANPR<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span></a></p>
+          </aside>
+        </div>
+      </div>
+    </section>
 
-	<section class="wg-content-section rw-section-y bg-[var(--bg-subtle)] rw-seam-t" aria-labelledby="wg-planning-heading">
-		<div class="container max-w-5xl mx-auto">
-			<div class="wg-section-rail w-full">
-				<div class="wg-section-head mb-8 md:mb-10">
-					<p class="section-label mb-2"><?php echo esc_html( $planning_label ); ?></p>
-					<h2 id="wg-planning-heading" class="text-3xl md:text-[2rem] font-serif text-[var(--deep-teal)] tracking-tight mb-5 md:mb-6"><?php echo esc_html( $planning_heading ); ?></h2>
-					<p class="<?php echo esc_attr( $body_class ); ?> max-w-[65ch]"><?php echo esc_html( $planning_intro ); ?></p>
-				</div>
-				<div class="wg-planning-card min-w-0 bg-white rounded-2xl p-8 md:p-9 <?php echo esc_attr( $card_hover ); ?>">
-					<ul class="wg-planning-card__list space-y-3 font-sans text-[var(--body-secondary)] text-base leading-relaxed list-disc pl-5 marker:text-[var(--deep-teal)] m-0">
-						<?php foreach ( preg_split( "/\\r\\n|\\r|\\n/", $planning_before_bullets ) as $bullet ) : ?>
-							<?php if ( trim( $bullet ) !== '' ) : ?>
-								<li><?php echo esc_html( $bullet ); ?></li>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-subtle" id="stops" aria-labelledby="stops-h">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Along the route</p>
+          <h2 id="stops-h">Castle, harbour and beach pub</h2>
+          <p class="lede">Level stops on the promenade route, with access notes and links so you can check opening times before you set out.</p>
+        </header>
+        <div class="place-list place-list--3">
+          <article class="place-list__item">
+            <img class="place-list__thumb" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-beach-huts.webp' ); ?>" alt="Colourful beach huts along the Whitstable seafront" width="640" height="400" loading="lazy" decoding="async" />
+            <h3 class="place-list__title"><a href="https://whitstablecastle.co.uk/" target="_blank" rel="noopener noreferrer">Whitstable Castle &amp; Gardens<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p class="place-list__meta">Promenade stop</p>
+            <p>Paved grounds and Orangery Tearooms with an accessible loo, a level stop about halfway along the promenade.</p>
+            <p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227281726">Call 01227 281726</a></p>
+          </article>
+          <article class="place-list__item">
+            <img class="place-list__thumb" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-sunset-pier.webp' ); ?>" alt="Whitstable harbour area at sunset" width="640" height="400" loading="lazy" decoding="async" />
+            <h3 class="place-list__title"><a href="https://www.canterbury.co.uk/whitstable-harbour/" target="_blank" rel="noopener noreferrer">Whitstable Harbour<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p class="place-list__meta">Town &amp; seafood</p>
+            <p>Working oyster port. South Quay Shed has a lift to a quieter upper floor. Surfaces can be uneven, take it steady at peak times.</p>
+            <p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
+          </article>
+          <article class="place-list__item">
+            <img class="place-list__thumb" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastal-walk.webp' ); ?>" alt="Coastal walk near the Whitstable beach pubs" width="640" height="400" loading="lazy" decoding="async" />
+            <h3 class="place-list__title"><a href="https://www.thepubonthebeach.co.uk/" target="_blank" rel="noopener noreferrer">The Old Neptune<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p class="place-list__meta">Beach pub</p>
+            <p>Pub on the shingle. The terrace on firm ground is the realistic option: sloping floors inside, no step-free entrance.</p>
+            <p class="place-list__actions"><a href="https://www.thepubonthebeach.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=The+Old+Neptune+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-	<section class="wg-content-section rw-section-y bg-white rw-seam-t" aria-labelledby="wg-eating-heading">
-		<div class="container max-w-5xl mx-auto">
-			<div class="wg-section-rail w-full">
-				<div class="wg-section-head <?php echo $eating_intro !== '' ? 'mb-8 md:mb-10' : 'mb-6 md:mb-8'; ?>">
-					<p class="section-label mb-2"><?php echo esc_html( $eating_label ); ?></p>
-					<h2 id="wg-eating-heading" class="text-3xl md:text-[2rem] font-serif text-[var(--deep-teal)] tracking-tight <?php echo $eating_intro !== '' ? 'mb-5 md:mb-6' : 'mb-0'; ?>"><?php echo esc_html( $eating_heading ); ?></h2>
-					<?php if ( $eating_intro !== '' ) : ?>
-						<p class="<?php echo esc_attr( $body_class ); ?> mb-0 max-w-[65ch]"><?php echo esc_html( $eating_intro ); ?></p>
-					<?php endif; ?>
-				</div>
-			<div class="wg-content-body wg-eating-body space-y-5 <?php echo esc_attr( $body_class ); ?> border-t border-[var(--deep-teal)]/10 pt-8 md:pt-10">
-				<?php foreach ( preg_split( "/\\r\\n|\\r|\\n/", $eating_body ) as $para ) : ?>
-					<?php if ( trim( $para ) !== '' ) : ?>
-						<p class="m-0"><?php echo wp_kses_post( $para ); ?></p>
-					<?php endif; ?>
-				<?php endforeach; ?>
-				<p class="m-0 pt-6 border-t border-[var(--deep-teal)]/10 <?php echo esc_attr( $body_class ); ?>"><?php esc_html_e( 'For full details on the property and equipment,', 'restwell-retreats' ); ?>
-					<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/the-property/' ) ); ?>"><?php esc_html_e( 'see the adapted bungalow', 'restwell-retreats' ); ?></a>.
-					<?php esc_html_e( 'When you are ready,', 'restwell-retreats' ); ?>
-					<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/enquire/' ) ); ?>"><?php esc_html_e( 'get in touch about your stay', 'restwell-retreats' ); ?></a>.
-					<?php esc_html_e( 'For in-depth access notes on specific beaches and promenades along this stretch of coast, read our', 'restwell-retreats' ); ?>
-					<a class="<?php echo esc_attr( $link_class ); ?>" href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>"><?php esc_html_e( 'guide to accessible beaches in Kent', 'restwell-retreats' ); ?></a>.
-				</p>
-			</div>
-			</div>
-		</div>
-	</section>
+    <section class="section-y band-white" id="eat" aria-labelledby="eat-h">
+      <div class="container split split--media-first">
+        <div>
+          <header class="section-head section-head--tight">
+            <p class="eyebrow">Places to eat</p>
+            <h2 id="eat-h">Pubs and restaurants near the house</h2>
+            <p class="lede">The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings, call ahead if access is critical.</p>
+          </header>
+          <div class="place-list place-list--stack">
+          <article class="place-list__item">
+            
+            <h3 class="place-list__title"><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" target="_blank" rel="noopener noreferrer">The Plough Inn, Swalecliffe<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p class="place-list__meta">Nearest pub · CT5 2RN</p>
+            <p>Around the corner via the footpath between 71 and 73 Russell Drive. Step-free entry; no accessible toilet, confirm on the day if that matters.</p>
+            <p class="place-list__actions"><a class="text-link" href="tel:01227794636">Call 01227 794636</a><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
+          </article>
+          <article class="place-list__item">
+            
+            <h3 class="place-list__title"><a href="https://jojosrestaurant.co.uk/" target="_blank" rel="noopener noreferrer">JoJo’s, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p class="place-list__meta">2 Herne Bay Road · CT5 2LQ</p>
+            <p>Clifftop Mediterranean favourite. Wheelchair access and accessible toilet. Book ahead: it fills quickly.</p>
+            <p class="place-list__actions"><a href="https://jojosrestaurant.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227274591">Call 01227 274591</a></p>
+          </article>
+          <article class="place-list__item">
+            
+            <h3 class="place-list__title"><a href="https://www.marinewhitstable.co.uk/" target="_blank" rel="noopener noreferrer">Marine Hotel, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p class="place-list__meta">32–33 Marine Parade · CT5 2BE</p>
+            <p>Ground-floor lounge and restaurant, step-free, accessible loo by reception. Sea views from Marine Parade.</p>
+            <p class="place-list__actions"><a href="https://www.marinewhitstable.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227272672">Call 01227 272672</a></p>
+          </article>
+          </div>
+        </div>
+        <div class="split__media">
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-marina-sunset.webp' ); ?>" alt="Whitstable seafront near Tankerton, where several step-free dining options sit" width="900" height="675" loading="lazy" />
+        </div>
+      </div>
+    </section>
 
-	<section class="rw-section-y--cta bg-[var(--deep-teal)] rw-seam-t" aria-labelledby="wg-cta-heading">
-		<div class="container max-w-3xl mx-auto text-center">
-			<h2 id="wg-cta-heading" class="text-3xl md:text-4xl font-serif text-white mb-4 tracking-tight text-balance"><?php echo esc_html( $cta_heading ); ?></h2>
-			<p class="text-white/85 text-lg leading-relaxed mb-8 max-w-2xl mx-auto text-pretty"><?php echo esc_html( $cta_body ); ?></p>
-			<div class="flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
-				<?php if ( $cta_primary_label !== '' && $cta_primary_url !== '' ) : ?>
-					<a href="<?php echo esc_url( $restwell_wg_resolve_url( $cta_primary_url ) ); ?>" class="btn btn-gold">
-						<?php echo esc_html( $cta_primary_label ); ?>
-						<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-					</a>
-				<?php endif; ?>
-				<?php if ( $cta_secondary_label !== '' && $cta_secondary_url !== '' ) : ?>
-					<a href="<?php echo esc_url( $restwell_wg_resolve_url( $cta_secondary_url ) ); ?>" class="btn btn-ghost-light">
-						<?php echo esc_html( $cta_secondary_label ); ?>
-					</a>
-				<?php endif; ?>
-			</div>
-			<?php if ( $cta_blog_label !== '' && $cta_blog_url !== '' ) : ?>
-				<p class="mt-6 mb-0">
-					<a class="text-white/90 font-medium underline underline-offset-[0.28em] decoration-white/60 hover:text-[var(--warm-gold-hero)] hover:decoration-[var(--warm-gold-hero)] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-sm transition-colors duration-200" href="<?php echo esc_url( $restwell_wg_resolve_url( $cta_blog_url ) ); ?>">
-						<?php echo esc_html( $cta_blog_label ); ?>
-					</a>
-				</p>
-			<?php endif; ?>
-		</div>
-	</section>
+    <section class="section-y section-y--compact band-subtle" id="toilets" aria-labelledby="toilets-h">
+      <div class="container">
+        <header class="section-head section-head--tight">
+          <p class="eyebrow">Loos along the way</p>
+          <h2 id="toilets-h">Accessible toilets</h2>
+          <p class="lede">Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.</p>
+        </header>
+        <ul class="checklist checklist--2">
+          <li>Behind the sailing club at the foot of the slopes</li>
+          <li>By the Marine Parade cafe at the top</li>
+          <li>Under the promenade cafe near the castle</li>
+          <li>Changing Places: Whitstable Harbour WC, Harbour Road</li>
+          <li>JoJo’s Tankerton and Marine Hotel (venue accessible loos)</li>
+        </ul>
+        <p><a href="https://www.changing-places.org/find" class="text-link" target="_blank" rel="noopener noreferrer">Changing Places map<span class="sr-only"> (opens in new tab)</span></a></p>
+      </div>
+    </section>
+
+    <section class="section-y band-white" id="travel" aria-labelledby="travel-h">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Getting around</p>
+          <h2 id="travel-h">Station, buses and taxis</h2>
+          <p class="lede">Travel times from London are in the strip above. Below: how to move around Whitstable once you’ve arrived.</p>
+        </header>
+        <dl class="fact-dl">
+          <div>
+            <dt>Station</dt>
+            <dd>Whitstable station access varies by platform, check <a href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</dd>
+          </div>
+          <div>
+            <dt>Buses</dt>
+            <dd><a href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</dd>
+          </div>
+          <div>
+            <dt>Accessible taxis</dt>
+            <dd>Pre-book on busy days. Abacus Cars: <a class="text-link" href="tel:01227277745">01227 277745</a>.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section-y band-subtle" id="days-out" aria-labelledby="days-out-h">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow">Further afield</p>
+          <h2 id="days-out-h">Wildwood, Dreamland and Canterbury</h2>
+          <p class="lede">Check each venue’s site for scooter hire, companion tickets and parking for your dates.</p>
+        </header>
+        <ul class="card-grid card-grid--3" role="list">
+          <li><article class="media-card">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/whitstable-days-out.webp' ); ?>" alt="Woodland day out near the Kent coast" width="640" height="480" loading="lazy" />
+            <h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p>~30 minutes. Mostly accessible woodland paths; scooters bookable ahead on 01227 209621.</p>
+            <p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>
+          </article></li>
+          <li><article class="media-card">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
+            <h3><a href="https://www.dreamland.co.uk/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Dreamland, Margate<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p>Wheelchair accessible park; Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
+            <p class="place-list__actions"><a href="https://www.dreamland.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Dreamland website<span class="sr-only"> (opens in new tab)</span></a></p>
+          </article></li>
+          <li><article class="media-card">
+            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' ); ?>" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
+            <h3><a href="https://www.canterbury-cathedral.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Canterbury<span class="sr-only"> (opens in new tab)</span></a></h3>
+            <p>~20 minutes by car. Cathedral Welcome Centre lends wheelchairs; riverside and Westgate Gardens are smoother than the cobbles.</p>
+            <p class="place-list__actions"><a href="https://www.canterbury-cathedral.org/visit/" class="text-link" target="_blank" rel="noopener noreferrer">Cathedral visit info<span class="sr-only"> (opens in new tab)</span></a></p>
+          </article></li>
+        </ul>
+      </div>
+    </section>
+    <section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+      <div class="container">
+        <div class="faq__layout">
+          <header class="faq__intro">
+            <p class="eyebrow">Local access</p>
+            <h2 id="faq-h">Whitstable &amp; coast FAQ</h2>
+            <p class="lede">Tankerton promenade, Blue Badge parking, and what the shingle beach can and can’t do.</p>
+          </header>
+          <div class="faq-list faq-list--split" data-faq-accordion>
+            <div class="faq-list__col">
+            <div class="faq-item is-open">
+              <button type="button" class="faq-item__trigger" aria-expanded="true" id="whit-q1" aria-controls="whit-q1-a">
+                <span>Is Whitstable accessible for disabled visitors?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q1-a" role="region" aria-labelledby="whit-q1">
+                <p>With planning, yes for paved routes. Tankerton’s level promenade works well; loose shingle and some older streets do not. Use Blue Badge parking notes, the harbour RADAR toilet, and a step-free base like Restwell.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q2" aria-controls="whit-q2-a">
+                <span>What is Whitstable like for wheelchair users?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
+                <p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, town centre is roughly 15 minutes on a flat paved route; Tankerton promenade about 15 minutes, wide, level and fully surfaced. Stay on the paved path; grassy slopes above are steep.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q3" aria-controls="whit-q3-a">
+                <span>Is Whitstable suitable for wheelchair users?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q3-a" role="region" aria-labelledby="whit-q3" hidden>
+                <p>Yes if you plan parking, toilets and seafront routes first. Tankerton promenade is the main long level coastal stretch. Restwell’s step-free bungalow with driveway parking removes the hardest accommodation barrier.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q4" aria-controls="whit-q4-a">
+                <span>Where can I find step-free routes on the Kent coast?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q4-a" role="region" aria-labelledby="whit-q4" hidden>
+                <p>Favour paved promenades over shingle or steep slips. Tankerton’s promenade near Restwell is the local stretch we use most. A step-free bungalow means the day is about the route, not stairs at the house.</p>
+              </div>
+            </div>
+            </div>
+            <div class="faq-list__col">
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q5" aria-controls="whit-q5-a">
+                <span>How do I plan a wheelchair coastal holiday near Whitstable?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q5-a" role="region" aria-labelledby="whit-q5" hidden>
+                <p>Secure step-free accommodation first; use Tankerton promenade for sea air; check accessible toilets and parking; leave rest days in the plan. This guide lists the local detail from Russell Drive.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q6" aria-controls="whit-q6-a">
+                <span>What makes an accessible beach day work here?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q6-a" role="region" aria-labelledby="whit-q6" hidden>
+                <p>Level promenade, nearby parking and toilets, and knowing the shingle beach itself is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs; ask locally if you need one.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q7" aria-controls="whit-q7-a">
+                <span>What should I look for in an accessible seaside holiday in Kent?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button>
+              <div class="faq-item__panel" id="whit-q7-a" role="region" aria-labelledby="whit-q7" hidden>
+                <p>A private adapted base, known level routes, quieter timing if crowds are hard, and a backup indoor plan for weather. Restwell is that base on the Kent coast, with optional Continuity care if you need it.</p>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+      <div class="mid-cta__media" aria-hidden="true"></div>
+      <div class="mid-cta__inner">
+        <h2 id="mid-cta-h">Ask for route notes for your party</h2>
+        <p>Tell us chair size and energy levels, then see the bungalow on Russell Drive.</p>
+        <div class="mid-cta__btns">
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">See the bungalow</a>
+        </div>
+      </div>
+    </section>
 
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

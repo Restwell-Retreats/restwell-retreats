@@ -2,6 +2,8 @@
 /**
  * Template Name: FAQ
  *
+ * Concept port from mockups — FAQ.
+ *
  * @package Restwell_Retreats
  */
 
@@ -10,246 +12,272 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$pid = get_the_ID();
-
-$faq_hero_image_id = (int) get_post_meta( $pid, 'faq_hero_image_id', true );
-$faq_label          = get_post_meta( $pid, 'faq_label', true ) ?: 'Frequently asked questions';
-$faq_heading        = get_post_meta( $pid, 'faq_heading', true ) ?: 'Accessible holiday FAQs';
-$faq_intro          = get_post_meta( $pid, 'faq_intro', true ) ?: 'Short, plain answers to the questions we hear most before an enquiry. Accessibility, suitability, care, funding and what to do if your situation is not on the list.';
-
-// FAQ list section: heading only shown if explicitly set and different from hero heading.
-$faq_list_label   = get_post_meta( $pid, 'faq_list_label', true ) ?: 'Browse by topic';
-$faq_list_heading = get_post_meta( $pid, 'faq_list_heading', true ) ?: '';
-
-$faq_cta_label   = get_post_meta( $pid, 'faq_cta_label', true ) ?: '';
-$faq_cta_heading = get_post_meta( $pid, 'faq_cta_heading', true ) ?: 'Still have a question?';
-$faq_cta_body    = get_post_meta( $pid, 'faq_cta_body', true ) ?: 'Get in touch and we will answer honestly. We respond within 48 hours.';
-$faq_cta_btn     = get_post_meta( $pid, 'faq_cta_btn', true ) ?: 'Ask us';
-$faq_cta_url     = esc_url( get_post_meta( $pid, 'faq_cta_url', true ) ?: home_url( '/enquire/' ) );
-
-$faq_question_sent   = isset( $_GET['question_sent'] ) && '1' === sanitize_text_field( wp_unslash( $_GET['question_sent'] ) );
-$faq_question_errors = array();
-$faq_q_name          = '';
-$faq_q_email         = '';
-$faq_q_phone         = '';
-$faq_q_message       = '';
-$faq_q_marketing_optin = '';
-
-$faq_flash_key = isset( $_GET['faq_flash'] ) ? sanitize_text_field( wp_unslash( $_GET['faq_flash'] ) ) : '';
-if ( $faq_flash_key ) {
-	$faq_flash = get_transient( 'restwell_faq_flash_' . $faq_flash_key );
-	if ( is_array( $faq_flash ) ) {
-		$faq_question_errors = isset( $faq_flash['errors'] ) && is_array( $faq_flash['errors'] ) ? $faq_flash['errors'] : array();
-		$fields                = isset( $faq_flash['fields'] ) && is_array( $faq_flash['fields'] ) ? $faq_flash['fields'] : array();
-		$faq_q_name            = isset( $fields['name'] ) ? sanitize_text_field( (string) $fields['name'] ) : '';
-		$faq_q_email           = isset( $fields['email'] ) ? sanitize_email( (string) $fields['email'] ) : '';
-		$faq_q_phone           = isset( $fields['phone'] ) ? sanitize_text_field( (string) $fields['phone'] ) : '';
-		$faq_q_message         = isset( $fields['message'] ) ? sanitize_textarea_field( (string) $fields['message'] ) : '';
-		$faq_q_marketing_optin = isset( $fields['marketing_optin'] ) ? sanitize_text_field( (string) $fields['marketing_optin'] ) : '';
-		delete_transient( 'restwell_faq_flash_' . $faq_flash_key );
-	}
-}
-
-$faq_form_input_class = 'w-full rounded-xl border border-[#CFC2AD] bg-[#FFFEFC] px-4 py-3 text-sm text-[#1B4D5C] shadow-sm focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2';
-$faq_form_label_class = 'block text-sm font-semibold text-[#1B4D5C] mb-1.5';
-
-// Build FAQ pairs via centralised helper (single source of truth across all pages).
-// Category values: about | booking | care | local | funding
-$faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'faq-page' ) : array();
-
-// Category definitions for tabs.
-$categories = array(
-	'all'     => 'All questions',
-	'about'   => 'About the property',
-	'booking' => 'Booking & dates',
-	'care'    => 'Care & support',
-	'local'   => 'The local area',
-	'funding' => 'Funding & payments',
-);
 ?>
-<main class="flex-1" id="main-content">
-<?php get_template_part( 'template-parts/breadcrumb' ); ?>
 
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id'  => 'page-hero-heading',
-			'label'       => $faq_label,
-			'heading'     => $faq_heading,
-			'intro'       => $faq_intro,
-			'media_id'    => $faq_hero_image_id,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
 
-	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-labelledby="faq-list-heading">
-		<div class="container max-w-3xl">
-		<?php
-		// Show a visible heading: use a custom one if set, otherwise a sensible default for this section.
-		$list_heading_text    = ( $faq_list_heading !== '' && $faq_list_heading !== $faq_heading ) ? $faq_list_heading : 'Common questions';
-		$list_heading_classes = 'text-3xl font-serif text-[var(--deep-teal)] m-0';
-		?>
-		<div class="rw-stack rw-mb-section">
-		<?php if ( $faq_list_label !== '' ) : ?>
-			<p class="section-label"><?php echo esc_html( $faq_list_label ); ?></p>
-		<?php endif; ?>
-		<h2 id="faq-list-heading" class="<?php echo esc_attr( $list_heading_classes ); ?>"><?php echo esc_html( $list_heading_text ); ?></h2>
-		</div>
+<main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+      <div class="container">
+        <div class="hero__content">
+          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">FAQ</li></ol>
+          <div class="hero__text">
+            <h1 id="page-h">Restwell accessible holiday FAQs</h1>
+            <p>House, booking and packing questions we hear before an enquiry — with links when the full answer lives on Accessibility, Pricing, Care or Whitstable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-			<div class="faq-filter mb-8" role="group" aria-label="Filter questions by category">
-				<div class="flex flex-wrap gap-2">
-					<?php foreach ( $categories as $cat_key => $cat_label ) : ?>
-						<button type="button"
-								class="faq-filter-pill inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border border-[var(--deep-teal)]/20 text-[var(--deep-teal)] bg-white hover:bg-[var(--deep-teal)]/5 hover:border-[var(--deep-teal)]/40 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2"
-								data-filter="<?php echo esc_attr( $cat_key ); ?>"
-								aria-pressed="<?php echo $cat_key === 'all' ? 'true' : 'false'; ?>">
-							<?php echo esc_html( $cat_label ); ?>
-						</button>
-					<?php endforeach; ?>
-				</div>
-			</div>
-
-			<?php // Live region: JS writes filtered count here for screen readers. ?>
-			<p id="faq-filter-status" class="sr-only" role="status" aria-live="polite"></p>
-
-			<div class="space-y-4 faq-list" id="faq-list">
-				<?php foreach ( $faq_pairs as $faq ) : ?>
-					<details class="faq-item rw-faq-shell group"
-							 data-category="<?php echo esc_attr( $faq['cat'] ); ?>">
-						<summary class="text-[var(--deep-teal)] font-medium text-lg py-4 min-h-[2.75rem] cursor-pointer list-none flex items-center justify-between gap-4 [&::-webkit-details-marker]:hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2">
-							<span><?php echo esc_html( $faq['q'] ); ?></span>
-							<span class="flex-shrink-0 text-[var(--warm-gold-text)] transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
-								<i class="ph-bold ph-caret-down"></i>
-							</span>
-						</summary>
-						<div class="text-gray-600 text-base leading-relaxed pb-6">
-							<?php echo wp_kses_post( wpautop( $faq['a'] ) ); ?>
-						</div>
-					</details>
-				<?php endforeach; ?>
-			</div>
-
-			<?php // Hidden by default; JS reveals this when the active filter returns no items. ?>
-			<p id="faq-empty-state" class="hidden text-gray-600 text-center py-8">
-				No questions in this category yet. <a href="#faq-question-form" class="text-[var(--deep-teal)] hover:underline font-medium">Ask us directly</a>.
-			</p>
-
-		</div>
-	</section>
-
-	<section class="rw-section-y--compact bg-white border-t border-gray-100" aria-labelledby="faq-related-heading">
-		<div class="container max-w-3xl">
-			<h2 id="faq-related-heading" class="text-2xl font-serif text-[var(--deep-teal)] mb-4"><?php esc_html_e( 'Further reading', 'restwell-retreats' ); ?></h2>
-			<ul class="space-y-3 text-gray-700">
-				<li>
-					<a href="<?php echo esc_url( home_url( '/direct-payment-holiday-accommodation/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'How to use your direct payment for a holiday', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'funding your care support during a stay.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'Accessible beaches and coastal walks in Kent', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'what to expect at the beaches closest to the property.', 'restwell-retreats' ); ?></span>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( home_url( '/carers-respite-holiday-guide/' ) ); ?>" class="rw-link-prose">
-						<?php esc_html_e( 'Carers taking holidays: respite rights and funding', 'restwell-retreats' ); ?>
-					</a>
-					<span class="text-gray-500">: <?php esc_html_e( 'how to arrange and fund a break for a carer.', 'restwell-retreats' ); ?></span>
-				</li>
-			</ul>
-		</div>
-	</section>
-
-	<section class="rw-section-y--cta bg-[var(--deep-teal)]" aria-labelledby="faq-cta-heading">
-		<div class="container max-w-4xl">
-			<div id="faq-question-form" class="rounded-3xl bg-white border border-[#E9E1D5] overflow-hidden shadow-[0_18px_44px_rgba(0,0,0,0.2)]">
-				<div class="grid gap-0 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-[#E8DFD0]">
-					<div class="lg:col-span-2 bg-[#FBF8F3] px-6 py-7 md:px-8 md:py-8">
-						<p class="text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--warm-gold-text)] mb-2"><?php esc_html_e( 'Quick question form', 'restwell-retreats' ); ?></p>
-						<h2 id="faq-cta-heading" class="text-[2rem] font-serif text-[var(--deep-teal)] leading-tight mb-3"><?php echo esc_html( $faq_cta_heading ); ?></h2>
-						<p class="text-[var(--deep-teal)] text-[15px] leading-relaxed mb-3"><?php echo esc_html( $faq_cta_body ); ?></p>
-						<p class="text-[var(--muted-grey)] text-sm leading-relaxed"><?php esc_html_e( 'Ask anything here and we will reply directly by email.', 'restwell-retreats' ); ?></p>
-					</div>
-
-					<div class="lg:col-span-3 px-6 py-7 md:px-8 md:py-8">
-						<h3 class="text-xl md:text-2xl font-serif text-[var(--deep-teal)] mb-5"><?php esc_html_e( 'Ask a simple question', 'restwell-retreats' ); ?></h3>
-
-						<?php if ( $faq_question_sent ) : ?>
-							<p class="text-sm font-medium text-[var(--deep-teal)] bg-[var(--sea-glass)]/35 border border-[var(--sea-glass)] rounded-xl px-4 py-3 mb-4">
-								<?php esc_html_e( 'Thanks. Your question has been sent to our team. We usually reply within 48 hours.', 'restwell-retreats' ); ?>
-							</p>
-						<?php endif; ?>
-
-						<?php if ( ! empty( $faq_question_errors ) ) : ?>
-							<div class="text-sm text-[#7a1c1c] bg-[#fef2f2] border border-[#fecaca] rounded-xl px-4 py-3 mb-4" role="alert">
-								<?php foreach ( $faq_question_errors as $faq_form_error ) : ?>
-									<p><?php echo esc_html( $faq_form_error ); ?></p>
-								<?php endforeach; ?>
-							</div>
-						<?php endif; ?>
-
-						<form method="post" action="<?php echo esc_url( get_permalink( $pid ) ); ?>#faq-question-form" class="restwell-faq-question-form space-y-4 text-left relative" novalidate>
-							<?php wp_nonce_field( 'restwell_faq_question', 'restwell_faq_question_nonce' ); ?>
-							<input type="hidden" name="restwell_faq_question" value="1" />
-							<input type="hidden" name="restwell_faq_page_id" value="<?php echo esc_attr( (string) $pid ); ?>" />
-							<input type="hidden" name="restwell_form_opened_at" value="" data-restwell-form-opened />
-							<div class="absolute overflow-hidden w-px h-px -m-px p-0 border-0 [clip:rect(0,0,0,0)]" aria-hidden="true">
-								<label for="faq_q_website"><?php esc_html_e( 'Leave this field empty', 'restwell-retreats' ); ?></label>
-								<input type="text" name="faq_q_website" id="faq_q_website" value="" tabindex="-1" autocomplete="off" />
-							</div>
-
-							<div class="grid gap-4 md:grid-cols-2">
-								<div>
-									<label for="faq_q_name" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your name', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
-									<input type="text" id="faq_q_name" name="faq_q_name" required aria-required="true" value="<?php echo esc_attr( $faq_q_name ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" />
-									<p id="faq_q_name-error" class="enq-field-error" role="alert" hidden></p>
-								</div>
-
-								<div>
-									<label for="faq_q_email" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Email address', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
-									<input type="email" id="faq_q_email" name="faq_q_email" required aria-required="true" value="<?php echo esc_attr( $faq_q_email ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" />
-									<p id="faq_q_email-error" class="enq-field-error" role="alert" hidden></p>
-								</div>
-							</div>
-
-							<div>
-								<label for="faq_q_phone" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Phone number', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
-								<input type="tel" id="faq_q_phone" name="faq_q_phone" required aria-required="true" autocomplete="tel" value="<?php echo esc_attr( $faq_q_phone ); ?>" class="<?php echo esc_attr( $faq_form_input_class ); ?>" placeholder="07700 900000" />
-								<p id="faq_q_phone-error" class="enq-field-error" role="alert" hidden></p>
-							</div>
-
-							<div>
-								<label for="faq_q_message" class="<?php echo esc_attr( $faq_form_label_class ); ?>"><?php esc_html_e( 'Your question', 'restwell-retreats' ); ?> <span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span></label>
-								<textarea id="faq_q_message" name="faq_q_message" required aria-required="true" rows="5" class="<?php echo esc_attr( $faq_form_input_class ); ?>"><?php echo esc_textarea( $faq_q_message ); ?></textarea>
-								<p id="faq_q_message-error" class="enq-field-error" role="alert" hidden></p>
-							</div>
-							<div class="rounded-xl border border-[#CFC2AD] bg-[#FFFEFC] px-4 py-3">
-								<div class="flex items-start gap-3">
-									<input type="checkbox" id="faq_q_marketing_optin" name="faq_q_marketing_optin" value="1"
-										class="h-[1.125rem] w-[1.125rem] mt-0.5 shrink-0 rounded border-2 border-[#C4B8A8] bg-white focus:outline-none focus:ring-2 focus:ring-[#A8D5D0] focus:ring-offset-2"
-										<?php checked( $faq_q_marketing_optin, '1' ); ?> />
-									<label for="faq_q_marketing_optin" class="text-sm leading-snug text-[#1B4D5C] cursor-pointer">
-										<?php esc_html_e( 'Yes, send me occasional email updates with priority date alerts, special offers, and practical accessibility holiday tips (you can unsubscribe at any time).', 'restwell-retreats' ); ?>
-									</label>
-								</div>
-							</div>
-
-							<p class="text-xs text-[var(--muted-grey)] leading-relaxed"><?php esc_html_e( 'We use your details only to answer you. We never sell contact information.', 'restwell-retreats' ); ?></p>
-							<button type="submit" class="btn btn-gold min-h-[48px] px-7 w-full md:w-auto">
-								<?php esc_html_e( 'Send my question', 'restwell-retreats' ); ?> <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-							</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="faq section-y band-white">
+      <div class="container">
+        <h2 class="sr-only">Frequently asked questions</h2>
+        <ul class="pill-tabs" data-faq-filters role="tablist" aria-label="FAQ categories">
+          <li><button type="button" data-filter="all" class="is-active" aria-selected="true">All</button></li>
+          <li><button type="button" data-filter="booking" aria-selected="false">Booking</button></li>
+          <li><button type="button" data-filter="property" aria-selected="false">The house</button></li>
+          <li><button type="button" data-filter="prep" aria-selected="false">Before you travel</button></li>
+          <li><button type="button" data-filter="care" aria-selected="false">Care</button></li>
+          <li><button type="button" data-filter="funding" aria-selected="false">Funding</button></li>
+        </ul>
+          <div class="faq-list faq-list--split faq-list--measure" data-faq-accordion>
+            <div class="faq-list__col">
+            <div class="faq-item is-open" data-cat="booking">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="true" id="faq-q1" aria-controls="faq-q1-a">
+                <span>Is Restwell open for bookings?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q1-a" role="region" aria-labelledby="faq-q1">
+                <p>Yes, we take bookings for 2026 and 2027. Send dates and access needs via the enquire form.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="booking">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q2" aria-controls="faq-q2-a">
+                <span>How do I check dates if there’s no online checkout?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q2-a" role="region" aria-labelledby="faq-q2" hidden>
+                <p>Enquire with dates and access needs, or call 01622 809881. We reply within 48 hours on most enquiries. A 50% deposit only happens after we’ve confirmed the house fits. The booking steps are on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'how-it-works' ) ); ?>">How It Works</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="booking">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q3" aria-controls="faq-q3-a">
+                <span>How quickly do you reply?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q3-a" role="region" aria-labelledby="faq-q3" hidden>
+                <p>Within 48 hours on most enquiries. Mark the form as time-sensitive if dates are tight, or phone 01622 809881.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="booking">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q4" aria-controls="faq-q4-a">
+                <span>What time is check-in and check-out?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q4-a" role="region" aria-labelledby="faq-q4" hidden>
+                <p>Check-in is from 3pm via the key-safe. Check-out is 11am unless we’ve agreed something else for access or care travel.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="booking">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q5" aria-controls="faq-q5-a">
+                <span>What’s your cancellation policy?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q5-a" role="region" aria-labelledby="faq-q5" hidden>
+                <p>More than 30 days before arrival your deposit is refundable minus an admin fee; 14–30 days sees partial forfeiture; inside 14 days the balance is typically due. Full wording is in the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'terms-and-conditions' ) ); ?>">Terms &amp; Conditions</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="booking">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q6" aria-controls="faq-q6-a">
+                <span>How many guests can stay, and can we book a few nights?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q6-a" role="region" aria-labelledby="faq-q6" hidden>
+                <p>Maximum occupancy is five guests unless agreed in writing. Midweek and weekend night rates are published, including three- and four-night examples, as well as a seven-night week. See <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#rates' ); ?>">Pricing</a> and the room layout on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">The Property</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q7" aria-controls="faq-q7-a">
+                <span>Do we have the whole bungalow to ourselves?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q7-a" role="region" aria-labelledby="faq-q7" hidden>
+                <p>Yes. Restwell is one private house for your party only. There is no shared corridor or reception desk.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q8" aria-controls="faq-q8-a">
+                <span>Do you allow assistance dogs?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q8-a" role="region" aria-labelledby="faq-q8" hidden>
+                <p>Yes. The bungalow is dog-friendly and welcomes assistance dogs. Please tell us in advance so we can complete a risk assessment. Water bowls and a toileting area are provided.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q9" aria-controls="faq-q9-a">
+                <span>Is parking available at the bungalow?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q9-a" role="region" aria-labelledby="faq-q9" hidden>
+                <p>Yes, driveway parking for two cars on a level surface. Adapted vehicles with ramps or side lifts usually fit; tell us your vehicle length when you enquire. Town Blue Badge bays are on the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q10" aria-controls="faq-q10-a">
+                <span>What is included — linen, towels, kitchen, Wi-Fi?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q10-a" role="region" aria-labelledby="faq-q10" hidden>
+                <p>Exclusive use of the house, bed linen and towels, a full kitchen with cooking basics, private garden, driveway parking, and Wi-Fi (network details on your confirmation). On-site access equipment is included in the bungalow rate; the millimetre list is on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility</a>. Care is never included in that rate.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q11" aria-controls="faq-q11-a">
+                <span>Is there a damage deposit or end-of-stay cleaning fee?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q11-a" role="region" aria-labelledby="faq-q11" hidden>
+                <p>No. We do not charge a damage deposit or a leaving-clean fee. Report any damage so we can put it right. Payment steps live on <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#payment' ); ?>">Pricing</a>.</p>
+              </div>
+            </div>
+            </div>
+            <div class="faq-list__col">
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q12" aria-controls="faq-q12-a">
+                <span>Can I smoke or vape at Restwell?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q12-a" role="region" aria-labelledby="faq-q12" hidden>
+                <p>No smoking or vaping inside. Outside only, with windows closed so smoke does not drift indoors. House rules are also in the guest guide after you book.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q13" aria-controls="faq-q13-a">
+                <span>Can I see the access measurements before I book?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q13-a" role="region" aria-labelledby="faq-q13" hidden>
+                <p>Yes. Door widths, hoist safe working load, wet room and beds are on the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility</a> page. We keep that as the spec sheet so it isn’t copied around the site.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="prep">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q14" aria-controls="faq-q14-a">
+                <span>Do you provide hoist slings?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q14-a" role="region" aria-labelledby="faq-q14" hidden>
+                <p>No. Please bring your own slings so they fit the person and the hoist. Ceiling track details and safe working load are on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="prep">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q15" aria-controls="faq-q15-a">
+                <span>Can I hire extra mobility equipment for the stay?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q15-a" role="region" aria-labelledby="faq-q15" hidden>
+                <p>On-site kit is included. Extra hire (for example a scooter) is charged separately if we need to arrange it — tell us when you enquire. We can also share local hire contacts. Confirm anything hired against the access statement so it actually fits the house.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="prep">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q16" aria-controls="faq-q16-a">
+                <span>Do I need holiday or travel insurance?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q16-a" role="region" aria-labelledby="faq-q16" hidden>
+                <p>We do not sell insurance. Most guests arrange their own cover for cancellation, medical kit and travel. Check the policy covers pre-existing conditions and hired equipment. Our cancellation rules are still in the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'terms-and-conditions' ) ); ?>">terms</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="prep">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q17" aria-controls="faq-q17-a">
+                <span>What if a carer is ill and can’t come?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q17-a" role="region" aria-labelledby="faq-q17" hidden>
+                <p>Restwell is a holiday let, not a care service, so plan a backup before you travel. If Continuity is already booked, they hold the care contract — phone them and us as soon as you know. If you bring your own PA, agree cover with your usual team. Optional Continuity is explained on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">Optional care</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="property">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q18" aria-controls="faq-q18-a">
+                <span>How far is the bungalow from the seafront?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q18-a" role="region" aria-labelledby="faq-q18" hidden>
+                <p>About ten to fifteen minutes. Tankerton promenade is the level coastal stretch; the shingle beach is not a wheelchair route. Days out, station access and RADAR toilets are on the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="care">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q19" aria-controls="faq-q19-a">
+                <span>Is care optional, or do I have to book Continuity?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q19-a" role="region" aria-labelledby="faq-q19" hidden>
+                <p>Optional. Most guests book the bungalow as self-catering. You can bring your own carer or PA at no extra house charge, or ask about Continuity. Restwell is not a care home. Process and rates: <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">Optional care</a>, <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'how-it-works' ) ); ?>">How It Works</a>, <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#care-rates' ); ?>">Pricing</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="funding">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q20" aria-controls="faq-q20-a">
+                <span>Where do I read about CHC, direct payments and who you invoice?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q20-a" role="region" aria-labelledby="faq-q20" hidden>
+                <p>On <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; Support</a>. House rates do not change with the funder; only who we invoice does. Deposits and “no damage deposit” are on <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#payment' ); ?>">Pricing</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="care">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q21" aria-controls="faq-q21-a">
+                <span>Is Restwell a respite centre or care home?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q21-a" role="region" aria-labelledby="faq-q21" hidden>
+                <p>No. It is a private adapted bungalow with optional Continuity care. Suitability versus a care-home placement is on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>">Who It’s For</a>.</p>
+              </div>
+            </div>
+            <div class="faq-item" data-cat="prep">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q22" aria-controls="faq-q22-a">
+                <span>Is there a supermarket near the bungalow?</span>
+                <span class="faq-item__icon" aria-hidden="true"></span>
+              </button></h3>
+              <div class="faq-item__panel" id="faq-q22-a" role="region" aria-labelledby="faq-q22" hidden>
+                <p>Tesco Extra is about seven minutes’ drive. Town eating and parking notes stay on the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a> so this page does not become a days-out list.</p>
+              </div>
+            </div>
+            </div>
+          </div>
+    <section class="section-y band-subtle">
+      <div class="container container--md">
+        <header class="section-head">
+          <p class="eyebrow">Can’t find your answer?</p>
+          <h2>Ask us directly</h2>
+        </header>
+        <form class="form-stack restwell-faq-question-form" id="faq-question-form" action="<?php echo esc_url( get_permalink() ? get_permalink() : home_url( '/faq/' ) ); ?>" method="post">
+          <?php wp_nonce_field( 'restwell_faq_question', 'restwell_faq_question_nonce' ); ?>
+          <input type="hidden" name="restwell_faq_question" value="1" />
+          <input type="hidden" name="restwell_faq_page_id" value="<?php echo esc_attr( (string) get_the_ID() ); ?>" />
+          <input type="hidden" name="restwell_form_opened_at" value="" data-restwell-form-opened />
+          <div class="field" hidden aria-hidden="true">
+            <label for="faq_q_website">Website</label>
+            <input type="text" id="faq_q_website" name="faq_q_website" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="field"><label for="ask-name">Name</label><input id="ask-name" name="faq_q_name" autocomplete="name" /></div>
+          <div class="field"><label for="ask-email">Email</label><input id="ask-email" name="faq_q_email" type="email" autocomplete="email" required /></div>
+          <div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" name="faq_q_message" required></textarea></div>
+          <div class="form-actions"><button class="btn btn-gold" type="submit">Send question</button></div>
+        </form>
+      </div>
+    </section>
+    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+      <div class="mid-cta__media" aria-hidden="true"></div>
+      <div class="mid-cta__inner">
+        <h2 id="mid-cta-h">Send dates and access needs</h2>
+        <p>We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.</p>
+        <div class="mid-cta__btns">
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Go to enquire form</a>
+        </div>
+      </div>
+    </section>
 
 </main>
-<?php get_footer(); ?>
+
+<?php
+get_footer();

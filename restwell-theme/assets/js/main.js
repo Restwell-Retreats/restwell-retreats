@@ -2150,14 +2150,13 @@
 			}
 		}
 
+		// Chrome (header solidify, dropdowns, mobile sheet, mockup FAQ, mockup lightbox)
+		// lives in shared.js. Do not re-bind here — dual handlers fight the concept markup.
 		safeInit('initRestwellGalleryCarousel', initRestwellGalleryCarousel);
 		safeInit('initRestwellGalleryLightbox', initRestwellGalleryLightbox);
 		safeInit('initRestwellFormOpenedAt', initRestwellFormOpenedAt);
-		safeInit('setActiveNavLinks', setActiveNavLinks);
-		safeInit('initStickyHeaderShadow', initStickyHeaderShadow);
-		safeInit('initNavDropdowns', initNavDropdowns);
-		safeInit('initMobileMenu', initMobileMenu);
 		safeInit('initExploreFilter', initExploreFilter);
+		// Legacy FAQ markup (details / .faq-filter-pill) until every template is concept-ported.
 		safeInit('initFaqTabs', initFaqTabs);
 		safeInit('initFaqToggleA11y', initFaqToggleA11y);
 		safeInit('initHomeFaqAccordion', initHomeFaqAccordion);
