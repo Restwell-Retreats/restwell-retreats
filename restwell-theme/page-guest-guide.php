@@ -140,8 +140,15 @@ if (
 		'restwell_gg_otp_step'
 	)
 ) {
-	$submitted_code  = isset( $_POST['gg_code'] ) ? sanitize_text_field( wp_unslash( $_POST['gg_code'] ) ) : '';
-	$pending_email   = isset( $_SESSION['gg_pending_email'] ) ? (string) $_SESSION['gg_pending_email'] : '';
+	$submitted_code = isset( $_POST['gg_code'] ) ? sanitize_text_field( wp_unslash( $_POST['gg_code'] ) ) : '';
+	if ( '' === $submitted_code && isset( $_POST['gg_otp'] ) && is_array( $_POST['gg_otp'] ) ) {
+		$digits = array();
+		foreach ( $_POST['gg_otp'] as $digit ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized below.
+			$digits[] = preg_replace( '/\D/', '', sanitize_text_field( wp_unslash( $digit ) ) );
+		}
+		$submitted_code = implode( '', $digits );
+	}
+	$pending_email = isset( $_SESSION['gg_pending_email'] ) ? (string) $_SESSION['gg_pending_email'] : '';
 
 	if ( '' === $submitted_code || '' === $pending_email ) {
 		$gg_error = __( 'Your session has expired. Please start again.', 'restwell-retreats' );
@@ -251,522 +258,323 @@ $gg_emergency   = array(
 	__( 'Gas emergency', 'restwell-retreats' )            => (string) get_post_meta( $pid, 'gg_gas_oos', true ),
 );
 
-// Common input / label classes (mirroring template-enquire.php).
-$input_class = 'w-full px-4 py-3 rounded-xl border border-[#E8DFD0] bg-[#F5EDE0]/50 text-[#1B4D5C] text-base focus:border-[#A8D5D0] focus:ring-2 focus:ring-[#A8D5D0]/30';
-$label_class = 'block text-sm font-medium text-[#1B4D5C] mb-1.5';
-
-// -------------------------------------------------------------------------
-// Template output
-// -------------------------------------------------------------------------
-
 get_header();
 ?>
-<main class="flex-1" id="main-content">
-<?php get_template_part( 'template-parts/breadcrumb' ); ?>
-
-	<?php
-	set_query_var(
-		'args',
-		array(
-			'heading_id'       => 'gg-hero-heading',
-			'label'            => __( 'Guest information', 'restwell-retreats' ),
-			'heading'          => __( 'Your arrival guide', 'restwell-retreats' ),
-			'intro'            => __( 'Everything you need for a comfortable stay, available to verified guests only.', 'restwell-retreats' ),
-			'media_id' => 0,
-		)
-	);
-	get_template_part( 'template-parts/interior-hero' );
-	?>
-
-	<?php if ( $admin_bypass ) : ?>
-		<div class="bg-[#A8D5D0]/25 border-y border-[#A8D5D0]/50">
-			<div class="container py-3">
-				<p class="text-sm text-[var(--deep-teal)] leading-relaxed">
-					<strong><?php esc_html_e( 'Admin preview mode:', 'restwell-retreats' ); ?></strong>
-					<?php esc_html_e( 'OTP is bypassed while you are logged in with administrator access.', 'restwell-retreats' ); ?>
-				</p>
+<main id="main-content">
+<section class="hero hero--interior" aria-labelledby="page-h">
+	<div class="container">
+		<div class="hero__content">
+			<ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'restwell-retreats' ); ?></a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page"><?php esc_html_e( 'Guest Guide', 'restwell-retreats' ); ?></li></ol>
+			<div class="hero__text">
+				<h1 id="page-h"><?php esc_html_e( 'Restwell guest guide for confirmed stays', 'restwell-retreats' ); ?></h1>
+				<p><?php esc_html_e( 'Arrival notes, Wi‑Fi, parking and house guidance for confirmed guests. Enter the email used on your booking confirmation to unlock the guide.', 'restwell-retreats' ); ?></p>
 			</div>
 		</div>
-	<?php endif; ?>
+	</div>
+</section>
 
-	<section class="rw-section-y bg-[var(--bg-subtle)]" aria-label="<?php esc_attr_e( 'Guest guide', 'restwell-retreats' ); ?>">
-		<div class="container">
+<?php if ( $admin_bypass ) : ?>
+<section class="section-y section-y--compact band-subtle no-print" aria-label="<?php esc_attr_e( 'Admin notice', 'restwell-retreats' ); ?>">
+	<div class="container container--sm">
+		<p class="lede"><strong><?php esc_html_e( 'Admin preview mode:', 'restwell-retreats' ); ?></strong> <?php esc_html_e( 'OTP is bypassed while you are logged in with administrator access.', 'restwell-retreats' ); ?></p>
+	</div>
+</section>
+<?php endif; ?>
 
-		<?php if ( $show_email_form ) : // State 1: email entry. ?>
-			<div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-				<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-2">
-					<?php esc_html_e( 'Verify your identity', 'restwell-retreats' ); ?>
-				</h2>
-				<p class="text-sm text-[var(--muted-grey)] mb-8 leading-relaxed">
-					<?php esc_html_e( 'Enter the email address we have on file for your booking. We will send you a one-time code to confirm it is you.', 'restwell-retreats' ); ?>
-				</p>
+<?php if ( $show_email_form ) : ?>
+<section class="section-y band-white" id="gate" aria-labelledby="gg-email-h">
+	<div class="container container--sm">
+		<header class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Step 1', 'restwell-retreats' ); ?></p>
+			<h2 id="gg-email-h"><?php esc_html_e( 'Verify your email', 'restwell-retreats' ); ?></h2>
+			<p class="lede"><?php esc_html_e( 'Enter the email address used for your booking. We’ll send a one-time code.', 'restwell-retreats' ); ?></p>
+		</header>
 
-				<?php if ( '' !== $gg_error ) : ?>
-					<div class="rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 mb-6" role="alert">
-						<?php echo esc_html( $gg_error ); ?>
-					</div>
-				<?php endif; ?>
+		<?php if ( '' !== $gg_error ) : ?>
+			<p class="gg-banner gg-banner--error" role="alert"><?php echo esc_html( $gg_error ); ?></p>
+		<?php endif; ?>
 
-				<form method="post" action="<?php echo esc_url( get_permalink() ); ?>" novalidate>
-					<?php wp_nonce_field( 'restwell_gg_email_step', 'restwell_gg_nonce' ); ?>
-					<input type="hidden" name="restwell_gg_step" value="email" />
-
-					<div class="space-y-5">
-						<div>
-							<label for="gg_email" class="<?php echo esc_attr( $label_class ); ?>">
-								<?php esc_html_e( 'Email address', 'restwell-retreats' ); ?>
-								<span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span>
-							</label>
-							<input
-								type="email"
-								id="gg_email"
-								name="gg_email"
-								required
-								aria-required="true"
-								autocomplete="email"
-								class="<?php echo esc_attr( $input_class ); ?>"
-								placeholder="jane@example.com"
-							/>
-						</div>
-						<div class="pt-2">
-							<button type="submit" class="btn btn-primary w-full">
-								<?php esc_html_e( 'Send my access code', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-							</button>
-						</div>
-					</div>
-				</form>
+		<form class="form-stack" method="post" action="<?php echo esc_url( get_permalink() ); ?>" novalidate>
+			<?php wp_nonce_field( 'restwell_gg_email_step', 'restwell_gg_nonce' ); ?>
+			<input type="hidden" name="restwell_gg_step" value="email" />
+			<div class="field">
+				<label for="gg_email"><?php esc_html_e( 'Booking email', 'restwell-retreats' ); ?> <span aria-hidden="true">*</span></label>
+				<input id="gg_email" name="gg_email" type="email" required aria-required="true" autocomplete="email" />
 			</div>
+			<div class="form-actions">
+				<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send code', 'restwell-retreats' ); ?></button>
+			</div>
+		</form>
+	</div>
+</section>
 
-		<?php elseif ( $show_otp_form ) : // State 2: OTP verification. ?>
-			<div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-				<h2 class="text-2xl font-serif text-[var(--deep-teal)] mb-2">
-					<?php esc_html_e( 'Enter your access code', 'restwell-retreats' ); ?>
-				</h2>
+<?php elseif ( $show_otp_form ) : ?>
+<section class="section-y band-subtle" id="otp" aria-labelledby="gg-otp-h">
+	<div class="container container--sm">
+		<header class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Step 2', 'restwell-retreats' ); ?></p>
+			<h2 id="gg-otp-h"><?php esc_html_e( 'Enter your 6-digit code', 'restwell-retreats' ); ?></h2>
+			<p class="lede">
+				<?php
+				if ( $otp_expired ) {
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %s - partially masked email address */
+							__( 'Any code sent to %s has now expired. Please request a new one below.', 'restwell-retreats' ),
+							'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>'
+						)
+					);
+				} else {
+					echo wp_kses_post(
+						sprintf(
+							/* translators: 1: partially masked email address, 2: number of whole minutes remaining */
+							_n(
+								'If %1$s is on our guest list, we\'ll send a code shortly (expires in about %2$d minute). Otherwise call us and we\'ll help.',
+								'If %1$s is on our guest list, we\'ll send a code shortly (expires in about %2$d minutes). Otherwise call us and we\'ll help.',
+								$otp_remaining_minutes,
+								'restwell-retreats'
+							),
+							'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>',
+							$otp_remaining_minutes
+						)
+					);
+				}
+				?>
+			</p>
+		</header>
 
-				<p class="text-sm text-[var(--muted-grey)] mb-8 leading-relaxed">
+		<?php if ( '' !== $gg_error ) : ?>
+			<p class="gg-banner gg-banner--error" role="alert"><?php echo esc_html( $gg_error ); ?></p>
+		<?php endif; ?>
+		<?php if ( '' !== $notice ) : ?>
+			<p class="gg-banner gg-banner--ok" role="status" aria-live="polite"><?php echo esc_html( $notice ); ?></p>
+		<?php endif; ?>
+
+		<form class="form-stack" method="post" action="<?php echo esc_url( get_permalink() ); ?>" novalidate>
+			<?php wp_nonce_field( 'restwell_gg_otp_step', 'restwell_gg_nonce' ); ?>
+			<input type="hidden" name="restwell_gg_step" value="otp" />
+			<input type="hidden" name="gg_code" value="" data-otp-value <?php echo $otp_expired ? 'disabled' : ''; ?> />
+			<div class="field">
+				<label for="otp-1"><?php esc_html_e( 'One-time code', 'restwell-retreats' ); ?> <span aria-hidden="true">*</span></label>
+				<div class="otp-box" role="group" aria-label="<?php esc_attr_e( 'Six digit code', 'restwell-retreats' ); ?>" data-otp-group>
+					<?php for ( $i = 1; $i <= 6; $i++ ) : ?>
+						<input
+							id="otp-<?php echo esc_attr( (string) $i ); ?>"
+							name="gg_otp[]"
+							maxlength="1"
+							inputmode="numeric"
+							autocomplete="<?php echo 1 === $i ? 'one-time-code' : 'off'; ?>"
+							aria-label="<?php echo esc_attr( sprintf( /* translators: %d: digit position */ __( 'Digit %d', 'restwell-retreats' ), $i ) ); ?>"
+							<?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>
+							required
+						/>
+					<?php endfor; ?>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-gold" type="submit" <?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>><?php esc_html_e( 'Unlock guide', 'restwell-retreats' ); ?></button>
+			</div>
+		</form>
+
+		<div class="gg-secondary no-print">
+			<form method="post" action="<?php echo esc_url( get_permalink() ); ?>">
+				<?php wp_nonce_field( 'restwell_gg_resend_step', 'restwell_gg_nonce' ); ?>
+				<input type="hidden" name="restwell_gg_step" value="resend" />
+				<button type="submit" class="btn btn-outline-teal">
 					<?php
 					if ( $otp_expired ) {
-						// The original code has timed out. Don't pretend it's still valid;
-						// tell the guest plainly and point them at the Resend button below.
-						echo wp_kses_post(
-							sprintf(
-								/* translators: %s - partially masked email address */
-								__( 'Any code sent to %s has now expired. Please request a new one below.', 'restwell-retreats' ),
-								'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>'
-							)
-						);
+						esc_html_e( 'Send me a new code', 'restwell-retreats' );
 					} else {
-						// Honest countdown; wording avoids confirming the email is on the guest list.
-						echo wp_kses_post(
-							sprintf(
-								/* translators: 1: partially masked email address, 2: number of whole minutes remaining */
-								_n(
-									'If %1$s is on our guest list, we\'ll send a code shortly (expires in about %2$d minute). Otherwise call us and we\'ll help.',
-									'If %1$s is on our guest list, we\'ll send a code shortly (expires in about %2$d minutes). Otherwise call us and we\'ll help.',
-									$otp_remaining_minutes,
-									'restwell-retreats'
-								),
-								'<strong>' . esc_html( restwell_mask_guide_email( $pending_email ) ) . '</strong>',
-								$otp_remaining_minutes
-							)
-						);
+						esc_html_e( 'Resend code', 'restwell-retreats' );
 					}
 					?>
-				</p>
+				</button>
+			</form>
+			<p class="gg-secondary__hint">
+				<?php esc_html_e( 'Used the wrong email?', 'restwell-retreats' ); ?>
+				<a class="text-link" href="<?php echo esc_url( add_query_arg( 'gg_reset', '1', get_permalink() ) ); ?>"><?php esc_html_e( 'Start again with a different address', 'restwell-retreats' ); ?></a>
+			</p>
+		</div>
+	</div>
+</section>
 
-				<?php if ( '' !== $gg_error ) : ?>
-					<div class="rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm px-4 py-3 mb-6" role="alert">
-						<?php echo esc_html( $gg_error ); ?>
-					</div>
-				<?php endif; ?>
+<?php elseif ( $is_verified ) : ?>
+<section class="section-y band-white" id="guide" aria-labelledby="gg-guide-h">
+	<div class="container">
+		<header class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Authenticated', 'restwell-retreats' ); ?></p>
+			<h2 id="gg-guide-h"><?php esc_html_e( 'About your stay', 'restwell-retreats' ); ?></h2>
+			<p class="lede"><?php esc_html_e( 'If anything in the house disagrees with your booking confirmation, call the number on that confirmation first.', 'restwell-retreats' ); ?></p>
+		</header>
 
-				<?php if ( '' !== $notice ) : ?>
-					<div class="rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm px-4 py-3 mb-6"
-						 role="status" aria-live="polite">
-						<?php echo esc_html( $notice ); ?>
-					</div>
-				<?php endif; ?>
-
-				<form method="post" action="<?php echo esc_url( get_permalink() ); ?>" novalidate>
-					<?php wp_nonce_field( 'restwell_gg_otp_step', 'restwell_gg_nonce' ); ?>
-					<input type="hidden" name="restwell_gg_step" value="otp" />
-
-					<div class="space-y-5">
-						<div>
-							<label for="gg_code" class="<?php echo esc_attr( $label_class ); ?>">
-								<?php esc_html_e( '6-digit code', 'restwell-retreats' ); ?>
-								<span class="text-[var(--warm-gold-text)]" aria-hidden="true">*</span>
-							</label>
-							<input
-								type="text"
-								id="gg_code"
-								name="gg_code"
-								required
-								aria-required="true"
-								maxlength="6"
-								inputmode="numeric"
-								autocomplete="one-time-code"
-								pattern="[0-9]{6}"
-								<?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>
-								class="<?php echo esc_attr( $input_class ); ?> tracking-widest text-center text-xl font-mono <?php echo $otp_expired ? 'opacity-50 cursor-not-allowed' : ''; ?>"
-								placeholder="123456"
-							/>
-						</div>
-						<div class="pt-2">
-							<button type="submit" class="btn btn-primary w-full" <?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>>
-								<?php esc_html_e( 'Access my guide', 'restwell-retreats' ); ?>
-								<i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
-							</button>
-						</div>
-					</div>
-				</form>
-
-				<!--
-					Secondary actions, in order of likelihood: most guests who need help will
-					just want a fresh code, not a fresh email entry. Resend is a real form
-					button (not a text link) so it's discoverable and tap-friendly. "Start
-					again" stays as a quiet text link for the genuine wrong-email case.
-				-->
-				<div class="mt-6 pt-6 border-t border-gray-100 space-y-4">
-					<form method="post" action="<?php echo esc_url( get_permalink() ); ?>">
-						<?php wp_nonce_field( 'restwell_gg_resend_step', 'restwell_gg_nonce' ); ?>
-						<input type="hidden" name="restwell_gg_step" value="resend" />
-						<button type="submit" class="btn btn-outline w-full">
-							<i class="ph-bold ph-paper-plane-tilt" aria-hidden="true"></i>
-							<?php
-							// Two literal strings (not a ternary inside esc_html_e) so the
-							// WP i18n string extractor can pick them up cleanly.
-							if ( $otp_expired ) {
-								esc_html_e( 'Send me a new code', 'restwell-retreats' );
-							} else {
-								esc_html_e( 'Resend code', 'restwell-retreats' );
-							}
-							?>
-						</button>
-					</form>
-
-					<p class="text-xs text-[var(--muted-grey)] text-center">
-						<?php esc_html_e( 'Used the wrong email?', 'restwell-retreats' ); ?>
-						<a
-							href="<?php echo esc_url( add_query_arg( 'gg_reset', '1', get_permalink() ) ); ?>"
-							class="text-[var(--deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2 rounded"
-						><?php esc_html_e( 'Start again with a different address', 'restwell-retreats' ); ?></a>
-					</p>
-				</div>
-			</div>
-
-		<?php elseif ( $is_verified ) : // State 3: authenticated guide content. ?>
-
-				<div class="max-w-6xl mx-auto">
-				<div class="mb-8 md:mb-10 rw-stack max-w-3xl">
-					<p class="section-label"><?php esc_html_e( 'Stay guide', 'restwell-retreats' ); ?></p>
-					<h2 class="text-3xl font-serif text-[var(--deep-teal)] m-0"><?php esc_html_e( 'Your stay information.', 'restwell-retreats' ); ?></h2>
-					<p class="text-gray-600 leading-relaxed m-0"><?php esc_html_e( 'Check-in details, property access, local area notes, and emergency contacts - all in one place. You can print this page or come back to it during your stay.', 'restwell-retreats' ); ?></p>
-				</div>
-
+		<ul class="card-grid card-grid--2" role="list">
 			<?php if ( '' !== $gg_welcome ) : ?>
-				<div class="bg-[var(--deep-teal)] rounded-2xl p-8 md:p-10 text-[#F5EDE0] mb-10">
-					<p class="text-[var(--warm-gold-hero)] text-xs font-semibold uppercase tracking-[0.2em] mb-3 font-sans">
-						<?php esc_html_e( 'Welcome', 'restwell-retreats' ); ?>
-					</p>
-					<div class="prose prose-invert max-w-none text-[#F5EDE0] leading-relaxed text-[15px]">
-						<?php echo wp_kses_post( nl2br( esc_html( $gg_welcome ) ) ); ?>
-					</div>
-				</div>
-				<?php endif; ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Welcome', 'restwell-retreats' ); ?></h3>
+				<p><?php echo wp_kses_post( nl2br( esc_html( $gg_welcome ) ) ); ?></p>
+			</article></li>
+			<?php endif; ?>
 
-				<div class="rw-section-head rw-section-head--left rw-section-head--tight">
-					<p class="section-label"><?php esc_html_e( 'Arrival and access', 'restwell-retreats' ); ?></p>
-				</div>
-				<div class="grid md:grid-cols-2 xl:grid-cols-3 rw-gap-grid mb-10">
-
-					<?php if ( $gg_address || $gg_checkin || $gg_checkout ) : ?>
-					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-							<i class="ph ph-calendar-check mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-							<?php esc_html_e( 'Arrival details', 'restwell-retreats' ); ?>
-						</h2>
-						<dl class="space-y-4 text-[15px]">
-							<?php if ( $gg_address ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Address', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600 leading-relaxed"><?php echo wp_kses_post( nl2br( esc_html( $gg_address ) ) ); ?></dd>
-							</div>
-							<?php endif; ?>
-							<?php if ( $gg_checkin ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Check-in', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600"><?php echo esc_html( $gg_checkin ); ?></dd>
-							</div>
-							<?php endif; ?>
-							<?php if ( $gg_checkout ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Check-out', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600"><?php echo esc_html( $gg_checkout ); ?></dd>
-							</div>
-							<?php endif; ?>
-						</dl>
-					</div>
+			<?php if ( $gg_address || $gg_checkin || $gg_checkout ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Arrival details', 'restwell-retreats' ); ?></h3>
+				<p>
+					<?php if ( $gg_address ) : ?>
+						<strong><?php esc_html_e( 'Address:', 'restwell-retreats' ); ?></strong> <?php echo wp_kses_post( nl2br( esc_html( $gg_address ) ) ); ?><br />
 					<?php endif; ?>
-
-					<?php if ( $gg_keysafe || $gg_door ) : ?>
-					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-							<i class="ph-bold ph-key mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-							<?php esc_html_e( 'Getting in', 'restwell-retreats' ); ?>
-						</h2>
-						<dl class="space-y-4 text-[15px]">
-						<?php if ( $gg_keysafe ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Key safe code', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600 font-mono text-base tracking-widest relative">
-									<span id="gg-keysafe-value"
-										  style="filter:blur(6px);transition:filter .25s;"
-										  class="select-none"
-										  aria-label="<?php esc_attr_e( 'Hidden key safe code - tap to reveal', 'restwell-retreats' ); ?>">
-										<?php echo esc_html( $gg_keysafe ); ?>
-									</span>
-									<button type="button"
-											id="gg-keysafe-reveal"
-											class="ml-3 text-xs font-sans font-medium text-[var(--deep-teal)] underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] rounded"
-											aria-controls="gg-keysafe-value"
-											aria-expanded="false">
-										<?php esc_html_e( 'Tap to reveal', 'restwell-retreats' ); ?>
-									</button>
-								</dd>
-							</div>
-						<?php endif; ?>
-							<?php if ( $gg_door ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Instructions', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600 leading-relaxed"><?php echo wp_kses_post( nl2br( esc_html( $gg_door ) ) ); ?></dd>
-							</div>
-							<?php endif; ?>
-						</dl>
-					</div>
+					<?php if ( $gg_checkin ) : ?>
+						<strong><?php esc_html_e( 'Check-in:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_checkin ); ?>
+						<?php if ( $gg_checkout ) : ?> · <?php endif; ?>
 					<?php endif; ?>
-
-					<?php if ( $gg_wifi_name || $gg_wifi_pass ) : ?>
-					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-							<i class="ph-bold ph-wifi-high mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-							<?php esc_html_e( 'WiFi', 'restwell-retreats' ); ?>
-						</h2>
-						<dl class="space-y-4 text-[15px]">
-							<?php if ( $gg_wifi_name ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Network', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600 font-mono"><?php echo esc_html( $gg_wifi_name ); ?></dd>
-							</div>
-							<?php endif; ?>
-							<?php if ( $gg_wifi_pass ) : ?>
-							<div>
-								<dt class="font-medium text-[var(--deep-teal)] mb-0.5"><?php esc_html_e( 'Password', 'restwell-retreats' ); ?></dt>
-								<dd class="text-gray-600 font-mono break-all"><?php echo esc_html( $gg_wifi_pass ); ?></dd>
-							</div>
-							<?php endif; ?>
-						</dl>
-					</div>
+					<?php if ( $gg_checkout ) : ?>
+						<strong><?php esc_html_e( 'Check-out:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_checkout ); ?>
 					<?php endif; ?>
+				</p>
+			</article></li>
+			<?php endif; ?>
 
-					<?php if ( $gg_parking ) : ?>
-					<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-						<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-							<i class="ph-bold ph-car mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-							<?php esc_html_e( 'Parking', 'restwell-retreats' ); ?>
-						</h2>
-						<div class="text-[15px] text-gray-600 leading-relaxed">
-							<?php echo wp_kses_post( nl2br( esc_html( $gg_parking ) ) ); ?>
-						</div>
-					</div>
-				<?php endif; ?>
+			<?php if ( $gg_keysafe || $gg_door ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Getting in', 'restwell-retreats' ); ?></h3>
+				<p>
+					<?php if ( $gg_keysafe ) : ?>
+						<strong><?php esc_html_e( 'Key safe code:', 'restwell-retreats' ); ?></strong>
+						<span class="gg-keysafe">
+							<span id="gg-keysafe-value" class="gg-keysafe__value is-blurred" aria-label="<?php esc_attr_e( 'Hidden key safe code - tap to reveal', 'restwell-retreats' ); ?>"><?php echo esc_html( $gg_keysafe ); ?></span>
+							<button type="button" id="gg-keysafe-reveal" class="text-link" aria-controls="gg-keysafe-value" aria-expanded="false" data-label-reveal="<?php echo esc_attr__( 'Tap to reveal', 'restwell-retreats' ); ?>" data-label-hide="<?php echo esc_attr__( 'Hide', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Tap to reveal', 'restwell-retreats' ); ?></button>
+						</span><br />
+					<?php endif; ?>
+					<?php if ( $gg_door ) : ?>
+						<?php echo wp_kses_post( nl2br( esc_html( $gg_door ) ) ); ?>
+					<?php endif; ?>
+				</p>
+			</article></li>
+			<?php endif; ?>
 
-				<?php if ( $gg_house_rules !== '' ) : ?>
-				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-						<i class="ph-bold ph-list-checks mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-						<?php esc_html_e( 'House rules', 'restwell-retreats' ); ?>
-					</h2>
-					<div class="text-[15px] text-gray-600 leading-relaxed">
-						<?php echo wp_kses_post( nl2br( esc_html( $gg_house_rules ) ) ); ?>
-					</div>
-				</div>
-				<?php endif; ?>
+			<?php if ( $gg_wifi_name || $gg_wifi_pass ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Wi‑Fi', 'restwell-retreats' ); ?></h3>
+				<p>
+					<?php if ( $gg_wifi_name ) : ?>
+						<strong><?php esc_html_e( 'Network:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_wifi_name ); ?><br />
+					<?php endif; ?>
+					<?php if ( $gg_wifi_pass ) : ?>
+						<strong><?php esc_html_e( 'Password:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_wifi_pass ); ?>
+					<?php endif; ?>
+				</p>
+			</article></li>
+			<?php endif; ?>
 
-				<?php if ( $gg_departure_notes !== '' ) : ?>
-				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-						<i class="ph ph-check-circle mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-						<?php esc_html_e( 'Before you leave', 'restwell-retreats' ); ?>
-					</h2>
-					<div class="text-[15px] text-gray-600 leading-relaxed">
-						<?php echo wp_kses_post( nl2br( esc_html( $gg_departure_notes ) ) ); ?>
-					</div>
-					<p class="mt-4 text-xs text-[var(--muted-grey)] leading-relaxed">
-						<?php esc_html_e( 'Return keys and fobs to the key safe (same code as arrival). If you are unsure of the location, check the "Getting in" card above.', 'restwell-retreats' ); ?>
-					</p>
-				</div>
-				<?php endif; ?>
+			<?php if ( $gg_parking ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Parking', 'restwell-retreats' ); ?></h3>
+				<p><?php echo wp_kses_post( nl2br( esc_html( $gg_parking ) ) ); ?></p>
+			</article></li>
+			<?php endif; ?>
 
-				<?php if ( $gg_local_info !== '' ) : ?>
-				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-						<i class="ph-bold ph-map-pin mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-						<?php esc_html_e( 'Local area', 'restwell-retreats' ); ?>
-					</h2>
-					<div class="text-[15px] text-gray-600 leading-relaxed">
-						<?php echo wp_kses_post( nl2br( esc_html( $gg_local_info ) ) ); ?>
-					</div>
-					<div class="mt-4 text-xs text-[var(--muted-grey)] leading-relaxed border-t border-gray-100 pt-3">
-						<p><?php esc_html_e( 'Accessibility note: the promenade route is level and surfaced. The slopes down to it are steeper and may not suit all wheelchair users.', 'restwell-retreats' ); ?></p>
-						<p class="mt-2"><?php esc_html_e( 'Practical tip: there is usually free parking along Marine Parade at the top.', 'restwell-retreats' ); ?></p>
-						<p class="mt-2">
-							<a href="<?php echo esc_url( home_url( '/whitstable-area-guide/' ) ); ?>" class="text-[var(--deep-teal)] underline hover:no-underline">
-								<?php esc_html_e( 'For more detail on local accessibility, restaurants, and nearby towns, see our full Whitstable Guide.', 'restwell-retreats' ); ?>
-							</a>
-						</p>
-					</div>
-				</div>
-				<?php endif; ?>
+			<?php if ( '' !== $gg_house_rules ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'House rules', 'restwell-retreats' ); ?></h3>
+				<p><?php echo wp_kses_post( nl2br( esc_html( $gg_house_rules ) ) ); ?></p>
+			</article></li>
+			<?php endif; ?>
 
-				<?php if ( array_filter( $gg_emergency ) ) : ?>
-				<div class="bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 h-full">
-					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-5 pb-3 border-b border-gray-100">
-						<i class="ph-bold ph-warning mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-						<?php esc_html_e( 'Emergency information', 'restwell-retreats' ); ?>
-					</h2>
-				<ul class="space-y-2 text-[15px]">
+			<?php if ( '' !== $gg_departure_notes ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Before you leave', 'restwell-retreats' ); ?></h3>
+				<p><?php echo wp_kses_post( nl2br( esc_html( $gg_departure_notes ) ) ); ?></p>
+				<p><?php esc_html_e( 'Return keys and fobs to the key safe (same code as arrival). If you are unsure of the location, check Getting in above.', 'restwell-retreats' ); ?></p>
+			</article></li>
+			<?php endif; ?>
+
+			<?php if ( '' !== $gg_local_info ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Local area', 'restwell-retreats' ); ?></h3>
+				<p><?php echo wp_kses_post( nl2br( esc_html( $gg_local_info ) ) ); ?></p>
+				<p><a class="text-link" href="<?php echo esc_url( home_url( '/whitstable-area-guide/' ) ); ?>"><?php esc_html_e( 'Whitstable accessibility guide', 'restwell-retreats' ); ?></a></p>
+			</article></li>
+			<?php endif; ?>
+
+			<?php if ( array_filter( $gg_emergency ) ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Emergencies', 'restwell-retreats' ); ?></h3>
+				<p>
 					<?php
 					$ae_label = __( 'Nearest A&E', 'restwell-retreats' );
-					foreach ( $gg_emergency as $label => $value ) :
+					$lines    = array();
+					foreach ( $gg_emergency as $label => $value ) {
 						if ( '' === $value ) {
 							continue;
 						}
-						// Auto-link values that look like phone numbers.
 						$is_phone = (bool) preg_match( '/^[\d\s\+\(\)\-\.]+$/', trim( $value ) );
 						if ( $is_phone ) {
 							$tel     = preg_replace( '/[^\d\+]/', '', $value );
-							$display = '<a href="tel:' . esc_attr( $tel ) . '" class="text-[var(--deep-teal)] underline hover:no-underline">' . esc_html( $value ) . '</a>';
+							$display = '<a class="text-link" href="tel:' . esc_attr( $tel ) . '">' . esc_html( $value ) . '</a>';
 						} else {
 							$display = esc_html( $value );
 						}
-						// For A&E, append a Maps link if the option is set.
 						if ( $label === $ae_label && $gg_nearest_ae_url ) {
-							$display .= ' <a href="' . esc_url( $gg_nearest_ae_url ) . '" target="_blank" rel="noopener noreferrer" class="text-xs text-[var(--muted-grey)] hover:text-[var(--deep-teal)] underline ml-1" aria-label="' . esc_attr__( 'Open A&E on Google Maps (opens in new tab)', 'restwell-retreats' ) . '">' . esc_html__( 'View on Maps', 'restwell-retreats' ) . '<span class="sr-only"> ' . esc_html__( '(opens in new tab)', 'restwell-retreats' ) . '</span></a>';
+							$display .= ' <a class="text-link" href="' . esc_url( $gg_nearest_ae_url ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'View on Maps', 'restwell-retreats' ) . '<span class="sr-only"> ' . esc_html__( '(opens in new tab)', 'restwell-retreats' ) . '</span></a>';
 						}
-						?>
-						<li>
-							<span class="font-medium text-[var(--deep-teal)]"><?php echo esc_html( $label ); ?>:</span>
-							<?php echo wp_kses_post( $display ); ?>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				</div>
-				<?php endif; ?>
-
-			</div>
-
-				<?php if ( $gg_host ) : ?>
-				<div class="rw-section-head rw-section-head--left rw-section-head--tight">
-					<p class="section-label"><?php esc_html_e( 'Support contacts', 'restwell-retreats' ); ?></p>
-				</div>
-				<div class="bg-white rounded-2xl p-7 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 mb-8">
-					<h2 class="text-lg font-serif text-[var(--deep-teal)] mb-3">
-						<i class="ph ph-user-circle mr-2 text-[var(--warm-gold-text)] text-base" aria-hidden="true"></i>
-						<?php esc_html_e( 'Your host', 'restwell-retreats' ); ?>
-					</h2>
-					<p class="text-gray-600 text-[15px] leading-relaxed"><?php echo wp_kses_post( nl2br( esc_html( $gg_host ) ) ); ?></p>
-				</div>
-				<?php endif; ?>
-
-				<div class="bg-white rounded-2xl p-6 border border-gray-100 text-center no-print">
-					<p class="text-sm text-[var(--muted-grey)] mb-4"><?php esc_html_e( 'Need a paper copy for your trip?', 'restwell-retreats' ); ?></p>
-					<button type="button" onclick="window.print()"
-							class="btn btn-outline btn-sm">
-						<i class="ph-bold ph-printer text-sm" aria-hidden="true"></i>
-						<?php esc_html_e( 'Print this guide', 'restwell-retreats' ); ?>
-					</button>
-				</div>
-
-				<?php
-				$gg_guest_row = isset( $_SESSION['gg_verified_email'] )
-					? restwell_get_guest_by_email( $_SESSION['gg_verified_email'] )
-					: null;
-				$already_confirmed = $gg_guest_row && ! empty( $gg_guest_row->confirmed_at );
-				?>
-				<?php if ( ! $already_confirmed ) : ?>
-				<div class="mt-8 bg-[var(--bg-subtle)] rounded-2xl p-6 border border-gray-100 text-center no-print">
-					<p class="text-sm text-[var(--muted-grey)] mb-4">
-						<?php esc_html_e( "Once you've read through your guide, let us know.", 'restwell-retreats' ); ?>
-					</p>
-					<?php if ( isset( $_GET['gg_confirmed'] ) ) : ?>
-						<p class="text-sm font-medium text-green-700">
-							<?php esc_html_e( "Thank you - we've recorded that you've read the guide.", 'restwell-retreats' ); ?>
-						</p>
-					<?php else : ?>
-					<form method="post" action="<?php echo esc_url( get_permalink() ); ?>">
-						<?php wp_nonce_field( 'restwell_gg_confirm_read', 'restwell_gg_nonce' ); ?>
-						<input type="hidden" name="restwell_gg_step" value="confirm_read" />
-						<button type="submit" class="btn btn-primary">
-							<i class="ph-bold ph-check mr-1" aria-hidden="true"></i>
-							<?php esc_html_e( "I've read the guide", 'restwell-retreats' ); ?>
-						</button>
-					</form>
-					<?php endif; ?>
-				</div>
-				<?php else : ?>
-				<p class="text-center mt-8 text-xs text-green-700 no-print">
-					<i class="ph-bold ph-check-circle mr-1" aria-hidden="true"></i>
-					<?php esc_html_e( 'You confirmed reading this guide.', 'restwell-retreats' ); ?>
+						$lines[] = '<strong>' . esc_html( $label ) . ':</strong> ' . $display;
+					}
+					echo wp_kses_post( implode( '<br />', $lines ) );
+					?>
 				</p>
-				<?php endif; ?>
-
-				<p class="text-center mt-6 text-xs text-[var(--muted-grey)] no-print">
-					<?php esc_html_e( 'Finished reading?', 'restwell-retreats' ); ?>
-					<a
-						href="<?php echo esc_url( add_query_arg( 'gg_reset', '1', get_permalink() ) ); ?>"
-						class="text-[var(--deep-teal)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--deep-teal)] focus-visible:ring-offset-2 rounded"
-					><?php esc_html_e( 'Sign out of the guide', 'restwell-retreats' ); ?></a>
-				</p>
-				</div>
-
+			</article></li>
 			<?php endif; ?>
 
-		</div>
-	</section>
+			<?php if ( $gg_host ) : ?>
+			<li><article class="info-card">
+				<h3><?php esc_html_e( 'Your host', 'restwell-retreats' ); ?></h3>
+				<p><?php echo wp_kses_post( nl2br( esc_html( $gg_host ) ) ); ?></p>
+			</article></li>
+			<?php endif; ?>
+
+			<?php
+			$gg_guest_row       = isset( $_SESSION['gg_verified_email'] )
+				? restwell_get_guest_by_email( $_SESSION['gg_verified_email'] )
+				: null;
+			$already_confirmed = $gg_guest_row && ! empty( $gg_guest_row->confirmed_at );
+			?>
+			<li id="gg-read-confirmation"><article class="info-card info-card--sand">
+				<h3><?php esc_html_e( 'Print / confirm', 'restwell-retreats' ); ?></h3>
+				<p><?php esc_html_e( 'Print this guide for the fridge if you like.', 'restwell-retreats' ); ?></p>
+				<div class="form-actions no-print">
+					<button type="button" class="btn btn-outline-teal" data-gg-print><?php esc_html_e( 'Print this guide', 'restwell-retreats' ); ?></button>
+				</div>
+				<?php if ( ! $already_confirmed ) : ?>
+					<?php if ( isset( $_GET['gg_confirmed'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+						<p class="gg-banner gg-banner--ok no-print" role="status"><?php esc_html_e( "Thank you - we've recorded that you've read the guide.", 'restwell-retreats' ); ?></p>
+					<?php else : ?>
+						<form class="form-stack no-print" method="post" action="<?php echo esc_url( get_permalink() ); ?>">
+							<?php wp_nonce_field( 'restwell_gg_confirm_read', 'restwell_gg_nonce' ); ?>
+							<input type="hidden" name="restwell_gg_step" value="confirm_read" />
+							<div class="field">
+								<label for="guide-read">
+									<input id="guide-read" type="checkbox" required />
+									<span><?php esc_html_e( "I've read the guide", 'restwell-retreats' ); ?></span>
+								</label>
+							</div>
+							<div class="form-actions">
+								<button type="submit" class="btn btn-gold"><?php esc_html_e( 'Confirm', 'restwell-retreats' ); ?></button>
+							</div>
+						</form>
+					<?php endif; ?>
+				<?php else : ?>
+					<p class="gg-banner gg-banner--ok no-print"><?php esc_html_e( 'You confirmed reading this guide.', 'restwell-retreats' ); ?></p>
+				<?php endif; ?>
+			</article></li>
+		</ul>
+
+		<p class="gg-secondary__hint no-print">
+			<?php esc_html_e( 'Finished reading?', 'restwell-retreats' ); ?>
+			<a class="text-link" href="<?php echo esc_url( add_query_arg( 'gg_reset', '1', get_permalink() ) ); ?>"><?php esc_html_e( 'Sign out of the guide', 'restwell-retreats' ); ?></a>
+		</p>
+	</div>
+</section>
+<?php endif; ?>
 
 </main>
-<?php get_footer(); ?>
-<style>
-@media print {
-	header, footer, nav, .no-print,
-	#gg-hero-heading, section.hero,
-	.breadcrumb, #wpadminbar {
-		display: none !important;
-	}
-	body { font-size: 12pt; }
-	.container { max-width: 100% !important; padding: 0 !important; }
-	a[href]::after { content: none !important; }
-}
-</style>
-<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-(function () {
-	'use strict';
-	var btn   = document.getElementById( 'gg-keysafe-reveal' );
-	var value = document.getElementById( 'gg-keysafe-value' );
-	if ( ! btn || ! value ) return;
-	btn.addEventListener( 'click', function () {
-		var revealed = btn.getAttribute( 'aria-expanded' ) === 'true';
-		if ( revealed ) {
-			value.style.filter = 'blur(6px)';
-			btn.setAttribute( 'aria-expanded', 'false' );
-			btn.textContent = '<?php echo esc_js( __( 'Tap to reveal', 'restwell-retreats' ) ); ?>';
-		} else {
-			value.style.filter = 'none';
-			btn.setAttribute( 'aria-expanded', 'true' );
-			btn.textContent = '<?php echo esc_js( __( 'Hide', 'restwell-retreats' ) ); ?>';
-		}
-	} );
-} )();
-</script>
+<?php
+get_footer();

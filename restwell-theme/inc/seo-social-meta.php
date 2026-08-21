@@ -13,10 +13,82 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Theme-relative stock filenames for Open Graph by page slug / context.
+ *
+ * Prefer distinct images per marketing surface so social previews are not
+ * identical. Unknown pages fall through to the coastline last resort.
+ *
+ * @return array<string, string> Slug => filename under assets/images/stock/.
+ */
+function restwell_get_default_og_stock_filename_map() {
+	return array(
+		'home'                  => 'restwell-whitstable-drone-aerial-view.webp',
+		'our-story'             => 'russell-drive-whitstable.webp',
+		'the-property'          => 'restwell-whitstable-beach-relaxation.webp',
+		'accessibility'         => 'restwell-whitstable-public-beach-path.webp',
+		'pricing'               => 'restwell-whitstable-marina-sunset.webp',
+		'how-it-works'          => 'restwell-whitstable-coastal-walk.webp',
+		'who-its-for'           => 'restwell-whitstable-coastal-pathway.webp',
+		'whitstable-area-guide' => 'whitstable-days-out.webp',
+		'resources'             => 'restwell-whitstable-rainbow-coast.webp',
+		'optional-care'         => 'restwell-whitstable-sunset-pier.webp',
+		'faq'                   => 'restwell-whitstable-beach-huts.webp',
+		'enquire'               => 'restwell-whitstable-marina-sunset.webp',
+		'blog'                  => 'restwell-whitstable-beach-huts.webp',
+		'privacy-policy'        => 'restwell-whitstable-coastline-panorama.webp',
+		'terms-and-conditions'  => 'restwell-whitstable-coastline-panorama.webp',
+		'accessibility-policy'  => 'restwell-whitstable-public-beach-path.webp',
+	);
+}
+
+/**
+ * Absolute URL for the default OG image for the current request / post.
+ *
+ * @param int $post_id Queried post ID (0 for non-singular).
+ * @return string Absolute image URL or empty string.
+ */
+function restwell_get_default_og_image_url_for_request( $post_id = 0 ) {
+	$post_id  = absint( $post_id );
+	$map      = restwell_get_default_og_stock_filename_map();
+	$filename = '';
+
+	if ( $post_id > 0 ) {
+		$slug = (string) get_post_field( 'post_name', $post_id );
+		if ( $slug !== '' && isset( $map[ $slug ] ) ) {
+			$filename = $map[ $slug ];
+		}
+		$front_id = (int) get_option( 'page_on_front', 0 );
+		if ( $filename === '' && $front_id > 0 && $post_id === $front_id ) {
+			$filename = $map['home'];
+		}
+		$blog_id = (int) get_option( 'page_for_posts', 0 );
+		if ( $filename === '' && $blog_id > 0 && $post_id === $blog_id ) {
+			$filename = $map['blog'];
+		}
+	} elseif ( is_front_page() ) {
+		$filename = $map['home'];
+	} elseif ( is_home() ) {
+		$filename = $map['blog'];
+	}
+
+	if ( $filename === '' ) {
+		return '';
+	}
+
+	$rel  = '/assets/images/stock/' . ltrim( $filename, '/' );
+	$path = get_template_directory() . $rel;
+	if ( ! is_readable( $path ) ) {
+		return '';
+	}
+
+	return get_template_directory_uri() . $rel;
+}
+
+/**
  * Output Open Graph and Twitter Card <meta> tags in <head>.
  */
 function restwell_output_social_meta() {
-	if ( is_404() || is_search() || is_page_template( 'page-guest-guide.php' ) ) {
+	if ( is_404() || is_search() || is_page_template( 'page-guest-guide.php' ) || is_page( 'sample-page' ) ) {
 		return;
 	}
 
@@ -63,7 +135,7 @@ function restwell_output_social_meta() {
 		$url = home_url( '/' );
 	}
 
-	// Image - og_image_id → featured image (posts) → template hero image → blank.
+	// Image - og_image_id → featured image (posts) → template hero image → page stock map → coastline.
 	$image_url           = '';
 	$image_attachment_id = 0;
 	if ( $pid ) {
@@ -95,6 +167,19 @@ function restwell_output_social_meta() {
 				}
 			}
 		}
+	}
+
+	// Page-keyed theme stock (distinct per surface before the generic coastline).
+	if ( ! $image_url && function_exists( 'restwell_get_default_og_image_url_for_request' ) ) {
+		$mapped = restwell_get_default_og_image_url_for_request( $pid );
+		if ( $mapped !== '' ) {
+			$image_url = $mapped;
+		}
+	}
+
+	// Last resort: theme stock coastline (covers unknown pages / Playground gaps).
+	if ( ! $image_url ) {
+		$image_url = get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastline-panorama.webp';
 	}
 
 	$image_width  = 0;

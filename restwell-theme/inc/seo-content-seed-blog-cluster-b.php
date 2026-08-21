@@ -313,6 +313,9 @@ function restwell_get_blog_post_read_access_statement_html() {
 <h2>What is an access statement?</h2>
 <p>An access statement is a structured document describing how a property meets (or honestly fails) various access needs.</p>
 
+<h2>A worked Restwell example</h2>
+<p>When you want millimetres rather than adjectives, read Restwell's published <a href=\"{$acc}\">access statement</a> — door widths, hoist, wet room, and parking on one page. Use that page as the benchmark when you score other holiday cottages. This guide stays general; Restwell's page is the property-specific example.</p>
+
 <h2>Why PDF puffery wastes everyone's time</h2>
 <p>Words like \"wheelchair friendly\" mean nothing at tribunal. Millimetres mean everything when commissioners audit.</p>
 
@@ -341,7 +344,7 @@ function restwell_get_blog_post_read_access_statement_html() {
 <li>Create a spreadsheet mirroring our <a href=\"{$checklist}\">booking checklist</a>.</li>
 <li>Request video walk-through when COVID-era excuses linger.</li>
 <li>Compare statements across three shortlisted cottages.</li>
-<li>Cross-read Restwell's live <a href=\"{$acc}\">accessibility data</a>.</li>
+<li>Score other listings against Restwell's published <a href=\"{$acc}\">access statement</a> (the worked example).</li>
 </ul>
 
 <h2>Common mistakes</h2>
@@ -365,7 +368,7 @@ function restwell_get_blog_post_read_access_statement_html() {
 <p>You, your OT, and sometimes insurers.</p>
 
 <h2>Closing</h2>
-<p>Statements exist to prevent tears. Browse the <a href=\"{$blog}\">blog</a> and <a href=\"{$enq}\">request ours</a> in writing anytime.</p>";
+<p>Statements exist to prevent tears. Start with Restwell's <a href=\"{$acc}\">access statement</a>, browse the <a href=\"{$blog}\">blog</a>, and <a href=\"{$enq}\">enquire</a> if you need anything clarified in writing.</p>";
 }
 
 /**

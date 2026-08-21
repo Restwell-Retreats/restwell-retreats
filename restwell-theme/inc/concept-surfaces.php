@@ -31,6 +31,7 @@ function restwell_concept_page_templates() {
 		'template-privacy-policy.php',
 		'template-terms-and-conditions.php',
 		'template-accessibility-policy.php',
+		'page-guest-guide.php',
 		'404',
 		'blog',
 		'page',

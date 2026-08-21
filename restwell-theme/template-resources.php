@@ -12,6 +12,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_guide_urls = array();
+foreach (
+	array(
+		'direct-payment-holiday-accommodation',
+		'personal-budget-short-break-care-act',
+		'chc-respite-holiday-accommodation-uk',
+		'carers-respite-holiday-guide',
+		'commissioner-checklist-accessible-respite-stay',
+	) as $restwell_guide_slug
+) {
+	$restwell_guide_post = get_page_by_path( $restwell_guide_slug, OBJECT, 'post' );
+	$restwell_guide_urls[ $restwell_guide_slug ] = ( $restwell_guide_post instanceof WP_Post )
+		? (string) get_permalink( $restwell_guide_post )
+		: '';
+}
 ?>
 
 
@@ -58,6 +74,19 @@ get_header();
                 <li>Nominate who Restwell should invoice</li>
               </ul>
             </div>
+            <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) || ! empty( $restwell_guide_urls['personal-budget-short-break-care-act'] ) ) : ?>
+            <p class="info-card__more">
+              <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) ) : ?>
+                <a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Direct payments guide', 'restwell-retreats' ); ?></a>
+              <?php endif; ?>
+              <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) && ! empty( $restwell_guide_urls['personal-budget-short-break-care-act'] ) ) : ?>
+                <span aria-hidden="true"> · </span>
+              <?php endif; ?>
+              <?php if ( ! empty( $restwell_guide_urls['personal-budget-short-break-care-act'] ) ) : ?>
+                <a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['personal-budget-short-break-care-act'] ); ?>"><?php esc_html_e( 'Care Act personal budgets', 'restwell-retreats' ); ?></a>
+              <?php endif; ?>
+            </p>
+            <?php endif; ?>
           </article></li>
           <li><article class="info-card info-card--route" id="nhs">
             <div class="info-card__head"><span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 12h4l2-5 3 10 2-7 1.5 2H21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>NHS / CHC</h3></div>
@@ -70,6 +99,9 @@ get_header();
                 <li>Request Restwell details for the pack</li>
               </ul>
             </div>
+            <?php if ( ! empty( $restwell_guide_urls['chc-respite-holiday-accommodation-uk'] ) ) : ?>
+            <p class="info-card__more"><a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['chc-respite-holiday-accommodation-uk'] ); ?>"><?php esc_html_e( 'CHC respite & lodging guide', 'restwell-retreats' ); ?></a></p>
+            <?php endif; ?>
           </article></li>
           <li><article class="info-card info-card--route" id="private">
             <div class="info-card__head"><span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h13A1.5 1.5 0 0 1 19 7.5V9h1.5A1.5 1.5 0 0 1 22 10.5v7A1.5 1.5 0 0 1 20.5 19h-15A2.5 2.5 0 0 1 3 16.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="17.25" cy="14" r="1" fill="currentColor" stroke="none"/></svg></span><h3>Grants &amp; private</h3></div>
@@ -82,6 +114,19 @@ get_header();
                 <li>Pay deposit to secure dates</li>
               </ul>
             </div>
+            <?php if ( ! empty( $restwell_guide_urls['carers-respite-holiday-guide'] ) || ! empty( $restwell_guide_urls['commissioner-checklist-accessible-respite-stay'] ) ) : ?>
+            <p class="info-card__more">
+              <?php if ( ! empty( $restwell_guide_urls['carers-respite-holiday-guide'] ) ) : ?>
+                <a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['carers-respite-holiday-guide'] ); ?>"><?php esc_html_e( 'Carer assessment & respite rights', 'restwell-retreats' ); ?></a>
+              <?php endif; ?>
+              <?php if ( ! empty( $restwell_guide_urls['carers-respite-holiday-guide'] ) && ! empty( $restwell_guide_urls['commissioner-checklist-accessible-respite-stay'] ) ) : ?>
+                <span aria-hidden="true"> · </span>
+              <?php endif; ?>
+              <?php if ( ! empty( $restwell_guide_urls['commissioner-checklist-accessible-respite-stay'] ) ) : ?>
+                <a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['commissioner-checklist-accessible-respite-stay'] ); ?>"><?php esc_html_e( 'Commissioner checklist', 'restwell-retreats' ); ?></a>
+              <?php endif; ?>
+            </p>
+            <?php endif; ?>
             </article></li>
         </ul>
       </div>
@@ -266,6 +311,18 @@ get_header();
         </div>
       </div>
     </section>
+
+<?php
+if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
+	restwell_render_pillar_related_guides(
+		'resources',
+		array(
+			'heading' => __( 'Guides by funding route', 'restwell-retreats' ),
+			'intro'   => __( 'Route-specific guides for direct payments, Care Act personal budgets, NHS CHC, carers and commissioners. This page stays the overview.', 'restwell-retreats' ),
+		)
+	);
+}
+?>
 
 </main>
 

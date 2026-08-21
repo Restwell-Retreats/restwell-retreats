@@ -21,7 +21,7 @@ get_header();
         <div class="hero__content">
           <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">How It Works</li></ol>
           <div class="hero__text">
-            <h1 id="page-h">How an accessible stay works</h1>
+            <h1 id="page-h">How accessible holiday booking works</h1>
             <p>Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.</p>
           </div>
         </div>

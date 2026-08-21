@@ -1,6 +1,6 @@
 <?php
 /**
- * Concept port from mockups — Default page.
+ * Concept port from mockups — Default page (dynamic title + content).
  *
  * @package Restwell_Retreats
  */
@@ -12,35 +12,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Sample page</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">About Restwell Retreats</h1>
-            <p>A private accessible bungalow in Whitstable, Kent: step-free, with published access details and optional Continuity care.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+while ( have_posts() ) :
+	the_post();
 
-    <section class="section-y band-white">
-      <div class="container">
-        <div class="prose prose--wide">
-          <p>Restwell is a single-storey holiday bungalow on Russell Drive. Guests who need a ceiling hoist, level-access wet room and driveway parking can check those details before they enquire.</p>
-          <h2>What this page is for</h2>
-          <p>Simple WordPress pages use this layout: interior hero, then long-form prose. Link to the property, accessibility and enquire pages when readers need the next step.</p>
-          <ul>
-            <li>Property and access specs</li>
-            <li>Funding and optional care</li>
-            <li>Enquire with dates and needs</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+	$title   = get_the_title();
+	$excerpt = trim( (string) get_the_excerpt() );
+	$crumb   = wp_html_excerpt( $title, 48, '…' );
+	?>
+	<section class="hero hero--interior" aria-labelledby="page-h">
+		<div class="container">
+			<div class="hero__content">
+				<ol class="breadcrumb">
+					<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'restwell-retreats' ); ?></a></li>
+					<li class="breadcrumb__sep" aria-hidden="true">/</li>
+					<li aria-current="page"><?php echo esc_html( $crumb ); ?></li>
+				</ol>
+				<div class="hero__text">
+					<h1 id="page-h"><?php echo esc_html( $title ); ?></h1>
+					<?php if ( $excerpt !== '' ) : ?>
+						<p><?php echo esc_html( $excerpt ); ?></p>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+	</section>
 
+	<section class="section-y band-white">
+		<div class="container">
+			<div class="prose prose--wide">
+				<?php the_content(); ?>
+			</div>
+		</div>
+	</section>
+	<?php
+endwhile;
+?>
 </main>
 
 <?php

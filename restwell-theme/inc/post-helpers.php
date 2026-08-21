@@ -41,3 +41,45 @@ function restwell_estimate_read_time( $content ) {
 	$word_count = str_word_count( wp_strip_all_tags( $content ) );
 	return max( 1, (int) ceil( $word_count / 200 ) );
 }
+
+/**
+ * Default H1 for the blog index (posts page).
+ *
+ * Broader than “travel guides” alone: tips, stories, Whitstable notes, updates.
+ *
+ * @return string
+ */
+function restwell_get_blog_index_heading() {
+	$posts_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $posts_id > 0 ) {
+		$title = trim( (string) get_the_title( $posts_id ) );
+		if ( $title !== '' && strcasecmp( $title, 'Blog' ) !== 0 ) {
+			return $title;
+		}
+	}
+
+	return __( 'Tips, stories and Whitstable updates', 'restwell-retreats' );
+}
+
+/**
+ * Default lede under the blog index H1.
+ *
+ * Uses the posts-page excerpt when editors have set one.
+ *
+ * @return string
+ */
+function restwell_get_blog_index_lede() {
+	$posts_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $posts_id > 0 ) {
+		$excerpt = trim( (string) get_post_field( 'post_excerpt', $posts_id ) );
+		if ( $excerpt !== '' ) {
+			return $excerpt;
+		}
+	}
+
+	return __(
+		'Accessible holiday tips, guest stories, what’s on around Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.',
+		'restwell-retreats'
+	);
+}
+

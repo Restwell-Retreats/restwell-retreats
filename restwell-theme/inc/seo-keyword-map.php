@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function restwell_keyword_map_excluded_slugs() {
 	return array(
 		'guest-guide',
+		'sample-page',
 		'privacy-policy',
 		'terms-and-conditions',
 	);

@@ -21,7 +21,7 @@ get_header();
         <div class="hero__content">
           <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">The Property</li></ol>
           <div class="hero__text">
-            <h1 id="page-h">Inside the accessible bungalow in Whitstable</h1>
+            <h1 id="page-h">Accessible bungalow: rooms, wet room and kit</h1>
             <p>Take a room-by-room tour of Restwell. See the bedrooms, wet room, living areas, kitchen, garden, and the access equipment already in place.</p>
           </div>
         </div>

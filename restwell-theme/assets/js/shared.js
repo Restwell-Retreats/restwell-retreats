@@ -514,19 +514,31 @@
     otpGroups.forEach(function (group) {
       var otpInputs = Array.prototype.slice.call(group.querySelectorAll('input'));
       if (!otpInputs.length) return;
+      var form = group.closest('form');
+      var hidden = form ? form.querySelector('[data-otp-value]') : null;
+
+      function syncHidden() {
+        if (!hidden) return;
+        hidden.value = otpInputs.map(function (i) { return i.value || ''; }).join('');
+        hidden.disabled = false;
+      }
+
+      if (form) {
+        form.addEventListener('submit', syncHidden);
+      }
 
       otpInputs.forEach(function (input, index) {
         input.addEventListener('input', function () {
           input.value = input.value.replace(/[^0-9]/g, '').slice(0, 1);
+          syncHidden();
           if (!input.value) return;
           var next = otpInputs[index + 1];
           if (next) {
             next.focus();
-          } else {
-            var form = group.closest('form');
-            if (form && otpInputs.every(function (i) { return i.value; })) {
-              form.requestSubmit ? form.requestSubmit() : form.submit();
-            }
+          } else if (form && otpInputs.every(function (i) { return i.value; })) {
+            syncHidden();
+            if (form.requestSubmit) form.requestSubmit();
+            else form.submit();
           }
         });
 
@@ -545,10 +557,13 @@
           digits.slice(0, otpInputs.length).forEach(function (digit, i) {
             otpInputs[i].value = digit;
           });
+          syncHidden();
           var lastFilled = Math.min(digits.length, otpInputs.length) - 1;
           if (lastFilled === otpInputs.length - 1) {
-            var form = group.closest('form');
-            if (form) form.requestSubmit ? form.requestSubmit() : form.submit();
+            if (form) {
+              if (form.requestSubmit) form.requestSubmit();
+              else form.submit();
+            }
           } else if (lastFilled >= 0) {
             otpInputs[lastFilled + 1].focus();
           }
@@ -556,6 +571,29 @@
       });
     });
   }
+
+  /* ---------- Guest guide keysafe reveal + print ---------- */
+  var keysafeBtn = document.getElementById('gg-keysafe-reveal');
+  var keysafeVal = document.getElementById('gg-keysafe-value');
+  if (keysafeBtn && keysafeVal) {
+    keysafeBtn.addEventListener('click', function () {
+      var revealed = keysafeBtn.getAttribute('aria-expanded') === 'true';
+      if (revealed) {
+        keysafeVal.classList.add('is-blurred');
+        keysafeBtn.setAttribute('aria-expanded', 'false');
+        keysafeBtn.textContent = keysafeBtn.getAttribute('data-label-reveal') || 'Tap to reveal';
+      } else {
+        keysafeVal.classList.remove('is-blurred');
+        keysafeBtn.setAttribute('aria-expanded', 'true');
+        keysafeBtn.textContent = keysafeBtn.getAttribute('data-label-hide') || 'Hide';
+      }
+    });
+  }
+  document.querySelectorAll('[data-gg-print]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      window.print();
+    });
+  });
 
   /* ---------- Multi-step enquiry form ---------- */
   var multistep = document.querySelector('[data-multistep]');

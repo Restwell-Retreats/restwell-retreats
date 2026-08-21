@@ -98,7 +98,7 @@ function restwell_get_meta_description_for_request() {
 				return restwell_trim_meta_text( $defaults['meta_description'], 160 );
 			}
 		}
-		return restwell_trim_meta_text( __( 'Accessible travel guides, Kent coast tips, and funding advice for disabled guests, carers, and families. Explore the latest articles.', 'restwell-retreats' ), 160 );
+		return restwell_trim_meta_text( __( 'Accessible holiday tips, guest stories, what’s on in Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.', 'restwell-retreats' ), 160 );
 	}
 
 	if ( is_category() || is_tag() || is_tax() ) {

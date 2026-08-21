@@ -120,6 +120,10 @@ function restwell_output_canonical_and_robots() {
 		if ( is_page_template( 'page-guest-guide.php' ) ) {
 			$noindex = true;
 		}
+		// WordPress install stub — not a Restwell marketing URL.
+		if ( is_page( 'sample-page' ) ) {
+			$noindex = true;
+		}
 		if ( $noindex ) {
 			// noindex keeps URLs out of the index; follow allows normal link discovery on private/marketing-off URLs.
 			echo '<meta name="robots" content="noindex, follow">' . "\n";

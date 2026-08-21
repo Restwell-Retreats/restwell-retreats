@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 5;
+const RESTWELL_SCHEMA_VERSION = 14;
 
 function restwell_migrate_homepage_faq_meta_v1() {
 	if ( get_option( 'restwell_home_faq_meta_migrated_v1', '' ) === '1' ) {
@@ -1153,12 +1153,15 @@ function restwell_migrate_enq_lede_v1() {
  * @return array<string, string>
  */
 function restwell_get_blog_lede_refresh_map() {
-	$next = 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.';
+	$next = 'Accessible holiday tips, guest stories, what’s on around Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.';
 	return array(
-		// hub-pages seed.
+		// hub-pages seed (previous).
+		'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.' => $next,
+		// hub-pages seed (older).
 		'Guides and stories: accessible travel, the Kent coast, funding routes, and updates from Restwell Retreats.' => $next,
 		// index.php fallback when no excerpt is stored.
 		'Practical guides to accessible travel on the Kent coast, local area information, and updates from Restwell.' => $next,
+		'Access notes for Whitstable and the Kent coast, written for wheelchair users, carers and anyone planning a disability-friendly holiday or a funded stay.' => $next,
 	);
 }
 
@@ -1178,7 +1181,7 @@ function restwell_migrate_blog_lede_v1() {
 		update_option( 'restwell_blog_lede_v1', '1' );
 		return;
 	}
-	$next = 'Guides and honest local information for accessible travel around Whitstable, the Kent coast and beyond. Written for wheelchair users, carers and anyone who needs a bit more detail before they go.';
+	$next = 'Accessible holiday tips, guest stories, what’s on around Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.';
 	foreach ( restwell_get_blog_lede_refresh_map() as $stale => $_ ) {
 		$current = trim( (string) get_post_field( 'post_excerpt', $blog_id ) );
 		if ( $current === $stale ) {
@@ -1192,6 +1195,429 @@ function restwell_migrate_blog_lede_v1() {
 		}
 	}
 	update_option( 'restwell_blog_lede_v1', '1' );
+}
+
+/**
+ * Broaden blog index H1/lede beyond “Accessible travel guides”.
+ */
+function restwell_migrate_blog_index_copy_v2() {
+	if ( get_option( 'restwell_blog_index_copy_v2', '' ) === '1' ) {
+		return;
+	}
+
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $blog_id < 1 ) {
+		$blog_page = get_page_by_path( 'blog', OBJECT, 'page' );
+		$blog_id   = $blog_page ? (int) $blog_page->ID : 0;
+	}
+
+	$next = 'Accessible holiday tips, guest stories, what’s on around Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.';
+
+	if ( $blog_id > 0 ) {
+		$current = trim( (string) get_post_field( 'post_excerpt', $blog_id ) );
+		$stale   = array_keys( restwell_get_blog_lede_refresh_map() );
+		$stale[] = '';
+		if ( in_array( $current, $stale, true ) || $current !== $next ) {
+			// Only overwrite known stale / empty / previous broadened-but-guides ledes.
+			$overwrite = ( $current === '' || isset( restwell_get_blog_lede_refresh_map()[ $current ] ) || str_contains( $current, 'accessible travel' ) || str_contains( $current, 'Access notes for Whitstable' ) );
+			if ( $overwrite ) {
+				wp_update_post(
+					array(
+						'ID'           => $blog_id,
+						'post_excerpt' => $next,
+					)
+				);
+			}
+		}
+
+		// Clear SEO meta title/description so theme defaults / seed can re-apply broader copy when empty after delete.
+		$old_titles = array(
+			'Accessible Travel Blog | Kent Stories | Restwell Retreats',
+			'Accessible travel blog',
+		);
+		$meta_title = (string) get_post_meta( $blog_id, 'meta_title', true );
+		foreach ( $old_titles as $old ) {
+			if ( $meta_title === $old || str_contains( $meta_title, 'Accessible Travel Blog' ) ) {
+				delete_post_meta( $blog_id, 'meta_title' );
+				break;
+			}
+		}
+		$meta_desc = (string) get_post_meta( $blog_id, 'meta_description', true );
+		if ( str_contains( $meta_desc, 'Accessible travel and Kent coast guides' ) || str_contains( $meta_desc, 'Accessible travel guides, Kent coast tips' ) ) {
+			delete_post_meta( $blog_id, 'meta_description' );
+		}
+	}
+
+	update_option( 'restwell_blog_index_copy_v2', '1' );
+}
+
+/**
+ * De-brand stored meta titles, fill Our Story / Optional care SEO, refresh stale titles.
+ */
+function restwell_migrate_seo_titles_meta_v3() {
+	if ( get_option( 'restwell_seo_titles_meta_v3', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_titles_meta_v3', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+	$force_slugs = array(
+		'who-its-for',
+		'resources',
+		'enquire',
+		'privacy-policy',
+		'terms-and-conditions',
+		'accessibility-policy',
+		'our-story',
+		'optional-care',
+		'blog',
+		'faq',
+		'how-it-works',
+		'home',
+		'the-property',
+		'accessibility',
+		'pricing',
+		'whitstable-area-guide',
+		'guest-guide',
+	);
+
+	foreach ( $force_slugs as $slug ) {
+		if ( empty( $defaults[ $slug ] ) ) {
+			continue;
+		}
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $page || (int) $page->ID < 1 ) {
+			continue;
+		}
+		$pid = (int) $page->ID;
+		$seo = $defaults[ $slug ];
+
+		$current_title = (string) get_post_meta( $pid, 'meta_title', true );
+		$stale_title   = (
+			$current_title === ''
+			|| str_contains( $current_title, '| Restwell' )
+			|| str_contains( $current_title, '– Restwell' )
+			|| str_contains( $current_title, 'Restwell Retreats' )
+			|| str_contains( $current_title, 'Who It Fits' )
+			|| str_contains( $current_title, 'Contact & Enquire | Restwell' )
+		);
+		if ( $stale_title && $seo['meta_title'] !== '' ) {
+			update_post_meta( $pid, 'meta_title', $seo['meta_title'] );
+		}
+
+		$current_desc = (string) get_post_meta( $pid, 'meta_description', true );
+		$thin_or_generic = (
+			$current_desc === ''
+			|| strlen( $current_desc ) < 110
+			|| str_contains( $current_desc, 'practical accessibility and holiday-planning guidance' )
+		);
+		if ( $thin_or_generic && $seo['meta_description'] !== '' ) {
+			update_post_meta( $pid, 'meta_description', $seo['meta_description'] );
+		}
+
+		if ( $seo['focus_keyphrase'] !== '' && (string) get_post_meta( $pid, 'focus_keyphrase', true ) === '' ) {
+			update_post_meta( $pid, 'focus_keyphrase', $seo['focus_keyphrase'] );
+		}
+	}
+
+	update_option( 'restwell_seo_titles_meta_v3', '1' );
+}
+
+/**
+ * Excellence pass: retarget marketing SEO titles/descriptions into 50–60 / 150–160 bands.
+ */
+function restwell_migrate_seo_titles_meta_v4() {
+	if ( get_option( 'restwell_seo_titles_meta_v4', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_titles_meta_v4', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+	$force_slugs = array(
+		'who-its-for',
+		'resources',
+		'enquire',
+		'privacy-policy',
+		'terms-and-conditions',
+		'accessibility-policy',
+		'our-story',
+		'optional-care',
+		'blog',
+		'faq',
+		'how-it-works',
+		'home',
+		'the-property',
+		'accessibility',
+		'pricing',
+		'whitstable-area-guide',
+	);
+
+	foreach ( $force_slugs as $slug ) {
+		if ( empty( $defaults[ $slug ] ) ) {
+			continue;
+		}
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $page || (int) $page->ID < 1 ) {
+			continue;
+		}
+		$pid = (int) $page->ID;
+		$seo = $defaults[ $slug ];
+
+		if ( $seo['meta_title'] !== '' ) {
+			update_post_meta( $pid, 'meta_title', $seo['meta_title'] );
+		}
+		if ( $seo['meta_description'] !== '' ) {
+			update_post_meta( $pid, 'meta_description', $seo['meta_description'] );
+		}
+		if ( $seo['focus_keyphrase'] !== '' ) {
+			update_post_meta( $pid, 'focus_keyphrase', $seo['focus_keyphrase'] );
+		}
+	}
+
+	update_option( 'restwell_seo_titles_meta_v4', '1' );
+}
+
+/**
+ * Front-page title excellence: WP often omits the site name on the home document title.
+ * Also re-applies accessibility-policy description into the 150–160 band.
+ */
+function restwell_migrate_seo_home_title_v5() {
+	if ( get_option( 'restwell_seo_home_title_v5', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_home_title_v5', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+	$home     = $defaults['home'] ?? null;
+	$front_id = (int) get_option( 'page_on_front', 0 );
+	if ( $front_id > 0 && is_array( $home ) && ! empty( $home['meta_title'] ) ) {
+		update_post_meta( $front_id, 'meta_title', $home['meta_title'] );
+		if ( ! empty( $home['meta_description'] ) ) {
+			update_post_meta( $front_id, 'meta_description', $home['meta_description'] );
+		}
+	}
+
+	$a11y = $defaults['accessibility-policy'] ?? null;
+	$page = get_page_by_path( 'accessibility-policy', OBJECT, 'page' );
+	if ( $page && is_array( $a11y ) && ! empty( $a11y['meta_description'] ) ) {
+		update_post_meta( (int) $page->ID, 'meta_description', $a11y['meta_description'] );
+		if ( ! empty( $a11y['meta_title'] ) ) {
+			update_post_meta( (int) $page->ID, 'meta_title', $a11y['meta_title'] );
+		}
+	}
+
+	update_option( 'restwell_seo_home_title_v5', '1' );
+}
+
+/**
+ * Re-apply accessibility-policy meta into the 150–160 description band.
+ */
+function restwell_migrate_seo_a11y_policy_meta_v6() {
+	if ( get_option( 'restwell_seo_a11y_policy_meta_v6', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_a11y_policy_meta_v6', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+	$a11y     = $defaults['accessibility-policy'] ?? null;
+	$page     = get_page_by_path( 'accessibility-policy', OBJECT, 'page' );
+	if ( $page && is_array( $a11y ) ) {
+		if ( ! empty( $a11y['meta_title'] ) ) {
+			update_post_meta( (int) $page->ID, 'meta_title', $a11y['meta_title'] );
+		}
+		if ( ! empty( $a11y['meta_description'] ) ) {
+			update_post_meta( (int) $page->ID, 'meta_description', $a11y['meta_description'] );
+		}
+	}
+
+	update_option( 'restwell_seo_a11y_policy_meta_v6', '1' );
+}
+
+/**
+ * Cannibalisation retarget: how-it-works + faq focus/title/description lanes.
+ */
+function restwell_migrate_seo_cannibal_lanes_v7() {
+	if ( get_option( 'restwell_seo_cannibal_lanes_v7', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_cannibal_lanes_v7', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+	foreach ( array( 'how-it-works', 'faq' ) as $slug ) {
+		if ( empty( $defaults[ $slug ] ) ) {
+			continue;
+		}
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $page || (int) $page->ID < 1 ) {
+			continue;
+		}
+		$pid = (int) $page->ID;
+		$seo = $defaults[ $slug ];
+		if ( $seo['meta_title'] !== '' ) {
+			update_post_meta( $pid, 'meta_title', $seo['meta_title'] );
+		}
+		if ( $seo['meta_description'] !== '' ) {
+			update_post_meta( $pid, 'meta_description', $seo['meta_description'] );
+		}
+		if ( $seo['focus_keyphrase'] !== '' ) {
+			update_post_meta( $pid, 'focus_keyphrase', $seo['focus_keyphrase'] );
+		}
+		if ( 'how-it-works' === $slug ) {
+			update_post_meta( $pid, 'hiw_heading', 'How accessible holiday booking works' );
+			$intro = 'An accessible holiday booking process with Restwell starts at enquiry: share access needs, confirm dates, arrange optional care if you want it, then settle in.';
+			update_post_meta( $pid, 'hiw_intro', $intro );
+		}
+	}
+
+	update_option( 'restwell_seo_cannibal_lanes_v7', '1' );
+}
+
+/**
+ * Cannibalisation harden: property rooms/kit title + H1; accessibility access-statement H1.
+ * Resources hub→spoke links ship in template-resources.php (no meta rewrite).
+ */
+function restwell_migrate_seo_cannibal_medium_v8() {
+	if ( get_option( 'restwell_seo_cannibal_medium_v8', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_cannibal_medium_v8', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+
+	$property = get_page_by_path( 'the-property', OBJECT, 'page' );
+	if ( $property && (int) $property->ID > 0 && ! empty( $defaults['the-property'] ) ) {
+		$pid = (int) $property->ID;
+		$seo = $defaults['the-property'];
+		if ( $seo['meta_title'] !== '' ) {
+			update_post_meta( $pid, 'meta_title', $seo['meta_title'] );
+		}
+		if ( $seo['meta_description'] !== '' ) {
+			update_post_meta( $pid, 'meta_description', $seo['meta_description'] );
+		}
+		if ( $seo['focus_keyphrase'] !== '' ) {
+			update_post_meta( $pid, 'focus_keyphrase', $seo['focus_keyphrase'] );
+		}
+
+		$prop_h1_stale = array(
+			'Accessible bungalow Whitstable',
+			'An accessible bungalow in Whitstable',
+			'An accessible bungalow in Whitstable, near the beach',
+			'Inside the accessible bungalow in Whitstable',
+		);
+		$prop_h1 = trim( (string) get_post_meta( $pid, 'prop_hero_heading', true ) );
+		if ( '' === $prop_h1 || in_array( $prop_h1, $prop_h1_stale, true ) ) {
+			update_post_meta( $pid, 'prop_hero_heading', 'Accessible bungalow: rooms, wet room and kit' );
+		}
+	}
+
+	$accessibility = get_page_by_path( 'accessibility', OBJECT, 'page' );
+	if ( $accessibility && (int) $accessibility->ID > 0 ) {
+		$aid = (int) $accessibility->ID;
+		$acc_h1_stale = array(
+			'Wheelchair accessible holiday cottage',
+			'A wheelchair accessible holiday cottage in Whitstable',
+			'Our access statement, room by room',
+		);
+		$acc_h1 = trim( (string) get_post_meta( $aid, 'acc_heading', true ) );
+		if ( '' === $acc_h1 || in_array( $acc_h1, $acc_h1_stale, true ) ) {
+			update_post_meta( $aid, 'acc_heading', 'Access statement: hoist, wet room, door widths' );
+		}
+	}
+
+	update_option( 'restwell_seo_cannibal_medium_v8', '1' );
+}
+
+/**
+ * Cannibalisation low polish: refresh access-statement post body (Restwell example links).
+ * Whitstable hub→spoke related guides ship in template-whitstable-guide.php.
+ */
+function restwell_migrate_seo_cannibal_low_v9() {
+	if ( get_option( 'restwell_seo_cannibal_low_v9', '' ) === '1' ) {
+		return;
+	}
+
+	$posts = get_posts(
+		array(
+			'name'                   => 'how-to-read-holiday-cottage-access-statement',
+			'post_type'              => 'post',
+			'post_status'            => 'any',
+			'posts_per_page'         => 1,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+		)
+	);
+
+	if ( empty( $posts ) ) {
+		update_option( 'restwell_seo_cannibal_low_v9', '1' );
+		return;
+	}
+
+	$post_id = (int) $posts[0];
+	$content = (string) get_post_field( 'post_content', $post_id );
+	if ( '' === $content ) {
+		update_option( 'restwell_seo_cannibal_low_v9', '1' );
+		return;
+	}
+
+	if ( false !== strpos( $content, 'A worked Restwell example' ) ) {
+		update_option( 'restwell_seo_cannibal_low_v9', '1' );
+		return;
+	}
+
+	if ( function_exists( 'restwell_get_blog_post_read_access_statement_html' ) ) {
+		$fresh = restwell_get_blog_post_read_access_statement_html();
+		if ( is_string( $fresh ) && '' !== $fresh ) {
+			wp_update_post(
+				array(
+					'ID'           => $post_id,
+					'post_content' => wp_kses_post( $fresh ),
+				)
+			);
+		}
+	}
+
+	update_option( 'restwell_seo_cannibal_low_v9', '1' );
+}
+
+/**
+ * Leave WordPress Sample Page as a demo stub: noindex + exclude from SEO lanes.
+ */
+function restwell_migrate_sample_page_demo_v10() {
+	if ( get_option( 'restwell_sample_page_demo_v10', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'sample-page', OBJECT, 'page' );
+	if ( $page && (int) $page->ID > 0 ) {
+		update_post_meta( (int) $page->ID, 'meta_noindex', 1 );
+	}
+
+	update_option( 'restwell_sample_page_demo_v10', '1' );
 }
 
 /**
@@ -1610,6 +2036,15 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_wg_lede_v1',
 		'restwell_enq_lede_v1',
 		'restwell_blog_lede_v1',
+		'restwell_blog_index_copy_v2',
+		'restwell_seo_titles_meta_v3',
+		'restwell_seo_titles_meta_v4',
+		'restwell_seo_home_title_v5',
+		'restwell_seo_a11y_policy_meta_v6',
+		'restwell_seo_cannibal_lanes_v7',
+		'restwell_seo_cannibal_medium_v8',
+		'restwell_seo_cannibal_low_v9',
+		'restwell_sample_page_demo_v10',
 		'restwell_keyword_lanes_v1',
 		'restwell_guest_guide_checkin_v1',
 		'restwell_terms_balance_one_week_v1',
@@ -1713,6 +2148,24 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_enq_lede_v1', 27 );
 	add_action( 'init', 'restwell_migrate_blog_lede_v1', 38 );
 	add_action( 'after_switch_theme', 'restwell_migrate_blog_lede_v1', 28 );
+	add_action( 'init', 'restwell_migrate_blog_index_copy_v2', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_blog_index_copy_v2', 28 );
+	add_action( 'init', 'restwell_migrate_seo_titles_meta_v3', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_meta_v3', 28 );
+	add_action( 'init', 'restwell_migrate_seo_titles_meta_v4', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_meta_v4', 28 );
+	add_action( 'init', 'restwell_migrate_seo_home_title_v5', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_home_title_v5', 28 );
+	add_action( 'init', 'restwell_migrate_seo_a11y_policy_meta_v6', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_a11y_policy_meta_v6', 28 );
+	add_action( 'init', 'restwell_migrate_seo_cannibal_lanes_v7', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_lanes_v7', 28 );
+	add_action( 'init', 'restwell_migrate_seo_cannibal_medium_v8', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_medium_v8', 28 );
+	add_action( 'init', 'restwell_migrate_seo_cannibal_low_v9', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_low_v9', 28 );
+	add_action( 'init', 'restwell_migrate_sample_page_demo_v10', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_sample_page_demo_v10', 28 );
 	add_action( 'init', 'restwell_migrate_keyword_lanes_v1', 39 );
 	add_action( 'after_switch_theme', 'restwell_migrate_keyword_lanes_v1', 29 );
 	add_action( 'init', 'restwell_migrate_guest_guide_checkin_v1', 40 );

@@ -578,7 +578,13 @@ function restwell_seo_admin_schema_status( WP_Post $post, string $template ): ar
 		__( 'WebSite + WebPage + Organization + LocalBusiness (front page)', 'restwell-retreats' ) => $is_front,
 		__( 'LocalBusiness + Service (property template)', 'restwell-retreats' ) => $is_property && ! $is_front,
 		__( 'BreadcrumbList', 'restwell-retreats' ) => $breadcrumb,
-		__( 'FAQPage', 'restwell-retreats' ) => ( 'template-faq.php' === $template ) || ( 'template-pricing.php' === $template ) || $is_front,
+		__( 'FAQPage', 'restwell-retreats' ) => ( 'template-faq.php' === $template ) || ( 'template-pricing.php' === $template ) || ( 'template-care.php' === $template ) || $is_front,
+		__( 'AboutPage', 'restwell-retreats' ) => ( 'template-our-story.php' === $template ),
+		__( 'CollectionPage', 'restwell-retreats' ) => ( 'template-resources.php' === $template ),
+		__( 'Service (optional care)', 'restwell-retreats' ) => ( 'template-care.php' === $template ),
+		__( 'ContactPage', 'restwell-retreats' ) => ( 'template-enquire.php' === $template ),
+		__( 'HowTo', 'restwell-retreats' ) => ( 'template-how-it-works.php' === $template ),
+		__( 'TouristDestination', 'restwell-retreats' ) => ( 'template-whitstable-guide.php' === $template ),
 		__( 'BlogPosting', 'restwell-retreats' ) => ( 'post' === $post->post_type ),
 	);
 }

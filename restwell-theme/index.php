@@ -19,8 +19,8 @@ get_header();
         <div class="hero__content">
           <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Blog</li></ol>
           <div class="hero__text">
-            <h1 id="page-h">Accessible travel guides</h1>
-            <p>Access notes for Whitstable and the Kent coast, written for wheelchair users, carers and anyone planning a disability-friendly holiday or a funded stay.</p>
+            <h1 id="page-h"><?php echo esc_html( restwell_get_blog_index_heading() ); ?></h1>
+            <p><?php echo esc_html( restwell_get_blog_index_lede() ); ?></p>
           </div>
         </div>
       </div>

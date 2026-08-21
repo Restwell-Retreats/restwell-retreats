@@ -656,6 +656,9 @@ blockquote,
   border: 0;
   border-radius: 0;
   background: transparent;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
   font: inherit;
   font-weight: var(--type-ui-weight);
   font-size: var(--type-ui-size);
@@ -955,7 +958,7 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   background:
     linear-gradient(180deg, rgba(12, 35, 42, 0.4) 0%, rgba(12, 35, 42, 0.52) 45%, rgba(12, 35, 42, 0.72) 100%),
-    url('../assets/images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
+    url('../images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
 }
 .hero__content {
   position: relative;
@@ -1034,7 +1037,7 @@ body.nav-open { overflow: hidden; }
   .hero__media {
     background:
       linear-gradient(180deg, rgba(12, 35, 42, 0.48) 0%, rgba(12, 35, 42, 0.42) 45%, rgba(12, 35, 42, 0.68) 100%),
-      url('../assets/images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
+      url('../images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
   }
   .hero__content {
     margin-inline: auto;
@@ -1141,7 +1144,7 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   background:
     linear-gradient(180deg, rgba(27, 77, 92, 0.72), rgba(27, 77, 92, 0.86)),
-    url('../assets/images/stock/restwell-whitstable-beach-huts.webp') center/cover no-repeat;
+    url('../images/stock/restwell-whitstable-beach-huts.webp') center/cover no-repeat;
 }
 .mid-cta__inner {
   position: relative;
@@ -1388,6 +1391,9 @@ body.nav-open { overflow: hidden; }
   text-wrap: pretty;
 }
 .site-footer__partner-line a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
   color: var(--warm-gold-hero);
   font-weight: 600;
   text-decoration: underline;
@@ -1515,6 +1521,9 @@ body.page--interior .site-header::before { opacity: 0; }
   color: rgba(255, 255, 255, 0.72);
 }
 .breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
 }
@@ -2815,6 +2824,12 @@ body:has(.subnav) {
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 0.15em;
+}
+.info-card__more {
+  flex: 0 0 auto;
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
 }
 
 /* Grants + contacts side by side on desktop */
@@ -5206,6 +5221,9 @@ body.lightbox-open {
   color: var(--deep-teal);
 }
 .place-list__title a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
   color: inherit;
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);
@@ -5285,6 +5303,9 @@ body.lightbox-open {
 
 /* Linked media titles (day trips / visual stops) */
 .media-card__title-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.5rem;
   color: inherit;
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);

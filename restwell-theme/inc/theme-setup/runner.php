@@ -58,7 +58,9 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 		'FAQ'                => 'template-faq.php',
 		'Enquire'            => 'template-enquire.php',
 		'Pricing'            => 'template-pricing.php',
-		'Resources'          => 'template-resources.php',
+		'Resources'            => 'template-resources.php',
+		'Our Story'            => 'template-our-story.php',
+		'Optional care'        => 'template-care.php',
 		'Guest Guide'          => 'page-guest-guide.php',
 		'Privacy Policy'       => 'template-privacy-policy.php',
 		'Terms & Conditions'   => 'template-terms-and-conditions.php',
@@ -158,7 +160,104 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 }
 
 /**
- * Public contact email for policies and footers (matches enquiry notify default).
+ * Ensure the Blog page is the posts index and Home is the static front.
  *
- * @return string Valid email address.
+ * front-page.php is the marketing homepage. index.php / home.php is the blog
+ * archive. If show_on_front is "posts", /blog/ is a normal page and uses
+ * page.php (wrong H1). Static front + page_for_posts routes /blog/ correctly.
  */
+function restwell_ensure_blog_posts_page() {
+	if ( wp_installing() ) {
+		return;
+	}
+
+	$blog = get_page_by_path( 'blog', OBJECT, 'page' );
+	if ( ! $blog || (int) $blog->ID < 1 ) {
+		return;
+	}
+	$blog_id = (int) $blog->ID;
+
+	$home = get_page_by_path( 'home', OBJECT, 'page' );
+	$home_id = $home ? (int) $home->ID : 0;
+	if ( $home_id < 1 ) {
+		$front_id = (int) get_option( 'page_on_front', 0 );
+		if ( $front_id > 0 && $front_id !== $blog_id ) {
+			$home_id = $front_id;
+		}
+	}
+	if ( $home_id < 1 ) {
+		$home_id = (int) wp_insert_post(
+			array(
+				'post_title'  => __( 'Home', 'restwell-retreats' ),
+				'post_name'   => 'home',
+				'post_status' => 'publish',
+				'post_type'   => 'page',
+				'post_content'=> '',
+			),
+			true
+		);
+		if ( $home_id < 1 ) {
+			return;
+		}
+	}
+
+	$show       = (string) get_option( 'show_on_front', 'posts' );
+	$front      = (int) get_option( 'page_on_front', 0 );
+	$posts_page = (int) get_option( 'page_for_posts', 0 );
+
+	$needs_update = ( 'page' !== $show )
+		|| ( $front !== $home_id )
+		|| ( $posts_page !== $blog_id );
+
+	if ( ! $needs_update ) {
+		return;
+	}
+
+	update_option( 'show_on_front', 'page' );
+	update_option( 'page_on_front', $home_id );
+	update_option( 'page_for_posts', $blog_id );
+	flush_rewrite_rules( false );
+}
+add_action( 'init', 'restwell_ensure_blog_posts_page', 4 );
+
+/**
+ * Ensure the Guest Arrival Guide page exists with the OTP template.
+ */
+function restwell_ensure_guest_guide_page() {
+	if ( wp_installing() ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'guest-guide', OBJECT, 'page' );
+	$created = false;
+
+	if ( ! $page || (int) $page->ID < 1 ) {
+		$page_id = (int) wp_insert_post(
+			array(
+				'post_title'   => __( 'Guest Guide', 'restwell-retreats' ),
+				'post_name'    => 'guest-guide',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+				'post_content' => '',
+			),
+			true
+		);
+		if ( $page_id < 1 ) {
+			return;
+		}
+		$created = true;
+	} else {
+		$page_id = (int) $page->ID;
+	}
+
+	$template = (string) get_post_meta( $page_id, '_wp_page_template', true );
+	if ( 'page-guest-guide.php' !== $template ) {
+		update_post_meta( $page_id, '_wp_page_template', 'page-guest-guide.php' );
+		$created = true;
+	}
+
+	if ( $created ) {
+		flush_rewrite_rules( false );
+	}
+}
+add_action( 'init', 'restwell_ensure_guest_guide_page', 5 );

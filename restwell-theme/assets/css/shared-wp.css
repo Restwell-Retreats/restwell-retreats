@@ -18,6 +18,17 @@
 	object-fit: contain;
 }
 
+/*
+ * Header + footer chrome are always on deep teal / dark scrim (mockup white
+ * wordmark). The uploaded long logo is dark — flatten to white so it matches.
+ */
+.site-header .logo img,
+.site-header .logo .site-logo__img,
+.site-footer .logo img,
+.site-footer .logo .site-logo__img {
+	filter: brightness(0) invert(1);
+}
+
 @media (min-width: 1024px) {
 	.logo img,
 	.logo .site-logo__img {
@@ -46,3 +57,80 @@
 .site-header .site-logo {
 	display: none !important;
 }
+
+/* Guest guide (OTP + authenticated cards) — concept chrome helpers */
+.gg-banner {
+	margin: 0 0 var(--space-5);
+	padding: var(--space-3) var(--space-4);
+	border-radius: var(--radius);
+	font-size: var(--text-sm);
+	line-height: 1.5;
+}
+.gg-banner--error {
+	background: color-mix(in srgb, #b42318 8%, white);
+	border: 1px solid color-mix(in srgb, #b42318 28%, transparent);
+	color: #7a271a;
+}
+.gg-banner--ok {
+	background: color-mix(in srgb, var(--deep-teal) 8%, white);
+	border: 1px solid color-mix(in srgb, var(--deep-teal) 22%, transparent);
+	color: var(--deep-teal);
+}
+.gg-secondary {
+	margin-top: var(--space-8);
+	padding-top: var(--space-6);
+	border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	align-items: stretch;
+}
+.gg-secondary__hint {
+	margin: 0;
+	font-size: var(--text-sm);
+	color: var(--muted-grey);
+	line-height: 1.5;
+}
+.gg-keysafe {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-2);
+}
+.gg-keysafe__value {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	letter-spacing: 0.12em;
+	transition: filter 0.25s ease;
+}
+.gg-keysafe__value.is-blurred {
+	filter: blur(6px);
+	user-select: none;
+}
+.otp-box input:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+@media print {
+	.site-header,
+	.site-footer,
+	.nav-toggle,
+	.mobile-nav,
+	.breadcrumb,
+	.no-print,
+	#wpadminbar {
+		display: none !important;
+	}
+	body {
+		font-size: 12pt;
+		background: white;
+	}
+	.container {
+		max-width: 100% !important;
+		padding-inline: 0 !important;
+	}
+	a[href]::after {
+		content: none !important;
+	}
+}
+

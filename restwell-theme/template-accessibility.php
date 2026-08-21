@@ -21,7 +21,7 @@ get_header();
         <div class="hero__content">
           <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Accessibility</li></ol>
           <div class="hero__text">
-            <h1 id="page-h">A wheelchair accessible holiday cottage in Whitstable</h1>
+            <h1 id="page-h">Access statement: hoist, wet room, door widths</h1>
             <p>We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.</p>
           </div>
         </div>
@@ -301,6 +301,26 @@ get_header();
         </div>
       </div>
     </section>
+
+<?php
+$restwell_access_guide = get_page_by_path( 'how-to-read-holiday-cottage-access-statement', OBJECT, 'post' );
+if ( $restwell_access_guide instanceof WP_Post ) :
+	$restwell_access_guide_url = get_permalink( $restwell_access_guide );
+	if ( $restwell_access_guide_url ) :
+		?>
+    <section class="section-y section-y--compact band-white" aria-labelledby="access-guide-h">
+      <div class="container">
+        <header class="section-head section-head--tight">
+          <p class="eyebrow">Comparing other cottages?</p>
+          <h2 id="access-guide-h">How to read any access statement</h2>
+          <p class="lede">This page is Restwell’s property-specific statement. For a general checklist of measurements, red flags and OT questions, see <a class="text-link" href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php echo esc_html( get_the_title( $restwell_access_guide ) ); ?></a>.</p>
+        </header>
+      </div>
+    </section>
+		<?php
+	endif;
+endif;
+?>
 
     <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
       <div class="mid-cta__media" aria-hidden="true"></div>

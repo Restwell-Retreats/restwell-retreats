@@ -149,6 +149,39 @@ function restwell_output_structured_data() {
 		restwell_output_jsonld_contact_page();
 	}
 
+	if ( is_page_template( 'template-our-story.php' ) ) {
+		restwell_output_jsonld_about_page();
+	}
+
+	if ( is_page_template( 'template-who-its-for.php' ) ) {
+		restwell_output_jsonld_audience_webpage();
+	}
+
+	if ( is_page_template( 'template-resources.php' ) ) {
+		restwell_output_jsonld_collection_page();
+	}
+
+	if ( is_page_template( 'template-care.php' ) ) {
+		restwell_output_jsonld_care_service();
+		restwell_output_jsonld_care_faq();
+	}
+
+	if ( is_page_template( 'template-accessibility.php' ) ) {
+		restwell_output_jsonld_access_webpage();
+	}
+
+	if ( is_home() && ! is_front_page() ) {
+		restwell_output_jsonld_blog();
+	}
+
+	if (
+		is_page_template( 'template-privacy-policy.php' )
+		|| is_page_template( 'template-terms-and-conditions.php' )
+		|| is_page_template( 'template-accessibility-policy.php' )
+	) {
+		restwell_output_jsonld_legal_webpage();
+	}
+
 	if ( is_front_page() ) {
 		$teaser_ids = array_slice( restwell_get_property_gallery_ids(), 0, 6 );
 		if ( ! empty( $teaser_ids ) ) {
@@ -1217,4 +1250,295 @@ function restwell_output_jsonld_contact_page() {
 	);
 
 	restwell_print_jsonld( $schema );
+}
+
+/**
+ * AboutPage for Our Story.
+ */
+function restwell_output_jsonld_about_page() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+	$url  = get_permalink( $pid );
+	$desc = (string) get_post_meta( $pid, 'meta_description', true );
+	if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+		$desc = restwell_get_seo_default_meta_for_post_id( $pid )['meta_description'];
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'AboutPage',
+			'@id'         => trailingslashit( $url ) . '#webpage',
+			'url'         => $url,
+			'name'        => get_the_title( $pid ),
+			'description' => $desc,
+			'inLanguage'  => 'en-GB',
+			'isPartOf'    => array(
+				'@type' => 'WebSite',
+				'@id'   => trailingslashit( home_url( '/' ) ) . '#website',
+				'url'   => home_url( '/' ),
+				'name'  => get_bloginfo( 'name' ),
+			),
+			'about'       => array(
+				'@id' => restwell_get_organization_schema_id(),
+			),
+		)
+	);
+}
+
+/**
+ * WebPage for Who It's For (audience fit).
+ */
+function restwell_output_jsonld_audience_webpage() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+	$url  = get_permalink( $pid );
+	$desc = (string) get_post_meta( $pid, 'meta_description', true );
+	if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+		$desc = restwell_get_seo_default_meta_for_post_id( $pid )['meta_description'];
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'WebPage',
+			'@id'         => trailingslashit( $url ) . '#webpage',
+			'url'         => $url,
+			'name'        => get_the_title( $pid ),
+			'description' => $desc,
+			'inLanguage'  => 'en-GB',
+			'audience'    => array(
+				array(
+					'@type'        => 'Audience',
+					'audienceType' => 'Wheelchair users and disabled holidaymakers',
+				),
+				array(
+					'@type'        => 'Audience',
+					'audienceType' => 'Family carers',
+				),
+				array(
+					'@type'        => 'Audience',
+					'audienceType' => 'Occupational therapists and commissioners',
+				),
+			),
+		)
+	);
+}
+
+/**
+ * CollectionPage for Funding & Support resources.
+ */
+function restwell_output_jsonld_collection_page() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+	$url  = get_permalink( $pid );
+	$desc = (string) get_post_meta( $pid, 'meta_description', true );
+	if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+		$desc = restwell_get_seo_default_meta_for_post_id( $pid )['meta_description'];
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'CollectionPage',
+			'@id'         => trailingslashit( $url ) . '#webpage',
+			'url'         => $url,
+			'name'        => get_the_title( $pid ),
+			'description' => $desc,
+			'inLanguage'  => 'en-GB',
+			'about'       => array(
+				'@type' => 'Thing',
+				'name'  => 'Accessible respite holiday funding',
+			),
+		)
+	);
+}
+
+/**
+ * Service schema for optional Continuity care during a Restwell stay.
+ */
+function restwell_output_jsonld_care_service() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+	$url  = get_permalink( $pid );
+	$desc = (string) get_post_meta( $pid, 'meta_description', true );
+	if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+		$desc = restwell_get_seo_default_meta_for_post_id( $pid )['meta_description'];
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'Service',
+			'@id'         => trailingslashit( $url ) . '#care-service',
+			'name'        => __( 'Optional care during a Restwell stay', 'restwell-retreats' ),
+			'url'         => $url,
+			'description' => $desc,
+			'provider'    => array(
+				'@type' => 'Organization',
+				'name'  => 'Continuity of Care Services',
+				'url'   => 'https://www.continuitycareservices.co.uk/',
+			),
+			'areaServed'  => array(
+				'@type' => 'Place',
+				'name'  => 'Whitstable, Kent',
+			),
+			'serviceType' => 'Home care during self-catering holiday',
+		)
+	);
+}
+
+/**
+ * FAQ pairs for the Optional care page (must match visible accordion copy).
+ *
+ * @return array<int, array{q: string, a: string}>
+ */
+function restwell_get_care_faq_pairs() {
+	$pricing_url = function_exists( 'restwell_nav_resolve_page_url' )
+		? restwell_nav_resolve_page_url( 'pricing' )
+		: home_url( '/pricing/' );
+	return array(
+		array(
+			'q' => 'Do I have to book care?',
+			'a' => 'No. Many guests book the house as a self-catering holiday and need no additional support. Continuity care is optional.',
+		),
+		array(
+			'q' => 'Is Restwell a care home?',
+			'a' => 'No. Restwell is a private holiday bungalow. Continuity of Care Services (our sister company) is the CQC-regulated provider if you want professional care during your stay.',
+		),
+		array(
+			'q' => 'Do I book care separately?',
+			'a' => 'No. Ask when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so house and care can start in one conversation when you want both.',
+		),
+		array(
+			'q' => 'Can I bring my own carers?',
+			'a' => 'Yes. The layout supports familiar routines, with separate sleeping and space to assist. Tell us your party layout when you enquire.',
+		),
+		array(
+			'q' => 'Where do I see guide rates?',
+			'a' => 'On the Pricing page (' . $pricing_url . '#care-rates). They are Continuity guide rates only. Continuity quotes your care cost once hours and tasks are agreed.',
+		),
+	);
+}
+
+/**
+ * FAQPage JSON-LD for Optional care.
+ */
+function restwell_output_jsonld_care_faq() {
+	$pairs = restwell_get_care_faq_pairs();
+	if ( empty( $pairs ) ) {
+		return;
+	}
+	$entities = array();
+	foreach ( $pairs as $pair ) {
+		$entities[] = array(
+			'@type'          => 'Question',
+			'name'           => $pair['q'],
+			'acceptedAnswer' => array(
+				'@type' => 'Answer',
+				'text'  => $pair['a'],
+			),
+		);
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'   => 'https://schema.org',
+			'@type'      => 'FAQPage',
+			'mainEntity' => $entities,
+		)
+	);
+}
+
+/**
+ * WebPage for the Accessibility access statement surface.
+ */
+function restwell_output_jsonld_access_webpage() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+	$url  = get_permalink( $pid );
+	$desc = (string) get_post_meta( $pid, 'meta_description', true );
+	if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+		$desc = restwell_get_seo_default_meta_for_post_id( $pid )['meta_description'];
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'WebPage',
+			'@id'         => trailingslashit( $url ) . '#webpage',
+			'url'         => $url,
+			'name'        => get_the_title( $pid ),
+			'description' => $desc,
+			'inLanguage'  => 'en-GB',
+			'about'       => array(
+				'@id' => restwell_get_local_business_schema_id(),
+			),
+		)
+	);
+}
+
+/**
+ * Blog schema for the posts index.
+ */
+function restwell_output_jsonld_blog() {
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	$url     = $blog_id > 0 ? get_permalink( $blog_id ) : home_url( '/blog/' );
+	$name    = $blog_id > 0 ? get_the_title( $blog_id ) : __( 'Blog', 'restwell-retreats' );
+	$desc    = '';
+	if ( $blog_id > 0 ) {
+		$desc = (string) get_post_meta( $blog_id, 'meta_description', true );
+		if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+			$desc = restwell_get_seo_default_meta_for_post_id( $blog_id )['meta_description'];
+		}
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'Blog',
+			'@id'         => trailingslashit( $url ) . '#blog',
+			'url'         => $url,
+			'name'        => $name,
+			'description' => $desc,
+			'inLanguage'  => 'en-GB',
+			'publisher'   => array(
+				'@id' => restwell_get_organization_schema_id(),
+			),
+		)
+	);
+}
+
+/**
+ * WebPage for legal / policy templates.
+ */
+function restwell_output_jsonld_legal_webpage() {
+	$pid = get_queried_object_id();
+	if ( ! $pid ) {
+		return;
+	}
+	$url  = get_permalink( $pid );
+	$desc = (string) get_post_meta( $pid, 'meta_description', true );
+	if ( $desc === '' && function_exists( 'restwell_get_seo_default_meta_for_post_id' ) ) {
+		$desc = restwell_get_seo_default_meta_for_post_id( $pid )['meta_description'];
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'    => 'https://schema.org',
+			'@type'       => 'WebPage',
+			'@id'         => trailingslashit( $url ) . '#webpage',
+			'url'         => $url,
+			'name'        => get_the_title( $pid ),
+			'description' => $desc,
+			'inLanguage'  => 'en-GB',
+			'isPartOf'    => array(
+				'@type' => 'WebSite',
+				'url'   => home_url( '/' ),
+				'name'  => get_bloginfo( 'name' ),
+			),
+		)
+	);
 }

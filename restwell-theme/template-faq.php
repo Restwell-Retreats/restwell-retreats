@@ -21,7 +21,7 @@ get_header();
         <div class="hero__content">
           <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">FAQ</li></ol>
           <div class="hero__text">
-            <h1 id="page-h">Restwell accessible holiday FAQs</h1>
+            <h1 id="page-h">Whitstable bungalow holiday FAQs</h1>
             <p>House, booking and packing questions we hear before an enquiry — with links when the full answer lives on Accessibility, Pricing, Care or Whitstable.</p>
           </div>
         </div>

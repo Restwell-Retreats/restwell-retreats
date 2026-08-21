@@ -20,11 +20,13 @@ function restwell_get_theme_setup_pages() {
 		'Enquire'            => 'enquire',
 		'Pricing'            => 'pricing',
 		'Resources'          => 'resources',
-		'Whitstable Guide'   => 'whitstable-area-guide',
-		'Blog'               => 'blog',
-		'Guest Guide'        => 'guest-guide',
+		'Whitstable Guide'     => 'whitstable-area-guide',
+		'Blog'                 => 'blog',
+		'Our Story'            => 'our-story',
+		'Optional care'        => 'optional-care',
+		'Guest Guide'          => 'guest-guide',
 		'Privacy Policy'       => 'privacy-policy',
-		'Terms & Conditions' => 'terms-and-conditions',
+		'Terms & Conditions'   => 'terms-and-conditions',
 		'Accessibility Policy' => 'accessibility-policy',
 	);
 }
@@ -162,7 +164,7 @@ function restwell_get_property_page_defaults() {
 		'prop_address_postcode' => 'CT5 2RQ',
 
 		'prop_hero_label'               => 'The Property',
-		'prop_hero_heading'             => 'Accessible bungalow Whitstable',
+		'prop_hero_heading'             => 'Accessible bungalow: rooms, wet room and kit',
 		'prop_hero_subtitle'            => 'This accessible bungalow Whitstable guests book for a private stay is single-storey and step-free throughout. Here is what each room has, what is included, and how the layout works before you enquire.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
@@ -344,8 +346,8 @@ function restwell_get_property_page_defaults() {
 function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
-		'hiw_heading' => 'How your accessible stay works',
-		'hiw_intro'   => 'An accessible stay at Restwell follows a clear booking process from first question to arrival. Share what you need, confirm dates, arrange optional care if you want it, then settle in.',
+		'hiw_heading' => 'How accessible holiday booking works',
+		'hiw_intro'   => 'An accessible holiday booking process with Restwell starts at enquiry: share access needs, confirm dates, arrange optional care if you want it, then settle in.',
 
 		'hiw_steps_label'   => 'FOUR-STEP PROCESS',
 		'hiw_steps_heading' => 'Straightforward from start to finish',
@@ -409,7 +411,7 @@ function restwell_get_how_it_works_page_defaults() {
 function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
-		'acc_heading' => 'Wheelchair accessible holiday cottage',
+		'acc_heading' => 'Access statement: hoist, wet room, door widths',
 		'acc_intro'   => 'This wheelchair accessible holiday cottage access statement covers the ceiling hoist, level-access wet room, door widths of 965mm at the front and 926mm inside, and parking, so you can judge fit before you book.',
 
 		'acc_room_label'      => 'The property',

@@ -50,7 +50,35 @@ function restwell_sanitize_seo_title_text( $title ) {
 		return '';
 	}
 	$title = (string) preg_replace( '/\s*[|\-–—]\s*from\s+Homely\s+Housing\s*$/i', '', $title );
+	// Strip trailing brand so WP / restwell_build_meta_title do not double the site name.
+	$title = (string) preg_replace( '/\s*[|\-–—]\s*Restwell(?:\s+Retreats)?\s*$/iu', '', $title );
 	return trim( $title );
+}
+
+/**
+ * Whether a document title already includes the site brand (avoid appending again).
+ *
+ * @param string $title Title part.
+ * @param string $site  Blog name.
+ * @return bool
+ */
+function restwell_title_already_includes_site_brand( $title, $site ) {
+	$title = trim( (string) $title );
+	$site  = trim( (string) $site );
+	if ( $title === '' || $site === '' ) {
+		return false;
+	}
+	if ( substr( $title, -strlen( $site ) ) === $site ) {
+		return true;
+	}
+	// Partial brand in seeds, e.g. "| Restwell" while site is "Restwell Retreats".
+	if ( preg_match( '/(?:^|[|\-–—])\s*Restwell(?:\s+Retreats)?\s*$/iu', $title ) ) {
+		return true;
+	}
+	if ( stripos( $title, 'Restwell Retreats' ) !== false ) {
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -150,7 +178,7 @@ function restwell_get_request_level_title_fallback() {
 			}
 			return restwell_build_meta_title( get_the_title( $posts_id ) );
 		}
-		return restwell_build_meta_title( __( 'Accessible travel blog', 'restwell-retreats' ) );
+		return restwell_build_meta_title( __( 'Tips, stories and Whitstable updates', 'restwell-retreats' ) );
 	}
 
 	if ( is_category() || is_tag() || is_tax() ) {
@@ -197,25 +225,15 @@ function restwell_document_title_parts( $parts ) {
 				$parts['title'] = restwell_sanitize_seo_title_text( $defaults['meta_title'] );
 			}
 		}
-		// When title already ends with the blog name (e.g. "… | Restwell Retreats"), avoid WP appending site again.
 		$site = isset( $parts['site'] ) ? trim( (string) $parts['site'] ) : '';
-		if ( $site !== '' && ! empty( $parts['title'] ) ) {
-			$t = trim( (string) $parts['title'] );
-			$len = strlen( $site );
-			if ( $len > 0 && strlen( $t ) >= $len && substr( $t, -$len ) === $site ) {
-				unset( $parts['site'], $parts['tagline'] );
-			}
+		if ( $site !== '' && ! empty( $parts['title'] ) && restwell_title_already_includes_site_brand( $parts['title'], $site ) ) {
+			unset( $parts['site'], $parts['tagline'] );
 		}
 	} elseif ( ! is_404() ) {
 		$parts['title'] = restwell_get_request_level_title_fallback();
-		// restwell_build_meta_title() already appends " | Site Name"; prevent WP adding it again.
 		$site = isset( $parts['site'] ) ? trim( (string) $parts['site'] ) : '';
-		if ( $site !== '' && ! empty( $parts['title'] ) ) {
-			$t   = trim( (string) $parts['title'] );
-			$len = strlen( $site );
-			if ( $len > 0 && strlen( $t ) >= $len && substr( $t, -$len ) === $site ) {
-				unset( $parts['site'], $parts['tagline'] );
-			}
+		if ( $site !== '' && ! empty( $parts['title'] ) && restwell_title_already_includes_site_brand( $parts['title'], $site ) ) {
+			unset( $parts['site'], $parts['tagline'] );
 		}
 	}
 	return $parts;

@@ -201,11 +201,11 @@ get_header();
         <dl class="fact-dl">
           <div>
             <dt>Station</dt>
-            <dd>Whitstable station access varies by platform, check <a href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</dd>
+            <dd>Whitstable station access varies by platform, check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</dd>
           </div>
           <div>
             <dt>Buses</dt>
-            <dd><a href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</dd>
+            <dd><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</dd>
           </div>
           <div>
             <dt>Accessible taxis</dt>
@@ -336,6 +336,18 @@ get_header();
         </div>
       </div>
     </section>
+
+<?php
+if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
+	restwell_render_pillar_related_guides(
+		'whitstable-area-guide',
+		array(
+			'heading' => __( 'Local Whitstable guides', 'restwell-retreats' ),
+			'intro'   => __( 'Long-tail notes on parking, trains, eating out, beaches and quieter timing. This page stays the Whitstable Kent coast overview.', 'restwell-retreats' ),
+		)
+	);
+}
+?>
 
 </main>
 
