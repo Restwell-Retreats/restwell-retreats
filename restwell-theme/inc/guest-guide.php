@@ -477,6 +477,7 @@ function restwell_guest_guide_settings_page() {
 				<tr>
 					<th scope="col" class="column-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></th>
+					<th scope="col" class="column-enquiry"><?php esc_html_e( 'Enquiry', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-scheduled"><?php esc_html_e( 'Scheduled send', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-status"><?php esc_html_e( 'Status', 'restwell-retreats' ); ?></th>
 					<th scope="col" class="column-actions"><?php esc_html_e( 'Actions', 'restwell-retreats' ); ?></th>
@@ -511,6 +512,33 @@ function restwell_guest_guide_settings_page() {
 				<tr>
 					<td class="column-name"><?php echo esc_html( $guest['name'] ?: '-' ); ?></td>
 					<td class="column-email"><span class="rw-cell-email"><?php echo esc_html( $guest['email'] ); ?></span></td>
+					<td class="column-enquiry">
+						<?php
+						$enq_id = isset( $guest['enquiry_id'] ) ? absint( $guest['enquiry_id'] ) : 0;
+						if ( $enq_id > 0 ) :
+							$enq_url = add_query_arg(
+								array(
+									'page' => 'restwell-enquiries',
+									'view' => $enq_id,
+								),
+								admin_url( 'admin.php' )
+							);
+							?>
+							<a href="<?php echo esc_url( $enq_url ); ?>">
+								<?php
+								echo esc_html(
+									sprintf(
+										/* translators: %d: enquiry ID */
+										__( '#%d', 'restwell-retreats' ),
+										$enq_id
+									)
+								);
+								?>
+							</a>
+						<?php else : ?>
+							—
+						<?php endif; ?>
+					</td>
 					<td class="column-scheduled"><?php echo esc_html( $formatted_date ); ?></td>
 					<td class="column-status">
 					<?php

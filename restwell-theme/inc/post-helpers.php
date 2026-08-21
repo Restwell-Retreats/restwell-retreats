@@ -31,6 +31,26 @@ function restwell_get_primary_category( $post_id = null ) {
 }
 
 /**
+ * Primary category term ID for related-post queries (skips Uncategorized when possible).
+ *
+ * @param int|null $post_id Post ID or null for current post in the loop.
+ * @return int Term ID, or 0 when none.
+ */
+function restwell_get_primary_category_id( $post_id = null ) {
+	$post_id = $post_id ? absint( $post_id ) : 0;
+	$cats    = $post_id ? get_the_category( $post_id ) : get_the_category();
+	if ( empty( $cats ) ) {
+		return 0;
+	}
+	foreach ( $cats as $cat ) {
+		if ( $cat->slug !== 'uncategorized' ) {
+			return (int) $cat->term_id;
+		}
+	}
+	return (int) $cats[0]->term_id;
+}
+
+/**
  * Estimate reading time in minutes for a block of post content.
  * Based on ~200 words per minute (comfortable for accessibility).
  *

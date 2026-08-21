@@ -643,6 +643,76 @@ function restwell_crm_enquiry_detail( int $id ) {
 							<?php endforeach; ?>
 						</table>
 
+						<?php
+						$gg_guest = function_exists( 'restwell_get_guest_by_email' )
+							? restwell_get_guest_by_email( (string) $row->email )
+							: null;
+						?>
+						<h3 class="rw-detail-section-title"><?php esc_html_e( 'Guest guide', 'restwell-retreats' ); ?></h3>
+						<?php if ( $gg_guest ) : ?>
+							<table class="form-table rw-readonly-table" role="presentation">
+								<tr>
+									<th scope="row"><?php esc_html_e( 'Guest row', 'restwell-retreats' ); ?></th>
+									<td>
+										<a href="<?php echo esc_url( admin_url( 'admin.php?page=restwell-guest-guide' ) ); ?>">
+											<?php
+											echo esc_html(
+												sprintf(
+													/* translators: %d: guest row ID */
+													__( 'Guest #%d', 'restwell-retreats' ),
+													(int) $gg_guest->id
+												)
+											);
+											?>
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row"><?php esc_html_e( 'Invitation', 'restwell-retreats' ); ?></th>
+									<td>
+										<?php
+										if ( ! empty( $gg_guest->sent_at ) ) {
+											echo esc_html(
+												sprintf(
+													/* translators: %s: date/time */
+													__( 'Sent %s', 'restwell-retreats' ),
+													date_i18n( 'j M Y, H:i', strtotime( (string) $gg_guest->sent_at ) )
+												)
+											);
+										} else {
+											esc_html_e( 'Not sent yet', 'restwell-retreats' );
+										}
+										?>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row"><?php esc_html_e( 'Guide read', 'restwell-retreats' ); ?></th>
+									<td>
+										<?php
+										if ( ! empty( $gg_guest->confirmed_at ) ) {
+											echo esc_html(
+												sprintf(
+													/* translators: %s: date/time */
+													__( 'Confirmed %s', 'restwell-retreats' ),
+													date_i18n( 'j M Y, H:i', strtotime( (string) $gg_guest->confirmed_at ) )
+												)
+											);
+										} else {
+											esc_html_e( 'Not confirmed yet', 'restwell-retreats' );
+										}
+										?>
+									</td>
+								</tr>
+							</table>
+						<?php else : ?>
+							<p class="description">
+								<?php esc_html_e( 'No guest-guide row for this email yet.', 'restwell-retreats' ); ?>
+								<?php if ( 'booked' === $row->status ) : ?>
+									<a href="<?php echo esc_url( $promote_url ); ?>"><?php esc_html_e( 'Add to Guest Guide', 'restwell-retreats' ); ?></a>
+								<?php endif; ?>
+							</p>
+						<?php endif; ?>
+
 						<h3 class="rw-detail-section-title"><?php esc_html_e( 'Booking', 'restwell-retreats' ); ?></h3>
 						<table class="form-table rw-readonly-table" role="presentation">
 							<?php foreach ( $booking_fields as $label => $value ) : ?>

@@ -68,16 +68,21 @@ while ( have_posts() ) :
 	<?php
 endwhile;
 
-$related = new WP_Query(
-	array(
-		'post_type'           => 'post',
-		'post_status'         => 'publish',
-		'posts_per_page'      => 3,
-		'post__not_in'        => array( get_queried_object_id() ),
-		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
-	)
+$related_args = array(
+	'post_type'           => 'post',
+	'post_status'         => 'publish',
+	'posts_per_page'      => 3,
+	'post__not_in'        => array( get_queried_object_id() ),
+	'ignore_sticky_posts' => true,
+	'no_found_rows'       => true,
 );
+$primary_cat_id = function_exists( 'restwell_get_primary_category_id' )
+	? restwell_get_primary_category_id( get_queried_object_id() )
+	: 0;
+if ( $primary_cat_id > 0 ) {
+	$related_args['category__in'] = array( $primary_cat_id );
+}
+$related = new WP_Query( $related_args );
 ?>
 <section class="section-y band-subtle">
 	<div class="container">

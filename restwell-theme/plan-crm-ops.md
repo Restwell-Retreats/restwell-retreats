@@ -12,21 +12,21 @@ Remaining work for **deployment hygiene**, **customer journey**, **process relia
 
 ## A. Deployment & technical hygiene
 
-- [ ] **Blog archive read-time** — In `index.php`, stop using `get_the_content()` in the loop for read-time only; use raw `post_content` (e.g. `get_post_field()` / `$post->post_content`) with `restwell_estimate_read_time()`. → Verify: archive read times unchanged; less CPU on large archives.
+- [x] **Blog archive read-time** — Single posts already use `get_post_field( 'post_content' )` with `restwell_estimate_read_time()` (`single.php`). Blog index is still concept-static (no loop/`get_the_content()` for read-time). → Verify: single read times unchanged.
 
-- [ ] **Fallback nav caching** — `restwell_get_primary_nav_links()` calls `get_page_by_path()` per slug when no menu assigned. Cache slug → permalink per request (static) or short transient. → Verify: at most one resolution path per slug per request.
+- [x] **Fallback nav caching** — `restwell_nav_resolve_page_url()` caches slug → permalink per request (`inc/nav.php`). → Verify: at most one `get_page_by_path` per slug per request.
 
-- [ ] **Related posts query** — In `single.php`, use primary category **term ID** from `get_the_category()` for `WP_Query` `category__in`, not `get_category_by_slug( sanitize_title( name ) )`. → Verify: related posts match the real category.
+- [x] **Related posts query** — `single.php` uses `restwell_get_primary_category_id()` → `category__in` (not slug lookup). → Verify: related posts match the real primary category.
 
 ---
 
 ## B. Customer journey
 
-- [ ] **Post-enquiry expectations** — Strengthen acknowledgement and any on-page success copy: explicit **next step** and **response timeframe** (and urgent path if applicable). Touch `inc/emails.php` (ack template) and enquiry success messaging in `template-enquire.php` as needed. → Verify: guests know what happens next and when.
+- [x] **Post-enquiry expectations** — Success variants (default / urgent / duplicate / mail_warn) + ack email next steps (`template-enquire.php`, mu-plugin emails). → Verify: guests know what happens next and when.
 
-- [ ] **Duplicate submissions** — `restwell_crm_save_enquiry()` skips a new row when the same email submits again within the duplicate window; the guest may still receive an ack. Align **guest-facing copy** (“we already have your enquiry”) and **CRM** (surface link to existing enquiry # or forced note on duplicate attempt). → Verify: no confused guests or orphan expectations.
+- [x] **Duplicate submissions** — Silent success with distinct copy; CRM note on existing enquiry; no duplicate emails (`enquire-handler.php` + `template-enquire.php`). → Verify: no confused guests or orphan expectations.
 
-- [ ] **Guest guide UX** — Add **resend OTP** (or clear “request new code”) and **expiry copy** (30 minutes) in UI/emails. Optional later: magic link as alternative to OTP (new token endpoints + security review). → Verify: fewer “I didn’t get the code” support tickets.
+- [x] **Guest guide UX** — Resend OTP + 30-minute expiry countdown in UI and email (`page-guest-guide.php`, `emails.php`). → Verify: fewer “I didn’t get the code” support tickets.
 
 - [ ] **Enquiry form resilience** — Optional: **draft/save progress** (e.g. `localStorage`) + beforeunload warning for long forms. → Verify: refresh doesn’t wipe multi-step progress where implemented.
 
@@ -42,19 +42,19 @@ Remaining work for **deployment hygiene**, **customer journey**, **process relia
 
 - [ ] **Mail failure visibility** — If staying on `wp_mail`, add **logging** or provider webhooks for failures; optional **queue/retry** for critical mails. → Verify: staff can see when email didn’t send.
 
-- [ ] **Abuse / rate limits** — Honeypot exists; add **rate limiting** on enquiry + OTP (plugin, WAF, or light IP/throttle in theme). → Verify: burst spam doesn’t overwhelm inbox or DB.
+- [x] **Abuse / rate limits** — Honeypot + timing + IP throttle on enquire (`form-notify.php`). → Verify: burst spam doesn’t overwhelm inbox or DB.
 
 ---
 
 ## D. Staff operations
 
-- [ ] **Stay dates authoritative in CRM** — `date_from` / `date_to` exist on `rw_enquiries` (from the enquiry form) but are not surfaced on the admin enquiry detail screen (only `preferred_dates` text). **Show and allow editing** of structured stay dates for booked leads so exports, reminders, and any future calendar feed match reality. → Verify: “Booked” rows have trusted dates without relying on free text alone.
+- [x] **Stay dates authoritative in CRM** — Structured `date_from` / `date_to` shown and editable on enquiry detail. → Verify: “Booked” rows have trusted dates without relying on free text alone.
 
 - [ ] **Outlook / team calendar (optional initiative)** — No in-theme PMS. Logical sequence: (1) structured dates as above; (2) **private iCal URL** (token-guarded) listing booked stays for Outlook “subscribe to internet calendar” — one-way, refresh not real-time; or (3) **Power Automate** / **Microsoft Graph** if events must appear instantly or two-way. Manual Outlook blocks remain valid at low volume. → Verify: owner chosen; security model for any public URL documented.
 
-- [ ] **Single view of guest** — **Link** `rw_enquiries` and `rw_guests` by email in admin UI: from enquiry detail, show guest row + guide sent / `confirmed_at`; from guest list, link to latest enquiry. → Verify: one place answers “who is this person?”
+- [x] **Single view of guest** — Enquiry detail shows linked guest-guide row (sent / confirmed); guest list links to enquiry `#id` when set. → Verify: one place answers “who is this person?”
 
-- [ ] **“Booked - guide not sent” workflow** — Dashboard already lists these; add **one-click** action: open guest add flow, prefill email, or send template with guide link. → Verify: fewer manual copy-paste steps.
+- [x] **“Booked - guide not sent” workflow** — Dashboard + enquiry detail **Add to Guest Guide** with prefill. → Verify: fewer manual copy-paste steps.
 
 - [ ] **Stale enquiry nags** — Superseded by **Section E / Step 4** (hourly stale-`new` reminders with 24h idempotency). Keep this item only for a later **daily digest summary** layer if still needed. → Verify: no duplicate reminder systems are active unintentionally.
 
@@ -70,7 +70,7 @@ Goal: make CRM ownership, team workflow, and stale-lead follow-up reliable for d
 
 - [ ] **Step 3 — Front-end team dashboard** — Build `/dashboard/` as login-protected + capability-gated mobile-first lead workspace reusing the same quick-action backend as Step 2. Include filters (`Mine`, `Unassigned`, `All`, status-based), urgency/SLA indicators, and keyboard-safe controls. → Verify: staff can process leads from mobile without wp-admin; dashboard actions produce identical results to admin list actions.
 
-- [ ] **Step 4 — Auto-reminder system** — Hourly cron process for stale leads where `status = 'new'` and age >= 18h; nudge only when `last_reminder_at` is null or older than 24h; update `last_reminder_at` after send. Include fallback recipient for unassigned leads and dry-run mode for rollout validation. → Verify: each eligible lead is reminded at most once per 24h; dry-run produces auditable logs/notes; no reminders sent for non-`new` leads.
+- [x] **Step 4 — Auto-reminder system** — Hourly cron for stale `new` leads (`crm-reminders.php`) with dry-run filter. → Verify: each eligible lead is reminded at most once per 24h; no reminders for non-`new` leads.
 
 - [ ] **Step 5 — Outlook sync (deferred by threshold)** — Keep deferred unless direct-email volume justifies complexity. Preferred later path: Power Automate flow (`hello@` inbound → webhook → match sender → append note/create lead). → Verify: trigger criterion documented (for example, sustained unlogged inbound volume), and no core CRM dependency blocks Steps 1–4.
 
