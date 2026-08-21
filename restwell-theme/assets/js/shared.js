@@ -38,12 +38,21 @@
       statusEl.textContent = (index + 1) + ' / ' + slides.length;
     }
 
+    function setLightboxBackgroundInert(isInert) {
+      Array.prototype.forEach.call(document.body.children, function (el) {
+        if (el === lightbox || el.id === 'wpadminbar') return;
+        if (isInert) el.setAttribute('inert', '');
+        else el.removeAttribute('inert');
+      });
+    }
+
     function openLightbox(startIndex) {
       lastFocus = document.activeElement;
       showSlide(typeof startIndex === 'number' ? startIndex : 0);
       lightbox.removeAttribute('hidden');
       document.documentElement.classList.add('lightbox-open');
       document.body.classList.add('lightbox-open');
+      setLightboxBackgroundInert(true);
       closeBtn.focus();
     }
 
@@ -51,6 +60,7 @@
       lightbox.setAttribute('hidden', '');
       document.documentElement.classList.remove('lightbox-open');
       document.body.classList.remove('lightbox-open');
+      setLightboxBackgroundInert(false);
       imageEl.removeAttribute('src');
       if (lastFocus && typeof lastFocus.focus === 'function') {
         lastFocus.focus();

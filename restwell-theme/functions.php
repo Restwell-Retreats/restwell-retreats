@@ -10,13 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Load Restwell CRM when the mu-plugin is not present (e.g. Local dev with only the theme symlinked).
- * Production should use wp-content/mu-plugins/restwell-crm.php; this path is the monorepo sibling.
+ * Load Restwell CRM when the mu-plugin is not present (e.g. Local / Playground with only the theme mounted).
+ * Production should use wp-content/mu-plugins/restwell-crm.php; candidates cover WP_CONTENT_DIR and the monorepo sibling.
  */
 if ( ! function_exists( 'restwell_crm_capability' ) ) {
-	$crm_bootstrap = dirname( get_template_directory() ) . '/wp-content/mu-plugins/restwell-crm/restwell-crm.php';
-	if ( is_readable( $crm_bootstrap ) ) {
-		require_once $crm_bootstrap;
+	$crm_candidates = array(
+		WP_CONTENT_DIR . '/mu-plugins/restwell-crm/restwell-crm.php',
+		dirname( get_template_directory() ) . '/wp-content/mu-plugins/restwell-crm/restwell-crm.php',
+	);
+	foreach ( $crm_candidates as $crm_bootstrap ) {
+		if ( is_readable( $crm_bootstrap ) ) {
+			require_once $crm_bootstrap;
+			break;
+		}
 	}
 }
 

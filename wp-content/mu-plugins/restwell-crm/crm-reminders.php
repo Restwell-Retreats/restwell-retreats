@@ -173,17 +173,17 @@ function restwell_crm_reminder_fetch_stale( int $stale_hours, int $repeat_hours 
 	$stale_cutoff   = gmdate( 'Y-m-d H:i:s', strtotime( $now ) - ( $stale_hours  * HOUR_IN_SECONDS ) );
 	$repeat_cutoff  = gmdate( 'Y-m-d H:i:s', strtotime( $now ) - ( $repeat_hours * HOUR_IN_SECONDS ) );
 
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$results = $wpdb->get_results(
 		$wpdb->prepare(
 			"SELECT id, name, email, phone, preferred_dates, num_guests, message,
 			        is_urgent, submitted_at, last_reminder_at
-			 FROM {$table}
+			 FROM %i
 			 WHERE status = 'new'
 			   AND submitted_at <= %s
 			   AND ( last_reminder_at IS NULL OR last_reminder_at <= %s )
 			 ORDER BY is_urgent DESC, submitted_at ASC
 			 LIMIT 50",
+			$table,
 			$stale_cutoff,
 			$repeat_cutoff
 		)

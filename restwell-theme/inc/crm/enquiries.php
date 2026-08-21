@@ -147,12 +147,14 @@ function restwell_crm_enquiries_page() {
 
 	$where = implode( ' AND ', $where_parts );
 
-	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} WHERE {$where}" );
-	$rows  = $wpdb->get_results(
-		$wpdb->prepare( "SELECT * FROM {$table} WHERE {$where} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d", $per_page, $offset )
+	// $where is built only from $wpdb->prepare() fragments and fixed SQL; $orderby/$order are allow-listed.
+	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- dynamic WHERE cannot be re-prepared (LIKE % wildcards); table via %i below.
+	$from_sql = $wpdb->prepare( 'FROM %i', $table );
+	$total    = (int) $wpdb->get_var( "SELECT COUNT(*) {$from_sql} WHERE {$where}" );
+	$rows     = $wpdb->get_results(
+		"SELECT * {$from_sql} WHERE {$where} ORDER BY {$orderby} {$order} LIMIT " . absint( $per_page ) . ' OFFSET ' . absint( $offset )
 	);
-	// phpcs:enable
+	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
 	$total_pages = (int) ceil( $total / $per_page );
 	$statuses    = restwell_crm_statuses();
@@ -162,12 +164,9 @@ function restwell_crm_enquiries_page() {
 	// Status counts for tabs.
 	$counts = array();
 	foreach ( array_keys( $statuses ) as $s ) {
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$counts[ $s ] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE status = %s", $s ) );
+		$counts[ $s ] = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE status = %s', $table, $s ) );
 	}
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$counts['all'] = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
-
+	$counts['all'] = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $table ) );
 	?>
 	<div class="wrap restwell-admin restwell-admin-enquiries">
 		<div class="rw-page-toolbar">
@@ -515,8 +514,7 @@ function restwell_crm_enquiries_page() {
 function restwell_crm_enquiry_detail( int $id ) {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) );
+	$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id ) );
 
 	if ( ! $row ) {
 		echo '<div class="wrap"><div class="notice notice-error"><p>' . esc_html__( 'Enquiry not found.', 'restwell-retreats' ) . '</p></div></div>';

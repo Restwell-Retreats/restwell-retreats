@@ -15,7 +15,17 @@ get_header();
 
 <main id="main-content">
 <section class="hero" aria-labelledby="hero-h">
-      <div class="hero__media" aria-hidden="true"></div>
+      <div class="hero__media" aria-hidden="true">
+        <img
+          class="hero__media-img"
+          src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastline-panorama.webp' ) ); ?>"
+          alt=""
+          width="1920"
+          height="1080"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
       <div class="container">
         <div class="hero__content">
           <div class="hero__text">
@@ -43,7 +53,7 @@ get_header();
       <div class="container">
         <div class="property__layout">
           <div class="property__media-wrap">
-            <img class="property__media" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/EX-1-LS.jpg' ); ?>" alt="Restwell bungalow exterior on Russell Drive" width="640" height="480" loading="lazy" decoding="async" />
+            <img class="property__media" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="Restwell bungalow exterior on Russell Drive" width="640" height="480" loading="lazy" decoding="async" />
           </div>
           <div class="property__copy">
             <p class="eyebrow">The Bungalow</p>
@@ -74,17 +84,17 @@ get_header();
         <ul class="gallery__grid" role="list" aria-label="Property photo preview">
           <li class="gallery__item">
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Open-plan living room with wide, step-free walkways between furniture">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/living-room-2.png' ); ?>" alt="Open-plan living room with wide, step-free walkways between furniture" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="Open-plan living room with wide, step-free walkways between furniture" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li class="gallery__item">
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-3-LS.jpg' ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-3-LS.jpg' ) ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li class="gallery__item">
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/wet-room-shower.png' ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
         </ul>
@@ -122,27 +132,27 @@ get_header();
         <ul class="partners__grid" role="list">
           <li class="partners__item">
             <a class="partners__link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Care Spaces (opens in a new tab)">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/care-spaces.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/care-spaces.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Thor Carpentry (opens in a new tab)">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/thor-carpentry.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/thor-carpentry.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://wealdenrehab.com/" target="_blank" rel="noopener noreferrer" aria-label="Wealden Rehab (opens in a new tab)">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/wealden-rehab.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/wealden-rehab.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://www.continuitytrainingacademy.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity Training Academy (opens in a new tab)">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-training-academy.png' ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-training-academy.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
         </ul>
@@ -219,10 +229,10 @@ get_header();
             </div>
             <div class="care__brand" aria-label="Care partner and CQC rating">
               <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services-long.png' ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
+                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
               </a>
               <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/cqc-rating-good.jpg' ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
+                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
               </a>
             </div>
           </div>

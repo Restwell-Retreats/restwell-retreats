@@ -28,20 +28,20 @@ function restwell_crm_dashboard_page() {
 	$week_ago     = gmdate( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
 
 	// ── Stats ────────────────────────────────────────────────────────────────
-	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$stat_new_week   = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$enq_table} WHERE submitted_at >= %s", $week_ago ) );
-	$stat_total      = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$enq_table}" );
-	$stat_urgent     = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$enq_table} WHERE is_urgent = 1 AND status = 'new'" );
+	$stat_new_week   = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE submitted_at >= %s', $enq_table, $week_ago ) );
+	$stat_total      = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $enq_table ) );
+	$stat_urgent     = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE is_urgent = 1 AND status = 'new'", $enq_table ) );
 	$stat_follow_ups = (int) $wpdb->get_var(
-		$wpdb->prepare( "SELECT COUNT(*) FROM {$enq_table} WHERE follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != 'closed'", $now_mysql )
+		$wpdb->prepare( "SELECT COUNT(*) FROM %i WHERE follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != 'closed'", $enq_table, $now_mysql )
 	);
 
 	// Follow-ups due today or overdue.
 	$follow_up_rows = $wpdb->get_results(
 		$wpdb->prepare(
-			"SELECT id, name, email, status, follow_up_at FROM {$enq_table}
+			"SELECT id, name, email, status, follow_up_at FROM %i
 			 WHERE follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != 'closed'
 			 ORDER BY follow_up_at ASC LIMIT 20",
+			$enq_table,
 			$now_mysql
 		)
 	);
@@ -51,14 +51,16 @@ function restwell_crm_dashboard_page() {
 	// stored column (e.g. email_lower GENERATED ALWAYS AS (LOWER(email)) STORED + index) if this
 	// query appears in the MySQL slow log.
 	$booked_without_guide = $wpdb->get_results(
-		"SELECT e.id, e.name, e.email, e.preferred_dates, e.booked_at
-		 FROM {$enq_table} e
-		 LEFT JOIN {$guests_table} g ON LOWER(g.email) = LOWER(e.email)
-		 WHERE e.status = 'booked' AND g.id IS NULL
-		 ORDER BY e.booked_at ASC"
+		$wpdb->prepare(
+			"SELECT e.id, e.name, e.email, e.preferred_dates, e.booked_at
+			 FROM %i e
+			 LEFT JOIN %i g ON LOWER(g.email) = LOWER(e.email)
+			 WHERE e.status = 'booked' AND g.id IS NULL
+			 ORDER BY e.booked_at ASC",
+			$enq_table,
+			$guests_table
+		)
 	);
-	// phpcs:enable
-
 	$enquiries_url = admin_url( 'admin.php?page=restwell-enquiries' );
 	?>
 	<div class="wrap restwell-admin restwell-admin-dashboard">

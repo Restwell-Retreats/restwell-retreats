@@ -1,7 +1,10 @@
 # Restwell Theme — Technical Debt Audit
 
-**Date:** 5 July 2026
-**Scope:** `/restwell-theme/` — PHP (`inc/`, templates, `template-parts/`), JS (`assets/js/`), CSS (`assets/css/`)
+**Date:** 5 July 2026  
+**Revalidated:** 21 Aug 2026 — see [`docs/PHPCS-BASELINE-2026-08-21.md`](docs/PHPCS-BASELINE-2026-08-21.md).  
+**§2.1 / §2.2 file:line citations below are historical** (those sites were fixed earlier). As of 21 Aug 2026, `composer phpcs -- --sniffs=WordPress.Security.EscapeOutput,WordPress.DB.PreparedSQL` reports **0 errors** across `restwell-theme/` + `wp-content/mu-plugins/restwell-crm/`. Remaining debt is style/I18n/god-functions (not this security pair).
+
+**Scope:** `/restwell-theme/` — PHP (`inc/`, templates, `template-parts/`), JS (`assets/js/`), CSS (`assets/css/`)  
 **Method:** Full-file reads across five module areas (CRM, SEO, theme-setup/content-meta, templates, front-end assets), plus an objective `phpcs` run against the WordPress Coding Standards config already in the repo (`phpcs.xml.dist`). Every finding below cites `file:line`. No git history rewriting was needed — the 41-commit history is already linear with clean conventional messages, so `git-advanced-workflows` techniques (rebase/bisect/worktree) aren't required for cleanup; they're noted only where relevant to *how* to land these fixes safely (small commits, `git bisect` if a fix regresses something).
 
 **Headline finding:** [`docs/archive/AUDIT.md`](docs/archive/AUDIT.md) currently scores "Code quality / maintainability" at **94/100** and "WordPress standards" at **93/100**. Neither is supported by the code. The modular file-splitting described there is real and was a genuine improvement, but splitting files ≠ removing debt — several of the new files are themselves 700–1,100 line god-modules, there are zero automated tests anywhere in the theme, and an objective linter run finds security-relevant violations (unescaped output, unprepared SQL, global overrides) that a 93–94/100 score should not have.

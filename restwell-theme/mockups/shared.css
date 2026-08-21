@@ -956,6 +956,27 @@ body.nav-open { overflow: hidden; }
 .hero__media {
   position: absolute;
   inset: 0;
+  background: var(--deep-teal);
+}
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(12, 35, 42, 0.4) 0%, rgba(12, 35, 42, 0.52) 45%, rgba(12, 35, 42, 0.72) 100%);
+}
+.hero__media-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+/* Fallback when no <img> is present (e.g. mid-layout variants). */
+.hero__media:not(:has(.hero__media-img)) {
   background:
     linear-gradient(180deg, rgba(12, 35, 42, 0.4) 0%, rgba(12, 35, 42, 0.52) 45%, rgba(12, 35, 42, 0.72) 100%),
     url('../assets/images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
@@ -1034,7 +1055,10 @@ body.nav-open { overflow: hidden; }
   .hero {
     align-items: stretch;
   }
-  .hero__media {
+  .hero__media::after {
+    background: linear-gradient(180deg, rgba(12, 35, 42, 0.48) 0%, rgba(12, 35, 42, 0.42) 45%, rgba(12, 35, 42, 0.68) 100%);
+  }
+  .hero__media:not(:has(.hero__media-img)) {
     background:
       linear-gradient(180deg, rgba(12, 35, 42, 0.48) 0%, rgba(12, 35, 42, 0.42) 45%, rgba(12, 35, 42, 0.68) 100%),
       url('../assets/images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
@@ -1601,8 +1625,8 @@ body.page--interior .site-header::before { opacity: 0; }
   margin: 0;
   padding: var(--space-2);
   list-style: none;
-  /* Soft teal glass — same language as the header scrim, not a solid cream card */
-  background: rgba(12, 35, 42, 0.72);
+  /* Near-solid teal — readable over light hero sky; still soft edge via blur/border */
+  background: rgba(12, 35, 42, 0.94);
   backdrop-filter: blur(18px) saturate(1.15);
   -webkit-backdrop-filter: blur(18px) saturate(1.15);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -3800,6 +3824,8 @@ fieldset.form-stack {
   flex-direction: column;
   gap: var(--space-2);
 }
+/* .field { display: flex } beats the UA [hidden] rule — honeypots must stay off-screen */
+.field[hidden] { display: none; }
 .field label {
   font-weight: 600;
   font-size: var(--text-md);
@@ -3875,6 +3901,22 @@ fieldset.form-stack {
   accent-color: var(--deep-teal);
   cursor: pointer;
 }
+
+/* Server-side PRG flash (enq_flash) — list above the multistep form. */
+.form-errors {
+  margin: 0 0 var(--rhythm-md, 1.25rem);
+  padding: var(--rhythm-sm, 0.875rem) var(--rhythm-md, 1.25rem);
+  border: 1px solid color-mix(in srgb, var(--error-red, #b42318) 35%, transparent);
+  border-radius: var(--radius-md, 0.75rem);
+  background: color-mix(in srgb, var(--error-red, #b42318) 8%, #fff);
+  color: var(--ink-700, #2d4a52);
+}
+.form-errors p { margin: 0 0 0.5rem; }
+.form-errors ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.form-errors li { margin: 0.15rem 0; }
 
 /* Validation — shared.js toggles is-invalid + un-hides the paired .field-error
    on a failed Continue/Send, and clears both as soon as the field is fixed. */

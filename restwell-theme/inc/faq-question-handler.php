@@ -216,8 +216,7 @@ function restwell_faq_inbox_page(): void {
 	}
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$rows = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY submitted_at DESC LIMIT 100", ARRAY_A );
+	$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY submitted_at DESC LIMIT 100', $table ), ARRAY_A );
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'FAQ questions', 'restwell-retreats' ); ?></h1>

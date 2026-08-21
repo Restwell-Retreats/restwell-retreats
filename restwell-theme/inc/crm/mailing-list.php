@@ -21,9 +21,9 @@ function restwell_crm_mailing_list_page(): void {
 	$enq_table = $wpdb->prefix . RESTWELL_CRM_TABLE;
 	$faq_table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
 
-	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	$rows = $wpdb->get_results(
-		"
+		$wpdb->prepare(
+			"
 		SELECT
 			email,
 			MAX(name) AS name,
@@ -35,7 +35,7 @@ function restwell_crm_mailing_list_page(): void {
 				name,
 				COALESCE(marketing_optin_at, submitted_at) AS last_opted_in_at,
 				'Enquiry form' AS source
-			FROM {$enq_table}
+			FROM %i
 			WHERE marketing_optin = 1 AND email <> ''
 			UNION ALL
 			SELECT
@@ -43,16 +43,17 @@ function restwell_crm_mailing_list_page(): void {
 				name,
 				COALESCE(marketing_optin_at, submitted_at) AS last_opted_in_at,
 				'FAQ question form' AS source
-			FROM {$faq_table}
+			FROM %i
 			WHERE marketing_optin = 1 AND email <> ''
 		) all_optins
 		GROUP BY email
 		ORDER BY last_opted_in_at DESC
 		",
+			$enq_table,
+			$faq_table
+		),
 		ARRAY_A
-	);
-	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	?>
+	);	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Mailing list', 'restwell-retreats' ); ?></h1>
 		<p class="description">

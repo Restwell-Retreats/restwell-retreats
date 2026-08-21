@@ -43,7 +43,7 @@ get_header();
       <div class="container">
         <header class="section-head">
           <p class="eyebrow">Bungalow rates</p>
-          <h2 id="rates-h">What a stay costs</h2>
+          <h2 id="rates-h">Published bungalow rates</h2>
           <p class="lede">The bungalow sleeps five people. Prices vary for midweek (Monday to Thursday) and weekend (Friday to Sunday) nights. Care is optional and has a separate charge.</p>
         </header>
         <div class="rates-block">

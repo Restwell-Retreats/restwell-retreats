@@ -95,24 +95,88 @@ function restwell_enquire_redirect_flash( string $redirect, array $errors, array
 		),
 		300
 	);
-	wp_safe_redirect( add_query_arg( 'enq_flash', rawurlencode( $key ), $redirect ) . '#enq-form-heading' );
+	wp_safe_redirect( add_query_arg( 'enq_flash', rawurlencode( $key ), $redirect ) . '#enquiry-result' );
 	exit;
 }
 
 /**
- * Map funding slug to readable label for email body.
+ * Allowed funding slugs stored on `funding_type` (CRM + email).
+ *
+ * @return string[]
+ */
+function restwell_enquiry_funding_allowed_slugs(): array {
+	return array( '', 'self', 'kcc', 'chc', 'direct' );
+}
+
+/**
+ * Normalise a posted funding value to an allowed slug.
+ *
+ * Accepts canonical slugs and legacy concept-form values (self-funded, etc.).
+ *
+ * @param string $raw Raw POST value after sanitize_key.
+ * @return string One of restwell_enquiry_funding_allowed_slugs().
+ */
+function restwell_enquiry_normalise_funding( string $raw ): string {
+	$aliases = array(
+		'self-funded'     => 'self',
+		'local-authority' => 'kcc',
+		'nhs-chc'         => 'chc',
+		'direct-payment'  => 'direct',
+		'not-sure'        => '',
+		'notsure'         => '',
+	);
+	if ( isset( $aliases[ $raw ] ) ) {
+		$raw = $aliases[ $raw ];
+	}
+	$allowed = restwell_enquiry_funding_allowed_slugs();
+	return in_array( $raw, $allowed, true ) ? $raw : '';
+}
+
+/**
+ * Map funding slug to readable label for email body and CRM.
  *
  * @param string $slug Form value.
  * @return string
  */
 function restwell_enquiry_funding_label( string $slug ): string {
 	$labels = array(
-		'self'   => __( 'Self-funding', 'restwell-retreats' ),
-		'kcc'    => __( 'Kent County Council (KCC)', 'restwell-retreats' ),
-		'chc'    => __( 'NHS Continuing Healthcare (CHC)', 'restwell-retreats' ),
-		'direct' => __( 'Direct payments', 'restwell-retreats' ),
+		'self'   => __( 'Self-funded', 'restwell-retreats' ),
+		'kcc'    => __( 'Local authority / KCC', 'restwell-retreats' ),
+		'chc'    => __( 'NHS Continuing Healthcare', 'restwell-retreats' ),
+		'direct' => __( 'Direct payment / PHB', 'restwell-retreats' ),
+		''       => __( 'Not sure yet', 'restwell-retreats' ),
 	);
-	return $labels[ $slug ] ?? $slug;
+	if ( array_key_exists( $slug, $labels ) ) {
+		return $labels[ $slug ];
+	}
+	return $slug;
+}
+
+/**
+ * Consume one-shot enquiry flash (validation errors + field values).
+ *
+ * @return array{errors: string[], fields: array<string, mixed>}|null
+ */
+function restwell_enquire_consume_flash(): ?array {
+	if ( ! isset( $_GET['enq_flash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return null;
+	}
+	$key = sanitize_text_field( wp_unslash( $_GET['enq_flash'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' === $key || ! preg_match( '/^[A-Za-z0-9]{8,32}$/', $key ) ) {
+		return null;
+	}
+	$transient_key = 'restwell_enq_flash_' . $key;
+	$data          = get_transient( $transient_key );
+	delete_transient( $transient_key );
+	if ( ! is_array( $data ) ) {
+		return null;
+	}
+	$errors = isset( $data['errors'] ) && is_array( $data['errors'] ) ? $data['errors'] : array();
+	$fields = isset( $data['fields'] ) && is_array( $data['fields'] ) ? $data['fields'] : array();
+	return array(
+		'errors' => array_values( array_filter( array_map( 'strval', $errors ) ) ),
+		'fields' => $fields,
+	);
 }
 
 /**
@@ -168,7 +232,8 @@ function restwell_handle_enquire_submit(): void {
 	$guests       = isset( $_POST['enq_guests'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_guests'] ) ) : '';
 	$care         = isset( $_POST['enq_care'] ) ? sanitize_textarea_field( wp_unslash( $_POST['enq_care'] ) ) : '';
 	$access       = isset( $_POST['enq_accessibility'] ) ? sanitize_textarea_field( wp_unslash( $_POST['enq_accessibility'] ) ) : '';
-	$funding      = isset( $_POST['enq_funding'] ) ? sanitize_key( wp_unslash( $_POST['enq_funding'] ) ) : '';
+	$funding_raw  = isset( $_POST['enq_funding'] ) ? sanitize_key( wp_unslash( $_POST['enq_funding'] ) ) : '';
+	$funding      = restwell_enquiry_normalise_funding( $funding_raw );
 	$urgent       = ! empty( $_POST['enq_urgent'] );
 	$marketing_optin = ! empty( $_POST['enq_marketing_optin'] );
 	$contact_pref = isset( $_POST['enq_contact_preference'] ) ? sanitize_key( wp_unslash( $_POST['enq_contact_preference'] ) ) : '';
@@ -206,11 +271,6 @@ function restwell_handle_enquire_submit(): void {
 	}
 	if ( strlen( $message ) > 15000 ) {
 		$errors[] = __( 'Your message is too long. Please shorten it slightly.', 'restwell-retreats' );
-	}
-
-	$allowed_funding = array( '', 'self', 'kcc', 'chc', 'direct' );
-	if ( ! in_array( $funding, $allowed_funding, true ) ) {
-		$funding = '';
 	}
 
 	$date_errors = restwell_validate_enquiry_dates( $date_from, $date_to );
@@ -290,10 +350,18 @@ function restwell_handle_enquire_submit(): void {
 	}
 
 	if ( $is_duplicate ) {
-		// Visitor re-submitted the same form within 30 minutes — silently succeed
-		// without spamming staff or the guest with duplicate emails.
+		// Visitor re-submitted the same form within 30 minutes — succeed without
+		// spamming staff or the guest with duplicate emails; surface distinct copy.
 		restwell_service_enquiry()->record_duplicate_submit( (int) $enquiry_id );
-		wp_safe_redirect( add_query_arg( array( 'sent' => '1' ), $redirect ) . '#enquiry-result' );
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'sent'      => '1',
+					'duplicate' => '1',
+				),
+				$redirect
+			) . '#enquiry-result'
+		);
 		exit;
 	}
 

@@ -35,8 +35,8 @@ function restwell_crm_save_enquiry( array $data ): array {
 		$cutoff  = gmdate( 'Y-m-d H:i:s', time() - 30 * MINUTE_IN_SECONDS );
 		$dup_id  = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				"SELECT id FROM {$table} WHERE email = %s AND submitted_at >= %s ORDER BY id DESC LIMIT 1",
+				'SELECT id FROM %i WHERE email = %s AND submitted_at >= %s ORDER BY id DESC LIMIT 1',
+				$table,
 				$email,
 				$cutoff
 			)

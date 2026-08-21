@@ -47,7 +47,7 @@ get_header();
     <section class="section-y band-white" id="rooms" aria-labelledby="rooms-h">
       <div class="container split">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-6-LS.jpg' ); ?>" alt="Amico ceiling track hoist in the accessible bedroom" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist in the accessible bedroom" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -64,7 +64,7 @@ get_header();
     <section class="section-y band-subtle" id="wetroom" aria-labelledby="wetroom-h">
       <div class="container split split--flip">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-1-LS.jpg' ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -81,7 +81,7 @@ get_header();
     <section class="section-y band-white" id="living" aria-labelledby="living-h">
       <div class="container split">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/LR-1-LS.jpg' ); ?>" alt="Open-plan living room with rise-and-recline chair and wide walkways" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living room with rise-and-recline chair and wide walkways" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -98,7 +98,7 @@ get_header();
     <section class="section-y band-subtle" id="kitchen" aria-labelledby="kitchen-h">
       <div class="container split split--flip">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/KT-1-LS.jpg' ); ?>" alt="Kitchen with lowered wheel-under worksurface" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with lowered wheel-under worksurface" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -115,7 +115,7 @@ get_header();
     <section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
       <div class="container split">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/GRDEN-2-LS.jpg' ); ?>" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-2-LS.jpg' ) ); ?>" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -131,7 +131,7 @@ get_header();
     <section class="section-y band-subtle" id="garden" aria-labelledby="garden-h">
       <div class="container split split--flip">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/PT-1-LS.jpg' ); ?>" alt="Level patio and enclosed dog-friendly garden" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-1-LS.jpg' ) ); ?>" alt="Level patio and enclosed dog-friendly garden" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -154,47 +154,47 @@ get_header();
         <ul class="gallery-grid" role="list" aria-label="Property photos">
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/wet-room-shower.png' ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-3-LS.jpg' ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-3-LS.jpg' ) ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Second double bedroom">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD1-1-LS.jpg' ); ?>" alt="Second double bedroom" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD1-1-LS.jpg' ) ); ?>" alt="Second double bedroom" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="3" aria-label="View full size: Kitchen with wheel-under worksurface">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/KT-1-LS.jpg' ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="4" aria-label="View full size: Open-plan living room with wide walkways">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/living-room-2.png' ); ?>" alt="Open-plan living room with wide walkways" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="Open-plan living room with wide walkways" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="5" aria-label="View full size: Rise-and-recline armchair in the living room">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/RAR-1-LS.jpg' ); ?>" alt="Rise-and-recline armchair in the living room" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-1-LS.jpg' ) ); ?>" alt="Rise-and-recline armchair in the living room" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="6" aria-label="View full size: Conservatory doors opening toward the living space">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/conservatory-doors.png' ); ?>" alt="Conservatory doors opening toward the living space" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/conservatory-doors.png' ) ); ?>" alt="Conservatory doors opening toward the living space" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="7" aria-label="View full size: Enclosed garden and level patio">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/GRDEN-1-LS.jpg' ); ?>" alt="Enclosed garden and level patio" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-1-LS.jpg' ) ); ?>" alt="Enclosed garden and level patio" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="8" aria-label="View full size: Step-free entrance doors to the bungalow">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance doors to the bungalow" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance doors to the bungalow" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
         </ul>
@@ -226,7 +226,7 @@ get_header();
           <p class="lede">For route tips, local recommendations, and access details, check our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable accessibility guide</a>.</p>
         </div>
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WHIT-SEAFRONT-1-LS.jpg' ); ?>" alt="Tankerton promenade and Whitstable seafront" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-1-LS.jpg' ) ); ?>" alt="Tankerton promenade and Whitstable seafront" width="900" height="675" loading="lazy" />
         </div>
       </div>
     </section>

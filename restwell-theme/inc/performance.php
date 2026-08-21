@@ -111,12 +111,23 @@ function restwell_regenerate_all_image_subsizes() {
 }
 
 /**
- * Preload the front-page hero image for LCP (image heroes only; not video).
+ * Preload the front-page hero image for LCP.
+ *
+ * Concept home uses a static theme webp (CSS/img), not ACF hero_media_id.
+ * Fall back to attachment preload when that meta is set (legacy pages).
  */
 function restwell_preload_front_page_hero_image() {
 	if ( ! is_front_page() ) {
 		return;
 	}
+
+	$concept_rel = '/assets/images/stock/restwell-whitstable-coastline-panorama.webp';
+	$concept_abs = get_template_directory() . $concept_rel;
+	if ( is_readable( $concept_abs ) ) {
+		echo '<link rel="preload" as="image" href="' . esc_url( get_template_directory_uri() . $concept_rel ) . '" fetchpriority="high" />' . "\n";
+		return;
+	}
+
 	$pid = (int) get_queried_object_id();
 	if ( $pid <= 0 ) {
 		return;
@@ -140,9 +151,29 @@ function restwell_preload_front_page_hero_image() {
 	if ( $srcset ) {
 		echo ' imagesrcset="' . esc_attr( $srcset ) . '" imagesizes="' . esc_attr( $sizes ) . '"';
 	}
-	echo ' />' . "\n";
+	echo ' fetchpriority="high" />' . "\n";
 }
 add_action( 'wp_head', 'restwell_preload_front_page_hero_image', 1 );
+
+/**
+ * Theme-bundled image URL, preferring a resized WebP under assets/images/.../opt/ when present.
+ *
+ * @param string $relative Path under assets/images/ (e.g. bungalow/EX-1-LS.jpg).
+ * @return string Absolute theme URI.
+ */
+function restwell_theme_image_url( string $relative ): string {
+	$relative = ltrim( str_replace( '\\', '/', $relative ), '/' );
+	$base     = get_template_directory() . '/assets/images/';
+	$dir      = dirname( $relative );
+	$stem     = pathinfo( $relative, PATHINFO_FILENAME );
+	$opt_rel  = ( '.' === $dir || '' === $dir )
+		? 'opt/' . $stem . '.webp'
+		: $dir . '/opt/' . $stem . '.webp';
+	if ( is_readable( $base . $opt_rel ) ) {
+		return get_template_directory_uri() . '/assets/images/' . $opt_rel;
+	}
+	return get_template_directory_uri() . '/assets/images/' . $relative;
+}
 
 /**
  * Preload self-hosted Phosphor icon WOFF2 files to reduce icon flash before CSS @font-face resolves.

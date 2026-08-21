@@ -89,8 +89,7 @@ function restwell_crm_handle_send_post_stay() {
 
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) );
+	$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id ) );
 
 	if ( $row && function_exists( 'restwell_email_post_stay' ) ) {
 		$email_data = restwell_email_post_stay( $row->email, $row->name );
@@ -338,8 +337,7 @@ function restwell_crm_handle_lead_action() {
 
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $lead_id ) );
+	$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $lead_id ) );
 
 	if ( ! $row ) {
 		wp_send_json_error(
@@ -368,8 +366,7 @@ function restwell_crm_handle_lead_action() {
 			wp_send_json_error( array( 'message' => __( 'Status update failed.', 'restwell-retreats' ) ), 500 );
 		}
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$fresh_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $lead_id ) );
+		$fresh_row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $lead_id ) );
 
 		wp_send_json_success(
 			array(

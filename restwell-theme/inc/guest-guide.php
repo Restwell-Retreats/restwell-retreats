@@ -75,8 +75,7 @@ add_action( 'template_redirect', 'restwell_guest_guide_start_session', 1 );
 function restwell_gg_get_guests(): array {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$rows = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY created_at ASC", ARRAY_A );
+	$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY created_at ASC', $table ), ARRAY_A );
 	return $rows ?: array();
 }
 
@@ -145,8 +144,7 @@ function restwell_gg_mark_sent( int $id ): void {
 function restwell_get_guest_by_email( string $email ): ?object {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE email = %s ORDER BY id DESC LIMIT 1", $email ) ) ?: null;
+	return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE email = %s ORDER BY id DESC LIMIT 1', $table, $email ) ) ?: null;
 }
 
 /**
@@ -203,8 +201,7 @@ function restwell_guest_guide_confirm_read( string $email ): void {
 function restwell_gg_find_guest( int $id ): ?array {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ), ARRAY_A );
+	$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id ), ARRAY_A );
 	return $row ?: null;
 }
 

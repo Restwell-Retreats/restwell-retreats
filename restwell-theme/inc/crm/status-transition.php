@@ -35,8 +35,7 @@ function restwell_crm_apply_status_change( int $id, string $new_status, string $
 
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-	$current = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id ) );
+	$current = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id ) );
 
 	if ( ! $current ) {
 		return false;

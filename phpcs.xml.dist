@@ -3,6 +3,9 @@
 	<description>WordPress Coding Standards for the Restwell theme (restwell-theme/).</description>
 
 	<file>restwell-theme</file>
+	<!-- Public enquire/mail/CRM side-effects live in the mu-plugin; lint them with the theme. -->
+	<file>wp-content/mu-plugins/restwell-crm</file>
+	<file>wp-content/mu-plugins/restwell-crm.php</file>
 
 	<arg name="extensions" value="php"/>
 	<arg value="psn"/>
