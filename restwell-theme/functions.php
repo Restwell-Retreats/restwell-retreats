@@ -46,6 +46,7 @@ require_once get_template_directory() . '/inc/meta-fields.php';
 require_once get_template_directory() . '/inc/page-content-checklist.php';
 require_once get_template_directory() . '/inc/nav.php';
 require_once get_template_directory() . '/inc/performance.php';
+require_once get_template_directory() . '/inc/page-hero.php';
 require_once get_template_directory() . '/inc/post-helpers.php';
 require_once get_template_directory() . '/inc/privacy-page-bootstrap.php';
 require_once get_template_directory() . '/inc/redirects.php';
@@ -107,6 +108,19 @@ function restwell_theme_setup() {
 	add_image_size( 'restwell-property', 1920, 0 );
 }
 add_action( 'after_setup_theme', 'restwell_theme_setup' );
+
+/**
+ * Prefer sharper JPEG/WebP intermediates for hero crops (default WP quality is ~82).
+ *
+ * @param int $quality Compression quality 0–100.
+ * @return int
+ */
+function restwell_image_editor_quality( $quality ) {
+	$quality = (int) $quality;
+	return max( $quality, 90 );
+}
+add_filter( 'jpeg_quality', 'restwell_image_editor_quality' );
+add_filter( 'wp_editor_set_quality', 'restwell_image_editor_quality' );
 
 /**
  * Send security headers on HTTPS responses.

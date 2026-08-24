@@ -18,6 +18,7 @@ Ship **SEO/performance** fixes and **analytics** (aligned with your existing coo
 
 | Concern | Doc | Sections |
 |---------|-----|----------|
+| **Comprehensive audit (codebase + visual)** | [docs/AUDIT-2026-08-24.md](docs/AUDIT-2026-08-24.md) | Findings + fixes |
 | **CRM, journey, staff, deployment** | [plan-crm-ops.md](plan-crm-ops.md) | A–E |
 | **SEO agent pack (start here)** | [docs/seo/](docs/seo/) | README · LANES · SOURCES |
 | **SEO execution + monthly cadence** | [plan-seo-ops.md](plan-seo-ops.md) | F–G |
@@ -30,8 +31,8 @@ Ship **SEO/performance** fixes and **analytics** (aligned with your existing coo
 
 ## A. Deployment & technical hygiene
 
-- [ ] **Front page — mobile menu button** - Verify hamburger button is ≥ 44×44px with visible tap target on real device. → Verify: Chrome DevTools + real mobile test.
-- [ ] **Front page — scroll-to-top button** - Add fixed scroll-to-top button in bottom-right at scroll depth > 50% for long mobile pages. → Verify: Appears on scroll, smooth scroll to top.
+- [x] **Front page — mobile menu button** - Verified 44×44px hamburger via CDP bounding box (24 Aug 2026). → Meets WCAG 2.5.8 minimum target size.
+- [x] **Front page — scroll-to-top button** - Added sitewide (footer.php + `.scroll-top` in shared.css + `initScrollToTop` in main.js, 24 Aug 2026). Shows past one viewport of scroll, `aria-hidden`/`tabindex` toggled so it's unreachable when hidden, respects `prefers-reduced-motion`. → Verified via CDP: hidden at load, visible + `tabindex="0"` after scroll, click returns to top.
 - [ ] **Front page — low-end Android test** - Test on simulated slow 4x CPU throttling in DevTools; confirm acceptable performance. → Verify: No jank, page loads in < 5s on slow 3G simulation.
 - [ ] **GA4 live verification** - Run DebugView pass; confirm canonical events/params firing; lock dashboard dimensions to documented event names in [ANALYTICS-EVENT-SCHEMA.md](ANALYTICS-EVENT-SCHEMA.md) → Verify: All enquiry funnel events confirmed in GA4.
 - [ ] **REST hardening smoke test** - Confirm `curl -sI …/wp-json/wp/v2/users` without cookies → `401` on live/staging. → Verify: Authenticated editor access still intact.

@@ -89,6 +89,9 @@ function restwell_upload_theme_logos( array &$result ) {
 			$result['logos_failed'][] = $filename;
 		} else {
 			set_theme_mod( $mod_key, $att_id );
+			if ( function_exists( 'restwell_maybe_set_attachment_alt_from_theme_map' ) ) {
+				restwell_maybe_set_attachment_alt_from_theme_map( (int) $att_id, $filename );
+			}
 			$result['logos_uploaded'][] = $filename;
 		}
 	}
@@ -201,6 +204,9 @@ function restwell_upload_partner_logos( $home_id, array &$result, $force = false
 		}
 
 		update_post_meta( $home_id, $meta_key, (int) $att_id );
+		if ( function_exists( 'restwell_maybe_set_attachment_alt_from_theme_map' ) ) {
+			restwell_maybe_set_attachment_alt_from_theme_map( (int) $att_id, 'partners/' . $matched_filename );
+		}
 		$result['partner_logos_uploaded'][] = $matched_filename . ' -> ' . $meta_key;
 	}
 }

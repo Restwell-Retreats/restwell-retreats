@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 14;
+const RESTWELL_SCHEMA_VERSION = 21;
 
 function restwell_migrate_homepage_faq_meta_v1() {
 	if ( get_option( 'restwell_home_faq_meta_migrated_v1', '' ) === '1' ) {
@@ -1621,6 +1621,33 @@ function restwell_migrate_sample_page_demo_v10() {
 }
 
 /**
+ * One-time: trash retired / WordPress demo content so it cannot linger in SEO → All pages.
+ *
+ * Contact is a retired URL (301 to enquire). Sample Page and Hello world! are install stubs.
+ */
+function restwell_migrate_retire_demo_content_v11() {
+	if ( get_option( 'restwell_retire_demo_content_v11', '' ) === '1' ) {
+		return;
+	}
+
+	$trash = static function ( $post ) {
+		if ( $post instanceof WP_Post && (int) $post->ID > 0 && 'trash' !== $post->post_status ) {
+			wp_trash_post( (int) $post->ID );
+		}
+	};
+
+	$trash( get_page_by_path( 'contact', OBJECT, 'page' ) );
+	$trash( get_page_by_path( 'sample-page', OBJECT, 'page' ) );
+
+	$hello = get_page_by_path( 'hello-world', OBJECT, 'post' );
+	if ( $hello instanceof WP_Post && 'Hello world!' === $hello->post_title ) {
+		$trash( $hello );
+	}
+
+	update_option( 'restwell_retire_demo_content_v11', '1' );
+}
+
+/**
  * One-time: lock Home / Property / Accessibility / How It Works / Who It's For into distinct keyword lanes.
  *
  * Updates focus_keyphrase, meta_title, meta_description, H1 and first-100-word ledes when they still
@@ -2000,6 +2027,242 @@ function restwell_migrate_pricing_equipment_hire_copy_v1() {
 }
 
 /**
+ * Put focus keyphrase into Blog + Who It’s For SEO titles.
+ */
+function restwell_migrate_seo_kp_titles_v12() {
+	if ( get_option( 'restwell_seo_kp_titles_v12', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_kp_titles_v12', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+
+	foreach ( array( 'who-its-for', 'blog' ) as $slug ) {
+		if ( empty( $defaults[ $slug ]['meta_title'] ) ) {
+			continue;
+		}
+		$page_id = 0;
+		if ( 'blog' === $slug ) {
+			$page_id = (int) get_option( 'page_for_posts', 0 );
+		}
+		if ( $page_id < 1 ) {
+			$page    = get_page_by_path( $slug, OBJECT, 'page' );
+			$page_id = $page ? (int) $page->ID : 0;
+		}
+		if ( $page_id < 1 ) {
+			continue;
+		}
+		update_post_meta( $page_id, 'meta_title', $defaults[ $slug ]['meta_title'] );
+	}
+
+	update_option( 'restwell_seo_kp_titles_v12', '1' );
+}
+
+/**
+ * Sideload OG stock map into Media and set Featured/hero/OG when empty.
+ */
+function restwell_migrate_page_hero_stock_v13() {
+	if ( get_option( 'restwell_page_hero_stock_v13', '' ) === '1' ) {
+		return;
+	}
+
+	if ( function_exists( 'restwell_seed_page_hero_stock_images' ) ) {
+		restwell_seed_page_hero_stock_images();
+	}
+
+	update_option( 'restwell_page_hero_stock_v13', '1' );
+}
+
+/**
+ * Retry stock hero sideload with wp_upload_bits path (Playground-safe).
+ */
+function restwell_migrate_page_hero_stock_v14() {
+	if ( get_option( 'restwell_page_hero_stock_v14', '' ) === '1' ) {
+		return;
+	}
+
+	if ( function_exists( 'restwell_seed_page_hero_stock_images' ) ) {
+		restwell_seed_page_hero_stock_images();
+	}
+
+	update_option( 'restwell_page_hero_stock_v14', '1' );
+}
+
+/**
+ * Terms SEO title includes focus keyphrase; replace soft stock webp heroes with bungalow JPGs.
+ */
+function restwell_migrate_terms_title_hero_quality_v15() {
+	if ( get_option( 'restwell_terms_title_hero_quality_v15', '' ) === '1' ) {
+		return;
+	}
+
+	if ( function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		$defaults = restwell_get_seo_meta_defaults_by_slug();
+		if ( ! empty( $defaults['terms-and-conditions']['meta_title'] ) ) {
+			$page = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+			if ( $page && (int) $page->ID > 0 ) {
+				update_post_meta( (int) $page->ID, 'meta_title', $defaults['terms-and-conditions']['meta_title'] );
+			}
+		}
+	}
+
+	if ( function_exists( 'restwell_seed_page_hero_stock_images' ) ) {
+		restwell_seed_page_hero_stock_images( true );
+	}
+
+	update_option( 'restwell_terms_title_hero_quality_v15', '1' );
+}
+
+/**
+ * Apply new Kent/Whitstable stock JPGs to place-led page heroes and OG images.
+ *
+ * Clears mismatched Featured/hero/OG first so theme-file map fallbacks apply
+ * immediately, then best-effort sideloads into Media.
+ */
+function restwell_migrate_page_hero_stock_v16() {
+	if ( get_option( 'restwell_page_hero_stock_v16', '' ) === '1' ) {
+		return;
+	}
+
+	if ( function_exists( 'restwell_get_default_og_stock_filename_map' ) && function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		$map = restwell_get_default_og_stock_filename_map();
+		foreach ( $map as $slug => $rel ) {
+			$page_id = restwell_page_id_for_stock_slug( $slug );
+			if ( $page_id < 1 ) {
+				continue;
+			}
+			if ( function_exists( 'restwell_page_featured_matches_stock_rel' ) && restwell_page_featured_matches_stock_rel( $page_id, $rel ) ) {
+				continue;
+			}
+
+			delete_post_thumbnail( $page_id );
+			$post = get_post( $page_id );
+			$key  = function_exists( 'restwell_page_hero_meta_key' ) ? restwell_page_hero_meta_key( $post ) : '';
+			if ( $key !== '' ) {
+				delete_post_meta( $page_id, $key );
+			}
+			delete_post_meta( $page_id, 'og_image_id' );
+		}
+	}
+
+	// Mark complete before sideload so a timeout still leaves map fallbacks working.
+	update_option( 'restwell_page_hero_stock_v16', '1' );
+
+	if ( function_exists( 'set_time_limit' ) ) {
+		set_time_limit( 180 );
+	}
+
+	if ( function_exists( 'restwell_seed_page_hero_stock_images' ) ) {
+		restwell_seed_page_hero_stock_images( true );
+	}
+}
+
+/**
+ * Swap product-page heroes to inviting bungalow shots (garden / lounge / bedroom).
+ */
+function restwell_migrate_page_hero_stock_v17() {
+	if ( get_option( 'restwell_page_hero_stock_v17', '' ) === '1' ) {
+		return;
+	}
+
+	$slugs = array( 'the-property', 'pricing', 'how-it-works', 'optional-care' );
+
+	if ( function_exists( 'restwell_get_default_og_stock_filename_map' ) && function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		$map = restwell_get_default_og_stock_filename_map();
+		foreach ( $slugs as $slug ) {
+			if ( empty( $map[ $slug ] ) ) {
+				continue;
+			}
+			$rel     = $map[ $slug ];
+			$page_id = restwell_page_id_for_stock_slug( $slug );
+			if ( $page_id < 1 ) {
+				continue;
+			}
+			if ( function_exists( 'restwell_page_featured_matches_stock_rel' ) && restwell_page_featured_matches_stock_rel( $page_id, $rel ) ) {
+				continue;
+			}
+
+			delete_post_thumbnail( $page_id );
+			$post = get_post( $page_id );
+			$key  = function_exists( 'restwell_page_hero_meta_key' ) ? restwell_page_hero_meta_key( $post ) : '';
+			if ( $key !== '' ) {
+				delete_post_meta( $page_id, $key );
+			}
+			delete_post_meta( $page_id, 'og_image_id' );
+		}
+	}
+
+	update_option( 'restwell_page_hero_stock_v17', '1' );
+
+	if ( function_exists( 'set_time_limit' ) ) {
+		set_time_limit( 120 );
+	}
+
+	if ( function_exists( 'restwell_seed_page_hero_stock_images' ) ) {
+		restwell_seed_page_hero_stock_images( true );
+	}
+}
+
+/**
+ * Put focus keyphrases into Our Story / Who It’s For meta descriptions,
+ * and lengthen the Guest Guide SEO title into the 50–60 character range.
+ *
+ * Only overwrites known stale seed strings so later manual edits stay intact.
+ */
+function restwell_migrate_seo_meta_tips_v18() {
+	if ( get_option( 'restwell_seo_meta_tips_v18', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_seo_meta_defaults_by_slug' ) ) {
+		update_option( 'restwell_seo_meta_tips_v18', '1' );
+		return;
+	}
+
+	$defaults = restwell_get_seo_meta_defaults_by_slug();
+	$pages    = array(
+		'our-story'   => array(
+			'field' => 'meta_description',
+			'stale' => array(
+				'Restwell was built by someone who kept seeing the access gap firsthand, then shaped by disabled guests, carers and occupational therapists — not assumptions.',
+			),
+		),
+		'who-its-for' => array(
+			'field' => 'meta_description',
+			'stale' => array(
+				'See who Restwell suits: wheelchair users, carers, OTs and commissioners. Check access fit, care options and funding routes before you enquire about dates.',
+			),
+		),
+		'guest-guide' => array(
+			'field' => 'meta_title',
+			'stale' => array(
+				'Guest Guide | Check-In Tips',
+			),
+		),
+	);
+
+	foreach ( $pages as $slug => $cfg ) {
+		if ( empty( $defaults[ $slug ][ $cfg['field'] ] ) ) {
+			continue;
+		}
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $page || (int) $page->ID < 1 ) {
+			continue;
+		}
+		$current = trim( (string) get_post_meta( (int) $page->ID, $cfg['field'], true ) );
+		if ( $current === '' || in_array( $current, $cfg['stale'], true ) ) {
+			update_post_meta( (int) $page->ID, $cfg['field'], $defaults[ $slug ][ $cfg['field'] ] );
+		}
+	}
+
+	update_option( 'restwell_seo_meta_tips_v18', '1' );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2045,11 +2308,19 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_seo_cannibal_medium_v8',
 		'restwell_seo_cannibal_low_v9',
 		'restwell_sample_page_demo_v10',
+		'restwell_retire_demo_content_v11',
 		'restwell_keyword_lanes_v1',
 		'restwell_guest_guide_checkin_v1',
 		'restwell_terms_balance_one_week_v1',
 		'restwell_pricing_hero_copy_v1',
 		'restwell_pricing_equipment_hire_copy_v1',
+		'restwell_seo_kp_titles_v12',
+		'restwell_page_hero_stock_v13',
+		'restwell_page_hero_stock_v14',
+		'restwell_terms_title_hero_quality_v15',
+		'restwell_page_hero_stock_v16',
+		'restwell_page_hero_stock_v17',
+		'restwell_seo_meta_tips_v18',
 	);
 }
 
@@ -2091,91 +2362,107 @@ function restwell_register_content_migrations(): void {
 	add_action( 'admin_init', 'restwell_migrate_homepage_faq_meta_v1', 5 );
 	add_action( 'after_switch_theme', 'restwell_migrate_homepage_faq_meta_v1', 10 );
 	add_action( 'init', 'restwell_migrate_property_practical_meta_v1', 20 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_practical_meta_v1', 10 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_practical_meta_v1', 11 );
 	add_action( 'init', 'restwell_migrate_property_sleeps_five_v1', 21 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_sleeps_five_v1', 11 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_sleeps_five_v1', 12 );
 	add_action( 'init', 'restwell_migrate_property_parking_short_v1', 22 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_parking_short_v1', 12 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_parking_short_v1', 13 );
 	add_action( 'init', 'restwell_migrate_property_bedrooms_parking_v2', 23 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_bedrooms_parking_v2', 13 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_bedrooms_parking_v2', 14 );
 	add_action( 'init', 'restwell_migrate_property_parking_detail_v3', 24 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_parking_detail_v3', 14 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_parking_detail_v3', 15 );
 	add_action( 'init', 'restwell_migrate_property_headings_v4', 25 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v4', 15 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v4', 16 );
 	add_action( 'init', 'restwell_migrate_property_labels_v5', 26 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_labels_v5', 16 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_labels_v5', 17 );
 	add_action( 'init', 'restwell_migrate_property_wetroom_stat_v6', 27 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_stat_v6', 17 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_stat_v6', 18 );
 	add_action( 'init', 'restwell_migrate_property_wetroom_walkthrough_v7', 28 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_walkthrough_v7', 18 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_walkthrough_v7', 19 );
 	add_action( 'init', 'restwell_migrate_homepage_cta_testword_v8', 29 );
-	add_action( 'after_switch_theme', 'restwell_migrate_homepage_cta_testword_v8', 19 );
+	add_action( 'after_switch_theme', 'restwell_migrate_homepage_cta_testword_v8', 20 );
 	add_action( 'init', 'restwell_migrate_property_wetroom_stat_copy_v9', 30 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_stat_copy_v9', 20 );
-	add_action( 'init', 'restwell_migrate_faq_access_parking_bedrooms_v1', 24 );
-	add_action( 'after_switch_theme', 'restwell_migrate_faq_access_parking_bedrooms_v1', 14 );
-	add_action( 'init', 'restwell_migrate_property_feature_copy_balance_v1', 25 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_feature_copy_balance_v1', 15 );
-	add_action( 'init', 'restwell_migrate_home_hiw_card_copy_balance_v1', 26 );
-	add_action( 'after_switch_theme', 'restwell_migrate_home_hiw_card_copy_balance_v1', 16 );
-	add_action( 'init', 'restwell_migrate_legal_policy_templates_v1', 12 );
-	add_action( 'after_switch_theme', 'restwell_migrate_legal_policy_templates_v1', 12 );
-	add_action( 'init', 'restwell_migrate_accessibility_headings_v1', 25 );
-	add_action( 'after_switch_theme', 'restwell_migrate_accessibility_headings_v1', 15 );
-	add_action( 'init', 'restwell_migrate_accessibility_intro_v2', 26 );
-	add_action( 'after_switch_theme', 'restwell_migrate_accessibility_intro_v2', 16 );
-	add_action( 'init', 'restwell_migrate_who_its_for_headings_v1', 27 );
-	add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_headings_v1', 17 );
-	add_action( 'init', 'restwell_migrate_property_headings_v1', 28 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v1', 18 );
-	add_action( 'init', 'restwell_migrate_how_it_works_headings_v1', 29 );
-	add_action( 'after_switch_theme', 'restwell_migrate_how_it_works_headings_v1', 19 );
-	add_action( 'init', 'restwell_migrate_home_lede_v1', 30 );
-	add_action( 'after_switch_theme', 'restwell_migrate_home_lede_v1', 20 );
-	add_action( 'init', 'restwell_migrate_property_lede_v1', 31 );
-	add_action( 'after_switch_theme', 'restwell_migrate_property_lede_v1', 21 );
-	add_action( 'init', 'restwell_migrate_wif_lede_v1', 32 );
-	add_action( 'after_switch_theme', 'restwell_migrate_wif_lede_v1', 22 );
-	add_action( 'init', 'restwell_migrate_hiw_lede_v1', 33 );
-	add_action( 'after_switch_theme', 'restwell_migrate_hiw_lede_v1', 23 );
-	add_action( 'init', 'restwell_migrate_faq_lede_v1', 34 );
-	add_action( 'after_switch_theme', 'restwell_migrate_faq_lede_v1', 24 );
-	add_action( 'init', 'restwell_migrate_resources_lede_v1', 35 );
-	add_action( 'after_switch_theme', 'restwell_migrate_resources_lede_v1', 25 );
-	add_action( 'init', 'restwell_migrate_wg_lede_v1', 36 );
-	add_action( 'after_switch_theme', 'restwell_migrate_wg_lede_v1', 26 );
-	add_action( 'init', 'restwell_migrate_enq_lede_v1', 37 );
-	add_action( 'after_switch_theme', 'restwell_migrate_enq_lede_v1', 27 );
-	add_action( 'init', 'restwell_migrate_blog_lede_v1', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_blog_lede_v1', 28 );
-	add_action( 'init', 'restwell_migrate_blog_index_copy_v2', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_blog_index_copy_v2', 28 );
-	add_action( 'init', 'restwell_migrate_seo_titles_meta_v3', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_meta_v3', 28 );
-	add_action( 'init', 'restwell_migrate_seo_titles_meta_v4', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_meta_v4', 28 );
-	add_action( 'init', 'restwell_migrate_seo_home_title_v5', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_home_title_v5', 28 );
-	add_action( 'init', 'restwell_migrate_seo_a11y_policy_meta_v6', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_a11y_policy_meta_v6', 28 );
-	add_action( 'init', 'restwell_migrate_seo_cannibal_lanes_v7', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_lanes_v7', 28 );
-	add_action( 'init', 'restwell_migrate_seo_cannibal_medium_v8', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_medium_v8', 28 );
-	add_action( 'init', 'restwell_migrate_seo_cannibal_low_v9', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_low_v9', 28 );
-	add_action( 'init', 'restwell_migrate_sample_page_demo_v10', 38 );
-	add_action( 'after_switch_theme', 'restwell_migrate_sample_page_demo_v10', 28 );
-	add_action( 'init', 'restwell_migrate_keyword_lanes_v1', 39 );
-	add_action( 'after_switch_theme', 'restwell_migrate_keyword_lanes_v1', 29 );
-	add_action( 'init', 'restwell_migrate_guest_guide_checkin_v1', 40 );
-	add_action( 'after_switch_theme', 'restwell_migrate_guest_guide_checkin_v1', 30 );
-	add_action( 'init', 'restwell_migrate_terms_balance_one_week_v1', 41 );
-	add_action( 'after_switch_theme', 'restwell_migrate_terms_balance_one_week_v1', 31 );
-	add_action( 'init', 'restwell_migrate_pricing_hero_copy_v1', 42 );
-	add_action( 'after_switch_theme', 'restwell_migrate_pricing_hero_copy_v1', 32 );
-	add_action( 'init', 'restwell_migrate_pricing_equipment_hire_copy_v1', 43 );
-	add_action( 'after_switch_theme', 'restwell_migrate_pricing_equipment_hire_copy_v1', 33 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_wetroom_stat_copy_v9', 21 );
+	add_action( 'init', 'restwell_migrate_faq_access_parking_bedrooms_v1', 31 );
+	add_action( 'after_switch_theme', 'restwell_migrate_faq_access_parking_bedrooms_v1', 22 );
+	add_action( 'init', 'restwell_migrate_property_feature_copy_balance_v1', 32 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_feature_copy_balance_v1', 23 );
+	add_action( 'init', 'restwell_migrate_home_hiw_card_copy_balance_v1', 33 );
+	add_action( 'after_switch_theme', 'restwell_migrate_home_hiw_card_copy_balance_v1', 24 );
+	add_action( 'init', 'restwell_migrate_legal_policy_templates_v1', 34 );
+	add_action( 'after_switch_theme', 'restwell_migrate_legal_policy_templates_v1', 25 );
+	add_action( 'init', 'restwell_migrate_accessibility_headings_v1', 35 );
+	add_action( 'after_switch_theme', 'restwell_migrate_accessibility_headings_v1', 26 );
+	add_action( 'init', 'restwell_migrate_accessibility_intro_v2', 36 );
+	add_action( 'after_switch_theme', 'restwell_migrate_accessibility_intro_v2', 27 );
+	add_action( 'init', 'restwell_migrate_who_its_for_headings_v1', 37 );
+	add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_headings_v1', 28 );
+	add_action( 'init', 'restwell_migrate_property_headings_v1', 38 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_headings_v1', 29 );
+	add_action( 'init', 'restwell_migrate_how_it_works_headings_v1', 39 );
+	add_action( 'after_switch_theme', 'restwell_migrate_how_it_works_headings_v1', 30 );
+	add_action( 'init', 'restwell_migrate_home_lede_v1', 40 );
+	add_action( 'after_switch_theme', 'restwell_migrate_home_lede_v1', 31 );
+	add_action( 'init', 'restwell_migrate_property_lede_v1', 41 );
+	add_action( 'after_switch_theme', 'restwell_migrate_property_lede_v1', 32 );
+	add_action( 'init', 'restwell_migrate_wif_lede_v1', 42 );
+	add_action( 'after_switch_theme', 'restwell_migrate_wif_lede_v1', 33 );
+	add_action( 'init', 'restwell_migrate_hiw_lede_v1', 43 );
+	add_action( 'after_switch_theme', 'restwell_migrate_hiw_lede_v1', 34 );
+	add_action( 'init', 'restwell_migrate_faq_lede_v1', 44 );
+	add_action( 'after_switch_theme', 'restwell_migrate_faq_lede_v1', 35 );
+	add_action( 'init', 'restwell_migrate_resources_lede_v1', 45 );
+	add_action( 'after_switch_theme', 'restwell_migrate_resources_lede_v1', 36 );
+	add_action( 'init', 'restwell_migrate_wg_lede_v1', 46 );
+	add_action( 'after_switch_theme', 'restwell_migrate_wg_lede_v1', 37 );
+	add_action( 'init', 'restwell_migrate_enq_lede_v1', 47 );
+	add_action( 'after_switch_theme', 'restwell_migrate_enq_lede_v1', 38 );
+	add_action( 'init', 'restwell_migrate_blog_lede_v1', 48 );
+	add_action( 'after_switch_theme', 'restwell_migrate_blog_lede_v1', 39 );
+	add_action( 'init', 'restwell_migrate_blog_index_copy_v2', 49 );
+	add_action( 'after_switch_theme', 'restwell_migrate_blog_index_copy_v2', 40 );
+	add_action( 'init', 'restwell_migrate_seo_titles_meta_v3', 50 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_meta_v3', 41 );
+	add_action( 'init', 'restwell_migrate_seo_titles_meta_v4', 51 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_meta_v4', 42 );
+	add_action( 'init', 'restwell_migrate_seo_home_title_v5', 52 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_home_title_v5', 43 );
+	add_action( 'init', 'restwell_migrate_seo_a11y_policy_meta_v6', 53 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_a11y_policy_meta_v6', 44 );
+	add_action( 'init', 'restwell_migrate_seo_cannibal_lanes_v7', 54 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_lanes_v7', 45 );
+	add_action( 'init', 'restwell_migrate_seo_cannibal_medium_v8', 55 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_medium_v8', 46 );
+	add_action( 'init', 'restwell_migrate_seo_cannibal_low_v9', 56 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_cannibal_low_v9', 47 );
+	add_action( 'init', 'restwell_migrate_sample_page_demo_v10', 57 );
+	add_action( 'after_switch_theme', 'restwell_migrate_sample_page_demo_v10', 48 );
+	add_action( 'init', 'restwell_migrate_retire_demo_content_v11', 58 );
+	add_action( 'after_switch_theme', 'restwell_migrate_retire_demo_content_v11', 49 );
+	add_action( 'init', 'restwell_migrate_keyword_lanes_v1', 59 );
+	add_action( 'after_switch_theme', 'restwell_migrate_keyword_lanes_v1', 50 );
+	add_action( 'init', 'restwell_migrate_guest_guide_checkin_v1', 60 );
+	add_action( 'after_switch_theme', 'restwell_migrate_guest_guide_checkin_v1', 51 );
+	add_action( 'init', 'restwell_migrate_terms_balance_one_week_v1', 61 );
+	add_action( 'after_switch_theme', 'restwell_migrate_terms_balance_one_week_v1', 52 );
+	add_action( 'init', 'restwell_migrate_pricing_hero_copy_v1', 62 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_hero_copy_v1', 53 );
+	add_action( 'init', 'restwell_migrate_pricing_equipment_hire_copy_v1', 63 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_equipment_hire_copy_v1', 54 );
+	add_action( 'init', 'restwell_migrate_seo_kp_titles_v12', 64 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_kp_titles_v12', 55 );
+	add_action( 'init', 'restwell_migrate_page_hero_stock_v13', 65 );
+	add_action( 'after_switch_theme', 'restwell_migrate_page_hero_stock_v13', 56 );
+	add_action( 'init', 'restwell_migrate_page_hero_stock_v14', 66 );
+	add_action( 'after_switch_theme', 'restwell_migrate_page_hero_stock_v14', 57 );
+	add_action( 'init', 'restwell_migrate_terms_title_hero_quality_v15', 67 );
+	add_action( 'after_switch_theme', 'restwell_migrate_terms_title_hero_quality_v15', 58 );
+	add_action( 'init', 'restwell_migrate_page_hero_stock_v16', 68 );
+	add_action( 'after_switch_theme', 'restwell_migrate_page_hero_stock_v16', 59 );
+	add_action( 'init', 'restwell_migrate_page_hero_stock_v17', 69 );
+	add_action( 'after_switch_theme', 'restwell_migrate_page_hero_stock_v17', 60 );
+	add_action( 'init', 'restwell_migrate_seo_meta_tips_v18', 70 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_meta_tips_v18', 61 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

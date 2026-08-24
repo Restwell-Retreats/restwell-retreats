@@ -68,7 +68,7 @@ Remaining work for **deployment hygiene**, **customer journey**, **process relia
 
 Goal: make CRM ownership, team workflow, and stale-lead follow-up reliable for day-to-day operations.
 
-- [ ] **Step 3 — Front-end team dashboard** — Build `/dashboard/` as login-protected + capability-gated mobile-first lead workspace reusing the same quick-action backend as Step 2. Include filters (`Mine`, `Unassigned`, `All`, status-based), urgency/SLA indicators, and keyboard-safe controls. → Verify: staff can process leads from mobile without wp-admin; dashboard actions produce identical results to admin list actions.
+- [x] **Step 3 — Front-end team dashboard (phased)** — **Phase 1 shipped:** mobile-first wp-admin CRM (base = cards / sticky filters / 44px taps; `min-width: 783px` restores tables; stats 1→2→4 cols at 481 / 1101) via `admin-crm.css`. Reuses existing `restwell_lead_action` AJAX. **Phase 2 parked:** public `/dashboard/` with Mine/Unassigned only after assignment exists and phone triage is a recurring need. → Verify: staff can triage from a phone in wp-admin without a parallel front-end surface.
 
 - [x] **Step 4 — Auto-reminder system** — Hourly cron for stale `new` leads (`crm-reminders.php`) with dry-run filter. → Verify: each eligible lead is reminded at most once per 24h; no reminders for non-`new` leads.
 
@@ -80,7 +80,7 @@ Goal: make CRM ownership, team workflow, and stale-lead follow-up reliable for d
 
 | Priority | Item | Area |
 |----------|------|------|
-| 1 | E3: Front-end team dashboard | CRM Ops |
+| 1 | E3 Phase 1: phone-first wp-admin CRM (done); `/dashboard/` parked | CRM Ops |
 | 2 | E4: Auto-reminder system (idempotent) | CRM Ops |
 | 3 | SMTP / deliverability | Process |
 | 4 | Duplicate enquiry UX + CRM visibility | Journey |
@@ -94,6 +94,6 @@ Goal: make CRM ownership, team workflow, and stale-lead follow-up reliable for d
 
 ## Done when (CRM track)
 
-- [ ] CRM Ops Steps **E3–E4** are shipped with verification criteria met (dashboard parity and reminder idempotency).
+- [x] CRM Ops Step **E4** shipped; **E3 Phase 1** (phone-first wp-admin) shipped — public `/dashboard/` remains parked until mobile triage is a stated recurring need.
 - [ ] Core technical items in section A are done or explicitly deferred in [plan.md](plan.md) **Deferred / parked**.
 - [ ] At least one **journey** and one **staff** item above are shipped or consciously parked with a one-line note.

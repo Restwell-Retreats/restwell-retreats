@@ -124,12 +124,12 @@
 
       // Thumb.
       if (thumbEl) {
-        thumbEl.innerHTML = '<img src="' + url + '" alt="" />';
+        thumbEl.innerHTML = '<img src="' + url + '" alt="Selected social image" />';
       }
 
       // Social previews.
       [fbImgEl, twImgEl].forEach(function (el) {
-        if (el) el.innerHTML = '<img src="' + url + '" alt="" />';
+        if (el) el.innerHTML = '<img src="' + url + '" alt="Social image preview" />';
       });
 
       // Show / update remove button.

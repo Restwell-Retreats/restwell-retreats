@@ -16,17 +16,28 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Who It’s For</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">Is Restwell right for your group?</h1>
-            <p>A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Is Restwell right for your group?',
+		'intro'      => 'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'Who It\'s For',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
     <nav class="subnav" aria-label="On this page">
       <div class="container">
@@ -81,7 +92,7 @@ get_header();
           </ul>
         </div>
         <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/LR-1-LS.jpg' ); ?>" alt="Open-plan living space in the accessible bungalow" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living space in the accessible bungalow" width="900" height="675" loading="lazy" />
         </div>
       </div>
     </section>
@@ -94,9 +105,9 @@ get_header();
           <p class="lede">These three items are on site before arrival, not hired for the week.</p>
         </header>
         <ul class="card-grid card-grid--3" role="list">
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-3-LS.jpg' ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-6-LS.jpg' ); ?>" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/kitchen.png' ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-3-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/kitchen.png' ) ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
         </ul>
         <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
       </div>
@@ -131,7 +142,7 @@ get_header();
             </div>
           </div>
           <div class="split__media" data-reveal>
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/RAR-1-LS.jpg' ); ?>" alt="Rise and recline chair providing extra support during a stay" width="900" height="675" loading="lazy" />
+            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-1-LS.jpg' ) ); ?>" alt="Rise and recline chair providing extra support during a stay" width="900" height="675" loading="lazy" />
           </div>
         </div>
       </div>
@@ -157,7 +168,7 @@ get_header();
         </header>
         <div class="process__layout">
           <div class="process__media" data-reveal>
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
+            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
           </div>
           <ol class="process-list">
             <li>

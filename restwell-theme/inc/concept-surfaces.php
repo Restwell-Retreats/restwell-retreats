@@ -113,6 +113,9 @@ function restwell_concept_body_class( $classes ) {
 	if ( restwell_is_concept_surface() ) {
 		$classes[] = 'restwell-concept';
 	}
+	if ( function_exists( 'restwell_page_has_photo_hero' ) && restwell_page_has_photo_hero() && ! is_front_page() ) {
+		$classes[] = 'has-photo-hero';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'restwell_concept_body_class' );

@@ -11,7 +11,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'enquire' ) : home_url( '/enquire/' );
 $header_class = 'site-header';
-if ( ! is_front_page() ) {
+// Solid chrome when there is no photo hero to fade over (policies, guest guide, etc.).
+$photo_hero = function_exists( 'restwell_page_has_photo_hero' ) && restwell_page_has_photo_hero();
+if ( ! is_front_page() && ! $photo_hero ) {
 	$header_class .= ' is-solid';
 }
 $logo_url = function_exists( 'restwell_get_logo_url' ) ? restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) : '';
@@ -26,7 +28,9 @@ $brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_bran
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<a href="#main-content" class="skip-link"><?php esc_html_e( 'Skip to main content', 'restwell-retreats' ); ?></a>
+<nav class="skip-links" aria-label="<?php esc_attr_e( 'Skip links', 'restwell-retreats' ); ?>">
+	<a href="#main-content" class="skip-link"><?php esc_html_e( 'Skip to main content', 'restwell-retreats' ); ?></a>
+</nav>
 <header class="<?php echo esc_attr( $header_class ); ?>">
 	<div class="container site-header__inner">
 		<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">

@@ -83,7 +83,7 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 			</svg>
 		</button>
 		<figure class="lightbox__figure">
-			<img class="lightbox__image" data-lightbox-image src="" alt="" decoding="async" />
+			<img class="lightbox__image" data-lightbox-image src="" alt="<?php echo esc_attr__( 'Gallery image', 'restwell-retreats' ); ?>" decoding="async" />
 		</figure>
 		<button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="<?php esc_attr_e( 'Next image', 'restwell-retreats' ); ?>">
 			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -96,5 +96,10 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 		<p class="lightbox__caption" data-lightbox-caption></p>
 	</div>
 </div>
+<button type="button" class="scroll-top" data-scroll-top hidden aria-label="<?php esc_attr_e( 'Back to top', 'restwell-retreats' ); ?>">
+	<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+		<path d="M8 12.8V3.2M3.6 7.6L8 3.2l4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg>
+</button>
 </body>
 </html>

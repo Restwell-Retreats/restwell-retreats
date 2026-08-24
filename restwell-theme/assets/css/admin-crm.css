@@ -94,16 +94,16 @@
 	box-sizing: border-box;
 }
 
-/* Filters left + search right on wide screens; single column on small */
+/* Filters + search: stacked by default; two columns from 961px */
 .restwell-admin-enquiries .rw-enquiries-controls {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
-	gap: var(--rw-space-5) var(--rw-space-8);
+	grid-template-columns: 1fr;
+	gap: var(--rw-space-4);
 	align-items: start;
 	width: 100%;
 	max-width: 100%;
 	margin: 0;
-	padding: var(--rw-space-5) var(--rw-space-6);
+	padding: var(--rw-space-4);
 	box-sizing: border-box;
 }
 
@@ -126,7 +126,7 @@
 	margin: 0;
 }
 
-/* Filter rows: label + pill chips (replaces pipe-separated subsubsub) */
+/* Filter rows: label + segmented tabs (not a row of separate buttons) */
 .restwell-admin-enquiries .rw-filter-group {
 	display: flex;
 	flex-direction: column;
@@ -145,11 +145,16 @@
 .restwell-admin-enquiries .rw-filter-pills {
 	display: flex;
 	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--rw-space-2);
+	align-items: stretch;
+	gap: 2px;
+	width: fit-content;
+	max-width: 100%;
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 3px;
+	background: #eef1f3;
+	border: 1px solid #d8dce1;
+	border-radius: 10px;
 }
 
 .restwell-admin-enquiries .rw-filter-pills li {
@@ -161,25 +166,24 @@
 	display: inline-flex;
 	align-items: center;
 	gap: 4px;
-	padding: 7px 14px;
-	border-radius: var(--rw-radius-pill);
+	min-height: 44px;
+	padding: 8px 12px;
+	border: 0;
+	border-radius: 8px;
 	font-size: 13px;
 	font-weight: 500;
 	line-height: 1.3;
 	text-decoration: none;
 	color: #3c434a;
-	background: #fff;
-	border: 1px solid #d0d5dd;
-	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
-	transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+	background: transparent;
+	box-shadow: none;
+	transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .restwell-admin-enquiries .rw-filter-pills a:hover,
 .restwell-admin-enquiries .rw-filter-pills a:focus {
 	color: var(--rw-primary);
-	border-color: #b8c4cc;
-	background: #f8fafb;
-	box-shadow: 0 2px 6px rgba(16, 24, 40, 0.06);
+	background: rgba(255, 255, 255, 0.7);
 	outline: none;
 }
 
@@ -188,28 +192,26 @@
 }
 
 .restwell-admin-enquiries .rw-filter-pills a.current {
-	color: #fff;
-	background: var(--rw-primary);
-	border-color: #164a57;
-	box-shadow: 0 2px 8px rgba(27, 77, 92, 0.25);
+	color: var(--rw-primary);
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
 }
 
 .restwell-admin-enquiries .rw-filter-pills a.current .count {
-	color: rgba(255, 255, 255, 0.9);
+	color: var(--rw-muted);
 }
 
 .restwell-admin-enquiries .rw-filter-pills .count {
 	font-weight: 500;
-	opacity: 0.9;
+	color: var(--rw-subtle);
 }
 
 .restwell-admin-enquiries .rw-enquiries-search {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	justify-self: end;
 	width: 100%;
-	max-width: 300px;
+	max-width: none;
 	margin: 0;
 	padding: 0;
 	border: none;
@@ -224,9 +226,8 @@
 	float: none;
 	margin: 0;
 	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: flex-start;
+	flex-wrap: nowrap;
+	align-items: stretch;
 	gap: var(--rw-space-2);
 	width: 100%;
 }
@@ -236,22 +237,29 @@
 }
 
 .restwell-admin-enquiries .rw-enquiries-search input[type="search"] {
-	flex: 1 1 100%;
+	flex: 1 1 auto;
 	min-width: 0;
-	width: 100%;
-	max-width: 100%;
+	width: auto;
+	max-width: none;
 }
 
-@media (max-width: 960px) {
+.restwell-admin-enquiries .rw-enquiries-search .search-box .button {
+	flex: 0 0 auto;
+	align-self: stretch;
+}
+
+@media (min-width: 961px) {
 	.restwell-admin-enquiries .rw-enquiries-controls {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--rw-space-4) var(--rw-space-6);
+		padding: var(--rw-space-5) var(--rw-space-6);
+		align-items: start;
 	}
 
 	.restwell-admin-enquiries .rw-enquiries-search {
-		justify-self: stretch;
-		max-width: none;
-		padding-top: var(--rw-space-4);
-		border-top: 1px solid #e8eaeb;
+		justify-self: end;
+		width: 18rem;
+		max-width: 100%;
 	}
 }
 
@@ -279,8 +287,8 @@
 
 .restwell-admin .rw-stat-grid {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	gap: var(--rw-space-4);
+	grid-template-columns: 1fr 1fr;
+	gap: var(--rw-space-3);
 	max-width: 980px;
 }
 
@@ -292,14 +300,15 @@
 	border: 1px solid var(--rw-border);
 	border-radius: var(--rw-radius-md);
 	border-top: 3px solid var(--rw-tile-accent);
-	padding: 14px 16px;
+	padding: 12px 14px;
 	text-decoration: none;
 	box-shadow: 0 2px 10px rgba(16, 24, 40, 0.04);
 	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	min-height: 72px;
 }
 
 .restwell-admin .rw-stat-value {
-	font-size: 1.9rem;
+	font-size: 1.65rem;
 	line-height: 1;
 	font-weight: 700;
 	color: var(--rw-tile-accent);
@@ -315,12 +324,88 @@
 	font-size: 0.75rem;
 	color: var(--rw-muted);
 	margin-top: 0.35rem;
+	line-height: 1.3;
+}
+
+.restwell-admin-dashboard .rw-dash-quicklinks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 var(--rw-space-5);
+	max-width: 980px;
+}
+
+.restwell-admin-dashboard .rw-dash-quicklinks .button {
+	min-height: 40px;
+}
+
+.restwell-admin-dashboard .rw-dash-panel {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	overflow: hidden;
+	max-width: 880px;
+}
+
+.restwell-admin-dashboard .rw-dash-panel__title {
+	margin: 0;
+	padding: 14px 16px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.3;
+	border-bottom: 1px solid #eef0f2;
+	background: #f6f7f7;
+}
+
+.restwell-admin-dashboard .rw-dash-panel__body {
+	padding: 14px 16px 16px;
+}
+
+.restwell-admin-dashboard .rw-dash-panel__action {
+	margin: 12px 0 0;
+}
+
+.restwell-admin-dashboard .rw-orientation-details {
+	max-width: 880px;
+	margin: var(--rw-space-5) 0;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.restwell-admin-dashboard .rw-orientation-details__summary {
+	cursor: pointer;
+	padding: 14px 16px;
+	font-size: 14px;
+	font-weight: 600;
+	list-style: none;
+}
+
+.restwell-admin-dashboard .rw-orientation-details__summary::-webkit-details-marker {
+	display: none;
+}
+
+.restwell-admin-dashboard .rw-orientation-details__body {
+	padding: 0 16px 16px;
+	border-top: 1px solid #eef0f2;
+}
+
+.restwell-admin-dashboard .rw-settings-wrap--demoted {
+	margin-top: var(--rw-space-4);
+	opacity: 1;
+}
+
+.restwell-admin-dashboard .rw-settings-wrap--demoted .button.button-secondary {
+	min-height: 40px;
+	width: 100%;
+	max-width: 280px;
 }
 
 .restwell-admin .rw-dashboard-grid {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: var(--rw-space-5);
+	grid-template-columns: 1fr;
+	gap: var(--rw-space-4);
 	max-width: 1120px;
 	align-items: start;
 }
@@ -557,9 +642,11 @@
 	color: #8a4b00;
 }
 
-/* Status badge (dynamic background via inline style on .rw-status-pill) */
+/* Status badge — compact by default; list cards bump tap size where needed */
 .restwell-admin .rw-status-pill {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	padding: 3px 10px;
 	border-radius: 4px;
 	font-size: 11px;
@@ -676,7 +763,7 @@
 	background: #f0f2f4;
 	border-bottom: 1px solid #c3c4c7;
 	vertical-align: middle;
-	white-space: nowrap;
+	white-space: normal;
 }
 
 /* Sortable column headers */
@@ -722,33 +809,38 @@
 
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-flag {
 	width: 1%;
-	min-width: 5.5rem;
-	max-width: 7rem;
+	min-width: 4.5rem;
+	max-width: 6rem;
 	text-align: center;
 	vertical-align: middle;
 	padding-top: 14px;
 }
 
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-name {
-	min-width: 9rem;
-	max-width: 16rem;
+	min-width: 7rem;
+	max-width: 14rem;
 	font-weight: 500;
 }
 
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-contact {
-	min-width: 12rem;
-	max-width: 20rem;
+	min-width: 9rem;
+	max-width: 16rem;
 	word-break: break-word;
 }
 
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-marketing {
+	min-width: 5rem;
+	max-width: 8rem;
+}
+
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-dates {
-	min-width: 8.5rem;
-	max-width: 14rem;
+	min-width: 6.5rem;
+	max-width: 11rem;
 }
 
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-status {
-	min-width: 10.5rem;
-	max-width: 15rem;
+	min-width: 8rem;
+	max-width: 12rem;
 	vertical-align: top;
 }
 
@@ -760,13 +852,13 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 28px;
-	padding: 4px 10px;
+	min-height: 44px;
+	padding: 10px 16px;
 	border: 1px solid #b7c8cf;
 	border-radius: 999px;
 	background: #fff;
 	color: var(--rw-primary);
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: 600;
 	line-height: 1;
 	text-decoration: none;
@@ -838,12 +930,16 @@
 .restwell-admin-enquiry-detail .rw-detail-title-row {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 8px 10px;
+	row-gap: 6px;
 	flex-wrap: wrap;
-	margin-bottom: var(--rw-space-2);
+	margin-bottom: var(--rw-space-3);
+	line-height: 1.3;
 }
 
 .restwell-admin-enquiry-detail .rw-back-link {
+	flex: 1 0 100%;
+	margin-bottom: 2px;
 	font-size: 13px;
 	font-weight: 400;
 	text-decoration: none;
@@ -851,8 +947,7 @@
 }
 
 .restwell-admin-enquiry-detail .rw-title-sep {
-	color: #ccc;
-	font-weight: 300;
+	display: none;
 }
 
 .restwell-admin-enquiry-detail .rw-urgent-flag {
@@ -862,9 +957,9 @@
 
 .restwell-admin-enquiry-detail .rw-detail-layout {
 	display: grid;
-	grid-template-columns: 1fr min(320px, 100%);
-	gap: var(--rw-space-6);
-	margin-top: var(--rw-space-5);
+	grid-template-columns: 1fr;
+	gap: var(--rw-space-4);
+	margin-top: var(--rw-space-4);
 	max-width: 1100px;
 	align-items: start;
 }
@@ -874,28 +969,67 @@
 }
 
 .restwell-admin-enquiry-detail .rw-detail-section-title {
-	margin-top: var(--rw-space-5);
-	margin-bottom: var(--rw-space-3);
+	margin-top: var(--rw-space-4);
+	margin-bottom: var(--rw-space-2);
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--rw-muted);
 }
 
 .restwell-admin-enquiry-detail .rw-detail-section-title:first-child {
 	margin-top: 0;
 }
 
+/* Definition-list rhythm: beat WP .form-table’s 20px th padding on phones */
 .restwell-admin-enquiry-detail .rw-readonly-table {
-	margin-top: 0;
+	margin: 0;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.restwell-admin-enquiry-detail .rw-readonly-table,
+.restwell-admin-enquiry-detail .rw-readonly-table tbody,
+.restwell-admin-enquiry-detail .rw-readonly-table tr,
+.restwell-admin-enquiry-detail .rw-readonly-table th,
+.restwell-admin-enquiry-detail .rw-readonly-table td {
+	display: block;
+	float: none;
+	width: 100% !important;
+	box-sizing: border-box;
+}
+
+.restwell-admin-enquiry-detail .rw-readonly-table tr {
+	margin: 0 0 12px;
+	padding: 0;
+	border: none;
+	background: transparent;
 }
 
 .restwell-admin-enquiry-detail .rw-readonly-table th {
-	width: 160px;
-	padding: 8px 12px 8px 0;
+	padding: 0 0 2px !important;
+	margin: 0;
+	font-size: 11px;
 	font-weight: 600;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: var(--rw-subtle);
+	line-height: 1.3;
 	vertical-align: top;
 }
 
 .restwell-admin-enquiry-detail .rw-readonly-table td {
-	padding: 8px 12px;
+	padding: 0 !important;
+	margin: 0;
+	font-size: 14px;
+	line-height: 1.45;
 	vertical-align: top;
+	word-break: break-word;
+}
+
+.restwell-admin-enquiry-detail .rw-readonly-table td a {
+	overflow-wrap: anywhere;
 }
 
 .restwell-admin-enquiry-detail .rw-prose-block {
@@ -903,7 +1037,7 @@
 	background: #f6f7f7;
 	padding: 12px 14px;
 	border-radius: 4px;
-	margin: 0 0 var(--rw-space-4);
+	margin: 0 0 var(--rw-space-3);
 }
 
 .restwell-admin-enquiry-detail .rw-prose-block:last-of-type,
@@ -913,9 +1047,7 @@
 
 /*
  * Editable stay-dates panel — sits below the read-only Booking table.
- * Uses CSS Grid so the two date fields sit side-by-side on wide admin screens
- * but stack on narrow ones (mobile-narrow admin sidebar, half-width windows)
- * without needing a JS breakpoint.
+ * Stacked on phone; two columns from 481px.
  */
 .restwell-admin-enquiry-detail .rw-stay-dates-form {
 	margin: 0 0 var(--rw-space-2);
@@ -923,8 +1055,8 @@
 
 .restwell-admin-enquiry-detail .rw-stay-dates-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: var(--rw-space-3) var(--rw-space-4);
+	grid-template-columns: 1fr;
+	gap: var(--rw-space-3);
 	margin: 0 0 var(--rw-space-3);
 }
 
@@ -942,8 +1074,9 @@
 
 .restwell-admin-enquiry-detail .rw-stay-dates-field input[type="date"] {
 	width: 100%;
-	max-width: 220px;
+	max-width: none;
 	box-sizing: border-box;
+	min-height: 40px;
 }
 
 .restwell-admin-enquiry-detail .rw-stay-dates-actions {
@@ -962,7 +1095,7 @@
 .restwell-admin-enquiry-detail .rw-submitted-meta {
 	color: var(--rw-subtle);
 	font-size: 12px;
-	margin-top: var(--rw-space-4);
+	margin-top: var(--rw-space-3);
 	margin-bottom: 0;
 }
 
@@ -1109,137 +1242,410 @@
 	max-width: 560px;
 }
 
-/* Guest Guide: list table - avoid WP `fixed` layout (cramped columns + stacked actions) */
+/* Guest Guide: list — cards on phone, table from 783px (no wp-list-table) */
 .restwell-admin-guest-guide .rw-table-shell--guest-guide {
 	max-width: 1200px;
-	border: 1px solid var(--rw-border);
-	border-radius: var(--rw-radius-md);
-	background: var(--rw-surface);
-	box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
-	overflow-x: auto;
-	-webkit-overflow-scrolling: touch;
-}
-
-.restwell-admin-guest-guide .rw-guest-guide-table {
-	width: 100%;
-	table-layout: auto;
 	border: none;
 	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	overflow-x: visible;
+	padding: 0;
+	margin: var(--rw-space-3) 0 var(--rw-space-4);
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table,
+.restwell-admin-guest-guide .rw-guest-guide-table tbody {
+	display: block;
+	width: 100%;
+}
+
+/* Kill WP .widefat chrome — cards carry their own surface */
+.restwell-admin-guest-guide .rw-guest-guide-table.widefat {
+	border: none;
+	background: transparent;
+	box-shadow: none;
+	border-spacing: 0;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table.widefat thead th,
+.restwell-admin-guest-guide .rw-guest-guide-table.widefat tbody td {
+	border: none;
 	box-shadow: none;
 }
 
-.restwell-admin-guest-guide .rw-guest-guide-table thead th {
-	padding: 14px 16px;
-	font-size: 12px;
-	font-weight: 600;
-	line-height: 1.3;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	color: var(--rw-muted);
-	background: #f0f2f4;
-	border-bottom: 1px solid #c3c4c7;
-	white-space: nowrap;
+.restwell-admin-guest-guide .rw-guest-guide-table thead {
+	display: none;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table tbody tr {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas:
+		"name name"
+		"email email"
+		"enquiry enquiry"
+		"scheduled status"
+		"actions actions";
+	gap: 12px 14px;
+	align-items: start;
+	margin: 0 0 12px;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	box-sizing: border-box;
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table tbody td {
-	padding: 16px;
-	font-size: 13px;
+	display: block;
+	padding: 0;
+	border: none;
+	width: auto;
+	max-width: none;
+	min-width: 0;
+	font-size: 14px;
 	line-height: 1.45;
 	vertical-align: top;
-	border-bottom: 1px solid #f0f0f1;
 }
 
-.restwell-admin-guest-guide .rw-guest-guide-table tbody tr:last-child td {
-	border-bottom: none;
+.restwell-admin-guest-guide .rw-guest-guide-table tbody td::before {
+	content: attr(data-label);
+	display: block;
+	margin-bottom: 3px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--rw-subtle, #787c82);
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table .column-name {
-	min-width: 7.5rem;
-	max-width: 14rem;
+	grid-area: name;
 	font-weight: 600;
 	color: var(--rw-text);
+	font-size: 16px;
+	line-height: 1.3;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table .column-name::before {
+	display: none;
+	content: none;
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table .column-email {
-	min-width: 12rem;
-	max-width: 22rem;
+	grid-area: email;
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table .rw-cell-email {
-	display: inline-block;
+	display: block;
 	word-break: break-word;
+	overflow-wrap: anywhere;
+	font-size: 13px;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table .column-enquiry {
+	grid-area: enquiry;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table .column-enquiry.rw-cell--empty {
+	display: none;
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table .column-scheduled {
-	min-width: 11rem;
-	white-space: nowrap;
+	grid-area: scheduled;
 	color: #50575e;
+	font-size: 13px;
+	white-space: normal;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table .column-scheduled::before {
+	content: "Send";
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table .column-status {
-	min-width: 9.5rem;
+	grid-area: status;
 }
 
 .restwell-admin-guest-guide .rw-guest-guide-table .column-actions {
-	width: 1%;
-	min-width: 13.5rem;
-	padding-right: 18px;
-	white-space: nowrap;
-	vertical-align: middle;
+	grid-area: actions;
+	padding-top: 4px;
+	border-top: 1px solid #eef0f2;
+	width: auto;
+}
+
+.restwell-admin-guest-guide .rw-guest-guide-table .column-actions::before {
+	display: none;
+	content: none;
 }
 
 .restwell-admin-guest-guide .rw-action-cell {
-	vertical-align: middle !important;
+	vertical-align: middle;
 }
 
 .restwell-admin-guest-guide .rw-action-cell-inner {
-	display: inline-flex;
+	display: flex;
 	flex-direction: row;
-	flex-wrap: nowrap;
-	align-items: center;
-	justify-content: flex-start;
-	gap: 10px;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: 8px;
 }
 
 .restwell-admin-guest-guide .rw-action-cell-inner form {
-	display: inline-flex;
+	display: block;
 	margin: 0;
-	align-items: center;
+}
+
+.restwell-admin-guest-guide .rw-action-cell-inner form:first-child {
+	flex: 1 1 auto;
+	min-width: 0;
 }
 
 .restwell-admin-guest-guide .rw-action-cell-inner .button-small {
-	min-height: 32px;
-	padding: 0 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	box-sizing: border-box;
+	min-height: 40px;
+	padding: 8px 14px;
 	line-height: 1.2;
+	font-size: 13px;
 }
 
 .restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete {
-	padding-left: 10px;
-	padding-right: 10px;
-	min-height: 32px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: auto;
+	min-height: 40px;
+	padding: 8px 12px;
 	line-height: 1.2;
+	font-size: 13px;
+	color: #b32d2e;
+	border: none;
+	background: transparent;
+	box-shadow: none;
+}
+
+.restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete:hover,
+.restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete:focus {
+	color: #8a2424;
+	background: #fcf0f1;
+}
+
+.restwell-admin-guest-guide .rw-gg-preview-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 40px;
+	padding: 8px 10px;
+	line-height: 1.2;
+	font-size: 13px;
+	text-decoration: none;
+}
+
+.restwell-admin-guest-guide .rw-email-preview {
+	max-width: 720px;
+	margin: var(--rw-space-4) 0 var(--rw-space-5);
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__summary {
+	cursor: pointer;
+	padding: 14px 16px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--rw-text, #1f2933);
+	list-style: none;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__summary::-webkit-details-marker {
+	display: none;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__summary::before {
+	content: "";
+	display: inline-block;
+	width: 0.45em;
+	height: 0.45em;
+	margin-right: 0.55em;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	transform: rotate(-45deg);
+	vertical-align: 0.15em;
+	transition: transform 0.15s ease;
+}
+
+.restwell-admin-guest-guide .rw-email-preview[open] .rw-email-preview__summary::before {
+	transform: rotate(45deg);
+	vertical-align: 0.05em;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__body {
+	padding: 0 16px 16px;
+	border-top: 1px solid #eef0f2;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__meta {
+	margin: 12px 0 10px;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__meta-card {
+	margin: 0 0 12px;
+	padding: 12px 14px;
+	background: #f6f7f7;
+	border: 1px solid #e2e4e7;
+	border-radius: 8px;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__subject,
+.restwell-admin-guest-guide .rw-email-preview__cc {
+	display: grid;
+	grid-template-columns: 4.5rem 1fr;
+	gap: 6px 10px;
+	align-items: start;
+	margin: 0 0 8px;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #1f2933;
+	word-break: break-word;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__cc:last-child,
+.restwell-admin-guest-guide .rw-email-preview__subject:last-child {
+	margin-bottom: 0;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__label {
+	display: block;
+	min-width: 0;
+	margin: 0;
+	padding-top: 1px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--rw-subtle, #787c82);
+}
+
+.restwell-admin-guest-guide .rw-email-preview__value {
+	min-width: 0;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__viewport {
+	margin-top: 4px;
+	padding: 10px;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	background: #e8eaed;
+}
+
+.restwell-admin-guest-guide .rw-email-preview__frame {
+	display: block;
+	width: 600px;
+	max-width: 100%;
+	height: min(70vh, 640px);
+	margin: 0 auto;
+	border: none;
+	border-radius: 4px;
+	background: #fff;
+}
+
+@media (max-width: 640px) {
+	.restwell-admin-guest-guide .rw-email-preview__frame {
+		width: 600px;
+		max-width: none;
+		transform-origin: top left;
+		/* Scale ~phone content width into viewport so email isn’t a sideways slog */
+		zoom: 0.58;
+	}
+}
+
+.restwell-admin-guest-guide .rw-status-sent,
+.restwell-admin-guest-guide .rw-status-scheduled,
+.restwell-admin-guest-guide .rw-status-pending {
+	display: inline-block;
+	padding: 3px 8px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.3;
 }
 
 .restwell-admin-guest-guide .rw-status-sent {
-	color: #00a32a;
-	font-weight: 600;
+	color: #005c12;
+	background: #edfaef;
 }
 
 .restwell-admin-guest-guide .rw-status-sent small {
 	display: block;
 	margin-top: 2px;
+	padding: 0;
 	font-weight: 400;
 	color: var(--rw-muted);
 	font-size: 12px;
+	background: none;
 }
 
 .restwell-admin-guest-guide .rw-status-scheduled {
-	color: var(--rw-muted);
+	color: #614200;
+	background: #fcf9e8;
 }
 
 .restwell-admin-guest-guide .rw-status-pending {
-	color: #d63638;
+	color: #8a2424;
+	background: #fcf0f1;
+}
+
+.restwell-admin-guest-guide .rw-settings-wrap .form-table,
+.restwell-admin-guest-guide .rw-settings-wrap .form-table tbody,
+.restwell-admin-guest-guide .rw-settings-wrap .form-table tr,
+.restwell-admin-guest-guide .rw-settings-wrap .form-table th,
+.restwell-admin-guest-guide .rw-settings-wrap .form-table td {
+	display: block;
+	float: none;
+	width: 100% !important;
+	box-sizing: border-box;
+}
+
+.restwell-admin-guest-guide .rw-settings-wrap .form-table tr {
+	margin: 0 0 14px;
+	padding: 0;
+	border: none;
+	background: transparent;
+}
+
+.restwell-admin-guest-guide .rw-settings-wrap .form-table th {
+	padding: 0 0 4px !important;
+	margin: 0;
+	font-size: 13px;
 	font-weight: 600;
+}
+
+.restwell-admin-guest-guide .rw-settings-wrap .form-table td {
+	padding: 0 !important;
+	margin: 0;
+}
+
+.restwell-admin-guest-guide .rw-settings-wrap .form-table input.regular-text,
+.restwell-admin-guest-guide .rw-settings-wrap .form-table input[type="email"],
+.restwell-admin-guest-guide .rw-settings-wrap .form-table input[type="datetime-local"],
+.restwell-admin-guest-guide .rw-settings-wrap .form-table textarea {
+	width: 100%;
+	max-width: none;
+	box-sizing: border-box;
+	min-height: 40px;
+}
+
+.restwell-admin-guest-guide .rw-settings-wrap .submit,
+.restwell-admin-guest-guide .rw-settings-wrap > .button {
+	margin-top: var(--rw-space-2);
 }
 
 .restwell-admin-guest-guide h3.rw-subsection-title {
@@ -1329,90 +1735,941 @@
 	color: #842029;
 }
 
-/* ── Orientation table ──────────────────────────────────────────────── */
+/* ── Orientation list ───────────────────────────────────────────────── */
 
 .rw-orientation-wrap {
 	margin-top: 2rem;
 }
 
-.rw-orientation-table {
-	border-collapse: collapse;
-	width: 100%;
+.rw-orientation-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	overflow: hidden;
 }
 
-.rw-orientation-table th,
-.rw-orientation-table td {
-	vertical-align: top;
-	padding: 0.55rem 0.75rem;
+.rw-orientation-list__item {
+	padding: 12px 14px;
+	border-bottom: 1px solid #eef0f2;
 }
 
-.rw-orientation-table thead th {
-	background: #f0f0f1;
-	font-weight: 600;
-	font-size: 12px;
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
-	color: #3c434a;
+.rw-orientation-list__item:last-child {
+	border-bottom: 0;
 }
 
-.rw-orient-what {
-	width: 28%;
-	min-width: 180px;
-}
-
-.rw-orient-where {
-	width: 30%;
-}
-
-.rw-orient-notes {
-	width: 42%;
-	color: #646970;
-	font-size: 13px;
-}
-
-.rw-orientation-table tbody tr:nth-child(even) td {
+.rw-orientation-list__item:nth-child(even) {
 	background: #f9f9f9;
 }
 
-/* ── Responsive ────────────────────────────────────────────────────── */
+.rw-orientation-list__what {
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+	line-height: 1.4;
+}
 
-@media (max-width: 1100px) {
+.rw-orientation-list__where {
+	margin-top: 4px;
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.rw-orientation-list__where a {
+	text-decoration: none;
+}
+
+.rw-orientation-list__where a:hover {
+	text-decoration: underline;
+}
+
+.rw-orientation-list__notes {
+	margin: 6px 0 0;
+	font-size: 12px;
+	line-height: 1.45;
+	color: #646970;
+}
+
+/* ── Mobile-first CRM surfaces (E3) ───────────────────────────────────
+ * Base = phone. Enhance at min-width. Avoid .wp-list-table so core’s
+ * 782px list-table rules don’t fight our cards.
+ */
+
+/* Phone: compact sticky filters (pills only stay useful; keep search in bar) */
+
+.restwell-admin .rw-stat-tile {
+	min-height: 64px;
+	padding: 16px;
+}
+
+.restwell-admin-enquiries .rw-enquiries-panel {
+	overflow: visible;
+}
+
+.restwell-admin-enquiries .rw-enquiries-controls {
+	position: static;
+	gap: var(--rw-space-3);
+	padding: 10px 12px;
+	background: #fff;
+	border-bottom: 1px solid #e8eaeb;
+}
+
+.restwell-admin-enquiries .rw-enquiries-controls__primary {
+	position: sticky;
+	top: 46px;
+	z-index: 20;
+	margin: -10px -12px 0;
+	padding: 10px 12px;
+	background: #fff;
+	border-bottom: 1px solid #e8eaeb;
+	box-shadow: 0 2px 8px rgba(16, 24, 40, 0.05);
+}
+
+.restwell-admin-enquiries .rw-filter-pills {
+	gap: 2px;
+}
+
+.restwell-admin-enquiries .rw-filter-pills a {
+	min-height: 40px;
+	padding: 8px 12px;
+	font-size: 13px;
+}
+
+.restwell-admin-enquiries .rw-enquiries-search .search-box .button,
+.restwell-admin-enquiries .rw-enquiries-search input[type="search"] {
+	min-height: 40px;
+}
+
+.restwell-admin-enquiries .rw-enquiries-search input[type="search"] {
+	font-size: 16px; /* avoid iOS zoom */
+}
+
+.restwell-admin-enquiries .rw-table-shell--enquiries .tablenav,
+.restwell-admin-enquiries .rw-enquiries-table .check-column {
+	display: none !important;
+}
+
+.restwell-admin-enquiries .rw-table-shell--enquiries {
+	overflow-x: visible;
+	border-top: none;
+	padding: 12px;
+	background: var(--rw-bg, #f3f5f7);
+}
+
+.restwell-admin-enquiries .rw-enquiries-table,
+.restwell-admin-enquiries .rw-enquiries-table tbody {
+	display: block;
+	width: 100%;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table thead {
+	display: none;
+}
+
+/* Card: title → contact → meta → actions (single column — no cramped 2-up) */
+.restwell-admin-enquiries .rw-enquiries-table tbody tr {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-areas:
+		"flag"
+		"name"
+		"contact"
+		"dates"
+		"received"
+		"status";
+	gap: 10px;
+	align-items: start;
+	margin: 0 0 10px;
+	padding: 14px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table tbody tr.rw-row--urgent {
+	border-left: 3px solid #d63638;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table tbody td {
+	display: block;
+	padding: 0 !important;
+	border: none !important;
+	width: auto !important;
+	max-width: none !important;
+	min-width: 0 !important;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table tbody td::before {
+	content: attr(data-label);
+	display: block;
+	margin-bottom: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--rw-subtle, #787c82);
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-flag {
+	grid-area: flag;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-flag:not(:has(.rw-badge)) {
+	display: none;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-flag:not(:has(.rw-badge))::before,
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-name::before,
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-contact::before,
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-status::before,
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-marketing::before {
+	display: none;
+	content: none;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-name {
+	grid-area: name;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-contact {
+	grid-area: contact;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-marketing {
+	display: none;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-dates {
+	grid-area: dates;
+	padding-top: 8px !important;
+	border-top: 1px solid #eef0f2 !important;
+	font-size: 13px;
+	line-height: 1.45;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table tbody td.column-rw-dates::before {
+	content: "Dates";
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-received {
+	grid-area: received;
+	font-size: 13px;
+	line-height: 1.45;
+	color: var(--rw-muted, #5f6c7b);
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-received br {
+	display: none;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table tbody td.column-rw-received::before {
+	content: "Received";
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-status {
+	grid-area: status;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 8px;
+	padding-top: 4px !important;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-name a {
+	font-size: 16px;
+	line-height: 1.35;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-contact .rw-tap-link {
+	display: flex;
+	align-items: center;
+	min-height: 36px;
+	padding: 2px 0;
+	font-size: 14px;
+	line-height: 1.35;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.restwell-admin .rw-tap-link {
+	display: inline-flex;
+	align-items: center;
+	min-height: 36px;
+	padding: 2px 0;
+	font-size: 14px;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-status-badge {
+	margin: 0;
+	align-self: flex-start;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-status-pill {
+	min-height: 32px;
+	min-width: 0;
+	padding: 6px 12px;
+	font-size: 12px;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-status-actions {
+	margin-top: 0;
+	width: 100%;
+}
+
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-details-link {
+	display: inline-flex;
+	width: 100%;
+	justify-content: center;
+	box-sizing: border-box;
+	min-height: 40px;
+	padding: 8px 14px;
+	font-size: 13px;
+	border-radius: 8px;
+}
+
+.restwell-admin .rw-status-badge {
+	display: inline-block;
+}
+
+.restwell-admin .rw-status-inline-select {
+	min-height: 40px;
+	min-width: 140px;
+	font-size: 16px;
+	padding: 8px 10px;
+}
+
+.restwell-admin-dashboard .rw-dashboard-table,
+.restwell-admin-dashboard .rw-dashboard-table tbody {
+	display: block;
+	width: 100%;
+}
+
+.restwell-admin-dashboard .rw-dashboard-table thead {
+	display: none;
+}
+
+.restwell-admin-dashboard .rw-dashboard-table tbody tr {
+	display: block;
+	margin: 0 0 10px;
+	padding: 12px 14px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	box-sizing: border-box;
+}
+
+.restwell-admin-dashboard .rw-dashboard-table tbody td {
+	display: block;
+	padding: 6px 0 !important;
+	border: none !important;
+}
+
+.restwell-admin-dashboard .rw-dashboard-table tbody td::before {
+	content: attr(data-label);
+	display: block;
+	margin-bottom: 2px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--rw-subtle, #787c82);
+}
+
+.restwell-admin .rw-tap-button,
+.restwell-admin-dashboard .rw-dashboard-table .button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 40px;
+	padding: 8px 14px;
+	font-size: 13px;
+}
+
+.restwell-admin-enquiry-detail .rw-btn-block,
+.restwell-admin-enquiry-detail .button.button-large,
+.restwell-admin-enquiry-detail .button.button-primary,
+.restwell-admin-enquiry-detail .rw-stay-dates-actions .button {
+	min-height: 44px;
+	width: 100%;
+	justify-content: center;
+	box-sizing: border-box;
+	font-size: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.restwell-admin-enquiry-detail #rw-status-select,
+.restwell-admin-enquiry-detail .rw-sidebar-field {
+	min-height: 44px;
+	font-size: 16px;
+}
+
+/* ≥481px — two-up stats + stay dates */
+
+@media (min-width: 481px) {
 	.restwell-admin .rw-stat-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.restwell-admin .rw-dashboard-grid {
-		grid-template-columns: 1fr;
+	.restwell-admin .rw-stat-tile {
+		min-height: 0;
+		padding: 14px 16px;
 	}
 
-	.restwell-admin-enquiry-detail .rw-detail-layout {
-		grid-template-columns: 1fr;
+	.restwell-admin-enquiry-detail .rw-stay-dates-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--rw-space-3) var(--rw-space-4);
+	}
+
+	.restwell-admin-enquiry-detail .rw-stay-dates-field input[type="date"] {
+		max-width: 220px;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-controls {
+		padding: 12px 16px;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-controls__primary {
+		margin: -12px -16px 0;
+		padding: 12px 16px;
+	}
+
+	.restwell-admin-enquiries .rw-table-shell--enquiries {
+		padding: 14px 16px;
 	}
 }
 
-@media (max-width: 782px) {
-	.rw-orientation-table,
-	.rw-orientation-table tbody,
-	.rw-orientation-table tr,
-	.rw-orientation-table td {
-		display: block;
+/* ≥783px — WP desktop admin: tables, bulk, compact chrome */
+
+@media (min-width: 783px) {
+	.restwell-admin-enquiry-detail .rw-back-link {
+		flex: 0 0 auto;
+	}
+
+	.restwell-admin-enquiry-detail .rw-title-sep {
+		display: inline;
+		color: #ccc;
+		font-weight: 300;
+	}
+
+	.restwell-admin-enquiry-detail .rw-detail-layout {
+		gap: var(--rw-space-6);
+		margin-top: var(--rw-space-5);
+	}
+
+	.restwell-admin-enquiry-detail .rw-detail-section-title {
+		margin-top: var(--rw-space-5);
+		margin-bottom: var(--rw-space-3);
+		font-size: inherit;
+		letter-spacing: normal;
+		text-transform: none;
+		color: inherit;
+	}
+
+	.restwell-admin-enquiry-detail .rw-readonly-table {
+		display: table;
 		width: 100%;
 	}
 
-	.rw-orientation-table thead {
+	.restwell-admin-enquiry-detail .rw-readonly-table tbody {
+		display: table-row-group;
+	}
+
+	.restwell-admin-enquiry-detail .rw-readonly-table tr {
+		display: table-row;
+		margin: 0;
+	}
+
+	.restwell-admin-enquiry-detail .rw-readonly-table th {
+		display: table-cell;
+		width: 160px !important;
+		padding: 8px 12px 8px 0 !important;
+		font-size: 14px;
+		font-weight: 600;
+		letter-spacing: normal;
+		text-transform: none;
+		color: inherit;
+		vertical-align: top;
+	}
+
+	.restwell-admin-enquiry-detail .rw-readonly-table td {
+		display: table-cell;
+		width: auto !important;
+		padding: 8px 12px !important;
+		font-size: 14px;
+		vertical-align: top;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-controls {
+		position: static;
+		background: transparent;
+		border-bottom: none;
+		gap: var(--rw-space-4) var(--rw-space-6);
+		padding: var(--rw-space-5) var(--rw-space-6);
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-controls__primary {
+		position: static;
+		top: auto;
+		z-index: auto;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border-bottom: none;
+		box-shadow: none;
+	}
+
+	.restwell-admin-enquiries .rw-filter-pills {
+		gap: 2px;
+	}
+
+	.restwell-admin-enquiries .rw-filter-pills a {
+		min-height: 0;
+		padding: 6px 12px;
+		font-size: 13px;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-search .search-box .button,
+	.restwell-admin-enquiries .rw-enquiries-search input[type="search"] {
+		min-height: 0;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-search input[type="search"] {
+		font-size: 14px;
+	}
+
+	.restwell-admin-enquiries .rw-table-shell--enquiries .tablenav {
+		display: block !important;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .check-column {
+		display: table-cell !important;
+	}
+
+	.restwell-admin-enquiries .rw-table-shell--enquiries {
+		overflow-x: auto;
+		padding: 0;
+		background: transparent;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table {
+		display: table;
+		width: 100%;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table thead {
+		display: table-header-group;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table tbody {
+		display: table-row-group;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table tbody tr {
+		display: table-row;
+		grid-template-columns: none;
+		grid-template-areas: none;
+		gap: 0;
+		align-items: stretch;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table tbody tr.rw-row--urgent {
+		border-left: none;
+		background: #fff8f8;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table tbody td {
+		display: table-cell;
+		padding: 14px 16px !important;
+		border: none !important;
+		border-bottom: 1px solid #f0f0f1 !important;
+		width: auto !important;
+		max-width: none;
+		min-width: 0;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table tbody td::before,
+	.restwell-admin-enquiries .rw-enquiries-table thead th::before {
+		content: none;
 		display: none;
 	}
 
-	.rw-orientation-table td {
-		padding: 0.35rem 0.5rem;
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-flag,
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-flag:not(:has(.rw-badge)),
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-marketing {
+		display: table-cell;
+		grid-area: auto;
 	}
 
-	.rw-orient-what {
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-name,
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-contact,
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-dates,
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-received,
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-status {
+		grid-area: auto;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-dates {
+		padding-top: 14px !important;
+		border-top: none !important;
+		font-size: inherit;
+		line-height: inherit;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-received {
+		font-size: inherit;
+		line-height: inherit;
+		color: inherit;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-received br {
+		display: inline;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-status {
+		display: table-cell;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		gap: 0;
+		padding-top: 14px !important;
+		border-top: none !important;
+		margin-top: 0;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-name a {
+		font-size: inherit;
+		line-height: inherit;
+	}
+
+	.restwell-admin .rw-tap-link,
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-contact .rw-tap-link {
+		display: inline;
+		min-height: 0;
+		padding: 0;
+		font-size: inherit;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-details-link {
+		display: inline-flex;
+		width: auto;
+		min-height: 28px;
+		padding: 4px 10px;
+		font-size: 12px;
+		border-radius: 999px;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-status-actions {
+		display: none;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-status-badge {
+		align-self: auto;
+	}
+
+	.restwell-admin-enquiries .rw-enquiries-table .column-rw-status .rw-status-pill {
+		min-height: 0;
+		min-width: 0;
+		padding: 3px 10px;
+		font-size: 11px;
+	}
+
+	.restwell-admin .rw-status-pill {
+		display: inline-block;
+		min-height: 0;
+		min-width: 0;
+		padding: 3px 10px;
+		border-radius: 4px;
+		font-size: 11px;
+	}
+
+	.restwell-admin .rw-status-badge {
+		min-height: 0;
+	}
+
+	.restwell-admin .rw-status-inline-select {
+		min-height: 0;
+		min-width: 0;
+		font-size: 13px;
+		padding: 0;
+	}
+
+	.restwell-admin-guest-guide .rw-table-shell--guest-guide {
+		border: 1px solid var(--rw-border);
+		border-radius: var(--rw-radius-md);
+		background: var(--rw-surface);
+		box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		padding: 0;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table {
+		display: table;
+		width: 100%;
+		table-layout: auto;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table thead {
+		display: table-header-group;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table tbody {
+		display: table-row-group;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table thead th {
+		padding: 14px 16px;
+		font-size: 12px;
+		font-weight: 600;
+		line-height: 1.3;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--rw-muted);
+		background: #f0f2f4;
+		border-bottom: 1px solid #c3c4c7;
+		white-space: nowrap;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table tbody tr {
+		display: table-row;
+		gap: 0;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table tbody td {
+		display: table-cell;
+		padding: 16px;
+		border: none;
+		border-bottom: 1px solid #f0f0f1;
+		font-size: 13px;
+		vertical-align: top;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table tbody td::before {
+		content: none;
+		display: none;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .column-name {
+		min-width: 7.5rem;
+		max-width: 14rem;
+		font-size: inherit;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .column-email {
+		min-width: 12rem;
+		max-width: 22rem;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .rw-cell-email {
+		display: inline-block;
+		font-size: inherit;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .column-enquiry.rw-cell--empty {
+		display: table-cell;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .column-scheduled {
+		min-width: 11rem;
+		font-size: inherit;
+		white-space: nowrap;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .column-status {
+		min-width: 9.5rem;
+	}
+
+	.restwell-admin-guest-guide .rw-guest-guide-table .column-actions {
+		width: 1%;
+		min-width: 13.5rem;
+		padding-top: 16px;
+		padding-right: 18px;
+		border-top: none;
+		white-space: nowrap;
+		vertical-align: middle;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell {
+		vertical-align: middle !important;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell-inner {
+		display: inline-flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 10px;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell-inner form {
+		display: inline-flex;
+		flex: none;
+		width: auto;
+		align-items: center;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell-inner form:first-child {
+		flex: none;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell-inner .button-small,
+	.restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete,
+	.restwell-admin-guest-guide .rw-gg-preview-link {
+		display: inline-flex;
+		width: auto;
+		min-height: 32px;
+		padding: 0 14px;
+		font-size: 13px;
+		background: transparent;
+	}
+
+	.restwell-admin-guest-guide .rw-gg-preview-link {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete {
+		padding-left: 10px;
+		padding-right: 10px;
+		background: transparent;
+	}
+
+	.restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete:hover,
+	.restwell-admin-guest-guide .rw-action-cell-inner .button-link-delete:focus {
+		background: transparent;
+	}
+
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table {
+		display: table;
+		width: 100%;
+	}
+
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table tbody {
+		display: table-row-group;
+	}
+
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table tr {
+		display: table-row;
+		margin: 0;
+	}
+
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table th {
+		display: table-cell;
+		width: 200px !important;
+		padding: 20px 10px 20px 0 !important;
 		font-size: 14px;
-		padding-top: 0.75rem;
+		vertical-align: top;
 	}
 
-	.rw-orient-notes {
-		padding-bottom: 0.75rem;
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table td {
+		display: table-cell;
+		width: auto !important;
+		padding: 15px 10px !important;
+		vertical-align: middle;
+	}
+
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table input.regular-text,
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table input[type="email"],
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table input[type="datetime-local"],
+	.restwell-admin-guest-guide .rw-settings-wrap .form-table textarea {
+		width: auto;
+		max-width: 25rem;
+		min-height: 0;
+	}
+
+	.restwell-admin-dashboard .rw-dashboard-table {
+		display: table;
+		width: 100%;
+	}
+
+	.restwell-admin-dashboard .rw-dashboard-table thead {
+		display: table-header-group;
+	}
+
+	.restwell-admin-dashboard .rw-dashboard-table tbody {
+		display: table-row-group;
+	}
+
+	.restwell-admin-dashboard .rw-dashboard-table tbody tr {
+		display: table-row;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+	}
+
+	.restwell-admin-dashboard .rw-dashboard-table tbody td {
+		display: table-cell;
+		padding: inherit !important;
+		border: inherit !important;
+	}
+
+	.restwell-admin-dashboard .rw-dashboard-table tbody td::before {
+		content: none;
+		display: none;
+	}
+
+	.restwell-admin .rw-tap-button,
+	.restwell-admin-dashboard .rw-dashboard-table .button {
+		display: inline-block;
+		min-height: 0;
+		padding: 0 10px;
+		font-size: 13px;
+	}
+
+	.restwell-admin-enquiry-detail .rw-btn-block,
+	.restwell-admin-enquiry-detail .button.button-large,
+	.restwell-admin-enquiry-detail .button.button-primary,
+	.restwell-admin-enquiry-detail .rw-stay-dates-actions .button {
+		width: auto;
+		min-height: 0;
+		font-size: inherit;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
+	.restwell-admin-enquiry-detail #rw-status-select,
+	.restwell-admin-enquiry-detail .rw-sidebar-field {
+		min-height: 0;
+		font-size: inherit;
+	}
+
+}
+
+/* ≥1101px — four-up stats, side-by-side dashboard + detail */
+
+@media (min-width: 1101px) {
+	.restwell-admin .rw-stat-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.restwell-admin .rw-dashboard-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.restwell-admin-enquiry-detail .rw-detail-layout {
+		grid-template-columns: 1fr min(320px, 100%);
 	}
 }

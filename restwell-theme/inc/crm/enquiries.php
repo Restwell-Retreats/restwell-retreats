@@ -14,103 +14,121 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Render the Enquiries admin page (list and detail views).
+ * Handle the status/notes/follow-up POST from the enquiry detail view.
+ *
+ * Redirects and exits on a handled submission; returns (falls through)
+ * if the request isn't a matching, nonce-verified POST.
+ *
+ * @param string $table Enquiries table name (with prefix).
  */
-function restwell_crm_enquiries_page() {
-	if ( ! restwell_crm_can_manage() ) {
-		wp_die( esc_html__( 'You do not have permission to access this page.', 'restwell-retreats' ), '', array( 'response' => 403 ) );
-	}
-
+function restwell_crm_handle_enquiry_detail_post( string $table ) {
 	global $wpdb;
-	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
 
-	// ── Handle status + notes update from detail view ────────────────────────
 	if (
-		isset( $_POST['rw_crm_nonce'], $_POST['rw_enquiry_id'], $_POST['rw_status'] )
-		&& wp_verify_nonce( sanitize_key( $_POST['rw_crm_nonce'] ), 'restwell_crm_action' )
+		! isset( $_POST['rw_crm_nonce'], $_POST['rw_enquiry_id'], $_POST['rw_status'] )
+		|| ! wp_verify_nonce( sanitize_key( $_POST['rw_crm_nonce'] ), 'restwell_crm_action' )
 	) {
-		$id         = absint( $_POST['rw_enquiry_id'] );
-		$new_status = sanitize_key( $_POST['rw_status'] );
-		$notes      = isset( $_POST['rw_notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['rw_notes'] ) ) : '';
-
-		// Parse follow-up date from datetime-local format (YYYY-MM-DDTHH:MM).
-		$follow_up_raw = isset( $_POST['rw_follow_up'] ) ? sanitize_text_field( wp_unslash( $_POST['rw_follow_up'] ) ) : '';
-		$follow_up_at  = $follow_up_raw ? str_replace( 'T', ' ', $follow_up_raw ) . ':00' : null;
-
-		if ( array_key_exists( $new_status, restwell_crm_statuses() ) ) {
-			// Status transition (timestamps, status-change note, booking email) is
-			// handled entirely by the unified function.
-			restwell_crm_ops_apply_status_change( $id, $new_status, 'detail' );
-
-			// Detail-view-only fields: notes, follow-up date.
-			$wpdb->update(
-				$table,
-				array(
-					'staff_notes'  => $notes,
-					'follow_up_at' => $follow_up_at,
-				),
-				array( 'id' => $id ),
-				array( '%s', '%s' ),
-				array( '%d' )
-			);
-		}
-
-		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'page' => 'restwell-enquiries',
-					'view' => $id,
-					'updated' => '1',
-				),
-				admin_url( 'admin.php' )
-			)
-		);
-		exit;
-	}
-
-	// ── Handle bulk status update ────────────────────────────────────────────
-	if (
-		isset( $_POST['rw_bulk_nonce'], $_POST['rw_bulk_action'], $_POST['rw_bulk_ids'] )
-		&& wp_verify_nonce( sanitize_key( $_POST['rw_bulk_nonce'] ), 'restwell_crm_bulk' )
-	) {
-		$bulk_action = sanitize_key( $_POST['rw_bulk_action'] );
-		$ids         = array_filter( array_map( 'absint', (array) $_POST['rw_bulk_ids'] ) );
-
-		if ( array_key_exists( $bulk_action, restwell_crm_statuses() ) && $ids ) {
-			foreach ( $ids as $id ) {
-				// Booking confirmation email is suppressed in bulk context (context = 'bulk').
-				restwell_crm_ops_apply_status_change( $id, $bulk_action, 'bulk' );
-			}
-		}
-
-		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'page' => 'restwell-enquiries',
-					'updated' => '1',
-				),
-				admin_url( 'admin.php' )
-			)
-		);
-		exit;
-	}
-
-	// ── Single enquiry detail view ───────────────────────────────────────────
-	if ( isset( $_GET['view'] ) ) {
-		restwell_crm_enquiry_detail( absint( wp_unslash( $_GET['view'] ) ) );
 		return;
 	}
 
-	// ── Build WHERE clause safely ────────────────────────────────────────────
+	$id         = absint( $_POST['rw_enquiry_id'] );
+	$new_status = sanitize_key( $_POST['rw_status'] );
+	$notes      = isset( $_POST['rw_notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['rw_notes'] ) ) : '';
+
+	// Parse follow-up date from datetime-local format (YYYY-MM-DDTHH:MM).
+	$follow_up_raw = isset( $_POST['rw_follow_up'] ) ? sanitize_text_field( wp_unslash( $_POST['rw_follow_up'] ) ) : '';
+	$follow_up_at  = $follow_up_raw ? str_replace( 'T', ' ', $follow_up_raw ) . ':00' : null;
+
+	if ( array_key_exists( $new_status, restwell_crm_statuses() ) ) {
+		// Status transition (timestamps, status-change note, booking email) is
+		// handled entirely by the unified function.
+		restwell_crm_ops_apply_status_change( $id, $new_status, 'detail' );
+
+		// Detail-view-only fields: notes, follow-up date.
+		$wpdb->update(
+			$table,
+			array(
+				'staff_notes'  => $notes,
+				'follow_up_at' => $follow_up_at,
+			),
+			array( 'id' => $id ),
+			array( '%s', '%s' ),
+			array( '%d' )
+		);
+	}
+
+	wp_safe_redirect(
+		add_query_arg(
+			array(
+				'page'    => 'restwell-enquiries',
+				'view'    => $id,
+				'updated' => '1',
+			),
+			admin_url( 'admin.php' )
+		)
+	);
+	exit;
+}
+
+/**
+ * Handle the bulk status-update POST from the enquiries list view.
+ *
+ * Redirects and exits on a handled submission; returns (falls through)
+ * if the request isn't a matching, nonce-verified POST.
+ */
+function restwell_crm_handle_bulk_status_post() {
+	if (
+		! isset( $_POST['rw_bulk_nonce'], $_POST['rw_bulk_action'], $_POST['rw_bulk_ids'] )
+		|| ! wp_verify_nonce( sanitize_key( $_POST['rw_bulk_nonce'] ), 'restwell_crm_bulk' )
+	) {
+		return;
+	}
+
+	$bulk_action = sanitize_key( $_POST['rw_bulk_action'] );
+	$ids         = array_filter( array_map( 'absint', (array) $_POST['rw_bulk_ids'] ) );
+
+	if ( array_key_exists( $bulk_action, restwell_crm_statuses() ) && $ids ) {
+		foreach ( $ids as $id ) {
+			// Booking confirmation email is suppressed in bulk context (context = 'bulk').
+			restwell_crm_ops_apply_status_change( $id, $bulk_action, 'bulk' );
+		}
+	}
+
+	wp_safe_redirect(
+		add_query_arg(
+			array(
+				'page'    => 'restwell-enquiries',
+				'updated' => '1',
+			),
+			admin_url( 'admin.php' )
+		)
+	);
+	exit;
+}
+
+/**
+ * Parse the enquiries list's $_GET filters/sort/pagination into a single
+ * array, and run the counted, paginated query against it.
+ *
+ * @param string $table Enquiries table name (with prefix).
+ * @return array{
+ *     status_filter:string, search:string, orderby:string, order:string,
+ *     per_page:int, current_page:int, total:int, total_pages:int,
+ *     rows:array, counts:array, statuses:array, base_url:string, now_mysql:string
+ * }
+ */
+function restwell_crm_get_enquiries_list_data( string $table ) {
+	global $wpdb;
+
 	// SAFETY: only append fragments returned by $wpdb->prepare() — never raw $_GET strings.
-	$status_filter      = isset( $_GET['status_filter'] ) ? sanitize_key( wp_unslash( $_GET['status_filter'] ) ) : '';
-	$search             = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
-	$urgent_filter      = isset( $_GET['urgent_filter'] ) ? absint( wp_unslash( $_GET['urgent_filter'] ) ) : 0;
-	$follow_up_filter   = isset( $_GET['follow_up_filter'] ) ? sanitize_key( wp_unslash( $_GET['follow_up_filter'] ) ) : '';
+	$status_filter       = isset( $_GET['status_filter'] ) ? sanitize_key( wp_unslash( $_GET['status_filter'] ) ) : '';
+	$search              = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+	$urgent_filter       = isset( $_GET['urgent_filter'] ) ? absint( wp_unslash( $_GET['urgent_filter'] ) ) : 0;
+	$follow_up_filter    = isset( $_GET['follow_up_filter'] ) ? sanitize_key( wp_unslash( $_GET['follow_up_filter'] ) ) : '';
 	$submitted_since_raw = isset( $_GET['submitted_since'] ) ? sanitize_text_field( wp_unslash( $_GET['submitted_since'] ) ) : '';
-	$per_page           = 25;
-	$current_page       = max( 1, isset( $_GET['paged'] ) ? absint( wp_unslash( $_GET['paged'] ) ) : 1 );
-	$offset             = ( $current_page - 1 ) * $per_page;
+	$per_page            = 25;
+	$current_page        = max( 1, isset( $_GET['paged'] ) ? absint( wp_unslash( $_GET['paged'] ) ) : 1 );
+	$offset              = ( $current_page - 1 ) * $per_page;
 
 	// Sortable columns.
 	$allowed_orderby = array( 'submitted_at', 'status', 'name' );
@@ -158,8 +176,6 @@ function restwell_crm_enquiries_page() {
 
 	$total_pages = (int) ceil( $total / $per_page );
 	$statuses    = restwell_crm_statuses();
-	$base_url    = admin_url( 'admin.php?page=restwell-enquiries' );
-	$now_mysql   = current_time( 'mysql' );
 
 	// Status counts for tabs.
 	$counts = array();
@@ -167,6 +183,56 @@ function restwell_crm_enquiries_page() {
 		$counts[ $s ] = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE status = %s', $table, $s ) );
 	}
 	$counts['all'] = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $table ) );
+
+	return array(
+		'status_filter' => $status_filter,
+		'search'        => $search,
+		'orderby'       => $orderby,
+		'order'         => $order,
+		'per_page'      => $per_page,
+		'current_page'  => $current_page,
+		'total'         => $total,
+		'total_pages'   => $total_pages,
+		'rows'          => $rows,
+		'counts'        => $counts,
+		'statuses'      => $statuses,
+		'base_url'      => admin_url( 'admin.php?page=restwell-enquiries' ),
+		'now_mysql'     => current_time( 'mysql' ),
+	);
+}
+
+/**
+ * Render the Enquiries admin page (list and detail views).
+ */
+function restwell_crm_enquiries_page() {
+	restwell_crm_require_manage_capability();
+
+	global $wpdb;
+	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+
+	restwell_crm_handle_enquiry_detail_post( $table );
+	restwell_crm_handle_bulk_status_post();
+
+	// ── Single enquiry detail view ───────────────────────────────────────────
+	if ( isset( $_GET['view'] ) ) {
+		restwell_crm_enquiry_detail( absint( wp_unslash( $_GET['view'] ) ) );
+		return;
+	}
+
+	$list = restwell_crm_get_enquiries_list_data( $table );
+
+	$status_filter = $list['status_filter'];
+	$search        = $list['search'];
+	$orderby       = $list['orderby'];
+	$order         = $list['order'];
+	$current_page  = $list['current_page'];
+	$total         = $list['total'];
+	$total_pages   = $list['total_pages'];
+	$rows          = $list['rows'];
+	$counts        = $list['counts'];
+	$statuses      = $list['statuses'];
+	$base_url      = $list['base_url'];
+	$now_mysql     = $list['now_mysql'];
 	?>
 	<div class="wrap restwell-admin restwell-admin-enquiries">
 		<div class="rw-page-toolbar">
@@ -184,6 +250,44 @@ function restwell_crm_enquiries_page() {
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Changes saved.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
 
+		<?php restwell_crm_render_enquiries_panel( $list ); ?>
+	</div>
+
+	<script>
+	( function() {
+		var selectAll = document.getElementById( 'cb-select-all' );
+		if ( selectAll ) {
+			selectAll.addEventListener( 'change', function() {
+				document.querySelectorAll( '[name="rw_bulk_ids[]"]' ).forEach( function( cb ) {
+					cb.checked = selectAll.checked;
+				} );
+			} );
+		}
+	} )();
+	</script>
+	<?php
+}
+
+/**
+ * The filter tabs, search box, and (bulk-action) results table for the
+ * enquiries list page.
+ *
+ * @param array $list Data from {@see restwell_crm_get_enquiries_list_data()}.
+ */
+function restwell_crm_render_enquiries_panel( array $list ) {
+	$status_filter = $list['status_filter'];
+	$search        = $list['search'];
+	$orderby       = $list['orderby'];
+	$order         = $list['order'];
+	$current_page  = $list['current_page'];
+	$total         = $list['total'];
+	$total_pages   = $list['total_pages'];
+	$rows          = $list['rows'];
+	$counts        = $list['counts'];
+	$statuses      = $list['statuses'];
+	$base_url      = $list['base_url'];
+	$now_mysql     = $list['now_mysql'];
+	?>
 		<div class="rw-enquiries-panel">
 		<div class="rw-enquiries-controls">
 			<div class="rw-enquiries-controls__primary">
@@ -308,7 +412,7 @@ function restwell_crm_enquiries_page() {
 				<?php endif; ?>
 			</div>
 
-			<table class="wp-list-table widefat striped rw-enquiries-table">
+			<table class="widefat striped rw-enquiries-table">
 			<?php
 			/**
 			 * Build a sortable column header link.
@@ -411,14 +515,14 @@ function restwell_crm_enquiries_page() {
 							<th scope="row" class="check-column">
 								<input type="checkbox" name="rw_bulk_ids[]" value="<?php echo esc_attr( $row->id ); ?>">
 							</th>
-							<td class="column-rw-flag">
+							<td class="column-rw-flag" data-label="<?php echo esc_attr__( 'Flags', 'restwell-retreats' ); ?>">
 								<?php if ( $row->is_urgent ) : ?>
 									<span class="rw-badge rw-badge--urgent" title="<?php esc_attr_e( 'Urgent', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Urgent', 'restwell-retreats' ); ?></span>
 								<?php elseif ( $is_overdue ) : ?>
 									<span class="rw-badge rw-badge--overdue" title="<?php esc_attr_e( 'Follow-up overdue', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Overdue', 'restwell-retreats' ); ?></span>
 								<?php endif; ?>
 							</td>
-							<td class="column-rw-name">
+							<td class="column-rw-name" data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
 								<strong><a href="<?php echo esc_url( $detail_url ); ?>"><?php echo esc_html( $row->name ); ?></a></strong>
 								<?php if ( $sla_badge ) : ?>
 									<div class="rw-sla-badge"><?php echo $sla_badge; // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
@@ -429,16 +533,16 @@ function restwell_crm_enquiries_page() {
 									</span>
 								<?php endif; ?>
 							</td>
-							<td class="column-rw-contact">
-								<a href="mailto:<?php echo esc_attr( $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a>
+							<td class="column-rw-contact" data-label="<?php echo esc_attr__( 'Contact', 'restwell-retreats' ); ?>">
+								<a class="rw-tap-link" href="mailto:<?php echo esc_attr( $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a>
 								<?php if ( $row->phone ) : ?>
 									<br>
-									<a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>">
+									<a class="rw-tap-link" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>">
 										<?php echo esc_html( $row->phone ); ?>
 									</a>
 								<?php endif; ?>
 							</td>
-							<td class="column-rw-marketing rw-text-meta">
+							<td class="column-rw-marketing rw-text-meta" data-label="<?php echo esc_attr__( 'Marketing', 'restwell-retreats' ); ?>">
 								<?php if ( ! empty( $row->marketing_optin ) ) : ?>
 									<span class="rw-badge rw-badge--booked"><?php esc_html_e( 'Opted in', 'restwell-retreats' ); ?></span>
 									<?php if ( ! empty( $row->marketing_optin_at ) ) : ?>
@@ -448,7 +552,7 @@ function restwell_crm_enquiries_page() {
 									<span class="rw-text-dim"><?php esc_html_e( 'No', 'restwell-retreats' ); ?></span>
 								<?php endif; ?>
 							</td>
-							<td class="column-rw-dates">
+							<td class="column-rw-dates" data-label="<?php echo esc_attr__( 'Dates / Guests', 'restwell-retreats' ); ?>">
 								<?php if ( $row->preferred_dates ) : ?>
 									<span class="rw-text-meta"><?php echo esc_html( $row->preferred_dates ); ?></span>
 								<?php endif; ?>
@@ -459,7 +563,7 @@ function restwell_crm_enquiries_page() {
 									<span class="rw-text-dim">-</span>
 								<?php endif; ?>
 							</td>
-							<td class="column-rw-status">
+							<td class="column-rw-status" data-label="<?php echo esc_attr__( 'Status', 'restwell-retreats' ); ?>">
 							<div class="rw-status-badge" data-enquiry-id="<?php echo esc_attr( $row->id ); ?>"><?php echo restwell_crm_status_badge( $row->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
 								<div class="rw-status-actions">
 									<a class="rw-details-link" href="<?php echo esc_url( $detail_url ); ?>">
@@ -467,7 +571,7 @@ function restwell_crm_enquiries_page() {
 									</a>
 								</div>
 							</td>
-							<td class="column-rw-received rw-text-meta">
+							<td class="column-rw-received rw-text-meta" data-label="<?php echo esc_attr__( 'Received', 'restwell-retreats' ); ?>">
 								<?php echo esc_html( date_i18n( 'j M Y', strtotime( $row->submitted_at ) ) ); ?>
 								<br><?php echo esc_html( date_i18n( 'H:i', strtotime( $row->submitted_at ) ) ); ?>
 								<?php if ( $is_overdue ) : ?>
@@ -485,20 +589,6 @@ function restwell_crm_enquiries_page() {
 
 		<?php endif; ?>
 		</div><!-- .rw-enquiries-panel -->
-	</div>
-
-	<script>
-	( function() {
-		var selectAll = document.getElementById( 'cb-select-all' );
-		if ( selectAll ) {
-			selectAll.addEventListener( 'change', function() {
-				document.querySelectorAll( '[name="rw_bulk_ids[]"]' ).forEach( function( cb ) {
-					cb.checked = selectAll.checked;
-				} );
-			} );
-		}
-	} )();
-	</script>
 	<?php
 }
 
@@ -594,6 +684,25 @@ function restwell_crm_enquiry_detail( int $id ) {
 		<div class="rw-detail-layout">
 
 			<!-- ── Left: enquiry details ─────────────────────────────────── -->
+			<?php restwell_crm_render_enquiry_main( $row, $promote_url ); ?>
+
+			<!-- ── Right: status, notes, actions ────────────────────────── -->
+			<?php restwell_crm_render_enquiry_sidebar( $row, $notes, $statuses, $follow_up_value, $mailto, $promote_url ); ?>
+
+		</div><!-- grid -->
+	</div><!-- .wrap -->
+	<?php
+}
+
+/**
+ * Left column of the enquiry detail view: contact info, guest-guide link,
+ * booking summary, editable stay-dates form, and the free-text fields.
+ *
+ * @param object $row         Enquiry row from the database.
+ * @param string $promote_url "Add to Guest Guide" prefilled URL.
+ */
+function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
+	?>
 			<div class="rw-detail-layout__main">
 				<div class="postbox">
 					<div class="postbox-header">
@@ -826,8 +935,22 @@ function restwell_crm_enquiry_detail( int $id ) {
 					</div><!-- .inside -->
 				</div><!-- .postbox -->
 			</div>
+	<?php
+}
 
-			<!-- ── Right: status, notes, actions ────────────────────────── -->
+/**
+ * Right column of the enquiry detail view: status/follow-up form, staff
+ * notes, activity log, and the quick-contact / promote / post-stay actions.
+ *
+ * @param object $row              Enquiry row from the database.
+ * @param array  $notes            Activity log rows for this enquiry.
+ * @param array  $statuses         Status slug => info map.
+ * @param string $follow_up_value  Follow-up date formatted for datetime-local input.
+ * @param string $mailto           Pre-filled mailto: link.
+ * @param string $promote_url      "Add to Guest Guide" prefilled URL.
+ */
+function restwell_crm_render_enquiry_sidebar( $row, array $notes, array $statuses, string $follow_up_value, string $mailto, string $promote_url ) {
+	?>
 			<div class="rw-detail-layout__sidebar">
 				<!-- Status + follow-up form -->
 				<form method="post" action="">
@@ -994,8 +1117,5 @@ function restwell_crm_enquiry_detail( int $id ) {
 			<?php endif; ?>
 
 			</div><!-- right column -->
-
-		</div><!-- grid -->
-	</div><!-- .wrap -->
 	<?php
 }

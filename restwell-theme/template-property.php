@@ -16,17 +16,28 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">The Property</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">Accessible bungalow: rooms, wet room and kit</h1>
-            <p>Take a room-by-room tour of Restwell. See the bedrooms, wet room, living areas, kitchen, garden, and the access equipment already in place.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Accessible bungalow: rooms, wet room and kit',
+		'intro'      => 'Take a room-by-room tour of Restwell. See the bedrooms, wet room, living areas, kitchen, garden, and the access equipment already in place.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'The Property',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
@@ -201,15 +212,27 @@ get_header();
       </div>
     </section>
 
-    <section class="section-y band-subtle" id="care" aria-labelledby="care-h">
+    <section class="section-y band-teal" id="care" aria-labelledby="care-h">
       <div class="container">
-        <header class="section-head section-head--tight">
-          <p class="eyebrow">Optional care</p>
-          <h2 id="care-h">Care support is available if you need it</h2>
-          <p class="lede">Professional care support is available on site through Continuity, our CQC-regulated sister company.</p>
-        </header>
-        <p class="lede">Just ask when you enquire, and care can be arranged at the same time as your booking. Or, if you prefer, you can bring your own carer.</p>
-        <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a></p>
+        <div class="split">
+          <div class="band-teal__stack">
+            <p class="eyebrow eyebrow--on-dark">Optional care</p>
+            <h2 id="care-h">Care support is available if you need it</h2>
+            <p class="lede">Professional care support is available on site through Continuity, our CQC-regulated sister company. Just ask when you enquire, and care can be arranged at the same time as your booking. Or, if you prefer, you can bring your own carer.</p>
+            <ul class="checklist">
+              <li>Personal care: washing, dressing and daily routines at agreed times</li>
+              <li>Visiting care: short daytime visits, or support for a promenade or town trip</li>
+              <li>Mobility and hoisting: transfers with the on-site ceiling track and wet-room kit</li>
+            </ul>
+            <div class="band-teal__actions">
+              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+              <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>">See care guide rates</a>
+            </div>
+          </div>
+          <div class="split__media">
+            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-2-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails and shower seat" width="900" height="675" loading="lazy" />
+          </div>
+        </div>
       </div>
     </section>
 

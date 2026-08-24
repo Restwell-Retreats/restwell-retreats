@@ -146,6 +146,9 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 	if ( $seed_media ) {
 		restwell_upload_theme_logos( $result );
 		restwell_upload_partner_logos( $home_id, $result, $force );
+		if ( function_exists( 'restwell_seed_page_hero_stock_images' ) ) {
+			$result['page_hero_stock'] = restwell_seed_page_hero_stock_images();
+		}
 
 		$run_regen = ! $skip_image_regen && apply_filters( 'restwell_theme_setup_run_image_subsize_regen', true, $force, $seed_media );
 		$result['image_regen_skipped'] = ! $run_regen;

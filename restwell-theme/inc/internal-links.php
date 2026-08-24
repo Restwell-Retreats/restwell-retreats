@@ -664,13 +664,6 @@ function restwell_orphan_audit_structural_inbound() {
 		}
 	}
 
-	// Contact page: linked from enquire (see template-enquire.php).
-	$contact_url = restwell_get_published_page_url( 'contact' );
-	$key         = restwell_orphan_audit_path_key( $contact_url );
-	if ( '' !== $key ) {
-		$inbound[ $key ] = true;
-	}
-
 	// Home → three pillars (and conversion when published).
 	foreach ( array_keys( restwell_get_pillar_cluster_map() ) as $pillar_slug ) {
 		$key = restwell_orphan_audit_path_key( restwell_get_pillar_url( $pillar_slug ) );

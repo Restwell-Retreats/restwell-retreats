@@ -182,6 +182,36 @@ function restwell_seo_pages_handle_save() {
 add_action( 'admin_init', 'restwell_seo_pages_handle_save' );
 
 /**
+ * Slugs that must not appear in SEO admin lists (retired URLs + WP install stubs).
+ *
+ * @param string $post_type page|post.
+ * @return string[]
+ */
+function restwell_seo_admin_excluded_slugs( string $post_type ) {
+	if ( 'post' === $post_type ) {
+		return array( 'hello-world' );
+	}
+	return array( 'contact', 'sample-page' );
+}
+
+/**
+ * Post IDs to hide from the SEO list for a post type.
+ *
+ * @param string $post_type page|post.
+ * @return int[]
+ */
+function restwell_seo_admin_excluded_ids( string $post_type ) {
+	$ids = array();
+	foreach ( restwell_seo_admin_excluded_slugs( $post_type ) as $slug ) {
+		$found = get_page_by_path( $slug, OBJECT, $post_type );
+		if ( $found instanceof WP_Post ) {
+			$ids[] = (int) $found->ID;
+		}
+	}
+	return array_values( array_filter( $ids ) );
+}
+
+/**
  * Render the SEO list table (pages or posts).
  *
  * @param string $post_type page|post.
@@ -192,19 +222,23 @@ function restwell_seo_pages_render_list( string $post_type, string $menu_slug ) 
 	$paged  = isset( $_GET['paged'] ) ? max( 1, absint( $_GET['paged'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$per_page = 20;
 
-	$query = new WP_Query(
-		array(
-			'post_type'              => $post_type,
-			'post_status'            => array( 'publish', 'draft', 'pending', 'private', 'future' ),
-			'posts_per_page'         => $per_page,
-			'paged'                  => $paged,
-			's'                      => $search,
-			'orderby'                => 'title',
-			'order'                  => 'ASC',
-			'update_post_meta_cache' => true,
-			'no_found_rows'          => false,
-		)
+	$query_args = array(
+		'post_type'              => $post_type,
+		'post_status'            => array( 'publish', 'draft', 'pending', 'private', 'future' ),
+		'posts_per_page'         => $per_page,
+		'paged'                  => $paged,
+		's'                      => $search,
+		'orderby'                => 'title',
+		'order'                  => 'ASC',
+		'update_post_meta_cache' => true,
+		'no_found_rows'          => false,
 	);
+	$exclude_ids = restwell_seo_admin_excluded_ids( $post_type );
+	if ( ! empty( $exclude_ids ) ) {
+		$query_args['post__not_in'] = $exclude_ids;
+	}
+
+	$query = new WP_Query( $query_args );
 
 	$heading = ( 'post' === $post_type )
 		? __( 'SEO — Blog posts', 'restwell-retreats' )
@@ -213,189 +247,224 @@ function restwell_seo_pages_render_list( string $post_type, string $menu_slug ) 
 	$list_bad  = 0;
 	$list_warn = 0;
 	$list_ok   = 0;
+	$rows      = array();
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$post_obj  = get_post();
+			$post_id   = get_the_ID();
+			$seo_title = (string) get_post_meta( $post_id, 'meta_title', true );
+			$focus_kp  = (string) get_post_meta( $post_id, 'focus_keyphrase', true );
+			$noindex   = (bool) get_post_meta( $post_id, 'meta_noindex', true );
+			$edit_url  = add_query_arg(
+				array(
+					'page' => $menu_slug,
+					'edit' => $post_id,
+				),
+				admin_url( 'admin.php' )
+			);
+			$content_url  = get_edit_post_link( $post_id, 'raw' );
+			$status_obj   = get_post_status_object( get_post_status() );
+			$status_label = ( $status_obj && isset( $status_obj->label ) ) ? $status_obj->label : get_post_status();
+
+			$summary = ( $post_obj instanceof WP_Post && function_exists( 'restwell_seo_checklist_summarize_post_list' ) )
+				? restwell_seo_checklist_summarize_post_list( $post_obj )
+				: array(
+					'status' => 'ok',
+					'bad'    => 0,
+					'warn'   => 0,
+					'info'   => 0,
+					'issues' => array(),
+				);
+
+			$dupes = ( $post_obj instanceof WP_Post && function_exists( 'restwell_seo_checklist_duplicate_keyphrase_ids' ) )
+				? restwell_seo_checklist_duplicate_keyphrase_ids( $post_obj )
+				: array();
+			if ( ! empty( $dupes ) ) {
+				$summary['warn']     = (int) $summary['warn'] + 1;
+				$summary['status']   = ( 'bad' === $summary['status'] ) ? 'bad' : 'warn';
+				$summary['issues'][] = array(
+					'id'       => 'cannibal',
+					'severity' => 'warn',
+					'message'  => sprintf(
+						/* translators: %s: other page titles */
+						__( 'Same focus keyphrase as: %s', 'restwell-retreats' ),
+						implode(
+							', ',
+							array_map(
+								static function ( $id ) {
+									$t = get_the_title( $id );
+									return $t !== '' ? $t : '#' . (string) $id;
+								},
+								array_slice( $dupes, 0, 3 )
+							)
+						)
+					),
+				);
+			}
+
+			if ( 'bad' === $summary['status'] ) {
+				++$list_bad;
+			} elseif ( 'warn' === $summary['status'] ) {
+				++$list_warn;
+			} else {
+				++$list_ok;
+			}
+
+			$action_issues = array_values(
+				array_filter(
+					$summary['issues'],
+					static function ( $issue ) {
+						return in_array( $issue['severity'] ?? '', array( 'error', 'warn' ), true );
+					}
+				)
+			);
+			$tip_issues = array_values(
+				array_filter(
+					$summary['issues'],
+					static function ( $issue ) {
+						return ( $issue['severity'] ?? '' ) === 'info';
+					}
+				)
+			);
+
+			$rows[] = array(
+				'post_id'        => $post_id,
+				'title'          => get_the_title() ?: __( '(no title)', 'restwell-retreats' ),
+				'edit_url'       => $edit_url,
+				'content_url'    => $content_url,
+				'permalink'      => get_permalink( $post_id ),
+				'seo_title'      => $seo_title,
+				'focus_kp'       => $focus_kp,
+				'status_label'   => $status_label,
+				'noindex'        => $noindex,
+				'status'         => $summary['status'],
+				'badge_class'    => 'rw-seo-flag rw-seo-flag--' . sanitize_html_class( $summary['status'] ),
+				'badge_label'    => function_exists( 'restwell_seo_checklist_badge_label' )
+					? restwell_seo_checklist_badge_label( $summary )
+					: '',
+				'action_issues'  => $action_issues,
+				'tip_issues'     => $tip_issues,
+			);
+		}
+		wp_reset_postdata();
+	}
 
 	?>
 	<div class="wrap rw-seo-dash">
 		<h1 class="wp-heading-inline"><?php echo esc_html( $heading ); ?></h1>
+		<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" class="search-box">
+			<input type="hidden" name="page" value="<?php echo esc_attr( $menu_slug ); ?>" />
+			<label class="screen-reader-text" for="restwell-seo-search"><?php esc_html_e( 'Search', 'restwell-retreats' ); ?></label>
+			<input type="search" id="restwell-seo-search" name="s" value="<?php echo esc_attr( $search ); ?>" />
+			<?php submit_button( __( 'Search', 'restwell-retreats' ), '', '', false, array( 'id' => 'search-submit' ) ); ?>
+		</form>
 		<hr class="wp-header-end" />
 
-		<p class="description">
-			<?php esc_html_e( 'Edit search titles, descriptions, and social previews here. Page content is still edited under Pages.', 'restwell-retreats' ); ?>
+		<p class="description rw-seo-dash__lead">
+			<?php esc_html_e( 'Search titles, descriptions, and social previews. Page copy is still edited under Pages.', 'restwell-retreats' ); ?>
 		</p>
 
-		<form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" class="rw-seo-dash__search search-form">
-			<input type="hidden" name="page" value="<?php echo esc_attr( $menu_slug ); ?>" />
-			<p class="search-box">
-				<label class="screen-reader-text" for="restwell-seo-search"><?php esc_html_e( 'Search', 'restwell-retreats' ); ?></label>
-				<input type="search" id="restwell-seo-search" name="s" value="<?php echo esc_attr( $search ); ?>" />
-				<?php submit_button( __( 'Search', 'restwell-retreats' ), '', '', false ); ?>
-			</p>
-		</form>
-
-		<table class="wp-list-table widefat fixed striped table-view-list rw-seo-dash__table">
-			<thead>
-				<tr>
-					<th scope="col" class="column-title column-primary"><?php esc_html_e( 'Title', 'restwell-retreats' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'SEO title', 'restwell-retreats' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Focus keyphrase', 'restwell-retreats' ); ?></th>
-					<th scope="col" class="column-rw-seo-flags"><?php esc_html_e( 'SEO check', 'restwell-retreats' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Status', 'restwell-retreats' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Hidden from Google?', 'restwell-retreats' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if ( ! $query->have_posts() ) : ?>
-					<tr>
-						<td colspan="6"><?php esc_html_e( 'No items found.', 'restwell-retreats' ); ?></td>
-					</tr>
-				<?php else : ?>
-					<?php
-					while ( $query->have_posts() ) :
-						$query->the_post();
-						$post_obj  = get_post();
-						$post_id   = get_the_ID();
-						$seo_title = (string) get_post_meta( $post_id, 'meta_title', true );
-						$focus_kp  = (string) get_post_meta( $post_id, 'focus_keyphrase', true );
-						$noindex   = (bool) get_post_meta( $post_id, 'meta_noindex', true );
-						$edit_url  = add_query_arg(
-							array(
-								'page' => $menu_slug,
-								'edit' => $post_id,
-							),
-							admin_url( 'admin.php' )
-						);
-						$content_url = get_edit_post_link( $post_id, 'raw' );
-
-						$summary = ( $post_obj instanceof WP_Post && function_exists( 'restwell_seo_checklist_summarize_post_list' ) )
-							? restwell_seo_checklist_summarize_post_list( $post_obj )
-							: array(
-								'status' => 'ok',
-								'bad'    => 0,
-								'warn'   => 0,
-								'issues' => array(),
-							);
-
-						$dupes = ( $post_obj instanceof WP_Post && function_exists( 'restwell_seo_checklist_duplicate_keyphrase_ids' ) )
-							? restwell_seo_checklist_duplicate_keyphrase_ids( $post_obj )
-							: array();
-						if ( ! empty( $dupes ) ) {
-							$summary['warn']   = (int) $summary['warn'] + 1;
-							$summary['status'] = ( 'bad' === $summary['status'] ) ? 'bad' : 'warn';
-							$summary['issues'][] = array(
-								'id'       => 'cannibal',
-								'severity' => 'warn',
-								'message'  => sprintf(
-									/* translators: %s: other page titles */
-									__( 'Same focus keyphrase as: %s', 'restwell-retreats' ),
-									implode(
-										', ',
-										array_map(
-											static function ( $id ) {
-												$t = get_the_title( $id );
-												return $t !== '' ? $t : '#' . (string) $id;
-											},
-											array_slice( $dupes, 0, 3 )
-										)
-									)
-								),
-							);
-						}
-
-						if ( 'bad' === $summary['status'] ) {
-							++$list_bad;
-						} elseif ( 'warn' === $summary['status'] ) {
-							++$list_warn;
-						} else {
-							++$list_ok;
-						}
-
-						$badge_class = 'rw-seo-flag rw-seo-flag--' . sanitize_html_class( $summary['status'] );
-						$badge_label = function_exists( 'restwell_seo_checklist_badge_label' )
-							? restwell_seo_checklist_badge_label( $summary )
-							: '';
-						?>
-						<tr>
-							<td class="column-title column-primary" data-colname="<?php esc_attr_e( 'Title', 'restwell-retreats' ); ?>">
-								<strong>
-									<a class="row-title" href="<?php echo esc_url( $edit_url ); ?>">
-										<?php echo esc_html( get_the_title() ?: __( '(no title)', 'restwell-retreats' ) ); ?>
-									</a>
-								</strong>
-								<div class="row-actions">
-									<span class="edit">
-										<a href="<?php echo esc_url( $edit_url ); ?>"><?php esc_html_e( 'Edit SEO', 'restwell-retreats' ); ?></a> |
-									</span>
-									<?php if ( $content_url ) : ?>
-										<span class="content">
-											<a href="<?php echo esc_url( $content_url ); ?>"><?php esc_html_e( 'Edit content', 'restwell-retreats' ); ?></a> |
-										</span>
-									<?php endif; ?>
-									<span class="view">
-										<a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View', 'restwell-retreats' ); ?></a>
-									</span>
-								</div>
-								<button type="button" class="toggle-row"><span class="screen-reader-text"><?php esc_html_e( 'Show more details', 'restwell-retreats' ); ?></span></button>
-							</td>
-							<td data-colname="<?php esc_attr_e( 'SEO title', 'restwell-retreats' ); ?>">
-								<?php if ( $seo_title !== '' ) : ?>
-									<?php echo esc_html( $seo_title ); ?>
-								<?php else : ?>
-									<span class="description"><?php esc_html_e( 'Using default', 'restwell-retreats' ); ?></span>
-								<?php endif; ?>
-							</td>
-							<td data-colname="<?php esc_attr_e( 'Focus keyphrase', 'restwell-retreats' ); ?>">
-								<?php if ( $focus_kp !== '' ) : ?>
-									<?php echo esc_html( $focus_kp ); ?>
-								<?php else : ?>
-									<span class="description">&mdash;</span>
-								<?php endif; ?>
-							</td>
-							<td class="column-rw-seo-flags" data-colname="<?php esc_attr_e( 'SEO check', 'restwell-retreats' ); ?>">
-								<span class="<?php echo esc_attr( $badge_class ); ?>"><?php echo esc_html( $badge_label ); ?></span>
-								<?php if ( ! empty( $summary['issues'] ) ) : ?>
-									<ul class="rw-seo-flag__list">
-										<?php foreach ( array_slice( $summary['issues'], 0, 3 ) as $issue ) : ?>
-											<li class="rw-seo-flag__item rw-seo-flag__item--<?php echo esc_attr( $issue['severity'] ); ?>">
-												<?php echo esc_html( $issue['message'] ); ?>
-											</li>
-										<?php endforeach; ?>
-										<?php if ( count( $summary['issues'] ) > 3 ) : ?>
-											<li class="rw-seo-flag__more">
-												<a href="<?php echo esc_url( $edit_url ); ?>">
-													<?php
-													echo esc_html(
-														sprintf(
-															/* translators: %d: remaining issue count */
-															__( '+%d more — Edit SEO', 'restwell-retreats' ),
-															count( $summary['issues'] ) - 3
-														)
-													);
-													?>
-												</a>
-											</li>
-										<?php endif; ?>
-									</ul>
-								<?php endif; ?>
-							</td>
-							<td data-colname="<?php esc_attr_e( 'Status', 'restwell-retreats' ); ?>">
-								<?php echo esc_html( get_post_status_object( get_post_status() )->label ?? get_post_status() ); ?>
-							</td>
-							<td data-colname="<?php esc_attr_e( 'Hidden from Google?', 'restwell-retreats' ); ?>">
-								<?php echo $noindex ? esc_html__( 'Yes (noindex)', 'restwell-retreats' ) : esc_html__( 'No', 'restwell-retreats' ); ?>
-							</td>
-						</tr>
-					<?php endwhile; ?>
-					<?php wp_reset_postdata(); ?>
-				<?php endif; ?>
-			</tbody>
-		</table>
-
 		<?php if ( ( $list_ok + $list_bad + $list_warn ) > 0 ) : ?>
-			<div class="rw-seo-dash__summary" aria-live="polite">
-				<strong><?php esc_html_e( 'This page of results:', 'restwell-retreats' ); ?></strong>
-				<span class="rw-seo-flag rw-seo-flag--bad"><?php echo esc_html( sprintf( /* translators: %d: count */ _n( '%d needs work', '%d need work', $list_bad, 'restwell-retreats' ), $list_bad ) ); ?></span>
-				<span class="rw-seo-flag rw-seo-flag--warn"><?php echo esc_html( sprintf( /* translators: %d: count */ _n( '%d suggestion', '%d suggestions', $list_warn, 'restwell-retreats' ), $list_warn ) ); ?></span>
-				<span class="rw-seo-flag rw-seo-flag--ok"><?php echo esc_html( sprintf( /* translators: %d: count */ _n( '%d looking good', '%d looking good', $list_ok, 'restwell-retreats' ), $list_ok ) ); ?></span>
+			<p class="rw-seo-dash__summary" aria-live="polite">
+				<?php if ( $list_bad ) : ?>
+					<span class="rw-seo-flag rw-seo-flag--bad"><?php echo esc_html( sprintf( /* translators: %d: count */ _n( '%d needs work', '%d need work', $list_bad, 'restwell-retreats' ), $list_bad ) ); ?></span>
+				<?php endif; ?>
+				<?php if ( $list_warn ) : ?>
+					<span class="rw-seo-flag rw-seo-flag--warn"><?php echo esc_html( sprintf( /* translators: %d: count */ _n( '%d suggestion', '%d suggestions', $list_warn, 'restwell-retreats' ), $list_warn ) ); ?></span>
+				<?php endif; ?>
+				<?php if ( $list_ok ) : ?>
+					<span class="rw-seo-flag rw-seo-flag--ok"><?php echo esc_html( sprintf( /* translators: %d: count */ _n( '%d looking good', '%d looking good', $list_ok, 'restwell-retreats' ), $list_ok ) ); ?></span>
+				<?php endif; ?>
+			</p>
+		<?php endif; ?>
+
+		<?php if ( empty( $rows ) ) : ?>
+			<p class="rw-seo-dash__empty"><?php esc_html_e( 'No items found.', 'restwell-retreats' ); ?></p>
+		<?php else : ?>
+			<div class="rw-seo-dash__table-wrap">
+				<table class="widefat striped rw-seo-dash__table">
+					<thead>
+						<tr>
+							<th scope="col" class="column-rw-seo-page"><?php echo esc_html( 'post' === $post_type ? __( 'Post', 'restwell-retreats' ) : __( 'Page', 'restwell-retreats' ) ); ?></th>
+							<th scope="col" class="column-rw-seo-title"><?php esc_html_e( 'SEO title', 'restwell-retreats' ); ?></th>
+							<th scope="col" class="column-rw-seo-keyphrase"><?php esc_html_e( 'Keyphrase', 'restwell-retreats' ); ?></th>
+							<th scope="col" class="column-rw-seo-status"><?php esc_html_e( 'Status', 'restwell-retreats' ); ?></th>
+							<th scope="col" class="column-rw-seo-issues"><?php esc_html_e( 'Issues', 'restwell-retreats' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $rows as $row ) : ?>
+							<tr class="rw-seo-dash__row rw-seo-dash__row--<?php echo esc_attr( $row['status'] ); ?>">
+								<th scope="row" class="column-rw-seo-page">
+									<strong>
+										<a class="row-title" href="<?php echo esc_url( $row['edit_url'] ); ?>">
+											<?php echo esc_html( $row['title'] ); ?>
+										</a>
+									</strong>
+									<div class="row-actions">
+										<span class="edit">
+											<a href="<?php echo esc_url( $row['edit_url'] ); ?>"><?php esc_html_e( 'Edit SEO', 'restwell-retreats' ); ?></a>
+										</span>
+										<?php if ( $row['content_url'] ) : ?>
+											<span class="content"> | <a href="<?php echo esc_url( $row['content_url'] ); ?>"><?php esc_html_e( 'Edit content', 'restwell-retreats' ); ?></a></span>
+										<?php endif; ?>
+										<span class="view"> | <a href="<?php echo esc_url( $row['permalink'] ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View', 'restwell-retreats' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a></span>
+									</div>
+								</th>
+								<td class="column-rw-seo-title">
+									<?php
+									if ( $row['seo_title'] !== '' ) {
+										echo esc_html( $row['seo_title'] );
+									} else {
+										echo '<span class="rw-seo-dash__muted">' . esc_html__( 'Using default', 'restwell-retreats' ) . '</span>';
+									}
+									?>
+								</td>
+								<td class="column-rw-seo-keyphrase">
+									<?php
+									if ( $row['focus_kp'] !== '' ) {
+										echo esc_html( $row['focus_kp'] );
+									} else {
+										echo '<span class="rw-seo-dash__muted">&mdash;</span>';
+									}
+									?>
+								</td>
+								<td class="column-rw-seo-status">
+									<?php echo esc_html( $row['status_label'] ); ?>
+									<?php if ( $row['noindex'] ) : ?>
+										<span class="rw-seo-dash__noindex"><?php esc_html_e( 'noindex', 'restwell-retreats' ); ?></span>
+									<?php endif; ?>
+								</td>
+								<td class="column-rw-seo-issues">
+									<span class="<?php echo esc_attr( $row['badge_class'] ); ?>"><?php echo esc_html( $row['badge_label'] ); ?></span>
+									<?php if ( ! empty( $row['action_issues'] ) ) : ?>
+										<ul class="rw-seo-flag__list rw-seo-flag__list--actions">
+											<?php foreach ( array_slice( $row['action_issues'], 0, 2 ) as $issue ) : ?>
+												<li class="rw-seo-flag__item rw-seo-flag__item--<?php echo esc_attr( $issue['severity'] ); ?>">
+													<?php echo esc_html( $issue['message'] ); ?>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									<?php endif; ?>
+									<?php if ( ! empty( $row['tip_issues'] ) ) : ?>
+										<details class="rw-seo-dash__tips">
+											<summary><?php esc_html_e( 'Tips', 'restwell-retreats' ); ?></summary>
+											<ul class="rw-seo-flag__list">
+												<?php foreach ( $row['tip_issues'] as $issue ) : ?>
+													<li class="rw-seo-flag__item rw-seo-flag__item--info">
+														<?php echo esc_html( $issue['message'] ); ?>
+													</li>
+												<?php endforeach; ?>
+											</ul>
+										</details>
+									<?php endif; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
 			</div>
 		<?php endif; ?>
 
@@ -432,6 +501,7 @@ function restwell_seo_pages_render_list( string $post_type, string $menu_slug ) 
 	</div>
 	<?php
 }
+
 
 /**
  * Render the SEO-only edit screen for one page or post.
@@ -565,7 +635,7 @@ function restwell_seo_pages_edit_screen_notice( $post ) {
 			echo wp_kses_post(
 				sprintf(
 					/* translators: %s: link to SEO edit screen */
-					__( 'SEO title, description, and social settings are managed under %s.', 'restwell-retreats' ),
+					__( 'Search titles and meta live under %s — keep editing page copy here.', 'restwell-retreats' ),
 					'<a href="' . esc_url( $url ) . '"><strong>' . esc_html__( 'SEO → Edit SEO', 'restwell-retreats' ) . '</strong></a>'
 				)
 			);

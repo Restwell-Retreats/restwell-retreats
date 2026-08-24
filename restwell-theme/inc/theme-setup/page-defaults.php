@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function restwell_get_theme_setup_pages() {
+	// Contact is retired: /contact/ 301s to /enquire/. Do not add it here.
+	// WP demo leftovers (sample-page, hello-world) are also excluded.
 	return array(
 		'Home'               => 'home',
 		'The Property'       => 'the-property',

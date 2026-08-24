@@ -2,9 +2,9 @@
 
 Tickable checklist. Finish this before WordPress conversion / Tailwind teardown.
 
-**Rule:** `*-concept.html` is the source of truth. Edit those files, `shared.css`, and `shared.js` directly. There is no mockup builder — do not add `_build_mockups.py` (or any generator) back. Do not regenerate pages from Python.
+**Rule:** `*-concept.html` is the source of truth. Edit those files plus `assets/css/shared.css` and `assets/js/shared.js` (one copy each — mockups link to them). There is no mockup builder — do not add `_build_mockups.py` (or any generator) back. Do not regenerate pages from Python.
 
-Keep chrome consistent by copying header/footer from an existing concept page when you add a new one. Shared behaviour stays in `shared.js`; shared look stays in `shared.css`.
+Keep chrome consistent by copying header/footer from an existing concept page when you add a new one. Shared behaviour stays in `assets/js/shared.js`; shared look stays in `assets/css/shared.css`.
 
 ```bash
 # Serve from theme root so ../assets/images resolves (not from mockups/)
@@ -36,7 +36,7 @@ cd restwell-theme && python3 -m http.server 8765
 
 - [x] Header/footer markup matches across pages (copy from an existing concept; keep `site-header` / `site-footer`)
 - [x] No duplicate chrome blocks inside page bodies
-- [x] Every `*-concept.html` includes `shared.css`, `shared.js`, `site-header`, `site-footer`
+- [x] Every `*-concept.html` includes `../assets/css/shared.css`, `../assets/js/shared.js`, `site-header`, `site-footer`
 - [x] No page-local nav / FAQ / solidify scripts (only `shared.js`)
 - [x] Active nav: `aria-current="page"` / `is-active` on the current page
 

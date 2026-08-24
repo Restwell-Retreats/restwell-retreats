@@ -151,7 +151,7 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 			<div class="rw-seo__social-preview" id="rw-social-fb">
 				<div class="rw-seo__social-img" id="rw-social-fb-img">
 					<?php if ( $og_image_url ) : ?>
-						<img src="<?php echo esc_url( $og_image_url ); ?>" alt="" />
+						<img src="<?php echo esc_url( $og_image_url ); ?>" alt="<?php echo esc_attr__( 'Social image preview', 'restwell-retreats' ); ?>" />
 					<?php else : ?>
 						<span class="rw-seo__social-placeholder"><?php esc_html_e( 'No image set', 'restwell-retreats' ); ?></span>
 					<?php endif; ?>
@@ -166,7 +166,7 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 			<div class="rw-seo__social-preview rw-seo__social-preview--twitter" id="rw-social-tw" style="display:none;">
 				<div class="rw-seo__social-img" id="rw-social-tw-img">
 					<?php if ( $og_image_url ) : ?>
-						<img src="<?php echo esc_url( $og_image_url ); ?>" alt="" />
+						<img src="<?php echo esc_url( $og_image_url ); ?>" alt="<?php echo esc_attr__( 'Social image preview', 'restwell-retreats' ); ?>" />
 					<?php else : ?>
 						<span class="rw-seo__social-placeholder"><?php esc_html_e( 'No image set', 'restwell-retreats' ); ?></span>
 					<?php endif; ?>
@@ -185,7 +185,7 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 			<input type="hidden" id="rw_og_image_id" name="og_image_id" value="<?php echo esc_attr( (string) $og_image_id ); ?>" />
 			<div class="rw-seo__og-thumb" id="rw-og-thumb">
 				<?php if ( $og_image_url ) : ?>
-					<img src="<?php echo esc_url( $og_image_url ); ?>" alt="" />
+					<img src="<?php echo esc_url( $og_image_url ); ?>" alt="<?php echo esc_attr__( 'Selected social image', 'restwell-retreats' ); ?>" />
 				<?php endif; ?>
 			</div>
 			<div class="rw-seo__og-actions">
@@ -256,13 +256,15 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 				foreach ( $checks as $check ) :
 					$state = $check['state']; // 'ok', 'warn', 'bad'
 					$icons = array(
-						'ok' => '✓',
+						'ok'   => '✓',
 						'warn' => '~',
-						'bad' => '✗',
+						'bad'  => '✗',
+						'info' => 'i',
 					);
+					$icon  = $icons[ $state ] ?? '•';
 					?>
 				<li class="rw-seo__check rw-seo__check--<?php echo esc_attr( $state ); ?>" data-check="<?php echo esc_attr( $check['id'] ); ?>">
-					<span class="rw-seo__check-icon" aria-hidden="true"><?php echo $icons[ $state ]; // phpcs:ignore ?></span>
+					<span class="rw-seo__check-icon" aria-hidden="true"><?php echo esc_html( $icon ); ?></span>
 					<span class="rw-seo__check-label"><?php echo esc_html( $check['label'] ); ?></span>
 				</li>
 				<?php endforeach; ?>
@@ -274,8 +276,8 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 			<p class="rw-seo__section-label"><?php esc_html_e( 'Active schema', 'restwell-retreats' ); ?></p>
 			<ul class="rw-seo__schema-list">
 				<?php foreach ( $schema_items as $name => $active ) : ?>
-				<li class="rw-seo__schema-item rw-seo__schema-item--<?php echo $active ? 'on' : 'off'; ?>">
-					<span class="rw-seo__schema-dot" aria-hidden="true"><?php echo $active ? '✓' : '✗'; // phpcs:ignore ?></span>
+				<li class="rw-seo__schema-item rw-seo__schema-item--<?php echo esc_attr( $active ? 'on' : 'off' ); ?>">
+					<span class="rw-seo__schema-dot" aria-hidden="true"><?php echo esc_html( $active ? '✓' : '✗' ); ?></span>
 					<?php echo esc_html( $name ); ?>
 				</li>
 				<?php endforeach; ?>
@@ -446,78 +448,131 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 	$desc_len   = mb_strlen( $desc );
 	$word_count = str_word_count( $plain );
 	$has_og     = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
+	$has_site_og = ! $has_og && function_exists( 'restwell_get_default_og_image_url_for_request' )
+		? (bool) restwell_get_default_og_image_url_for_request( $post->ID )
+		: false;
 
 	$checks = array();
 
-	// 1 - title contains focus keyphrase.
+	$defaults_for_expect = function_exists( 'restwell_get_seo_default_meta_for_post_id' )
+		? restwell_get_seo_default_meta_for_post_id( $post->ID )
+		: array();
+	$expects_kp = ! empty( $defaults_for_expect['focus_keyphrase'] );
+
+	if ( $title === '' ) {
+		$checks[] = array(
+			'id'    => 'title_missing',
+			'label' => __( 'SEO title is missing', 'restwell-retreats' ),
+			'state' => 'bad',
+		);
+	}
+
+	if ( $desc === '' ) {
+		$checks[] = array(
+			'id'    => 'desc_missing',
+			'label' => __( 'Meta description is missing', 'restwell-retreats' ),
+			'state' => 'bad',
+		);
+	}
+
+	// 1 - title reflects focus keyphrase (token match).
 	if ( $kp === '' ) {
-		$state = 'warn';
-		$label = __( 'No focus keyphrase set (optional but recommended)', 'restwell-retreats' );
+		$checks[] = array(
+			'id'    => 'kp_missing',
+			'label' => $expects_kp
+				? __( 'No focus keyphrase set (this page has a theme default — add one)', 'restwell-retreats' )
+				: __( 'No focus keyphrase set (optional but recommended)', 'restwell-retreats' ),
+			'state' => $expects_kp ? 'bad' : 'warn',
+		);
 	} else {
-		$state = ( str_contains( $title_l, $kp ) ) ? 'ok' : 'bad';
-		$label = __( 'Focus keyphrase in SEO title', 'restwell-retreats' );
+		$kp_fn = function_exists( 'restwell_seo_checklist_keyphrase_tokens_match' )
+			? 'restwell_seo_checklist_keyphrase_tokens_match'
+			: null;
+		$in_title = $kp_fn
+			? restwell_seo_checklist_keyphrase_tokens_match( $title_l, $kp )
+			: str_contains( $title_l, $kp );
+		$checks[] = array(
+			'id'    => 'kp_title',
+			'label' => __( 'Focus keyphrase reflected in SEO title', 'restwell-retreats' ),
+			'state' => $in_title ? 'ok' : 'warn',
+		);
+		$in_desc = $kp_fn
+			? restwell_seo_checklist_keyphrase_tokens_match( $desc_l, $kp )
+			: str_contains( $desc_l, $kp );
+		$checks[] = array(
+			'id'    => 'kp_desc',
+			'label' => __( 'Focus keyphrase reflected in meta description', 'restwell-retreats' ),
+			'state' => $in_desc ? 'ok' : 'info',
+		);
 	}
-	$checks[] = array(
-		'id' => 'kp_title',
-		'label' => $label,
-		'state' => $state,
-	);
 
-	// 2 - description contains focus keyphrase.
-	if ( $kp === '' ) {
-		$state = 'warn';
-		$label = __( 'Focus keyphrase in meta description - set a keyphrase first', 'restwell-retreats' );
-	} else {
-		$state = ( str_contains( $desc_l, $kp ) ) ? 'ok' : 'bad';
-		$label = __( 'Focus keyphrase in meta description', 'restwell-retreats' );
+	// 3 - title length (tips, not hard fails for 30–45).
+	if ( $title_len > 0 ) {
+		if ( $title_len >= 30 && $title_len <= 60 ) {
+			$state = 'ok';
+			$label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (good range)', 'restwell-retreats' ),
+				$title_len
+			);
+		} elseif ( $title_len < 25 ) {
+			$state = 'warn';
+			$label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (very short — may be vague in search)', 'restwell-retreats' ),
+				$title_len
+			);
+		} elseif ( $title_len > 60 ) {
+			$state = 'info';
+			$label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (may truncate in Google ~50–60)', 'restwell-retreats' ),
+				$title_len
+			);
+		} else {
+			$state = 'info';
+			$label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (tip: 30–60 is a solid SERP range)', 'restwell-retreats' ),
+				$title_len
+			);
+		}
+		$checks[] = array(
+			'id'    => 'title_len',
+			'label' => $label,
+			'state' => $state,
+		);
 	}
-	$checks[] = array(
-		'id' => 'kp_desc',
-		'label' => $label,
-		'state' => $state,
-	);
 
-	// 3 - title length 50-60 chars.
-	if ( $title_len >= 50 && $title_len <= 60 ) {
-		$state = 'ok';
-	} elseif ( $title_len >= 40 ) {
-		$state = 'warn';
-	} else {
-		$state = 'bad';
+	// 4 - description length.
+	if ( $desc_len > 0 ) {
+		if ( $desc_len >= 120 && $desc_len <= 160 ) {
+			$state = 'ok';
+		} elseif ( $desc_len < 80 ) {
+			$state = 'warn';
+		} else {
+			$state = 'info';
+		}
+		$checks[] = array(
+			'id'    => 'desc_len',
+			'label' => sprintf(
+				/* translators: %d - character count */
+				__( 'Meta description length: %d characters (guide: 120–160)', 'restwell-retreats' ),
+				$desc_len
+			),
+			'state' => $state,
+		);
 	}
-	$checks[] = array(
-		'id'    => 'title_len',
-		'label' => sprintf(
-			/* translators: %d - character count */
-			__( 'SEO title length: %d characters (ideal: 50-60)', 'restwell-retreats' ),
-			$title_len
-		),
-		'state' => $state,
-	);
 
-	// 4 - description length 120-160 chars.
-	if ( $desc_len >= 120 && $desc_len <= 160 ) {
-		$state = 'ok';
-	} elseif ( $desc_len >= 100 ) {
-		$state = 'warn';
-	} else {
-		$state = 'bad';
-	}
-	$checks[] = array(
-		'id'    => 'desc_len',
-		'label' => sprintf(
-			/* translators: %d - character count */
-			__( 'Meta description length: %d characters (ideal: 120-160)', 'restwell-retreats' ),
-			$desc_len
-		),
-		'state' => $state,
-	);
-
-	// 5 - has featured image or OG image.
+	// 5 - featured / OG.
 	$checks[] = array(
 		'id'    => 'og_image',
-		'label' => __( 'Featured or OG image is set', 'restwell-retreats' ),
-		'state' => $has_og ? 'ok' : 'bad',
+		'label' => $has_og
+			? __( 'Featured or OG image is set', 'restwell-retreats' )
+			: ( $has_site_og
+				? __( 'No page OG/featured image — site default image will be used', 'restwell-retreats' )
+				: __( 'No OG/featured image and no usable site default', 'restwell-retreats' ) ),
+		'state' => $has_og ? 'ok' : ( $has_site_og ? 'info' : 'warn' ),
 	);
 
 	// 6 - content contains at least one heading (HTML corpus / derived heading meta).
@@ -528,13 +583,13 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		'state' => $has_heading ? 'ok' : ( $post->post_type === 'page' ? 'warn' : 'bad' ),
 	);
 
-	// 7 - word count over 300 (plain-text corpus only).
+	// 7 - word count (posts stricter).
 	if ( $word_count >= 300 ) {
 		$state = 'ok';
 	} elseif ( $word_count >= 150 ) {
 		$state = 'warn';
 	} else {
-		$state = 'bad';
+		$state = ( 'post' === $post->post_type ) ? 'bad' : 'warn';
 	}
 	$checks[] = array(
 		'id'    => 'word_count',
@@ -546,7 +601,7 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		'state' => $state,
 	);
 
-	// 8 - at least one internal link (HTML corpus / derived URL meta).
+	// 8 - at least one internal link.
 	$home_base    = untrailingslashit( home_url() );
 	$has_internal = preg_match( '/href=["\']\//', $html ) === 1
 		|| ( $home_base !== '' && preg_match( '#href=["\']' . preg_quote( $home_base, '#' ) . '/#', $html ) === 1 );
@@ -578,7 +633,7 @@ function restwell_seo_admin_schema_status( WP_Post $post, string $template ): ar
 		__( 'WebSite + WebPage + Organization + LocalBusiness (front page)', 'restwell-retreats' ) => $is_front,
 		__( 'LocalBusiness + Service (property template)', 'restwell-retreats' ) => $is_property && ! $is_front,
 		__( 'BreadcrumbList', 'restwell-retreats' ) => $breadcrumb,
-		__( 'FAQPage', 'restwell-retreats' ) => ( 'template-faq.php' === $template ) || ( 'template-pricing.php' === $template ) || ( 'template-care.php' === $template ) || $is_front,
+		__( 'FAQPage', 'restwell-retreats' ) => ( 'template-faq.php' === $template ) || ( 'template-pricing.php' === $template ) || ( 'template-care.php' === $template ) || ( 'template-resources.php' === $template ) || $is_front,
 		__( 'AboutPage', 'restwell-retreats' ) => ( 'template-our-story.php' === $template ),
 		__( 'CollectionPage', 'restwell-retreats' ) => ( 'template-resources.php' === $template ),
 		__( 'Service (optional care)', 'restwell-retreats' ) => ( 'template-care.php' === $template ),

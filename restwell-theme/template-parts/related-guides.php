@@ -28,18 +28,19 @@ $category_name  = isset( $data['category_name'] ) ? (string) $data['category_nam
 if ( empty( $posts ) && empty( $siblings ) && empty( $conversion ) ) {
 	return;
 }
-
-$link_class = 'rw-link-prose';
 ?>
-<section class="rw-section-y--compact bg-white border-t border-gray-100" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
-	<div class="container max-w-3xl">
-		<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="text-2xl font-serif text-[var(--deep-teal)] mb-6 m-0"><?php echo esc_html( $heading ); ?></h2>
-		<?php if ( $intro !== '' ) : ?>
-			<p class="text-gray-600 mb-6 leading-relaxed"><?php echo esc_html( $intro ); ?></p>
-		<?php endif; ?>
+<section class="section-y section-y--compact band-white" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+	<div class="container">
+		<header class="section-head section-head--tight">
+			<p class="eyebrow"><?php esc_html_e( 'Further reading', 'restwell-retreats' ); ?></p>
+			<h2 id="<?php echo esc_attr( $heading_id ); ?>"><?php echo esc_html( $heading ); ?></h2>
+			<?php if ( $intro !== '' ) : ?>
+				<p class="lede"><?php echo esc_html( $intro ); ?></p>
+			<?php endif; ?>
+		</header>
 
 		<?php if ( ! empty( $posts ) ) : ?>
-			<ul class="space-y-3 m-0 list-none p-0">
+			<ul class="link-list">
 				<?php foreach ( $posts as $guide_post ) : ?>
 					<?php
 					if ( ! $guide_post instanceof WP_Post ) {
@@ -52,17 +53,15 @@ $link_class = 'rw-link-prose';
 					}
 					?>
 					<li>
-						<a href="<?php echo esc_url( $guide_url ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
-							<?php echo esc_html( $guide_title ); ?>
-						</a>
+						<a href="<?php echo esc_url( $guide_url ); ?>"><?php echo esc_html( $guide_title ); ?></a>
 					</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
 
 		<?php if ( $category_url !== '' && $category_name !== '' ) : ?>
-			<p class="mt-6 mb-0 text-sm text-gray-600 leading-relaxed">
-				<a href="<?php echo esc_url( $category_url ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
+			<p class="section-follow">
+				<a class="text-link" href="<?php echo esc_url( $category_url ); ?>">
 					<?php
 					echo esc_html(
 						sprintf(
@@ -77,9 +76,9 @@ $link_class = 'rw-link-prose';
 		<?php endif; ?>
 
 		<?php if ( ! empty( $siblings ) ) : ?>
-			<div class="mt-8 pt-6 border-t border-gray-100">
-				<h3 class="text-lg font-serif text-[var(--deep-teal)] mb-3 m-0"><?php esc_html_e( 'Also on Restwell', 'restwell-retreats' ); ?></h3>
-				<ul class="space-y-3 m-0 list-none p-0">
+			<div class="section-follow">
+				<h3><?php esc_html_e( 'Also on Restwell', 'restwell-retreats' ); ?></h3>
+				<ul class="link-list">
 					<?php foreach ( $siblings as $sib ) : ?>
 						<?php
 						if ( empty( $sib['url'] ) || empty( $sib['label'] ) ) {
@@ -87,9 +86,7 @@ $link_class = 'rw-link-prose';
 						}
 						?>
 						<li>
-							<a href="<?php echo esc_url( $sib['url'] ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
-								<?php echo esc_html( $sib['label'] ); ?>
-							</a>
+							<a href="<?php echo esc_url( $sib['url'] ); ?>"><?php echo esc_html( $sib['label'] ); ?></a>
 						</li>
 					<?php endforeach; ?>
 				</ul>
@@ -97,9 +94,9 @@ $link_class = 'rw-link-prose';
 		<?php endif; ?>
 
 		<?php if ( ! empty( $conversion ) ) : ?>
-			<div class="mt-8 pt-6 border-t border-gray-100">
-				<h3 class="text-lg font-serif text-[var(--deep-teal)] mb-3 m-0"><?php esc_html_e( 'Plan your stay', 'restwell-retreats' ); ?></h3>
-				<ul class="space-y-3 m-0 list-none p-0">
+			<div class="section-follow">
+				<h3><?php esc_html_e( 'Plan your stay', 'restwell-retreats' ); ?></h3>
+				<ul class="link-list">
 					<?php foreach ( $conversion as $item ) : ?>
 						<?php
 						if ( empty( $item['url'] ) || empty( $item['label'] ) ) {
@@ -107,9 +104,7 @@ $link_class = 'rw-link-prose';
 						}
 						?>
 						<li>
-							<a href="<?php echo esc_url( $item['url'] ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
-								<?php echo esc_html( $item['label'] ); ?>
-							</a>
+							<a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a>
 						</li>
 					<?php endforeach; ?>
 				</ul>

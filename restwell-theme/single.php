@@ -10,8 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$fallback_img = get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastline-panorama.webp';
 ?>
 
 <main id="main-content">
@@ -92,14 +90,12 @@ $related = new WP_Query( $related_args );
 				<?php
 				while ( $related->have_posts() ) :
 					$related->the_post();
-					$thumb = get_the_post_thumbnail_url( get_the_ID(), 'medium_large' );
-					if ( ! $thumb ) {
-						$thumb = $fallback_img;
-					}
+					$related_id = get_the_ID();
+					list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $related_id, 'medium_large' );
 					?>
 					<li>
 						<article class="media-card">
-							<img src="<?php echo esc_url( $thumb ); ?>" alt="" width="640" height="480" loading="lazy" decoding="async" />
+							<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
 							<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 						</article>
 					</li>

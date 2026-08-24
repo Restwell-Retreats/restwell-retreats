@@ -139,7 +139,7 @@
       pillRoot.querySelectorAll('button').forEach(function (b) {
         var on = b === btn;
         b.classList.toggle('is-active', on);
-        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       var visible = [];
       faqRoot.querySelectorAll('.faq-item').forEach(function (item) {
@@ -167,11 +167,14 @@
   var fitCheck = document.querySelector('[data-fit-check]');
   if (fitCheck) {
     var fitInput = fitCheck.querySelector('[data-fit-input]');
-    var fitValueOut = fitCheck.querySelector('[data-fit-value]');
+    var fitNumber = fitCheck.querySelector('[data-fit-number]');
     var fitSummary = fitCheck.querySelector('[data-fit-summary]');
     var fitGauges = fitCheck.querySelectorAll('[data-fit-gauge]');
     var fitUnitBtns = fitCheck.querySelectorAll('[data-fit-unit]');
-    var FIT_TRACK_MAX = 1100; /* mm — a little headroom past the 1050mm slider max */
+    var fitMinLabel = fitCheck.querySelector('[data-fit-min-label]');
+    var fitMaxLabel = fitCheck.querySelector('[data-fit-max-label]');
+    var FIT_MIN = parseInt(fitInput.min, 10) || 500;
+    var FIT_MAX = parseInt(fitInput.max, 10) || 1050;
     var MM_PER_IN = 25.4;
     var fitUnit = 'mm';
 
@@ -182,14 +185,43 @@
       return Math.round(mm) + 'mm';
     };
 
+    var displayNumber = function (mm) {
+      if (fitUnit === 'in') {
+        return (mm / MM_PER_IN).toFixed(1);
+      }
+      return String(Math.round(mm));
+    };
+
     var joinList = function (items) {
       if (items.length === 1) return items[0];
       return items.slice(0, -1).join(', ') + ' and ' + items[items.length - 1];
     };
 
-    var renderFit = function () {
+    var syncNumberBounds = function () {
+      if (!fitNumber) return;
+      if (fitUnit === 'in') {
+        fitNumber.min = (FIT_MIN / MM_PER_IN).toFixed(1);
+        fitNumber.max = (FIT_MAX / MM_PER_IN).toFixed(1);
+        fitNumber.step = '0.1';
+      } else {
+        fitNumber.min = String(FIT_MIN);
+        fitNumber.max = String(FIT_MAX);
+        fitNumber.step = '1';
+      }
+    };
+
+    var renderFit = function (opts) {
+      var skipNumber = opts && opts.skipNumber;
       var chairWidth = parseInt(fitInput.value, 10);
-      fitValueOut.textContent = formatLength(chairWidth);
+      var sliderPct = ((chairWidth - FIT_MIN) / (FIT_MAX - FIT_MIN)) * 100;
+      fitInput.style.setProperty('--fit-slider-pct', sliderPct + '%');
+      fitInput.setAttribute('aria-valuetext', formatLength(chairWidth));
+
+      if (fitNumber && !skipNumber) {
+        fitNumber.value = displayNumber(chairWidth);
+      }
+      if (fitMinLabel) fitMinLabel.textContent = formatLength(FIT_MIN);
+      if (fitMaxLabel) fitMaxLabel.textContent = formatLength(FIT_MAX);
 
       var totalDoors = fitGauges.length;
       var failing = [];
@@ -197,17 +229,14 @@
 
       fitGauges.forEach(function (gauge) {
         var doorWidth = parseInt(gauge.getAttribute('data-door-width'), 10);
-        var track = gauge.querySelector('[data-fit-track]');
         var fill = gauge.querySelector('[data-fit-fill]');
         var spec = gauge.querySelector('[data-fit-spec]');
         var result = gauge.querySelector('[data-fit-result]');
         var name = gauge.getAttribute('data-fit-name');
 
-        var doorPct = Math.min((doorWidth / FIT_TRACK_MAX) * 100, 100);
-        var fillPct = Math.min((chairWidth / FIT_TRACK_MAX) * 100, 100);
-        track.style.setProperty('--door-pct', doorPct + '%');
+        var fillPct = Math.min((chairWidth / doorWidth) * 100, 100);
         fill.style.width = fillPct + '%';
-        spec.textContent = formatLength(doorWidth);
+        if (spec) spec.textContent = formatLength(doorWidth);
 
         var clearance = doorWidth - chairWidth;
         var fits = clearance >= 0;
@@ -215,10 +244,10 @@
         gauge.classList.toggle('fit-bar--tight', tight);
         gauge.classList.toggle('fit-bar--no', !fits);
         if (!fits) {
-          result.textContent = 'Doesn’t fit: ' + formatLength(Math.abs(clearance)) + ' too wide.';
+          result.textContent = 'Short by ' + formatLength(Math.abs(clearance)) + '.';
           failing.push(name);
         } else if (tight) {
-          result.textContent = 'Snug fit: ' + formatLength(clearance) + ' clearance.';
+          result.textContent = 'Tight: ' + formatLength(clearance) + ' clearance.';
           tightOnes.push(name);
         } else {
           result.textContent = formatLength(clearance) + ' clearance.';
@@ -226,24 +255,51 @@
       });
 
       var summaryState = 'ok';
-      var summaryText = 'Fits all doors comfortably.';
+      var summaryText = 'Comfortable clearance at both doors.';
       if (failing.length) {
         summaryState = 'no';
         summaryText = failing.length === totalDoors
-          ? 'Won’t fit through either door.'
-          : 'Won’t fit through ' + joinList(failing) + '.';
+          ? 'This width is wider than both doorways.'
+          : 'This width is wider than ' + joinList(failing) + '.';
       } else if (tightOnes.length) {
         summaryState = 'tight';
         summaryText = tightOnes.length === totalDoors
-          ? 'Tight fit at both doors.'
-          : 'Tight fit at ' + joinList(tightOnes) + '.';
+          ? 'Tight clearance at both doors.'
+          : 'Tight clearance at ' + joinList(tightOnes) + '.';
       }
       fitSummary.textContent = summaryText;
       fitSummary.classList.toggle('fit-check__summary--tight', summaryState === 'tight');
       fitSummary.classList.toggle('fit-check__summary--no', summaryState === 'no');
     };
 
-    fitInput.addEventListener('input', renderFit);
+    var commitNumber = function () {
+      if (!fitNumber) return;
+      var raw = parseFloat(fitNumber.value);
+      if (isNaN(raw)) {
+        renderFit();
+        return;
+      }
+      var mm = fitUnit === 'in' ? raw * MM_PER_IN : raw;
+      mm = Math.round(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
+      fitInput.value = String(mm);
+      renderFit();
+    };
+
+    fitInput.addEventListener('input', function () {
+      renderFit();
+    });
+
+    if (fitNumber) {
+      fitNumber.addEventListener('input', function () {
+        var raw = parseFloat(fitNumber.value);
+        if (isNaN(raw)) return;
+        var mm = fitUnit === 'in' ? raw * MM_PER_IN : raw;
+        mm = Math.round(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
+        fitInput.value = String(mm);
+        renderFit({ skipNumber: true });
+      });
+      fitNumber.addEventListener('change', commitNumber);
+    }
 
     fitUnitBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -252,11 +308,23 @@
         fitUnitBtns.forEach(function (b) {
           b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
         });
+        syncNumberBounds();
         renderFit();
       });
     });
 
+    syncNumberBounds();
     renderFit();
+
+    var fitSection = fitCheck.closest('#fit-check') || document;
+    fitSection.querySelectorAll('[data-fit-preset]').forEach(function (presetBtn) {
+      presetBtn.addEventListener('click', function () {
+        var mm = parseInt(presetBtn.getAttribute('data-fit-preset'), 10);
+        if (isNaN(mm)) return;
+        fitInput.value = String(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
+        renderFit();
+      });
+    });
   }
 
   /* ---------- Desktop dropdowns (The Bungalow, Plan your trip) ---------- */
@@ -322,7 +390,8 @@
   var panel = document.getElementById('mobile-nav');
   var header = document.querySelector('.site-header');
   var hero = document.querySelector('.hero');
-  var isInterior = document.body.classList.contains('page--interior');
+  var isInterior = document.body.classList.contains('page--interior')
+    && !document.body.classList.contains('has-photo-hero');
 
   if (toggle && panel && header) {
     function closeMenu() {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Concept port from mockups — Blog index.
+ * Blog index — lists published posts.
  *
  * @package Restwell_Retreats
  */
@@ -10,56 +10,114 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$blog_page_id = (int) get_option( 'page_for_posts', 0 );
 ?>
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Blog</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h"><?php echo esc_html( restwell_get_blog_index_heading() ); ?></h1>
-            <p><?php echo esc_html( restwell_get_blog_index_lede() ); ?></p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => restwell_get_blog_index_heading(),
+		'intro'      => restwell_get_blog_index_lede(),
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => __( 'Blog', 'restwell-retreats' ),
+				'url'   => '',
+			),
+		),
+		'post_id'    => $blog_page_id > 0 ? $blog_page_id : (int) get_queried_object_id(),
+	)
+);
+?>
 
     <section class="section-y band-white">
       <div class="container">
+        <?php if ( have_posts() ) : ?>
+          <?php
+          $card_index = 0;
+          $cards      = array();
+          while ( have_posts() ) :
+            the_post();
+            $post_id   = get_the_ID();
+            $title     = get_the_title();
+            $excerpt   = trim( (string) get_the_excerpt() );
+            if ( $excerpt === '' ) {
+              $excerpt = wp_trim_words( wp_strip_all_tags( get_the_content( null, false ) ), 24, '…' );
+            }
+            $category  = function_exists( 'restwell_get_primary_category' ) ? restwell_get_primary_category( $post_id ) : '';
+            $read_mins = function_exists( 'restwell_estimate_read_time' ) ? restwell_estimate_read_time( get_post_field( 'post_content', $post_id ) ) : 1;
+            $permalink = get_permalink( $post_id );
+
+            if ( 0 === $card_index ) {
+              list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $post_id, 'large' );
+              ?>
         <article class="blog-featured">
-          <a class="blog-featured__media" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" aria-hidden="true" tabindex="-1">
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastline-panorama.webp' ); ?>" alt="Whitstable coastline" width="1000" height="625" loading="lazy" />
+          <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true" tabindex="-1">
+            <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="625" loading="lazy" decoding="async" />
             <span class="blog-featured__scrim" aria-hidden="true"></span>
-            <span class="tag blog-featured__tag">Area guide</span>
+            <?php if ( $category !== '' ) : ?>
+              <span class="tag blog-featured__tag"><?php echo esc_html( $category ); ?></span>
+            <?php endif; ?>
           </a>
           <div class="blog-featured__overlay">
-            <p class="blog-meta blog-meta--overlay">8 min read</p>
-            <h2><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Accessible beaches and promenades near Whitstable</a></h2>
-            <p class="blog-featured__excerpt">Where the paved coast works for chairs, and where shingle means choosing the promenade instead.</p>
+            <p class="blog-meta blog-meta--overlay"><?php echo esc_html( sprintf( /* translators: %d: minutes */ _n( '%d min read', '%d min read', $read_mins, 'restwell-retreats' ), $read_mins ) ); ?></p>
+            <h2><a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_html( $title ); ?></a></h2>
+            <p class="blog-featured__excerpt"><?php echo esc_html( $excerpt ); ?></p>
           </div>
         </article>
+              <?php
+            } else {
+              $cards[] = array(
+                'permalink' => $permalink,
+                'title'     => $title,
+                'excerpt'   => $excerpt,
+                'category'  => $category,
+                'read_mins' => $read_mins,
+                'post_id'   => $post_id,
+              );
+            }
+            ++$card_index;
+          endwhile;
+          ?>
+          <?php if ( ! empty( $cards ) ) : ?>
         <ul class="card-grid card-grid--2" role="list" data-reveal>
+          <?php foreach ( $cards as $card ) : ?>
+            <?php list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $card['post_id'], 'medium_large' ); ?>
           <li><article class="media-card">
-            <a class="media-card__image" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" aria-hidden="true" tabindex="-1">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-marina-sunset.webp' ); ?>" alt="Marina at sunset" width="640" height="480" loading="lazy" />
-              <span class="tag media-card__tag">Planning</span>
+            <a class="media-card__image" href="<?php echo esc_url( $card['permalink'] ); ?>" aria-hidden="true" tabindex="-1">
+              <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
+              <?php if ( $card['category'] !== '' ) : ?>
+                <span class="tag media-card__tag"><?php echo esc_html( $card['category'] ); ?></span>
+              <?php endif; ?>
             </a>
-            <p class="blog-meta">5 min read</p>
-            <h3><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">What to pack for an accessible coastal stay</a></h3>
-            <p>A short list that assumes the hoist and wet room are already waiting.</p>
+            <p class="blog-meta"><?php echo esc_html( sprintf( /* translators: %d: minutes */ _n( '%d min read', '%d min read', $card['read_mins'], 'restwell-retreats' ), $card['read_mins'] ) ); ?></p>
+            <h3><a href="<?php echo esc_url( $card['permalink'] ); ?>"><?php echo esc_html( $card['title'] ); ?></a></h3>
+            <p><?php echo esc_html( $card['excerpt'] ); ?></p>
           </article></li>
-          <li><article class="media-card">
-            <a class="media-card__image" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>" aria-hidden="true" tabindex="-1">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-drone-aerial-view.webp' ); ?>" alt="Aerial view of Whitstable" width="640" height="480" loading="lazy" />
-              <span class="tag media-card__tag">Funding</span>
-            </a>
-            <p class="blog-meta">6 min read</p>
-            <h3><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>">Direct payments and short breaks: a plain overview</a></h3>
-            <p>How families and carers often start the conversation with their local authority.</p>
-          </article></li>
+          <?php endforeach; ?>
         </ul>
+          <?php endif; ?>
+          <?php
+          the_posts_pagination(
+            array(
+              'mid_size'  => 1,
+              'prev_text' => esc_html__( 'Newer posts', 'restwell-retreats' ),
+              'next_text' => esc_html__( 'Older posts', 'restwell-retreats' ),
+            )
+          );
+          ?>
+        <?php else : ?>
+          <p class="lede"><?php esc_html_e( 'More articles will appear here as the blog grows.', 'restwell-retreats' ); ?></p>
+        <?php endif; ?>
       </div>
     </section>
 

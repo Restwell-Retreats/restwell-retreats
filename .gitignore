@@ -149,6 +149,9 @@ vite.config.ts
 *.zip
 restwell-theme/restwell-theme
 
+# Mockup screenshot dumps (regenerable)
+restwell-theme/mockups/_shots/
+
 # Personal notes and reference docs
 ideas.md
 SEO_Web_Development.md

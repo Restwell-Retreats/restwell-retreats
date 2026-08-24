@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Enforce spacing-system governance rules for mockups/shared.css.
+"""Enforce spacing-system governance rules for assets/css/shared.css.
 
 Rules (see SPACING SYSTEM comment in shared.css):
   A. Every non-ladder --rhythm-* token needs a justification comment.
@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-DEFAULT_CSS = ROOT / "shared.css"
+DEFAULT_CSS = ROOT.parent / "assets" / "css" / "shared.css"
 
 SPACING_PROP_RE = re.compile(
     r"^(?P<prop>"

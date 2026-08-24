@@ -40,8 +40,8 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'wheelchair accessible holiday cottage',
 		),
 		'who-its-for'           => array(
-			'meta_title'       => 'Who Restwell Suits for Your Party',
-			'meta_description' => 'See who Restwell suits: wheelchair users, carers, OTs and commissioners. Check access fit, care options and funding routes before you enquire about dates.',
+			'meta_title'       => 'Accessible Stay Suitability for Your Party',
+			'meta_description' => 'Use this accessible stay suitability guide to see whether Restwell fits wheelchair users, carers, OTs and commissioners before you enquire about dates.',
 			'focus_keyphrase'  => 'accessible stay suitability',
 		),
 		// Deck meta for /pricing/ (template-pricing.php). Focus keyphrase owned by this URL only.
@@ -71,13 +71,13 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'fund accessible respite holiday',
 		),
 		'blog'                  => array(
-			'meta_title'       => 'Tips, Stories & Whitstable Updates',
+			'meta_title'       => 'Accessible Holiday Tips & Whitstable Updates',
 			'meta_description' => 'Accessible holiday tips, guest stories, what’s on in Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.',
 			'focus_keyphrase'  => 'accessible holiday tips',
 		),
 		'our-story'             => array(
 			'meta_title'       => 'Our Story: Built From Real Access Needs',
-			'meta_description' => 'Restwell was built by someone who kept seeing the access gap firsthand, then shaped by disabled guests, carers and occupational therapists — not assumptions.',
+			'meta_description' => 'Restwell our story: built from a real access gap, then shaped by disabled guests, carers and occupational therapists — not assumptions.',
 			'focus_keyphrase'  => 'restwell our story',
 		),
 		'optional-care'         => array(
@@ -86,7 +86,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'optional care restwell',
 		),
 		'guest-guide'                              => array(
-			'meta_title'       => 'Guest Guide | Check-In Tips',
+			'meta_title'       => 'Restwell Guest Guide: Check-In, Wi-Fi and Parking Tips',
 			'meta_description' => 'Restwell guest guide: check-in, Wi-Fi, house rules, parking, and local tips for Whitstable. Everything confirmed guests need in one place.',
 			'focus_keyphrase'  => 'restwell guest guide',
 		),
@@ -191,7 +191,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'restwell privacy',
 		),
 		'terms-and-conditions'  => array(
-			'meta_title'       => 'Booking Terms and Payment Rules',
+			'meta_title'       => 'Restwell Terms: Booking & Payment Rules',
 			'meta_description' => 'Restwell terms for bookings: deposits, cancellations, guest responsibilities, how we rely on published access details, and how disputes are handled in the UK.',
 			'focus_keyphrase'  => 'restwell terms',
 		),

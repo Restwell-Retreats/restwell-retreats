@@ -36,9 +36,9 @@ function restwell_enqueue_scripts() {
 
 	wp_enqueue_style(
 		'restwell-fonts',
-		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:wght@400;500;600&display=swap',
+		$theme_uri . '/assets/css/fonts.css',
 		array(),
-		null
+		restwell_theme_asset_version( '/assets/css/fonts.css' )
 	);
 
 	/*

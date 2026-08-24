@@ -16,17 +16,28 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Our Story</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">Why Restwell exists</h1>
-            <p>Restwell started when someone saw how difficult it was for people to find a holiday home that really met their needs. The bungalow was shaped by the people who would actually stay there.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Why Restwell exists',
+		'intro'      => 'Restwell started when someone saw how difficult it was for people to find a holiday home that really met their needs. The bungalow was shaped by the people who would actually stay there.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'Our Story',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
     <nav class="subnav" aria-label="On this page">
       <div class="container">
@@ -66,7 +77,7 @@ get_header();
           <p>That’s why the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility page</a> lists exact measurements in millimetres, so you can check the fit yourself before you book.</p>
         </div>
         <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-1-LS.jpg' ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
         </div>
       </div>
     </section>
@@ -96,7 +107,7 @@ get_header();
             </div>
           </div>
           <div class="split__media" data-reveal>
-            <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-6-LS.jpg' ); ?>" alt="Amico ceiling track hoist over the profiling bed" width="900" height="675" loading="lazy" />
+            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the profiling bed" width="900" height="675" loading="lazy" />
           </div>
         </div>
       </div>

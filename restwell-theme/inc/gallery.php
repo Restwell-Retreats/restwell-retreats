@@ -87,6 +87,7 @@ function restwell_get_property_attachment_image( $attachment_id, $context = 'roo
 		'decoding' => 'async',
 		'width'    => $width,
 		'height'   => $height,
+		'alt'      => restwell_get_gallery_attachment_alt( $attachment_id ),
 	);
 
 	return wp_get_attachment_image(
@@ -417,11 +418,23 @@ function restwell_get_gallery_attachment_alt( $attachment_id ) {
 	}
 
 	$alt = trim( (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) );
-	if ( $alt !== '' ) {
+	if ( $alt !== '' && ! restwell_is_internal_gallery_label( $alt ) ) {
 		return $alt;
 	}
 
-	return trim( (string) get_the_title( $attachment_id ) );
+	if ( function_exists( 'restwell_attachment_image_alt' ) ) {
+		$mapped = restwell_attachment_image_alt( $attachment_id );
+		if ( $mapped !== '' ) {
+			return $mapped;
+		}
+	}
+
+	$title = trim( (string) get_the_title( $attachment_id ) );
+	if ( $title !== '' && ! restwell_is_internal_gallery_label( $title ) ) {
+		return $title;
+	}
+
+	return __( 'Photograph from Restwell in Whitstable', 'restwell-retreats' );
 }
 
 /**

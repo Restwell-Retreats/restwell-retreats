@@ -65,6 +65,31 @@ function restwell_maybe_remove_classic_editor_for_structured_pages() {
 add_action( 'admin_init', 'restwell_maybe_remove_classic_editor_for_structured_pages' );
 
 /**
+ * Body class so CSS can hide leftover editor chrome on structured pages.
+ *
+ * @param string $classes Space-separated body classes.
+ * @return string
+ */
+function restwell_structured_page_admin_body_class( $classes ) {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || 'page' !== $screen->post_type || ! in_array( $screen->base, array( 'post', 'post-new' ), true ) ) {
+		return $classes;
+	}
+
+	$post_id = 0;
+	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_id = absint( wp_unslash( $_GET['post'] ) );
+	}
+
+	if ( $post_id && restwell_page_uses_structured_content_fields( $post_id ) ) {
+		$classes .= ' restwell-structured-page';
+	}
+
+	return $classes;
+}
+add_filter( 'admin_body_class', 'restwell_structured_page_admin_body_class' );
+
+/**
  * Hide noisy default metaboxes on page edit screens.
  *
  * The native "Custom Fields" box lists every post meta key/value — on Restwell

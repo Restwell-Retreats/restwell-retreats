@@ -127,14 +127,13 @@ WordPress resolves URLs from **page slug** (`post_name`), not the PHP filename. 
 | `template-privacy-policy.php` | Privacy Policy | `privacy-policy` | `/privacy-policy/` *(may follow Settings → Privacy)* |
 | `template-terms-and-conditions.php` | Terms & Conditions | `terms-and-conditions` | `/terms-and-conditions/` |
 | `template-accessibility-policy.php` | Accessibility Policy | `accessibility-policy` | `/accessibility-policy/` |
-| `template-contact.php` | Contact | `contact` | `/contact/` → **301 to `/enquire/`** |
 | `page.php` | Default | *(varies)* | Generic pages |
 | `single.php` | — | *(post slug)* | `/blog/{post-slug}/` when posts page is `blog` |
 | `index.php` | — | — | Fallback loop |
 
 **Also created by Theme Setup:** `blog` → posts index (`page_for_posts`); no `template-blog.php` (WordPress uses the posts page + `index.php` / archive templates).
 
-**Redirects (see `inc/redirects.php`):** legacy blog slugs, `?page_id=3`, old beach URL, www/apex host, author archives → home.
+**Redirects (see `inc/redirects.php`):** `/contact/` → `/enquire/`, legacy blog slugs, `?page_id=3`, old beach URL, www/apex host, author archives → home. There is no Contact page or template.
 
 ---
 
@@ -142,12 +141,10 @@ WordPress resolves URLs from **page slug** (`post_name`), not the PHP filename. 
 
 | Partial | Role |
 |---------|------|
-| `breadcrumb.php` | Breadcrumb trail |
-| `how-it-works-steps.php` | Numbered steps block |
-| `interior-hero.php` | Interior page hero |
-| `legal-policy-layout.php` | Legal/policy page shell |
-| `section-label.php` | Eyebrow / section label |
-| `trust-strip.php` | Trust/partner strip |
+| `concept/photo-hero.php` | Photo hero on concept templates |
+| `related-guides.php` | Related-guide links |
+| `post-cluster-links.php` | Blog cluster links |
+| `pricing-cross-links.php` | Pricing cross-links |
 
 ---
 

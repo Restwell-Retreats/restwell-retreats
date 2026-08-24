@@ -172,57 +172,27 @@ get_header();
             <h2 id="faq-h">Before you enquire</h2>
             <p class="lede">We will explain when to pay the deposit, who we invoice, arrival details, and how optional care works with a self-catering stay.</p>
           </header>
-          <div class="faq-list faq-list--split" data-faq-accordion>
-            <div class="faq-list__col">
-            <div class="faq-item is-open" data-cat="booking">
-              <button type="button" class="faq-item__trigger" aria-expanded="true" id="hiw-q1" aria-controls="hiw-q1-a">
-                <span>How do I book a stay?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="hiw-q1-a" role="region" aria-labelledby="hiw-q1">
-                <p>Send an enquiry with your dates and access needs. We will confirm availability and what the house offers, then send booking details. A 50% deposit secures your dates.</p>
-              </div>
-            </div>
-            <div class="faq-item" data-cat="booking">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q2" aria-controls="hiw-q2-a">
-                <span>How can I pay for the bungalow?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="hiw-q2-a" role="region" aria-labelledby="hiw-q2" hidden>
-                <p>You can pay by bank transfer or debit/credit card. The balance is due no later than one week before arrival. If you arrange care, Continuity will send quotes and invoices separately.</p>
-              </div>
-            </div>
-            <div class="faq-item" data-cat="funding">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q3" aria-controls="hiw-q3-a">
-                <span>Can a local authority or NHS team book for me?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="hiw-q3-a" role="region" aria-labelledby="hiw-q3" hidden>
-                <p>Yes. We invoice the same rates regardless of funding route. Tell us who should receive the invoice when you enquire. Funding &amp; Support sets out the paperwork routes.</p>
-              </div>
-            </div>
-            </div>
-            <div class="faq-list__col">
-            <div class="faq-item" data-cat="booking">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q4" aria-controls="hiw-q4-a">
-                <span>What time can we arrive?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="hiw-q4-a" role="region" aria-labelledby="hiw-q4" hidden>
-                <p>Check in with the key-safe from 3pm on your arrival day. Departure is by 11am unless we agree on a different time in writing.</p>
-              </div>
-            </div>
-            <div class="faq-item" data-cat="care">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="hiw-q5" aria-controls="hiw-q5-a">
-                <span>Can I arrange optional care with the stay?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="hiw-q5-a" role="region" aria-labelledby="hiw-q5" hidden>
-                <p>Yes. You can bring your usual team, or ask about Continuity of Care Services on 01622 809881 when you enquire. Care is not included in the bungalow price. Details and guide rates are on Optional Care and Pricing.</p>
-              </div>
-            </div>
-            </div>
-          </div>
+          <?php
+          $hiw_faq_items = array();
+          foreach ( restwell_get_faq_items( 'how-it-works' ) as $row ) {
+            $hiw_faq_items[] = array(
+              'q'    => $row['q'],
+              'a'    => '<p>' . wp_kses_post( $row['a'] ) . '</p>',
+              'open' => ! empty( $row['open'] ),
+              'cat'  => isset( $row['cat'] ) ? $row['cat'] : 'booking',
+            );
+          }
+          get_template_part(
+            'template-parts/faq-accordion',
+            null,
+            array(
+              'id_prefix'    => 'hiw-q',
+              'list_class'   => 'faq-list--split',
+              'wrap_columns' => true,
+              'columns'      => array( array_slice( $hiw_faq_items, 0, 3 ), array_slice( $hiw_faq_items, 3 ) ),
+            )
+          );
+          ?>
         </div>
       </div>
     </section>

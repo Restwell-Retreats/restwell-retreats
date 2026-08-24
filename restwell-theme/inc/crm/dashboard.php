@@ -117,21 +117,23 @@ function restwell_crm_dashboard_page() {
 			<?php endforeach; ?>
 		</div>
 
+		<nav class="rw-dash-quicklinks" aria-label="<?php esc_attr_e( 'CRM shortcuts', 'restwell-retreats' ); ?>">
+			<a class="button button-secondary" href="<?php echo esc_url( $enquiries_url ); ?>"><?php esc_html_e( 'Enquiries', 'restwell-retreats' ); ?></a>
+			<a class="button button-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=restwell-guest-guide' ) ); ?>"><?php esc_html_e( 'Guest Guide', 'restwell-retreats' ); ?></a>
+			<a class="button button-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=restwell-mailing-list' ) ); ?>"><?php esc_html_e( 'Mailing list', 'restwell-retreats' ); ?></a>
+		</nav>
+
 		<div class="rw-dashboard-grid">
 
 			<!-- Follow-ups due -->
-			<div class="postbox">
-				<div class="postbox-header">
-					<h2 class="hndle">
-						<span class="rw-panel-title">
-							<span class="rw-panel-title__icon" aria-hidden="true">&#9201;</span>
-							<span><?php esc_html_e( 'Follow-ups due', 'restwell-retreats' ); ?></span>
-						</span>
-					</h2>
-				</div>
-				<div class="inside">
+			<section class="rw-dash-panel">
+				<h2 class="rw-dash-panel__title"><?php esc_html_e( 'Follow-ups due', 'restwell-retreats' ); ?></h2>
+				<div class="rw-dash-panel__body">
 					<?php if ( empty( $follow_up_rows ) ) : ?>
 						<p class="rw-empty"><?php esc_html_e( 'No overdue follow-ups. Nice work.', 'restwell-retreats' ); ?></p>
+						<p class="rw-dash-panel__action">
+							<a class="button button-secondary" href="<?php echo esc_url( $enquiries_url ); ?>"><?php esc_html_e( 'Open enquiries', 'restwell-retreats' ); ?></a>
+						</p>
 					<?php else : ?>
 						<table class="widefat striped rw-dashboard-table">
 							<thead>
@@ -144,25 +146,13 @@ function restwell_crm_dashboard_page() {
 							<tbody>
 								<?php foreach ( $follow_up_rows as $r ) : ?>
 									<tr>
-										<td>
-											<a href="
-											<?php
-											echo esc_url(
-												add_query_arg(
-													array(
-														'page' => 'restwell-enquiries',
-														'view' => $r->id,
-													),
-													admin_url( 'admin.php' )
-												)
-											);
-											?>
-														">
+										<td data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
+											<a class="rw-tap-link" href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $r->id ), admin_url( 'admin.php' ) ) ); ?>">
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
-										<td><?php echo restwell_crm_status_badge( $r->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
-										<td class="rw-table-meta">
+										<td data-label="<?php echo esc_attr__( 'Status', 'restwell-retreats' ); ?>"><?php echo restwell_crm_status_badge( $r->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td class="rw-table-meta" data-label="<?php echo esc_attr__( 'Due', 'restwell-retreats' ); ?>">
 											<?php echo esc_html( date_i18n( 'j M Y', strtotime( $r->follow_up_at ) ) ); ?>
 										</td>
 									</tr>
@@ -171,21 +161,17 @@ function restwell_crm_dashboard_page() {
 						</table>
 					<?php endif; ?>
 				</div>
-			</div>
+			</section>
 
 			<!-- Booked without guide -->
-			<div class="postbox">
-				<div class="postbox-header">
-					<h2 class="hndle">
-						<span class="rw-panel-title">
-							<span class="rw-panel-title__icon" aria-hidden="true">&#128203;</span>
-							<span><?php esc_html_e( 'Booked; guide not sent', 'restwell-retreats' ); ?></span>
-						</span>
-					</h2>
-				</div>
-				<div class="inside">
+			<section class="rw-dash-panel">
+				<h2 class="rw-dash-panel__title"><?php esc_html_e( 'Booked; guide not sent', 'restwell-retreats' ); ?></h2>
+				<div class="rw-dash-panel__body">
 					<?php if ( empty( $booked_without_guide ) ) : ?>
 						<p class="rw-empty"><?php esc_html_e( 'All booked guests have a guide invitation.', 'restwell-retreats' ); ?></p>
+						<p class="rw-dash-panel__action">
+							<a class="button button-secondary" href="<?php echo esc_url( admin_url( 'admin.php?page=restwell-guest-guide' ) ); ?>"><?php esc_html_e( 'Open Guest Guide', 'restwell-retreats' ); ?></a>
+						</p>
 					<?php else : ?>
 						<table class="widefat striped rw-dashboard-table">
 							<thead>
@@ -209,26 +195,14 @@ function restwell_crm_dashboard_page() {
 									);
 									?>
 									<tr>
-										<td>
-											<a href="
-											<?php
-											echo esc_url(
-												add_query_arg(
-													array(
-														'page' => 'restwell-enquiries',
-														'view' => $r->id,
-													),
-													admin_url( 'admin.php' )
-												)
-											);
-											?>
-														">
+										<td data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
+											<a class="rw-tap-link" href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $r->id ), admin_url( 'admin.php' ) ) ); ?>">
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
-										<td class="rw-table-meta"><?php echo esc_html( $r->preferred_dates ?: '-' ); ?></td>
-										<td>
-											<a href="<?php echo esc_url( $promote_url ); ?>" class="button button-small">
+										<td class="rw-table-meta" data-label="<?php echo esc_attr__( 'Dates', 'restwell-retreats' ); ?>"><?php echo esc_html( $r->preferred_dates ?: '-' ); ?></td>
+										<td data-label="<?php echo esc_attr__( 'Action', 'restwell-retreats' ); ?>">
+											<a href="<?php echo esc_url( $promote_url ); ?>" class="button button-small rw-tap-button">
 												<?php esc_html_e( 'Add to Guide', 'restwell-retreats' ); ?>
 											</a>
 										</td>
@@ -238,105 +212,85 @@ function restwell_crm_dashboard_page() {
 						</table>
 					<?php endif; ?>
 				</div>
-			</div>
+			</section>
 
 	</div><!-- grid -->
 
-	<!-- Where-to-edit-what orientation panel -->
-	<div class="rw-settings-wrap rw-orientation-wrap">
-		<div class="postbox">
-			<div class="postbox-header">
-				<h2 class="hndle">
-					<span class="rw-panel-title">
-						<span class="rw-panel-title__icon" aria-hidden="true">&#128196;</span>
-						<span><?php esc_html_e( 'Where to edit what', 'restwell-retreats' ); ?></span>
-					</span>
-				</h2>
-			</div>
-			<div class="inside">
+	<!-- Where-to-edit-what orientation panel (collapsed by default) -->
+	<details class="rw-orientation-details">
+		<summary class="rw-orientation-details__summary"><?php esc_html_e( 'Where to edit what', 'restwell-retreats' ); ?></summary>
+		<div class="rw-orientation-details__body">
 				<p class="description rw-description--tight-top">
 					<?php esc_html_e( 'Quick reference — every piece of content and where it lives.', 'restwell-retreats' ); ?>
 				</p>
-				<table class="widefat rw-orientation-table">
-					<thead>
-						<tr>
-							<th><?php esc_html_e( 'What you want to change', 'restwell-retreats' ); ?></th>
-							<th><?php esc_html_e( 'Where to go', 'restwell-retreats' ); ?></th>
-							<th><?php esc_html_e( 'Notes', 'restwell-retreats' ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$base_url = admin_url( 'admin.php' );
-						$pages_url = admin_url( 'edit.php?post_type=page' );
-						$rows = array(
-							array(
-								__( 'Hero text, images, body copy on any page', 'restwell-retreats' ),
-								'<a href="' . esc_url( $pages_url ) . '">' . __( 'Pages → edit page → Page Content Fields metabox', 'restwell-retreats' ) . '</a>',
-								__( 'Use the tabbed sections in the "Page Content Fields" panel. Changes here update the live site immediately on save.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'FAQ questions &amp; answers', 'restwell-retreats' ),
-								'<a href="' . esc_url( admin_url( 'post.php?post=' . (int) get_option( 'page_on_front' ) . '&action=edit' ) ) . '">' . __( 'Front Page → Page Content Fields → FAQ tab', 'restwell-retreats' ) . '</a>',
-								__( 'Up to 14 items. The same data renders on the FAQ page, How It Works page, and homepage. Categories: about | booking | care | local | funding.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'SEO title &amp; meta description for a page', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-seo', $base_url ) ) . '">' . __( 'SEO → All pages', 'restwell-retreats' ) . '</a>',
-								__( 'Per-page focus keyphrase, SEO title, and social settings.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'Phone, Google address, GA4, footer CTA, property line', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-seo-sitewide', $base_url ) ) . '">' . __( 'SEO → Site-wide', 'restwell-retreats' ) . '</a>',
-								__( 'Everything that applies to the whole site (search, analytics, and shared website copy).', 'restwell-retreats' ),
-							),
-							array(
-								__( 'Notify email, Mailchimp, who can use the CRM', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-crm', $base_url ) ) . '">' . __( 'Dashboard → CRM settings (below)', 'restwell-retreats' ) . '</a>',
-								__( 'Enquiry alerts and CRM access only — not SEO or website copy.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'Enquiries (contact form submissions)', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-enquiries', $base_url ) ) . '">' . __( 'Restwell → Enquiries', 'restwell-retreats' ) . '</a>',
-								__( 'View, reply, update status, add follow-up notes, and mark urgent.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'Guest guide (pre-stay info sent to bookers)', 'restwell-retreats' ),
-								'<a href="' . esc_url( add_query_arg( 'page', 'restwell-guest-guide', $base_url ) ) . '">' . __( 'Restwell → Guest Guide', 'restwell-retreats' ) . '</a>',
-								__( 'Create a personalised guide link. Guests receive a private URL with their arrival details.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'Partner logos on the homepage trust strip', 'restwell-retreats' ),
-								__( 'Pages → Front Page → Page Content Fields → Partners tab', 'restwell-retreats' ),
-								__( 'Upload a PNG for each partner. Leave empty to hide that slot.', 'restwell-retreats' ),
-							),
-							array(
-								__( 'Legal pages (Privacy Policy, Terms etc.)', 'restwell-retreats' ),
-								__( 'Pages → edit the relevant legal page → Page Content Fields', 'restwell-retreats' ),
-								__( 'Body accepts full HTML via the wp_kses_post sanitiser.', 'restwell-retreats' ),
-							),
-						);
-						foreach ( $rows as $row ) :
-							?>
-							<tr>
-								<td class="rw-orient-what"><strong><?php echo wp_kses_post( $row[0] ); ?></strong></td>
-								<td class="rw-orient-where"><?php echo wp_kses_post( $row[1] ); ?></td>
-								<td class="rw-orient-notes rw-table-meta"><?php echo wp_kses_post( $row[2] ); ?></td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			</div>
+				<?php
+				$base_url  = admin_url( 'admin.php' );
+				$pages_url = admin_url( 'edit.php?post_type=page' );
+				$rows      = array(
+					array(
+						__( 'Hero text, images, body copy on any page', 'restwell-retreats' ),
+						'<a href="' . esc_url( $pages_url ) . '">' . esc_html__( 'Pages → edit page → Page content', 'restwell-retreats' ) . '</a>',
+						__( 'Use the tabbed sections in the Page content panel. Changes update the live site on save.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'FAQ questions & answers', 'restwell-retreats' ),
+						'<a href="' . esc_url( admin_url( 'post.php?post=' . (int) get_option( 'page_on_front' ) . '&action=edit' ) ) . '">' . esc_html__( 'Front Page → Page content → FAQ tab', 'restwell-retreats' ) . '</a>',
+						__( 'Up to 14 items. The same data renders on the FAQ page, How It Works page, and homepage. Categories: about | booking | care | local | funding.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'SEO title & meta description for a page', 'restwell-retreats' ),
+						'<a href="' . esc_url( add_query_arg( 'page', 'restwell-seo', $base_url ) ) . '">' . esc_html__( 'SEO → All pages', 'restwell-retreats' ) . '</a>',
+						__( 'Per-page focus keyphrase, SEO title, and social settings.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Phone, Google address, GA4, footer CTA, property line', 'restwell-retreats' ),
+						'<a href="' . esc_url( add_query_arg( 'page', 'restwell-seo-sitewide', $base_url ) ) . '">' . esc_html__( 'SEO → Site-wide', 'restwell-retreats' ) . '</a>',
+						__( 'Everything that applies to the whole site (search, analytics, and shared website copy).', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Notify email, Mailchimp, who can use the CRM', 'restwell-retreats' ),
+						'<a href="#rw-crm-settings">' . esc_html__( 'Dashboard → Settings (below)', 'restwell-retreats' ) . '</a>',
+						__( 'Enquiry alerts and CRM access only — not SEO or website copy.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Enquiries (contact form submissions)', 'restwell-retreats' ),
+						'<a href="' . esc_url( add_query_arg( 'page', 'restwell-enquiries', $base_url ) ) . '">' . esc_html__( 'Restwell → Enquiries', 'restwell-retreats' ) . '</a>',
+						__( 'View, reply, update status, add follow-up notes, and mark urgent.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Guest guide (pre-stay info sent to bookers)', 'restwell-retreats' ),
+						'<a href="' . esc_url( add_query_arg( 'page', 'restwell-guest-guide', $base_url ) ) . '">' . esc_html__( 'Restwell → Guest Guide', 'restwell-retreats' ) . '</a>',
+						__( 'Create a personalised guide link. Guests receive a private URL with their arrival details.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Partner logos on the homepage trust strip', 'restwell-retreats' ),
+						esc_html__( 'Pages → Front Page → Page content → Partners tab', 'restwell-retreats' ),
+						__( 'Upload a PNG for each partner. Leave empty to hide that slot.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Legal pages (Privacy Policy, Terms etc.)', 'restwell-retreats' ),
+						esc_html__( 'Pages → edit the relevant legal page → Page content', 'restwell-retreats' ),
+						__( 'Body accepts full HTML via the wp_kses_post sanitiser.', 'restwell-retreats' ),
+					),
+				);
+				?>
+				<ul class="rw-orientation-list">
+					<?php foreach ( $rows as $row ) : ?>
+						<li class="rw-orientation-list__item">
+							<div class="rw-orientation-list__what"><?php echo esc_html( $row[0] ); ?></div>
+							<div class="rw-orientation-list__where"><?php echo wp_kses_post( $row[1] ); ?></div>
+							<p class="rw-orientation-list__notes"><?php echo esc_html( $row[2] ); ?></p>
+						</li>
+					<?php endforeach; ?>
+				</ul>
 		</div>
-	</div>
+	</details>
 
 	<!-- CRM settings (enquiry notify / Mailchimp / roles only) -->
-		<div class="rw-settings-wrap">
-			<div class="postbox">
-				<div class="postbox-header">
-					<h2 class="hndle"><span><?php esc_html_e( 'CRM settings', 'restwell-retreats' ); ?></span></h2>
-				</div>
-				<div class="inside">
+		<div id="rw-crm-settings" class="rw-settings-wrap rw-settings-wrap--demoted">
+			<div class="rw-dash-panel">
+				<h2 class="rw-dash-panel__title"><?php esc_html_e( 'Settings', 'restwell-retreats' ); ?></h2>
+				<div class="rw-dash-panel__body">
 					<p class="description rw-description--tight-top">
 						<?php esc_html_e( 'Who gets enquiry emails, Mailchimp, and which roles can use the CRM.', 'restwell-retreats' ); ?>
 					</p>
@@ -486,22 +440,15 @@ function restwell_crm_dashboard_page() {
 						</table>
 					<?php submit_button( __( 'Save', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
 				</form>
+				</div>
 			</div>
 		</div>
-	</div>
 
 	<!-- Export audit log -->
-	<div class="rw-settings-wrap">
-		<div class="postbox">
-			<div class="postbox-header">
-				<h2 class="hndle">
-					<span class="rw-panel-title">
-						<span class="rw-panel-title__icon" aria-hidden="true">&#128196;</span>
-						<span><?php esc_html_e( 'Export Audit Log', 'restwell-retreats' ); ?></span>
-					</span>
-				</h2>
-			</div>
-			<div class="inside">
+	<div class="rw-settings-wrap rw-settings-wrap--demoted">
+		<section class="rw-dash-panel">
+			<h2 class="rw-dash-panel__title"><?php esc_html_e( 'Export audit log', 'restwell-retreats' ); ?></h2>
+			<div class="rw-dash-panel__body">
 				<?php
 				$export_log     = get_option( 'restwell_crm_export_log', array() );
 				$export_log     = is_array( $export_log ) ? $export_log : array();
@@ -536,7 +483,7 @@ function restwell_crm_dashboard_page() {
 					</table>
 				<?php endif; ?>
 			</div>
-		</div>
+		</section>
 	</div>
 
 </div><!-- .wrap -->

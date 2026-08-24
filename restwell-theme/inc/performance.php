@@ -113,15 +113,24 @@ function restwell_regenerate_all_image_subsizes() {
 /**
  * Preload the front-page hero image for LCP.
  *
- * Concept home uses a static theme webp (CSS/img), not ACF hero_media_id.
- * Fall back to attachment preload when that meta is set (legacy pages).
+ * Prefers the resolved page hero URL (Featured / stock map), then falls back
+ * to the theme coastline stock asset.
  */
 function restwell_preload_front_page_hero_image() {
 	if ( ! is_front_page() ) {
 		return;
 	}
 
-	$concept_rel = '/assets/images/stock/restwell-whitstable-coastline-panorama.webp';
+	$home_id = (int) get_option( 'page_on_front', 0 );
+	if ( $home_id > 0 && function_exists( 'restwell_page_hero_image_url' ) ) {
+		$url = restwell_page_hero_image_url( $home_id );
+		if ( $url !== '' ) {
+			echo '<link rel="preload" as="image" href="' . esc_url( $url ) . '" fetchpriority="high" />' . "\n";
+			return;
+		}
+	}
+
+	$concept_rel = '/assets/images/stock/restwell-whitstable-promenade-golden-hour.jpg';
 	$concept_abs = get_template_directory() . $concept_rel;
 	if ( is_readable( $concept_abs ) ) {
 		echo '<link rel="preload" as="image" href="' . esc_url( get_template_directory_uri() . $concept_rel ) . '" fetchpriority="high" />' . "\n";

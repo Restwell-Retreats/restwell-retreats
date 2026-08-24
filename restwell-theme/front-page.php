@@ -10,6 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$home_id  = (int) get_option( 'page_on_front', 0 );
+$hero_src = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_url' ) )
+	? restwell_page_hero_image_url( $home_id )
+	: restwell_theme_image_url( 'stock/restwell-whitstable-promenade-golden-hour.jpg' );
+$hero_alt = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) )
+	? restwell_page_hero_image_alt( $home_id, __( 'Accessible holidays in Whitstable', 'restwell-retreats' ) )
+	: restwell_theme_image_alt( 'stock/restwell-whitstable-promenade-golden-hour.jpg' );
 ?>
 
 
@@ -18,8 +26,8 @@ get_header();
       <div class="hero__media" aria-hidden="true">
         <img
           class="hero__media-img"
-          src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastline-panorama.webp' ) ); ?>"
-          alt=""
+          src="<?php echo esc_url( $hero_src ); ?>"
+          alt="<?php echo esc_attr( $hero_alt ); ?>"
           width="1920"
           height="1080"
           decoding="async"
@@ -125,34 +133,34 @@ get_header();
     <section class="partners section-y" id="partners" aria-labelledby="partners-h">
       <div class="container">
         <header class="section-head partners__head">
-          <p class="eyebrow">Who fitted the house</p>
-          <h2 id="partners-h">Who helped adapt the bungalow?</h2>
-          <p class="lede">Specialist firms helped adapt the house. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'our-story' ) ); ?>">Read the full story</a>.</p>
+          <p class="eyebrow">Behind Restwell</p>
+          <h2 id="partners-h">Who built it, and who we work with</h2>
+          <p class="lede">Specialist firms adapted the house. Continuity, our sister company, is who we’d put you in touch with for care — <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'our-story' ) ); ?>">read the full story</a>.</p>
         </header>
         <ul class="partners__grid" role="list">
           <li class="partners__item">
             <a class="partners__link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Care Spaces (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/care-spaces.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/care-spaces.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/care-spaces.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Thor Carpentry (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/thor-carpentry.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/thor-carpentry.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/thor-carpentry.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://wealdenrehab.com/" target="_blank" rel="noopener noreferrer" aria-label="Wealden Rehab (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/wealden-rehab.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/wealden-rehab.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/wealden-rehab.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
           <li class="partners__item">
             <a class="partners__link" href="https://www.continuitytrainingacademy.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity Training Academy (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-training-academy.png' ) ); ?>" alt="" width="180" height="72" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-training-academy.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-training-academy.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
         </ul>
@@ -164,20 +172,29 @@ get_header();
         <header class="section-head section-head--center">
           <h2 id="comparison-h">Why families choose Restwell</h2>
         </header>
-        <dl class="comparison-list">
-          <div class="comparison-list__item">
-            <dt>Access details published</dt>
-            <dd>Measurements and kit notes live on the access statement, before you book.</dd>
-          </div>
-          <div class="comparison-list__item">
-            <dt>A private bungalow, not a hotel corridor</dt>
-            <dd>Your group has the whole place to yourselves. There are no shared lifts, lobbies, or public spaces between the bedroom and wet room.</dd>
-          </div>
-          <div class="comparison-list__item">
-            <dt>Optional care support</dt>
-            <dd>Continuity of Care Services can arrange CQC-regulated support during the same call as your booking, or, if you prefer, you can bring your own carer.</dd>
-          </div>
-        </dl>
+        <ul class="card-grid card-grid--3" role="list">
+          <li>
+            <article class="info-card">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3.5h6l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13.5l2 2 4-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <h3>Access details published</h3>
+              <p>Measurements and kit notes live on the access statement, before you book.</p>
+            </article>
+          </li>
+          <li>
+            <article class="info-card">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="7" y="3" width="10" height="18" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 12h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+              <h3>A private bungalow, not a hotel corridor</h3>
+              <p>Your group has the whole place to yourselves. There are no shared lifts, lobbies, or public spaces between the bedroom and wet room.</p>
+            </article>
+          </li>
+          <li>
+            <article class="info-card">
+              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.6-9.5 9-9.5 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+              <h3>Optional care support</h3>
+              <p>Continuity of Care Services can arrange CQC-regulated support during the same call as your booking, or, if you prefer, you can bring your own carer.</p>
+            </article>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -229,10 +246,10 @@ get_header();
             </div>
             <div class="care__brand" aria-label="Care partner and CQC rating">
               <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
+                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
               </a>
               <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
+                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
               </a>
             </div>
           </div>

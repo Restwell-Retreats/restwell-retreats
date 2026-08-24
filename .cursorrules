@@ -34,8 +34,8 @@ Never modify anything in /client/, /server/, /shared/, or /patches/.
 - No jQuery — vanilla JS only
 
 ## Mockup spacing governance
-When editing `restwell-theme/mockups/shared.css`, follow the SPACING SYSTEM rules in that file:
-new `--rhythm-*` tokens need a justification comment; component rules consume tokens (not length literals); `@media` remaps tokens, never padding/margin/gap literals. Run `python3 restwell-theme/mockups/_check_spacing.py` before finishing.
+When editing `restwell-theme/assets/css/shared.css`, follow the SPACING SYSTEM rules in that file:
+new `--rhythm-*` tokens need a justification comment; component rules consume tokens (not length literals); `@media` remaps tokens, never padding/margin/gap literals. Run `python3 restwell-theme/mockups/_check_spacing.py` before finishing. Mockups load that file via `../assets/css/shared.css` — do not add a second copy under `mockups/`.
 
 ## Frontend & UI/UX Design
 When generating or modifying HTML/PHP/CSS, follow these design principles:

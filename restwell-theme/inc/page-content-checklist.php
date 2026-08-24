@@ -191,7 +191,7 @@ function restwell_page_content_run_checks( WP_Post $post ): array {
 	$required = restwell_page_content_required_fields( $post );
 
 	foreach ( $required as $key => $label ) {
-		$val = trim( (string) get_post_meta( $post->ID, $key, true ) );
+		$val = trim( (string) restwell_page_content_meta_or_default( (int) $post->ID, $key ) );
 		if ( $val === '' || $val === '0' ) {
 			$issues[] = array(
 				'id'       => 'required_' . $key,
@@ -208,7 +208,7 @@ function restwell_page_content_run_checks( WP_Post $post ): array {
 	}
 
 	$h1_key = restwell_page_content_h1_meta_key( $post );
-	$h1     = $h1_key !== '' ? trim( (string) get_post_meta( $post->ID, $h1_key, true ) ) : '';
+	$h1     = $h1_key !== '' ? trim( (string) restwell_page_content_meta_or_default( (int) $post->ID, $h1_key ) ) : '';
 	$seo    = restwell_page_content_effective_seo( $post );
 	$kp     = restwell_page_content_normalize_text( $seo['focus_keyphrase'] );
 	$h1_n   = restwell_page_content_normalize_text( $h1 );
@@ -268,13 +268,13 @@ function restwell_page_content_run_checks( WP_Post $post ): array {
 	}
 
 	$title_len = mb_strlen( $seo['meta_title'] );
-	if ( $seo['meta_title'] !== '' && ( $title_len < 40 || $title_len > 60 ) ) {
+	if ( $seo['meta_title'] !== '' && ( $title_len < 25 || $title_len > 60 ) ) {
 		$issues[] = array(
 			'id'       => 'seo_title_length',
-			'severity' => 'info',
+			'severity' => ( $title_len < 25 ) ? 'warn' : 'info',
 			'message'  => sprintf(
 				/* translators: %d: character count */
-				__( 'SEO title is %d characters (ideal about 50–60). Adjust under SEO → Edit SEO.', 'restwell-retreats' ),
+				__( 'SEO title is %d characters (solid range ~30–60; Google may truncate past ~60). Adjust under SEO → Edit SEO.', 'restwell-retreats' ),
 				$title_len
 			),
 			'field'    => '',

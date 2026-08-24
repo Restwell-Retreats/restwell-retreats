@@ -13,31 +13,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Theme-relative stock filenames for Open Graph by page slug / context.
+ * Theme-relative image paths for Open Graph / Featured heroes by page slug.
  *
- * Prefer distinct images per marketing surface so social previews are not
- * identical. Unknown pages fall through to the coastline last resort.
+ * Paths are under assets/images/. Place-led and local-area pages use the new
+ * Kent/Whitstable stock JPGs; product pages use inviting bungalow photos
+ * (garden, lounge, bedroom) rather than kit/detail documentary shots.
  *
- * @return array<string, string> Slug => filename under assets/images/stock/.
+ * @return array<string, string> Slug => path relative to assets/images/.
  */
 function restwell_get_default_og_stock_filename_map() {
 	return array(
-		'home'                  => 'restwell-whitstable-drone-aerial-view.webp',
-		'our-story'             => 'russell-drive-whitstable.webp',
-		'the-property'          => 'restwell-whitstable-beach-relaxation.webp',
-		'accessibility'         => 'restwell-whitstable-public-beach-path.webp',
-		'pricing'               => 'restwell-whitstable-marina-sunset.webp',
-		'how-it-works'          => 'restwell-whitstable-coastal-walk.webp',
-		'who-its-for'           => 'restwell-whitstable-coastal-pathway.webp',
-		'whitstable-area-guide' => 'whitstable-days-out.webp',
-		'resources'             => 'restwell-whitstable-rainbow-coast.webp',
-		'optional-care'         => 'restwell-whitstable-sunset-pier.webp',
-		'faq'                   => 'restwell-whitstable-beach-huts.webp',
-		'enquire'               => 'restwell-whitstable-marina-sunset.webp',
-		'blog'                  => 'restwell-whitstable-beach-huts.webp',
-		'privacy-policy'        => 'restwell-whitstable-coastline-panorama.webp',
-		'terms-and-conditions'  => 'restwell-whitstable-coastline-panorama.webp',
-		'accessibility-policy'  => 'restwell-whitstable-public-beach-path.webp',
+		'home'                  => 'stock/restwell-whitstable-promenade-golden-hour.jpg',
+		'our-story'             => 'stock/restwell-kent-riverside-brick-house.jpg',
+		'the-property'          => 'bungalow/GRDEN-1-LS.jpg',
+		'accessibility'         => 'stock/restwell-whitstable-promenade-golden-hour.jpg',
+		'pricing'               => 'bungalow/LR-2-LS.jpg',
+		'how-it-works'          => 'bungalow/BD1-2-LS.jpg',
+		'who-its-for'           => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
+		'whitstable-area-guide' => 'stock/restwell-whitstable-painted-beach-huts.jpg',
+		'resources'             => 'stock/restwell-kent-woodland-paved-path.jpg',
+		'optional-care'         => 'bungalow/LR-1-LS.jpg',
+		'faq'                   => 'stock/restwell-canterbury-riverside-walk.jpg',
+		'enquire'               => 'stock/restwell-whitstable-beach-huts-pier-view.jpg',
+		'blog'                  => 'stock/restwell-whitstable-beach-sailboats-sunset.jpg',
+		'guest-guide'           => 'stock/restwell-whitstable-beach-hut-gallery.jpg',
+		'privacy-policy'        => 'stock/restwell-whitstable-pebble-beach-groynes.jpg',
+		'terms-and-conditions'  => 'stock/restwell-whitstable-shingle-beach-sunset.jpg',
+		'accessibility-policy'  => 'stock/restwell-kent-nursery-hedgerow-path.jpg',
 	);
 }
 
@@ -75,13 +77,19 @@ function restwell_get_default_og_image_url_for_request( $post_id = 0 ) {
 		return '';
 	}
 
-	$rel  = '/assets/images/stock/' . ltrim( $filename, '/' );
-	$path = get_template_directory() . $rel;
+	// Paths may be stock/foo.jpg or bungalow/foo.jpg (relative to assets/images/).
+	$rel = ltrim( $filename, '/' );
+	if ( false === strpos( $filename, '/' ) ) {
+		$rel = 'stock/' . $rel;
+	}
+	$path = get_template_directory() . '/assets/images/' . $rel;
 	if ( ! is_readable( $path ) ) {
 		return '';
 	}
 
-	return get_template_directory_uri() . $rel;
+	// Route through the WebP optimisation helper so social crawlers fetch the
+	// same lightweight opt/ variant used on-page, not the raw multi-MB source.
+	return restwell_theme_image_url( $rel );
 }
 
 /**
@@ -144,8 +152,8 @@ function restwell_output_social_meta() {
 			$image_url           = wp_get_attachment_image_url( $og_img_id, 'full' );
 			$image_attachment_id = $image_url ? $og_img_id : 0;
 		}
-		// For posts, use the featured image as the OG image.
-		if ( ! $image_url && is_singular( 'post' ) ) {
+		// Featured image for pages and posts.
+		if ( ! $image_url ) {
 			$thumb_id = get_post_thumbnail_id( $pid );
 			if ( $thumb_id ) {
 				$image_url           = wp_get_attachment_image_url( $thumb_id, 'full' );
@@ -153,8 +161,10 @@ function restwell_output_social_meta() {
 			}
 		}
 		if ( ! $image_url ) {
-			// Fallback: try common hero image meta keys across templates
-			$hero_keys = array( 'hero_media_id', 'prop_hero_image_id' );
+			// Fallback: template hero image meta keys.
+			$hero_keys = function_exists( 'restwell_page_hero_meta_keys_all' )
+				? restwell_page_hero_meta_keys_all()
+				: array( 'hero_media_id', 'prop_hero_image_id' );
 			foreach ( $hero_keys as $key ) {
 				$hero_id = absint( get_post_meta( $pid, $key, true ) );
 				if ( $hero_id ) {
@@ -191,7 +201,9 @@ function restwell_output_social_meta() {
 			$image_width  = ! empty( $img_meta['width'] ) ? absint( $img_meta['width'] ) : 0;
 			$image_height = ! empty( $img_meta['height'] ) ? absint( $img_meta['height'] ) : 0;
 		}
-		$image_alt = trim( (string) get_post_meta( $image_attachment_id, '_wp_attachment_image_alt', true ) );
+		$image_alt = function_exists( 'restwell_attachment_image_alt' )
+			? restwell_attachment_image_alt( $image_attachment_id )
+			: trim( (string) get_post_meta( $image_attachment_id, '_wp_attachment_image_alt', true ) );
 	}
 	if ( $image_alt === '' ) {
 		$image_alt = $title !== '' ? $title : (string) get_bloginfo( 'name' );

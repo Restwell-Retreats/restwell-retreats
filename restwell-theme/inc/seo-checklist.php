@@ -14,13 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Build a checklist summary array from discrete check rows.
  *
- * @param array<int, array{id:string,label:string,state:string}> $checks Check rows (ok|warn|bad).
+ * States: ok | warn | bad | info (tips — do not affect badge status).
+ *
+ * @param array<int, array{id:string,label:string,state:string}> $checks Check rows.
  * @param WP_Post                                                $post   Post (for noindex).
  * @return array{
  *   status:string,
  *   bad:int,
  *   warn:int,
  *   ok:int,
+ *   info:int,
  *   issues:array<int, array{id:string,severity:string,message:string}>
  * }
  */
@@ -28,6 +31,7 @@ function restwell_seo_checklist_build_summary_from_checks( array $checks, WP_Pos
 	$bad    = 0;
 	$warn   = 0;
 	$ok     = 0;
+	$info   = 0;
 	$issues = array();
 
 	foreach ( $checks as $check ) {
@@ -44,6 +48,13 @@ function restwell_seo_checklist_build_summary_from_checks( array $checks, WP_Pos
 			$issues[] = array(
 				'id'       => (string) ( $check['id'] ?? '' ),
 				'severity' => 'warn',
+				'message'  => (string) ( $check['label'] ?? '' ),
+			);
+		} elseif ( 'info' === $state ) {
+			++$info;
+			$issues[] = array(
+				'id'       => (string) ( $check['id'] ?? '' ),
+				'severity' => 'info',
 				'message'  => (string) ( $check['label'] ?? '' ),
 			);
 		} else {
@@ -74,8 +85,47 @@ function restwell_seo_checklist_build_summary_from_checks( array $checks, WP_Pos
 		'bad'    => $bad,
 		'warn'   => $warn,
 		'ok'     => $ok,
+		'info'   => $info,
 		'issues' => $issues,
 	);
+}
+
+/**
+ * Whether haystack contains enough keyphrase tokens (natural-variant match).
+ *
+ * Exact phrase match wins. Otherwise require at least 2 significant tokens
+ * (3+ chars), or all tokens when the keyphrase has only one significant token.
+ *
+ * @param string $haystack_norm Normalised haystack.
+ * @param string $kp_norm       Normalised keyphrase.
+ * @return bool
+ */
+function restwell_seo_checklist_keyphrase_tokens_match( string $haystack_norm, string $kp_norm ): bool {
+	if ( $kp_norm === '' || $haystack_norm === '' ) {
+		return false;
+	}
+	if ( str_contains( $haystack_norm, $kp_norm ) ) {
+		return true;
+	}
+	$tokens = array_values(
+		array_filter(
+			preg_split( '/\s+/', $kp_norm ) ?: array(),
+			static function ( $t ) {
+				return is_string( $t ) && mb_strlen( $t ) >= 3;
+			}
+		)
+	);
+	if ( empty( $tokens ) ) {
+		return false;
+	}
+	$hits = 0;
+	foreach ( $tokens as $token ) {
+		if ( str_contains( $haystack_norm, $token ) ) {
+			++$hits;
+		}
+	}
+	$need = ( count( $tokens ) === 1 ) ? 1 : min( 2, count( $tokens ) );
+	return $hits >= $need;
 }
 
 /**
@@ -117,9 +167,7 @@ function restwell_seo_checklist_effective_meta( WP_Post $post ): array {
 /**
  * Lightweight SEO checks for the All pages / Blog posts list (no content aggregation).
  *
- * Covers title length, description length, keyphrase presence in title/description,
- * OG/featured image, plus noindex via restwell_seo_checklist_build_summary_from_checks().
- * Full eight-check analysis (headings, word count, internal links) stays on the edit screen.
+ * Hard fails vs tips: length tips are info; missing description is bad; keyphrase uses token match.
  *
  * @param WP_Post $post Post or page.
  * @return array{
@@ -127,90 +175,145 @@ function restwell_seo_checklist_effective_meta( WP_Post $post ): array {
  *   bad:int,
  *   warn:int,
  *   ok:int,
+ *   info:int,
  *   issues:array<int, array{id:string,severity:string,message:string}>
  * }
  */
 function restwell_seo_checklist_summarize_post_list( WP_Post $post ): array {
-	$meta       = restwell_seo_checklist_effective_meta( $post );
-	$focus_kp   = $meta['focus_keyphrase'];
-	$title      = $meta['meta_title'];
-	$desc       = $meta['meta_description'];
-	$kp         = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
+	$meta      = restwell_seo_checklist_effective_meta( $post );
+	$focus_kp  = $meta['focus_keyphrase'];
+	$title     = $meta['meta_title'];
+	$desc      = $meta['meta_description'];
+	$kp        = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
 		? restwell_seo_admin_normalize_for_keyphrase_match( $focus_kp )
 		: strtolower( trim( $focus_kp ) );
-	$title_l    = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
+	$title_l   = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
 		? restwell_seo_admin_normalize_for_keyphrase_match( $title )
 		: strtolower( trim( $title ) );
-	$desc_l     = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
+	$desc_l    = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
 		? restwell_seo_admin_normalize_for_keyphrase_match( $desc )
 		: strtolower( trim( $desc ) );
-	$title_len  = mb_strlen( $title );
-	$desc_len   = mb_strlen( $desc );
-	$has_og     = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
+	$title_len = mb_strlen( $title );
+	$desc_len  = mb_strlen( $desc );
+	$has_og    = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
+	$has_site_og = ! $has_og && function_exists( 'restwell_get_default_og_image_url_for_request' )
+		? (bool) restwell_get_default_og_image_url_for_request( $post->ID )
+		: false;
+	$defaults  = function_exists( 'restwell_get_seo_default_meta_for_post_id' )
+		? restwell_get_seo_default_meta_for_post_id( $post->ID )
+		: array();
+	$expects_kp = ! empty( $defaults['focus_keyphrase'] );
 	$checks     = array();
+
+	if ( $title === '' ) {
+		$checks[] = array(
+			'id'    => 'title_missing',
+			'label' => __( 'SEO title is missing', 'restwell-retreats' ),
+			'state' => 'bad',
+		);
+	}
+
+	if ( $desc === '' ) {
+		$checks[] = array(
+			'id'    => 'desc_missing',
+			'label' => __( 'Meta description is missing', 'restwell-retreats' ),
+			'state' => 'bad',
+		);
+	}
 
 	if ( $kp === '' ) {
 		$checks[] = array(
-			'id'    => 'kp_title',
-			'label' => __( 'No focus keyphrase set (optional but recommended)', 'restwell-retreats' ),
-			'state' => 'warn',
-		);
-		$checks[] = array(
-			'id'    => 'kp_desc',
-			'label' => __( 'Focus keyphrase in meta description - set a keyphrase first', 'restwell-retreats' ),
-			'state' => 'warn',
+			'id'    => 'kp_missing',
+			'label' => $expects_kp
+				? __( 'No focus keyphrase set (this page has a theme default — add one)', 'restwell-retreats' )
+				: __( 'No focus keyphrase set (optional but recommended)', 'restwell-retreats' ),
+			'state' => $expects_kp ? 'bad' : 'warn',
 		);
 	} else {
-		$checks[] = array(
+		$kp_in_title = restwell_seo_checklist_keyphrase_tokens_match( $title_l, $kp );
+		$checks[]    = array(
 			'id'    => 'kp_title',
-			'label' => __( 'Focus keyphrase in SEO title', 'restwell-retreats' ),
-			'state' => str_contains( $title_l, $kp ) ? 'ok' : 'bad',
+			'label' => $kp_in_title
+				? __( 'Focus keyphrase reflected in SEO title', 'restwell-retreats' )
+				: __( 'Focus keyphrase not clearly reflected in SEO title', 'restwell-retreats' ),
+			'state' => $kp_in_title ? 'ok' : 'warn',
 		);
-		$checks[] = array(
+		$kp_in_desc = restwell_seo_checklist_keyphrase_tokens_match( $desc_l, $kp );
+		$checks[]   = array(
 			'id'    => 'kp_desc',
-			'label' => __( 'Focus keyphrase in meta description', 'restwell-retreats' ),
-			'state' => str_contains( $desc_l, $kp ) ? 'ok' : 'bad',
+			'label' => $kp_in_desc
+				? __( 'Focus keyphrase reflected in meta description', 'restwell-retreats' )
+				: __( 'Focus keyphrase not clearly reflected in meta description', 'restwell-retreats' ),
+			'state' => $kp_in_desc ? 'ok' : 'info',
 		);
 	}
 
-	if ( $title_len >= 50 && $title_len <= 60 ) {
-		$title_state = 'ok';
-	} elseif ( $title_len >= 40 ) {
-		$title_state = 'warn';
-	} else {
-		$title_state = 'bad';
+	// Title length: 30–60 fine; tip outside; never bad for 30–45 alone.
+	if ( $title_len > 0 ) {
+		if ( $title_len >= 30 && $title_len <= 60 ) {
+			$title_state = 'ok';
+			$title_label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (good range)', 'restwell-retreats' ),
+				$title_len
+			);
+		} elseif ( $title_len < 25 ) {
+			$title_state = 'warn';
+			$title_label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (very short — may be vague in search)', 'restwell-retreats' ),
+				$title_len
+			);
+		} elseif ( $title_len > 60 ) {
+			$title_state = 'info';
+			$title_label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (may truncate in Google ~50–60)', 'restwell-retreats' ),
+				$title_len
+			);
+		} else {
+			// 25–29: tip only.
+			$title_state = 'info';
+			$title_label = sprintf(
+				/* translators: %d - character count */
+				__( 'SEO title length: %d characters (tip: 30–60 is a solid SERP range)', 'restwell-retreats' ),
+				$title_len
+			);
+		}
+		$checks[] = array(
+			'id'    => 'title_len',
+			'label' => $title_label,
+			'state' => $title_state,
+		);
 	}
-	$checks[] = array(
-		'id'    => 'title_len',
-		'label' => sprintf(
-			/* translators: %d - character count */
-			__( 'SEO title length: %d characters (ideal: 50-60)', 'restwell-retreats' ),
-			$title_len
-		),
-		'state' => $title_state,
-	);
 
-	if ( $desc_len >= 120 && $desc_len <= 160 ) {
-		$desc_state = 'ok';
-	} elseif ( $desc_len >= 100 ) {
-		$desc_state = 'warn';
-	} else {
-		$desc_state = 'bad';
+	if ( $desc_len > 0 ) {
+		if ( $desc_len >= 120 && $desc_len <= 160 ) {
+			$desc_state = 'ok';
+		} elseif ( $desc_len < 80 ) {
+			$desc_state = 'warn';
+		} else {
+			$desc_state = 'info';
+		}
+		$checks[] = array(
+			'id'    => 'desc_len',
+			'label' => sprintf(
+				/* translators: %d - character count */
+				__( 'Meta description length: %d characters (guide: 120–160)', 'restwell-retreats' ),
+				$desc_len
+			),
+			'state' => $desc_state,
+		);
 	}
-	$checks[] = array(
-		'id'    => 'desc_len',
-		'label' => sprintf(
-			/* translators: %d - character count */
-			__( 'Meta description length: %d characters (ideal: 120-160)', 'restwell-retreats' ),
-			$desc_len
-		),
-		'state' => $desc_state,
-	);
 
 	$checks[] = array(
 		'id'    => 'og_image',
-		'label' => __( 'Featured or OG image is set', 'restwell-retreats' ),
-		'state' => $has_og ? 'ok' : 'bad',
+		'label' => $has_og
+			? __( 'Featured or OG image is set', 'restwell-retreats' )
+			: ( $has_site_og
+				? __( 'No page OG/featured image — site default image will be used', 'restwell-retreats' )
+				: __( 'No OG/featured image and no usable site default', 'restwell-retreats' ) ),
+		'state' => $has_og ? 'ok' : ( $has_site_og ? 'info' : 'warn' ),
 	);
 
 	return restwell_seo_checklist_build_summary_from_checks( $checks, $post );

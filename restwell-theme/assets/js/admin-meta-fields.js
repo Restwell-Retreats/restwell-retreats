@@ -99,6 +99,7 @@
 						img.src = ( attachment.sizes && attachment.sizes.medium && attachment.sizes.medium.url )
 							? attachment.sizes.medium.url
 							: ( attachment.url || '' );
+						img.alt = attachment.alt || attachment.title || 'Selected image preview';
 						img.style.display = '';
 						if ( previewText ) previewText.style.display = 'none';
 					}
@@ -118,7 +119,7 @@
 				var previewText = preview ? preview.querySelector( '.restwell-media-preview-text' ) : null;
 
 				if ( input ) input.value = '';
-				if ( img ) { img.removeAttribute( 'src' ); img.style.display = ''; }
+				if ( img ) { img.removeAttribute( 'src' ); img.alt = ''; img.style.display = ''; }
 				if ( previewText ) previewText.style.display = 'none';
 				if ( preview ) preview.style.display = 'none';
 				this.style.display = 'none';
@@ -157,7 +158,7 @@
 				img.src = ( attachment.sizes && attachment.sizes.thumbnail && attachment.sizes.thumbnail.url )
 					? attachment.sizes.thumbnail.url
 					: ( attachment.url || '' );
-				img.alt = '';
+				img.alt = attachment.alt || attachment.title || 'Gallery image preview';
 				img.width = 80;
 				img.height = 80;
 				var remove = document.createElement( 'button' );

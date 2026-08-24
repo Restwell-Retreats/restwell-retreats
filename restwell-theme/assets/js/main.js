@@ -965,7 +965,11 @@
 	 *     excluded — they must never round-trip through localStorage.
 	 */
 	function initEnquiryDraftPersistence() {
-		var form = document.querySelector('.restwell-enq-form[data-multistep]');
+		// The multistep wrapper carries [data-multistep]; the <form> inside it
+		// carries [data-multistep-form] (see shared.js, which owns step
+		// navigation for this form). These are two different attributes on two
+		// different elements — matching both on the form itself never finds it.
+		var form = document.querySelector('[data-multistep] .restwell-enq-form[data-multistep-form]');
 		if (!form) return;
 
 		// Versioned key so we can change the stored shape later without exhuming
@@ -1022,13 +1026,25 @@
 			field.value = val == null ? '' : String(val);
 		}
 
+		// Fields that render empty in the plain PHP template and only gain a
+		// value via $enq_val() echoing back a failed submission. enq_guests,
+		// enq_funding, and enq_contact_preference are deliberately excluded:
+		// they always render with a non-empty default (2 / self / email) even
+		// on a first-ever visit, so including them made this check always
+		// true and permanently disabled draft restoration.
+		var SERVER_PREFILL_SIGNAL_FIELDS = [
+			'enq_name', 'enq_email', 'enq_phone', 'enq_preferred_time',
+			'enq_date_from', 'enq_date_to', 'enq_urgent',
+			'enq_care', 'enq_accessibility', 'enq_message', 'enq_marketing_optin'
+		];
+
 		// True if the page rendered with values already filled in by the server.
 		// That happens after a validation failure: the server re-renders the
 		// form with the user's submitted values via $enq_f. Their just-typed
 		// state is fresher than anything in localStorage, so we leave it alone.
 		function isServerPrefilled() {
-			for (var i = 0; i < PERSIST_FIELDS.length; i++) {
-				var f = getField(PERSIST_FIELDS[i]);
+			for (var i = 0; i < SERVER_PREFILL_SIGNAL_FIELDS.length; i++) {
+				var f = getField(SERVER_PREFILL_SIGNAL_FIELDS[i]);
 				if (!f) continue;
 				if (f.type === 'checkbox') {
 					if (f.checked) return true;
@@ -1143,11 +1159,14 @@
 				notice.remove();
 				// Send the user back to step 1 so the cleared form makes sense
 				// in context — they shouldn't be staring at an empty step 3.
-				var firstNode = form.querySelector('.step-node[data-step="1"]');
-				var visibleStep = form.querySelector('.enquire-step:not(.hidden)');
-				if (visibleStep && firstNode && parseInt(visibleStep.getAttribute('data-step'), 10) > 1) {
-					var backBtn = form.querySelector('.step-back[data-back="1"]');
-					if (backBtn) backBtn.click();
+				// shared.js owns step navigation for this form (panels are
+				// `.form-step[data-step-panel]`, back button is `[data-step-prev]`).
+				var visiblePanel = form.querySelector('.form-step:not([hidden])');
+				var currentPanelNum = visiblePanel ? parseInt(visiblePanel.getAttribute('data-step-panel'), 10) : 1;
+				var backBtn = form.querySelector('[data-step-prev]');
+				while (currentPanelNum > 1 && backBtn) {
+					backBtn.click();
+					currentPanelNum--;
 				}
 				var name = getField('enq_name');
 				if (name) name.focus();
@@ -1210,6 +1229,50 @@
 			e.preventDefault();
 			// returnValue is the documented contract for this prompt.
 			e.returnValue = '';
+		});
+	}
+
+	/**
+	 * Back-to-top button. Shows once the visitor has scrolled past one
+	 * viewport height and returns them to the top on click or Enter/Space.
+	 * Long pages (Accessibility, Pricing) benefit most on mobile, where
+	 * re-scrolling to the nav or enquiry link is slow and error-prone.
+	 */
+	function initScrollToTop() {
+		var btn = document.querySelector('[data-scroll-top]');
+		if (!btn) {
+			return;
+		}
+		btn.hidden = false;
+		btn.setAttribute('aria-hidden', 'true');
+		btn.tabIndex = -1;
+		var visible = false;
+		var ticking = false;
+		function update() {
+			ticking = false;
+			var shouldShow = (window.pageYOffset || document.documentElement.scrollTop || 0) > window.innerHeight;
+			if (shouldShow === visible) {
+				return;
+			}
+			visible = shouldShow;
+			btn.classList.toggle('is-visible', visible);
+			btn.setAttribute('aria-hidden', visible ? 'false' : 'true');
+			btn.tabIndex = visible ? 0 : -1;
+		}
+		window.addEventListener(
+			'scroll',
+			function () {
+				if (!ticking) {
+					ticking = true;
+					window.requestAnimationFrame(update);
+				}
+			},
+			{ passive: true }
+		);
+		update();
+		btn.addEventListener('click', function () {
+			var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
 		});
 	}
 
@@ -1933,7 +1996,7 @@
 						'<p class="restwell-lightbox__status" data-lightbox-status aria-live="polite"></p>' +
 					'</div>' +
 					'<figure class="restwell-lightbox__figure">' +
-						'<img class="restwell-lightbox__image" src="" alt="" decoding="async" />' +
+						'<img class="restwell-lightbox__image" src="" alt="Gallery image" decoding="async" />' +
 					'</figure>' +
 					'<figcaption class="restwell-lightbox__caption" data-lightbox-caption></figcaption>' +
 				'</div>';
@@ -2169,6 +2232,7 @@
 		safeInit('initWifPersonaNav', initWifPersonaNav);
 		safeInit('initPropPageNav', initPropPageNav);
 		safeInit('initPricingPageNav', initPricingPageNav);
+		safeInit('initScrollToTop', initScrollToTop);
 
 		// Non-critical analytics and reveal effects run after the initial paint window.
 		runWhenIdle(function () {

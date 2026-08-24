@@ -16,17 +16,28 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Pricing</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">What a stay costs</h1>
-            <p>Our rates include the entire bungalow. You can add care from Continuity if you need support.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'What a stay costs',
+		'intro'      => 'Our rates include the entire bungalow. You can add care from Continuity if you need support.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'Pricing',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
@@ -212,10 +223,10 @@ get_header();
             <div class="care-rates__footer">
               <div class="care-rates__brands care__brand" aria-label="Care partner and CQC rating">
                 <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-                  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services-long.png' ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
+                  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services-long.png' ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
                 </a>
                 <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-                  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/cqc-rating-good.jpg' ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
+                  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/cqc-rating-good.jpg' ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
                 </a>
               </div>
               <p class="care-rates__note">There may be extra charges for bank holidays and complex care. Next review: 1 September 2026.</p>

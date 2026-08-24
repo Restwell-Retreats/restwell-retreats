@@ -409,8 +409,9 @@ div[id] {
 }
 /* Sticky .subnav sits under the header — give jump targets extra room. */
 .subnav ~ section[id],
-.subnav ~ section .info-card[id] {
-  scroll-margin-top: calc(var(--banner-h) + var(--header-offset) + var(--space-12));
+.subnav ~ section .info-card[id],
+.subnav ~ section .funding-route[id] {
+  scroll-margin-top: calc(var(--banner-h) + var(--header-offset) + var(--subnav-h) + var(--space-3));
 }
 
 .sr-only {
@@ -475,6 +476,19 @@ div[id] {
   padding-top: var(--section-y-compact);
   padding-bottom: var(--section-y-compact);
 }
+/* Funding page: first band is a stat row, not a heading. Full section-y-lead
+   at lg left the three lines floating in a 6.5rem void under the subnav. */
+#basics {
+  --basics-pad-top: var(--section-y-lead);
+}
+@media (min-width: 1024px) {
+  #basics {
+    --basics-pad-top: var(--rhythm-lead-2);
+  }
+}
+.subnav + #basics {
+  padding-top: var(--basics-pad-top);
+}
 
 .section-head {
   display: flex;
@@ -515,11 +529,16 @@ div[id] {
 .card-grid + .card-grid,
 .card-grid + .checklist,
 .card-grid + .comparison-list,
+.card-grid + .funding-routes,
 .card-grid + p,
 .checklist + p,
 .comparison-list + p,
 .comparison-list + .link-stack,
 .comparison-list + .download-panel,
+.stat-row + .section-head,
+.stat-row + .invoice-pair,
+.section-head + .invoice-pair,
+.section-head + .cover-split,
 .blog-featured + .card-grid,
 .blog-meta + .prose,
 .prose + .blog-meta,
@@ -1472,19 +1491,20 @@ body.nav-open { overflow: hidden; }
 .site-footer__copyright {
   margin: 0;
   font-size: var(--type-meta-size);
-  color: rgba(255, 255, 255, 0.6);
+  /* 0.7 alpha over --deep-teal measures ~5.5:1; 0.6 measured 4.49:1, just under WCAG AA's 4.5:1. */
+  color: rgba(255, 255, 255, 0.7);
 }
   
 /* -------------------------------------------------------------------------- */
 /* Interior page chrome                                                       */
 /* -------------------------------------------------------------------------- */
 
-/* Interior header: always solid teal (no photo hero to fade over) */
-body.page--interior .site-header {
+/* Interior header: solid teal only when there is no photo hero to fade over */
+body.page--interior:not(.has-photo-hero) .site-header {
   background: var(--deep-teal);
   box-shadow: 0 8px 24px rgba(9, 26, 32, 0.18);
 }
-body.page--interior .site-header::before { opacity: 0; }
+body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 
 /*
  * Interior hero = homepage .hero, with only two deltas:
@@ -1686,7 +1706,8 @@ body.page--interior .site-header::before { opacity: 0; }
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  /* 0.65 alpha over the deep-teal header keeps this near 5:1 contrast (WCAG AA needs 4.5:1 at this size) */
+  color: rgba(255, 255, 255, 0.65);
 }
 .mobile-nav__rule {
   height: 1px;
@@ -2021,7 +2042,9 @@ body.page--interior .site-header::before { opacity: 0; }
     --split-gap: var(--space-6);
     align-items: stretch;
   }
-  .download-panel {
+  /* Flatten only the statement-band panel — other download-panels (funding
+     “what we send”) need to keep their card chrome when the split stacks. */
+  #statement .download-panel {
     --download-pad: var(--space-5) 0 0;
     width: 100%;
     border-radius: 0;
@@ -2029,7 +2052,7 @@ body.page--interior .site-header::before { opacity: 0; }
     border: 0;
     border-top: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
   }
-  .download-panel .btn {
+  #statement .download-panel .btn {
     width: 100%;
   }
 }
@@ -2049,6 +2072,17 @@ body.page--interior .site-header::before { opacity: 0; }
 }
 .info-card h3,
 .path-card h3 { margin: 0; }
+.info-card h3 a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1.5px;
+}
+.info-card h3 a:hover {
+  color: var(--warm-gold-text);
+  text-decoration-color: var(--warm-gold);
+}
 
 .media-card {
   display: flex;
@@ -2103,6 +2137,11 @@ body.page--interior .site-header::before { opacity: 0; }
     grid-template-columns: 1.05fr 0.95fr;
   }
   .split--flip > :first-child { order: 2; }
+}
+/* Funding “what we send”: short copy beside a panel — centre-align left the
+   panel floating in empty space next to the heading. */
+#help .split {
+  align-items: start;
 }
 .split__media img {
   width: 100%;
@@ -2215,26 +2254,67 @@ body.page--interior .site-header::before { opacity: 0; }
     font-size: var(--text-sm);
     line-height: 1.4;
   }
+  /* Phrase + sentence stats (funding page) — the journey-time row layout
+     squeezes a full clause into a remnant column. Stack instead. */
+  .stat-row--prose .stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .stat-row--prose .stat__value {
+    font-size: var(--text-xl);
+    white-space: normal;
+  }
+  .stat-row--prose .stat__label {
+    font-size: var(--text-base);
+    line-height: 1.5;
+  }
 }
 
 /*
- * Wheelchair-width fit-check — compact bar comparing a chair width to the
- * two published door measurements on a shared 0-1100mm scale. The fill bar
- * grows with the slider; the door-mark tick is fixed at the door's clear
- * opening, so "fill runs past the tick" reads as "doesn't fit" at a glance.
- * (Previously a pair of near-square SVG doorway illustrations that ran to
- * ~750px tall each and scaled the chair icon's height off its width —
- * replaced after it made the tool unreadable without heavy scrolling.)
+ * Wheelchair-width fit-check — type a chair width (or drag the slider) and
+ * compare it to each published door. Each bar *is* that doorway (100% =
+ * clear opening); the fill is the chair, so leftover track is clearance.
  */
 .fit-check {
-  max-width: 42rem;
+  --fit-control-gap: var(--space-3);
+  --fit-readout-gap: var(--space-1);
+  --fit-readout-pad: var(--space-1);
+  --fit-bars-gap: var(--space-5);
+  --fit-bar-gap: var(--space-2);
+  --fit-thumb-nudge: -0.625rem;
+  height: 100%;
+  max-width: none;
+}
+.fit-check-split {
+  --fit-split-gap: var(--grid-gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fit-split-gap);
+}
+@media (min-width: 900px) {
+  .fit-check-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+    align-items: stretch;
+  }
 }
 .fit-check__panel {
-  margin-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-stack-gap);
+  margin-top: 0;
+  height: 100%;
+  box-sizing: border-box;
   padding: var(--panel-pad);
   background: var(--white);
   border: 1px solid var(--driftwood);
   border-radius: var(--radius-lg);
+}
+.fit-check__control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fit-control-gap);
 }
 .fit-check__control-row {
   display: flex;
@@ -2242,37 +2322,58 @@ body.page--interior .site-header::before { opacity: 0; }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  margin-bottom: var(--space-3);
 }
-.fit-check__control-row label {
+.fit-check__label {
   font-weight: 600;
   color: var(--deep-teal);
 }
 .fit-check__control-right {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
-.fit-check__control input[type="range"] {
-  width: 100%;
-  accent-color: var(--deep-teal);
-  min-height: 2.75rem;
+.fit-check__readout {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background: var(--white);
+  border: 1px solid var(--driftwood);
+  border-radius: var(--radius);
 }
-.fit-check__control output {
+.fit-check__readout:focus-within {
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 2px;
+}
+.fit-check__readout input[type="number"] {
+  width: 6.5ch;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--deep-teal);
   font-family: var(--font-serif);
   font-size: var(--text-xl);
   font-weight: 600;
-  color: var(--deep-teal);
-  min-width: 5ch;
+  line-height: 1.2;
   text-align: right;
   font-variant-numeric: tabular-nums;
+  appearance: textfield;
+}
+.fit-check__readout input[type="number"]:focus {
+  outline: none;
+}
+.fit-check__readout input[type="number"]::-webkit-outer-spin-button,
+.fit-check__readout input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
 }
 .fit-check__unit-toggle {
   display: inline-flex;
   gap: 2px;
-  padding: 2px;
-  border: 1px solid color-mix(in srgb, var(--muted-grey) 30%, transparent);
-  border-radius: 999px;
+  padding: 3px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--driftwood);
+  border-radius: 8px;
 }
 .fit-check__unit-toggle button {
   appearance: none;
@@ -2283,18 +2384,89 @@ body.page--interior .site-header::before { opacity: 0; }
   font-size: var(--text-xs);
   font-weight: 600;
   line-height: 1;
-  min-height: 2.75rem;
+  min-height: 2.25rem;
   min-width: 2.75rem;
   padding: var(--space-2) var(--space-3);
-  border-radius: 999px;
+  border-radius: 6px;
   cursor: pointer;
 }
-.fit-check__unit-toggle button[aria-pressed="true"] {
-  background: var(--bg-subtle);
+.fit-check__unit-toggle button:hover,
+.fit-check__unit-toggle button:focus {
   color: var(--deep-teal);
 }
+.fit-check__unit-toggle button:focus-visible {
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 2px;
+}
+.fit-check__unit-toggle button[aria-pressed="true"] {
+  background: var(--deep-teal);
+  color: var(--white);
+}
+.fit-check__control input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2.75rem;
+  margin: 0;
+  background: transparent;
+  accent-color: var(--deep-teal);
+  cursor: pointer;
+}
+.fit-check__control input[type="range"]:focus-visible {
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 2px;
+}
+.fit-check__control input[type="range"]::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  background: linear-gradient(
+    to right,
+    var(--deep-teal) var(--fit-slider-pct, 0%),
+    var(--bg-subtle) var(--fit-slider-pct, 0%)
+  );
+  border: 1px solid var(--driftwood);
+  border-radius: 999px;
+}
+.fit-check__control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-top: var(--fit-thumb-nudge);
+  border-radius: 999px;
+  background: var(--deep-teal);
+  border: 3px solid var(--white);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--deep-teal) 35%, transparent);
+}
+.fit-check__control input[type="range"]::-moz-range-track {
+  height: 0.5rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--driftwood);
+  border-radius: 999px;
+}
+.fit-check__control input[type="range"]::-moz-range-progress {
+  height: 0.5rem;
+  background: var(--deep-teal);
+  border-radius: 999px;
+}
+.fit-check__control input[type="range"]::-moz-range-thumb {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  background: var(--deep-teal);
+  border: 3px solid var(--white);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--deep-teal) 35%, transparent);
+}
+.fit-check__scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: calc(var(--space-2) * -1);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: var(--muted-grey);
+  font-variant-numeric: tabular-nums;
+}
 .fit-check__summary {
-  margin: var(--space-4) 0 0;
+  margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-lg);
   font-weight: 600;
@@ -2305,29 +2477,36 @@ body.page--interior .site-header::before { opacity: 0; }
 .fit-check__bars {
   display: flex;
   flex-direction: column;
-  gap: var(--space-7);
-  margin-top: var(--space-7);
+  gap: var(--fit-bars-gap);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--driftwood);
+}
+.fit-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fit-bar-gap);
 }
 .fit-bar__head {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-8);
-}
-.fit-bar__icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  flex: none;
-  color: var(--deep-teal);
-  transition: color var(--duration-fast) ease;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 .fit-bar__label {
   font-weight: 600;
   color: var(--deep-teal);
 }
+.fit-bar__spec {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted-grey);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
 .fit-bar__track {
   position: relative;
-  height: 1.75rem;
+  height: 1.25rem;
+  overflow: hidden;
   background: var(--bg-subtle);
   border: 1px solid var(--driftwood);
   border-radius: 999px;
@@ -2340,51 +2519,115 @@ body.page--interior .site-header::before { opacity: 0; }
   border-radius: 999px;
   transition: width 0.15s ease, background-color var(--duration-fast) ease;
 }
-.fit-bar__door-mark {
-  position: absolute;
-  top: -0.25rem;
-  bottom: -0.25rem;
-  left: var(--door-pct, 100%);
-  width: 2px;
-  background: var(--muted-grey);
-  z-index: 1;
-}
-.fit-bar__door-mark::before {
-  content: "";
-  position: absolute;
-  top: -0.375rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0.4375rem;
-  height: 0.4375rem;
-  border-radius: 999px;
-  background: var(--muted-grey);
-}
-.fit-bar__door-mark-label {
-  position: absolute;
-  bottom: calc(100% + var(--space-1));
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: var(--text-2xs);
-  font-weight: 600;
-  color: var(--muted-grey);
-  white-space: nowrap;
-}
 .fit-bar--tight .fit-bar__fill { background: var(--warm-gold-text); }
-.fit-bar--tight .fit-bar__icon { color: var(--warm-gold-text); }
+.fit-bar--tight .fit-bar__label { color: var(--warm-gold-text); }
 .fit-bar--no .fit-bar__fill { background: var(--error-red); }
-.fit-bar--no .fit-bar__icon { color: var(--error-red); }
+.fit-bar--no .fit-bar__label { color: var(--error-red); }
 .fit-bar__result {
-  margin: var(--space-2) 0 0;
+  margin: 0;
   font-size: var(--text-sm);
   color: var(--muted-grey);
 }
 .fit-bar--tight .fit-bar__result { color: var(--warm-gold-text); font-weight: 600; }
 .fit-bar--no .fit-bar__result { color: var(--error-red); font-weight: 600; }
 .fit-check__note {
-  margin-top: var(--space-7);
+  margin: 0;
   font-size: var(--text-sm);
   color: var(--muted-grey);
+}
+.width-guide {
+  --width-guide-gap: var(--space-5);
+  --width-guide-row-pad: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--width-guide-gap);
+  padding: var(--panel-pad);
+  background: var(--white);
+  border: 1px solid var(--driftwood);
+  border-radius: var(--radius-lg);
+}
+.width-guide__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.width-guide__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--deep-teal);
+}
+.width-guide__lede,
+.width-guide__note {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+}
+.width-guide__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.width-guide__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  margin: 0;
+  padding: var(--width-guide-row-pad) 0;
+  border: 0;
+  border-bottom: 1px solid var(--driftwood);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.width-guide__list li:first-child .width-guide__row {
+  padding-top: 0;
+}
+.width-guide__list li:last-child .width-guide__row {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+.width-guide__row:hover .width-guide__name,
+.width-guide__row:hover .width-guide__mm,
+.width-guide__row:focus .width-guide__name,
+.width-guide__row:focus .width-guide__mm {
+  color: var(--deep-teal);
+}
+.width-guide__row:focus-visible {
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 2px;
+}
+.width-guide__name,
+.width-guide__mm {
+  display: block;
+  font-weight: 600;
+  color: var(--deep-teal);
+}
+.width-guide__hint,
+.width-guide__in {
+  display: block;
+  font-size: var(--text-2xs);
+  color: var(--muted-grey);
+}
+.width-guide__size {
+  flex: none;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.width-guide__refs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
 }
 
 /*
@@ -2798,62 +3041,239 @@ body:has(.subnav) {
 }
 
 /*
- * Funding route cards — blurb + next steps in one card (no duplicate detail bands).
- * Drop the base .info-card shadow: elsewhere that shadow only carries small
- * secondary callouts. These three are the page's primary content, so the
- * shadow read as much heavier here. Border only.
+ * Flat info cards — border only. Used for grant directory tiles and jump cards.
+ * Funding routes themselves use .funding-route (copy + next-steps panel), not
+ * three equal cards: those read as a dump on a page people arrive to anxious.
  */
-.info-card--flat,
-.info-card.info-card--route {
+.info-card--flat {
   box-shadow: none;
 }
-.info-card.info-card--route {
-  --route-gap: var(--space-4);
-  --route-steps-pt: var(--space-4);
-  --route-steps-gap: var(--space-3);
-  --route-check-gap: var(--space-2);
-  gap: var(--route-gap);
+
+/*
+ * Invoice pair — Restwell house vs Continuity care as two labelled bills,
+ * not a prose lecture. Same enquiry line sits under both.
+ */
+.invoice-pair {
+  --invoice-gap: var(--space-4);
+  display: grid;
+  gap: var(--invoice-gap);
 }
-.info-card--route > p {
-  flex: 1;
-  font-size: var(--text-base);
-  line-height: 1.65;
+@media (min-width: 700px) {
+  .invoice-pair {
+    --invoice-gap: var(--space-6);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
-.info-card__steps {
-  margin-top: auto;
-  padding-top: var(--route-steps-pt);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+.invoice-card {
+  --invoice-pad: var(--panel-pad);
+  --invoice-gap: var(--space-3);
   display: flex;
   flex-direction: column;
-  gap: var(--route-steps-gap);
+  align-items: flex-start;
+  gap: var(--invoice-gap);
+  padding: var(--invoice-pad);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
 }
-.info-card__steps h4 {
+.invoice-card h3 {
   margin: 0;
-  font-size: var(--text-2xs);
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-size: var(--type-h3);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  color: var(--deep-teal);
+}
+.invoice-card p {
+  margin: 0;
+  color: var(--muted-grey);
+  font-size: var(--text-base);
+  line-height: 1.55;
+}
+.invoice-pair__note {
+  margin: var(--space-4) 0 0;
+  color: var(--deep-teal);
+  font-weight: var(--weight-medium);
+  font-size: var(--text-base);
+}
+
+/*
+ * Cover split — usually covered / usually not. Colour is a hint; the heading
+ * and the mark are the actual signal (WCAG 1.4.1).
+ */
+.cover-split {
+  --cover-gap: var(--space-4);
+  --cover-pad: var(--space-5);
+  --cover-item-gap: var(--space-3);
+  --cover-yes: #1b6b48;
+  --cover-no: var(--error-red);
+  --cover-yes-bg: color-mix(in srgb, var(--cover-yes) 8%, var(--white));
+  --cover-no-bg: color-mix(in srgb, var(--cover-no) 8%, var(--white));
+  display: grid;
+  gap: var(--cover-gap);
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .cover-split {
+    --cover-gap: var(--space-5);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.cover-split__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cover-item-gap);
+  padding: var(--cover-pad);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+}
+.cover-split__col--yes {
+  background: var(--cover-yes-bg);
+  border-color: color-mix(in srgb, var(--cover-yes) 22%, transparent);
+}
+.cover-split__col--no {
+  background: var(--cover-no-bg);
+  border-color: color-mix(in srgb, var(--cover-no) 22%, transparent);
+}
+.cover-split__col h4 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--warm-gold-text);
 }
-.info-card__steps .checklist {
-  gap: var(--route-check-gap);
+.cover-split__col--yes h4 { color: var(--cover-yes); }
+.cover-split__col--no h4 { color: var(--cover-no); }
+.cover-split__col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
-.info-card__steps .checklist li {
-  font-size: var(--text-md);
-  font-weight: 500;
+.cover-split__col li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--deep-teal);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
   line-height: 1.45;
 }
-.info-card__steps .checklist a {
+.cover-split__mark {
+  flex-shrink: 0;
+  width: var(--space-5);
+  height: var(--space-5);
+  margin-top: 0.1em;
+  border-radius: 999px;
+  color: var(--white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1;
+}
+.cover-split__col--yes .cover-split__mark {
+  background: var(--cover-yes);
+}
+.cover-split__col--no .cover-split__mark {
+  background: var(--cover-no);
+}
+.cover-split__source {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+  line-height: 1.5;
+}
+.cover-split__source a {
   color: var(--deep-teal);
   font-weight: 600;
   text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);
   text-underline-offset: 0.15em;
 }
-.info-card__more {
-  flex: 0 0 auto;
-  margin: var(--space-3) 0 0;
-  font-size: var(--text-sm);
-  line-height: 1.5;
+
+/*
+ * Funding routes — one visual card per route. Cover-split does the compare;
+ * a short footer holds the contact. Tokens live on the article.
+ */
+.funding-routes {
+  --funding-routes-gap: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--funding-routes-gap);
+}
+@media (min-width: 900px) {
+  .funding-routes {
+    --funding-routes-gap: var(--space-8);
+  }
+}
+.funding-route {
+  --funding-route-gap: var(--space-5);
+  --funding-route-pad: var(--panel-pad);
+  display: grid;
+  gap: var(--funding-route-gap);
+  padding: var(--funding-route-pad);
+  border-radius: var(--radius-lg);
+  background: var(--soft-sand);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  align-items: start;
+}
+.funding-route__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.funding-route__copy > h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--type-h3);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  color: var(--deep-teal);
+}
+.funding-route__copy > p {
+  margin: 0;
+  max-width: var(--rw-readable);
+  color: var(--muted-grey);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+}
+.funding-route__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3) var(--space-5);
+  padding-top: var(--space-2);
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  width: 100%;
+}
+.funding-route__foot p {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--deep-teal);
+}
+.funding-route .sidebar-card h3 {
+  font-family: var(--font-sans);
+  font-size: var(--type-eyebrow-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--warm-gold-text);
+}
+.funding-route .sidebar-card .checklist {
+  gap: var(--space-3);
+}
+.funding-route .sidebar-card .checklist li {
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
 }
 
 /* Grants + contacts side by side on desktop */
@@ -2895,6 +3315,17 @@ body:has(.subnav) {
 }
 .fund-directory .contact-list__item:first-child {
   padding-top: 0;
+}
+.fund-directory .card-grid {
+  --grid-gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+/* Half-column contacts: don’t shove the number to the far edge. */
+.fund-directory .contact-list__item {
+  grid-template-columns: minmax(0, 1fr);
+}
+.fund-directory .contact-list__action {
+  justify-self: start;
 }
 
 /*
@@ -2939,6 +3370,10 @@ body:has(.subnav) {
   color: var(--muted-grey);
   font-size: var(--text-base);
   line-height: 1.55;
+}
+.section-head + .link-list > li:first-child {
+  border-top: 0;
+  padding-top: 0;
 }
 
 .data-table {
@@ -3904,17 +4339,17 @@ fieldset.form-stack {
 
 /* Server-side PRG flash (enq_flash) — list above the multistep form. */
 .form-errors {
-  margin: 0 0 var(--rhythm-md, 1.25rem);
-  padding: var(--rhythm-sm, 0.875rem) var(--rhythm-md, 1.25rem);
+  margin: 0 0 var(--space-5);
+  padding: var(--space-3) var(--space-5);
   border: 1px solid color-mix(in srgb, var(--error-red, #b42318) 35%, transparent);
   border-radius: var(--radius-md, 0.75rem);
   background: color-mix(in srgb, var(--error-red, #b42318) 8%, #fff);
   color: var(--ink-700, #2d4a52);
 }
-.form-errors p { margin: 0 0 0.5rem; }
+.form-errors p { margin: 0 0 var(--space-2); }
 .form-errors ul {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: var(--space-5);
 }
 .form-errors li { margin: 0.15rem 0; }
 
@@ -4770,6 +5205,50 @@ body.lightbox-open {
   background: var(--deep-teal);
 }
 
+/* Back-to-top button — appears after scrolling past one viewport height. */
+.scroll-top {
+  position: fixed;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  z-index: var(--z-subnav);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: var(--deep-teal);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+.scroll-top svg {
+  width: 18px;
+  height: 18px;
+}
+.scroll-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-top[hidden] {
+  display: none;
+}
+.scroll-top:hover {
+  background: var(--warm-gold);
+  color: var(--deep-teal);
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
+
 /* Property — standard stack under hero */
 .property {
   --property-layout-gap: var(--space-6);
@@ -4956,14 +5435,24 @@ body.lightbox-open {
 /* Path cards live in shared.css (same card system as interior info-cards). */
 
 /*
- * Comparison — deliberately not a table or a set of "vs" cards. Both read as a
- * marketing battle-card. This is a plain editorial list: one quiet question per
- * row, one sentence on how Restwell handles it, one muted sentence on the usual
- * alternative. No borders-as-boxes, no coloured tags — just hairline dividers.
+ * Comparison — three reasons stated as icon cards (same info-card + icon-circle
+ * recipe as the room-by-room cards on Accessibility, which sit on white too —
+ * the card's own border/shadow carries the contrast). Keep this white: .partners
+ * directly above is --bg-subtle, and matching it here made the two sections
+ * read as one continuous grey block with no seam between them.
  */
 .comparison {
   background: var(--white);
   border-top: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
+}
+.comparison .info-card { text-align: left; }
+.comparison .info-card h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--type-h3);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  color: var(--deep-teal);
 }
 .comparison-list {
   --comparison-item-pad-y: var(--space-5);
@@ -5078,6 +5567,39 @@ body.lightbox-open {
 }
 .split .comparison-list__item:first-child { padding-top: 0; }
 .split .comparison-list__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+/* Funding-route writeups always stack the compare pair. comparison-list--2 at
+   900px treats a 2-item list as both first and last row, which zeros padding
+   and indents the even column — “Often not included” sat on the line above. */
+.funding-route .comparison-list,
+.funding-route .comparison-list--2 {
+  --comparison-item-pad-y: var(--funding-route-compare-pad);
+  --comparison-item-pad-x: 0;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  margin-inline: 0;
+}
+.funding-route .comparison-list__item,
+.funding-route .comparison-list--2 .comparison-list__item,
+.funding-route .comparison-list--2 .comparison-list__item:nth-child(odd),
+.funding-route .comparison-list--2 .comparison-list__item:nth-child(even),
+.funding-route .comparison-list--2 .comparison-list__item:nth-child(-n + 2),
+.funding-route .comparison-list--2 .comparison-list__item:nth-last-child(-n + 2) {
+  border-left: 0;
+  padding-inline: 0;
+  padding-block: var(--funding-route-compare-pad);
+  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.funding-route .comparison-list__item:first-child,
+.funding-route .comparison-list--2 .comparison-list__item:first-child {
+  padding-top: 0;
+}
+.funding-route .comparison-list__item:last-child,
+.funding-route .comparison-list--2 .comparison-list__item:last-child {
   padding-bottom: 0;
   border-bottom: 0;
 }

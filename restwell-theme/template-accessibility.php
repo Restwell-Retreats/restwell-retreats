@@ -16,17 +16,28 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Accessibility</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">Access statement: hoist, wet room, door widths</h1>
-            <p>We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Access statement: hoist, wet room, door widths',
+		'intro'      => 'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'Accessibility',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
     <section class="section-y section-y--compact band-white" aria-label="Key measurements">
       <div class="container">
@@ -40,42 +51,41 @@ get_header();
 
     <section class="section-y band-subtle" id="fit-check" aria-labelledby="fit-check-h">
       <div class="container">
+        <header class="section-head section-head--tight">
+          <p class="eyebrow">Door clearances</p>
+          <h2 id="fit-check-h">Compare your chair width to our doorways</h2>
+          <p class="lede">Enter the overall width of the chair you travel with (widest point, including hand rims). We’ll show the clearance at each doorway so you can judge the numbers before you enquire.</p>
+        </header>
+        <div class="fit-check-split">
         <div class="fit-check" data-fit-check>
-          <header class="section-head section-head--tight">
-            <p class="eyebrow">Try it yourself</p>
-            <h2 id="fit-check-h">Will your wheelchair fit through our doors?</h2>
-            <p class="lede">Check your chair’s width (look at your spec sheet or measure the widest part, including hand rims) to see how much space there is at each doorway.</p>
-          </header>
           <div class="fit-check__panel">
             <div class="fit-check__control">
               <div class="fit-check__control-row">
-                <label for="fit-check-input">Wheelchair width</label>
+                <label class="fit-check__label" for="fit-check-number" id="fit-check-label">Wheelchair width</label>
                 <div class="fit-check__control-right">
-                  <div class="fit-check__unit-toggle" role="group" aria-label="Units">
+                  <div class="fit-check__readout">
+                    <input type="number" id="fit-check-number" data-fit-number inputmode="decimal" min="500" max="1050" step="1" value="700" aria-describedby="fit-check-summary" />
+                  </div>
+                  <div class="fit-check__unit-toggle" role="group" aria-label="Measurement units">
                     <button type="button" data-fit-unit="mm" aria-pressed="true">mm</button>
                     <button type="button" data-fit-unit="in" aria-pressed="false">in</button>
                   </div>
-                  <output id="fit-check-value" for="fit-check-input" data-fit-value>700mm</output>
                 </div>
               </div>
-              <input type="range" id="fit-check-input" min="500" max="1050" step="10" value="700" data-fit-input aria-describedby="fit-check-value fit-check-summary" />
-              <p class="fit-check__summary" id="fit-check-summary" data-fit-summary aria-live="polite"></p>
+              <input type="range" id="fit-check-input" min="500" max="1050" step="1" value="700" data-fit-input aria-labelledby="fit-check-label" aria-describedby="fit-check-summary" />
+              <div class="fit-check__scale" aria-hidden="true">
+                <span data-fit-min-label>500mm</span>
+                <span data-fit-max-label>1050mm</span>
+              </div>
+              <p class="fit-check__summary" id="fit-check-summary" data-fit-summary role="status" aria-live="polite"></p>
             </div>
             <div class="fit-check__bars">
               <div class="fit-bar" data-fit-gauge data-door-width="965" data-fit-name="the front door">
                 <div class="fit-bar__head">
-                  <svg class="fit-bar__icon" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
-                    <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                    <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
-                    <path d="M3 3h1a2 2 0 0 1 2 2v6" />
-                    <path d="M6 8h11" />
-                    <path d="M15 8v6" />
-                  </svg>
                   <span class="fit-bar__label">Front door</span>
+                  <span class="fit-bar__spec" data-fit-spec>965mm</span>
                 </div>
-                <div class="fit-bar__track" data-fit-track>
-                  <span class="fit-bar__door-mark" aria-hidden="true"><span class="fit-bar__door-mark-label" data-fit-spec></span></span>
+                <div class="fit-bar__track" data-fit-track aria-hidden="true">
                   <span class="fit-bar__fill" data-fit-fill></span>
                 </div>
                 <p class="fit-bar__result" data-fit-result></p>
@@ -83,25 +93,83 @@ get_header();
 
               <div class="fit-bar" data-fit-gauge data-door-width="926" data-fit-name="the internal doors">
                 <div class="fit-bar__head">
-                  <svg class="fit-bar__icon" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 16a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
-                    <path d="M17 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                    <path d="M19 17a3 3 0 0 0 -3 -3h-3.4" />
-                    <path d="M3 3h1a2 2 0 0 1 2 2v6" />
-                    <path d="M6 8h11" />
-                    <path d="M15 8v6" />
-                  </svg>
                   <span class="fit-bar__label">Internal doors</span>
+                  <span class="fit-bar__spec" data-fit-spec>926mm</span>
                 </div>
-                <div class="fit-bar__track" data-fit-track>
-                  <span class="fit-bar__door-mark" aria-hidden="true"><span class="fit-bar__door-mark-label" data-fit-spec></span></span>
+                <div class="fit-bar__track" data-fit-track aria-hidden="true">
                   <span class="fit-bar__fill" data-fit-fill></span>
                 </div>
                 <p class="fit-bar__result" data-fit-result></p>
               </div>
             </div>
-            <p class="fit-check__note">This is just a rough guide. We suggest having at least 50mm of clearance if you can, and please double-check your chair’s width with us before you book.</p>
+            <p class="fit-check__note">This is a guide only. Aim for at least 50mm of clearance where you can, and we’re happy to talk through your measurements before you book.</p>
           </div>
+        </div>
+        <aside class="width-guide" aria-labelledby="width-guide-h">
+          <div class="width-guide__intro">
+            <h3 id="width-guide-h" class="width-guide__title">Typical chair widths</h3>
+            <p class="width-guide__lede">Wheel to wheel, including hand rims. These are common ranges, not a measurement of your chair.</p>
+          </div>
+          <ul class="width-guide__list">
+            <li>
+              <button type="button" class="width-guide__row" data-fit-preset="570" aria-label="Set checker to 570 millimetres, typical transit chair">
+                <span class="width-guide__copy">
+                  <span class="width-guide__name">Transit</span>
+                  <span class="width-guide__hint">Attendant-propelled</span>
+                </span>
+                <span class="width-guide__size">
+                  <span class="width-guide__mm">530–610mm</span>
+                  <span class="width-guide__in">21–24in</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="width-guide__row" data-fit-preset="660" aria-label="Set checker to 660 millimetres, typical self-propelled chair">
+                <span class="width-guide__copy">
+                  <span class="width-guide__name">Self-propelled</span>
+                  <span class="width-guide__hint">Most adult manuals</span>
+                </span>
+                <span class="width-guide__size">
+                  <span class="width-guide__mm">635–685mm</span>
+                  <span class="width-guide__in">25–27in</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="width-guide__row" data-fit-preset="700" aria-label="Set checker to 700 millimetres, typical powered chair">
+                <span class="width-guide__copy">
+                  <span class="width-guide__name">Powered</span>
+                  <span class="width-guide__hint">Electric bases</span>
+                </span>
+                <span class="width-guide__size">
+                  <span class="width-guide__mm">600–760mm+</span>
+                  <span class="width-guide__in">24–30in+</span>
+                </span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="width-guide__row" data-fit-preset="800" aria-label="Set checker to 800 millimetres, typical bariatric chair">
+                <span class="width-guide__copy">
+                  <span class="width-guide__name">Bariatric</span>
+                  <span class="width-guide__hint">Wide-width</span>
+                </span>
+                <span class="width-guide__size">
+                  <span class="width-guide__mm">Over 760mm</span>
+                  <span class="width-guide__in">Over 30in</span>
+                </span>
+              </button>
+            </li>
+          </ul>
+          <p class="width-guide__note">Choose a type to try a midpoint in the checker. Measure your own chair before you book.</p>
+          <ul class="width-guide__refs">
+            <li>
+              <a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer">UK Approved Document M<span class="sr-only"> (opens in a new tab)</span></a>
+            </li>
+            <li>
+              <a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer">BS 8300 accessible environment<span class="sr-only"> (opens in a new tab)</span></a>
+            </li>
+          </ul>
+        </aside>
         </div>
       </div>
     </section>
@@ -113,12 +181,12 @@ get_header();
           <h2>Room-by-room access notes</h2>
         </header>
         <ul class="card-grid card-grid--3" role="list">
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/FD-1-LS.jpg' ); ?>" alt="Front door with a wide, level threshold" width="640" height="480" loading="eager" fetchpriority="high" decoding="async" /><h3>Arrival &amp; entrance</h3><p>You’ll find a private driveway for two cars, a step-free path, a 965mm wide front door, and a level threshold. If you need them, we have portable fold-up ramps for the front door.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/LR-2-LS.jpg' ); ?>" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>The bungalow is single-storey. Inside, doorways are 926mm wide and hallways are kept clear so you can turn your chair easily.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/BD2-2-LS.jpg' ); ?>" alt="Adjustable profiling beds in the accessible bedroom" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>The accessible bedroom has a profiling bed with a pressure-relieving mattress and a hoist. Next door is a second double bedroom, and the conservatory sofa bed can sleep a fifth guest.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-1-LS.jpg' ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>The wet room includes a level-access shower, grab rails, a shower chair, a height-adjustable basin, and a wash-dry WC. Care Spaces adapted this room.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/KT-1-LS.jpg' ); ?>" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>The kitchen features a wheel-under worktop, all the essential utensils, a slide-under oven, and a gas hob.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/GRDEN-1-LS.jpg' ); ?>" alt="Level garden and patio beyond the conservatory" width="640" height="480" loading="lazy" decoding="async" /><h3>Outdoor spaces</h3><p>A ramp leads to a level patio and enclosed garden, with space for a BBQ and French doors opening from the conservatory.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/FD-1-LS.jpg' ) ); ?>" alt="Front door with a wide, level threshold" width="640" height="480" loading="eager" fetchpriority="high" decoding="async" /><h3>Arrival &amp; entrance</h3><p>You’ll find a private driveway for two cars, a step-free path, a 965mm wide front door, and a level threshold. If you need them, we have portable fold-up ramps for the front door.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-2-LS.jpg' ) ); ?>" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>The bungalow is single-storey. Inside, doorways are 926mm wide and hallways are kept clear so you can turn your chair easily.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="Adjustable profiling beds in the accessible bedroom" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>The accessible bedroom has a profiling bed with a pressure-relieving mattress and a hoist. Next door is a second double bedroom, and the conservatory sofa bed can sleep a fifth guest.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>The wet room includes a level-access shower, grab rails, a shower chair, a height-adjustable basin, and a wash-dry WC. Care Spaces adapted this room.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>The kitchen features a wheel-under worktop, all the essential utensils, a slide-under oven, and a gas hob.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-1-LS.jpg' ) ); ?>" alt="Level garden and patio beyond the conservatory" width="640" height="480" loading="lazy" decoding="async" /><h3>Outdoor spaces</h3><p>A ramp leads to a level patio and enclosed garden, with space for a BBQ and French doors opening from the conservatory.</p></article></li>
         </ul>
         <ul class="card-grid card-grid--2" role="list">
           <li><article class="info-card info-card--sand info-card--flat"><h3>Specific requirement?</h3><p>Email us your needs as early as you can. We may not be able to provide every aid at short notice, but we’d much rather you ask than be unsure.</p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Send details</a></article></li>
@@ -136,32 +204,32 @@ get_header();
         <ul class="gallery-grid" role="list" aria-label="Access equipment photos">
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Ceiling track hoist in situ">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/H-1-LS.jpg' ); ?>" alt="Ceiling track hoist in situ" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/H-1-LS.jpg' ) ); ?>" alt="Ceiling track hoist in situ" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Rise and recline chair">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/RAR-2-LS.jpg' ); ?>" alt="Rise and recline chair" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-2-LS.jpg' ) ); ?>" alt="Rise and recline chair" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Wet room grab rails and shower">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/WR-2-LS.jpg' ); ?>" alt="Wet room grab rails and shower" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-2-LS.jpg' ) ); ?>" alt="Wet room grab rails and shower" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="3" aria-label="View full size: Access equipment in the bedroom">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/EQU-2-LS.jpg' ); ?>" alt="Access equipment in the bedroom" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EQU-2-LS.jpg' ) ); ?>" alt="Access equipment in the bedroom" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="4" aria-label="View full size: Height-adjustable basin">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/adjustable-sink.png' ); ?>" alt="Height-adjustable basin" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/adjustable-sink.png' ) ); ?>" alt="Height-adjustable basin" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
           <li>
             <button type="button" class="gallery__open" data-gallery-open data-gallery-index="5" aria-label="View full size: Exterior threshold ramp">
-              <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/exterior-ramp.png' ); ?>" alt="Exterior threshold ramp" width="640" height="480" loading="lazy" decoding="async" />
+              <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/exterior-ramp.png' ) ); ?>" alt="Exterior threshold ramp" width="640" height="480" loading="lazy" decoding="async" />
             </button>
           </li>
         </ul>

@@ -16,18 +16,28 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior hero--place" aria-labelledby="page-h">
-      <div class="hero__media" aria-hidden="true"></div>
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Whitstable</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">Whitstable Kent coast access guide</h1>
-            <p>Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Whitstable Kent coast access guide',
+		'intro'      => 'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'Whitstable',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
     <nav class="subnav" aria-label="On this page">
       <div class="container">

@@ -74,7 +74,7 @@ function restwell_sitemap_exclude_attachment_post_type( $post_types ) {
 add_filter( 'wp_sitemaps_post_types', 'restwell_sitemap_exclude_attachment_post_type' );
 
 /**
- * Keep WP demo / noindex utility pages out of the XML sitemap.
+ * Keep WP demo / retired / noindex utility pages out of the XML sitemap.
  *
  * @param array<string, mixed> $args  WP_Query args for sitemap entries.
  * @param string               $post_type Post type.
@@ -86,13 +86,11 @@ function restwell_sitemap_exclude_demo_and_noindex_pages( $args, $post_type ) {
 	}
 
 	$exclude_ids = array();
-	$sample      = get_page_by_path( 'sample-page', OBJECT, 'page' );
-	if ( $sample && (int) $sample->ID > 0 ) {
-		$exclude_ids[] = (int) $sample->ID;
-	}
-	$guest = get_page_by_path( 'guest-guide', OBJECT, 'page' );
-	if ( $guest && (int) $guest->ID > 0 ) {
-		$exclude_ids[] = (int) $guest->ID;
+	foreach ( array( 'sample-page', 'contact', 'guest-guide' ) as $slug ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( $page && (int) $page->ID > 0 ) {
+			$exclude_ids[] = (int) $page->ID;
+		}
 	}
 
 	if ( empty( $exclude_ids ) ) {

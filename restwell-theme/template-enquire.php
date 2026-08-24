@@ -45,17 +45,28 @@ $phone_tel        = preg_replace( '/\s+/', '', $phone_number );
 ?>
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-	<div class="container">
-		<div class="hero__content">
-			<ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">Enquire</li></ol>
-			<div class="hero__text">
-				<h1 id="page-h">Contact Restwell about your stay</h1>
-				<p>Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.</p>
-			</div>
-		</div>
-	</div>
-</section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Contact Restwell about your stay',
+		'intro'      => 'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'Enquire',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
 <section class="section-y band-white" id="enquiry-result">
 	<div class="container layout-sidebar">

@@ -69,6 +69,77 @@ function restwell_get_page_content_field_definitions( $post = null ) {
 }
 
 /**
+ * Theme default values for a page's Page content fields (same maps Theme Setup seeds).
+ *
+ * @param WP_Post|null $post Page post or null.
+ * @return array<string, mixed>
+ */
+function restwell_get_page_content_defaults( $post = null ) {
+	if ( ! $post instanceof WP_Post ) {
+		return array();
+	}
+
+	$front_page_id = (int) get_option( 'page_on_front', 0 );
+	if ( $front_page_id > 0 && (int) $post->ID === $front_page_id ) {
+		return function_exists( 'restwell_get_theme_setup_defaults' )
+			? restwell_get_theme_setup_defaults()
+			: array();
+	}
+
+	$template = (string) get_page_template_slug( $post );
+	$map      = array(
+		'template-property.php'             => 'restwell_get_property_page_defaults',
+		'template-how-it-works.php'         => 'restwell_get_how_it_works_page_defaults',
+		'template-accessibility.php'        => 'restwell_get_accessibility_page_defaults',
+		'template-who-its-for.php'          => 'restwell_get_who_its_for_page_defaults',
+		'template-whitstable-guide.php'     => 'restwell_get_whitstable_guide_page_defaults',
+		'template-faq.php'                  => 'restwell_get_faq_page_defaults',
+		'template-enquire.php'              => 'restwell_get_enquire_page_defaults',
+		'template-pricing.php'              => 'restwell_get_pricing_page_defaults',
+		'template-resources.php'            => 'restwell_get_resources_page_defaults',
+		'page-guest-guide.php'              => 'restwell_get_guest_guide_page_defaults',
+		'template-privacy-policy.php'       => 'restwell_get_privacy_policy_page_defaults',
+		'template-terms-and-conditions.php' => 'restwell_get_terms_conditions_page_defaults',
+		'template-accessibility-policy.php' => 'restwell_get_accessibility_policy_page_defaults',
+	);
+
+	if ( ! isset( $map[ $template ] ) || ! is_callable( $map[ $template ] ) ) {
+		return array();
+	}
+
+	$defaults = call_user_func( $map[ $template ] );
+	return is_array( $defaults ) ? $defaults : array();
+}
+
+/**
+ * Effective Page content value: stored meta, else theme default when the key was never saved.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $key     Meta key.
+ * @param array  $defaults Optional defaults map (looked up from the post when empty).
+ * @return mixed
+ */
+function restwell_page_content_meta_or_default( $post_id, $key, array $defaults = array() ) {
+	$post_id = (int) $post_id;
+	if ( empty( $defaults ) && $post_id > 0 ) {
+		$post = get_post( $post_id );
+		if ( $post instanceof WP_Post ) {
+			$defaults = restwell_get_page_content_defaults( $post );
+		}
+	}
+
+	if ( function_exists( 'restwell_post_meta_or_default' ) ) {
+		return restwell_post_meta_or_default( $post_id, $key, $defaults );
+	}
+
+	if ( $post_id > 0 && metadata_exists( 'post', $post_id, $key ) ) {
+		return get_post_meta( $post_id, $key, true );
+	}
+
+	return $defaults[ $key ] ?? '';
+}
+
+/**
  * Front page definitions.
  */
 function restwell_get_front_page_field_definitions() {

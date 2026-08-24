@@ -159,6 +159,7 @@ function restwell_output_structured_data() {
 
 	if ( is_page_template( 'template-resources.php' ) ) {
 		restwell_output_jsonld_collection_page();
+		restwell_output_jsonld_resources_faq();
 	}
 
 	if ( is_page_template( 'template-care.php' ) ) {
@@ -1323,6 +1324,68 @@ function restwell_output_jsonld_audience_webpage() {
 					'audienceType' => 'Occupational therapists and commissioners',
 				),
 			),
+		)
+	);
+}
+
+/**
+ * FAQ pairs for the Funding & Support page (must match visible accordion copy).
+ *
+ * @return array<int, array{q: string, a: string}>
+ */
+function restwell_get_resources_faq_pairs() {
+	return array(
+		array(
+			'q' => 'Can NHS Continuing Healthcare funding be used for a holiday?',
+			'a' => 'It can cover the care hours you’re already assessed for, if your CHC team agrees in writing. It doesn’t pay for the holiday itself, so the bungalow, travel and food are usually yours unless a panel says otherwise. Ask them which costs they’ll take, then tell us who to invoice.',
+		),
+		array(
+			'q' => 'Can I get an NHS-funded holiday in the UK?',
+			'a' => 'There isn’t a general scheme where the NHS pays for holidays. Your assessed care can sometimes continue while you’re away. Treat the house, travel and care as separate costs, and get each one clear in writing.',
+		),
+		array(
+			'q' => 'Can I use direct payments for a short break or holiday in England?',
+			'a' => 'Yes, if it fits your support plan. Councils can’t ban short breaks as a blanket rule. The bungalow rent is only in if the plan names it, and food and souvenirs usually aren’t. Check with your social worker before you pay a deposit.',
+		),
+		array(
+			'q' => 'Can a personal budget support a holiday or short break?',
+			'a' => 'A Care Act personal budget can support a short break if that’s an assessed need. Keep general holiday spending off that line, and talk the wording through with your social worker. We can send the access statement to go on the file.',
+		),
+		array(
+			'q' => 'How do I use NHS CHC funding for a short break?',
+			'a' => 'Speak to your CHC coordinator and ask which hours continue away from home. Enquire with Restwell, and Continuity can quote the care on the same call. We’ll send the access statement; you agree who receives which invoice.',
+		),
+		array(
+			'q' => 'What if my funding application is refused?',
+			'a' => 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
+		),
+	);
+}
+
+/**
+ * FAQPage JSON-LD for Funding & Support.
+ */
+function restwell_output_jsonld_resources_faq() {
+	$pairs = restwell_get_resources_faq_pairs();
+	if ( empty( $pairs ) ) {
+		return;
+	}
+	$entities = array();
+	foreach ( $pairs as $pair ) {
+		$entities[] = array(
+			'@type'          => 'Question',
+			'name'           => $pair['q'],
+			'acceptedAnswer' => array(
+				'@type' => 'Answer',
+				'text'  => $pair['a'],
+			),
+		);
+	}
+	restwell_print_jsonld(
+		array(
+			'@context'   => 'https://schema.org',
+			'@type'      => 'FAQPage',
+			'mainEntity' => $entities,
 		)
 	);
 }
