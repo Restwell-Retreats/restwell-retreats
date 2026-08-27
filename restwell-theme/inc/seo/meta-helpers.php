@@ -214,28 +214,37 @@ function restwell_get_request_level_title_fallback() {
  * @return array
  */
 function restwell_document_title_parts( $parts ) {
+	$injected = false;
+
 	if ( is_singular() ) {
 		$pid    = get_queried_object_id();
 		$custom = (string) get_post_meta( $pid, 'meta_title', true );
 		if ( $custom !== '' ) {
 			$parts['title'] = restwell_sanitize_seo_title_text( $custom );
+			$injected       = true;
 		} else {
 			$defaults = restwell_get_seo_default_meta_for_post_id( $pid );
 			if ( $defaults['meta_title'] !== '' ) {
 				$parts['title'] = restwell_sanitize_seo_title_text( $defaults['meta_title'] );
+				$injected       = true;
 			}
-		}
-		$site = isset( $parts['site'] ) ? trim( (string) $parts['site'] ) : '';
-		if ( $site !== '' && ! empty( $parts['title'] ) && restwell_title_already_includes_site_brand( $parts['title'], $site ) ) {
-			unset( $parts['site'], $parts['tagline'] );
 		}
 	} elseif ( ! is_404() ) {
 		$parts['title'] = restwell_get_request_level_title_fallback();
+		$injected       = true;
+	}
+
+	if ( $injected ) {
+		// Injected titles are self-contained: the tagline must never be appended as well.
+		// Drop the site name too when the title already carries the brand.
+		unset( $parts['tagline'] );
+
 		$site = isset( $parts['site'] ) ? trim( (string) $parts['site'] ) : '';
 		if ( $site !== '' && ! empty( $parts['title'] ) && restwell_title_already_includes_site_brand( $parts['title'], $site ) ) {
-			unset( $parts['site'], $parts['tagline'] );
+			unset( $parts['site'] );
 		}
 	}
+
 	return $parts;
 }
 add_filter( 'document_title_parts', 'restwell_document_title_parts' );
