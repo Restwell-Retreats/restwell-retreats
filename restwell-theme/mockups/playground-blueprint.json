@@ -1,0 +1,40 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "Restwell Retreats theme development site",
+		"author": "restwell-retreats"
+	},
+	"landingPage": "/",
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"steps": [
+		{
+			"step": "activateTheme",
+			"themeFolderName": "restwell-theme"
+		},
+		{
+			"step": "setSiteOptions",
+			"options": {
+				"blogname": "Restwell Retreats",
+				"blogdescription": "Accessible holidays in Whitstable, Kent",
+				"timezone_string": "Europe/London",
+				"start_of_week": 1,
+				"permalink_structure": "/%postname%/"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; $result = restwell_run_theme_setup( true, true, false ); echo 'SETUP_OK created=' . count( $result['created'] ) . ' skipped=' . count( $result['skipped'] ) . ' blog_seeded=' . count( $result['blog_posts_seeded'] );"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; $u = get_user_by('login','admin'); if ($u) { wp_set_password('restwell123', $u->ID); echo 'ADMIN_PW_SET'; } else { echo 'NO_ADMIN_USER'; }"
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require '/wordpress/wp-load.php'; flush_rewrite_rules(); echo 'REWRITES_FLUSHED';"
+		}
+	]
+}

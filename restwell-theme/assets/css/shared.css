@@ -677,7 +677,8 @@ blockquote,
   background: transparent;
   display: inline-flex;
   align-items: center;
-  min-height: 1.5rem;
+  /* 44px comfortable touch target (WCAG 2.5.5); relaxed on pointer devices below. */
+  min-height: var(--tap-target, 2.75rem);
   font: inherit;
   font-weight: var(--type-ui-weight);
   font-size: var(--type-ui-size);
@@ -687,6 +688,9 @@ blockquote,
   text-underline-offset: 0.18em;
   text-decoration-color: color-mix(in srgb, var(--deep-teal) 28%, transparent);
   cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  :root { --tap-target: 2.25rem; }
 }
 .text-link:hover {
   color: var(--warm-gold-text);
@@ -708,14 +712,13 @@ blockquote,
 .link-stack .text-link {
   display: inline-flex;
   align-items: center;
-  min-height: 2.25rem;
 }
 /* Standalone control (e.g. “View photos”) — keep a usable hit area */
 button.text-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: 2.5rem;
+  min-height: var(--tap-target, 2.75rem);
   padding-block: var(--space-1);
 }
 
@@ -983,7 +986,9 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(12, 35, 42, 0.4) 0%, rgba(12, 35, 42, 0.52) 45%, rgba(12, 35, 42, 0.72) 100%);
+  /* Lighter at the top so coastal / bungalow photos read as photos;
+     keep the lower band strong enough for white H1 + lede contrast. */
+  background: linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.48) 50%, rgba(12, 35, 42, 0.74) 100%);
 }
 .hero__media-img {
   position: absolute;
@@ -997,7 +1002,7 @@ body.nav-open { overflow: hidden; }
 /* Fallback when no <img> is present (e.g. mid-layout variants). */
 .hero__media:not(:has(.hero__media-img)) {
   background:
-    linear-gradient(180deg, rgba(12, 35, 42, 0.4) 0%, rgba(12, 35, 42, 0.52) 45%, rgba(12, 35, 42, 0.72) 100%),
+    linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.48) 50%, rgba(12, 35, 42, 0.74) 100%),
     url('../images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
 }
 .hero__content {
@@ -1259,6 +1264,67 @@ body.nav-open { overflow: hidden; }
   margin-inline: auto;
   width: 100%;
 }
+
+/*
+ * FAQ page — single readable column + sticky ask form on desktop.
+ * Replaces the old 2-col split that left short questions stranded and
+ * pushed the ask form into a separate band that felt mobile-only.
+ */
+.faq-page {
+  --faq-page-gap: var(--space-8);
+  --faq-aside-pad: var(--panel-pad);
+}
+.faq-page__head {
+  margin-bottom: var(--space-6);
+}
+.faq-page .pill-tabs {
+  margin-bottom: var(--space-6);
+}
+.faq-page__layout {
+  display: grid;
+  gap: var(--faq-page-gap);
+  align-items: start;
+}
+.faq-list--page {
+  --faq-rule: color-mix(in srgb, var(--deep-teal) 12%, transparent);
+  max-width: none;
+  width: 100%;
+  min-width: 0;
+}
+.faq-ask {
+  padding: var(--faq-aside-pad);
+  border-radius: var(--radius-lg);
+  background: var(--soft-sand);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.faq-ask .section-head {
+  margin: 0;
+}
+.faq-ask .section-head p:last-child {
+  margin: 0;
+  color: var(--muted-grey);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+}
+.faq-page__aside {
+  /* Clears sticky site header when the ask form pins on desktop */
+  --faq-aside-sticky-top: calc(var(--header-offset) + var(--space-4));
+}
+@media (min-width: 960px) {
+  .faq-page {
+    --faq-page-gap: var(--space-10);
+  }
+  .faq-page__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
+  }
+  .faq-page__aside {
+    position: sticky;
+    top: var(--faq-aside-sticky-top);
+  }
+}
 .faq-list--split.faq-list--measure {
   max-width: none;
 }
@@ -1436,7 +1502,7 @@ body.nav-open { overflow: hidden; }
 .site-footer__partner-line a {
   display: inline-flex;
   align-items: center;
-  min-height: 1.5rem;
+  min-height: var(--tap-target, 2.75rem);
   color: var(--warm-gold-hero);
   font-weight: 600;
   text-decoration: underline;
@@ -1475,7 +1541,7 @@ body.nav-open { overflow: hidden; }
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   padding: var(--space-1) 0;
-  min-height: 2.25rem;
+  min-height: var(--tap-target, 2.75rem);
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
@@ -1895,6 +1961,14 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 0.15em;
+}
+/* Inline copy links need real touch targets too (WCAG 2.5.8) — scoped to
+   prose so wrapped paragraphs keep natural line-height. */
+.prose--wide a,
+.content-prose a {
+  display: inline-block;
+  padding-block: 0.4em;
+  min-height: var(--tap-target, 2.75rem);
 }
 .prose--wide { max-width: min(44rem, 100%); }
 
@@ -2935,14 +3009,24 @@ body:has(.subnav) {
 
 .layout-sidebar {
   --sidebar-gap: var(--space-8);
+  /* Clears sticky site header when contact card pins beside the form */
+  --sidebar-sticky-top: calc(var(--header-offset) + var(--space-4));
   display: grid;
   gap: var(--sidebar-gap);
 }
 @media (min-width: 960px) {
   .layout-sidebar {
     --sidebar-gap: var(--space-10);
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 18rem);
+    /* Wider form column so enquire / FAQ-style pages don’t feel phone-narrow on desktop */
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem);
     align-items: start;
+  }
+  .layout-sidebar > .multistep {
+    max-width: 42rem;
+  }
+  .layout-sidebar > .sidebar-card {
+    position: sticky;
+    top: var(--sidebar-sticky-top);
   }
 }
 .sidebar-card {
@@ -2963,6 +3047,9 @@ body:has(.subnav) {
 .sidebar-card a:not(.btn) {
   color: var(--deep-teal);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target, 2.75rem);
 }
 
 /*
@@ -3026,6 +3113,10 @@ body:has(.subnav) {
   text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);
   text-underline-offset: 0.18em;
   text-decoration-thickness: 1.5px;
+  /* Tel/mailto links are the primary contact action — keep them tappable (WCAG 2.5.8). */
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target, 2.75rem);
 }
 .contact-list__action a:hover {
   color: var(--warm-gold-text);
@@ -3145,6 +3236,15 @@ body:has(.subnav) {
 }
 .cover-split__col--yes h4 { color: var(--cover-yes); }
 .cover-split__col--no h4 { color: var(--cover-no); }
+/* Inside funding-route panels the tinted fills double up (box-in-box on sand).
+   White cells with the brand's soft shadow read calmer; the ✓/× marks and
+   hairlines still carry the covered/not-covered distinction (WCAG 1.4.1). */
+.funding-route .cover-split__col {
+  --cover-yes-bg: var(--white);
+  --cover-no-bg: var(--white);
+  box-shadow: 0 2px 12px rgb(15 35 42 / 0.05);
+  border-radius: var(--radius-lg);
+}
 .cover-split__col ul {
   margin: 0;
   padding: 0;
@@ -3195,6 +3295,9 @@ body:has(.subnav) {
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);
   text-underline-offset: 0.15em;
+  /* Small-print source links still need usable touch targets. */
+  display: inline-block;
+  min-height: calc(var(--tap-target, 2.75rem) / 2);
 }
 
 /*
@@ -3219,8 +3322,10 @@ body:has(.subnav) {
   gap: var(--funding-route-gap);
   padding: var(--funding-route-pad);
   border-radius: var(--radius-lg);
-  background: var(--soft-sand);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  /* White panel + soft border — match hospitality cards, not sand “form pack” look */
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
+  box-shadow: 0 8px 28px rgb(15 35 42 / 0.04);
   align-items: start;
 }
 .funding-route__copy {
@@ -3258,6 +3363,11 @@ body:has(.subnav) {
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
   color: var(--deep-teal);
+}
+.funding-route__foot a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target, 2.75rem);
 }
 .funding-route .sidebar-card h3 {
   font-family: var(--font-sans);
@@ -3476,6 +3586,14 @@ body:has(.subnav) {
 .data-table--care th[scope="row"] {
   max-width: 18rem;
 }
+/* Unavailable weekend care: same scale as the row label, not a price. */
+.data-table .is-price--na {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size: var(--type-meta-size);
+  color: var(--muted-grey);
+  white-space: normal;
+}
 
 /*
  * Phone: stack each stay type as its own block so labels aren’t clipped
@@ -3632,47 +3750,89 @@ body:has(.subnav) {
   line-height: var(--leading-snug);
 }
 
-/* Peak season dates — disclosure, same measure as the panel */
+/* Peak season dates — disclosure. Reads as a clear control (not a caption):
+   teal border, gold action chip, larger chevron. Guests must not miss which
+   calendar windows are peak before they enquire. */
 .peak-dates {
   --peak-list-mt: var(--space-3);
   --peak-item-pad-y: var(--space-2);
   --peak-item-gap: var(--space-3);
   --peak-item-size: var(--text-sm);
   --peak-label-size: var(--type-meta-size);
-  --peak-title-size: var(--text-base);
+  --peak-title-size: var(--text-lg);
   margin: 0;
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--deep-teal) 3%, var(--white));
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 9%, transparent);
+  padding: 0;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 2px solid var(--deep-teal);
+  box-shadow: 0 4px 18px rgb(15 35 42 / 0.06);
 }
 .peak-dates__summary {
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-areas:
-    "title chevron"
-    "hint chevron";
-  column-gap: var(--space-3);
-  row-gap: 0.15rem;
+    "title action"
+    "hint action";
+  column-gap: var(--space-4);
+  row-gap: 0.2rem;
   align-items: center;
   cursor: pointer;
   list-style: none;
+  padding: var(--space-5) var(--space-5);
+  border-radius: calc(var(--radius-lg) - 2px);
+  transition: background-color 160ms ease;
+}
+@media (hover: hover) {
+  .peak-dates__summary:hover { background: color-mix(in srgb, var(--warm-gold) 14%, var(--white)); }
+}
+.peak-dates__summary:focus { outline: none; }
+.peak-dates__summary:focus-visible {
+  outline: 3px solid var(--warm-gold);
+  outline-offset: 2px;
 }
 .peak-dates__summary::-webkit-details-marker { display: none; }
 .peak-dates__summary::marker { content: ""; }
-.peak-dates__summary::after {
-  grid-area: chevron;
-  content: "";
-  width: 0.45rem;
-  height: 0.45rem;
-  border-right: 1.5px solid var(--deep-teal);
-  border-bottom: 1.5px solid var(--deep-teal);
-  transform: rotate(45deg);
-  opacity: 0.55;
-  transition: transform 160ms ease;
+/* Gold action chip — “Show dates” must read as the interactive affordance. */
+.peak-dates__summary-action {
+  grid-area: action;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  min-height: 2.75rem;
+  border-radius: 999px;
+  background: var(--warm-gold);
+  color: var(--ink-on-gold);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  box-shadow: 0 1px 0 rgb(15 35 42 / 0.08);
 }
-.peak-dates[open] > .peak-dates__summary::after {
+@media (hover: hover) {
+  .peak-dates__summary:hover .peak-dates__summary-action,
+  .peak-dates__summary:focus-visible .peak-dates__summary-action {
+    background: var(--warm-gold-hero);
+  }
+}
+.peak-dates .peak-dates__action-open { display: inline; }
+.peak-dates .peak-dates__action-close { display: none; }
+.peak-dates[open] .peak-dates__action-open { display: none; }
+.peak-dates[open] .peak-dates__action-close { display: inline; }
+.peak-dates__action-chevron {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2.5px solid currentColor;
+  border-bottom: 2.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 160ms ease;
+  flex-shrink: 0;
+}
+.peak-dates[open] > .peak-dates__summary .peak-dates__action-chevron {
   transform: rotate(-135deg);
+}
+.peak-dates[open] {
+  border-color: color-mix(in srgb, var(--deep-teal) 70%, var(--warm-gold));
 }
 .peak-dates__summary-title {
   grid-area: title;
@@ -3693,8 +3853,9 @@ body:has(.subnav) {
 .peak-dates__list {
   display: grid;
   gap: 0;
-  margin: var(--peak-list-mt) 0 0;
-  padding: 0;
+  /* List lives inside the card now the padding moved onto the summary */
+  margin: 0;
+  padding: var(--space-2) var(--space-5) var(--space-4);
   list-style: none;
   border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
   min-width: 0;
@@ -3943,6 +4104,7 @@ body:has(.subnav) {
   border-radius: 999px;
   cursor: pointer;
 }
+.pill-tabs button[aria-pressed="true"],
 .pill-tabs button[aria-selected="true"],
 .pill-tabs button.is-active {
   background: var(--deep-teal);
@@ -4639,6 +4801,41 @@ fieldset.form-stack {
   margin: 0;
 }
 .blog-meta--overlay { color: rgba(255, 255, 255, 0.78); }
+.pagination {
+  margin-block-start: var(--rhythm-after-head-dense);
+}
+.pagination .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.pagination .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-target, 2.75rem);
+  min-height: var(--tap-target, 2.75rem);
+  padding-inline: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  border-radius: var(--radius);
+  color: var(--deep-teal);
+  font-weight: var(--type-ui-weight);
+  text-decoration: none;
+}
+.pagination a.page-numbers:hover {
+  border-color: var(--deep-teal);
+  background: color-mix(in srgb, var(--deep-teal) 7%, var(--white));
+}
+.pagination a.page-numbers:focus-visible {
+  outline: 3px solid var(--warm-gold);
+  outline-offset: 3px;
+}
+.pagination .page-numbers.current {
+  border-color: var(--deep-teal);
+  background: var(--deep-teal);
+  color: var(--white);
+}
 .tag {
   display: inline-flex;
   align-items: center;
@@ -4840,7 +5037,6 @@ fieldset.form-stack {
 .care__foot-copy .text-link {
   display: inline-flex;
   align-items: center;
-  min-height: 2.25rem;
 }
 .care__note {
   margin: 0;
@@ -5828,7 +6024,6 @@ body.lightbox-open {
 .place-list__actions .text-link {
   display: inline-flex;
   align-items: center;
-  min-height: 2.25rem;
   font-size: var(--text-sm);
 }
 .place-list__sep {

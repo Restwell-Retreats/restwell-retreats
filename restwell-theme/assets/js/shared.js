@@ -100,26 +100,43 @@
     });
   }
 
-  /* ---------- FAQ accordion ---------- */
-  var faqRoot = document.querySelector('[data-faq-accordion]');
-
+  /* ---------- FAQ accordion ----------
+   * Instant open/close (no height animation). Mid-animation cancels were
+   * leaving panels stuck closed/open on the FAQ page; class + hidden is enough.
+   * Bind every [data-faq-accordion] root — pages can have more than one.
+   */
   function setFaqItemOpen(item, isOpen) {
+    if (!item) return;
     var trigger = item.querySelector('.faq-item__trigger');
     var panel = item.querySelector('.faq-item__panel');
-    item.classList.toggle('is-open', isOpen);
-    if (trigger) trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    item.classList.toggle('is-open', !!isOpen);
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
     if (panel) {
-      if (isOpen) panel.removeAttribute('hidden');
-      else panel.setAttribute('hidden', '');
+      if (isOpen) {
+        panel.removeAttribute('hidden');
+      } else {
+        panel.setAttribute('hidden', '');
+      }
+      /* Clear any leftover inline styles from the previous animated version. */
+      panel.style.height = '';
+      panel.style.opacity = '';
+      panel.style.overflow = '';
     }
   }
 
-  if (faqRoot) {
+  function bindFaqAccordion(faqRoot) {
+    if (!faqRoot || faqRoot.__faqBound) return;
+    faqRoot.__faqBound = true;
+
     faqRoot.addEventListener('click', function (event) {
       var trigger = event.target.closest('.faq-item__trigger');
       if (!trigger || !faqRoot.contains(trigger)) return;
 
+      event.preventDefault();
       var item = trigger.closest('.faq-item');
+      if (!item || item.hidden) return;
       var willOpen = !item.classList.contains('is-open');
 
       faqRoot.querySelectorAll('.faq-item').forEach(function (other) {
@@ -128,37 +145,43 @@
     });
   }
 
+  document.querySelectorAll('[data-faq-accordion]').forEach(bindFaqAccordion);
+
   /* ---------- FAQ category pills ---------- */
   var pillRoot = document.querySelector('[data-faq-filters]');
-  if (pillRoot && faqRoot) {
-    var faqCols = faqRoot.querySelectorAll('.faq-list__col');
+  var faqRootForFilters = pillRoot
+    ? (pillRoot.closest('section') || document).querySelector('[data-faq-accordion]')
+    : null;
+  if (pillRoot && faqRootForFilters) {
+    var faqCols = faqRootForFilters.querySelectorAll('.faq-list__col');
     pillRoot.addEventListener('click', function (event) {
       var btn = event.target.closest('button[data-filter]');
       if (!btn) return;
       var filter = btn.getAttribute('data-filter') || 'all';
-      pillRoot.querySelectorAll('button').forEach(function (b) {
+      pillRoot.querySelectorAll('button[data-filter]').forEach(function (b) {
         var on = b === btn;
         b.classList.toggle('is-active', on);
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       var visible = [];
-      faqRoot.querySelectorAll('.faq-item').forEach(function (item) {
+      faqRootForFilters.querySelectorAll('.faq-item').forEach(function (item) {
         var cat = item.getAttribute('data-cat') || 'all';
         var show = filter === 'all' || cat === filter;
         item.hidden = !show;
         if (show) visible.push(item);
-        /* Switching category shouldn't leave a stray item expanded from
-           the previous view — collapse everything back to a clean list. */
         setFaqItemOpen(item, false);
       });
-      /* Two static columns in markup — rebalance the *visible* items across
-         them on every filter change, or one column goes blank while the
-         other keeps every match (items never move columns otherwise). */
+      /* Two static columns in markup — rebalance visible items so one column
+         does not go blank while the other keeps every match. */
       if (faqCols.length === 2) {
         var mid = Math.ceil(visible.length / 2);
         visible.forEach(function (item, i) {
           faqCols[i < mid ? 0 : 1].appendChild(item);
         });
+      }
+      /* Open the first visible item so a filtered view isn't a wall of +. */
+      if (visible.length) {
+        setFaqItemOpen(visible[0], true);
       }
     });
   }
