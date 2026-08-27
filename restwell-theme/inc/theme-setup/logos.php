@@ -12,12 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 function restwell_get_logo_url( $mod_key, $fallback_filename ) {
 	$att_id = (int) get_theme_mod( $mod_key, 0 );
 	if ( $att_id > 0 ) {
-		$url = wp_get_attachment_url( $att_id );
+		// Prefer a right-sized derivative; small originals have no medium_large crop.
+		$url = wp_get_attachment_image_url( $att_id, 'medium_large' );
+		if ( ! $url ) {
+			$url = wp_get_attachment_url( $att_id );
+		}
 		if ( $url ) {
 			return $url;
 		}
 	}
-	return get_template_directory_uri() . '/assets/images/' . $fallback_filename;
+	return restwell_theme_image_url( $fallback_filename );
 }
 
 /**

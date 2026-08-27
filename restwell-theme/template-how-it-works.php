@@ -12,21 +12,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_hiw_id      = (int) get_queried_object_id();
+$restwell_hiw_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'How accessible holiday booking works' )
+	: 'How accessible holiday booking works';
+$restwell_hiw_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_hiw_id,
+		'hiw_intro',
+		'Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.'
+	)
+	: 'Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.';
 ?>
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">How It Works</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">How accessible holiday booking works</h1>
-            <p>Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => $restwell_hiw_heading,
+		'intro'      => $restwell_hiw_intro,
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'How It Works',
+				'url'   => '',
+			),
+		),
+		'post_id'    => $restwell_hiw_id,
+	)
+);
+?>
 
     <nav class="subnav" aria-label="On this page" data-toc>
       <div class="container">
@@ -153,10 +176,10 @@ get_header();
             </div>
             <div class="care__brand" aria-label="Care partner and CQC rating">
               <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/continuity-of-care-services-long.png' ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
+                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
               </a>
               <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-                <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/partners/cqc-rating-good.jpg' ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
+                <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" width="710" height="399" loading="lazy" decoding="async" />
               </a>
             </div>
           </div>
