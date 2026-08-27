@@ -31,7 +31,7 @@ function restwell_get_default_og_stock_filename_map() {
 		'how-it-works'          => 'bungalow/BD1-2-LS.jpg',
 		'who-its-for'           => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
 		'whitstable-area-guide' => 'stock/restwell-whitstable-painted-beach-huts.jpg',
-		'resources'             => 'stock/restwell-kent-woodland-paved-path.jpg',
+		'resources'             => 'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg',
 		'optional-care'         => 'bungalow/LR-1-LS.jpg',
 		'faq'                   => 'stock/restwell-canterbury-riverside-walk.jpg',
 		'enquire'               => 'stock/restwell-whitstable-beach-huts-pier-view.jpg',

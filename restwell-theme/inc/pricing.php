@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   check_in: string,
  *   check_out: string,
  *   seasons: array<string, array{label: string, full_week: int, midweek_night: int, weekend_night: int}>,
- *   peak_ranges: array<int, array{start: string, end: string, label: string}>,
+ *   peak_ranges: array<int, array{start: string, end: string, label: string, label_short?: string}>,
  *   care: array<string, mixed>,
  *   price_range_schema: string
  * }
@@ -49,39 +49,46 @@ function restwell_get_pricing(): array {
 
 	$peak_ranges = array(
 		array(
-			'start' => '2026-07-22',
-			'end'   => '2026-09-01',
-			'label' => '22 July to 1 September 2026',
+			'start'       => '2026-07-22',
+			'end'         => '2026-09-01',
+			'label'       => '22 July to 1 September 2026',
+			'label_short' => 'Summer 2026',
 		),
 		array(
-			'start' => '2026-10-26',
-			'end'   => '2026-11-01',
-			'label' => '26 October to 1 November 2026',
+			'start'       => '2026-10-26',
+			'end'         => '2026-11-01',
+			'label'       => '26 October to 1 November 2026',
+			'label_short' => 'Autumn half-term',
 		),
 		array(
-			'start' => '2026-12-21',
-			'end'   => '2027-01-03',
-			'label' => '21 December 2026 to 3 January 2027',
+			'start'       => '2026-12-21',
+			'end'         => '2027-01-03',
+			'label'       => '21 December 2026 to 3 January 2027',
+			'label_short' => 'Christmas',
 		),
 		array(
-			'start' => '2027-02-15',
-			'end'   => '2027-02-21',
-			'label' => '15 to 21 February 2027',
+			'start'       => '2027-02-15',
+			'end'         => '2027-02-21',
+			'label'       => '15 to 21 February 2027',
+			'label_short' => 'February half-term',
 		),
 		array(
-			'start' => '2027-03-29',
-			'end'   => '2027-04-11',
-			'label' => '29 March to 11 April 2027',
+			'start'       => '2027-03-29',
+			'end'         => '2027-04-11',
+			'label'       => '29 March to 11 April 2027',
+			'label_short' => 'Easter',
 		),
 		array(
-			'start' => '2027-05-31',
-			'end'   => '2027-06-06',
-			'label' => '31 May to 6 June 2027',
+			'start'       => '2027-05-31',
+			'end'         => '2027-06-06',
+			'label'       => '31 May to 6 June 2027',
+			'label_short' => 'Spring bank holiday',
 		),
 		array(
-			'start' => '2027-07-22',
-			'end'   => '2027-09-01',
-			'label' => '22 July to 1 September 2027',
+			'start'       => '2027-07-22',
+			'end'         => '2027-09-01',
+			'label'       => '22 July to 1 September 2027',
+			'label_short' => 'Summer 2027',
 		),
 	);
 
@@ -94,7 +101,9 @@ function restwell_get_pricing(): array {
 		'guide_intro'  => __( 'Think of them as starting points: because the right support depends entirely on what each guest needs, your final cost is tailored to you and confirmed after a free, no-obligation conversation with the care team. Nobody is quoted a figure before we understand what would actually help.', 'restwell-retreats' ),
 		'rows'         => array(
 			array(
+				'key'             => 'day_personal',
 				'type'            => 'Personal, social, sit-in and escort care (7am to 10pm)',
+				'type_short'      => __( 'Daytime personal care', 'restwell-retreats' ),
 				'weekday_display' => '£34.65 per hour',
 				'weekend_display' => '£41.25 per hour',
 				'weekday_from'    => 34.65,
@@ -102,7 +111,9 @@ function restwell_get_pricing(): array {
 				'unit'            => 'hour',
 			),
 			array(
+				'key'             => 'overnight_personal',
 				'type'            => 'Personal care overnight (10pm to 7am)',
+				'type_short'      => __( 'Overnight personal care', 'restwell-retreats' ),
 				'weekday_display' => '£40.15 per hour',
 				'weekend_display' => '£46.75 per hour',
 				'weekday_from'    => 40.15,
@@ -110,7 +121,9 @@ function restwell_get_pricing(): array {
 				'unit'            => 'hour',
 			),
 			array(
+				'key'             => 'domestic',
 				'type'            => 'Domestic care (7am to 10pm)',
+				'type_short'      => __( 'Domestic care', 'restwell-retreats' ),
 				'weekday_display' => '£34.65 per hour',
 				'weekend_display' => 'Not available at weekends',
 				'weekday_from'    => 34.65,
@@ -118,7 +131,9 @@ function restwell_get_pricing(): array {
 				'unit'            => 'hour',
 			),
 			array(
+				'key'             => 'complex_day',
 				'type'            => 'Complex care (7am to 10pm)',
+				'type_short'      => __( 'Complex care', 'restwell-retreats' ),
 				'weekday_display' => '£38.50 per hour',
 				'weekend_display' => '£46.20 per hour',
 				'weekday_from'    => 38.50,
@@ -126,7 +141,9 @@ function restwell_get_pricing(): array {
 				'unit'            => 'hour',
 			),
 			array(
+				'key'             => 'complex_overnight',
 				'type'            => 'Complex care overnight (10pm to 7am)',
+				'type_short'      => __( 'Overnight complex care', 'restwell-retreats' ),
 				'weekday_display' => '£44.00 per hour',
 				'weekend_display' => '£50.60 per hour',
 				'weekday_from'    => 44.00,
@@ -134,7 +151,9 @@ function restwell_get_pricing(): array {
 				'unit'            => 'hour',
 			),
 			array(
+				'key'             => 'sleep_in',
 				'type'            => 'Sleep-in night, fixed rate (10pm to 7am)',
+				'type_short'      => __( 'Sleep-in night', 'restwell-retreats' ),
 				'weekday_display' => '£230.94 standard, £274.02 complex',
 				'weekend_display' => '£230.94 standard, £293.16 complex',
 				'weekday_from'    => 230.94,
@@ -142,7 +161,9 @@ function restwell_get_pricing(): array {
 				'unit'            => 'night',
 			),
 			array(
+				'key'             => 'waking_night',
 				'type'            => 'Waking night, fixed rate (10pm to 7am)',
+				'type_short'      => __( 'Waking night', 'restwell-retreats' ),
 				'weekday_display' => '£307.62 standard, £307.62 complex',
 				'weekend_display' => '£307.62 standard, £334.21 complex',
 				'weekday_from'    => 307.62,
@@ -233,11 +254,15 @@ function restwell_get_terms_payment_paragraph(): string {
 /**
  * Format a pound amount for on-page display (British grouping).
  *
- * @param int|float $amount Amount in pounds.
+ * @param int|float   $amount   Amount in pounds.
+ * @param int|null    $decimals Force decimal places (e.g. 2 for quoted rates); null trims whole pounds.
  * @return string e.g. £1,300 or £34.65.
  */
-function restwell_format_gbp( $amount ): string {
+function restwell_format_gbp( $amount, ?int $decimals = null ): string {
 	$amount = (float) $amount;
+	if ( null !== $decimals ) {
+		return '£' . number_format_i18n( $amount, max( 0, $decimals ) );
+	}
 	if ( abs( $amount - (int) $amount ) < 0.001 ) {
 		return '£' . number_format_i18n( (int) $amount );
 	}
@@ -297,15 +322,69 @@ function restwell_get_peak_season_labels_sentence(): string {
 }
 
 /**
+ * Peak ranges formatted for the Pricing page list (short name + date range).
+ *
+ * @return array<int, array{label: string, range: string}>
+ */
+function restwell_get_peak_ranges_display(): array {
+	$ranges = array();
+	foreach ( restwell_get_pricing()['peak_ranges'] as $range ) {
+		$label    = isset( $range['label_short'] ) && $range['label_short'] !== '' ? $range['label_short'] : $range['label'];
+		$ranges[] = array(
+			'label' => $label,
+			'range' => restwell_format_peak_date_range( $range['start'], $range['end'] ),
+		);
+	}
+	return $ranges;
+}
+
+/**
+ * Format a Y-m-d start/end pair as "22 Jul – 1 Sep 2026" style range text.
+ *
+ * @param string $start Start date (Y-m-d).
+ * @param string $end   End date (Y-m-d).
+ * @return string
+ */
+function restwell_format_peak_date_range( string $start, string $end ): string {
+	$s = DateTimeImmutable::createFromFormat( 'Y-m-d', $start );
+	$e = DateTimeImmutable::createFromFormat( 'Y-m-d', $end );
+	if ( ! $s || ! $e || $s->format( 'Y-m-d' ) !== $start || $e->format( 'Y-m-d' ) !== $end ) {
+		return trim( $start . ' to ' . $end );
+	}
+
+	// "15 – 21 Feb 2027" within one month.
+	if ( $s->format( 'Y-m' ) === $e->format( 'Y-m' ) ) {
+		return $s->format( 'j' ) . ' – ' . $e->format( 'j M Y' );
+	}
+	// Same year across months: "26 Oct – 1 Nov 2026".
+	if ( $s->format( 'Y' ) === $e->format( 'Y' ) ) {
+		return $s->format( 'j M' ) . ' – ' . $e->format( 'j M Y' );
+	}
+	// Crossing years: show the year on both dates ("21 Dec 2026 – 3 Jan 2027").
+	return $s->format( 'j M Y' ) . ' – ' . $e->format( 'j M Y' );
+}
+
+/**
  * Default FAQ pairs for the Pricing page (visible accordion + FAQPage JSON-LD).
  *
  * @return array<int, array{q: string, a: string, cat: string}>
  */
 function restwell_get_pricing_faq_defaults(): array {
+	$pricing    = restwell_get_pricing();
+	$off_peak   = $pricing['seasons']['off_peak'];
+	$peak       = $pricing['seasons']['peak'];
+	$timeline   = restwell_get_payment_timeline();
+
 	return array(
 		array(
 			'q'   => 'How much does an accessible holiday at Restwell cost?',
-			'a'   => 'You book the whole step-free bungalow in Whitstable, with the listed on-site access equipment included. A full week starts at £1,300 off-peak and £1,400 in peak season, with single nights from £185. A 50% deposit secures your dates and the balance is due one week before arrival.',
+			'a'   => sprintf(
+				/* translators: 1: off-peak full week price, 2: peak full week price, 3: lowest single-night price */
+				__( 'You book the whole step-free bungalow in Whitstable, with the listed on-site access equipment included. A full week starts at %1$s off-peak and %2$s in peak season, with single nights from %3$s. A 50%% deposit secures your dates and the balance is due one week before arrival.', 'restwell-retreats' ),
+				restwell_format_gbp( $off_peak['full_week'] ),
+				restwell_format_gbp( $peak['full_week'] ),
+				restwell_format_gbp( min( $off_peak['midweek_night'], $off_peak['weekend_night'], $peak['midweek_night'], $peak['weekend_night'] ) )
+			),
 			'cat' => 'booking',
 		),
 		array(
@@ -320,7 +399,12 @@ function restwell_get_pricing_faq_defaults(): array {
 		),
 		array(
 			'q'   => 'How much deposit do I pay to secure my dates?',
-			'a'   => 'A 50% deposit secures your chosen dates, with the remaining balance due no later than one week before you arrive.',
+			'a'   => sprintf(
+				/* translators: 1: deposit percent, 2: balance due clause */
+				__( 'A %1$d%% deposit secures your chosen dates, with the remaining balance due %2$s.', 'restwell-retreats' ),
+				(int) $timeline['deposit_percent'],
+				(string) $timeline['balance_due_clause_you']
+			),
 			'cat' => 'booking',
 		),
 		array(
