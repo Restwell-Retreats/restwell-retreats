@@ -12,6 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_wif_id      = (int) get_queried_object_id();
+$restwell_wif_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_wif_id, 'wif_heading', 'Is Restwell right for your group?' )
+	: 'Is Restwell right for your group?';
+$restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_wif_id,
+		'wif_intro',
+		'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.'
+	)
+	: 'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.';
 ?>
 
 
@@ -22,8 +34,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Is Restwell right for your group?',
-		'intro'      => 'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.',
+		'heading'    => $restwell_wif_heading,
+		'intro'      => $restwell_wif_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -34,7 +46,7 @@ get_template_part(
 				'url'   => '',
 			),
 		),
-		'post_id'    => (int) get_queried_object_id(),
+		'post_id'    => $restwell_wif_id,
 	)
 );
 ?>

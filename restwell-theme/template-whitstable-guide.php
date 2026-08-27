@@ -12,6 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_wg_id      = (int) get_queried_object_id();
+$restwell_wg_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_wg_id, 'wg_heading', 'Whitstable Kent coast access guide' )
+	: 'Whitstable Kent coast access guide';
+$restwell_wg_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_wg_id,
+		'wg_intro',
+		'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.'
+	)
+	: 'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.';
 ?>
 
 
@@ -22,8 +34,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Whitstable Kent coast access guide',
-		'intro'      => 'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.',
+		'heading'    => $restwell_wg_heading,
+		'intro'      => $restwell_wg_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -34,7 +46,7 @@ get_template_part(
 				'url'   => '',
 			),
 		),
-		'post_id'    => (int) get_queried_object_id(),
+		'post_id'    => $restwell_wg_id,
 	)
 );
 ?>

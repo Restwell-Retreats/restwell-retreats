@@ -42,6 +42,18 @@ $enq_val = static function ( string $key, array $fields, string $default = '' ):
 $funding_selected = $enq_val( 'enq_funding', $enq_fields, 'self' );
 $phone_number     = (string) get_option( 'restwell_phone_number', '01622 809881' );
 $phone_tel        = preg_replace( '/\s+/', '', $phone_number );
+
+$restwell_enq_id      = (int) get_queried_object_id();
+$restwell_enq_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Contact Restwell about your stay' )
+	: 'Contact Restwell about your stay';
+$restwell_enq_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_enq_id,
+		'enq_intro',
+		'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.'
+	)
+	: 'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.';
 ?>
 
 <main id="main-content">
@@ -51,8 +63,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Contact Restwell about your stay',
-		'intro'      => 'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.',
+		'heading'    => $restwell_enq_heading,
+		'intro'      => $restwell_enq_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -63,7 +75,7 @@ get_template_part(
 				'url'   => '',
 			),
 		),
-		'post_id'    => (int) get_queried_object_id(),
+		'post_id'    => $restwell_enq_id,
 	)
 );
 ?>

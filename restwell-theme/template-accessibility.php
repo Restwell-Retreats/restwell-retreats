@@ -12,6 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_acc_id      = (int) get_queried_object_id();
+$restwell_acc_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_acc_id, 'acc_heading', 'Access statement: hoist, wet room, door widths' )
+	: 'Access statement: hoist, wet room, door widths';
+$restwell_acc_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_acc_id,
+		'acc_intro',
+		'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.'
+	)
+	: 'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.';
 ?>
 
 
@@ -22,8 +34,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Access statement: hoist, wet room, door widths',
-		'intro'      => 'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.',
+		'heading'    => $restwell_acc_heading,
+		'intro'      => $restwell_acc_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -34,7 +46,7 @@ get_template_part(
 				'url'   => '',
 			),
 		),
-		'post_id'    => (int) get_queried_object_id(),
+		'post_id'    => $restwell_acc_id,
 	)
 );
 ?>

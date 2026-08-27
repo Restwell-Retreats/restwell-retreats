@@ -39,8 +39,8 @@ function restwell_get_theme_setup_pages() {
 function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
-		'hero_heading'             => 'Accessible holidays Whitstable',
-		'hero_subheading'          => 'Restwell is the brand overview for accessible holidays Whitstable guests can plan with confidence. Start here, then follow links to the bungalow, the access statement, who the stay suits, and how booking works. Enquire when you are ready.',
+		'hero_heading'             => 'Accessible holidays in Whitstable',
+		'hero_subheading'          => 'Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'View the property',
 		'hero_cta_primary_url'     => '/the-property/',
@@ -349,7 +349,7 @@ function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
 		'hiw_heading' => 'How accessible holiday booking works',
-		'hiw_intro'   => 'An accessible holiday booking process with Restwell starts at enquiry: share access needs, confirm dates, arrange optional care if you want it, then settle in.',
+		'hiw_intro'   => 'Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.',
 
 		'hiw_steps_label'   => 'FOUR-STEP PROCESS',
 		'hiw_steps_heading' => 'Straightforward from start to finish',
@@ -414,7 +414,7 @@ function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
 		'acc_heading' => 'Access statement: hoist, wet room, door widths',
-		'acc_intro'   => 'This wheelchair accessible holiday cottage access statement covers the ceiling hoist, level-access wet room, door widths of 965mm at the front and 926mm inside, and parking, so you can judge fit before you book.',
+		'acc_intro'   => 'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.',
 
 		'acc_room_label'      => 'The property',
 		'acc_room_heading'    => 'Room by room',
@@ -454,8 +454,8 @@ function restwell_get_accessibility_page_defaults() {
 function restwell_get_faq_page_defaults() {
 	return array(
 		'faq_label'        => 'FAQ',
-		'faq_heading'      => 'Your questions, answered honestly.',
-		'faq_intro'        => 'Short, plain answers to the questions we hear most before an enquiry. Accessibility, suitability, care, funding and what to do if your situation is not on the list.',
+		'faq_heading'      => 'Whitstable bungalow holiday FAQs',
+		'faq_intro'        => 'House, booking and packing questions we hear before an enquiry — with links when the full answer lives on Accessibility, Pricing, Care or Whitstable.',
 		'faq_list_label'   => '',
 		'faq_list_heading' => 'Frequently asked questions',
 
@@ -501,8 +501,8 @@ function restwell_get_faq_page_defaults() {
 function restwell_get_enquire_page_defaults() {
 	return array(
 		'enq_label'   => 'Get in touch',
-		'enq_heading' => 'Let\'s talk about your stay.',
-		'enq_intro'   => 'Tell us your dates, your access needs and anything specific to your situation. We will help you work out whether Restwell is the right fit, with no commitment until you are ready.',
+		'enq_heading' => 'Contact Restwell about your stay',
+		'enq_intro'   => 'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.',
 
 		'enq_form_heading'        => 'Tell us about your stay',
 		'enq_success_heading'     => 'Thank you — we have your enquiry.',
@@ -525,9 +525,9 @@ function restwell_get_pricing_page_defaults() {
 
 	$defaults = array(
 		'pricing_label'         => 'Pricing',
-		'pricing_heading'       => 'Pricing for your accessible Whitstable break',
-		'pricing_subheading'    => 'Transparent accessible holiday pricing in Whitstable: the bungalow, optional care and every funding route explained.',
-		'pricing_intro'         => 'Restwell Retreats is a step-free, single-storey bungalow in Whitstable, and when you book it, the whole house is yours. The access equipment listed on this page is included in the bungalow rate. Extra kit we need to hire in is charged separately. This page explains what is included, how payment works, common funding routes, and what else to budget for. If anything is unclear, we are always happy to talk it through before you book.',
+		'pricing_heading'       => 'What a stay costs',
+		'pricing_subheading'    => 'Our rates include the entire bungalow. You can add care from Continuity if you need support.',
+		'pricing_intro'         => 'Our rates include the entire bungalow. You can add care from Continuity if you need support.',
 		'pricing_hero_cta_text' => 'Check dates and care availability',
 		'pricing_hero_cta_url'  => '/enquire/',
 		'pricing_hero_cta_promise' => 'No booking commitment, just a conversation.',
@@ -551,8 +551,8 @@ function restwell_get_pricing_page_defaults() {
 function restwell_get_resources_page_defaults() {
 	return array(
 		'res_label'   => 'Funding & support',
-		'res_heading' => 'How to fund an accessible holiday in the UK',
-		'res_intro'   => 'Funding an accessible holiday in the UK is possible through several routes, even if you have been told otherwise. Here are the pathways that can help, with step-by-step guides for families, carers and commissioners.',
+		'res_heading' => 'Fund an accessible respite holiday',
+		'res_intro'   => 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.',
 
 		'res_fund_heading' => 'How to fund your stay',
 		'res_fund_body'    => "Many guests use a combination of personal savings, direct payments, and charitable grants to fund their stay.\n\nIf you receive a personal budget or direct payment from your local authority or NHS, you may be able to use this towards your stay, particularly if care support is included. We recommend speaking to your care coordinator or social worker in the first instance.\n\nWe are happy to provide documentation to support a funding application.",
@@ -604,8 +604,8 @@ function restwell_get_guest_guide_page_defaults() {
 function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'           => 'Who it is for',
-		'wif_heading'         => 'Accessible stay suitability',
-		'wif_intro'           => 'Use this accessible stay suitability guide to see whether Restwell fits your party: guests and families, carers and support workers, occupational therapists, and commissioners planning funded short breaks.',
+		'wif_heading'         => 'Is Restwell right for your group?',
+		'wif_intro'           => 'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.',
 		'wif_hero_image_id'   => 0,
 		'wif_family_title'    => 'For guests and families',
 		'wif_family_body'     => '"Accessible" and "wheelchair friendly" are used loosely by a lot of accommodation. People book in good faith and arrive to find a step at the entrance, a bathroom that is too small to turn, or a hoist that is not actually there. Restwell works the other way: the ceiling track hoist is already fitted in the accessible bedroom, the wet room has a roll-in shower with turning space, and every doorway and corridor is sized for a powerchair. The full measurements are published on our accessibility page. Check them before you enquire, not after. This is a private home, not a converted hotel room. No shared spaces, no clinical layout, and no surprises on arrival.',
@@ -633,8 +633,8 @@ function restwell_get_who_its_for_page_defaults() {
 function restwell_get_whitstable_guide_page_defaults() {
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
-		'wg_heading'       => 'A practical local guide for your stay.',
-		'wg_intro'         => 'Whitstable is a genuinely lovely town, and most of it is more accessible than it first appears. This guide covers the seafront, parking, eating out and quieter times, written for wheelchair users and visitors with access needs.',
+		'wg_heading'       => 'Whitstable Kent coast access guide',
+		'wg_intro'         => 'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.',
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'The promenade from Tankerton Slopes',
 		'wg_about_body'    => "A paved promenade route of about two miles, west from the property at the top of Tankerton Slopes. Marine Parade clifftop is wide and flat with weather shelters and benches. At the right tide you can watch The Street, a natural shingle spit, emerge almost 800 metres into the estuary.\nSloped paths down to the beach are steep and easier with a companion for manual wheelchair users. The lower promenade then runs unbroken west past the painted beach huts to Whitstable Castle gardens, town and harbour.",
@@ -678,6 +678,32 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_cta_secondary_url'     => '/enquire/',
 		'wg_cta_blog_label'        => 'Read local articles',
 		'wg_cta_blog_url'          => '/blog/',
+	);
+}
+
+/**
+ * Default meta for the Optional care page.
+ *
+ * @return array<string, mixed>
+ */
+function restwell_get_care_page_defaults() {
+	return array(
+		'care_label'   => 'Optional care',
+		'care_heading' => 'Care during your stay, only if you want it',
+		'care_intro'   => 'CQC-regulated care from Continuity of Care Services, on hand whenever you want it, arranged in the same phone call as your booking, or bring your own carer if you’d rather.',
+	);
+}
+
+/**
+ * Default meta for the Our Story page.
+ *
+ * @return array<string, mixed>
+ */
+function restwell_get_our_story_page_defaults() {
+	return array(
+		'story_label'   => 'Our story',
+		'story_heading' => 'Why Restwell exists',
+		'story_intro'   => 'Restwell started when someone saw how difficult it was for people to find a holiday home that really met their needs. The bungalow was shaped by the people who would actually stay there.',
 	);
 }
 

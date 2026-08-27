@@ -33,13 +33,20 @@ foreach (
 
 <main id="main-content">
 <?php
+$restwell_res_id      = (int) get_queried_object_id();
+$restwell_res_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_res_id, 'res_heading', 'Fund an accessible respite holiday' )
+	: 'Fund an accessible respite holiday';
+$restwell_res_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_res_id, 'res_intro', 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.' )
+	: 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.';
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Fund an accessible respite holiday',
-		'intro'      => 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.',
+		'heading'    => $restwell_res_heading,
+		'intro'      => $restwell_res_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -51,6 +58,11 @@ get_template_part(
 			),
 		),
 		'post_id'    => (int) get_queried_object_id(),
+		/* Force coastal hospitality hero — seeded woodland attachment must not override. */
+		'image_url'  => function_exists( 'restwell_theme_image_url' )
+			? restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg' )
+			: '',
+		'image_alt'  => __( 'Colourful beach huts along Tankerton promenade at sunset, Whitstable', 'restwell-retreats' ),
 	)
 );
 ?>

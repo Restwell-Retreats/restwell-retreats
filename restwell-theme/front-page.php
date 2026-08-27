@@ -18,6 +18,17 @@ $hero_src = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_url' ) 
 $hero_alt = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) )
 	? restwell_page_hero_image_alt( $home_id, __( 'Accessible holidays in Whitstable', 'restwell-retreats' ) )
 	: restwell_theme_image_alt( 'stock/restwell-whitstable-promenade-golden-hour.jpg' );
+
+$hero_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $home_id, 'hero_heading', 'Accessible holidays in Whitstable' )
+	: 'Accessible holidays in Whitstable';
+$hero_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$home_id,
+		'hero_subheading',
+		'Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.'
+	)
+	: 'Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.';
 ?>
 
 
@@ -37,8 +48,8 @@ $hero_alt = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) 
       <div class="container">
         <div class="hero__content">
           <div class="hero__text">
-            <h1 id="hero-h">Accessible holidays in Whitstable</h1>
-            <p>Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.</p>
+            <h1 id="hero-h"><?php echo esc_html( $hero_heading ); ?></h1>
+            <p><?php echo esc_html( $hero_intro ); ?></p>
           </div>
           <div class="hero__ctas">
             <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Get in touch</a>

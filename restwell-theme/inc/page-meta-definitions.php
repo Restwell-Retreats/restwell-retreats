@@ -53,6 +53,8 @@ function restwell_get_page_content_field_definitions( $post = null ) {
 		'template-enquire.php'    => 'restwell_get_enquire_field_definitions',
 		'template-pricing.php'    => 'restwell_get_pricing_field_definitions',
 		'template-resources.php'           => 'restwell_get_resources_field_definitions',
+		'template-care.php'                => 'restwell_get_care_field_definitions',
+		'template-our-story.php'           => 'restwell_get_our_story_field_definitions',
 		'template-privacy-policy.php'      => 'restwell_get_legal_policy_field_definitions',
 		'template-terms-and-conditions.php' => 'restwell_get_legal_policy_field_definitions',
 		'template-accessibility-policy.php' => 'restwell_get_legal_policy_field_definitions',
@@ -97,6 +99,8 @@ function restwell_get_page_content_defaults( $post = null ) {
 		'template-enquire.php'              => 'restwell_get_enquire_page_defaults',
 		'template-pricing.php'              => 'restwell_get_pricing_page_defaults',
 		'template-resources.php'            => 'restwell_get_resources_page_defaults',
+		'template-care.php'                 => 'restwell_get_care_page_defaults',
+		'template-our-story.php'            => 'restwell_get_our_story_page_defaults',
 		'page-guest-guide.php'              => 'restwell_get_guest_guide_page_defaults',
 		'template-privacy-policy.php'       => 'restwell_get_privacy_policy_page_defaults',
 		'template-terms-and-conditions.php' => 'restwell_get_terms_conditions_page_defaults',
@@ -137,6 +141,28 @@ function restwell_page_content_meta_or_default( $post_id, $key, array $defaults 
 	}
 
 	return $defaults[ $key ] ?? '';
+}
+
+/**
+ * Page-content string for templates: stored meta / theme default, else hard fallback.
+ *
+ * Use the fallback for current live copy so a missing key never blanks the H1.
+ *
+ * @param int    $post_id  Page ID.
+ * @param string $key      Meta key.
+ * @param string $fallback Hardcoded fallback when meta and defaults are empty.
+ * @return string
+ */
+function restwell_page_content_text( $post_id, $key, $fallback = '' ) {
+	$post_id = absint( $post_id );
+	$val     = '';
+	if ( $post_id > 0 && function_exists( 'restwell_page_content_meta_or_default' ) ) {
+		$val = trim( (string) restwell_page_content_meta_or_default( $post_id, $key ) );
+	}
+	if ( $val !== '' ) {
+		return $val;
+	}
+	return is_string( $fallback ) ? $fallback : '';
 }
 
 /**
@@ -908,6 +934,38 @@ function restwell_get_legal_policy_field_definitions() {
 		),
 		'Document body' => array(
 			'legal_body_html' => restwell_field( __( 'Main policy text (HTML). Leave empty to use the theme default for this page type.', 'restwell-retreats' ), 'textarea' ),
+		),
+	);
+}
+
+/**
+ * Optional care page.
+ *
+ * @return array<string, array<string, array{label:string,type:string}>>
+ */
+function restwell_get_care_field_definitions() {
+	return array(
+		'Header' => array(
+			'care_hero_image_id' => restwell_field( __( 'Hero background image (attachment ID, optional)', 'restwell-retreats' ), 'media' ),
+			'care_label'         => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
+			'care_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
+			'care_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+	);
+}
+
+/**
+ * Our Story page.
+ *
+ * @return array<string, array<string, array{label:string,type:string}>>
+ */
+function restwell_get_our_story_field_definitions() {
+	return array(
+		'Header' => array(
+			'story_hero_image_id' => restwell_field( __( 'Hero background image (attachment ID, optional)', 'restwell-retreats' ), 'media' ),
+			'story_label'         => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
+			'story_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
+			'story_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
 		),
 	);
 }

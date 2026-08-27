@@ -16,31 +16,45 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-      <div class="container">
-        <div class="hero__content">
-          <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page">FAQ</li></ol>
-          <div class="hero__text">
-            <h1 id="page-h">Whitstable bungalow holiday FAQs</h1>
-            <p>House, booking and packing questions we hear before an enquiry — with links when the full answer lives on Accessibility, Pricing, Care or Whitstable.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+<?php
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => 'Whitstable bungalow holiday FAQs',
+		'intro'      => 'House, booking and packing questions we hear before an enquiry — with links when the full answer lives on Accessibility, Pricing, Care or Whitstable.',
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => 'FAQ',
+				'url'   => '',
+			),
+		),
+		'post_id'    => (int) get_queried_object_id(),
+	)
+);
+?>
 
-    <section class="faq section-y band-white">
-      <div class="container">
-        <h2 class="sr-only">Frequently asked questions</h2>
-        <ul class="pill-tabs" data-faq-filters role="tablist" aria-label="FAQ categories">
-          <li><button type="button" data-filter="all" class="is-active" aria-selected="true">All</button></li>
-          <li><button type="button" data-filter="booking" aria-selected="false">Booking</button></li>
-          <li><button type="button" data-filter="property" aria-selected="false">The house</button></li>
-          <li><button type="button" data-filter="prep" aria-selected="false">Before you travel</button></li>
-          <li><button type="button" data-filter="care" aria-selected="false">Care</button></li>
-          <li><button type="button" data-filter="funding" aria-selected="false">Funding</button></li>
-        </ul>
-          <div class="faq-list faq-list--split faq-list--measure" data-faq-accordion>
-            <div class="faq-list__col">
+    <section class="faq section-y band-white" aria-labelledby="faq-list-h">
+      <div class="container faq-page">
+        <header class="faq-page__head section-head section-head--center section-head--tight">
+          <p class="eyebrow"><?php esc_html_e( 'Browse by topic', 'restwell-retreats' ); ?></p>
+          <h2 id="faq-list-h"><?php esc_html_e( 'Frequently asked questions', 'restwell-retreats' ); ?></h2>
+        </header>
+        <div class="pill-tabs" data-faq-filters role="group" aria-label="<?php esc_attr_e( 'Filter questions by category', 'restwell-retreats' ); ?>">
+          <button type="button" data-filter="all" class="is-active" aria-pressed="true">All</button>
+          <button type="button" data-filter="booking" aria-pressed="false">Booking</button>
+          <button type="button" data-filter="property" aria-pressed="false">The house</button>
+          <button type="button" data-filter="prep" aria-pressed="false">Before you travel</button>
+          <button type="button" data-filter="care" aria-pressed="false">Care</button>
+          <button type="button" data-filter="funding" aria-pressed="false">Funding</button>
+        </div>
+        <div class="faq-page__layout">
+          <div class="faq-list faq-list--page" data-faq-accordion>
             <div class="faq-item is-open" data-cat="booking">
               <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="true" id="faq-q1" aria-controls="faq-q1-a">
                 <span>Is Restwell open for bookings?</span>
@@ -140,8 +154,6 @@ get_header();
                 <p>No. We do not charge a damage deposit or a leaving-clean fee. Report any damage so we can put it right. Payment steps live on <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#payment' ); ?>">Pricing</a>.</p>
               </div>
             </div>
-            </div>
-            <div class="faq-list__col">
             <div class="faq-item" data-cat="property">
               <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="faq-q12" aria-controls="faq-q12-a">
                 <span>Can I smoke or vape at Restwell?</span>
@@ -241,30 +253,34 @@ get_header();
                 <p>Tesco Extra is about seven minutes’ drive. Town eating and parking notes stay on the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a> so this page does not become a days-out list.</p>
               </div>
             </div>
+          </div>
+          <aside class="faq-page__aside" aria-labelledby="faq-ask-h">
+            <div class="faq-ask">
+              <header class="section-head section-head--tight">
+                <p class="eyebrow">Can’t find your answer?</p>
+                <h2 id="faq-ask-h">Ask us directly</h2>
+                <p>We reply within 48 hours on most questions. Prefer to talk? Call 01622 809881.</p>
+              </header>
+              <form class="form-stack restwell-faq-question-form" id="faq-question-form" action="<?php echo esc_url( get_permalink() ? get_permalink() : home_url( '/faq/' ) ); ?>" method="post">
+                <?php wp_nonce_field( 'restwell_faq_question', 'restwell_faq_question_nonce' ); ?>
+                <input type="hidden" name="restwell_faq_question" value="1" />
+                <input type="hidden" name="restwell_faq_page_id" value="<?php echo esc_attr( (string) get_the_ID() ); ?>" />
+                <input type="hidden" name="restwell_form_opened_at" value="" data-restwell-form-opened />
+                <div class="field" hidden aria-hidden="true">
+                  <label for="faq_q_website">Website</label>
+                  <input type="text" id="faq_q_website" name="faq_q_website" tabindex="-1" autocomplete="off" />
+                </div>
+                <div class="field"><label for="ask-name">Name</label><input id="ask-name" name="faq_q_name" autocomplete="name" /></div>
+                <div class="field"><label for="ask-email">Email</label><input id="ask-email" name="faq_q_email" type="email" autocomplete="email" required /></div>
+                <div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" name="faq_q_message" required rows="4"></textarea></div>
+                <div class="form-actions"><button class="btn btn-gold" type="submit">Send question</button></div>
+              </form>
             </div>
-          </div>
-    <section class="section-y band-subtle">
-      <div class="container container--md">
-        <header class="section-head">
-          <p class="eyebrow">Can’t find your answer?</p>
-          <h2>Ask us directly</h2>
-        </header>
-        <form class="form-stack restwell-faq-question-form" id="faq-question-form" action="<?php echo esc_url( get_permalink() ? get_permalink() : home_url( '/faq/' ) ); ?>" method="post">
-          <?php wp_nonce_field( 'restwell_faq_question', 'restwell_faq_question_nonce' ); ?>
-          <input type="hidden" name="restwell_faq_question" value="1" />
-          <input type="hidden" name="restwell_faq_page_id" value="<?php echo esc_attr( (string) get_the_ID() ); ?>" />
-          <input type="hidden" name="restwell_form_opened_at" value="" data-restwell-form-opened />
-          <div class="field" hidden aria-hidden="true">
-            <label for="faq_q_website">Website</label>
-            <input type="text" id="faq_q_website" name="faq_q_website" tabindex="-1" autocomplete="off" />
-          </div>
-          <div class="field"><label for="ask-name">Name</label><input id="ask-name" name="faq_q_name" autocomplete="name" /></div>
-          <div class="field"><label for="ask-email">Email</label><input id="ask-email" name="faq_q_email" type="email" autocomplete="email" required /></div>
-          <div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" name="faq_q_message" required></textarea></div>
-          <div class="form-actions"><button class="btn btn-gold" type="submit">Send question</button></div>
-        </form>
+          </aside>
+        </div>
       </div>
     </section>
+
     <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
       <div class="mid-cta__media" aria-hidden="true"></div>
       <div class="mid-cta__inner">
@@ -272,7 +288,7 @@ get_header();
         <p>We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.</p>
         <div class="mid-cta__btns">
           <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Go to enquire form</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">See access details</a>
         </div>
       </div>
     </section>
