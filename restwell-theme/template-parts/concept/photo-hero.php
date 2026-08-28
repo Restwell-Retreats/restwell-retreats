@@ -86,7 +86,7 @@ if ( $image_alt === '' ) {
 }
 ?>
 <section class="hero" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
-	<div class="hero__media" aria-hidden="true">
+	<div class="hero__media">
 		<?php if ( $image_url !== '' ) : ?>
 			<img
 				class="hero__media-img"

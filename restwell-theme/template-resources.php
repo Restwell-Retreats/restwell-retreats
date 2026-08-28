@@ -35,11 +35,11 @@ foreach (
 <?php
 $restwell_res_id      = (int) get_queried_object_id();
 $restwell_res_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_res_id, 'res_heading', 'Fund an accessible respite holiday' )
-	: 'Fund an accessible respite holiday';
+	? restwell_page_content_text( $restwell_res_id, 'res_heading', 'Paying for a break, without the guesswork' )
+	: 'Paying for a break, without the guesswork';
 $restwell_res_intro   = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_res_id, 'res_intro', 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.' )
-	: 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.';
+	? restwell_page_content_text( $restwell_res_id, 'res_intro', 'Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.' )
+	: 'Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.';
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,
@@ -82,9 +82,11 @@ get_template_part(
     <section class="section-y band-subtle" id="basics" aria-labelledby="basics-h">
       <div class="container">
         <div class="stat-row stat-row--prose">
-          <div class="stat"><p class="stat__value">Same rate</p><p class="stat__label">The published bungalow price, whoever is paying</p></div>
-          <div class="stat"><p class="stat__value">Your funder</p><p class="stat__label">We’ll invoice your council, the NHS, a grant body, or you</p></div>
-          <div class="stat"><p class="stat__value">Two invoices</p><p class="stat__label">House from Restwell. Care from Continuity. Same phone number.</p></div>
+          <dl>
+            <div class="stat"><dt class="stat__label">The published bungalow price, whoever is paying</dt><dd class="stat__value">Same rate</dd></div>
+            <div class="stat"><dt class="stat__label">We’ll invoice your council, the NHS, a grant body, or you</dt><dd class="stat__value">Your funder</dd></div>
+            <div class="stat"><dt class="stat__label">House from Restwell. Care from Continuity. Same phone number.</dt><dd class="stat__value">Two invoices</dd></div>
+          </dl>
         </div>
         <header class="section-head">
           <p class="eyebrow">How the bills work</p>

@@ -78,7 +78,7 @@ function restwell_get_blog_index_heading() {
 		}
 	}
 
-	return __( 'Tips, stories and Whitstable updates', 'restwell-retreats' );
+	return __( 'Notes for planning a trip', 'restwell-retreats' );
 }
 
 /**
@@ -98,7 +98,7 @@ function restwell_get_blog_index_lede() {
 	}
 
 	return __(
-		'Accessible holiday tips, guest stories, what’s on around Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.',
+		'Guides about accessible travel written from one adapted bungalow in Whitstable: the Kent coast in a wheelchair, how funding for a break usually works, and how to read an access statement so a listing can’t catch you out.',
 		'restwell-retreats'
 	);
 }

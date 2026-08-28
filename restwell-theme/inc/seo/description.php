@@ -61,7 +61,7 @@ function restwell_get_meta_description_for_request() {
 			return restwell_trim_meta_text(
 				sprintf(
 					/* translators: %s: page or post title */
-					__( '%s — practical accessibility and holiday-planning guidance from Restwell Retreats.', 'restwell-retreats' ),
+					__( '%s: practical accessibility and holiday-planning guidance from Restwell Retreats.', 'restwell-retreats' ),
 					$title
 				),
 				160
@@ -142,13 +142,3 @@ function restwell_get_meta_description_for_request() {
 
 	return restwell_trim_meta_text( (string) get_bloginfo( 'description' ), 160 );
 }
-
-// ---------------------------------------------------------------------------
-// 1c. Robots meta (noindex) + canonical URL
-// ---------------------------------------------------------------------------
-
-/**
- * Compute canonical URL for the current request.
- *
- * @return string Empty if no canonical should be output (e.g. 404).
- */

@@ -6,7 +6,7 @@
  * restwell_get_homepage_faq_defaults()).
  *
  * FAQ page scope: canonical FAQ template page meta
- * `faq_{N}_q`, `faq_{N}_a`, and `faq_{N}_cat` (up to 14 items).
+ * `faq_{N}_q`, `faq_{N}_a`, and `faq_{N}_cat` (up to 15 items).
  *
  * How It Works and Pricing scopes: page meta first, then
  * restwell_get_*_faq_defaults() seeds (same array for accordion + JSON-LD).
@@ -63,6 +63,10 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 				$q = (string) get_post_meta( $pricing_pid, "pricing_faq_{$i}_q", true );
 				$a = (string) get_post_meta( $pricing_pid, "pricing_faq_{$i}_a", true );
 				if ( $q !== '' && $a !== '' ) {
+					if ( function_exists( 'restwell_normalize_editorial_dashes' ) ) {
+						$q = restwell_normalize_editorial_dashes( $q );
+						$a = restwell_normalize_editorial_dashes( $a );
+					}
 					$items[] = array(
 						'q'   => $q,
 						'a'   => $a,
@@ -124,11 +128,15 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 	$items = array();
 
 	if ( $pid > 0 ) {
-		for ( $i = 1; $i <= 14; $i++ ) {
+		for ( $i = 1; $i <= 15; $i++ ) {
 			$q   = (string) get_post_meta( $pid, "faq_{$i}_q", true );
 			$a   = (string) get_post_meta( $pid, "faq_{$i}_a", true );
 			$cat = (string) get_post_meta( $pid, "faq_{$i}_cat", true );
 			if ( $q !== '' && $a !== '' ) {
+				if ( function_exists( 'restwell_normalize_editorial_dashes' ) ) {
+					$q = restwell_normalize_editorial_dashes( $q );
+					$a = restwell_normalize_editorial_dashes( $a );
+				}
 				$items[] = array(
 					'q'   => $q,
 					'a'   => $a,
@@ -187,18 +195,17 @@ function restwell_get_how_it_works_faq_defaults(): array {
 	return array(
 		array(
 			'q'   => __( 'How do I book a stay?', 'restwell-retreats' ),
-			'a'   => __( 'Start with an enquiry through the website or by phone. We confirm availability and what you need, then hold your dates.', 'restwell-retreats' ),
+			'a'   => __( 'Three steps: send us your dates and what you need, we confirm the bungalow and take a 50% deposit, then you arrive from 3pm using a key safe. Care can go on the same enquiry.', 'restwell-retreats' ),
 			'cat' => 'booking',
 		),
 		array(
 			'q'   => __( 'When can care be added?', 'restwell-retreats' ),
-			// Confirm in WP: how far ahead to request care.
-			'a'   => __( 'Care can be arranged when you book or added later, subject to availability.', 'restwell-retreats' ),
+			'a'   => __( 'Mention it when you first write, even if the dates are still vague. We don’t publish a lead time because it depends on what you need and who’s available that week. We’ll give you a real answer quickly.', 'restwell-retreats' ),
 			'cat' => 'care',
 		),
 		array(
 			'q'   => __( 'How can I pay?', 'restwell-retreats' ),
-			'a'   => __( 'Many guests use direct payments or a personal budget. See the Funding and Support page for the options.', 'restwell-retreats' ),
+			'a'   => __( 'We can invoice you, a council, the NHS or a grant body, at the same bungalow rate. Who we invoice doesn’t change the price. See Funding and support for the paperwork.', 'restwell-retreats' ),
 			'cat' => 'funding',
 		),
 		array(

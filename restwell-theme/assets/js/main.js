@@ -1907,6 +1907,8 @@
 		var lightboxImage = null;
 		var lightboxCaption = null;
 		var lightboxStatus = null;
+		var lightboxNav = null;
+		var lightboxStrip = null;
 		var lightboxClose = null;
 		var lightboxPrev = null;
 		var lightboxNext = null;
@@ -1984,27 +1986,32 @@
 			lightboxEl.innerHTML =
 				'<div class="restwell-lightbox__dialog">' +
 					'<div class="restwell-lightbox__toolbar">' +
-						'<button type="button" class="restwell-lightbox__btn restwell-lightbox__btn--close" data-lightbox-close aria-label="Close gallery">' +
+						'<p class="restwell-lightbox__counter" data-lightbox-counter aria-live="polite"></p>' +
+						'<div class="restwell-lightbox__nav" data-lightbox-nav>' +
+							'<button type="button" class="restwell-lightbox__btn" data-lightbox-prev aria-label="Previous image">' +
+								'<i class="ph-bold ph-caret-left" aria-hidden="true"></i>' +
+							'</button>' +
+							'<button type="button" class="restwell-lightbox__btn" data-lightbox-next aria-label="Next image">' +
+								'<i class="ph-bold ph-caret-right" aria-hidden="true"></i>' +
+							'</button>' +
+						'</div>' +
+						'<button type="button" class="restwell-lightbox__btn" data-lightbox-close aria-label="Close gallery">' +
 							'<i class="ph-bold ph-x" aria-hidden="true"></i>' +
 						'</button>' +
-						'<button type="button" class="restwell-lightbox__btn restwell-lightbox__btn--prev" data-lightbox-prev aria-label="Previous image">' +
-							'<i class="ph-bold ph-caret-left" aria-hidden="true"></i>' +
-						'</button>' +
-						'<button type="button" class="restwell-lightbox__btn restwell-lightbox__btn--next" data-lightbox-next aria-label="Next image">' +
-							'<i class="ph-bold ph-caret-right" aria-hidden="true"></i>' +
-						'</button>' +
-						'<p class="restwell-lightbox__status" data-lightbox-status aria-live="polite"></p>' +
 					'</div>' +
 					'<figure class="restwell-lightbox__figure">' +
-						'<img class="restwell-lightbox__image" src="" alt="Gallery image" decoding="async" />' +
+						'<img class="restwell-lightbox__image" src="" alt="" decoding="async" />' +
+						'<figcaption class="restwell-lightbox__caption" data-lightbox-caption></figcaption>' +
 					'</figure>' +
-					'<figcaption class="restwell-lightbox__caption" data-lightbox-caption></figcaption>' +
+					'<div class="restwell-lightbox__strip" data-lightbox-strip></div>' +
 				'</div>';
 			document.body.appendChild(lightboxEl);
 
 			lightboxImage = lightboxEl.querySelector('.restwell-lightbox__image');
 			lightboxCaption = lightboxEl.querySelector('[data-lightbox-caption]');
-			lightboxStatus = lightboxEl.querySelector('[data-lightbox-status]');
+			lightboxStatus = lightboxEl.querySelector('[data-lightbox-counter]');
+			lightboxNav = lightboxEl.querySelector('[data-lightbox-nav]');
+			lightboxStrip = lightboxEl.querySelector('[data-lightbox-strip]');
 			lightboxClose = lightboxEl.querySelector('[data-lightbox-close]');
 			lightboxPrev = lightboxEl.querySelector('[data-lightbox-prev]');
 			lightboxNext = lightboxEl.querySelector('[data-lightbox-next]');
@@ -2016,6 +2023,25 @@
 			lightboxNext.addEventListener('click', function () {
 				showSlide(currentIndex + 1);
 			});
+			var touchStartX = 0;
+			var touchStartY = 0;
+			lightboxEl.addEventListener('touchstart', function (e) {
+				if (e.touches.length !== 1) {
+					return;
+				}
+				touchStartX = e.touches[0].clientX;
+				touchStartY = e.touches[0].clientY;
+			}, { passive: true });
+			lightboxEl.addEventListener('touchend', function (e) {
+				if (e.changedTouches.length !== 1) {
+					return;
+				}
+				var dx = e.changedTouches[0].clientX - touchStartX;
+				var dy = e.changedTouches[0].clientY - touchStartY;
+				if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+					showSlide(currentIndex + (dx < 0 ? 1 : -1));
+				}
+			}, { passive: true });
 			lightboxEl.addEventListener('click', function (e) {
 				if (e.target === lightboxEl) {
 					closeLightbox();
@@ -2069,14 +2095,53 @@
 		}
 
 		function updateNavButtons() {
-			var single = slides.length <= 1;
-			if (lightboxPrev) {
-				lightboxPrev.hidden = single;
-				lightboxPrev.disabled = single;
+			if (!lightboxNav) {
+				return;
 			}
-			if (lightboxNext) {
-				lightboxNext.hidden = single;
-				lightboxNext.disabled = single;
+			/* Hide the whole prev/next cluster for single-image galleries. */
+			lightboxNav.hidden = slides.length <= 1;
+		}
+
+		function renderStrip() {
+			if (!lightboxStrip) {
+				return;
+			}
+			lightboxStrip.replaceChildren();
+			if (slides.length <= 1) {
+				lightboxStrip.hidden = true;
+				return;
+			}
+			lightboxStrip.hidden = false;
+			slides.forEach(function (slide, index) {
+				var thumb = document.createElement('button');
+				thumb.type = 'button';
+				thumb.className = 'restwell-lightbox__thumb';
+				thumb.setAttribute('aria-label', 'Show image ' + (index + 1) + ' of ' + slides.length);
+				var img = document.createElement('img');
+				img.src = slide.url;
+				img.alt = '';
+				img.loading = 'lazy';
+				img.decoding = 'async';
+				thumb.appendChild(img);
+				thumb.addEventListener('click', function () {
+					showSlide(index);
+				});
+				lightboxStrip.appendChild(thumb);
+			});
+		}
+
+		function syncStrip() {
+			if (!lightboxStrip || lightboxStrip.hidden) {
+				return;
+			}
+			var thumbs = lightboxStrip.children;
+			for (var i = 0; i < thumbs.length; i++) {
+				var isActive = i === currentIndex;
+				thumbs[i].classList.toggle('is-active', isActive);
+				thumbs[i].setAttribute('aria-current', isActive ? 'true' : 'false');
+				if (isActive) {
+					thumbs[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+				}
 			}
 		}
 
@@ -2114,6 +2179,7 @@
 				lightboxStatus.textContent = (currentIndex + 1) + ' / ' + slides.length;
 			}
 			updateNavButtons();
+			syncStrip();
 			preloadAdjacentSlides();
 		}
 
@@ -2124,6 +2190,7 @@
 			ensureLightbox();
 			lastFocus = document.activeElement;
 			slides = nextSlides;
+			renderStrip();
 			lightboxEl.removeAttribute('hidden');
 			lockPageScroll();
 			showSlide(startIndex);

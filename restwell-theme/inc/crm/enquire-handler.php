@@ -188,6 +188,11 @@ function restwell_handle_enquire_submit(): void {
 	}
 
 	$redirect = isset( $_POST['enq_redirect'] ) ? esc_url_raw( wp_unslash( $_POST['enq_redirect'] ) ) : '';
+	// Only trust client-supplied redirect targets pointing back at this site.
+	if ( $redirect && '' !== (string) wp_parse_url( $redirect, PHP_URL_HOST )
+		&& 0 !== strcasecmp( (string) wp_parse_url( $redirect, PHP_URL_HOST ), (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) ) {
+		$redirect = '';
+	}
 	if ( ! $redirect ) {
 		$redirect = wp_get_referer() ?: home_url( '/enquire/' );
 	}

@@ -21,7 +21,13 @@ function restwell_get_canonical_url_for_request() {
 		}
 		$custom = (string) get_post_meta( $post->ID, 'meta_canonical', true );
 		if ( $custom !== '' ) {
-			return esc_url( $custom );
+			// Editors may only point the canonical at this site — a cross-domain
+			// canonical would silently merge the page into someone else's URL.
+			$custom_host = (string) wp_parse_url( $custom, PHP_URL_HOST );
+			$home_host   = (string) wp_parse_url( home_url(), PHP_URL_HOST );
+			if ( '' !== $custom_host && 0 === strcasecmp( $custom_host, $home_host ) ) {
+				return esc_url( $custom );
+			}
 		}
 		if ( function_exists( 'wp_get_canonical_url' ) ) {
 			$core = wp_get_canonical_url( $post );
@@ -137,12 +143,16 @@ function restwell_output_canonical_and_robots() {
 }
 add_action( 'wp_head', 'restwell_output_canonical_and_robots', 2 );
 
-// ---------------------------------------------------------------------------
-// 1d. Analytics (GA4) + Bing Webmaster verification
-// ---------------------------------------------------------------------------
-
 /**
- * Where to load GA4 / Metricool: head (legacy), non-blocking footer loader, or CMP-gated footer loader.
+ * Keep utility views out of the index.
  *
- * @return string head|footer_deferred|consent_gated
+ * @param array $robots Directive map.
+ * @return array
  */
+function restwell_robots_noindex_utility_views( $robots ) {
+	if ( is_search() || is_404() ) {
+		$robots['noindex'] = true;
+	}
+	return $robots;
+}
+add_filter( 'wp_robots', 'restwell_robots_noindex_utility_views' );

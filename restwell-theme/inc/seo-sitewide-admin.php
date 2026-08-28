@@ -125,7 +125,7 @@ function restwell_seo_sitewide_handle_save() {
 	update_option( 'restwell_footer_cta_primary_label', $footer_primary_label );
 
 	$footer_primary_url = isset( $_POST['restwell_footer_cta_primary_url'] )
-		? sanitize_text_field( wp_unslash( $_POST['restwell_footer_cta_primary_url'] ) )
+		? esc_url_raw( wp_unslash( $_POST['restwell_footer_cta_primary_url'] ) )
 		: '';
 	update_option( 'restwell_footer_cta_primary_url', $footer_primary_url );
 
@@ -442,7 +442,7 @@ function restwell_seo_sitewide_render_page() {
 					<div class="rw-seo-sitewide__grid">
 						<?php restwell_seo_sitewide_field_open( 'restwell_property_address', __( 'Property street address', 'restwell-retreats' ), $issues ); ?>
 							<input type="text" class="rw-seo-field__input" id="restwell_property_address" name="restwell_property_address" value="<?php echo esc_attr( (string) get_option( 'restwell_property_address', '101 Russell Drive' ) ); ?>" />
-							<p class="rw-seo-field__hint"><?php esc_html_e( 'On-site copy and the 404 page — not public JSON-LD.', 'restwell-retreats' ); ?></p>
+							<p class="rw-seo-field__hint"><?php esc_html_e( 'Published in Google schema without the house number.', 'restwell-retreats' ); ?></p>
 						<?php restwell_seo_sitewide_field_close(); ?>
 
 						<?php restwell_seo_sitewide_field_open( 'restwell_property_postcode', __( 'Property postcode', 'restwell-retreats' ), $issues ); ?>

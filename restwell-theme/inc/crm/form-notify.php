@@ -21,6 +21,32 @@ function restwell_get_submission_notify_email(): string {
 }
 
 /**
+ * Client IP for rate limiting.
+ *
+ * REMOTE_ADDR is the only trustworthy value by default. When the site runs
+ * behind a known reverse proxy/CDN, each visitor shares that proxy's
+ * REMOTE_ADDR and one bucket would throttle every guest. Define
+ * RESTWELL_TRUSTED_PROXY in wp-config.php to opt in to the proxy-supplied
+ * client IP (left-most X-Forwarded-For / CF-Connecting-IP), which is only safe
+ * once the proxy is confirmed to set or overwrite it.
+ *
+ * @return string
+ */
+function restwell_form_client_ip(): string {
+	if ( defined( 'RESTWELL_TRUSTED_PROXY' ) && RESTWELL_TRUSTED_PROXY ) {
+		foreach ( array( 'HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR' ) as $header ) {
+			if ( ! empty( $_SERVER[ $header ] ) ) {
+				$forwarded = trim( explode( ',', sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) ) )[0] );
+				if ( '' !== $forwarded && filter_var( $forwarded, FILTER_VALIDATE_IP ) ) {
+					return $forwarded;
+				}
+			}
+		}
+	}
+	return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : 'unknown';
+}
+
+/**
  * Soft rate limit by IP to reduce abuse (transient-backed).
  *
  * @param string $bucket Form identifier (e.g. 'enquire', 'faq').
@@ -29,7 +55,7 @@ function restwell_get_submission_notify_email(): string {
  * @return bool True if limit exceeded (block).
  */
 function restwell_form_rate_limit_exceeded( string $bucket, int $max = 12, int $window = 3600 ): bool {
-	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : 'unknown';
+	$ip = restwell_form_client_ip();
 	$key  = 'rw_rl_' . sanitize_key( $bucket ) . '_' . md5( $ip );
 	$count = (int) get_transient( $key );
 	if ( $count >= $max ) {

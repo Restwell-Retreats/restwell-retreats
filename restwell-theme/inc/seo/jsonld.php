@@ -387,19 +387,32 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 	$phone     = (string) get_option( 'restwell_phone_number', '' );
 	$email     = (string) get_option( 'restwell_enquiry_notify_email', '' );
 
-	// Confirm in WP: publish full street address?
+	// Full street + postcode, house number never included (owner decision).
+	// Site-wide SEO fields override these defaults when set.
 	$address = array(
 		'@type'           => 'PostalAddress',
+		'streetAddress'   => 'Russell Drive',
 		'addressLocality' => 'Whitstable',
 		'addressRegion'   => 'Kent',
-		'postalCode'      => 'CT5',
+		'postalCode'      => 'CT5 2RQ',
 		'addressCountry'  => 'GB',
 	);
 
-	$desc = get_bloginfo( 'description' );
-	if ( $desc === '' ) {
-		$desc = __( 'Wheelchair-accessible adapted holiday bungalow in Whitstable, Kent: bedroom ceiling track hoist, profiling bed, roll-in shower.', 'restwell-retreats' );
+	$street = trim( (string) get_option( 'restwell_property_address', '' ) );
+	if ( '' !== $street ) {
+		// Editors sometimes paste the full address; house number never goes to schema.
+		$address['streetAddress'] = trim( (string) preg_replace( '/^\s*[0-9]+[A-Za-z]?\s*,?\s*/', '', $street ) );
 	}
+
+	$postcode = trim( (string) get_option( 'restwell_property_postcode', '' ) );
+	if ( '' !== $postcode ) {
+		$address['postalCode'] = $postcode;
+	}
+
+	$desc = __(
+		'A private adapted bungalow by the sea in Whitstable, sleeping five. Single-storey and step-free, with a level-access wet room and a ceiling track hoist. Optional home care from Continuity of Care Services, our sister company.',
+		'restwell-retreats'
+	);
 
 	$price_range = (string) get_option( 'restwell_lodging_price_range', '' );
 	if ( $price_range === '' && function_exists( 'restwell_get_pricing_price_range' ) ) {
@@ -535,7 +548,7 @@ function restwell_output_jsonld_accommodation_service() {
 		$name = (string) get_post_meta( $pid, 'prop_hero_heading', true );
 	}
 	if ( $name === '' ) {
-		$name = get_bloginfo( 'name' ) . ' — ' . __( 'Accessible holiday accommodation, Whitstable', 'restwell-retreats' );
+		$name = get_bloginfo( 'name' ) . ': ' . __( 'Accessible holiday accommodation, Whitstable', 'restwell-retreats' );
 	}
 
 	$desc = (string) get_post_meta( $pid, 'meta_description', true );
@@ -723,7 +736,7 @@ function restwell_get_homepage_faq_meta_seed_map() {
 	$pairs = restwell_get_homepage_faq_pairs( 0 );
 	$out   = array(
 		'home_faq_label'   => __( 'Quick answers', 'restwell-retreats' ),
-		'home_faq_heading' => __( 'Common questions', 'restwell-retreats' ),
+		'home_faq_heading' => __( 'The questions that stop an enquiry', 'restwell-retreats' ),
 	);
 	foreach ( $pairs as $i => $p ) {
 		$n = $i + 1;
@@ -1015,39 +1028,79 @@ function restwell_get_faq_page_default_pairs() {
 	// Broader set -- kept distinct from per-page FAQs (homepage, how-it-works) to prevent duplicate-content cannibalisation.
 	return array(
 		array(
-			'q'   => 'Is Restwell open for bookings?',
-			'a'   => 'Yes, we\'re open and taking bookings now, for dates across 2026 and 2027. Tell us when you\'d like to come and we\'ll check availability.',
+			'q'   => 'Is Restwell a care home?',
+			'a'   => 'No. It’s a private adapted bungalow that you rent as a holiday, and the whole house is yours for the stay. There’s no staff on site and nobody has a key but you. If you’d like professional care while you’re here, that comes separately from our sister company. See <a href="/optional-care/">Optional care</a>.',
+			'cat' => 'about',
+		),
+		array(
+			'q'   => 'Is it a respite centre?',
+			'a'   => 'No, though your funder may well use the word respite, and that’s fine. It’s often how a break like this gets described on paperwork. It’s still a private house rather than a registered respite service.',
+			'cat' => 'about',
+		),
+		array(
+			'q'   => 'Will a wheelchair actually fit?',
+			'a'   => 'The house is single-storey and step-free throughout. The front door has a 965mm clear opening, the internal doorways are 926mm, the wet room is level-access, and there’s a ceiling track hoist over the profiling bed. If you need a measurement we haven’t published, ask and we’ll go and take it. See the <a href="/accessibility/">access statement</a>.',
+			'cat' => 'about',
+		),
+		array(
+			'q'   => 'Is there a hoist, and what’s it rated to?',
+			'a'   => 'There’s a ceiling track hoist rated to 180kg, and an electric mobile hoist also rated to 180kg. Both are subject to a LOLER thorough examination every six months. Guests bring their own slings, because a sling needs to fit the person.',
+			'cat' => 'about',
+		),
+		array(
+			'q'   => 'Can we have two profiling beds?',
+			'a'   => 'Yes. We arrange the accessible bedroom around each guest: one profiling bed if that’s what you need, two if it isn’t. Tell us when you book so it’s set up before you arrive.',
+			'cat' => 'about',
+		),
+		array(
+			'q'   => 'How many people does it sleep?',
+			'a'   => 'Five. There are two bedrooms and a double sofa bed in the conservatory. Five is what our safety checks are based on, so we do have to hold to it.',
+			'cat' => 'about',
+		),
+		array(
+			'q'   => 'Can we add home care?',
+			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
+			'cat' => 'care',
+		),
+		array(
+			'q'   => 'How far ahead do we need to arrange the care?',
+			'a'   => 'The sooner you ask, the more likely we can say yes. We don’t publish a lead time because it honestly depends on what you need and who’s available that week, and we’d rather give you a real answer quickly than a number we’ve invented.',
+			'cat' => 'care',
+		),
+		array(
+			'q'   => 'Can we bring our own carer or PA?',
+			'a'   => 'Of course, and the price doesn’t change. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.',
+			'cat' => 'care',
+		),
+		array(
+			'q'   => 'How far is the bungalow from the seafront?',
+			'a'   => 'About ten minutes on foot from the driveway. Places along Tankerton promenade take longer, because you walk down to the sea first and then head west along the prom. JoJo’s is roughly twenty minutes all in. See the <a href="/whitstable-area-guide/">Whitstable guide</a>.',
+			'cat' => 'local',
+		),
+		array(
+			'q'   => 'What does it cost, and what’s included?',
+			'a'   => 'A week is £1,300 off-peak and £1,400 in peak season, with all the access equipment, linen, towels and parking included. A 50% deposit reserves your dates and the balance follows a week before arrival. See <a href="/pricing/">Pricing</a>.',
 			'cat' => 'booking',
 		),
 		array(
-			'q'   => 'Do you allow assistance dogs?',
-			'a'   => 'Yes. The bungalow is dog-friendly and welcomes assistance dogs, with water bowls and a toileting area provided.',
+			'q'   => 'Can a council or the NHS pay?',
+			'a'   => 'We can invoice you, a local authority, the NHS or a grant body, and the rate is identical either way. What we can’t do is promise your package will cover a holiday. That decision sits with your social worker or case manager. See <a href="/resources/">Funding and support</a>.',
+			'cat' => 'funding',
+		),
+		array(
+			'q'   => 'Can we use direct payments?',
+			'a'   => 'Some guests do, for the accommodation or for a PA’s time. The rules vary by area, so start with your own care team. See <a href="/direct-payment-holiday-accommodation/">direct payments</a>.',
+			'cat' => 'funding',
+		),
+		array(
+			'q'   => 'Are dogs allowed?',
+			'a'   => 'Yes, with a bit of notice so we can run a quick risk assessment. Assistance dogs are welcome on the same terms.',
 			'cat' => 'about',
 		),
 		array(
-			'q'   => 'Is parking available at the house?',
-			'a'   => 'Yes, level driveway parking for two cars.',
-			'cat' => 'local',
-		),
-		array(
-			'q'   => 'How far is the seafront?',
-			'a'   => 'About ten minutes away, with a paved promenade route along the Tankerton Slopes.',
-			'cat' => 'local',
-		),
-		array(
-			'q'   => 'Can I see the full access details before booking?',
-			'a'   => 'Yes, the Accessibility page lists measurements and equipment room by room.',
-			'cat' => 'about',
-		),
-		array(
-			'q'   => 'Can I get to Whitstable by train step-free?',
-			'a'   => 'Yes. Whitstable station has step-free access to both platforms via separate street-level entrances, and the house is about a nine-minute drive from the station.',
-			'cat' => 'local',
-		),
-		array(
-			'q'   => 'Is there a Changing Places toilet nearby?',
-			'a'   => 'Yes, at Whitstable Harbour on Harbour Road, which needs a RADAR key.',
-			'cat' => 'local',
+			'q'   => 'What time is check-in?',
+			'a'   => 'From 3pm, through a key safe, with the code sent to you beforehand. Check-out is by 11am, and if you need longer for personal care or transport, tell us a few days ahead and we’ll do our best. See <a href="/how-it-works/">How it works</a>.',
+			'cat' => 'booking',
 		),
 	);
 }

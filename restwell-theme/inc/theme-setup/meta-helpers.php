@@ -57,7 +57,7 @@ function restwell_post_meta_or_default( $post_id, $key, array $defaults ) {
 		$value = $defaults[ $key ] ?? '';
 	}
 
-	if ( is_string( $value ) && strncmp( $key, 'prop_', 5 ) === 0 && function_exists( 'restwell_normalize_editorial_dashes' ) ) {
+	if ( is_string( $value ) && function_exists( 'restwell_normalize_editorial_dashes' ) ) {
 		$value = restwell_normalize_editorial_dashes( $value );
 	}
 

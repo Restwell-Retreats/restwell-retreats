@@ -258,6 +258,8 @@ function restwell_seed_all_pages_meta( array $created_ids, $force, array &$resul
 		'Privacy Policy'       => 'restwell_get_privacy_policy_page_defaults',
 		'Terms & Conditions'   => 'restwell_get_terms_conditions_page_defaults',
 		'Accessibility Policy' => 'restwell_get_accessibility_policy_page_defaults',
+		'Our Story'            => 'restwell_get_our_story_page_defaults',
+		'Optional care'        => 'restwell_get_care_page_defaults',
 	);
 
 	foreach ( $page_defaults_map as $title => $defaults_fn ) {

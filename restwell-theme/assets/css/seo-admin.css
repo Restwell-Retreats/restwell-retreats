@@ -849,9 +849,10 @@ table.widefat.rw-seo-dash__table {
   transition: border-color .15s, box-shadow .15s;
 }
 
-.rw-seo-field__input:focus {
+.rw-seo-field__input:focus,
+.rw-seo-field__input:focus-visible {
   border-color: #2271b1;
-  box-shadow: 0 0 0 1px #2271b1;
+  box-shadow: 0 0 0 1px #2271b1, 0 0 0 3px rgba(34, 113, 177, 0.25);
   outline: none;
 }
 

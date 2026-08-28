@@ -15,15 +15,15 @@ get_header();
 
 $restwell_acc_id      = (int) get_queried_object_id();
 $restwell_acc_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_acc_id, 'acc_heading', 'Access statement: hoist, wet room, door widths' )
-	: 'Access statement: hoist, wet room, door widths';
+	? restwell_page_content_text( $restwell_acc_id, 'acc_heading', 'The wet room, the hoists, and every measurement' )
+	: 'The wet room, the hoists, and every measurement';
 $restwell_acc_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_acc_id,
 		'acc_intro',
-		'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.'
+		'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.'
 	)
-	: 'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.';
+	: 'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.';
 ?>
 
 
@@ -54,9 +54,11 @@ get_template_part(
     <section class="section-y section-y--compact band-white" aria-label="Key measurements">
       <div class="container">
         <div class="stat-row">
-          <div class="stat"><p class="stat__value">965mm</p><p class="stat__label">Clear opening, front door</p></div>
-          <div class="stat"><p class="stat__value">926mm</p><p class="stat__label">Clear width, internal doors</p></div>
-          <div class="stat"><p class="stat__value">Full-room</p><p class="stat__label">Ceiling track hoist over the bed</p></div>
+          <dl>
+            <div class="stat"><dt class="stat__label">Clear opening, front door</dt><dd class="stat__value">965mm</dd></div>
+            <div class="stat"><dt class="stat__label">Clear width, internal doors</dt><dd class="stat__value">926mm</dd></div>
+            <div class="stat"><dt class="stat__label">Ceiling track hoist over the bed</dt><dd class="stat__value">Full-room</dd></div>
+          </dl>
         </div>
       </div>
     </section>
@@ -193,10 +195,10 @@ get_template_part(
           <h2>Room-by-room access notes</h2>
         </header>
         <ul class="card-grid card-grid--3" role="list">
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/FD-1-LS.jpg' ) ); ?>" alt="Front door with a wide, level threshold" width="640" height="480" loading="eager" fetchpriority="high" decoding="async" /><h3>Arrival &amp; entrance</h3><p>You’ll find a private driveway for two cars, a step-free path, a 965mm wide front door, and a level threshold. If you need them, we have portable fold-up ramps for the front door.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-2-LS.jpg' ) ); ?>" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>The bungalow is single-storey. Inside, doorways are 926mm wide and hallways are kept clear so you can turn your chair easily.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="Adjustable profiling beds in the accessible bedroom" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>The accessible bedroom has a profiling bed with a pressure-relieving mattress and a hoist. Next door is a second double bedroom, and the conservatory sofa bed can sleep a fifth guest.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>The wet room includes a level-access shower, grab rails, a shower chair, a height-adjustable basin, and a wash-dry WC. Care Spaces adapted this room.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/FD-1-LS.jpg' ) ); ?>" alt="Front door with a wide, level threshold" width="640" height="480" loading="eager" fetchpriority="high" decoding="async" /><h3>Arrival &amp; entrance</h3><p>A private, level driveway for two cars, a 1720mm porch opening, a 965mm inner front door, and a level threshold. Portable fold-up ramps are yours to borrow while you’re here.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-2-LS.jpg' ) ); ?>" alt="Open-plan living space with wide hall routes between furniture" width="640" height="480" loading="lazy" decoding="async" /><h3>Inside the property</h3><p>The bungalow is single-storey. Internal doorways are 926mm clear, and hallways are kept clear so you can turn your chair.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="Adjustable profiling beds in the accessible bedroom" width="640" height="480" loading="lazy" decoding="async" /><h3>Bedrooms &amp; sleeping</h3><p>An Accora CommunityBed profiling bed (180kg user weight) under an Amico GoLift 400 ceiling hoist (180kg SWL). A second profiling bed can be set up. The conservatory sofa bed makes the fifth sleeping space.</p></article></li>
+          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" decoding="async" /><h3>Wet room</h3><p>Level-access throughout. Mira Select Flex TMV3 shower, a RAZ-AT tilt-in-space commode chair, a Drive DeVilbiss stool rated to 136kg, and a Ropox Swing basin that winds between 750mm and 950mm.</p></article></li>
           <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with a reachable, wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" /><h3>Kitchen</h3><p>The kitchen features a wheel-under worktop, all the essential utensils, a slide-under oven, and a gas hob.</p></article></li>
           <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-1-LS.jpg' ) ); ?>" alt="Level garden and patio beyond the conservatory" width="640" height="480" loading="lazy" decoding="async" /><h3>Outdoor spaces</h3><p>A ramp leads to a level patio and enclosed garden, with space for a BBQ and French doors opening from the conservatory.</p></article></li>
         </ul>
@@ -285,46 +287,46 @@ get_template_part(
           <div class="faq-list faq-list--split" data-faq-accordion>
             <div class="faq-list__col">
             <div class="faq-item is-open">
-              <button type="button" class="faq-item__trigger" aria-expanded="true" id="a11y-q1" aria-controls="a11y-q1-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="true" id="a11y-q1" aria-controls="a11y-q1-a">
                 <span>Can I find a holiday cottage with a ceiling hoist in England?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q1-a" role="region" aria-labelledby="a11y-q1">
-                <p>Yes, they are uncommon. Confirm fixed ceiling track vs mobile only, coverage, safe working load, sling policy, and bed position under the track. Restwell has an Amico GoLift 400 ceiling track hoist over the profiling bed, safe working load 181kg; full specs are on this page.</p>
+                <p>Yes, they are uncommon. Confirm fixed ceiling track vs mobile only, coverage, safe working load, sling policy, and bed position under the track. Restwell has an Amico GoLift 400 ceiling track hoist over the profiling bed, safe working load 180kg; full specs are on this page.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q2" aria-controls="a11y-q2-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q2" aria-controls="a11y-q2-a">
                 <span>What is a ceiling track hoist in holiday accommodation?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q2-a" role="region" aria-labelledby="a11y-q2" hidden>
                 <p>A ceiling track hoist is fixed to the ceiling and moves a person in a sling along a rail. It’s less bulky than most mobile units. Most guests bring their own slings. Ask about what areas it covers and who can operate it before you arrive.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q3" aria-controls="a11y-q3-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q3" aria-controls="a11y-q3-a">
                 <span>What should I check before booking a hoist-equipped holiday let?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q3-a" role="region" aria-labelledby="a11y-q3" hidden>
                 <p>Check the hoist type and safe working load, whether the bed is under the track, if there’s same-level wet-room access, space for a second carer, parking, and what’s included versus what needs to be hired. Restwell includes the on-site hoist and wet-room kit in the bungalow rate.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q4" aria-controls="a11y-q4-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q4" aria-controls="a11y-q4-a">
                 <span>Can I find a holiday cottage with a profiling bed in the UK?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q4-a" role="region" aria-labelledby="a11y-q4" hidden>
                 <p>Yes, but make sure the bed is actually on site, not just “available to hire.” Ask about the mattress type, size, transfer height, and hoist clearance. Restwell’s accessible bedroom has a profiling bed with a pressure-relieving mattress.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q5" aria-controls="a11y-q5-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q5" aria-controls="a11y-q5-a">
                 <span>Can I find a holiday cottage with a hospital-style or profiling bed?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q5-a" role="region" aria-labelledby="a11y-q5" hidden>
                 <p>People searching for a “hospital bed holiday cottage” usually want an adjustable profiling bed at a safe transfer height, in a regular bedroom, not a hospital ward. Restwell’s accessible bedroom has this bed, with the ceiling track above it.</p>
               </div>
@@ -332,46 +334,46 @@ get_template_part(
             </div>
             <div class="faq-list__col">
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q6" aria-controls="a11y-q6-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q6" aria-controls="a11y-q6-a">
                 <span>Why does an adjustable or profiling bed matter in an accessible bedroom?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q6-a" role="region" aria-labelledby="a11y-q6" hidden>
                 <p>Profiling beds help with positioning, pressure care, safer transfers, and overnight care routines when a fixed divan isn’t safe. At Restwell, check the controls, side-rail policy, and space for a carer beside the bed to ensure it meets your needs.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q7" aria-controls="a11y-q7-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q7" aria-controls="a11y-q7-a">
                 <span>What accessible equipment should I expect in a specialist holiday let?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q7-a" role="region" aria-labelledby="a11y-q7" hidden>
                 <p>Ask for a published equipment list. Restwell includes a profiling bed, ceiling- and mobile hoists, a level-access wet room with a seat and grab rails, a height-adjustable basin, threshold ramps, and parking notes. Never assume “accessible” means a hoist is fitted.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q8" aria-controls="a11y-q8-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q8" aria-controls="a11y-q8-a">
                 <span>What should “wheelchair friendly holiday cottage” mean?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q8-a" role="region" aria-labelledby="a11y-q8" hidden>
                 <p>Look for step-free routes, door widths that fit your chair, a bathroom you can use, and parking for accessible vehicles all shown in measurements and photos. If a listing only says “wheelchair friendly,” ask for an access statement or look elsewhere.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q9" aria-controls="a11y-q9-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q9" aria-controls="a11y-q9-a">
                 <span>What do I need to check before booking an accessible holiday cottage?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q9-a" role="region" aria-labelledby="a11y-q9" hidden>
                 <p>Check for clear door openings, a step-free route from parking, whether there’s a wet room or adapted bath, hoist type, bed type, turning space, recent entrance and bathroom photos, sling policy, and if <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">care can be arranged separately</a>. Restwell shares all these details on this page.</p>
               </div>
             </div>
             <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q10" aria-controls="a11y-q10-a">
+              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="a11y-q10" aria-controls="a11y-q10-a">
                 <span>What makes an accessible bungalow in the UK suitable for complex needs?</span>
                 <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
+              </button></h3>
               <div class="faq-item__panel" id="a11y-q10-a" role="region" aria-labelledby="a11y-q10" hidden>
                 <p>Being single-storey helps, but accessibility varies a lot. Some people need widened doorways, purpose-built wet rooms, parking, and often a hoist and profiling bed. Restwell is step-free throughout, as shown here.</p>
               </div>

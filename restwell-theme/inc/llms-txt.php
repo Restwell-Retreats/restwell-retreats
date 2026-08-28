@@ -35,7 +35,7 @@ function restwell_serve_llms_txt() {
 		return;
 	}
 	$file = get_template_directory() . '/llms.txt';
-	if ( ! is_readable( $file ) ) {
+	if ( ! is_readable( $file ) || ! get_option( 'blog_public' ) ) {
 		status_header( 404 );
 		nocache_headers();
 		echo "Not found.\n";

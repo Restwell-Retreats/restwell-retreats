@@ -36,8 +36,16 @@ function restwell_crm_handle_enquiry_detail_post( string $table ) {
 	$notes      = isset( $_POST['rw_notes'] ) ? sanitize_textarea_field( wp_unslash( $_POST['rw_notes'] ) ) : '';
 
 	// Parse follow-up date from datetime-local format (YYYY-MM-DDTHH:MM).
+	// Reject anything unparseable rather than writing a malformed DATETIME.
 	$follow_up_raw = isset( $_POST['rw_follow_up'] ) ? sanitize_text_field( wp_unslash( $_POST['rw_follow_up'] ) ) : '';
-	$follow_up_at  = $follow_up_raw ? str_replace( 'T', ' ', $follow_up_raw ) . ':00' : null;
+	$follow_up_at  = null;
+	if ( '' !== $follow_up_raw ) {
+		$parsed = DateTime::createFromFormat( 'Y-m-d\TH:i', $follow_up_raw );
+		$valid  = $parsed && $parsed->format( 'Y-m-d\TH:i' ) === $follow_up_raw;
+		if ( $valid ) {
+			$follow_up_at = $parsed->format( 'Y-m-d H:i:s' );
+		}
+	}
 
 	if ( array_key_exists( $new_status, restwell_crm_statuses() ) ) {
 		// Status transition (timestamps, status-change note, booking email) is
@@ -205,7 +213,9 @@ function restwell_crm_get_enquiries_list_data( string $table ) {
  * Render the Enquiries admin page (list and detail views).
  */
 function restwell_crm_enquiries_page() {
-	restwell_crm_require_manage_capability();
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'You do not have permission to view this page.', 'restwell-retreats' ) );
+	}
 
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
@@ -252,19 +262,6 @@ function restwell_crm_enquiries_page() {
 
 		<?php restwell_crm_render_enquiries_panel( $list ); ?>
 	</div>
-
-	<script>
-	( function() {
-		var selectAll = document.getElementById( 'cb-select-all' );
-		if ( selectAll ) {
-			selectAll.addEventListener( 'change', function() {
-				document.querySelectorAll( '[name="rw_bulk_ids[]"]' ).forEach( function( cb ) {
-					cb.checked = selectAll.checked;
-				} );
-			} );
-		}
-	} )();
-	</script>
 	<?php
 }
 

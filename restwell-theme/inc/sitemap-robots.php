@@ -48,7 +48,6 @@ function restwell_robots_txt_allow_ai_crawlers( $output, $public ) {
 		'GPTBot',
 		'ChatGPT-User',
 		'ClaudeBot',
-		'Claude-Web',
 		'PerplexityBot',
 		'Google-Extended',
 	);

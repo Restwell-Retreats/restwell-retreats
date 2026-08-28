@@ -12,6 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_care_id      = (int) get_queried_object_id();
+$restwell_care_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Care during your stay, arranged in the same conversation' )
+	: 'Care during your stay, arranged in the same conversation';
+$restwell_care_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_care_id,
+		'care_intro',
+		'Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.'
+	)
+	: 'Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.';
 ?>
 
 
@@ -22,8 +34,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Care during your stay, only if you want it',
-		'intro'      => 'CQC-regulated care from Continuity of Care Services, on hand whenever you want it, arranged in the same phone call as your booking, or bring your own carer if you’d rather.',
+		'heading'    => $restwell_care_heading,
+		'intro'      => $restwell_care_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -58,6 +70,7 @@ get_template_part(
         <header class="section-head section-head--tight">
           <p class="eyebrow">Sister company</p>
           <h2 id="sister-company-h">One conversation if you need both the bungalow and care</h2>
+          <p class="lede">Victoria Walker owns Restwell and is Continuity’s CQC registered manager. That’s why one call can cover the house and the care, without a handover to somebody else.</p>
         </header>
         <dl class="comparison-list">
           <div class="comparison-list__item">
@@ -192,7 +205,7 @@ get_template_part(
           <h2 id="cqc-regulated-h">What CQC-regulated means</h2>
         </header>
         <div class="prose">
-          <p>The Care Quality Commission (CQC) inspects and rates health and social care providers in England against standards of safety, effectiveness and leadership. Continuity of Care Services holds a CQC rating of Good; read the published report yourself rather than take our word for it.</p>
+          <p>The Care Quality Commission (CQC) inspects and rates health and social care providers in England against standards of safety, effectiveness and leadership. Continuity of Care Services holds a CQC rating of Good; Victoria Walker, who owns Restwell, is Continuity’s registered manager. Read the published report yourself rather than take our word for it.</p>
           <p>Restwell is the accommodation, not the regulated care provider. When care is arranged during your stay, Continuity of Care Services delivers it under that CQC registration: the accountability of a regulated provider, not an informal or unregistered introduction.</p>
           <p><a href="https://www.cqc.org.uk/location/1-2624556588" class="text-link" target="_blank" rel="noopener noreferrer">Read the CQC inspection profile<span class="sr-only"> (opens in new tab)</span></a></p>
         </div>

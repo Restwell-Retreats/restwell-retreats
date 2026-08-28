@@ -118,18 +118,33 @@
 
     var frame;
 
+    /**
+     * Build a preview <img> element. DOM APIs instead of innerHTML string
+     * concatenation so the URL can never be interpreted as markup.
+     *
+     * @param {string} url - Attachment image URL.
+     * @param {string} alt - Alt text for the preview.
+     * @returns {HTMLImageElement}
+     */
+    function buildPreviewImg(url, alt) {
+      var img = document.createElement('img');
+      img.src = url;
+      img.alt = alt;
+      return img;
+    }
+
     function setImage(id, url) {
       if (!hiddenId) return;
       hiddenId.value = id;
 
       // Thumb.
       if (thumbEl) {
-        thumbEl.innerHTML = '<img src="' + url + '" alt="Selected social image" />';
+        thumbEl.replaceChildren(buildPreviewImg(url, 'Selected social image'));
       }
 
       // Social previews.
       [fbImgEl, twImgEl].forEach(function (el) {
-        if (el) el.innerHTML = '<img src="' + url + '" alt="Social image preview" />';
+        if (el) el.replaceChildren(buildPreviewImg(url, 'Social image preview'));
       });
 
       // Show / update remove button.

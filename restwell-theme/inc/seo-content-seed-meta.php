@@ -11,83 +11,83 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Default meta_title, meta_description, and focus_keyphrase by page/post slug (path without slashes).
- * Each meta_description is written so it contains the focus keyphrase (checked in SEO admin analysis).
+ * Titles are human-shaped (40–60 characters). Focus keyphrases are write-toward phrases
+ * for admin scoring and are not required to appear verbatim in the title.
  *
  * @return array<string, array{meta_title:string, meta_description:string, focus_keyphrase:string}>
  */
 function restwell_get_seo_meta_defaults_by_slug() {
 	$name = get_bloginfo( 'name' );
-	// Defaults tuned for 50–60 char titles, 120–160 char descriptions, unique focus keyphrases (cannibalization), and theme SEO admin keyphrase checks.
+	// Defaults: 40–60 char human titles. Focus keyphrases stay as write-toward phrases.
 	return array(
 		'how-it-works'          => array(
-			'meta_title'       => 'Accessible Holiday Booking Process',
-			'meta_description' => 'An accessible holiday booking process with Restwell starts at enquiry: share access needs, confirm dates, add optional care if you want it, then arrive ready.',
-			'focus_keyphrase'  => 'accessible holiday booking process',
+			'meta_title'       => 'Booking a stay, from first email to front door',
+			'meta_description' => 'Tell us your dates and who’s coming, we confirm the bungalow, you pay a deposit, and then you arrive to a house already set up for you. Care can go on the same note.',
+			'focus_keyphrase'  => 'how a restwell stay is booked',
 		),
 		'home'                  => array(
-			'meta_title'       => 'Accessible Holidays Whitstable: Step-Free Kent Stay',
-			'meta_description' => 'Accessible holidays Whitstable: a step-free self-catering home on the Kent coast. Explore the bungalow, published access details and how booking works with us.',
-			'focus_keyphrase'  => 'accessible holidays whitstable',
+			'meta_title'       => 'Accessible holiday cottage in Whitstable, sleeps five',
+			'meta_description' => 'One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and you can add home care if you’d like it.',
+			'focus_keyphrase'  => 'accessible holiday cottages by the sea',
 		),
 		'the-property'          => array(
-			'meta_title'       => 'Accessible Bungalow: Room-by-Room Tour',
-			'meta_description' => 'Accessible bungalow Whitstable room-by-room: bedrooms, wet room, living areas and kit already fitted — tour the house before you enquire about stay dates.',
-			'focus_keyphrase'  => 'accessible bungalow whitstable',
+			'meta_title'       => 'Look inside the accessible holiday bungalow',
+			'meta_description' => 'A room-by-room look round the bungalow: two bedrooms, a level-access wet room, an open kitchen, and French doors onto the garden. Sleeps five, and it’s all yours.',
+			'focus_keyphrase'  => 'accessible holiday bungalow',
 		),
 		'accessibility'         => array(
-			'meta_title'       => 'Wheelchair Accessible Holiday Cottage',
-			'meta_description' => 'Wheelchair accessible holiday cottage access statement: ceiling hoist, level-access wet room, door widths 965mm and 926mm, driveway parking and published kit.',
-			'focus_keyphrase'  => 'wheelchair accessible holiday cottage',
+			'meta_title'       => 'A disabled holiday cottage with a wet room and hoist',
+			'meta_description' => 'The access statement in full: a 965mm front door, 926mm inside, a ceiling track hoist rated to 180kg, a height-adjustable basin and a tilt-in-space shower commode chair.',
+			'focus_keyphrase'  => 'disabled holiday cottages with wet room',
 		),
 		'who-its-for'           => array(
-			'meta_title'       => 'Accessible Stay Suitability for Your Party',
-			'meta_description' => 'Use this accessible stay suitability guide to see whether Restwell fits wheelchair users, carers, OTs and commissioners before you enquire about dates.',
-			'focus_keyphrase'  => 'accessible stay suitability',
+			'meta_title'       => 'Holidays for disabled adults and their carers',
+			'meta_description' => 'A private adapted bungalow that sleeps five, for disabled adults, families and the people who care for them. A holiday, not a placement. See whether it fits.',
+			'focus_keyphrase'  => 'holidays for disabled adults and carers',
 		),
-		// Deck meta for /pricing/ (template-pricing.php). Focus keyphrase owned by this URL only.
 		'pricing'               => array(
-			'meta_title'       => 'Accessible Holiday Pricing in Whitstable',
-			'meta_description' => 'How pricing works for an accessible self-catering break at Restwell in Whitstable, with private, case-managed and NHS CHC funding routes and deposits explained.',
-			'focus_keyphrase'  => 'accessible holiday pricing whitstable',
+			'meta_title'       => 'Prices for the bungalow, and what’s included',
+			'meta_description' => 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all the access equipment included. The rate is the same whoever pays the invoice.',
+			'focus_keyphrase'  => 'accessible holiday prices',
 		),
 		'whitstable-area-guide' => array(
-			'meta_title'       => 'Whitstable Kent Coast Guide | Days Out',
-			'meta_description' => 'The Whitstable Kent coast: accessible days out in Canterbury, Faversham, Herne Bay, Tankerton. Where to eat, promenade walks, parking, and travel tips.',
-			'focus_keyphrase'  => 'whitstable kent coast',
+			'meta_title'       => 'Accessible days out in Whitstable and Tankerton',
+			'meta_description' => 'Which bits of Whitstable work in a wheelchair and which don’t. Tankerton promenade is level, the harbour beach is shingle, and we’ve named the venues with an accessible loo.',
+			'focus_keyphrase'  => 'whitstable accessible days out',
 		),
 		'enquire'               => array(
-			'meta_title'       => 'Contact Restwell About Your Stay',
-			'meta_description' => 'Contact Restwell by phone, email or enquiry form for rates, dates and access questions. Share your party needs; we usually reply within two working days.',
+			'meta_title'       => 'Ask us anything about a stay at Restwell',
+			'meta_description' => 'Call, email, or fill in the form. Tell us your dates and what you need from the house, and put any care questions on the same note. Nothing to pay until it fits.',
 			'focus_keyphrase'  => 'contact restwell',
 		),
 		'faq'                   => array(
-			'meta_title'       => 'Whitstable Bungalow Holiday FAQs',
-			'meta_description' => 'Whitstable bungalow FAQ answers on bookings, assistance dogs, parking and access, with links to room-by-room guides and the published access statement.',
-			'focus_keyphrase'  => 'whitstable bungalow faq',
+			'meta_title'       => 'The questions guests ask us before booking',
+			'meta_description' => 'Straight answers about the house, the access equipment, optional home care, deposits and who we can invoice. Then a link to the page that covers it properly.',
+			'focus_keyphrase'  => 'restwell faq',
 		),
 		'resources'             => array(
-			'meta_title'       => 'Funding an Accessible Respite Holiday',
-			'meta_description' => 'How families fund an accessible respite break: direct payments, personal budgets under the Care Act, and NHS Continuing Healthcare. A plain-English UK guide.',
-			'focus_keyphrase'  => 'fund accessible respite holiday',
+			'meta_title'       => 'Funding an accessible holiday, and who we invoice',
+			'meta_description' => 'We can invoice you, a council, the NHS or a grant body, and the bungalow rate is the same either way. What we can’t do is promise your package will cover it.',
+			'focus_keyphrase'  => 'funding an accessible holiday',
 		),
 		'blog'                  => array(
-			'meta_title'       => 'Accessible Holiday Tips & Whitstable Updates',
-			'meta_description' => 'Accessible holiday tips, guest stories, what’s on in Whitstable, and practical updates for wheelchair users, carers and anyone planning a respite break.',
-			'focus_keyphrase'  => 'accessible holiday tips',
+			'meta_title'       => 'Accessible travel notes from one bungalow',
+			'meta_description' => 'Guides written from a single adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.',
+			'focus_keyphrase'  => 'accessible travel',
 		),
 		'our-story'             => array(
-			'meta_title'       => 'Our Story: Built From Real Access Needs',
-			'meta_description' => 'Restwell our story: built from a real access gap, then shaped by disabled guests, carers and occupational therapists — not assumptions.',
+			'meta_title'       => 'Why we built Restwell, and who Continuity are',
+			'meta_description' => 'Restwell is a private adapted bungalow in Whitstable. Continuity of Care Services is our sister company for optional home care. Two companies, one family, one phone.',
 			'focus_keyphrase'  => 'restwell our story',
 		),
 		'optional-care'         => array(
-			'meta_title'       => 'Optional Care During Your Stay',
-			'meta_description' => 'Optional, CQC-regulated care during your self-catering stay in Whitstable via Continuity of Care Services. Or bring your own carer. Ask when you enquire.',
-			'focus_keyphrase'  => 'optional care restwell',
+			'meta_title'       => 'Home care in the bungalow, if you’d like it',
+			'meta_description' => 'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Same conversation as the house. Ring 01622 809881 or send us a note.',
+			'focus_keyphrase'  => 'adding home care during a self-catering stay',
 		),
 		'guest-guide'                              => array(
-			'meta_title'       => 'Restwell Guest Guide: Check-In, Wi-Fi and Parking Tips',
-			'meta_description' => 'Restwell guest guide: check-in, Wi-Fi, house rules, parking, and local tips for Whitstable. Everything confirmed guests need in one place.',
+			'meta_title'       => 'Restwell guest guide for confirmed stays',
+			'meta_description' => 'Check-in, WiFi, bins and the departure list for guests with a booking.',
 			'focus_keyphrase'  => 'restwell guest guide',
 		),
 		'accessible-beaches-coastal-walks-kent'    => array(

@@ -12,6 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_prop_id      = (int) get_queried_object_id();
+$restwell_prop_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_prop_id, 'prop_hero_heading', 'A proper look round the bungalow' )
+	: 'A proper look round the bungalow';
+$restwell_prop_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_prop_id,
+		'prop_hero_subtitle',
+		'This is a room-by-room look round Restwell, a single-storey adapted bungalow on a quiet street in Whitstable that sleeps up to five. There are two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden.'
+	)
+	: 'This is a room-by-room look round Restwell, a single-storey adapted bungalow on a quiet street in Whitstable that sleeps up to five. There are two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden.';
 ?>
 
 
@@ -22,8 +34,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Accessible bungalow: rooms, wet room and kit',
-		'intro'      => 'Take a room-by-room tour of Restwell. See the bedrooms, wet room, living areas, kitchen, garden, and the access equipment already in place.',
+		'heading'    => $restwell_prop_heading,
+		'intro'      => $restwell_prop_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -63,8 +75,8 @@ get_template_part(
         <div>
           <header class="section-head section-head--tight">
             <p class="eyebrow">Bedrooms</p>
-            <h2 id="rooms-h">Ceiling hoist and adjustable profiling beds</h2>
-            <p class="lede">The accessible bedroom is designed for easy transfers and a good night’s sleep. It includes a ceiling-track hoist that reaches the whole room and can have one or two adjustable profiling beds, depending on what your group needs. There’s a second double bedroom next door, and the conservatory has a double sofa bed for extra guests. We also have a mobile hoist and a stand-aid, also known as a Sara Stedy.</p>
+            <h2 id="rooms-h">The room with the hoist, and room for everyone else</h2>
+            <p class="lede">The accessible bedroom has a ceiling-track hoist that reaches the whole room and can have one or two adjustable profiling beds, depending on what your group needs. There’s a second double bedroom next door, and the conservatory has a double sofa bed for extra guests. We also have a mobile hoist and a standing aid (an AAL RS4, rated to 185kg).</p>
           </header>
           <p class="lede">The bungalow can sleep up to five people using the accessible bedroom, the second double, and the conservatory sofa bed. Hoists, profiling beds, and wet-room equipment are all included in the price, unless you need something very specific that we don’t have. When you get in touch, we’ll ask about your group and accessibility needs so we can set up the room for you, with one or two profiling beds as needed. For example, a guest once asked us to match her mum’s bedroom layout from home, and we were happy to help.</p>
           <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and equipment notes</a></p>
@@ -241,11 +253,11 @@ get_template_part(
         <div>
           <header class="section-head section-head--tight">
             <p class="eyebrow">Location</p>
-            <h2 id="location-h">A quiet place to stay in Whitstable, close to the coast path</h2>
-            <p class="lede">The bungalow sits on a quiet street, a short walk from The Plough pub and around 10–15 minutes from Tankerton promenade.</p>
+            <h2 id="location-h">A quiet street in Whitstable, close to the coast path</h2>
+            <p class="lede">The bungalow sits on a quiet residential street, a short walk from The Plough pub and about ten minutes on foot from the seafront.</p>
           </header>
           <p class="lede">The beach is shingle, but the wide, paved promenade offers a step-free route along the coast and forms part of the King Charles III England Coast Path.</p>
-          <p class="lede">JoJo’s and the Marine Hotel are also nearby on Tankerton, and the town centre is about 15 minutes away on a flat, paved route if you want to explore further.</p>
+          <p class="lede">JoJo’s is about twenty minutes on foot: ten minutes down to the sea, then west along Tankerton promenade. The Marine Hotel sits on that same stretch. A short drive if you’d rather save your energy for lunch.</p>
           <p class="lede">For route tips, local recommendations, and access details, check our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable accessibility guide</a>.</p>
         </div>
         <div class="split__media">

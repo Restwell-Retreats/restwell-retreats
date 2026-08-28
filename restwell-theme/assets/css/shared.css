@@ -126,6 +126,10 @@
    *    whitelist: values under 0.25rem / 4px (optical nudges), hairline
    *    borders (≤2px), and fixed-chrome measurements that carry an inline
    *    comment stating what chrome they clear.
+   *    Font-relative nudges (≤0.6em): glyph/bullet/icon optical alignment
+   *    (margin-top/padding on ::before dots, icons, small-caps). Must scale
+   *    with the element's own font-size, so em is required — never remap
+   *    these to tokens or across breakpoints; each carries a why-comment.
    *    Also allowed (do not remap in @media): .fit-bar__door-mark top/bottom
    *    overhang (0.25rem / 0.375rem); checkbox-label padding-block 0.35rem
    *    (44px hit area).
@@ -157,7 +161,15 @@
   --space-16: 4rem;
   --space-20: 5rem;
 
-  /* 2. Rhythm ladder — values live once */
+  /* 2. Rhythm ladder — values live once.
+     Why each family exists (Rule A): section = marketing band breathing;
+     compact = interior bands, one notch tighter than marketing; cta =
+     conversion bands pull more air than scannable body sections; gutter =
+     container side padding, tracks viewport width not content height;
+     panel/grid/after-head/head-gap match existing panel chrome, --grid-gap,
+     and intro→body steps respectively; lead/hero-* size the hero around its
+     H1 + CTA stack. Dense/tight variants exist for interior phones and
+     sticky-subnav clearance — reasons inline on each token below. */
   --rhythm-section-0: 3.25rem;
   --rhythm-section-1: 4.75rem;
   --rhythm-section-2: 5.5rem;
@@ -166,7 +178,7 @@
 
   --rhythm-compact-0: var(--space-6);
   --rhythm-compact-1: var(--space-8);
-  --rhythm-compact-2: 2.25rem;
+  --rhythm-compact-2: 2.25rem; /* between sm and lg density — not a primitive value */
   --rhythm-compact-3: var(--space-10);
 
   --rhythm-cta-0: 3.75rem;
@@ -586,7 +598,7 @@ h3 { font-size: var(--type-h3); }
  */
 p,
 dd,
-blockquote,
+blockquote:not(.pull-quote__text),
 .lede,
 .prose,
 .prose li,
@@ -617,7 +629,10 @@ blockquote,
 .site-footer p,
 .site-footer__copyright,
 .empty-state p,
-.partners .section-head .lede {
+.partners .section-head .lede,
+.pull-quote,
+.pull-quote__text,
+.pull-quote__cite {
   text-align: center;
   hyphens: manual;
 }
@@ -1418,7 +1433,7 @@ body.nav-open { overflow: hidden; }
   flex-shrink: 0;
   width: 1.5rem;
   height: 1.5rem;
-  margin-top: 0.1em;
+  margin-top: 0.1em; /* em nudge: +/− glyph on cap-height */
   display: grid;
   place-items: center;
   color: var(--warm-gold-text);
@@ -1513,7 +1528,7 @@ body.nav-open { overflow: hidden; }
 .site-footer__partner-line a:hover { color: var(--white); }
 .site-footer__sep {
   display: inline-block;
-  padding-inline: 0.3em;
+  padding-inline: 0.3em; /* em nudge: separator breathing scales with its font-size */
   color: rgba(255, 255, 255, 0.4);
   font-size: 0.75em;
   line-height: 1;
@@ -1818,7 +1833,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 .band-teal .checklist li::before {
   width: var(--bullet-halo-size);
   height: var(--bullet-halo-size);
-  margin-top: 0.55em;
+  margin-top: 0.55em; /* em nudge: halo dot aligns to first text line */
   background: var(--bullet-halo-core);
   box-shadow: 0 0 0 var(--bullet-halo-ring-width) var(--bullet-halo-ring);
 }
@@ -1967,7 +1982,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 .prose--wide a,
 .content-prose a {
   display: inline-block;
-  padding-block: 0.4em;
+  padding-block: 0.4em; /* em nudge: tap comfort inside --tap-target min-height */
   min-height: var(--tap-target, 2.75rem);
 }
 .prose--wide { max-width: min(44rem, 100%); }
@@ -2265,7 +2280,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   content: "";
   width: 0.55rem;
   height: 0.55rem;
-  margin-top: 0.45em;
+  margin-top: 0.45em; /* em nudge: gold bullet aligns to first text line */
   border-radius: 50%;
   background: var(--warm-gold);
   flex-shrink: 0;
@@ -2283,6 +2298,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   display: grid;
   gap: var(--stat-row-gap);
 }
+.stat-row dl { margin: 0; }
 .stat {
   padding: var(--stat-pad-y) 0;
   border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
@@ -2319,6 +2335,8 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     column-gap: var(--space-3);
     align-items: baseline;
   }
+  /* dt prints before dd; keep the value leading the row */
+  .stat__value { order: -1; }
   .stat__value {
     margin: 0;
     font-size: var(--text-lg);
@@ -2443,7 +2461,10 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 .fit-check__unit-toggle {
   display: inline-flex;
+  /* Optical nudge: segmented control hairline gap, under the whitelist's
+     sub-4px rule — a full token would read as two separate buttons. */
   gap: 2px;
+  /* Optical nudge: control inner padding, sits the labels inside the border pill. */
   padding: 3px;
   background: var(--bg-subtle);
   border: 1px solid var(--driftwood);
@@ -2824,13 +2845,8 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 @media (min-width: 768px) {
   .care-rates__footer {
     --care-footer-pad: var(--space-5) var(--space-6);
-    --care-footer-gap: var(--space-5);
-    /* Fixed width (not auto/min-content) on the ctas column: a flex
-       child's intrinsic-size contribution is based on its content's
-       own min-content, which for a nowrap button+link is still wide
-       enough to crush the note column even though ctas visually wraps
-       to two lines. A fixed width sized for the button forces that. */
-    grid-template-columns: auto minmax(0, 1fr) 12rem;
+    --care-footer-gap: var(--space-4);
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     column-gap: var(--space-6);
   }
@@ -2841,9 +2857,11 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     grid-column: 2;
   }
   .care-rates__ctas {
-    grid-column: 3;
-    width: auto;
-    justify-content: flex-end;
+    grid-column: 1 / -1;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
   .care-rates__brands .care__brand-link--ccs img {
     height: 1.65rem;
@@ -2852,6 +2870,17 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   .care-rates__brands .care__brand-link--cqc img {
     height: 1.65rem;
     max-width: min(100%, 5.5rem);
+  }
+}
+@media (min-width: 1024px) {
+  .care-rates__footer {
+    --care-footer-gap: var(--space-5);
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .care-rates__ctas {
+    grid-column: 3;
+    width: auto;
+    justify-content: flex-end;
   }
 }
 /* Mobile: airier rows + compact footer stack */
@@ -3267,7 +3296,7 @@ body:has(.subnav) {
   flex-shrink: 0;
   width: var(--space-5);
   height: var(--space-5);
-  margin-top: 0.1em;
+  margin-top: 0.1em; /* em nudge: step number sits on cap-height */
   border-radius: 999px;
   color: var(--white);
   display: inline-flex;
@@ -3584,7 +3613,7 @@ body:has(.subnav) {
   border-bottom: 0;
 }
 .data-table--care th[scope="row"] {
-  max-width: 18rem;
+  max-width: none;
 }
 /* Unavailable weekend care: same scale as the row label, not a price. */
 .data-table .is-price--na {
@@ -3649,7 +3678,7 @@ body:has(.subnav) {
     font-weight: var(--type-eyebrow-weight);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--muted-grey) 80%, transparent);
+    color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
   }
   /* Inside the unified panel: row dividers, not nested mini-cards */
   .rates-panel .data-table--rates tr {
@@ -3680,7 +3709,7 @@ body:has(.subnav) {
     font-weight: var(--type-eyebrow-weight);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: color-mix(in srgb, var(--muted-grey) 85%, transparent);
+    color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
     background: color-mix(in srgb, var(--deep-teal) 3%, var(--white));
   }
   .data-table--rates thead th:first-child {
@@ -3701,6 +3730,30 @@ body:has(.subnav) {
   .rates-panel .data-table--rates {
     --rates-price-size: var(--text-xl);
     --rates-cell-pad-x: var(--space-4);
+  }
+  /* After .data-table--rates { table-layout: fixed } so care columns
+     can shrink to the figures instead of a 42/29/29 split. */
+  .data-table--rates.data-table--care {
+    table-layout: auto;
+    --rates-cell-pad-y: var(--space-3);
+  }
+  .data-table--rates.data-table--care thead th:first-child {
+    width: auto;
+  }
+  .data-table--rates.data-table--care thead th:not(:first-child),
+  .data-table--rates.data-table--care tbody td {
+    width: 1%;
+  }
+  .data-table--rates.data-table--care thead th:not(:first-child) {
+    white-space: nowrap;
+  }
+  .data-table--rates.data-table--care tbody td.is-price--na {
+    white-space: nowrap;
+  }
+}
+@media (min-width: 768px) {
+  .data-table--rates.data-table--care {
+    --rates-cell-pad-y: var(--space-4);
   }
 }
 /*
@@ -3764,7 +3817,8 @@ body:has(.subnav) {
   padding: 0;
   border-radius: var(--radius-lg);
   background: var(--white);
-  border: 2px solid var(--deep-teal);
+  /* Hairline border keeps the disclosure quiet — the gold chip is the loud part. */
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 25%, transparent);
   box-shadow: 0 4px 18px rgb(15 35 42 / 0.06);
 }
 .peak-dates__summary {
@@ -3778,12 +3832,12 @@ body:has(.subnav) {
   align-items: center;
   cursor: pointer;
   list-style: none;
-  padding: var(--space-5) var(--space-5);
-  border-radius: calc(var(--radius-lg) - 2px);
+  padding: var(--space-4) var(--space-5);
+  border-radius: calc(var(--radius-lg) - 1px);
   transition: background-color 160ms ease;
 }
 @media (hover: hover) {
-  .peak-dates__summary:hover { background: color-mix(in srgb, var(--warm-gold) 14%, var(--white)); }
+  .peak-dates__summary:hover { background: color-mix(in srgb, var(--deep-teal) 4%, var(--white)); }
 }
 .peak-dates__summary:focus { outline: none; }
 .peak-dates__summary:focus-visible {
@@ -3832,7 +3886,7 @@ body:has(.subnav) {
   transform: rotate(-135deg);
 }
 .peak-dates[open] {
-  border-color: color-mix(in srgb, var(--deep-teal) 70%, var(--warm-gold));
+  border-color: color-mix(in srgb, var(--deep-teal) 45%, transparent);
 }
 .peak-dates__summary-title {
   grid-area: title;
@@ -3880,7 +3934,7 @@ body:has(.subnav) {
   font-weight: var(--type-eyebrow-weight);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--muted-grey) 88%, transparent);
+  color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
 }
 .peak-dates__range {
   min-width: 0;
@@ -3945,7 +3999,7 @@ body:has(.subnav) {
   font-weight: var(--type-eyebrow-weight);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--muted-grey) 85%, transparent);
+  color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
 }
 .rates-examples__list {
   display: grid;
@@ -4011,7 +4065,7 @@ body:has(.subnav) {
   font-weight: var(--type-eyebrow-weight);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--muted-grey) 80%, transparent);
+  color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
 }
 /* Desktop: side-by-side row matching tariff column proportions */
 @media (min-width: 700px) {
@@ -4161,7 +4215,7 @@ body:has(.subnav) {
   /* --warm-gold (2.1:1 on this light background) fails WCAG even at large
      text size; --warm-gold-text is the token's text-safe counterpart. */
   color: var(--warm-gold-text);
-  padding-top: 0.08em;
+  padding-top: 0.08em; /* em nudge: optical centering of numeral on gold fill */
 }
 .payment-steps__body {
   display: flex;
@@ -5220,6 +5274,8 @@ fieldset.form-stack {
   align-items: center;
   justify-content: center;
   gap: var(--space-4);
+  /* Safe-area padding: clears iOS notches/home indicator inside the fullscreen
+     lightbox (fixed chrome measurements, per whitelist B/C). */
   padding:
     max(4.25rem, calc(env(safe-area-inset-top, 0px) + 3.5rem))
     max(3.25rem, calc(env(safe-area-inset-right, 0px) + 2.75rem))
@@ -5516,7 +5572,7 @@ body.lightbox-open {
   content: "";
   width: 0.35rem;
   height: 0.35rem;
-  margin-top: 0.55em;
+  margin-top: 0.55em; /* em nudge: bullet aligns to first text line */
   border-radius: 50%;
   background: var(--warm-gold);
   flex-shrink: 0;
@@ -5863,11 +5919,17 @@ body.lightbox-open {
  * Pull-quote — a single featured review dropped into a plain band, no card.
  * Big serif mark + serif text gives it a different texture to every other
  * section on the page instead of one more box in a grid.
+ *
+ * Isolated mid-page copy sits in the measure with equal air on both
+ * container walls (not parked on the left rail). text-align must be set on
+ * the blockquote itself — a global `blockquote { text-align: left }` would
+ * otherwise pin the quote to one wall.
  */
 .pull-quote {
   --pull-quote-gap: var(--space-4);
-  max-width: 38rem;
-  margin: 0 auto;
+  --pull-quote-measure: 38rem;
+  width: min(var(--pull-quote-measure), 100%);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -5889,17 +5951,20 @@ body.lightbox-open {
   font-weight: 500;
   line-height: 1.55;
   color: var(--deep-teal);
+  text-align: center;
   text-wrap: pretty;
 }
 .pull-quote__cite {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-1);
   margin-top: var(--space-2);
   font-style: normal;
   font-weight: 600;
   font-size: var(--text-md);
   color: var(--deep-teal);
+  text-align: center;
 }
 .pull-quote__role {
   font-weight: 400;

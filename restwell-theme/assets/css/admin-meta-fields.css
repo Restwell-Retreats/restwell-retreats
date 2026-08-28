@@ -203,7 +203,11 @@
 .restwell-meta-fields .restwell-nav-tab:focus {
 	background: #fff;
 	color: #135e96;
+}
+/* Visible keyboard ring mirroring admin-crm's pattern. */
+.restwell-meta-fields .restwell-nav-tab:focus-visible {
 	outline: none;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 4px #2271b1;
 }
 
 .restwell-meta-fields .restwell-nav-tab.is-active {

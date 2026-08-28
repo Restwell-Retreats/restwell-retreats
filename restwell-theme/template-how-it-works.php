@@ -15,15 +15,15 @@ get_header();
 
 $restwell_hiw_id      = (int) get_queried_object_id();
 $restwell_hiw_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'How accessible holiday booking works' )
-	: 'How accessible holiday booking works';
+	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'The bookends of a holiday should be the easy bit' )
+	: 'The bookends of a holiday should be the easy bit';
 $restwell_hiw_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,
 		'hiw_intro',
-		'Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.'
+		'Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.'
 	)
-	: 'Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.';
+	: 'Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.';
 ?>
 
 
@@ -66,8 +66,8 @@ get_template_part(
       <div class="container">
         <header class="section-head section-head--center process__head">
           <p class="eyebrow">How it works</p>
-          <h2 id="process-h">Enquire, confirm, deposit, arrive.</h2>
-          <p class="lede">There are four steps from your first message to arriving at the key safe. There is no online checkout, and you only pay a deposit after we have agreed on your dates.</p>
+          <h2 id="process-h">Enquire, confirm, arrive</h2>
+          <p class="lede">Three steps from your first message to the front door. There is no online checkout, and you only pay a deposit after we’ve both agreed the bungalow fits.</p>
         </header>
         <div class="process__layout">
           <div class="process__media" data-reveal>
@@ -78,28 +78,21 @@ get_template_part(
               <span class="process-list__index" aria-hidden="true">01</span>
               <div class="process-list__body">
                 <h3>Enquire</h3>
-                <p>Tell us your travel dates, who’s coming, and what equipment you need.</p>
+                <p>Send us your dates, who’s coming, and anything that would make the house work better for you. We aim to reply within 48 hours. Nothing to pay at this stage.</p>
               </div>
             </li>
             <li>
               <span class="process-list__index" aria-hidden="true">02</span>
               <div class="process-list__body">
                 <h3>Confirm</h3>
-                <p>We will set up the house for your group, including the bed layout. If you want, we can also start a Continuity care conversation using the same phone number.</p>
+                <p>We set the house up around what you’ve told us. A 50% deposit reserves the dates; the balance is due a week before you arrive. Care from Continuity stays in the same conversation.</p>
               </div>
             </li>
             <li>
               <span class="process-list__index" aria-hidden="true">03</span>
               <div class="process-list__body">
-                <h3>Deposit</h3>
-                <p>Pay a 50% deposit to reserve your bungalow. The rest is due one week before you arrive.</p>
-              </div>
-            </li>
-            <li>
-              <span class="process-list__index" aria-hidden="true">04</span>
-              <div class="process-list__body">
                 <h3>Arrive</h3>
-                <p>Arrive any time after 3pm and use the key-safe. The step-free house and all your equipment will be ready for your group.</p>
+                <p>Check-in is from 3pm, through a key safe. We send the code and the address with your confirmation, never on the website.</p>
               </div>
             </li>
           </ol>
@@ -110,7 +103,7 @@ get_template_part(
     <section class="section-y band-subtle" id="arrival" aria-labelledby="arrival-h">
       <div class="container split split--flip split--cover">
         <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance to the Restwell bungalow on Russell Drive" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">

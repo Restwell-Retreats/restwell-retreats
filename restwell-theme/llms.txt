@@ -1,15 +1,30 @@
 # Restwell Retreats
-> Accessible holiday accommodation in Whitstable, Kent
-Last-Updated: 2026-06-18
+> One private adapted bungalow by the sea in Whitstable, Kent
+Last-Updated: 2026-08-28
 
-## Main pages
-- `Homepage -> https://restwellretreats.co.uk/`: Accessible self-catering bungalow for private short breaks with optional CQC-regulated care support.
-- `The Property -> /the-property/`: Room-by-room access specs, equipment details, and suitability information for wheelchair users.
-- `Who It's For -> /who-its-for/`: Audience-fit guidance for disabled guests, families, carers, and referral professionals.
-- `How It Works -> /how-it-works/`: Step-by-step booking process from enquiry to confirmed stay.
-- `Accessibility -> /accessibility/`: Detailed access statement including hoist, wet room, parking, and layout details.
-- `FAQ -> /faq/`: Practical pre-booking answers on suitability, funding, and logistics.
-- `Resources -> /resources/`: Funding and support hub covering direct payments, CHC, grants, and planning guidance.
+## Homepage
+Restwell is one private adapted bungalow by the sea in Whitstable, Kent, sleeping up to five. It is not a care home or a respite centre. The whole house is yours for the stay. It is single-storey and step-free, with a level-access wet room and a ceiling track hoist. Home care can be added through Continuity of Care Services, our sister company, on the same enquiry.
+
+## The Property
+A room-by-room tour of the bungalow: two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden. Sleeps five.
+
+## Accessibility
+The access statement in measurements: a 965mm clear front door, 926mm internal doorways, a level-access wet room with a tilt-in-space shower commode chair and a height-adjustable basin, a ceiling track hoist rated to 180kg, an electric mobile hoist also rated to 180kg, a profiling bed, a standing aid rated to 185kg, and portable ramps guests can borrow. A second profiling bed can be set up on request.
+
+## How it works
+Booking has three steps: enquire with your dates, we confirm the bungalow and take a 50% deposit, then you arrive from 3pm using a key safe. Home care goes on the same enquiry.
+
+## Optional care
+Continuity of Care Services provides home care inside the bungalow during a stay, from a morning visit to nurse-led support for complex needs. Continuity is a separate company that invoices the care and holds the CQC rating; Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell provides the accommodation.
+
+## Pricing
+A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all access equipment, linen and parking included. The rate is the same whoever is invoiced.
+
+## Resources
+Restwell can invoice a guest, a local authority, the NHS or a grant body at the same rate. Restwell does not promise that any funding package will cover a holiday.
+
+## Whitstable area guide
+Tankerton promenade is the level route with a sea view; the harbour beach is shingle and not a wheelchair surface. The guide names which local venues have step-free access and an accessible toilet, and which do not.
 
 ## Social profiles
 - Facebook: https://www.facebook.com/restwellretreats/
@@ -17,10 +32,12 @@ Last-Updated: 2026-06-18
 - LinkedIn: https://www.linkedin.com/company/restwell-retreats
 
 ## Key facts
-- Location: Whitstable, Kent, UK
-- Type: Wheelchair-accessible single-storey bungalow
-- Bedrooms: Two bedrooms plus a sofa bed in the living area; sleeps up to 5
-- Features: Ceiling track hoist in accessible bedroom, profiling bed, wet room (roll-in shower, height-adjustable washbasin that swings aside)
-- Parking: Two off-road spaces on the private drive; on-street outside usually available for extra vehicles (no residents permit on this road—verify signs on arrival)
+- Location: Whitstable, Kent, UK (address sent after a booking is confirmed)
+- Type: Private adapted single-storey bungalow, not a care home or respite centre
+- Bedrooms: Two bedrooms plus a sofa bed in the conservatory; sleeps up to 5
+- Features: Ceiling track hoist (Amico GoLift 400, 180kg), Oxford Midi 180 mobile hoist (180kg), Accora CommunityBed profiling bed (180kg user), AAL RS4 standing aid (185kg), level-access wet room
+- Parking: Two off-road spaces on the private drive; on-street outside usually available for extra vehicles (no residents permit on this road. Verify signs on arrival)
 - Booking: Whole-property private rental
-- Care: Optional CQC-regulated support via Continuity of Care Services — verify on CQC: https://www.cqc.org.uk/location/1-2624556588
+- Care: Optional CQC-regulated support via Continuity of Care Services (registered manager: Victoria Walker). Verify on CQC: https://www.cqc.org.uk/location/1-2624556588
+- Phone: 01622 809881
+- Email: hello@restwellretreats.co.uk

@@ -174,7 +174,24 @@
 		} );
 	}
 
+	/**
+	 * Select-all checkbox for the bulk-actions table.
+	 */
+	function initBulkSelectAll() {
+		var selectAll = document.getElementById( 'cb-select-all' );
+		if ( ! selectAll ) {
+			return;
+		}
+		selectAll.addEventListener( 'change', function () {
+			document.querySelectorAll( '[name="rw_bulk_ids[]"]' ).forEach( function ( cb ) {
+				cb.checked = selectAll.checked;
+			} );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
+		initBulkSelectAll();
+
 		if ( typeof rwCrmActions === 'undefined' ) {
 			return;
 		}

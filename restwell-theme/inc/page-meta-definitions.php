@@ -159,10 +159,13 @@ function restwell_page_content_text( $post_id, $key, $fallback = '' ) {
 	if ( $post_id > 0 && function_exists( 'restwell_page_content_meta_or_default' ) ) {
 		$val = trim( (string) restwell_page_content_meta_or_default( $post_id, $key ) );
 	}
-	if ( $val !== '' ) {
-		return $val;
+	if ( $val === '' && is_string( $fallback ) ) {
+		$val = $fallback;
 	}
-	return is_string( $fallback ) ? $fallback : '';
+	if ( $val !== '' && function_exists( 'restwell_normalize_editorial_dashes' ) ) {
+		$val = restwell_normalize_editorial_dashes( $val );
+	}
+	return $val;
 }
 
 /**
@@ -643,12 +646,12 @@ function restwell_get_accessibility_field_definitions() {
 }
 
 /**
- * FAQ page. Pairs faq_1_q, faq_1_a ... faq_14_q, faq_14_a.
+ * FAQ page. Pairs faq_1_q, faq_1_a ... faq_15_q, faq_15_a.
  * Categories: about | booking | care | local | funding
  */
 function restwell_get_faq_field_definitions() {
 	$faq_section = array();
-	for ( $i = 1; $i <= 14; $i++ ) {
+	for ( $i = 1; $i <= 15; $i++ ) {
 		$faq_section[ "faq_{$i}_q" ]   = restwell_field( __( "Question $i", 'restwell-retreats' ) );
 		$faq_section[ "faq_{$i}_a" ]   = restwell_field( __( "Answer $i", 'restwell-retreats' ), 'textarea' );
 		$faq_section[ "faq_{$i}_cat" ] = restwell_field( __( "Question $i category (about | booking | care | local | funding)", 'restwell-retreats' ) );

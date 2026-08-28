@@ -49,23 +49,9 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 	$pages = restwell_get_theme_setup_pages();
 	$created_ids = array();
 
-	$page_templates = array(
-		'The Property'       => 'template-property.php',
-		'How It Works'       => 'template-how-it-works.php',
-		'Accessibility'      => 'template-accessibility.php',
-		'Who It\'s For'      => 'template-who-its-for.php',
-		'Whitstable Guide'   => 'template-whitstable-guide.php',
-		'FAQ'                => 'template-faq.php',
-		'Enquire'            => 'template-enquire.php',
-		'Pricing'            => 'template-pricing.php',
-		'Resources'            => 'template-resources.php',
-		'Our Story'            => 'template-our-story.php',
-		'Optional care'        => 'template-care.php',
-		'Guest Guide'          => 'page-guest-guide.php',
-		'Privacy Policy'       => 'template-privacy-policy.php',
-		'Terms & Conditions'   => 'template-terms-and-conditions.php',
-		'Accessibility Policy' => 'template-accessibility-policy.php',
-	);
+	$page_templates = function_exists( 'restwell_get_theme_setup_page_templates' )
+		? restwell_get_theme_setup_page_templates()
+		: array();
 
 	foreach ( $pages as $title => $slug ) {
 		$existing = get_page_by_path( $slug, OBJECT, 'page' );
@@ -264,3 +250,78 @@ function restwell_ensure_guest_guide_page() {
 	}
 }
 add_action( 'init', 'restwell_ensure_guest_guide_page', 5 );
+
+/**
+ * Create any Theme Setup pages that are missing (templates exist; the WP page may not).
+ *
+ * Nav falls back to /{slug}/ even when get_page_by_path() is empty, so missing
+ * pages 404 behind a real-looking link. Guest Guide already has its own ensure.
+ */
+function restwell_ensure_registered_theme_pages() {
+	if ( wp_installing() ) {
+		return;
+	}
+	if ( ! function_exists( 'restwell_get_theme_setup_pages' ) ) {
+		return;
+	}
+
+	$pages     = restwell_get_theme_setup_pages();
+	$templates = function_exists( 'restwell_get_theme_setup_page_templates' )
+		? restwell_get_theme_setup_page_templates()
+		: array();
+	$created_ids = array();
+	$created_any = false;
+
+	foreach ( $pages as $title => $slug ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( $page instanceof WP_Post ) {
+			$created_ids[ $title ] = (int) $page->ID;
+		} else {
+			$page_id = wp_insert_post(
+				array(
+					'post_title'   => $title,
+					'post_name'    => $slug,
+					'post_status'  => 'publish',
+					'post_type'    => 'page',
+					'post_content' => '',
+					'post_author'  => get_current_user_id(),
+				),
+				true
+			);
+			if ( is_wp_error( $page_id ) || (int) $page_id < 1 ) {
+				continue;
+			}
+			$page_id = (int) $page_id;
+			$created_ids[ $title ] = $page_id;
+			$created_any           = true;
+		}
+
+		if ( ! isset( $templates[ $title ], $created_ids[ $title ] ) ) {
+			continue;
+		}
+		$pid      = (int) $created_ids[ $title ];
+		$current  = (string) get_post_meta( $pid, '_wp_page_template', true );
+		$expected = $templates[ $title ];
+		if ( $current !== $expected ) {
+			update_post_meta( $pid, '_wp_page_template', $expected );
+			$created_any = true;
+		}
+	}
+
+	if ( ! $created_any ) {
+		return;
+	}
+
+	$result = array(
+		'pages_seeded'       => array(),
+		'pages_seed_skipped' => array(),
+	);
+	if ( function_exists( 'restwell_seed_all_pages_meta' ) ) {
+		restwell_seed_all_pages_meta( $created_ids, false, $result );
+	}
+	if ( function_exists( 'restwell_apply_seo_meta_to_pages' ) ) {
+		restwell_apply_seo_meta_to_pages( false );
+	}
+	flush_rewrite_rules( false );
+}
+add_action( 'init', 'restwell_ensure_registered_theme_pages', 6 );

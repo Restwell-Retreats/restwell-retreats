@@ -45,15 +45,15 @@ $phone_tel        = preg_replace( '/\s+/', '', $phone_number );
 
 $restwell_enq_id      = (int) get_queried_object_id();
 $restwell_enq_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Contact Restwell about your stay' )
-	: 'Contact Restwell about your stay';
+	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Get in touch whenever you’re ready' )
+	: 'Get in touch whenever you’re ready';
 $restwell_enq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_enq_id,
 		'enq_intro',
-		'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.'
+		'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.'
 	)
-	: 'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.';
+	: 'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.';
 ?>
 
 <main id="main-content">
@@ -102,10 +102,10 @@ get_template_part(
 				</p>
 				<?php else : ?>
 				<h2><?php esc_html_e( 'We’ve got your enquiry', 'restwell-retreats' ); ?></h2>
-				<p class="lede"><?php esc_html_e( 'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies — usually within 48 hours. Call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' ); ?></p>
+				<p class="lede"><?php esc_html_e( 'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' ); ?></p>
 				<?php endif; ?>
 				<?php if ( $enq_mail_warn && ! $enq_duplicate ) : ?>
-				<p class="lede" role="status"><?php esc_html_e( 'Our confirmation email may not have sent just now. Your enquiry is still saved — please call us if you do not hear back within 48 hours.', 'restwell-retreats' ); ?></p>
+				<p class="lede" role="status"><?php esc_html_e( 'Our confirmation email may not have sent just now. Your enquiry is still saved. Please call us if you do not hear back within 48 hours.', 'restwell-retreats' ); ?></p>
 				<?php endif; ?>
 				<p><a class="btn btn-outline-teal" href="tel:<?php echo esc_attr( $phone_tel ); ?>"><?php echo esc_html( $phone_number ); ?></a></p>
 			</div>
@@ -225,7 +225,7 @@ get_template_part(
 			<h2><?php esc_html_e( 'Talk to us', 'restwell-retreats' ); ?></h2>
 			<p><strong><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></strong><br /><a href="tel:01622809881">01622 809881</a></p>
 			<p><strong><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></strong><br /><a href="mailto:hello@restwellretreats.co.uk">hello@restwellretreats.co.uk</a></p>
-			<p><strong><?php esc_html_e( 'Property', 'restwell-retreats' ); ?></strong><br />Russell Drive<br />Whitstable, CT5 2RQ</p>
+			<p><strong><?php esc_html_e( 'Where', 'restwell-retreats' ); ?></strong><br />Whitstable, Kent</p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & support', 'restwell-retreats' ); ?></a></p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>"><?php esc_html_e( 'Who it’s for', 'restwell-retreats' ); ?></a></p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'See the adapted bungalow', 'restwell-retreats' ); ?></a></p>

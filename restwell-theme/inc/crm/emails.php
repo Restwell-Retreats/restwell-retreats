@@ -305,8 +305,8 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
 	$site       = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
 	$first_name = explode( ' ', trim( $name ) )[0];
 
-	$subject = $site . ' | ' . __( "We've received your enquiry", 'restwell-retreats' );
-	$preview = __( "Thank you for getting in touch. We'll be with you shortly.", 'restwell-retreats' );
+	$subject = $site . ' | ' . __( "We've got your enquiry", 'restwell-retreats' );
+	$preview = __( 'There’s nothing to pay at this stage. We’ll reply properly, usually within 48 hours.', 'restwell-retreats' );
 
 	$urgent_note = $urgent
 		? '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:20px 0;">
@@ -320,38 +320,32 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
       </table>'
 		: '';
 
-	$steps = array(
-		'1.' => "We've logged your enquiry and our team has been notified.",
-		'2.' => 'A member of staff will review your details and contact you - usually within 48 hours.',
-		'3.' => 'If your plans change in the meantime, simply reply to this email.',
-	);
+	$phone = esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) );
 
-	$steps_html = '';
-	foreach ( $steps as $num => $text ) {
-		$steps_html .= '<tr>
-      <td width="32" valign="top" style="padding:0 12px 14px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;font-weight:600;color:#D4A853;">' . esc_html( $num ) . '</td>
-      <td valign="top" style="padding:0 0 14px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:14px;color:#2d4a52;line-height:1.6;">' . esc_html( $text ) . '</td>
-    </tr>';
-	}
-
-	$content = restwell_email_banner( 'Enquiry received', 'Thank you, ' . $first_name . '.' )
-		. '<p style="margin:0 0 20px 0;font-family:\'Lora\',Georgia,serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
-    Thank you for getting in touch. Your enquiry is with our team and someone will be back to you - usually within 48 hours.
+	$content = restwell_email_banner( 'We’ve got your enquiry', 'Thank you, ' . $first_name . '.' )
+		. '<p style="margin:0 0 16px 0;font-family:\'Lora\',Georgia,serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
+    Your enquiry about the bungalow in Whitstable has reached us, and one of us will reply properly, usually within 48 hours, and sooner if we can.
   </p>'
 		. $urgent_note
-		. '<p style="margin:0 0 12px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#3A5A63;">What happens next</p>
-  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">'
-		. $steps_html
-		. '</table>
+		. '<p style="margin:0 0 16px 0;font-family:\'Lora\',Georgia,serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
+    There’s nothing to pay at this stage and nothing to commit to. When we write back we’ll confirm whether your dates are free and answer whatever you’ve asked.
+  </p>
+  <p style="margin:0 0 16px 0;font-family:\'Lora\',Georgia,serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
+    If you mentioned care, that’s in hand too. Continuity of Care Services is our sister company, in the same office on the same phone, so it’s one conversation rather than two. And if you’re bringing your own carer or PA, they’re very welcome. It doesn’t change anything.
+  </p>
+  <p style="margin:0 0 20px 0;font-family:\'Lora\',Georgia,serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
+    If your plans shift in the meantime, or you think of something you forgot to mention, just reply to this email. There’s no such thing as a silly question.
+  </p>
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:20px 0;">
     <tr>
       <td style="background-color:#F5EDE0;border-radius:3px;padding:18px 20px;text-align:center;">
         <p style="margin:0 0 4px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#3A5A63;">Questions? Reach us directly</p>
-        <p style="margin:0;font-family:\'Lora\',Georgia,serif;font-size:20px;color:#1B4D5C;">' . esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) ) . '</p>
+        <p style="margin:0 0 6px 0;font-family:\'Lora\',Georgia,serif;font-size:20px;color:#1B4D5C;">' . $phone . '</p>
+        <p style="margin:0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:14px;color:#2d4a52;"><a href="mailto:hello@restwellretreats.co.uk" style="color:#1B4D5C;text-decoration:underline;">hello@restwellretreats.co.uk</a></p>
       </td>
     </tr>
-  </table>'
-		. restwell_email_signoff();
+  </table>
+  <p style="margin:28px 0 0 0;font-family:\'Lora\',Georgia,serif;font-size:16px;color:#1B4D5C;line-height:1.7;">Rest Easy, Stay Well.</p>';
 
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
@@ -417,7 +411,7 @@ function restwell_email_guest_guide_invite( string $email, string $name, string 
 		. ' <strong style="color:#1B4D5C;">' . esc_html( $email ) . '</strong></p>
       <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.55;">
         <span style="color:#D4A853;font-weight:700;">3.</span>&nbsp; '
-		. esc_html__( 'We will send a one-time code to that address — enter it to unlock your guide.', 'restwell-retreats' )
+		. esc_html__( 'We will send a one-time code to that address. Enter it to unlock your guide.', 'restwell-retreats' )
 		. '</p>
     </td>
   </tr>
@@ -430,7 +424,7 @@ function restwell_email_guest_guide_invite( string $email, string $name, string 
 		. esc_html(
 			sprintf(
 				/* translators: %s: site name */
-				__( 'Your arrival guide for %s is ready. It covers check-in, the property layout, local tips, and who to call — everything you need before you arrive.', 'restwell-retreats' ),
+				__( 'Your arrival guide for %s is ready. It covers check-in, the property layout, local tips, and who to call: everything you need before you arrive.', 'restwell-retreats' ),
 				$site
 			)
 		)
@@ -438,7 +432,7 @@ function restwell_email_guest_guide_invite( string $email, string $name, string 
 		. $steps
 		. restwell_email_button( $guide_url, __( 'Open your arrival guide', 'restwell-retreats' ) )
 		. '<p style="margin:28px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">'
-		. esc_html__( 'Questions before your stay? Call us or reply to this email — we are happy to help.', 'restwell-retreats' )
+		. esc_html__( 'Questions before your stay? Call us or reply to this email. We are happy to help.', 'restwell-retreats' )
 		. '<br>'
 		. esc_html__( 'Call', 'restwell-retreats' )
 		. ' <strong style="color:#1B4D5C;">'
@@ -595,6 +589,8 @@ function restwell_email_booking_confirmed( string $name, string $email ): array 
 function restwell_email_post_stay( string $email, string $name, string $stay_dates = '' ): array {
 	$site       = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
 	$enquire    = esc_url( home_url( '/enquire/' ) );
+	$google_url = 'https://g.page/r/CcRcJZcgLeuSEBM/review';
+	$facebook_url = 'https://www.facebook.com/restwellretreats/reviews';
 	$first_name = $name ? explode( ' ', trim( $name ) )[0] : 'there';
 	$subject    = $site . ' | ' . __( 'Thank you for staying with us', 'restwell-retreats' );
 	$preview    = __( "It was a pleasure having you. We hope you felt truly at home.", 'restwell-retreats' );
@@ -614,9 +610,14 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
     Should you wish to visit us again - for yourself or someone close to you - we\'d love to welcome you back. You\'re always welcome here.
   </p>
   <p style="margin:0 0 8px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
-    If you are happy to share your experience - even a sentence or two - it helps other families decide whether Restwell is right for them. You can reply to this email with your thoughts, or let us know if you would prefer us to send a short form.
+    If you are happy to share your experience - even a sentence or two - it helps other families decide whether Restwell is right for them:
+  </p>
+  <p style="margin:0 0 8px 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
+    &bull; <a href="' . esc_url( $google_url ) . '" target="_blank" style="color:#1B4D5C;">Leave a Google review</a><br>
+    &bull; <a href="' . esc_url( $facebook_url ) . '" target="_blank" style="color:#1B4D5C;">Review us on Facebook</a><br>
+    &bull; Reply to this email with your thoughts, or ask us for a short form.
   </p>'
-		. restwell_email_button( $enquire, 'Enquire About a Return Stay', '#D4A853' )
+		. restwell_email_button( $enquire, __( 'Enquire About a Return Stay', 'restwell-retreats' ), '#D4A853' )
 		. '<p style="margin:28px 0 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
     If there is anything we could do better, please reply to this email. Honest feedback helps us improve for every guest who follows.
   </p>'

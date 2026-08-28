@@ -123,7 +123,7 @@ function restwell_theme_email_invite_steps( string $email ): string {
 		. ' <strong style="color:#1B4D5C;">' . esc_html( $email ) . '</strong></p>
       <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.55;">
         <span style="color:#D4A853;font-weight:700;">3.</span>&nbsp; '
-		. esc_html__( 'We will send a one-time code to that address — enter it to unlock your guide.', 'restwell-retreats' )
+		. esc_html__( 'We will send a one-time code to that address. Enter it to unlock your guide.', 'restwell-retreats' )
 		. '</p>
     </td>
   </tr>
@@ -169,7 +169,7 @@ function restwell_theme_email_guest_guide_invite( string $email, string $name, s
 		. esc_html(
 			sprintf(
 				/* translators: %s: site name */
-				__( 'Your arrival guide for %s is ready. It covers check-in, the property layout, local tips, and who to call — everything you need before you arrive.', 'restwell-retreats' ),
+				__( 'Your arrival guide for %s is ready. It covers check-in, the property layout, local tips, and who to call: everything you need before you arrive.', 'restwell-retreats' ),
 				$site
 			)
 		)
@@ -177,7 +177,7 @@ function restwell_theme_email_guest_guide_invite( string $email, string $name, s
 		. restwell_theme_email_invite_steps( $email )
 		. $cta
 		. '<p style="margin:28px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">'
-		. esc_html__( 'Questions before your stay? Call us or reply to this email — we are happy to help.', 'restwell-retreats' )
+		. esc_html__( 'Questions before your stay? Call us or reply to this email. We are happy to help.', 'restwell-retreats' )
 		. '<br>'
 		. esc_html__( 'Call', 'restwell-retreats' )
 		. ' <strong style="color:#1B4D5C;">'
@@ -771,7 +771,7 @@ function restwell_guest_guide_settings_page() {
 								<?php echo esc_html( $guest['email'] ); ?>
 							</a>
 						<?php else : ?>
-							<span class="rw-text-dim">—</span>
+							<span class="rw-text-dim">&ndash;</span>
 						<?php endif; ?>
 					</td>
 					<?php
@@ -800,7 +800,7 @@ function restwell_guest_guide_settings_page() {
 								?>
 							</a>
 						<?php else : ?>
-							<span class="rw-text-dim">—</span>
+							<span class="rw-text-dim">&ndash;</span>
 						<?php endif; ?>
 					</td>
 					<td class="column-scheduled" data-label="<?php echo esc_attr__( 'Scheduled send', 'restwell-retreats' ); ?>">
@@ -869,13 +869,13 @@ function restwell_guest_guide_settings_page() {
 						echo esc_html(
 							sprintf(
 								/* translators: %s: guest name or sample label */
-								__( 'Not sent — this is the HTML for: %s', 'restwell-retreats' ),
+								__( 'Not sent. This is the HTML for: %s', 'restwell-retreats' ),
 								$preview_ctx['label']
 							)
 						);
 						if ( $preview_ctx['is_sample'] ) {
 							echo ' ';
-							esc_html_e( '(sample — add a guest or use View email on a row for a real name.)', 'restwell-retreats' );
+							esc_html_e( '(sample: add a guest or use View email on a row for a real name.)', 'restwell-retreats' );
 						}
 						?>
 					</p>

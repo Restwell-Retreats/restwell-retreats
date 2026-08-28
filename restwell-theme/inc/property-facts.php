@@ -348,7 +348,6 @@ function restwell_get_property_facts_faq_hoist_answer(): string {
 		strtolower( $facts['sleeping'][1] )
 	);
 
-	// Confirm in WP: perching stool, adjustable washbasin.
 	return $answer . ' ' . __(
 		'If you have additional or specialist equipment needs, please get in touch before booking so we can confirm we can accommodate them.',
 		'restwell-retreats'
@@ -363,7 +362,6 @@ function restwell_get_property_facts_faq_hoist_answer(): string {
 function restwell_get_property_facts_amenity_features(): array {
 	$amenities = array();
 
-	// Confirm in WP: perching stool, adjustable washbasin.
 	foreach ( restwell_get_property_facts_flat() as $fact ) {
 		$amenities[] = array(
 			'@type' => 'LocationFeatureSpecification',

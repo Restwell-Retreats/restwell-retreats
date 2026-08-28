@@ -34,19 +34,44 @@ function restwell_get_theme_setup_pages() {
 }
 
 /**
+ * Page title => PHP template file for Theme Setup and missing-page ensure.
+ *
+ * @return array<string, string>
+ */
+function restwell_get_theme_setup_page_templates() {
+	return array(
+		'The Property'           => 'template-property.php',
+		'How It Works'           => 'template-how-it-works.php',
+		'Accessibility'          => 'template-accessibility.php',
+		'Who It\'s For'          => 'template-who-its-for.php',
+		'Whitstable Guide'       => 'template-whitstable-guide.php',
+		'FAQ'                    => 'template-faq.php',
+		'Enquire'                => 'template-enquire.php',
+		'Pricing'                => 'template-pricing.php',
+		'Resources'              => 'template-resources.php',
+		'Our Story'              => 'template-our-story.php',
+		'Optional care'          => 'template-care.php',
+		'Guest Guide'            => 'page-guest-guide.php',
+		'Privacy Policy'         => 'template-privacy-policy.php',
+		'Terms & Conditions'     => 'template-terms-and-conditions.php',
+		'Accessibility Policy'   => 'template-accessibility-policy.php',
+	);
+}
+
+/**
  * Default meta values for the front page (Home).
  */
 function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
-		'hero_heading'             => 'Accessible holidays in Whitstable',
-		'hero_subheading'          => 'Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.',
+		'hero_heading'             => 'An accessible bungalow by the sea, at your own pace',
+		'hero_subheading'          => 'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.',
 		'hero_spec_heading'        => '',
-		'hero_cta_primary_label'   => 'View the property',
-		'hero_cta_primary_url'     => '/the-property/',
-		'hero_cta_secondary_label' => 'Send an enquiry',
-		'hero_cta_secondary_url'   => '/enquire/',
-		'hero_cta_promise'         => '',
+		'hero_cta_primary_label'   => 'Get in touch',
+		'hero_cta_primary_url'     => '/enquire/',
+		'hero_cta_secondary_label' => 'Look inside the bungalow',
+		'hero_cta_secondary_url'   => '/the-property/',
+		'hero_cta_promise'         => 'We aim to reply within 48 hours, and there’s no deposit until you’ve decided the house fits.',
 		'home_partners_label'      => 'Trusted partners',
 		'home_partners_heading'    => 'Specialist Partners',
 		'home_partners_intro'      => 'The full story of how we adapted Restwell, who built it, and who supports guests today.',
@@ -80,9 +105,9 @@ function restwell_get_theme_setup_defaults() {
 
 		'home_teaser_label'         => 'Area & funding',
 		'home_teaser_area_title'    => 'Whitstable & the Kent coast',
-		'home_teaser_area_body'     => 'Single-storey bungalow on the Kent coast: harbour, promenade, and day trips with realistic access notes. We focus on step-free routes, parking, and places that match your needs, not a vague list labelled "wheelchair friendly".',
+		'home_teaser_area_body'     => 'The harbour beach is shingle. Tankerton promenade is the level stretch with the sea view. We’ve written down what we know about surfaces, parking and which places have an accessible loo, including the ones that don’t.',
 		'home_teaser_funding_title' => 'Funding your stay',
-		'home_teaser_funding_body'  => 'Many guests use personal budgets, direct payments, NHS Continuing Healthcare, or local authority funding. Our guides explain common routes in plain English: what to ask your social worker, and what paperwork helps.',
+		'home_teaser_funding_body'  => 'If a council, a grant or a direct payment might go towards the cost, we can invoice whoever you name. We can’t promise your package will stretch to a holiday, but we can tell you honestly how the paperwork usually goes.',
 
 		'what_restwell_label'   => 'What is Restwell?',
 		'what_restwell_heading' => 'A proper accessible coastal holiday.',
@@ -102,15 +127,15 @@ function restwell_get_theme_setup_defaults() {
 		'who_carer_title'  => 'Optional care on your terms',
 		'who_carer_body'   => 'The layout supports everyday routines: separate sleeping, practical bathroom access, and space to assist when needed. Optional CQC-regulated support is available through Continuity of Care Services, or bring your own support. Either way, the environment is set up for real routines, day and night, so you are not improvising.',
 
-		'property_label'      => 'The property',
-		'property_heading'   => 'Our Whitstable home',
-		'property_body'      => 'An adapted single-storey property in Whitstable: level approach from the street, two off-road spaces on the private drive (on-street outside if you need extra room—no residents permit on this road), and a flat route toward the Tankerton promenade. Whitstable town centre (harbour, seafood restaurants, and the waterfront) is close enough for day trips without stressful route planning.',
-		'property_cta_label' => 'Explore the property',
+		'property_label'      => 'The bungalow',
+		'property_heading'   => 'One bungalow, and it’s all yours',
+		'property_body'      => 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address and directions once your stay is confirmed.',
+		'property_cta_label' => 'Have a proper look round the rooms',
 		'property_cta_url'   => '/the-property/',
 		'property_image_id'  => 0,
 
-		'why_label'       => 'Why Restwell?',
-		'why_heading'     => 'Why choose Restwell for your accessible break?',
+		'why_label'       => 'Why a house',
+		'why_heading'     => 'A wet room in a hotel still comes with the corridor',
 		'why_item1_title' => 'Private & personal',
 		'why_item1_desc'  => 'The whole bungalow is yours: living space, kitchen, two bedrooms plus a sofa bed in the living area (sleeps up to five), with the privacy of a self-catering stay.',
 		'why_item2_title' => 'Professional support on your terms',
@@ -121,8 +146,8 @@ function restwell_get_theme_setup_defaults() {
 		'why_item4_desc'  => 'We publish the access specification: exact dimensions, thresholds, and equipment, so you can plan with confidence before you travel.',
 
 		'home_comparison_label'          => 'Compare options',
-		'home_comparison_heading'        => 'Restwell vs. a typical hotel stay',
-		'home_comparison_intro'          => 'A side-by-side on privacy, equipment, care, and the kitchen.',
+		'home_comparison_heading'        => 'A wet room in a hotel still comes with the corridor',
+		'home_comparison_intro'          => 'Plenty of hotels will tell you they have an accessible room. What they don’t mention is the lift you queue for, the breakfast room you cross, and the feeling of being a logistical problem in somebody else’s building.',
 		'home_comparison_row1_feature'   => 'Privacy',
 		'home_comparison_row1_restwell'  => 'Whole property',
 		'home_comparison_row1_other'     => 'Shared spaces',
@@ -136,13 +161,13 @@ function restwell_get_theme_setup_defaults() {
 		'home_comparison_row4_restwell'  => 'Full self-catering',
 		'home_comparison_row4_other'     => 'None or limited',
 
-		'cta_heading'          => 'Need exact access details first?',
-		'cta_body'            => 'Tell us your dates and practical needs. We will reply with clear measurements, equipment details, and next steps.',
-		'cta_primary_label'   => 'Send an enquiry',
+		'cta_heading'          => 'Ask us anything about a stay',
+		'cta_body'            => 'Tell us your dates and what you need from the house. We aim to reply within 48 hours, and there’s no deposit until you’ve decided it fits.',
+		'cta_primary_label'   => 'Get in touch',
 		'cta_primary_url'     => '/enquire/',
-		'cta_secondary_label' => 'See the property',
+		'cta_secondary_label' => 'Look inside the bungalow',
 		'cta_secondary_url'   => '/the-property/',
-		'cta_promise'         => 'No pressure to book. Useful answers, usually within 48 hours.',
+		'cta_promise'         => 'We aim to reply within 48 hours. No deposit until you’ve decided the house fits.',
 		'cta_image_id'        => 0,
 	);
 
@@ -165,9 +190,9 @@ function restwell_get_property_page_defaults() {
 		'prop_address_region'   => 'Kent',
 		'prop_address_postcode' => 'CT5 2RQ',
 
-		'prop_hero_label'               => 'The Property',
-		'prop_hero_heading'             => 'Accessible bungalow: rooms, wet room and kit',
-		'prop_hero_subtitle'            => 'This accessible bungalow Whitstable guests book for a private stay is single-storey and step-free throughout. Here is what each room has, what is included, and how the layout works before you enquire.',
+		'prop_hero_label'               => 'The bungalow',
+		'prop_hero_heading'             => 'A proper look round the bungalow',
+		'prop_hero_subtitle'            => 'This is a room-by-room look round Restwell, a single-storey adapted bungalow on a quiet street in Whitstable that sleeps up to five. There are two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -183,8 +208,8 @@ function restwell_get_property_page_defaults() {
 		'prop_living_heading' => 'Wheel-under kitchen and open-plan living',
 		'prop_living_body'    => 'The light and airy open-plan living room has sofas, a riser/recliner chair, a dining table, a wall-mounted TV and a feature fireplace, and leads round into a modern fully-equipped kitchen with a lowered, wheel-under worksurface. Double doors open into a conservatory with a sofa (including a sofa bed), laundry facilities and garden views, with threshold ramps onto the patio.',
 
-		'prop_bedrooms_section_heading' => 'Ceiling hoist and profiling bed',
-		'prop_bedrooms_section_body'    => 'The accessible bedroom has two profiling beds, a full room coverage ceiling hoist and a wall-mounted TV. A mobile hoist and a Sara Stedy stand aid are available to guests and can be used in the bedroom and throughout the bungalow. The second bedroom has a double bed and a wall-mounted TV.',
+		'prop_bedrooms_section_heading' => 'The room with the hoist, and room for everyone else',
+		'prop_bedrooms_section_body'    => 'The accessible bedroom has a ceiling track hoist running over a profiling bed with a pressure-relieving mattress, a mobile hoist as well, and a standing aid. We set the room up around what you tell us when you book. If you need a second profiling bed, say so and we’ll put one in. The second bedroom sleeps whoever else is with you, and there’s a double sofa bed in the conservatory. Five is the limit.',
 
 		'prop_wetroom_heading' => 'Roll-in wet room with adjustable basin',
 		'prop_wetroom_body'    => 'The accessible wet room has a step-free shower with a fixed grab-rail, a shower/commode chair, a tilt-in-space shower chair and a shower stool, with fixed and drop-down grab-rails. There is a Geberit AquaClean wash and dry WC with remote and touch control, and a height-adjustable wheel-under washbasin that also swings aside.',
@@ -278,7 +303,7 @@ function restwell_get_property_page_defaults() {
 		'prop_parking_detail'    => 'Room for two vehicles on the resin-bound private drive',
 		'prop_sleeps_value'      => '5',
 		'prop_sleeps_label'      => 'Sleeps',
-		'prop_distances'         => "Tankerton Slopes promenade: 15 min flat walk\nWhitstable town centre: 15 min walk\nWhitstable station: 20-30 min walk",
+		'prop_distances'         => "Seafront: about 10 min on foot from the driveway\nJoJo’s, Tankerton promenade: about 20 min (10 min to the sea, then west along the prom)",
 		'prop_confirm_details_url' => '/enquire/',
 
 		'prop_nearby_label'       => '',
@@ -292,7 +317,7 @@ function restwell_get_property_page_defaults() {
 		'prop_nearby_2_title'     => 'Tankerton Slopes & Promenade',
 		'prop_nearby_2_body'      => 'A long, flat, surfaced promenade with views across the Thames Estuary. The promenade path itself is wide and level, suitable for wheelchairs and powerchairs. The grassy slopes between the road and the promenade are steep, so use the paved access paths. Free parking along Marine Parade at the top.',
 		'prop_nearby_2_acc'       => 'Flat tarmac path, no steps, suitable for wheelchairs. Accessible WC at harbour end.',
-		'prop_nearby_2_distance'  => 'Approx. 15 min flat walk',
+		'prop_nearby_2_distance'  => 'About 10 min on foot',
 		'prop_nearby_2_filter'    => 'wheelchair-friendly',
 		'prop_nearby_2_map_url'   => 'https://maps.google.com/?q=Tankerton+Slopes+Whitstable',
 		'prop_nearby_3_title'     => 'Whitstable Harbour & Harbour Street',
@@ -304,7 +329,7 @@ function restwell_get_property_page_defaults() {
 		'prop_nearby_4_title'     => 'Whitstable Beach',
 		'prop_nearby_4_body'      => "Whitstable's iconic shingle beach is beautiful, but we want to be honest: shingle is generally not suitable for wheelchairs. The promenade above provides excellent sea views and is accessible for most wheelchair users.",
 		'prop_nearby_4_acc'       => 'Shingle beach is not recommended for wheelchairs. The level promenade path above the beach is the accessible alternative.',
-		'prop_nearby_4_distance'  => 'Approx. 15 min walk',
+		'prop_nearby_4_distance'  => 'About 10 min on foot',
 		'prop_nearby_4_filter'    => 'wheelchair-friendly',
 		'prop_nearby_4_map_url'   => 'https://maps.google.com/?q=Whitstable+Beach+Kent',
 		'prop_nearby_5_title'     => 'Supermarkets',
@@ -348,20 +373,20 @@ function restwell_get_property_page_defaults() {
 function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
-		'hiw_heading' => 'How accessible holiday booking works',
-		'hiw_intro'   => 'Share your dates and access needs, check what is included in the house, add Continuity care if you want, and arrive any time after 3pm using the key-safe.',
+		'hiw_heading' => 'The bookends of a holiday should be the easy bit',
+		'hiw_intro'   => 'Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.',
 
-		'hiw_steps_label'   => 'FOUR-STEP PROCESS',
-		'hiw_steps_heading' => 'Straightforward from start to finish',
+		'hiw_steps_label'   => 'THREE-STEP PROCESS',
+		'hiw_steps_heading' => 'Enquire, confirm, arrive',
 		'hiw_steps_intro'   => '',
 		'hiw_step1_title'   => 'Enquire',
-		'hiw_step1_body'    => 'Tell us your dates and your access needs.',
+		'hiw_step1_body'    => 'Tell us your dates and what you need. Nothing to pay at this stage.',
 		'hiw_step2_title'   => 'Confirm',
-		'hiw_step2_body'    => 'We talk through what\'s in the house and any care you\'d like.',
-		'hiw_step3_title'   => 'Book',
-		'hiw_step3_body'    => 'You secure your dates.',
-		'hiw_step4_title'   => 'Arrive',
-		'hiw_step4_body'    => 'You come home to a step-free house that is ready for you.',
+		'hiw_step2_body'    => 'We set the house up around you. A 50% deposit reserves the dates.',
+		'hiw_step3_title'   => 'Arrive',
+		'hiw_step3_body'    => 'From 3pm, through a key safe. The address comes with your confirmation.',
+		'hiw_step4_title'   => '',
+		'hiw_step4_body'    => '',
 
 		'hiw_care_cta_label'   => 'CARE SUPPORT',
 		'hiw_care_cta_heading' => 'Care fits around your routine',
@@ -397,12 +422,12 @@ function restwell_get_how_it_works_page_defaults() {
 		'hiw_faq_label'   => 'Common questions',
 		'hiw_faq_heading' => 'Things people often ask.',
 		'hiw_faq_intro'   => '',
-		'hiw_faq_1_q'     => 'Do I have to book care?',
-		'hiw_faq_1_a'     => 'No. Care support through Continuity of Care Services is entirely optional. Many guests book the house as a self-catering holiday and need no additional support.',
-		'hiw_faq_2_q'     => 'How far in advance should I book?',
-		'hiw_faq_2_a'     => 'We recommend enquiring as early as possible; peak summer weeks fill quickly. That said, we will always try to accommodate shorter-notice bookings where we can.',
-		'hiw_faq_3_q'     => 'How far is the property from the beach?',
-		'hiw_faq_3_a'     => 'The Tankerton promenade is about 15 minutes\' flat walk from the property. The town centre and harbour are about a 7-minute drive or 20-minute walk. We can provide exact routes and accessibility notes for any destination before your stay.',
+		'hiw_faq_1_q'     => 'How do I book a stay?',
+		'hiw_faq_1_a'     => 'Three steps: send us your dates and what you need, we confirm the bungalow and take a 50% deposit, then you arrive from 3pm using a key safe. Care can go on the same enquiry.',
+		'hiw_faq_2_q'     => 'When can care be added?',
+		'hiw_faq_2_a'     => 'Mention it when you first write, even if the dates are still vague. We don’t publish a lead time because it depends on what you need and who’s available that week. We’ll give you a real answer quickly.',
+		'hiw_faq_3_q'     => 'How can I pay?',
+		'hiw_faq_3_a'     => 'We can invoice you, a council, the NHS or a grant body, at the same bungalow rate. Who we invoice doesn’t change the price.',
 	);
 	return $defaults;
 }
@@ -413,21 +438,21 @@ function restwell_get_how_it_works_page_defaults() {
 function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
-		'acc_heading' => 'Access statement: hoist, wet room, door widths',
-		'acc_intro'   => 'We provide details on door widths, step-free routes, the wet room, hoist, and parking so you can see if Restwell suits your needs before you get in touch.',
+		'acc_heading' => 'The wet room, the hoists, and every measurement',
+		'acc_intro'   => 'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.',
 
 		'acc_room_label'      => 'The property',
 		'acc_room_heading'    => 'Room by room',
 		'acc_arrival_heading' => 'Arrival & entrance',
-		'acc_arrival_body'    => "Private driveway: two off-road car spaces (adapted vehicles welcome)\nOn-street parking outside if you need extra room—no residents permit on this road; check signs on arrival in case street rules change\nStep-free path from car to front door\nWide front door (965 mm clear)\nLevel threshold, no step",
+		'acc_arrival_body'    => "Private driveway: two off-road car spaces (adapted vehicles welcome)\nOn-street parking outside if you need extra room. No residents permit on this road; check signs on arrival in case street rules change\nStep-free path from car to front door\nPorch opening 1720mm; inner front door 965mm clear\nLevel threshold, no step",
 		'acc_inside_heading'  => 'Inside the property',
-		'acc_inside_body'     => "All internal doors 926 mm clear\nOpen-plan ground floor, no internal steps\nLevel flooring throughout (no carpet lips)\nCeiling track hoist in the accessible bedroom (full-room track there; wet room is on the same level nearby)",
+		'acc_inside_body'     => "All internal doors 926mm clear\nOpen-plan ground floor, no internal steps\nLevel flooring throughout (no carpet lips)\nCeiling track hoist in the accessible bedroom (Amico GoLift 400, 180kg SWL; wet room is on the same level nearby)",
 		'acc_bedroom_heading' => 'Bedrooms & sleeping',
-		'acc_bedroom_body'    => "Accessible bedroom: profiling bed with pressure-relieving mattress\nCeiling hoist with full-room track in this room for transfers at the bed\nHeight-adjustable features\nSpace for carer on both sides of bed\nSecond bedroom for additional guests or a support worker\nSofa bed in the living area—house sleeps up to five; tell us your party layout when you enquire",
+		'acc_bedroom_body'    => "Accessible bedroom: Accora CommunityBed profiling bed, maximum user weight 180kg, with pressure-relieving mattress\nCeiling hoist with full-room track in this room for transfers at the bed\nA second profiling bed can be set up on request\nSpace for carer on both sides of bed\nSecond bedroom for additional guests or a support worker\nSofa bed in the conservatory. The house sleeps up to five; tell us your party layout when you enquire",
 		'acc_bathroom_heading' => 'Wet room',
-		'acc_bathroom_body'   => "Full wet room: roll-in shower, no lip — layout and specification by <a href=\"https://www.carespaces.co.uk/\" target=\"_blank\" rel=\"noopener noreferrer\">Care Spaces</a> (specialist care environments, design & installation)\nPerching stool in the shower for balance and short rests\nTilt-in-space shower chair fitted in the wet room\nWashbasin is fully height-adjustable and swings aside, so you can set a comfortable working height and move it out of the way for transfers or assistance\nGrab rails: shower, toilet, and washbasin\nFloor-level drain\nExtractor fan",
+		'acc_bathroom_body'   => "Full wet room: roll-in shower, no lip. Layout and specification by <a href=\"https://www.carespaces.co.uk/\" target=\"_blank\" rel=\"noopener noreferrer\">Care Spaces</a> (specialist care environments, design & installation)\nMira Select Flex TMV3 shower, RNIB Tried & Tested\nRAZ-AT tilt-in-space shower commode chair\nDrive DeVilbiss shower stool, rated to 136kg\nRopox Swing washbasin, height-adjustable 750–950mm\nGrab rails: shower, toilet, and washbasin\nFloor-level drain\nExtractor fan",
 		'acc_kitchen_heading' => 'Kitchen',
-		'acc_kitchen_body'    => "Open-plan kitchen, easy wheelchair access\nHeight-adapted worktop section\nGas hob (not induction)—no electromagnetic field from the cooktop, which many guests with pacemakers prefer\nAccessible storage at lower levels",
+		'acc_kitchen_body'    => "Open-plan kitchen, easy wheelchair access\nHeight-adapted worktop section\nGas hob (not induction). No electromagnetic field from the cooktop, which many guests with pacemakers prefer\nAccessible storage at lower levels",
 		'acc_outdoor_heading' => 'Outdoor spaces',
 		'acc_outdoor_body'    => "Level patio immediately outside rear doors\nHard-standing surface suitable for wheelchairs\nSmall garden area, mostly flat",
 
@@ -452,47 +477,31 @@ function restwell_get_accessibility_page_defaults() {
  * Default meta for the FAQ page.
  */
 function restwell_get_faq_page_defaults() {
-	return array(
+	$defaults = array(
 		'faq_label'        => 'FAQ',
-		'faq_heading'      => 'Whitstable bungalow holiday FAQs',
-		'faq_intro'        => 'House, booking and packing questions we hear before an enquiry — with links when the full answer lives on Accessibility, Pricing, Care or Whitstable.',
+		'faq_heading'      => 'Questions people ask before they book',
+		'faq_intro'        => 'Short answers to the things we’re asked most: what Restwell is, whether a wheelchair fits, how care works, what it costs, and who we can invoice. Each answer links to the page that goes into proper detail.',
 		'faq_list_label'   => '',
 		'faq_list_heading' => 'Frequently asked questions',
 
-		'faq_1_q'   => 'Is Restwell open for bookings?',
-		'faq_1_a'   => 'Yes, we\'re open and taking bookings now, for dates across 2026 and 2027. Tell us when you\'d like to come and we\'ll check availability.',
-		'faq_1_cat' => 'booking',
-
-		'faq_2_q'   => 'Do you allow assistance dogs?',
-		'faq_2_a'   => 'Yes. The bungalow is dog-friendly and welcomes assistance dogs, with water bowls and a toileting area provided.',
-		'faq_2_cat' => 'about',
-
-		'faq_3_q'   => 'Is parking available at the house?',
-		'faq_3_a'   => 'Yes, level driveway parking for two cars.',
-		'faq_3_cat' => 'local',
-
-		'faq_4_q'   => 'How far is the seafront?',
-		'faq_4_a'   => 'About ten minutes away, with a paved promenade route along the Tankerton Slopes.',
-		'faq_4_cat' => 'local',
-
-		'faq_5_q'   => 'Can I see the full access details before booking?',
-		'faq_5_a'   => 'Yes, the Accessibility page lists measurements and equipment room by room.',
-		'faq_5_cat' => 'about',
-
-		'faq_6_q'   => 'Can I get to Whitstable by train step-free?',
-		'faq_6_a'   => 'Yes. Whitstable station has step-free access to both platforms via separate street-level entrances, and the house is about a nine-minute drive from the station.',
-		'faq_6_cat' => 'local',
-
-		'faq_7_q'   => 'Is there a Changing Places toilet nearby?',
-		'faq_7_a'   => 'Yes, at Whitstable Harbour on Harbour Road, which needs a RADAR key.',
-		'faq_7_cat' => 'local',
-
 		'faq_cta_label'   => '',
 		'faq_cta_heading' => 'Still have a question?',
-		'faq_cta_body'    => 'Get in touch and we will answer honestly. We respond within 48 hours.',
+		'faq_cta_body'    => 'If your question isn’t here, ring us on 01622 809881 and just ask it. We keep a note of the ones that come up repeatedly and add them to this page.',
 		'faq_cta_btn'     => 'Enquire now',
 		'faq_cta_url'     => '/enquire/',
 	);
+
+	if ( function_exists( 'restwell_get_faq_page_default_pairs' ) ) {
+		$i = 1;
+		foreach ( restwell_get_faq_page_default_pairs() as $row ) {
+			$defaults[ "faq_{$i}_q" ]   = $row['q'];
+			$defaults[ "faq_{$i}_a" ]   = $row['a'];
+			$defaults[ "faq_{$i}_cat" ] = isset( $row['cat'] ) ? $row['cat'] : 'about';
+			$i++;
+		}
+	}
+
+	return $defaults;
 }
 
 /**
@@ -501,11 +510,11 @@ function restwell_get_faq_page_defaults() {
 function restwell_get_enquire_page_defaults() {
 	return array(
 		'enq_label'   => 'Get in touch',
-		'enq_heading' => 'Contact Restwell about your stay',
-		'enq_intro'   => 'Share dates, access needs and funding contact. No deposit until you decide. We reply within 48 hours on most enquiries.',
+		'enq_heading' => 'Get in touch whenever you’re ready',
+		'enq_intro'   => 'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.',
 
 		'enq_form_heading'        => 'Tell us about your stay',
-		'enq_success_heading'     => 'Thank you — we have your enquiry.',
+		'enq_success_heading'     => 'Thank you. We have your enquiry.',
 		'enq_success_body'        => 'We usually respond within one to two working days (often sooner), using your preferred contact method where you have told us one. If your dates are tight, say so in your message and we will prioritise a quick first reply.',
 		'enq_success_urgent_body' => 'You marked this as time-sensitive. We will prioritise your request and aim to respond within one working day where possible, using your preferred contact method.',
 
@@ -525,12 +534,12 @@ function restwell_get_pricing_page_defaults() {
 
 	$defaults = array(
 		'pricing_label'         => 'Pricing',
-		'pricing_heading'       => 'What a stay costs',
-		'pricing_subheading'    => 'Our rates include the entire bungalow. You can add care from Continuity if you need support.',
-		'pricing_intro'         => 'Our rates include the entire bungalow. You can add care from Continuity if you need support.',
-		'pricing_hero_cta_text' => 'Check dates and care availability',
+		'pricing_heading'       => 'What a stay here costs',
+		'pricing_subheading'    => 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. The rate is the same whoever we invoice.',
+		'pricing_intro'         => 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. Midweek nights are £185 off-peak and £200 peak, with weekend nights in the table below. A 50% deposit reserves your dates and the balance is due a week before you arrive. The rate is the same whoever we invoice.',
+		'pricing_hero_cta_text' => 'Tell us your dates',
 		'pricing_hero_cta_url'  => '/enquire/',
-		'pricing_hero_cta_promise' => 'No booking commitment, just a conversation.',
+		'pricing_hero_cta_promise' => 'No deposit until you’ve decided the house fits.',
 		'pricing_faq_label'     => 'FAQ',
 		'pricing_faq_heading'   => 'Common questions about pricing',
 	);
@@ -551,8 +560,8 @@ function restwell_get_pricing_page_defaults() {
 function restwell_get_resources_page_defaults() {
 	return array(
 		'res_label'   => 'Funding & support',
-		'res_heading' => 'Fund an accessible respite holiday',
-		'res_intro'   => 'The bungalow costs the same whoever pays. We’ll invoice your council, the NHS, a grant body, or you. If you want care too, Continuity is our sister company: one phone call, two invoices.',
+		'res_heading' => 'Paying for a break, without the guesswork',
+		'res_intro'   => 'Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.',
 
 		'res_fund_heading' => 'How to fund your stay',
 		'res_fund_body'    => "Many guests use a combination of personal savings, direct payments, and charitable grants to fund their stay.\n\nIf you receive a personal budget or direct payment from your local authority or NHS, you may be able to use this towards your stay, particularly if care support is included. We recommend speaking to your care coordinator or social worker in the first instance.\n\nWe are happy to provide documentation to support a funding application.",
@@ -593,8 +602,8 @@ function restwell_get_guest_guide_page_defaults() {
 		'gg_checkout_time'   => $check_out,
 		'gg_house_rules'     => "Please treat the property with care; it is someone's home.\nNo smoking anywhere inside the property.\nDogs are allowed, subject to risk assessment and prior notice. Please keep dogs off the furniture.\nPlease lock all doors and close all windows when you go out.\nReport any damages as soon as possible.",
 		'gg_departure_notes' => "Strip the beds and leave used linen in the laundry room.\nPlace all rubbish in the bins provided.\nReturn all keys and fobs to the key safe (location shared on arrival).\nClose all windows and lock all doors.\nLeave the property in a tidy condition. Thank you!",
-		'gg_parking_info'    => "Two off-road spaces on the private driveway at the property—enough room for most cars and adapted vehicles if you deploy ramps thoughtfully.\nIf you are bringing more than two cars, you can usually park on the road outside. There is no residents permit scheme on this road, and we have not seen time-limited bay controls here—please still check any street signs when you arrive in case local rules change.",
-		'gg_local_info'      => "Whitstable town centre is approximately 15 minutes on foot via a flat, paved route.\nTankerton promenade is about 15 minutes away on foot. The promenade itself is wide, level, and fully surfaced, suitable for wheelchairs and powerchairs. The grassy slopes above it are steep, so stick to the paved path along the seafront. Free parking is available along Marine Parade at the top.\nTesco Extra (Whitstable) is a 7-minute drive and has accessible parking, automatic doors, and a wheelchair-friendly layout.\nWheelchair and equipment hire is available locally; we can share details of trusted suppliers before your stay. Just ask.",
+		'gg_parking_info'    => "Two off-road spaces on the private driveway at the property, enough room for most cars and adapted vehicles if you deploy ramps thoughtfully.\nIf you are bringing more than two cars, you can usually park on the road outside. There is no residents permit scheme on this road, and we have not seen time-limited bay controls here. Please still check any street signs when you arrive in case local rules change.",
+		'gg_local_info'      => "The seafront is about ten minutes on foot from the driveway, via a flat, paved route.\nTankerton promenade is the level stretch once you get there. Places along it, such as JoJo’s, take longer because you then walk west along the prom, roughly twenty minutes all in. The grassy slopes above the promenade are steep, so stick to the paved path. Free parking is available along Marine Parade at the top.\nTesco Extra (Whitstable) is a 7-minute drive and has accessible parking, automatic doors, and a wheelchair-friendly layout.\nWheelchair and equipment hire is available locally; we can share details of trusted suppliers before your stay. Just ask.",
 	);
 }
 
@@ -604,8 +613,8 @@ function restwell_get_guest_guide_page_defaults() {
 function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'           => 'Who it is for',
-		'wif_heading'         => 'Is Restwell right for your group?',
-		'wif_intro'           => 'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.',
+		'wif_heading'         => 'Is this the right house for your group?',
+		'wif_intro'           => 'Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.',
 		'wif_hero_image_id'   => 0,
 		'wif_family_title'    => 'For guests and families',
 		'wif_family_body'     => '"Accessible" and "wheelchair friendly" are used loosely by a lot of accommodation. People book in good faith and arrive to find a step at the entrance, a bathroom that is too small to turn, or a hoist that is not actually there. Restwell works the other way: the ceiling track hoist is already fitted in the accessible bedroom, the wet room has a roll-in shower with turning space, and every doorway and corridor is sized for a powerchair. The full measurements are published on our accessibility page. Check them before you enquire, not after. This is a private home, not a converted hotel room. No shared spaces, no clinical layout, and no surprises on arrival.',
@@ -633,8 +642,8 @@ function restwell_get_who_its_for_page_defaults() {
 function restwell_get_whitstable_guide_page_defaults() {
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
-		'wg_heading'       => 'Whitstable Kent coast access guide',
-		'wg_intro'         => 'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.',
+		'wg_heading'       => 'What a day out from the bungalow is actually like',
+		'wg_intro'         => 'Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.',
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'The promenade from Tankerton Slopes',
 		'wg_about_body'    => "A paved promenade route of about two miles, west from the property at the top of Tankerton Slopes. Marine Parade clifftop is wide and flat with weather shelters and benches. At the right tide you can watch The Street, a natural shingle spit, emerge almost 800 metres into the estuary.\nSloped paths down to the beach are steep and easier with a companion for manual wheelchair users. The lower promenade then runs unbroken west past the painted beach huts to Whitstable Castle gardens, town and harbour.",
@@ -669,7 +678,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_eating_label'            => 'Eating out',
 		'wg_eating_heading'          => 'Places to eat near the property',
 		'wg_eating_intro'            => 'Three nearby options with honest access notes. Confirm details with the venue before you travel if access is critical to your plans.',
-		'wg_eating_body'             => "<strong>The Plough Inn, Swalecliffe</strong> (100 St John's Road, CT5 2RN, 01227 794636): step-free entry, no accessible toilet. Confirm in WP: full access details.\n<strong>JoJo's, Tankerton</strong> (2 Herne Bay Road, CT5 2LQ, 01227 274591): wheelchair access and accessible toilet.\n<strong>Marine Hotel, Tankerton</strong> (32-33 Marine Parade, CT5 2BE, 01227 272672): ground-floor step-free dining, accessible toilet by reception.",
+		'wg_eating_body'             => "<strong>The Plough Inn, Swalecliffe</strong> (100 St John's Road, CT5 2RN, 01227 794636): step-free entry, no accessible toilet; confirm access on the day if that matters.\n<strong>JoJo's, Tankerton</strong> (2 Herne Bay Road, CT5 2LQ, 01227 274591): wheelchair access and accessible toilet; book ahead.\n<strong>Marine Hotel, Tankerton</strong> (32-33 Marine Parade, CT5 2BE, 01227 272672): ground-floor step-free dining, accessible toilet by reception.",
 		'wg_cta_heading'         => 'Planning your coastal break?',
 		'wg_cta_body'            => 'If you have dates in mind, get in touch and we will help you plan a stay that works for your access needs.',
 		'wg_cta_primary_label'   => 'See the property',
@@ -689,8 +698,8 @@ function restwell_get_whitstable_guide_page_defaults() {
 function restwell_get_care_page_defaults() {
 	return array(
 		'care_label'   => 'Optional care',
-		'care_heading' => 'Care during your stay, only if you want it',
-		'care_intro'   => 'CQC-regulated care from Continuity of Care Services, on hand whenever you want it, arranged in the same phone call as your booking, or bring your own carer if you’d rather.',
+		'care_heading' => 'Care during your stay, arranged in the same conversation',
+		'care_intro'   => 'Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.',
 	);
 }
 
@@ -703,7 +712,7 @@ function restwell_get_our_story_page_defaults() {
 	return array(
 		'story_label'   => 'Our story',
 		'story_heading' => 'Why Restwell exists',
-		'story_intro'   => 'Restwell started when someone saw how difficult it was for people to find a holiday home that really met their needs. The bungalow was shaped by the people who would actually stay there.',
+		'story_intro'   => 'Restwell Retreats is an adapted holiday bungalow in Whitstable, run by Victoria Walker. Continuity of Care Services is our sister company; Victoria is their CQC registered manager. They work from the same office on the same phone number. Restwell provides the house; Continuity provide any care.',
 	);
 }
 

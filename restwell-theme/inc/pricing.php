@@ -377,40 +377,41 @@ function restwell_get_pricing_faq_defaults(): array {
 
 	return array(
 		array(
-			'q'   => 'How much does an accessible holiday at Restwell cost?',
+			'q'   => 'What does the bungalow price include?',
 			'a'   => sprintf(
-				/* translators: 1: off-peak full week price, 2: peak full week price, 3: lowest single-night price */
-				__( 'You book the whole step-free bungalow in Whitstable, with the listed on-site access equipment included. A full week starts at %1$s off-peak and %2$s in peak season, with single nights from %3$s. A 50%% deposit secures your dates and the balance is due one week before arrival.', 'restwell-retreats' ),
+				/* translators: 1: off-peak full week, 2: peak full week, 3: off-peak midweek night, 4: peak midweek night */
+				__( 'You book the whole house, with all the access equipment included. A week is %1$s off-peak and %2$s in peak season; midweek nights are %3$s and %4$s. A 50%% deposit reserves your dates, and the balance is due a week before arrival.', 'restwell-retreats' ),
 				restwell_format_gbp( $off_peak['full_week'] ),
 				restwell_format_gbp( $peak['full_week'] ),
-				restwell_format_gbp( min( $off_peak['midweek_night'], $off_peak['weekend_night'], $peak['midweek_night'], $peak['weekend_night'] ) )
+				restwell_format_gbp( $off_peak['midweek_night'] ),
+				restwell_format_gbp( $peak['midweek_night'] )
 			),
 			'cat' => 'booking',
 		),
 		array(
 			'q'   => 'Is care included in the price?',
-			'a'   => 'No. The price covers the whole bungalow and the listed on-site access equipment. Care is optional and quoted separately through our sister company, Continuity of Care Services.',
+			'a'   => 'No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, invoice that separately.',
 			'cat' => 'care',
 		),
 		array(
-			'q'   => 'Are there extra charges for using the equipment?',
-			'a'   => 'The hoists, profiling beds and wet room equipment already on site are part of the bungalow rate. Extra specialist kit we need to hire in is charged separately — tell us when you enquire.',
+			'q'   => 'Are there extra charges for the equipment?',
+			'a'   => 'No. The hoist, the profiling bed and the wet room kit listed on the access statement are all included in the house rate.',
 			'cat' => 'booking',
 		),
 		array(
-			'q'   => 'How much deposit do I pay to secure my dates?',
+			'q'   => 'Does the price change depending on who’s funding it?',
+			'a'   => 'No. The rate is identical whether you pay, a council pays, the NHS pays, or a grant body pays. All that changes is who receives the invoice.',
+			'cat' => 'funding',
+		),
+		array(
+			'q'   => 'How much deposit do I pay?',
 			'a'   => sprintf(
 				/* translators: 1: deposit percent, 2: balance due clause */
-				__( 'A %1$d%% deposit secures your chosen dates, with the remaining balance due %2$s.', 'restwell-retreats' ),
+				__( '%1$d%%, once we’ve confirmed the house fits. The remaining balance is due %2$s.', 'restwell-retreats' ),
 				(int) $timeline['deposit_percent'],
 				(string) $timeline['balance_due_clause_you']
 			),
 			'cat' => 'booking',
-		),
-		array(
-			'q'   => 'Do prices change depending on how my stay is funded?',
-			'a'   => 'No. The same rates apply to every guest. The funding route only affects who we invoice, so it does not change the price of the bungalow.',
-			'cat' => 'funding',
 		),
 	);
 }

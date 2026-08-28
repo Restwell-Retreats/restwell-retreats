@@ -21,7 +21,12 @@ function restwell_normalize_editorial_dashes( $text ) {
 		return $text;
 	}
 
-	return (string) preg_replace( '/\s*—\s*/u', ', ', $text );
+	$text = (string) preg_replace( '/\s*—\s*([^—]+?)\s*—\s*/u', ', $1, ', $text );
+	$text = (string) preg_replace( '/\s*—\s*/u', ', ', $text );
+	$text = str_replace( '—', ', ', $text );
+	$text = (string) preg_replace( '/,\s*,/u', ',', $text );
+
+	return $text;
 }
 
 /**

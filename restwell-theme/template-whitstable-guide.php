@@ -15,15 +15,15 @@ get_header();
 
 $restwell_wg_id      = (int) get_queried_object_id();
 $restwell_wg_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_wg_id, 'wg_heading', 'Whitstable Kent coast access guide' )
-	: 'Whitstable Kent coast access guide';
+	? restwell_page_content_text( $restwell_wg_id, 'wg_heading', 'What a day out from the bungalow is actually like' )
+	: 'What a day out from the bungalow is actually like';
 $restwell_wg_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wg_id,
 		'wg_intro',
-		'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.'
+		'Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.'
 	)
-	: 'Promenade routes, Blue Badge parking, toilets, eating out and day trips, written for wheelchair users and carers on a disability-friendly holiday at Restwell.';
+	: 'Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.';
 ?>
 
 
@@ -66,11 +66,13 @@ get_template_part(
 
     <section class="section-y section-y--compact band-white" aria-label="Travel times">
       <div class="container">
-        <div class="stat-row">
-          <div class="stat"><p class="stat__value">~90 min</p><p class="stat__label">Drive from London (M2 / A299)</p></div>
-          <div class="stat"><p class="stat__value">75–90 min</p><p class="stat__label">Direct train, check National Rail</p></div>
-          <div class="stat"><p class="stat__value">15 min</p><p class="stat__label">Walk to Tankerton promenade</p></div>
-        </div>
+          <div class="stat-row">
+            <dl>
+              <div class="stat"><dt class="stat__label">Drive from London (M2 / A299)</dt><dd class="stat__value">~90 min</dd></div>
+              <div class="stat"><dt class="stat__label">Direct train, check National Rail</dt><dd class="stat__value">75–90 min</dd></div>
+              <div class="stat"><dt class="stat__label">Walk to Tankerton promenade</dt><dd class="stat__value">10 min</dd></div>
+            </dl>
+          </div>
       </div>
     </section>
 
@@ -97,7 +99,7 @@ get_template_part(
     <section class="section-y band-white" id="parking" aria-labelledby="parking-h">
       <div class="container split split--flip split--media-first">
         <div class="split__media">
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/russell-drive-whitstable.webp' ); ?>" alt="Russell Drive neighbourhood near Tankerton" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/russell-drive-whitstable.webp' ); ?>" alt="Quiet residential street near Tankerton" width="900" height="675" loading="lazy" />
         </div>
         <div>
           <header class="section-head section-head--tight">
@@ -170,14 +172,14 @@ get_template_part(
             
             <h3 class="place-list__title"><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" target="_blank" rel="noopener noreferrer">The Plough Inn, Swalecliffe<span class="sr-only"> (opens in new tab)</span></a></h3>
             <p class="place-list__meta">Nearest pub · CT5 2RN</p>
-            <p>Around the corner via the footpath between 71 and 73 Russell Drive. Step-free entry; no accessible toilet, confirm on the day if that matters.</p>
+            <p>Around the corner via a footpath at the end of the road. We’ll point it out in your welcome pack. Step-free entry; no accessible toilet, confirm on the day if that matters.</p>
             <p class="place-list__actions"><a class="text-link" href="tel:01227794636">Call 01227 794636</a><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
           </article>
           <article class="place-list__item">
             
             <h3 class="place-list__title"><a href="https://jojosrestaurant.co.uk/" target="_blank" rel="noopener noreferrer">JoJo’s, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
             <p class="place-list__meta">2 Herne Bay Road · CT5 2LQ</p>
-            <p>Clifftop Mediterranean favourite. Wheelchair access and accessible toilet. Book ahead: it fills quickly.</p>
+            <p>About twenty minutes on foot from the bungalow: ten to the seafront, then west along the promenade. Wheelchair access and an accessible toilet. Book ahead: it fills quickly.</p>
             <p class="place-list__actions"><a href="https://jojosrestaurant.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227274591">Call 01227 274591</a></p>
           </article>
           <article class="place-list__item">
@@ -291,7 +293,7 @@ get_template_part(
                 <span class="faq-item__icon" aria-hidden="true"></span>
               </button>
               <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
-                <p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, town centre is roughly 15 minutes on a flat paved route; Tankerton promenade about 15 minutes, wide, level and fully surfaced. Stay on the paved path; grassy slopes above are steep.</p>
+                <p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route. Places along Tankerton promenade take longer because you then walk west along the prom. JoJo’s is roughly twenty minutes all in. Stay on the paved path; grassy slopes above are steep.</p>
               </div>
             </div>
             <div class="faq-item">
@@ -320,7 +322,7 @@ get_template_part(
                 <span class="faq-item__icon" aria-hidden="true"></span>
               </button>
               <div class="faq-item__panel" id="whit-q5-a" role="region" aria-labelledby="whit-q5" hidden>
-                <p>Secure step-free accommodation first; use Tankerton promenade for sea air; check accessible toilets and parking; leave rest days in the plan. This guide lists the local detail from Russell Drive.</p>
+                <p>Secure step-free accommodation first; use Tankerton promenade for sea air; check accessible toilets and parking; leave rest days in the plan. This guide lists the local detail from the bungalow.</p>
               </div>
             </div>
             <div class="faq-item">
@@ -351,7 +353,7 @@ get_template_part(
       <div class="mid-cta__media" aria-hidden="true"></div>
       <div class="mid-cta__inner">
         <h2 id="mid-cta-h">Ask for route notes for your party</h2>
-        <p>Tell us chair size and energy levels, then see the bungalow on Russell Drive.</p>
+        <p>Tell us chair size and energy levels, then look inside the bungalow.</p>
         <div class="mid-cta__btns">
           <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
           <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">See the bungalow</a>

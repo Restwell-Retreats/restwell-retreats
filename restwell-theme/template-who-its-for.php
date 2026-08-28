@@ -15,15 +15,15 @@ get_header();
 
 $restwell_wif_id      = (int) get_queried_object_id();
 $restwell_wif_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_wif_id, 'wif_heading', 'Is Restwell right for your group?' )
-	: 'Is Restwell right for your group?';
+	? restwell_page_content_text( $restwell_wif_id, 'wif_heading', 'Is this the right house for your group?' )
+	: 'Is this the right house for your group?';
 $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,
 		'wif_intro',
-		'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.'
+		'Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.'
 	)
-	: 'A quick fit-check for guests, families, carers, OTs and commissioners planning an accessible stay in Whitstable.';
+	: 'Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.';
 ?>
 
 
@@ -70,7 +70,7 @@ get_template_part(
           <header class="section-head section-head--tight">
             <p class="eyebrow">Your situation</p>
             <h2 id="situations-h">Who Restwell is built for</h2>
-            <p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if Russell Drive fits before they travel.</p>
+            <p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.</p>
           </header>
           <ul class="persona-list" role="list">
             <li class="persona-list__item">
@@ -314,7 +314,7 @@ get_template_part(
       <div class="mid-cta__media" aria-hidden="true"></div>
       <div class="mid-cta__inner">
         <h2 id="mid-cta-h">Describe the party and equipment</h2>
-        <p>We’ll say straight whether Russell Drive fits, or where it doesn’t.</p>
+        <p>We’ll say straight whether the bungalow fits, or where it doesn’t.</p>
         <div class="mid-cta__btns">
           <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
           <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read accessibility</a>

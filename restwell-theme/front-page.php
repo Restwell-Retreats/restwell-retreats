@@ -20,21 +20,21 @@ $hero_alt = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) 
 	: restwell_theme_image_alt( 'stock/restwell-whitstable-promenade-golden-hour.jpg' );
 
 $hero_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'hero_heading', 'Accessible holidays in Whitstable' )
-	: 'Accessible holidays in Whitstable';
+	? restwell_page_content_text( $home_id, 'hero_heading', 'An accessible bungalow by the sea, at your own pace' )
+	: 'An accessible bungalow by the sea, at your own pace';
 $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_subheading',
-		'Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.'
+		'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.'
 	)
-	: 'Your own accessible bungalow in Whitstable. A self-catering stay with optional care support, so you can plan with confidence.';
+	: 'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.';
 ?>
 
 
 <main id="main-content">
 <section class="hero" aria-labelledby="hero-h">
-      <div class="hero__media" aria-hidden="true">
+      <div class="hero__media">
         <img
           class="hero__media-img"
           src="<?php echo esc_url( $hero_src ); ?>"
@@ -53,9 +53,9 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
           </div>
           <div class="hero__ctas">
             <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Get in touch</a>
-            <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">See the bungalow</a>
+            <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Look inside the bungalow</a>
           </div>
-          <p class="hero__note">We aim to reply within 48 hours, and you’re under no obligation to book</p>
+          <p class="hero__note">We aim to reply within 48 hours, and there’s no deposit until you’ve decided the house fits.</p>
           <p class="hero__scroll-hint">
             <a class="hero__scroll-link" href="#property">
               <span>Take a look inside</span>
@@ -72,21 +72,20 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
       <div class="container">
         <div class="property__layout">
           <div class="property__media-wrap">
-            <img class="property__media" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="Restwell bungalow exterior on Russell Drive" width="640" height="480" loading="lazy" decoding="async" />
+            <img class="property__media" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="Restwell bungalow exterior in Whitstable" width="640" height="480" loading="lazy" decoding="async" />
           </div>
           <div class="property__copy">
-            <p class="eyebrow">The Bungalow</p>
-            <h2 id="property-h">The details, before you book</h2>
-            <p class="lede">It’s not easy to find a private holiday house that actually works for a wheelchair and a care routine. Guests often tell us this one is worth the journey.</p>
-            <p class="lede">Restwell is a bungalow on Russell Drive in Whitstable, about an hour from London. You have the whole house. Access measurements and kit notes are published before you book.</p>
+            <p class="eyebrow">The bungalow</p>
+            <h2 id="property-h">One bungalow, and it’s all yours</h2>
+            <p class="lede">It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address once your stay is confirmed.</p>
             <ul class="property__facts">
               <li>Private, single-storey house</li>
-              <li>Driveway parking</li>
-              <li>Access details published before you book</li>
+              <li>Driveway parking for two</li>
+              <li>Level-access wet room</li>
             </ul>
             <div class="property__cta-row">
-              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">View the property</a>
-              <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access statement</a>
+              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Have a proper look round the rooms</a>
+              <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths, the wet room and the hoist</a>
             </div>
           </div>
         </div>
@@ -123,19 +122,19 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
     <section class="paths section-y" id="paths" aria-labelledby="paths-h">
       <div class="container">
         <header class="section-head">
-          <h2 id="paths-h">Plan your stay</h2>
-          <p class="lede">Before you contact us, it helps to read about what it’s really like to get around the area and how funding could help with costs.</p>
+          <h2 id="paths-h">Plan a day, or a way to pay</h2>
+          <p class="lede">The harbour beach is shingle. Tankerton promenade is the level stretch. If a funder might help with the cost, we can invoice whoever you name.</p>
         </header>
         <div class="paths__grid">
           <article class="path-card path-card--area">
-            <h3>Whitstable and the Kent coast</h3>
-            <p>Harbour, promenade, and day trips — with honest notes on what is actually workable, not just labelled that way.</p>
-            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable access notes</a>
+            <h3>Whitstable and Tankerton</h3>
+            <p>Surfaces, parking, and which places have an accessible loo, including the ones that don’t.</p>
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Days out from the bungalow</a>
           </article>
           <article class="path-card path-card--funding">
-            <h3>Ways to help fund your stay</h3>
-            <p>Some stays are paid for through a funder. We can tell you who we invoice, and point you to the pathway guides.</p>
-            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Read funding guides</a>
+            <h3>Who we can invoice</h3>
+            <p>You, a council, the NHS or a grant body. The bungalow rate is the same either way. We can’t promise your package will cover it.</p>
+            <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding an accessible holiday</a>
           </article>
         </div>
       </div>
@@ -146,7 +145,7 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
         <header class="section-head partners__head">
           <p class="eyebrow">Behind Restwell</p>
           <h2 id="partners-h">Who built it, and who we work with</h2>
-          <p class="lede">Specialist firms adapted the house. Continuity, our sister company, is who we’d put you in touch with for care — <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'our-story' ) ); ?>">read the full story</a>.</p>
+          <p class="lede">Specialist firms adapted the house. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'our-story' ) ); ?>">Read the full story</a>.</p>
         </header>
         <ul class="partners__grid" role="list">
           <li class="partners__item">
@@ -181,62 +180,60 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
     <section class="comparison section-y" id="comparison" aria-labelledby="comparison-h">
       <div class="container">
         <header class="section-head section-head--center">
-          <h2 id="comparison-h">Why families choose Restwell</h2>
+          <h2 id="comparison-h">A wet room in a hotel still comes with the corridor</h2>
         </header>
         <ul class="card-grid card-grid--3" role="list">
           <li>
             <article class="info-card">
               <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3.5h6l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 3.5V8h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 13.5l2 2 4-4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <h3>Access details published</h3>
-              <p>Measurements and kit notes live on the access statement, before you book.</p>
+              <h3>One level, from driveway to garden</h3>
+              <p>No lift to queue for, no corridor to share. The linen is already on the beds.</p>
             </article>
           </li>
           <li>
             <article class="info-card">
               <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="7" y="3" width="10" height="18" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 12h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-              <h3>A private bungalow, not a hotel corridor</h3>
-              <p>Your group has the whole place to yourselves. There are no shared lifts, lobbies, or public spaces between the bedroom and wet room.</p>
+              <h3>Only the people you came with</h3>
+              <p>The whole bungalow is yours. Nobody is going to knock unless you’ve asked them to.</p>
             </article>
           </li>
           <li>
             <article class="info-card">
               <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5c-2.5 4.6-9.5 9-9.5 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
-              <h3>Optional care support</h3>
-              <p>Continuity of Care Services can arrange CQC-regulated support during the same call as your booking, or, if you prefer, you can bring your own carer.</p>
+              <h3>Heating you can reach</h3>
+              <p>Controls are within reach from a seated position, so you set the temperature yourself.</p>
             </article>
           </li>
         </ul>
       </div>
     </section>
 
-    <section class="testimonials section-y" aria-labelledby="testimonials-h">
-      <div class="container">
-        <header class="section-head">
-          <p class="eyebrow eyebrow--on-dark">What guests say</p>
-          <h2 id="testimonials-h">What guests wrote after staying</h2>
-        </header>
-        <ul class="testimonials__grid" role="list">
-          <li>
-            <article class="testimonial-card">
-              <blockquote class="testimonial-card__quote">Keelie was tremendously helpful in explaining all the facilities, equipment and care help they could provide. The bungalow is modern and spotless, fully equipped for both the person you are caring for, and for the carer. It was a home from home.</blockquote>
-              <footer class="testimonial-card__name">M.H.<span class="testimonial-card__role">Family carer · Facebook review</span></footer>
-            </article>
-          </li>
-          <li>
-            <article class="testimonial-card">
-              <blockquote class="testimonial-card__quote">From the minute I rolled my wheelchair out the car, I smiled. Widened hallways, ceiling track hoist, a wet room that should be in a gallery. With the complex care I need, this is worth its weight in gold.</blockquote>
-              <footer class="testimonial-card__name">M.P.<span class="testimonial-card__role">Wheelchair user · Google review</span></footer>
-            </article>
-          </li>
-          <li>
-            <article class="testimonial-card">
-              <blockquote class="testimonial-card__quote">The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.</blockquote>
-              <footer class="testimonial-card__name">M.Z.<span class="testimonial-card__role">Guest · Google review</span></footer>
-            </article>
-          </li>
-        </ul>
-      </div>
-    </section>
+    <?php
+    // Reviews: live Google reviews when Places API is configured, verbatim
+    // static quotes otherwise. Copy below stays the source of truth for the fallback.
+    $reviews_fallbacks = array(
+      array(
+        'quote' => 'Keelie was tremendously helpful in explaining all the facilities, equipment and care help they could provide. The bungalow is modern and spotless, fully equipped for both the person you are caring for, and for the carer. It was a home from home.',
+        'name'  => 'M.H.',
+        'role'  => 'Family carer · Facebook review',
+      ),
+      array(
+        'quote' => 'From the minute I rolled my wheelchair out the car, I smiled. Widened hallways, ceiling track hoist, a wet room that should be in a gallery. With the complex care I need, this is worth its weight in gold.',
+        'name'  => 'M.P.',
+        'role'  => 'Wheelchair user · Google review',
+      ),
+      array(
+        'quote' => 'The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.',
+        'name'  => 'M.Z.',
+        'role'  => 'Guest · Google review',
+      ),
+    );
+    get_template_part(
+      'template-parts/google-reviews',
+      null,
+      array( 'fallbacks' => $reviews_fallbacks )
+    );
+    ?>
 
     <section class="care section-y" id="care" aria-labelledby="care-h">
       <div class="container">
@@ -244,16 +241,16 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
           <div class="care__intro">
             <header class="section-head">
               <p class="eyebrow">If you need support while you stay</p>
-              <h2 id="care-h">Optional care during your stay</h2>
+              <h2 id="care-h">Yes if you want it, and no, you don’t have to</h2>
             </header>
             <div class="care__intro-body">
-              <p class="lede">You book the bungalow with Restwell. Optional CQC-regulated support is arranged separately with Continuity of Care Services if you want it — never bundled into the house rate.</p>
+              <p class="lede">Plenty of guests bring their own person, or simply manage the way they do at home, and that’s completely fine. If you would like professional home care, Continuity of Care Services can come to you. They’re our sister company, they already know this house, and they’re rated Good by the CQC. One conversation covers both.</p>
             </div>
           </div>
           <div class="care__foot">
             <div class="care__foot-copy">
-              <p class="care__note">Nothing is added to your stay until you agree the plan.</p>
-              <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+              <p class="care__note">The bungalow rate stays exactly the same. Ring 01622 809881 if that’s easier than a form.</p>
+              <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">What home care here actually looks like</a>
             </div>
             <div class="care__brand" aria-label="Care partner and CQC rating">
               <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
@@ -268,42 +265,31 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
       </div>
     </section>
 
+    <?php
+    $home_faq_items = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'homepage' ) : array();
+    $home_faq_col   = array();
+    foreach ( $home_faq_items as $home_faq_i => $home_faq_item ) {
+    	$home_faq_item['open'] = ( 0 === (int) $home_faq_i );
+    	$home_faq_col[]       = $home_faq_item;
+    }
+    ?>
     <section class="faq section-y" id="faq" aria-labelledby="faq-h">
       <div class="container">
         <div class="faq__layout">
           <header class="faq__intro">
             <p class="eyebrow">Quick answers</p>
-            <h2 id="faq-h">Questions you might have</h2>
+            <h2 id="faq-h">The questions that stop an enquiry</h2>
           </header>
-          <div class="faq-list" data-faq-accordion>
-            <div class="faq-item is-open">
-              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="true" id="home-q1" aria-controls="home-q1-a">
-                <span>Is Restwell suitable for wheelchair users?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button></h3>
-              <div class="faq-item__panel" id="home-q1-a" role="region" aria-labelledby="home-q1">
-                <p>Yes. Restwell is a private, step-free house. Measurements and kit notes are on the Accessibility page, before you book.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="home-q2" aria-controls="home-q2-a">
-                <span>What makes accessible self-catering work well?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button></h3>
-              <div class="faq-item__panel" id="home-q2-a" role="region" aria-labelledby="home-q2" hidden>
-                <p>Published access details, not a vague label. On-site equipment is included in the house rate. Measurements and kit notes are on the Accessibility page.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <h3 class="faq-item__heading"><button type="button" class="faq-item__trigger" aria-expanded="false" id="home-q3" aria-controls="home-q3-a">
-                <span>Is this disabled holiday accommodation in Kent?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button></h3>
-              <div class="faq-item__panel" id="home-q3-a" role="region" aria-labelledby="home-q3" hidden>
-                <p>Yes. It’s a specialist accessible holiday in Whitstable, Kent. Measurements and kit notes are on the Accessibility page.</p>
-              </div>
-            </div>
-          </div>
+          <?php
+          get_template_part(
+          	'template-parts/faq-accordion',
+          	null,
+          	array(
+          		'id_prefix' => 'home-q',
+          		'columns'   => array( $home_faq_col ),
+          	)
+          );
+          ?>
           <aside class="faq-cta" aria-label="More questions">
             <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'faq' ) ); ?>">Browse the FAQ</a>
           </aside>
@@ -314,11 +300,11 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
     <section class="mid-cta mid-cta--plain section-y--cta" id="enquire" aria-labelledby="mid-cta-h">
       <div class="mid-cta__media" aria-hidden="true"></div>
       <div class="mid-cta__inner">
-        <h2 id="mid-cta-h">Not sure it’s the right fit?</h2>
-        <p>You can look through the FAQ, or just send us your dates and access needs. We’ll let you know quickly if it’s not the right fit.</p>
+        <h2 id="mid-cta-h">Ask us anything about a stay</h2>
+        <p>There’s no deposit until you’ve decided the house fits. We aim to reply within 48 hours.</p>
         <div class="mid-cta__btns">
-          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire now</a>
-          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access statement</a>
+          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Get in touch</a>
+          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Look inside the bungalow</a>
         </div>
       </div>
     </section>

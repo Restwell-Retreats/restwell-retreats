@@ -12,6 +12,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
+
+$restwell_story_id      = (int) get_queried_object_id();
+$restwell_story_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_story_id, 'story_heading', 'Why Restwell exists' )
+	: 'Why Restwell exists';
+$restwell_story_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_story_id,
+		'story_intro',
+		'Restwell Retreats is an adapted holiday bungalow in Whitstable, run by Victoria Walker. Continuity of Care Services is our sister company; Victoria is their CQC registered manager. They work from the same office on the same phone number. Restwell provides the house; Continuity provide any care.'
+	)
+	: 'Restwell Retreats is an adapted holiday bungalow in Whitstable, run by Victoria Walker. Continuity of Care Services is our sister company; Victoria is their CQC registered manager. They work from the same office on the same phone number. Restwell provides the house; Continuity provide any care.';
 ?>
 
 
@@ -22,8 +34,8 @@ get_template_part(
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => 'Why Restwell exists',
-		'intro'      => 'Restwell started when someone saw how difficult it was for people to find a holiday home that really met their needs. The bungalow was shaped by the people who would actually stay there.',
+		'heading'    => $restwell_story_heading,
+		'intro'      => $restwell_story_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -56,12 +68,12 @@ get_template_part(
           <header class="section-head section-head--tight">
             <p class="eyebrow">How it started</p>
             <h2 id="origin-h">The pattern</h2>
-            <p class="lede">Victoria owns Restwell Retreats and its sister company, Continuity of Care Services. After more than ten years of providing home care for people with different access needs, she often heard the same thing: it’s hard to find truly accessible holiday accommodation, and places that claim to be “wheelchair friendly” often don’t meet real needs.</p>
+            <p class="lede">Victoria Walker owns Restwell Retreats and is the CQC registered manager of Continuity of Care Services, our sister company. After more than ten years of providing home care for people with different access needs, she often heard the same thing: it’s hard to find truly accessible holiday accommodation, and places that claim to be “wheelchair friendly” often don’t meet real needs.</p>
           </header>
-          <p>She bought a house on Russell Drive in Whitstable that needed a lot of work and set out to improve it. She got the keys in early March, and just four weeks later, with help from family, friends, and three specialist teams, Restwell was ready. Now, guests can enjoy a holiday without the usual barriers, confusion or last-minute surprises.</p>
+          <p>She bought a bungalow in Whitstable that needed a lot of work and set out to improve it. She got the keys in early March, and just four weeks later, with help from family, friends, and three specialist teams, Restwell was ready. Now, guests can enjoy a holiday without the usual barriers, confusion or last-minute surprises.</p>
         </div>
         <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/journey/101-russel-drive-archive.webp' ); ?>" alt="The bungalow on Russell Drive before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
+          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/journey/101-russel-drive-archive.webp' ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
         </div>
       </div>
     </section>
@@ -100,7 +112,7 @@ get_template_part(
             <p class="eyebrow eyebrow--on-dark">Built with specialists</p>
             <h2 id="specialists-h">Occupational therapists, not guesswork</h2>
             <p class="lede">The accessible bedroom and wet room were designed with advice from occupational therapists at Kent Community Health NHS Trust and built by <a class="text-link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer">Care Spaces by Wealden Rehab<span class="sr-only"> (opens in new tab)</span></a> and <a class="text-link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"> (opens in new tab)</span></a>. That way, the equipment works for a genuine range of needs, rather than one imagined “average” guest. The companies we worked with understood Victoria’s vision from the start and finished everything within just one month.</p>
-            <p>Continuity of Care Services, our CQC-rated care partner, takes the same approach if you want support arranged during your stay.</p>
+            <p>Continuity of Care Services, our sister company, takes the same approach if you want support during your stay. Victoria is Continuity’s registered manager; the CQC rating of Good is theirs, not Restwell’s.</p>
             <div class="band-teal__actions">
               <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access specs</a>
               <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>

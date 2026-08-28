@@ -61,7 +61,7 @@ get_template_part(
               list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $post_id, 'large' );
               ?>
         <article class="blog-featured">
-          <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true" tabindex="-1">
+          <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true">
             <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="625" loading="lazy" decoding="async" />
             <span class="blog-featured__scrim" aria-hidden="true"></span>
             <?php if ( $category !== '' ) : ?>
@@ -93,7 +93,7 @@ get_template_part(
           <?php foreach ( $cards as $card ) : ?>
             <?php list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $card['post_id'], 'medium_large' ); ?>
           <li><article class="media-card">
-            <a class="media-card__image" href="<?php echo esc_url( $card['permalink'] ); ?>" aria-hidden="true" tabindex="-1">
+            <a class="media-card__image" href="<?php echo esc_url( $card['permalink'] ); ?>" aria-hidden="true">
               <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
               <?php if ( $card['category'] !== '' ) : ?>
                 <span class="tag media-card__tag"><?php echo esc_html( $card['category'] ); ?></span>
@@ -109,9 +109,11 @@ get_template_part(
           <?php
           the_posts_pagination(
             array(
-              'mid_size'  => 1,
-              'prev_text' => esc_html__( 'Newer posts', 'restwell-retreats' ),
-              'next_text' => esc_html__( 'Older posts', 'restwell-retreats' ),
+              'mid_size'   => 1,
+              'prev_text'  => esc_html__( 'Newer posts', 'restwell-retreats' ),
+              'next_text'  => esc_html__( 'Older posts', 'restwell-retreats' ),
+              /* translators: accessibility label for the blog pagination block */
+              'aria_label' => __( 'Blog posts navigation', 'restwell-retreats' ),
             )
           );
           ?>
