@@ -83,6 +83,51 @@ function restwell_wp_mail_with_retry( $to, string $subject, string $body, $heade
 }
 
 /**
+ * Reply-To header using the address only (no visitor display name).
+ *
+ * Display names in Reply-To are a header-injection vector and confuse staff
+ * clients when the name contains commas or non-ASCII.
+ *
+ * @param string $email Sanitised address.
+ * @return string Header line or empty when the address is invalid.
+ */
+function restwell_mail_reply_to_header( string $email ): string {
+	$email = sanitize_email( $email );
+	if ( ! is_email( $email ) ) {
+		return '';
+	}
+	return 'Reply-To: ' . $email;
+}
+
+/**
+ * Allow-listed staff notification subject: short prefix plus optional numeric id.
+ *
+ * @param string $kind enquiry|urgent_enquiry|enquiry_save_failed|faq|faq_save_failed|stale_enquiry|urgent_stale_enquiry.
+ * @param int    $id   Row id (0 when unknown).
+ * @return string
+ */
+function restwell_mail_staff_subject( string $kind, int $id = 0 ): string {
+	$kind      = sanitize_key( $kind );
+	$templates = array(
+		'enquiry'               => '[Restwell] Enquiry #%d',
+		'urgent_enquiry'        => '[Restwell] Urgent enquiry #%d',
+		'enquiry_save_failed'   => '[Restwell] Enquiry save failed',
+		'faq'                   => '[Restwell] FAQ #%d',
+		'faq_save_failed'       => '[Restwell] FAQ save failed',
+		'stale_enquiry'         => '[Restwell] Stale enquiry #%d',
+		'urgent_stale_enquiry'  => '[Restwell] Urgent stale enquiry #%d',
+	);
+	if ( ! isset( $templates[ $kind ] ) ) {
+		$kind = 'enquiry';
+	}
+	$template = $templates[ $kind ];
+	if ( false === strpos( $template, '%d' ) ) {
+		return $template;
+	}
+	return sprintf( $template, max( 0, $id ) );
+}
+
+/**
  * Log wp_mail failures for hosting diagnostics (no PII in message body).
  */
 function restwell_log_wp_mail_failed( WP_Error $error ): void {

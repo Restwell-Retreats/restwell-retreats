@@ -167,7 +167,7 @@ get_template_part(
                 <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#care-rates' ); ?>">See care guide rates</a>
               </p>
             </div>
-            <div class="care__brand" aria-label="Care partner and CQC rating">
+            <div class="care__brand" aria-label="Sister company and CQC rating">
               <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
                 <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" width="405" height="69" loading="lazy" decoding="async" />
               </a>

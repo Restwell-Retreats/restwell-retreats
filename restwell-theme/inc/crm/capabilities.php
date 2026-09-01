@@ -9,12 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RESTWELL_CRM_DB_VERSION', '3.5' );
+define( 'RESTWELL_CRM_DB_VERSION', '3.7' );
 define( 'RESTWELL_CRM_TABLE', 'rw_enquiries' );
 define( 'RESTWELL_NOTES_TABLE', 'rw_enquiry_notes' );
 define( 'RESTWELL_GUESTS_TABLE', 'rw_guests' );
 define( 'RESTWELL_FAQ_TABLE', 'rw_faq_submissions' );
 define( 'RESTWELL_CRM_CAP', 'restwell_manage_enquiries' );
+define( 'RESTWELL_CRM_EXPORT_SENSITIVE_CAP', 'restwell_export_sensitive' );
 
 /**
  * Return the CRM capability key.
@@ -32,6 +33,15 @@ function restwell_crm_capability(): string {
  */
 function restwell_crm_can_manage(): bool {
 	return current_user_can( restwell_crm_capability() );
+}
+
+/**
+ * Whether the current user may include care/accessibility columns in a CSV export.
+ *
+ * @return bool
+ */
+function restwell_crm_can_export_sensitive(): bool {
+	return current_user_can( RESTWELL_CRM_EXPORT_SENSITIVE_CAP );
 }
 
 /**
@@ -66,6 +76,11 @@ function restwell_crm_apply_role_caps(): void {
 			$role->add_cap( restwell_crm_capability() );
 		} else {
 			$role->remove_cap( restwell_crm_capability() );
+		}
+		if ( 'administrator' === $role_slug ) {
+			$role->add_cap( RESTWELL_CRM_EXPORT_SENSITIVE_CAP );
+		} else {
+			$role->remove_cap( RESTWELL_CRM_EXPORT_SENSITIVE_CAP );
 		}
 	}
 }

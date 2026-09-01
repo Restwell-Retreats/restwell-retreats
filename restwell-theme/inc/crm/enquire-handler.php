@@ -241,6 +241,8 @@ function restwell_handle_enquire_submit(): void {
 	$funding      = restwell_enquiry_normalise_funding( $funding_raw );
 	$urgent       = ! empty( $_POST['enq_urgent'] );
 	$marketing_optin = ! empty( $_POST['enq_marketing_optin'] );
+	$privacy_consent = ! empty( $_POST['enq_consent'] );
+	$health_consent  = ! empty( $_POST['enq_health_consent'] );
 	$contact_pref = isset( $_POST['enq_contact_preference'] ) ? sanitize_key( wp_unslash( $_POST['enq_contact_preference'] ) ) : '';
 	$pref_time    = isset( $_POST['enq_preferred_time'] ) ? sanitize_key( wp_unslash( $_POST['enq_preferred_time'] ) ) : '';
 
@@ -257,6 +259,8 @@ function restwell_handle_enquire_submit(): void {
 		'enq_funding'            => $funding,
 		'enq_urgent'             => $urgent ? '1' : '',
 		'enq_marketing_optin'    => $marketing_optin ? '1' : '',
+		'enq_consent'            => $privacy_consent ? '1' : '',
+		'enq_health_consent'     => $health_consent ? '1' : '',
 		'enq_contact_preference' => $contact_pref,
 		'enq_preferred_time'     => $pref_time,
 	);
@@ -276,6 +280,16 @@ function restwell_handle_enquire_submit(): void {
 	}
 	if ( strlen( $message ) > 15000 ) {
 		$errors[] = __( 'Your message is too long. Please shorten it slightly.', 'restwell-retreats' );
+	}
+	if ( ! $privacy_consent ) {
+		$errors[] = __( 'Please confirm we can contact you about this enquiry, as set out in the privacy policy.', 'restwell-retreats' );
+	}
+	$has_health_notes = ( '' !== $care || '' !== $access );
+	if ( $has_health_notes && ! $health_consent ) {
+		$errors[] = __( 'Please confirm we can use the care or accessibility notes you added. Those notes can include health information.', 'restwell-retreats' );
+	}
+	if ( ! $has_health_notes ) {
+		$health_consent = false;
 	}
 
 	$date_errors = restwell_validate_enquiry_dates( $date_from, $date_to );
@@ -308,7 +322,12 @@ function restwell_handle_enquire_submit(): void {
 	if ( $urgent ) {
 		$body .= "\n*** URGENT - prioritised callback requested ***\n";
 	}
-	$body .= "\nMarketing updates consent: " . ( $marketing_optin ? 'Yes (opted in)' : 'No (not opted in)' ) . "\n";
+	$policy_version = function_exists( 'restwell_privacy_policy_version' )
+		? restwell_privacy_policy_version()
+		: '2026-09-01';
+	$body .= "\nPrivacy consent: Yes (policy " . $policy_version . ")\n";
+	$body .= 'Health-data consent (care/accessibility notes): ' . ( $health_consent ? 'Yes (policy ' . $policy_version . ')' : 'No (no care/accessibility notes stored as health data)' ) . "\n";
+	$body .= 'Marketing updates consent: ' . ( $marketing_optin ? 'Yes (opted in)' : 'No (not opted in)' ) . "\n";
 	if ( $care ) {
 		$body .= "\nCare requirements:\n$care\n";
 	}
@@ -331,8 +350,11 @@ function restwell_handle_enquire_submit(): void {
 		'contact_pref' => $contact_pref,
 		'pref_time'    => $pref_time,
 		'message'      => $message,
-		'urgent'       => $urgent,
-		'marketing_optin' => $marketing_optin,
+		'urgent'                 => $urgent,
+		'marketing_optin'        => $marketing_optin,
+		'privacy_consent'        => true,
+		'privacy_policy_version' => $policy_version,
+		'health_data_consent'    => $health_consent,
 	);
 
 	$crm_result   = restwell_service_enquiry()->persist_lead( $crm_data );
@@ -342,8 +364,15 @@ function restwell_handle_enquire_submit(): void {
 	if ( ! $enquiry_id ) {
 		// Rare DB failure: still email staff the payload so nothing is lost.
 		$to      = restwell_get_submission_notify_email();
-		$subject = '[Restwell Retreats] Enquiry (CRM SAVE FAILED) from ' . $name;
-		$headers = array( 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $name . ' <' . $email . '>' );
+		$subject = restwell_mail_staff_subject( 'enquiry_save_failed' );
+		$headers = array_values(
+			array_filter(
+				array(
+					'Content-Type: text/plain; charset=UTF-8',
+					restwell_mail_reply_to_header( $email ),
+				)
+			)
+		);
 		restwell_wp_mail_with_retry( $to, $subject, $body . "\n\n[CRM insert returned false]", $headers );
 		restwell_enquire_redirect_flash(
 			$redirect,
@@ -384,8 +413,15 @@ function restwell_handle_enquire_submit(): void {
 	}
 
 	$to      = restwell_get_submission_notify_email();
-	$subject = sprintf( '[Restwell Retreats] %sEnquiry from %s', $urgent ? 'URGENT - ' : '', $name );
-	$headers = array( 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $name . ' <' . $email . '>' );
+	$subject = restwell_mail_staff_subject( $urgent ? 'urgent_enquiry' : 'enquiry', (int) $enquiry_id );
+	$headers = array_values(
+		array_filter(
+			array(
+				'Content-Type: text/plain; charset=UTF-8',
+				restwell_mail_reply_to_header( $email ),
+			)
+		)
+	);
 	$body   .= "\n\nCRM enquiry ID: #" . (string) $enquiry_id;
 
 	$staff_sent = restwell_wp_mail_with_retry( $to, $subject, $body, $headers );

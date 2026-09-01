@@ -92,7 +92,7 @@ Cards: Level-access wet room · Ceiling track hoist · Reachable kitchen
 CTA: Full accessibility details → Accessibility page
 
 ### Section 4 — Testimonial
-Quote: "The house was well equipped with all the facilities we needed for my Dad's complex needs. Vicky and Keeley could not do enough for us. Our stay was comfortable and a home away from home."
+Quote: "The house was well equipped with all the facilities we needed for my Dad's complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind."
 Attribution: M.W. · Visiting family · Facebook review
 
 ### Section 5 — Optional care
@@ -135,6 +135,6 @@ Primary CTA: Enquire Now
 Secondary CTA: Read accessibility
 
 ### Footer
-Restwell · Care partner: Continuity of Care Services · CQC inspection profile · Accessible holidays, Whitstable, Kent
+Restwell · Sister company: Continuity of Care Services · CQC inspection profile · Accessible holidays, Whitstable, Kent
 Footer links: FAQ · Privacy Policy · Terms & Conditions · Website accessibility
 Copyright: © 2026 Homely Housing Investments Ltd t/a Restwell Retreats. All rights reserved.

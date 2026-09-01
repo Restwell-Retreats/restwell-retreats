@@ -89,6 +89,63 @@ function restwell_redirect_accessible_beaches_old_slug() {
 add_action( 'template_redirect', 'restwell_redirect_accessible_beaches_old_slug', 22 );
 
 /**
+ * 301 /resources/ to the live Funding & Support URL.
+ */
+function restwell_redirect_resources_to_funding() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	global $wp;
+	if ( ! isset( $wp->request ) || ! is_string( $wp->request ) ) {
+		return;
+	}
+	if ( ! preg_match( '#^resources/?$#', $wp->request ) ) {
+		return;
+	}
+	$target = function_exists( 'restwell_get_page_by_nav_slug' )
+		? restwell_get_page_by_nav_slug( 'funding-and-support' )
+		: get_page_by_path( 'funding-and-support', OBJECT, 'page' );
+	if ( ! ( $target instanceof WP_Post ) || 'resources' === $target->post_name ) {
+		return;
+	}
+	$permalink = get_permalink( $target );
+	if ( $permalink ) {
+		wp_safe_redirect( $permalink, 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'restwell_redirect_resources_to_funding', 20 );
+
+/**
+ * 301 /news/ to the posts page when that slug is not itself a published page.
+ */
+function restwell_redirect_news_to_blog() {
+	if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+		return;
+	}
+	global $wp;
+	if ( ! isset( $wp->request ) || ! is_string( $wp->request ) ) {
+		return;
+	}
+	if ( ! preg_match( '#^news/?$#', $wp->request ) ) {
+		return;
+	}
+	if ( get_page_by_path( 'news', OBJECT, 'page' ) instanceof WP_Post ) {
+		return;
+	}
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $blog_id < 1 ) {
+		return;
+	}
+	$permalink = get_permalink( $blog_id );
+	if ( $permalink ) {
+		wp_safe_redirect( $permalink, 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'restwell_redirect_news_to_blog', 20 );
+
+/**
  * Enforce the canonical host (www vs apex) by 301-redirecting the alternate variant.
  *
  * Reads the WP home URL to determine the canonical host. If the current request uses

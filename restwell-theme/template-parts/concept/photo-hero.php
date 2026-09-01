@@ -7,11 +7,13 @@
  * @param array $args {
  *     @type string $heading_id H1 id.
  *     @type string $heading    H1 text.
+ *     @type string $eyebrow    Optional eyebrow above the H1.
  *     @type string $intro      Lede paragraph.
  *     @type array  $crumbs     Optional list of array( 'label' => '', 'url' => '' ); last item current.
  *     @type int    $media_id   Optional attachment ID (0 = resolve from page / stock).
  *     @type string $image_url  Optional absolute image URL override.
  *     @type string $image_alt  Optional alt text override.
+ *     @type string $overlay    Optional 'heavy' for a darker bottom-up scrim (enquire photo hero).
  *     @type int    $post_id    Page ID for Featured/stock resolution (default queried object).
  * }
  */
@@ -26,22 +28,26 @@ $args = wp_parse_args(
 	array(
 		'heading_id' => 'page-h',
 		'heading'    => '',
+		'eyebrow'    => '',
 		'intro'      => '',
 		'crumbs'     => array(),
 		'media_id'   => 0,
 		'image_url'  => '',
 		'image_alt'  => '',
+		'overlay'    => '',
 		'post_id'    => 0,
 	)
 );
 
 $heading_id = (string) $args['heading_id'];
 $heading    = (string) $args['heading'];
+$eyebrow    = trim( (string) $args['eyebrow'] );
 $intro      = (string) $args['intro'];
 $crumbs     = is_array( $args['crumbs'] ) ? $args['crumbs'] : array();
 $media_id   = absint( $args['media_id'] );
 $image_url  = trim( (string) $args['image_url'] );
 $image_alt  = trim( (string) $args['image_alt'] );
+$overlay    = sanitize_key( (string) $args['overlay'] );
 $post_id    = absint( $args['post_id'] );
 
 if ( $heading === '' ) {
@@ -84,8 +90,12 @@ if ( $image_alt === '' && function_exists( 'restwell_theme_image_alt' ) ) {
 if ( $image_alt === '' ) {
 	$image_alt = $heading;
 }
+$hero_class = 'hero';
+if ( 'heavy' === $overlay ) {
+	$hero_class .= ' hero--overlay-heavy';
+}
 ?>
-<section class="hero" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+<section class="<?php echo esc_attr( $hero_class ); ?>" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
 	<div class="hero__media">
 		<?php if ( $image_url !== '' ) : ?>
 			<img
@@ -122,6 +132,9 @@ if ( $image_alt === '' ) {
 				</ol>
 			<?php endif; ?>
 			<div class="hero__text">
+				<?php if ( $eyebrow !== '' ) : ?>
+					<p class="eyebrow eyebrow--on-dark"><?php echo esc_html( $eyebrow ); ?></p>
+				<?php endif; ?>
 				<h1 id="<?php echo esc_attr( $heading_id ); ?>"><?php echo esc_html( $heading ); ?></h1>
 				<?php if ( $intro !== '' ) : ?>
 					<p><?php echo esc_html( $intro ); ?></p>

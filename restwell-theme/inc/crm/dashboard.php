@@ -25,7 +25,10 @@ function restwell_crm_dashboard_page() {
 	$enq_table    = $wpdb->prefix . RESTWELL_CRM_TABLE;
 	$guests_table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
 	$now_mysql    = current_time( 'mysql' );
-	$week_ago     = gmdate( 'Y-m-d H:i:s', strtotime( '-7 days' ) );
+	$week_ago     = wp_date( 'Y-m-d H:i:s', time() - WEEK_IN_SECONDS );
+	if ( ! is_string( $week_ago ) || $week_ago === '' ) {
+		$week_ago = $now_mysql;
+	}
 
 	// ── Stats ────────────────────────────────────────────────────────────────
 	$stat_new_week   = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE submitted_at >= %s', $enq_table, $week_ago ) );
@@ -68,6 +71,9 @@ function restwell_crm_dashboard_page() {
 
 		<?php if ( isset( $_GET['settings_saved'] ) && absint( wp_unslash( $_GET['settings_saved'] ) ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Settings saved.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['mailchimp_key_blocked'] ) && absint( wp_unslash( $_GET['mailchimp_key_blocked'] ) ) ) : ?>
+			<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'The Mailchimp API key was not saved. On production it must live in RESTWELL_MAILCHIMP_API_KEY (wp-config or the environment), not in the database.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
 
 		<!-- Stat tiles -->
@@ -228,14 +234,14 @@ function restwell_crm_dashboard_page() {
 				$pages_url = admin_url( 'edit.php?post_type=page' );
 				$rows      = array(
 					array(
-						__( 'Hero text, images, body copy on any page', 'restwell-retreats' ),
+						__( 'Hero text and images', 'restwell-retreats' ),
 						'<a href="' . esc_url( $pages_url ) . '">' . esc_html__( 'Pages → edit page → Page content', 'restwell-retreats' ) . '</a>',
-						__( 'Use the tabbed sections in the Page content panel. Changes update the live site on save.', 'restwell-retreats' ),
+						__( 'What goes live depends on the template. Homepage: hero heading and intro (hero media is used). Legal pages: label, heading, intro, body HTML, and hero image. Concept pages: hero fields; most body copy lives in the theme PHP. Each Page content box spells this out.', 'restwell-retreats' ),
 					),
 					array(
 						__( 'FAQ questions & answers', 'restwell-retreats' ),
-						'<a href="' . esc_url( admin_url( 'post.php?post=' . (int) get_option( 'page_on_front' ) . '&action=edit' ) ) . '">' . esc_html__( 'Front Page → Page content → FAQ tab', 'restwell-retreats' ) . '</a>',
-						__( 'Up to 14 items. The same data renders on the FAQ page, How It Works page, and homepage. Categories: about | booking | care | local | funding.', 'restwell-retreats' ),
+						'<a href="' . esc_url( admin_url( 'edit.php?post_type=page' ) ) . '">' . esc_html__( 'Pages → FAQ (and How It Works)', 'restwell-retreats' ) . '</a>',
+						__( 'The FAQ page reads its own question/answer fields. Homepage FAQ is in the theme file inc/homepage-faq.php. How It Works FAQ is that page’s fields (or theme defaults). The homepage Page content box has no FAQ tab.', 'restwell-retreats' ),
 					),
 					array(
 						__( 'SEO title & meta description for a page', 'restwell-retreats' ),
@@ -263,9 +269,14 @@ function restwell_crm_dashboard_page() {
 						__( 'Create a personalised guide link. Guests receive a private URL with their arrival details.', 'restwell-retreats' ),
 					),
 					array(
-						__( 'Partner logos on the homepage trust strip', 'restwell-retreats' ),
-						esc_html__( 'Pages → Front Page → Page content → Partners tab', 'restwell-retreats' ),
-						__( 'Upload a PNG for each partner. Leave empty to hide that slot.', 'restwell-retreats' ),
+						__( 'Partner logos on the homepage', 'restwell-retreats' ),
+						esc_html__( 'Home → Page content → Partners (theme images used until a logo is uploaded)', 'restwell-retreats' ),
+						__( 'Heading, intro, CTA and the five partner names/URLs/logos go live. Empty heading hides the strip.', 'restwell-retreats' ),
+					),
+					array(
+						__( 'Guest reviews / testimonials', 'restwell-retreats' ),
+						esc_html__( 'Places API when configured; otherwise Home → Page content → Testimonials', 'restwell-retreats' ),
+						__( 'Always the guest’s consecutive words from the review. Do not rewrite to house style.', 'restwell-retreats' ),
 					),
 					array(
 						__( 'Legal pages (Privacy Policy, Terms etc.)', 'restwell-retreats' ),
@@ -340,6 +351,7 @@ function restwell_crm_dashboard_page() {
 								<?php
 								$mailchimp_from_constant = defined( 'RESTWELL_MAILCHIMP_API_KEY' ) && '' !== (string) RESTWELL_MAILCHIMP_API_KEY;
 								$mailchimp_key_stored    = (string) get_option( 'restwell_mailchimp_api_key', '' );
+								$mailchimp_prod_locked   = function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment();
 								// Never echo the raw key — masked placeholder only when an option is stored.
 								$mailchimp_key_masked = '';
 								if ( '' !== $mailchimp_key_stored ) {
@@ -367,7 +379,7 @@ function restwell_crm_dashboard_page() {
 										class="regular-text"
 										autocomplete="new-password"
 										placeholder="<?php echo esc_attr( $mailchimp_key_masked ); ?>"
-										<?php disabled( $mailchimp_from_constant ); ?>
+										<?php disabled( $mailchimp_from_constant || $mailchimp_prod_locked ); ?>
 									/>
 									<span class="<?php echo esc_attr( $mailchimp_badge_class ); ?>" aria-live="polite">
 										<?php echo esc_html( $mailchimp_badge_text ); ?>
@@ -377,17 +389,21 @@ function restwell_crm_dashboard_page() {
 									<?php
 									if ( $mailchimp_from_constant ) {
 										esc_html_e( 'RESTWELL_MAILCHIMP_API_KEY is set in wp-config.php (or the environment). The option field is unused while that constant is defined.', 'restwell-retreats' );
+									} elseif ( $mailchimp_prod_locked ) {
+										esc_html_e( 'Production will not store this key in the database. Define RESTWELL_MAILCHIMP_API_KEY in wp-config.php (or the environment).', 'restwell-retreats' );
 									} else {
 										esc_html_e( 'Preferred: define RESTWELL_MAILCHIMP_API_KEY in wp-config.php (mirrors SMTP constants). This non-autoloaded option is a fallback only. Leave blank to keep an existing key; enter a new key to replace it.', 'restwell-retreats' );
 									}
 									?>
 								</p>
+								<?php if ( ! $mailchimp_from_constant && ! $mailchimp_prod_locked ) : ?>
 								<p class="description">
 									<label>
 										<input type="checkbox" name="restwell_mailchimp_api_key_clear" value="1" />
 										<?php esc_html_e( 'Clear stored API key on save', 'restwell-retreats' ); ?>
 									</label>
 								</p>
+								<?php endif; ?>
 								<p class="description">
 									<label for="restwell_mailchimp_audience_id"><?php esc_html_e( 'Audience ID', 'restwell-retreats' ); ?></label><br />
 									<input

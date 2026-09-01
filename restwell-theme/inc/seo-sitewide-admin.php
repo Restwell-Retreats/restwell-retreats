@@ -92,9 +92,9 @@ function restwell_seo_sitewide_handle_save() {
 
 	$analytics_mode = isset( $_POST['restwell_analytics_load_mode'] )
 		? sanitize_key( wp_unslash( $_POST['restwell_analytics_load_mode'] ) )
-		: 'head';
+		: 'consent_gated';
 	if ( ! in_array( $analytics_mode, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
-		$analytics_mode = 'head';
+		$analytics_mode = 'consent_gated';
 	}
 	update_option( 'restwell_analytics_load_mode', $analytics_mode );
 
@@ -239,9 +239,9 @@ function restwell_seo_sitewide_render_page() {
 		$metricool_badge_text  = __( 'Wrong format — should be a 32-character hash', 'restwell-retreats' );
 	}
 
-	$analytics_mode_current = (string) get_option( 'restwell_analytics_load_mode', 'head' );
+	$analytics_mode_current = (string) get_option( 'restwell_analytics_load_mode', 'consent_gated' );
 	if ( ! in_array( $analytics_mode_current, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
-		$analytics_mode_current = 'head';
+		$analytics_mode_current = 'consent_gated';
 	}
 
 	$social_urls = function_exists( 'restwell_get_social_profile_urls' ) ? restwell_get_social_profile_urls() : array();
@@ -414,7 +414,7 @@ function restwell_seo_sitewide_render_page() {
 							<option value="footer_deferred" <?php selected( $analytics_mode_current, 'footer_deferred' ); ?>><?php esc_html_e( 'Footer — deferred (better for page speed)', 'restwell-retreats' ); ?></option>
 							<option value="consent_gated" <?php selected( $analytics_mode_current, 'consent_gated' ); ?>><?php esc_html_e( 'Consent-gated — only after cookie consent', 'restwell-retreats' ); ?></option>
 						</select>
-						<p class="rw-seo-field__hint"><?php esc_html_e( 'Consent-gated is best if you use a cookie banner. GA4 and Metricool wait until analytics consent is given.', 'restwell-retreats' ); ?></p>
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Consent-gated is the PECR-safe default: the theme cookie banner stores the choice, and GA4/Metricool stay off until the visitor accepts analytics. Head and Footer deferred load tracking without that consent.', 'restwell-retreats' ); ?></p>
 					<?php restwell_seo_sitewide_field_close(); ?>
 				</section>
 

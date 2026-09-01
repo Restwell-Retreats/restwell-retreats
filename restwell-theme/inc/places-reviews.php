@@ -65,7 +65,7 @@ function restwell_places_normalize_review( array $review ): array {
 		: '';
 
 	$text = isset( $review['text']['text'] )
-		? sanitize_text_field( (string) $review['text']['text'] )
+		? sanitize_textarea_field( (string) $review['text']['text'] )
 		: '';
 
 	if ( '' === $name || '' === $text ) {

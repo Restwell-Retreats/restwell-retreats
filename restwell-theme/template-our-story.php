@@ -99,7 +99,7 @@ get_template_part(
         <h2 id="quote-h" class="sr-only">What a guest wrote after staying</h2>
         <figure class="pull-quote">
           <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-          <blockquote class="pull-quote__text">It truly amazes me just how much work has gone into this &ldquo;home from home&rdquo;; literally everything you may require is provided. 10/10 from me, as there was NOTHING I needed to ask for, as Restwell Retreats had catered for it all already.</blockquote>
+          <blockquote class="pull-quote__text">it truly amazes me, just how much work has gone into this &ldquo;home from home&rdquo; literally everything you may require, is provided.. I will most definitely be back.. 10/10 from me, as there was NOTHING i needed to ask for, as Restwell Retreats had catered for it all already</blockquote>
           <figcaption class="pull-quote__cite">M.P.<span class="pull-quote__role">Wheelchair user &middot; Google review</span></figcaption>
         </figure>
       </div>

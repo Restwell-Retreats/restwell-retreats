@@ -124,7 +124,9 @@ function restwell_handle_faq_question_submit(): void {
 	}
 
 	$to       = restwell_get_submission_notify_email();
-	$subject  = sprintf( __( '[Restwell Retreats] FAQ question from %s', 'restwell-retreats' ), $name );
+	$subject  = $row_id
+		? restwell_mail_staff_subject( 'faq', (int) $row_id )
+		: restwell_mail_staff_subject( 'faq_save_failed' );
 	$lines    = array(
 		sprintf( __( 'Name: %s', 'restwell-retreats' ), $name ),
 		sprintf( __( 'Email: %s', 'restwell-retreats' ), $email ),
@@ -136,10 +138,17 @@ function restwell_handle_faq_question_submit(): void {
 		'',
 		sprintf( __( 'Saved as submission #%s in the site database.', 'restwell-retreats' ), $row_id ? (string) $row_id : '?' ),
 	);
-	$headers = array( 'Content-Type: text/plain; charset=UTF-8', 'Reply-To: ' . $name . ' <' . $email . '>' );
+	$headers = array_values(
+		array_filter(
+			array(
+				'Content-Type: text/plain; charset=UTF-8',
+				function_exists( 'restwell_mail_reply_to_header' ) ? restwell_mail_reply_to_header( $email ) : ( 'Reply-To: ' . $email ),
+			)
+		)
+	);
 
 	if ( ! $row_id ) {
-		$sent = restwell_wp_mail_with_retry( $to, $subject . ' [DB SAVE FAILED]', implode( "\n", $lines ), $headers );
+		$sent = restwell_wp_mail_with_retry( $to, $subject, implode( "\n", $lines ), $headers );
 		if ( $sent ) {
 			wp_safe_redirect( add_query_arg( 'question_sent', '1', $back ) . '#faq-question-form' );
 		} else {

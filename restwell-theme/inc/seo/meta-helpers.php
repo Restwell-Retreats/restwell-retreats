@@ -19,6 +19,36 @@ function restwell_get_access_statement_url() {
 }
 
 /**
+ * Schema.org name for Restwell entities. Never use get_bloginfo('name') here —
+ * WP site title can be a short lockup that is wrong for LodgingBusiness.
+ *
+ * @return string
+ */
+function restwell_get_schema_brand_name() {
+	return 'Restwell Retreats';
+}
+
+/**
+ * Public phone as shown in templates (spaces allowed).
+ *
+ * @return string
+ */
+function restwell_get_public_phone_number() {
+	$phone = trim( (string) get_option( 'restwell_phone_number', '' ) );
+	return '' !== $phone ? $phone : '01622 809881';
+}
+
+/**
+ * Public phone as digits only (schema telephone / tel: href).
+ *
+ * @return string
+ */
+function restwell_get_public_phone_tel() {
+	$digits = preg_replace( '/\D+/', '', restwell_get_public_phone_number() );
+	return ( is_string( $digits ) && '' !== $digits ) ? $digits : '01622809881';
+}
+
+/**
  * Add configured social profile URLs to a schema.org entity as `sameAs`.
  *
  * @param array<string, mixed> $entity JSON-LD object.
@@ -68,14 +98,12 @@ function restwell_title_already_includes_site_brand( $title, $site ) {
 	if ( $title === '' || $site === '' ) {
 		return false;
 	}
-	if ( substr( $title, -strlen( $site ) ) === $site ) {
+	// WP site title may be lowercase ("restwell") while the SEO title uses "Restwell".
+	if ( 0 === strcasecmp( substr( $title, -strlen( $site ) ), $site ) ) {
 		return true;
 	}
-	// Partial brand in seeds, e.g. "| Restwell" while site is "Restwell Retreats".
-	if ( preg_match( '/(?:^|[|\-–—])\s*Restwell(?:\s+Retreats)?\s*$/iu', $title ) ) {
-		return true;
-	}
-	if ( stripos( $title, 'Restwell Retreats' ) !== false ) {
+	// Brand anywhere in the title is enough (e.g. "Ask us anything about a stay at Restwell").
+	if ( false !== stripos( $title, 'Restwell' ) ) {
 		return true;
 	}
 	return false;

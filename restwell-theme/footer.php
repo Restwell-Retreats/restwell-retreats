@@ -45,7 +45,7 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 				<?php endif; ?>
 			</a>
 			<p class="site-footer__partner-line">
-				<?php esc_html_e( 'Care partner:', 'restwell-retreats' ); ?>
+				<?php esc_html_e( 'Sister company:', 'restwell-retreats' ); ?>
 				<a href="<?php echo esc_url( $footer_partner_url ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span>
 				</a>
@@ -63,12 +63,15 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 				<a href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>
 				<a href="<?php echo esc_url( $terms_url ); ?>"><?php esc_html_e( 'Terms &amp; Conditions', 'restwell-retreats' ); ?></a>
 				<a href="<?php echo esc_url( $a11y_pol_url ); ?>"><?php esc_html_e( 'Website accessibility', 'restwell-retreats' ); ?></a>
+				<?php if ( function_exists( 'restwell_cookie_consent_is_gated' ) && restwell_cookie_consent_is_gated() ) : ?>
+					<button type="button" class="site-footer__cookie-settings" data-cookie-settings><?php esc_html_e( 'Cookie settings', 'restwell-retreats' ); ?></button>
+				<?php endif; ?>
 			</nav>
 			<p class="site-footer__copyright">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( $legal_entity_name ); ?>. <?php esc_html_e( 'All rights reserved.', 'restwell-retreats' ); ?></p>
 		</div>
 	</div>
-	<?php wp_footer(); ?>
 </footer>
+<?php get_template_part( 'template-parts/cookie-banner' ); ?>
 <div class="lightbox" id="gallery-lightbox" hidden role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Photo gallery', 'restwell-retreats' ); ?>">
 	<button type="button" class="lightbox__close" data-lightbox-close>
 		<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -101,5 +104,6 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 		<path d="M8 12.8V3.2M3.6 7.6L8 3.2l4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 	</svg>
 </button>
+<?php wp_footer(); ?>
 </body>
 </html>

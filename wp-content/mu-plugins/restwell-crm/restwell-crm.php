@@ -38,20 +38,37 @@ function restwell_crm_theme_asset_uri(): string {
 }
 
 /**
+ * Directory for the five public CRM modules (canonical copies live in the theme).
+ *
+ * @return string Trailing slash.
+ */
+function restwell_crm_public_module_dir(): string {
+	if ( function_exists( 'get_template_directory' ) ) {
+		$dir = get_template_directory() . '/inc/crm/';
+		if ( is_dir( $dir ) ) {
+			return $dir;
+		}
+	}
+	return RESTWELL_CRM_PLUGIN_DIR;
+}
+
+/**
  * Load CRM modules in dependency order (matches former theme functions.php sequence).
  */
 function restwell_crm_load_modules(): void {
-	$dir = RESTWELL_CRM_PLUGIN_DIR;
-	$files = array(
-		'form-notify.php',
-		'emails.php',
-		'mailchimp.php',
-		'crm.php',
-		'crm-reminders.php',
-		'enquire-handler.php',
+	$theme_crm = restwell_crm_public_module_dir();
+	$files     = array(
+		$theme_crm . 'form-notify.php',
+		$theme_crm . 'emails.php',
+		$theme_crm . 'mailchimp.php',
+		RESTWELL_CRM_PLUGIN_DIR . 'crm.php',
+		$theme_crm . 'crm-reminders.php',
+		$theme_crm . 'enquire-handler.php',
 	);
-	foreach ( $files as $file ) {
-		require_once $dir . $file;
+	foreach ( $files as $path ) {
+		if ( is_readable( $path ) ) {
+			require_once $path;
+		}
 	}
 }
 restwell_crm_load_modules();

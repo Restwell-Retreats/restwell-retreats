@@ -40,6 +40,7 @@ require_once get_template_directory() . '/inc/pricing.php';
 require_once get_template_directory() . '/inc/property-content.php';
 require_once get_template_directory() . '/inc/guest-guide.php';
 require_once get_template_directory() . '/inc/homepage-faq.php';
+require_once get_template_directory() . '/inc/homepage-content.php';
 require_once get_template_directory() . '/inc/llms-txt.php';
 require_once get_template_directory() . '/inc/litespeed-compat.php';
 require_once get_template_directory() . '/inc/meta-fields.php';
@@ -53,6 +54,7 @@ require_once get_template_directory() . '/inc/privacy-page-bootstrap.php';
 require_once get_template_directory() . '/inc/redirects.php';
 require_once get_template_directory() . '/inc/security-rest.php';
 require_once get_template_directory() . '/inc/seo.php';
+require_once get_template_directory() . '/inc/cookie-consent.php';
 require_once get_template_directory() . '/inc/seo-admin.php';
 require_once get_template_directory() . '/inc/seo-checklist.php';
 require_once get_template_directory() . '/inc/seo-pages-admin.php';
@@ -124,22 +126,30 @@ add_filter( 'jpeg_quality', 'restwell_image_editor_quality' );
 add_filter( 'wp_editor_set_quality', 'restwell_image_editor_quality' );
 
 /**
- * Send security headers on HTTPS responses.
+ * Whether this request is a production environment (wp_get_environment_type).
  *
- * HSTS uses includeSubDomains without preload as a safe default.
- * X-Content-Type-Options nosniff prevents MIME sniffing.
- * X-Frame-Options SAMEORIGIN allows same-site embeds (use DENY if no embeds ever).
- * Referrer-Policy strict-origin-when-cross-origin limits referrer leakage while keeping analytics useful.
- * Permissions-Policy denies geolocation, microphone, and camera (unused on this site).
- * Content-Security-Policy: see inc/csp.php (Report-Only by default; enforce via restwell_enable_csp_enforce).
+ * @return bool
+ */
+function restwell_is_production_environment() {
+	return function_exists( 'wp_get_environment_type' ) && 'production' === wp_get_environment_type();
+}
+
+/**
+ * Send security headers on every front-end response.
+ *
+ * nosniff / X-Frame-Options / Referrer-Policy / Permissions-Policy apply on HTTP and HTTPS.
+ * HSTS is SSL-only. CSP: see inc/csp.php (report-only until a clean week on production HTTPS).
  */
 function restwell_send_security_headers() {
+	if ( function_exists( 'header_remove' ) ) {
+		header_remove( 'X-Powered-By' );
+	}
+	header( 'X-Content-Type-Options: nosniff' );
+	header( 'X-Frame-Options: SAMEORIGIN' );
+	header( 'Referrer-Policy: strict-origin-when-cross-origin' );
+	header( 'Permissions-Policy: geolocation=(), microphone=(), camera=()' );
 	if ( is_ssl() ) {
 		header( 'Strict-Transport-Security: max-age=31536000; includeSubDomains' );
-		header( 'X-Content-Type-Options: nosniff' );
-		header( 'X-Frame-Options: SAMEORIGIN' );
-		header( 'Referrer-Policy: strict-origin-when-cross-origin' );
-		header( 'Permissions-Policy: geolocation=(), microphone=(), camera=()' );
 	}
 }
 add_action( 'send_headers', 'restwell_send_security_headers' );

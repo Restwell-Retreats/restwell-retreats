@@ -61,7 +61,8 @@ function restwell_theme_setup_page() {
 			$force            = ! empty( $_POST['restwell_rerun'] );
 			$seed_media       = ! empty( $_POST['restwell_seed_media'] );
 			$skip_image_regen = ! empty( $_POST['restwell_skip_image_regen'] );
-			$result           = restwell_run_theme_setup( $force, $skip_image_regen, $seed_media );
+			$overwrite_seo    = ! empty( $_POST['restwell_overwrite_seo'] );
+			$result           = restwell_run_theme_setup( $force, $skip_image_regen, $seed_media, $overwrite_seo );
 			$message          = restwell_theme_setup_format_message( $result );
 		}
 	}
@@ -73,7 +74,7 @@ function restwell_theme_setup_page() {
 		<?php echo wp_kses_post( $message ); ?>
 
 		<div class="notice notice-warning">
-			<p><?php esc_html_e( 'Creates missing pages and fills default content. Re-running merges any new theme default fields into pages where those keys are not stored yet; use “Re-run setup anyway” to overwrite Home and template page fields from current theme defaults.', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'Creates missing pages and fills default content. Re-running merges any new theme default fields into pages where those keys are not stored yet; use “Re-run setup anyway” to overwrite Home and template page fields from current theme defaults. SEO title, meta description, and focus keyphrase are only overwritten if you tick that box separately.', 'restwell-retreats' ); ?></p>
 		</div>
 
 		<?php if ( $already_seeded ) : ?>
@@ -88,7 +89,13 @@ function restwell_theme_setup_page() {
 				<p>
 					<label>
 						<input type="checkbox" name="restwell_rerun" value="1" />
-						<?php esc_html_e( 'Re-run setup anyway (re-seeds content and overwrites SEO title, meta description, and focus keyphrase from theme defaults).', 'restwell-retreats' ); ?>
+						<?php esc_html_e( 'Re-run setup anyway (re-seeds page content from current theme defaults). Does not overwrite SEO titles unless you also tick the box below.', 'restwell-retreats' ); ?>
+					</label>
+				</p>
+				<p>
+					<label>
+						<input type="checkbox" name="restwell_overwrite_seo" value="1" />
+						<?php esc_html_e( 'Overwrite SEO title, meta description, and focus keyphrase from theme defaults (off by default — leaves editor-written SEO alone).', 'restwell-retreats' ); ?>
 					</label>
 				</p>
 			<?php endif; ?>

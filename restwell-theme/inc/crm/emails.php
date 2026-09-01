@@ -349,7 +349,7 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
 
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
-		'Reply-To: ' . $site . ' <hello@restwellretreats.co.uk>',
+		'Reply-To: hello@restwellretreats.co.uk',
 	);
 
 	return array(
@@ -560,7 +560,7 @@ function restwell_email_booking_confirmed( string $name, string $email ): array 
 
 	$headers = array(
 		'Content-Type: text/html; charset=UTF-8',
-		'Reply-To: ' . $site . ' <hello@restwellretreats.co.uk>',
+		'Reply-To: hello@restwellretreats.co.uk',
 	);
 
 	return array(

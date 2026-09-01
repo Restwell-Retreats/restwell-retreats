@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind.css --watch",
-    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind.css --minify && npx terser assets/js/main.js --compress --mangle --output assets/js/main.min.js && npx terser assets/js/analytics-loader.js --compress --mangle --output assets/js/analytics-loader.min.js"
+    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/tailwind.css --minify && npx terser assets/js/main.js --compress --mangle --output assets/js/main.min.js && npx terser assets/js/analytics-loader.js --compress --mangle --output assets/js/analytics-loader.min.js && npx terser assets/js/cookie-consent.js --compress --mangle --output assets/js/cookie-consent.min.js"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",

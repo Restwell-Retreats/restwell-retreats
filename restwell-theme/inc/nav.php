@@ -10,6 +10,36 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Path candidates for a nav slug (canonical first, then retired aliases).
+ *
+ * @param string $slug Nav slug.
+ * @return string[]
+ */
+function restwell_nav_page_path_candidates( $slug ) {
+	$slug = (string) $slug;
+	if ( 'resources' === $slug || 'funding-and-support' === $slug ) {
+		return array( 'funding-and-support', 'resources' );
+	}
+	return array( $slug );
+}
+
+/**
+ * Find a page by nav slug, including retired aliases.
+ *
+ * @param string $slug Nav slug.
+ * @return WP_Post|null
+ */
+function restwell_get_page_by_nav_slug( $slug ) {
+	foreach ( restwell_nav_page_path_candidates( $slug ) as $path ) {
+		$page = get_page_by_path( $path, OBJECT, 'page' );
+		if ( $page instanceof WP_Post ) {
+			return $page;
+		}
+	}
+	return null;
+}
+
+/**
  * Resolve a page slug to its permalink (home when slug is empty).
  *
  * @param string $slug Page path slug or empty for front page.
@@ -36,8 +66,9 @@ function restwell_nav_resolve_page_url( $slug ) {
 		}
 	}
 
-	$page = get_page_by_path( $slug, OBJECT, 'page' );
-	$cache[ $slug ] = $page ? get_permalink( $page ) : home_url( '/' . $slug . '/' );
+	$page = restwell_get_page_by_nav_slug( $slug );
+	$canonical = restwell_nav_page_path_candidates( $slug )[0];
+	$cache[ $slug ] = $page ? get_permalink( $page ) : home_url( '/' . $canonical . '/' );
 	return $cache[ $slug ];
 }
 
@@ -126,7 +157,7 @@ function restwell_get_primary_nav_structure() {
 				),
 				array(
 					'label' => __( 'Funding & Support', 'restwell-retreats' ),
-					'slug'  => 'resources',
+					'slug'  => 'funding-and-support',
 				),
 				array(
 					'label' => __( 'Optional care', 'restwell-retreats' ),

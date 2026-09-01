@@ -153,6 +153,6 @@ Primary CTA: Enquire Now
 Secondary CTA: See the bungalow
 
 ### Footer
-Restwell · Care partner: Continuity of Care Services · CQC inspection profile · Accessible holidays, Whitstable, Kent
+Restwell · Sister company: Continuity of Care Services · CQC inspection profile · Accessible holidays, Whitstable, Kent
 Footer links: FAQ · Privacy Policy · Terms & Conditions · Website accessibility
 Copyright: © 2026 Homely Housing Investments Ltd t/a Restwell Retreats. All rights reserved.

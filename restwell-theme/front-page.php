@@ -29,6 +29,17 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
 		'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.'
 	)
 	: 'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.';
+
+$partners     = function_exists( 'restwell_get_homepage_partners' )
+	? restwell_get_homepage_partners( $home_id )
+	: array();
+$testimonials = function_exists( 'restwell_get_homepage_testimonials' )
+	? restwell_get_homepage_testimonials( $home_id )
+	: array(
+		'label'     => 'What guests say',
+		'heading'   => 'What guests wrote after staying',
+		'fallbacks' => array(),
+	);
 ?>
 
 
@@ -140,42 +151,28 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
       </div>
     </section>
 
+    <?php if ( ! empty( $partners['heading'] ) && ! empty( $partners['items'] ) ) : ?>
     <section class="partners section-y" id="partners" aria-labelledby="partners-h">
       <div class="container">
         <header class="section-head partners__head">
-          <p class="eyebrow">Behind Restwell</p>
-          <h2 id="partners-h">Who built it, and who we work with</h2>
-          <p class="lede">Specialist firms adapted the house. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'our-story' ) ); ?>">Read the full story</a>.</p>
+          <?php if ( '' !== $partners['label'] ) : ?>
+          <p class="eyebrow"><?php echo esc_html( $partners['label'] ); ?></p>
+          <?php endif; ?>
+          <h2 id="partners-h"><?php echo esc_html( $partners['heading'] ); ?></h2>
+          <p class="lede"><?php echo esc_html( $partners['intro'] ); ?><?php if ( '' !== $partners['cta_text'] && '' !== $partners['cta_url'] ) : ?> <a class="text-link" href="<?php echo esc_url( $partners['cta_url'] ); ?>"><?php echo esc_html( $partners['cta_text'] ); ?></a>.<?php endif; ?></p>
         </header>
         <ul class="partners__grid" role="list">
+          <?php foreach ( $partners['items'] as $partner ) : ?>
           <li class="partners__item">
-            <a class="partners__link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Care Spaces (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/care-spaces.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/care-spaces.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
+            <a class="partners__link" href="<?php echo esc_url( $partner['url'] ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: partner name */ __( '%s (opens in a new tab)', 'restwell-retreats' ), $partner['name'] ) ); ?>">
+              <img src="<?php echo esc_url( $partner['img'] ); ?>" alt="<?php echo esc_attr( $partner['alt'] ); ?>" width="180" height="72" loading="lazy" decoding="async" />
             </a>
           </li>
-          <li class="partners__item">
-            <a class="partners__link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Thor Carpentry (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/thor-carpentry.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/thor-carpentry.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
-            </a>
-          </li>
-          <li class="partners__item">
-            <a class="partners__link" href="https://wealdenrehab.com/" target="_blank" rel="noopener noreferrer" aria-label="Wealden Rehab (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/wealden-rehab.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/wealden-rehab.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
-            </a>
-          </li>
-          <li class="partners__item">
-            <a class="partners__link" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
-            </a>
-          </li>
-          <li class="partners__item">
-            <a class="partners__link" href="https://www.continuitytrainingacademy.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity Training Academy (opens in a new tab)">
-              <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-training-academy.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-training-academy.png' ) ); ?>" width="180" height="72" loading="lazy" decoding="async" />
-            </a>
-          </li>
+          <?php endforeach; ?>
         </ul>
       </div>
     </section>
+    <?php endif; ?>
 
     <section class="comparison section-y" id="comparison" aria-labelledby="comparison-h">
       <div class="container">
@@ -209,29 +206,17 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
     </section>
 
     <?php
-    // Reviews: live Google reviews when Places API is configured, verbatim
-    // static quotes otherwise. Copy below stays the source of truth for the fallback.
-    $reviews_fallbacks = array(
-      array(
-        'quote' => 'Keelie was tremendously helpful in explaining all the facilities, equipment and care help they could provide. The bungalow is modern and spotless, fully equipped for both the person you are caring for, and for the carer. It was a home from home.',
-        'name'  => 'M.H.',
-        'role'  => 'Family carer · Facebook review',
-      ),
-      array(
-        'quote' => 'From the minute I rolled my wheelchair out the car, I smiled. Widened hallways, ceiling track hoist, a wet room that should be in a gallery. With the complex care I need, this is worth its weight in gold.',
-        'name'  => 'M.P.',
-        'role'  => 'Wheelchair user · Google review',
-      ),
-      array(
-        'quote' => 'The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.',
-        'name'  => 'M.Z.',
-        'role'  => 'Guest · Google review',
-      ),
-    );
+    // Reviews: live Google reviews when Places API is configured, otherwise
+    // Page content → Testimonials (verbatim guest words). Hardcoded fallbacks
+    // in restwell_homepage_testimonial_hard_fallbacks() if the tab is empty.
     get_template_part(
       'template-parts/google-reviews',
       null,
-      array( 'fallbacks' => $reviews_fallbacks )
+      array(
+        'fallbacks' => $testimonials['fallbacks'],
+        'label'     => $testimonials['label'],
+        'heading'   => $testimonials['heading'],
+      )
     );
     ?>
 
@@ -252,7 +237,7 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
               <p class="care__note">The bungalow rate stays exactly the same. Ring 01622 809881 if that’s easier than a form.</p>
               <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">What home care here actually looks like</a>
             </div>
-            <div class="care__brand" aria-label="Care partner and CQC rating">
+            <div class="care__brand" aria-label="Sister company and CQC rating">
               <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
                 <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
               </a>

@@ -22,6 +22,10 @@ function restwell_crm_handle_export_csv() {
 	}
 	check_admin_referer( 'restwell_crm_export_csv' );
 
+	$include_sensitive = restwell_crm_can_export_sensitive()
+		&& isset( $_POST['include_sensitive'] )
+		&& '1' === (string) wp_unslash( $_POST['include_sensitive'] );
+
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
 	// Explicit column list — avoids pulling unexpected columns added by future migrations.
@@ -32,19 +36,38 @@ function restwell_crm_handle_export_csv() {
 			        care_requirements, accessibility, funding_type,
 			        contact_preference, preferred_time, message,
 			        is_urgent, marketing_optin, marketing_optin_at,
+			        privacy_consented_at, privacy_policy_version,
+			        health_data_consent, health_data_consented_at,
 			        status, staff_notes, follow_up_at,
-			        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at
+			        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at,
+			        anonymised_at
 			 FROM %i ORDER BY submitted_at DESC',
 			$table
 		),
 		ARRAY_A
 	);
+	if ( ! is_array( $rows ) ) {
+		$rows = array();
+	}
+
+	if ( ! $include_sensitive ) {
+		foreach ( $rows as &$row ) {
+			if ( isset( $row['care_requirements'] ) ) {
+				$row['care_requirements'] = '';
+			}
+			if ( isset( $row['accessibility'] ) ) {
+				$row['accessibility'] = '';
+			}
+		}
+		unset( $row );
+	}
 
 	// Append to audit log before streaming headers (headers cannot be sent before update_option).
 	$export_log_entry = array(
-		'user_id'     => get_current_user_id(),
-		'exported_at' => gmdate( 'Y-m-d H:i:s' ),
-		'row_count'   => count( (array) $rows ),
+		'user_id'            => get_current_user_id(),
+		'exported_at'        => gmdate( 'Y-m-d H:i:s' ),
+		'row_count'          => count( $rows ),
+		'include_sensitive'  => $include_sensitive ? 1 : 0,
 	);
 	$export_log = get_option( 'restwell_crm_export_log', array() );
 	if ( ! is_array( $export_log ) ) {
@@ -133,8 +156,14 @@ function restwell_crm_handle_save_settings() {
 		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_api_key'] ) )
 		: '';
 	$mailchimp_api_key = preg_replace( '/[^A-Za-z0-9\-]/', '', trim( $mailchimp_api_key ) );
+	$mailchimp_key_blocked = false;
 	// Prefer RESTWELL_MAILCHIMP_API_KEY in wp-config; option is fallback only and must not autoload.
-	if ( '' !== $mailchimp_api_key ) {
+	// Production must not persist the key in wp_options.
+	if ( function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment() ) {
+		if ( '' !== $mailchimp_api_key || ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
+			$mailchimp_key_blocked = true;
+		}
+	} elseif ( '' !== $mailchimp_api_key ) {
 		update_option( 'restwell_mailchimp_api_key', $mailchimp_api_key, false );
 	} elseif ( ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
 		update_option( 'restwell_mailchimp_api_key', '', false );
@@ -163,12 +192,16 @@ function restwell_crm_handle_save_settings() {
 	}
 	update_option( 'restwell_crm_cap_roles', $cap_roles );
 
+	$redirect_args = array(
+		'page'           => 'restwell-crm',
+		'settings_saved' => '1',
+	);
+	if ( ! empty( $mailchimp_key_blocked ) ) {
+		$redirect_args['mailchimp_key_blocked'] = '1';
+	}
 	wp_safe_redirect(
 		add_query_arg(
-			array(
-				'page' => 'restwell-crm',
-				'settings_saved' => '1',
-			),
+			$redirect_args,
 			admin_url( 'admin.php' )
 		)
 	);

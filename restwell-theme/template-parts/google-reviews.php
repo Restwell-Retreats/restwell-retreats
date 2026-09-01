@@ -7,6 +7,7 @@
  *
  * Renders live Google reviews when the Places API returns them; otherwise
  * re-renders the exact static quotes already on the page. Never empty.
+ * Review text is the guest’s words. Do not rewrite for house style.
  *
  * @package Restwell_Retreats
  */
@@ -17,19 +18,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $google_reviews_args = wp_parse_args(
 	$args ?? array(),
-	array( 'fallbacks' => array() )
+	array(
+		'fallbacks' => array(),
+		'label'     => 'What guests say',
+		'heading'   => 'What guests wrote after staying',
+	)
 );
 
 $google_reviews = restwell_get_google_reviews();
 $review_items   = $google_reviews['reviews'];
+$reviews_label  = (string) $google_reviews_args['label'];
+$reviews_heading = (string) $google_reviews_args['heading'];
+if ( '' === $reviews_label ) {
+	$reviews_label = 'What guests say';
+}
+if ( '' === $reviews_heading ) {
+	$reviews_heading = 'What guests wrote after staying';
+}
 
 if ( ! empty( $review_items ) ) :
 	?>
 	<section class="testimonials section-y" aria-labelledby="testimonials-h">
 		<div class="container">
 			<header class="section-head">
-				<p class="eyebrow eyebrow--on-dark">What guests say</p>
-				<h2 id="testimonials-h">What guests wrote after staying</h2>
+				<p class="eyebrow eyebrow--on-dark"><?php echo esc_html( $reviews_label ); ?></p>
+				<h2 id="testimonials-h"><?php echo esc_html( $reviews_heading ); ?></h2>
 			</header>
 			<ul class="testimonials__grid" role="list">
 				<?php foreach ( $review_items as $google_review ) : ?>
@@ -55,8 +68,8 @@ endif;
 <section class="testimonials section-y" aria-labelledby="testimonials-h">
 	<div class="container">
 		<header class="section-head">
-			<p class="eyebrow eyebrow--on-dark">What guests say</p>
-			<h2 id="testimonials-h">What guests wrote after staying</h2>
+			<p class="eyebrow eyebrow--on-dark"><?php echo esc_html( $reviews_label ); ?></p>
+			<h2 id="testimonials-h"><?php echo esc_html( $reviews_heading ); ?></h2>
 		</header>
 		<ul class="testimonials__grid" role="list">
 			<?php foreach ( $google_reviews_args['fallbacks'] as $static_review ) : ?>

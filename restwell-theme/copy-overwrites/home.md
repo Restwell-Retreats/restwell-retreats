@@ -1,6 +1,6 @@
 # Home `/`
 
-**Layer:** `hero_heading` `hero_subheading` `meta_title` `meta_description`. Never “fully accessible” in Restwell-owned copy.
+**Layer:** `hero_heading` `hero_subheading` `meta_title` `meta_description`. Never “fully accessible” in Restwell-owned copy. Guest review cards stay the reviewer’s words.
 
 **What this site is.** Marketing for a holiday let. Its job is to make somebody want the stay and then enquire. It borrows the Welcome Guide’s *voice* (warm, plain, honest about limits) but not its *content*. Bin days, house rules, plumbing, emergency numbers and departure checklists belong in `/guest-guide/` and the welcome pack, never on a page someone reads while deciding.
 

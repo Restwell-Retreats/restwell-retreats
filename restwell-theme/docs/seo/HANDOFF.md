@@ -28,7 +28,7 @@ One private self-catering adapted bungalow in Whitstable. Whole house, sleeps 5.
 
 - Allowed: **respite** (respite break / respite holiday). Pair with bungalow + optional Continuity. Not a respite centre or care home.
 - Allowed: **wheelchair friendly**. Always with millimetres/kit. Not the only access claim.
-- Banned: **fully accessible** / fully-accessible anywhere (titles, H1, body, meta, FAQ, alt, schema).
+- Banned: **fully accessible** / fully-accessible in Restwell-authored copy (titles, H1, body, meta, FAQ, alt, schema). Guest reviews stay verbatim, including that phrase.
 - Banned: care home, nursing home, respite centre.
 
 Rule file: `.cursor/rules/copy-voice.mdc`
@@ -96,7 +96,7 @@ Continue Restwell SEO from docs/seo/HANDOFF.md.
 
 Restwell is one private adapted holiday bungalow in Whitstable. Audience = UK people who want an accessible holiday by the sea. Town is the destination, not the customer.
 
-Copy (2026-08-13): respite and wheelchair friendly allowed (with mm/kit). Never “fully accessible”. Not a care home / nursing home / respite centre.
+Copy (2026-08-13): respite and wheelchair friendly allowed (with mm/kit). Never “fully accessible” in Restwell-authored copy. Guest reviews stay verbatim. Not a care home / nursing home / respite centre.
 
 Two Gemini runs are tidied in aug-research.md. Live UK SERP is in uk-serp-2026-08-13.md. AlsoAsked + Trends in uk-keywords-no-planner-2026-08-13.md. Forum tool list in uk-tools-forums-2026-08-13.md.
 

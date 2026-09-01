@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function restwell_get_pillar_cluster_map() {
 	return array(
 		'the-property'          => 'accessible-holidays',
-		'resources'             => 'funding-care',
+		'funding-and-support'   => 'funding-care',
 		'whitstable-area-guide' => 'kent-coast',
 	);
 }
@@ -38,7 +38,7 @@ function restwell_get_pillar_cluster_map() {
 function restwell_get_pillar_titles() {
 	return array(
 		'the-property'          => __( 'The Property', 'restwell-retreats' ),
-		'resources'             => __( 'Resources', 'restwell-retreats' ),
+		'funding-and-support'   => __( 'Funding & Support', 'restwell-retreats' ),
 		'whitstable-area-guide' => __( 'Whitstable Area Guide', 'restwell-retreats' ),
 	);
 }
@@ -78,7 +78,10 @@ function restwell_get_pillar_for_category( $category_slug ) {
  */
 function restwell_get_cluster_category_for_pillar( $pillar_slug ) {
 	$pillar_slug = sanitize_title( (string) $pillar_slug );
-	$map         = restwell_get_pillar_cluster_map();
+	if ( 'resources' === $pillar_slug ) {
+		$pillar_slug = 'funding-and-support';
+	}
+	$map = restwell_get_pillar_cluster_map();
 	return isset( $map[ $pillar_slug ] ) ? $map[ $pillar_slug ] : '';
 }
 
@@ -94,19 +97,13 @@ function restwell_get_published_page_url( $slug ) {
 		return '';
 	}
 
-	if ( function_exists( 'restwell_nav_resolve_page_url' ) ) {
-		$page = get_page_by_path( $slug, OBJECT, 'page' );
-		if ( $page && 'publish' === $page->post_status ) {
-			return (string) get_permalink( $page );
-		}
-		return '';
+	$page = function_exists( 'restwell_get_page_by_nav_slug' )
+		? restwell_get_page_by_nav_slug( $slug )
+		: get_page_by_path( $slug, OBJECT, 'page' );
+	if ( $page && 'publish' === $page->post_status ) {
+		return (string) get_permalink( $page );
 	}
-
-	$page = get_page_by_path( $slug, OBJECT, 'page' );
-	if ( ! $page || 'publish' !== $page->post_status ) {
-		return '';
-	}
-	return (string) get_permalink( $page );
+	return '';
 }
 
 /**
@@ -301,7 +298,7 @@ function restwell_get_pricing_cross_link_items() {
 			'label' => __( 'See how booking an accessible stay works', 'restwell-retreats' ),
 		),
 		array(
-			'slug'  => 'resources',
+			'slug'  => 'funding-and-support',
 			'label' => __( 'Explore care funding and respite routes', 'restwell-retreats' ),
 		),
 		// TODO(dates): restore when /dates/ ships (currently unpublished; skipped below).
@@ -316,7 +313,7 @@ function restwell_get_pricing_cross_link_items() {
 	);
 
 	// Funding cluster guides also belong on the pricing hub.
-	$funding_posts = restwell_get_cluster_posts( 'resources' );
+	$funding_posts = restwell_get_cluster_posts( 'funding-and-support' );
 	foreach ( $funding_posts as $post ) {
 		if ( ! $post instanceof WP_Post ) {
 			continue;
@@ -335,7 +332,7 @@ function restwell_get_pricing_cross_link_items() {
 			$url = restwell_get_published_page_url( $row['slug'] );
 			if ( '' === $url && ! empty( $row['slug'] ) ) {
 				// Known pillars / conversion: allow path fallback for seeded hubs.
-				$known = array( 'the-property', 'accessibility', 'how-it-works', 'resources', 'enquire' );
+				$known = array( 'the-property', 'accessibility', 'how-it-works', 'funding-and-support', 'resources', 'enquire' );
 				if ( in_array( $row['slug'], $known, true ) ) {
 					$url = function_exists( 'restwell_nav_resolve_page_url' )
 						? restwell_nav_resolve_page_url( $row['slug'] )
@@ -367,7 +364,7 @@ function restwell_get_sibling_pillar_link_items( $current_pillar_slug = '' ) {
 
 	$anchors = array(
 		'the-property'          => __( 'See the adapted bungalow and how the stay works', 'restwell-retreats' ),
-		'resources'             => __( 'Find care funding and respite routes for a short break', 'restwell-retreats' ),
+		'funding-and-support'   => __( 'Find care funding and respite routes for a short break', 'restwell-retreats' ),
 		'whitstable-area-guide' => __( 'Plan around Whitstable and the Kent coast', 'restwell-retreats' ),
 	);
 

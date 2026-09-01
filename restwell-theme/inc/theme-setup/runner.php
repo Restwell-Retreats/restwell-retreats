@@ -12,12 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Create pages, seed content, and optionally upload theme media.
  *
- * @param bool $force            If true, re-seed Home and page content where supported, refresh seeded blog posts, and overwrite SEO meta from theme defaults.
+ * @param bool $force            If true, re-seed Home and page content where supported, and refresh seeded blog posts.
  * @param bool $skip_image_regen If true, skip regenerating image subsizes when media seed is enabled.
  * @param bool $seed_media       If true, upload logos and partner images and optionally regenerate image subsizes.
+ * @param bool $overwrite_seo    If true, overwrite existing SEO title, meta description, and focus keyphrase from theme defaults. Empty SEO fields are filled either way.
  * @return array<string, mixed> Setup result.
  */
-function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $seed_media = false ) {
+function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $seed_media = false, $overwrite_seo = false ) {
 	$result = array(
 		'created'                => array(),
 		'skipped'                => array(),
@@ -54,7 +55,7 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 		: array();
 
 	foreach ( $pages as $title => $slug ) {
-		$existing = get_page_by_path( $slug, OBJECT, 'page' );
+		$existing = restwell_get_page_by_nav_slug( $slug );
 		if ( $existing ) {
 			$result['skipped'][] = $title;
 			$created_ids[ $title ] = $existing->ID;
@@ -120,10 +121,10 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 		$result['posts_page_set'] = true;
 	}
 
-	// SEO defaults: fill empty fields always; overwrite when $force (re-run setup) is true.
-	restwell_apply_seo_meta_to_pages( $force );
+	// SEO defaults: fill empty fields always; overwrite existing only when $overwrite_seo is true.
+	restwell_apply_seo_meta_to_pages( $overwrite_seo );
 	$result['seo_meta_applied'] = true;
-	$result['seo_meta_forced']  = $force;
+	$result['seo_meta_forced']  = (bool) $overwrite_seo;
 
 	// Priority blog posts (idempotent; pass $force so re-run updates content).
 	restwell_seed_priority_blog_posts( $result, $force );
@@ -273,7 +274,9 @@ function restwell_ensure_registered_theme_pages() {
 	$created_any = false;
 
 	foreach ( $pages as $title => $slug ) {
-		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		$page = function_exists( 'restwell_get_page_by_nav_slug' )
+			? restwell_get_page_by_nav_slug( $slug )
+			: get_page_by_path( $slug, OBJECT, 'page' );
 		if ( $page instanceof WP_Post ) {
 			$created_ids[ $title ] = (int) $page->ID;
 		} else {

@@ -1768,49 +1768,6 @@
     line-height: 1.4;
   }
 
-  /* "We restored your details" notice injected by initEnquiryDraftPersistence().
-     Soft sea-glass band — present enough to be noticed, quiet enough not to
-     compete with the form heading. The discard control reads as a link rather
-     than a button so it doesn't compete visually with the primary submit. */
-  .restwell-enq-draft-notice {
-    margin: 0 0 1.25rem;
-    padding: 0.625rem 0.875rem;
-    background-color: rgba(168, 213, 208, 0.18);  /* sea-glass @ ~18% */
-    border-left: 3px solid var(--deep-teal);
-    border-radius: 0.5rem;
-  }
-  .restwell-enq-draft-notice__text {
-    margin: 0;
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    color: var(--deep-teal);
-  }
-  .restwell-enq-draft-notice__discard {
-    appearance: none;
-    background: transparent;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    color: var(--deep-teal);
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    cursor: pointer;
-    font-size: inherit;
-    font-family: inherit;
-    /* 44×44 hit target overflows visually for a tiny inline control;
-       a comfortable horizontal padding zone is the practical compromise here. */
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
-  }
-  .restwell-enq-draft-notice__discard:hover {
-    text-decoration-thickness: 2px;
-  }
-  .restwell-enq-draft-notice__discard:focus-visible {
-    outline: 2px solid var(--deep-teal);
-    outline-offset: 2px;
-  }
-
   /* Homepage / content links: ≥44×44px tap target (WCAG 2.5.5); global :focus-visible applies.
      No negative horizontal margin — it was eating card padding and made copy look flush on mobile. */
   a.restwell-tap-link {

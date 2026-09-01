@@ -43,30 +43,20 @@ get_header();
 
 
 <main id="main-content">
-<section class="hero hero--interior" aria-labelledby="page-h">
-	  <div class="container">
-		<div class="hero__content">
-		  <ol class="breadcrumb"><li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'restwell-retreats' ); ?></a></li><li class="breadcrumb__sep" aria-hidden="true">/</li><li aria-current="page"><?php esc_html_e( 'Website accessibility', 'restwell-retreats' ); ?></li></ol>
-		  <div class="hero__text">
-			<?php if ( '' !== $restwell_legal_label ) : ?>
-			<p class="eyebrow eyebrow--on-dark"><?php echo esc_html( $restwell_legal_label ); ?></p>
-			<?php endif; ?>
-			<h1 id="page-h"><?php echo esc_html( $restwell_legal_heading ); ?></h1>
-			<?php if ( '' !== $restwell_legal_intro ) : ?>
-			<p><?php echo esc_html( $restwell_legal_intro ); ?></p>
-			<?php endif; ?>
-		  </div>
-		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-white">
-	  <div class="container">
-		<div class="prose prose--wide">
-		  <?php echo wp_kses_post( $restwell_legal_body ); ?>
-		</div>
-	  </div>
-	</section>
+<?php
+get_template_part(
+	'template-parts/legal-document',
+	null,
+	array(
+		'post_id'     => $restwell_legal_post_id,
+		'eyebrow'     => $restwell_legal_label,
+		'heading'     => $restwell_legal_heading,
+		'intro'       => $restwell_legal_intro,
+		'crumb_label' => __( 'Website accessibility', 'restwell-retreats' ),
+		'body_html'   => $restwell_legal_body,
+	)
+);
+?>
 
 </main>
 

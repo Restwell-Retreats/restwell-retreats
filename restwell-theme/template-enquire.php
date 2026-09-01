@@ -54,6 +54,35 @@ $restwell_enq_intro   = function_exists( 'restwell_page_content_text' )
 		'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.'
 	)
 	: 'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.';
+
+$enq_success_heading_default = __( 'We’ve got your enquiry', 'restwell-retreats' );
+$enq_success_body_default    = __( 'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' );
+$enq_urgent_body_default     = sprintf(
+	/* translators: %s: phone number */
+	__( 'We’ve flagged this for a priority callback and aim to contact you sooner than our usual 48-hour window. If you need to speak now, call %s.', 'restwell-retreats' ),
+	$phone_number
+);
+
+$enq_success_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_enq_id, 'enq_success_heading', $enq_success_heading_default )
+	: $enq_success_heading_default;
+$enq_success_body    = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_enq_id, 'enq_success_body', $enq_success_body_default )
+	: $enq_success_body_default;
+$enq_urgent_body     = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_enq_id, 'enq_success_urgent_body', $enq_urgent_body_default )
+	: $enq_urgent_body_default;
+
+// Saved Page content can still hold the old “working days” seed; guest copy is 48 hours.
+if ( 0 === strcasecmp( trim( $enq_success_heading ), 'Thank you. We have your enquiry.' ) ) {
+	$enq_success_heading = $enq_success_heading_default;
+}
+if ( false !== stripos( $enq_success_body, 'working days' ) ) {
+	$enq_success_body = $enq_success_body_default;
+}
+if ( false !== stripos( $enq_urgent_body, 'working days' ) ) {
+	$enq_urgent_body = $enq_urgent_body_default;
+}
 ?>
 
 <main id="main-content">
@@ -76,6 +105,7 @@ get_template_part(
 			),
 		),
 		'post_id'    => $restwell_enq_id,
+		'overlay'    => 'heavy',
 	)
 );
 ?>
@@ -91,18 +121,10 @@ get_template_part(
 				<p class="lede"><?php esc_html_e( 'You submitted recently with this email, so we have not sent another acknowledgement. Our team is still working from your earlier message and will reply within 48 hours on most enquiries.', 'restwell-retreats' ); ?></p>
 				<?php elseif ( $enq_urgent ) : ?>
 				<h2><?php esc_html_e( 'We’ve got your urgent enquiry', 'restwell-retreats' ); ?></h2>
-				<p class="lede">
-					<?php
-					printf(
-						/* translators: %s: phone number */
-						esc_html__( 'We’ve flagged this for a priority callback and aim to contact you sooner than our usual 48-hour window. If you need to speak now, call %s.', 'restwell-retreats' ),
-						esc_html( $phone_number )
-					);
-					?>
-				</p>
+				<p class="lede"><?php echo esc_html( $enq_urgent_body ); ?></p>
 				<?php else : ?>
-				<h2><?php esc_html_e( 'We’ve got your enquiry', 'restwell-retreats' ); ?></h2>
-				<p class="lede"><?php esc_html_e( 'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' ); ?></p>
+				<h2><?php echo esc_html( $enq_success_heading ); ?></h2>
+				<p class="lede"><?php echo esc_html( $enq_success_body ); ?></p>
 				<?php endif; ?>
 				<?php if ( $enq_mail_warn && ! $enq_duplicate ) : ?>
 				<p class="lede" role="status"><?php esc_html_e( 'Our confirmation email may not have sent just now. Your enquiry is still saved. Please call us if you do not hear back within 48 hours.', 'restwell-retreats' ); ?></p>
@@ -208,9 +230,10 @@ get_template_part(
 					<fieldset class="form-stack">
 						<legend class="form-legend"><?php esc_html_e( 'Your needs', 'restwell-retreats' ); ?></legend>
 						<div class="field"><label for="enq-care"><?php esc_html_e( 'Care requirements', 'restwell-retreats' ); ?></label><textarea id="enq-care" name="enq_care" placeholder="Optional, e.g. morning personal care, overnight support"><?php echo esc_textarea( $enq_val( 'enq_care', $enq_fields ) ); ?></textarea></div>
-						<div class="field"><label for="enq-access"><?php esc_html_e( 'Accessibility needs', 'restwell-retreats' ); ?></label><textarea id="enq-access" name="enq_accessibility" placeholder="Equipment, doorway clearances, vehicle access…"><?php echo esc_textarea( $enq_val( 'enq_access', $enq_fields ) ); ?></textarea></div>
+						<div class="field"><label for="enq-access"><?php esc_html_e( 'Accessibility needs', 'restwell-retreats' ); ?></label><textarea id="enq-access" name="enq_accessibility" placeholder="Equipment, doorway clearances, vehicle access…"><?php echo esc_textarea( $enq_val( 'enq_accessibility', $enq_fields ) ); ?></textarea></div>
+						<div class="field"><label for="enq-health-consent"><input id="enq-health-consent" type="checkbox" name="enq_health_consent" value="1" aria-describedby="enq-health-consent-error" <?php checked( $enq_val( 'enq_health_consent', $enq_fields ), '1' ); ?> /> <span><?php esc_html_e( 'If I have added care or accessibility notes, I agree Restwell can use that information to reply to this enquiry. Those notes can include health information, as explained in the', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'privacy-policy' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>.</span></label><p class="field-hint" id="enq-health-consent-hint"><?php esc_html_e( 'Required only if you fill in care or accessibility notes above.', 'restwell-retreats' ); ?></p><p class="field-error" id="enq-health-consent-error" role="alert" hidden><?php esc_html_e( 'Confirm we can use those notes before sending.', 'restwell-retreats' ); ?></p></div>
 						<div class="field"><label for="enq-msg"><?php esc_html_e( 'Message *', 'restwell-retreats' ); ?></label><textarea id="enq-msg" name="enq_message" required aria-describedby="enq-msg-error"><?php echo esc_textarea( $enq_val( 'enq_message', $enq_fields ) ); ?></textarea><p class="field-error" id="enq-msg-error" role="alert" hidden><?php esc_html_e( 'Add a short message so we know what you need.', 'restwell-retreats' ); ?></p></div>
-						<div class="field"><label for="enq-consent"><input id="enq-consent" type="checkbox" name="enq_consent" value="1" required aria-describedby="enq-consent-error" /> <span><?php esc_html_e( 'I agree to Restwell contacting me about this enquiry and to my information being handled as set out in the', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'privacy-policy' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a> *</span></label><p class="field-error" id="enq-consent-error" role="alert" hidden><?php esc_html_e( 'Check this box so we can contact you about your enquiry.', 'restwell-retreats' ); ?></p></div>
+						<div class="field"><label for="enq-consent"><input id="enq-consent" type="checkbox" name="enq_consent" value="1" required aria-describedby="enq-consent-error" <?php checked( $enq_val( 'enq_consent', $enq_fields ), '1' ); ?> /> <span><?php esc_html_e( 'I agree to Restwell contacting me about this enquiry and to my information being handled as set out in the', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'privacy-policy' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a> *</span></label><p class="field-error" id="enq-consent-error" role="alert" hidden><?php esc_html_e( 'Check this box so we can contact you about your enquiry.', 'restwell-retreats' ); ?></p></div>
 						<div class="field"><label for="enq-marketing"><input id="enq-marketing" type="checkbox" name="enq_marketing_optin" value="1" <?php checked( $enq_val( 'enq_marketing_optin', $enq_fields ), '1' ); ?> /> <?php esc_html_e( 'Keep me updated about Restwell (optional)', 'restwell-retreats' ); ?></label></div>
 					</fieldset>
 					<div class="form-actions form-actions--split">

@@ -227,14 +227,7 @@ function restwell_crm_reminder_build_email( object $row, int $stale_hours ): arr
 	$age_hours = (int) round( restwell_crm_reminder_age_hours( (string) $row->submitted_at ) );
 	$urgent    = (int) $row->is_urgent === 1;
 
-	$subject_prefix = $urgent ? '[URGENT] ' : '';
-	$subject        = sprintf(
-		/* translators: 1: optional "[URGENT] " prefix, 2: enquirer name, 3: number of hours stale. */
-		'%1$s[Restwell Retreats] Reminder: %2$s enquiry waiting %3$dh — please follow up',
-		$subject_prefix,
-		(string) $row->name,
-		$age_hours
-	);
+	$subject        = restwell_mail_staff_subject( $urgent ? 'urgent_stale_enquiry' : 'stale_enquiry', (int) $row->id );
 
 	$crm_url = add_query_arg(
 		array(
@@ -283,10 +276,13 @@ function restwell_crm_reminder_build_email( object $row, int $stale_hours ): arr
 	);
 
 	$body    = implode( "\n", $lines );
-	$headers = array(
-		'Content-Type: text/plain; charset=UTF-8',
-		// Replying goes straight to the guest, not back into the cron job.
-		'Reply-To: ' . (string) $row->name . ' <' . (string) $row->email . '>',
+	$headers = array_values(
+		array_filter(
+			array(
+				'Content-Type: text/plain; charset=UTF-8',
+				restwell_mail_reply_to_header( (string) $row->email ),
+			)
+		)
 	);
 
 	return array(

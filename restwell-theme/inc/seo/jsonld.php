@@ -68,7 +68,7 @@ function restwell_get_business_geo_coordinates() {
  * @return array<string, mixed>
  */
 function restwell_build_jsonld_organization() {
-	$site_name = get_bloginfo( 'name' );
+	$site_name = restwell_get_schema_brand_name();
 	$site_url  = home_url( '/' );
 	$addr      = restwell_get_business_postal_address_parts();
 
@@ -139,10 +139,6 @@ function restwell_output_structured_data() {
 
 	if ( is_page_template( 'template-whitstable-guide.php' ) ) {
 		restwell_output_jsonld_tourist_destination();
-	}
-
-	if ( is_page_template( 'template-how-it-works.php' ) ) {
-		restwell_output_jsonld_how_to();
 	}
 
 	if ( is_page_template( 'template-enquire.php' ) ) {
@@ -382,9 +378,9 @@ function restwell_get_default_lodging_amenity_features() {
  */
 function restwell_output_jsonld_local_business( $page_id = 0 ) {
 	$page_id   = (int) $page_id;
-	$site_name = get_bloginfo( 'name' );
+	$site_name = restwell_get_schema_brand_name();
 	$site_url  = home_url( '/' );
-	$phone     = (string) get_option( 'restwell_phone_number', '' );
+	$phone     = restwell_get_public_phone_tel();
 	$email     = (string) get_option( 'restwell_enquiry_notify_email', '' );
 
 	// Full street + postcode, house number never included (owner decision).
@@ -485,9 +481,7 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 		'acceptsReservations' => true,
 	);
 
-	if ( $phone !== '' ) {
-		$schema['telephone'] = $phone;
-	}
+	$schema['telephone'] = $phone;
 	if ( $email !== '' ) {
 		$schema['email'] = $email;
 	}
@@ -752,12 +746,6 @@ function restwell_get_homepage_faq_meta_seed_map() {
 function restwell_output_jsonld_homepage_faq() {
 	$front_id = (int) get_option( 'page_on_front', 0 );
 	if ( $front_id <= 0 ) {
-		return;
-	}
-	// Match front-page.php: section hidden when heading cleared in Page Content Fields.
-	$heading_meta = get_post_meta( $front_id, 'home_faq_heading', true );
-	$show_section = ! ( metadata_exists( 'post', $front_id, 'home_faq_heading' ) && $heading_meta === '' );
-	if ( ! $show_section ) {
 		return;
 	}
 
@@ -1084,7 +1072,7 @@ function restwell_get_faq_page_default_pairs() {
 		),
 		array(
 			'q'   => 'Can a council or the NHS pay?',
-			'a'   => 'We can invoice you, a local authority, the NHS or a grant body, and the rate is identical either way. What we can’t do is promise your package will cover a holiday. That decision sits with your social worker or case manager. See <a href="/resources/">Funding and support</a>.',
+			'a'   => 'We can invoice you, a local authority, the NHS or a grant body, and the rate is identical either way. What we can’t do is promise your package will cover a holiday. That decision sits with your social worker or case manager. See <a href="/funding-and-support/">Funding and support</a>.',
 			'cat' => 'funding',
 		),
 		array(
@@ -1203,57 +1191,6 @@ function restwell_output_jsonld_tourist_destination() {
 }
 
 /**
- * HowTo - booking process steps on the how-it-works template.
- */
-function restwell_output_jsonld_how_to() {
-	$pid = get_queried_object_id();
-	if ( ! $pid ) {
-		return;
-	}
-
-	$name = get_post_meta( $pid, 'meta_title', true );
-	if ( $name === '' ) {
-		$name = __( 'How to book Restwell Retreats', 'restwell-retreats' );
-	}
-
-	$desc = get_post_meta( $pid, 'meta_description', true );
-	if ( $desc === '' ) {
-		$desc = __( 'A straightforward three-step process to enquire, confirm suitability, and book your accessible holiday at Restwell Retreats.', 'restwell-retreats' );
-	}
-
-	$schema = array(
-		'@context'    => 'https://schema.org',
-		'@type'       => 'HowTo',
-		'name'        => $name,
-		'description' => $desc,
-		'url'         => get_permalink( $pid ),
-		'step'        => array(
-			array(
-				'@type'    => 'HowToStep',
-				'position' => 1,
-				'name'     => 'Share your requirements',
-				'text'     => 'Use the enquiry form or get in touch by phone or email to tell us about your dates, access needs, and any questions you have.',
-				'url'      => home_url( '/enquire/' ),
-			),
-			array(
-				'@type'    => 'HowToStep',
-				'position' => 2,
-				'name'     => 'Confirm suitability',
-				'text'     => 'We will talk through your specific requirements, share the access statement, and confirm the property is right for you before you commit to anything.',
-			),
-			array(
-				'@type'    => 'HowToStep',
-				'position' => 3,
-				'name'     => 'Book and prepare',
-				'text'     => 'Once you are happy, we confirm your booking and help you plan your stay, including care support options if needed.',
-			),
-		),
-	);
-
-	restwell_print_jsonld( $schema );
-}
-
-/**
  * ContactPage - output on the enquire template (primary contact surface).
  */
 function restwell_output_jsonld_contact_page() {
@@ -1267,7 +1204,7 @@ function restwell_output_jsonld_contact_page() {
 		return;
 	}
 
-	$phone = (string) get_option( 'restwell_phone_number', '' );
+	$phone = restwell_get_public_phone_tel();
 	$email = (string) get_option( 'restwell_enquiry_notify_email', '' );
 
 	$contact_point = array(
@@ -1277,9 +1214,7 @@ function restwell_output_jsonld_contact_page() {
 		'availableLanguage' => 'English',
 	);
 
-	if ( $phone !== '' ) {
-		$contact_point['telephone'] = $phone;
-	}
+	$contact_point['telephone'] = $phone;
 	if ( $email !== '' ) {
 		$contact_point['email'] = $email;
 	}
@@ -1288,7 +1223,7 @@ function restwell_output_jsonld_contact_page() {
 		array(
 			'@type'         => 'Organization',
 			'@id'           => trailingslashit( home_url( '/' ) ) . '#organization',
-			'name'          => get_bloginfo( 'name' ),
+			'name'          => restwell_get_schema_brand_name(),
 			'url'           => home_url( '/' ),
 			'contactPoint'  => $contact_point,
 		)

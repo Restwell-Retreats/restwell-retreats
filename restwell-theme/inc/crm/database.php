@@ -49,6 +49,10 @@ function restwell_crm_maybe_create_table() {
 		is_urgent tinyint(1) NOT NULL DEFAULT 0,
 		marketing_optin tinyint(1) NOT NULL DEFAULT 0,
 		marketing_optin_at datetime DEFAULT NULL,
+		privacy_consented_at datetime DEFAULT NULL,
+		privacy_policy_version varchar(32) NOT NULL DEFAULT '',
+		health_data_consent tinyint(1) NOT NULL DEFAULT 0,
+		health_data_consented_at datetime DEFAULT NULL,
 		status varchar(50) NOT NULL DEFAULT 'new',
 		assigned_to bigint(20) UNSIGNED DEFAULT NULL,
 		staff_notes text NOT NULL,
@@ -58,11 +62,13 @@ function restwell_crm_maybe_create_table() {
 		qualified_at datetime DEFAULT NULL,
 		booked_at datetime DEFAULT NULL,
 		closed_at datetime DEFAULT NULL,
+		anonymised_at datetime DEFAULT NULL,
 		PRIMARY KEY  (id),
 		KEY status_submitted (status, submitted_at),
 		KEY email_submitted (email, submitted_at),
 		KEY follow_up_status (follow_up_at, status),
-		KEY urgent_status (is_urgent, status)
+		KEY urgent_status (is_urgent, status),
+		KEY anonymised_at (anonymised_at)
 	) {$charset_collate};"
 	);
 
@@ -92,8 +98,10 @@ function restwell_crm_maybe_create_table() {
 		sent_at datetime DEFAULT NULL,
 		confirmed_at datetime DEFAULT NULL,
 		created_at datetime NOT NULL,
+		anonymised_at datetime DEFAULT NULL,
 		PRIMARY KEY  (id),
-		KEY email (email)
+		KEY email (email),
+		KEY anonymised_at (anonymised_at)
 	) {$charset_collate};"
 	);
 
@@ -111,9 +119,11 @@ function restwell_crm_maybe_create_table() {
 		marketing_optin_at datetime DEFAULT NULL,
 		marketing_sync_failed tinyint(1) NOT NULL DEFAULT 0,
 		source_url varchar(500) NOT NULL DEFAULT '',
+		anonymised_at datetime DEFAULT NULL,
 		PRIMARY KEY  (id),
 		KEY submitted_at (submitted_at),
-		KEY email (email)
+		KEY email (email),
+		KEY anonymised_at (anonymised_at)
 	) {$charset_collate};"
 	);
 

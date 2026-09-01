@@ -546,12 +546,20 @@ function restwell_seo_checklist_sitewide(): array {
 		);
 	}
 
-	$mode = (string) get_option( 'restwell_analytics_load_mode', 'head' );
-	if ( $ga4 !== '' && 'head' === $mode ) {
+	$mode = (string) get_option( 'restwell_analytics_load_mode', 'consent_gated' );
+	$has_tracker = ( $ga4 !== '' || $metricool !== '' );
+	if ( $has_tracker && 'head' === $mode ) {
 		$issues[] = array(
 			'id'       => 'analytics_mode',
-			'severity' => 'info',
-			'message'  => __( 'Analytics loads in the head immediately. For page speed or a cookie banner, consider Footer deferred or Consent-gated.', 'restwell-retreats' ),
+			'severity' => 'error',
+			'message'  => __( 'Analytics loads in the head without cookie consent (PECR). Switch to Consent-gated so GA4/Metricool wait for the cookie banner.', 'restwell-retreats' ),
+			'field'    => 'restwell_analytics_load_mode',
+		);
+	} elseif ( $has_tracker && 'footer_deferred' === $mode ) {
+		$issues[] = array(
+			'id'       => 'analytics_mode_deferred',
+			'severity' => 'warn',
+			'message'  => __( 'Analytics loads in the footer without cookie consent. Use Consent-gated so tracking waits for Accept analytics.', 'restwell-retreats' ),
 			'field'    => 'restwell_analytics_load_mode',
 		);
 	}

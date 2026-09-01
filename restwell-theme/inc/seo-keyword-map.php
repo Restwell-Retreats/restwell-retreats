@@ -23,6 +23,7 @@ function restwell_keyword_map_excluded_slugs() {
 		'sample-page',
 		'privacy-policy',
 		'terms-and-conditions',
+		'accessible-beaches-kent-coast',
 	);
 }
 

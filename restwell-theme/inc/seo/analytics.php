@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function restwell_get_analytics_load_mode() {
-	$mode = (string) get_option( 'restwell_analytics_load_mode', 'head' );
+	$mode = (string) get_option( 'restwell_analytics_load_mode', 'consent_gated' );
 	$allowed = array( 'head', 'footer_deferred', 'consent_gated' );
-	return in_array( $mode, $allowed, true ) ? $mode : 'head';
+	return in_array( $mode, $allowed, true ) ? $mode : 'consent_gated';
 }
 
 /**

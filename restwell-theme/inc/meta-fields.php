@@ -96,7 +96,15 @@ function restwell_page_content_meta_box_callback( WP_Post $post ) {
 		data-required-fields="<?php echo esc_attr( wp_json_encode( array_keys( $required ) ) ); ?>"
 	>
 		<p class="restwell-meta-fields__intro description">
-			<?php esc_html_e( 'Pick a section, edit the fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' ); ?>
+			<?php
+			$notice = function_exists( 'restwell_page_content_editor_notice' )
+				? restwell_page_content_editor_notice( $post )
+				: '';
+			if ( $notice === '' ) {
+				$notice = __( 'Pick a section, edit the fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+			}
+			echo esc_html( $notice );
+			?>
 		</p>
 
 		<details class="restwell-meta-fields__checklist" id="restwell-content-checklist"<?php echo ( $error_count > 0 || $warn_count > 0 ) ? ' open' : ''; ?>>

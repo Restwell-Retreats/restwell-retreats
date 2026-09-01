@@ -32,7 +32,10 @@ function restwell_crm_save_enquiry( array $data ): array {
 
 	// Duplicate guard: same email, submitted in the last 30 minutes.
 	if ( $email ) {
-		$cutoff  = gmdate( 'Y-m-d H:i:s', time() - 30 * MINUTE_IN_SECONDS );
+		$cutoff = wp_date( 'Y-m-d H:i:s', time() - 30 * MINUTE_IN_SECONDS );
+		if ( ! is_string( $cutoff ) || $cutoff === '' ) {
+			$cutoff = current_time( 'mysql' );
+		}
 		$dup_id  = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				'SELECT id FROM %i WHERE email = %s AND submitted_at >= %s ORDER BY id DESC LIMIT 1',
@@ -54,6 +57,13 @@ function restwell_crm_save_enquiry( array $data ): array {
 	$date_to   = ! empty( $data['date_to'] ) ? $data['date_to'] : null;
 	$marketing_optin    = ! empty( $data['marketing_optin'] ) ? 1 : 0;
 	$marketing_optin_at = $marketing_optin ? current_time( 'mysql' ) : null;
+	$now                = current_time( 'mysql' );
+	$policy_version = function_exists( 'restwell_privacy_policy_version' )
+		? restwell_privacy_policy_version()
+		: sanitize_text_field( (string) ( $data['privacy_policy_version'] ?? '' ) );
+	$privacy_consented_at = ! empty( $data['privacy_consent'] ) ? $now : null;
+	$health_consent       = ! empty( $data['health_data_consent'] ) ? 1 : 0;
+	$health_consented_at  = $health_consent ? $now : null;
 	$staff_notes = '';
 	if ( array_key_exists( 'marketing_optin', $data ) ) {
 		$staff_notes = ! empty( $data['marketing_optin'] )
@@ -64,27 +74,31 @@ function restwell_crm_save_enquiry( array $data ): array {
 	$result = $wpdb->insert(
 		$table,
 		array(
-			'submitted_at'       => current_time( 'mysql' ),
-			'name'               => $data['name'] ?? '',
-			'email'              => $email,
-			'phone'              => $data['phone'] ?? '',
-			'preferred_dates'    => $data['dates'] ?? '',
-			'date_from'          => $date_from,
-			'date_to'            => $date_to,
-			'num_guests'         => $data['guests'] ?? '',
-			'care_requirements'  => $data['care'] ?? '',
-			'accessibility'      => $data['access'] ?? '',
-			'funding_type'       => $data['funding'] ?? '',
-			'contact_preference' => $data['contact_pref'] ?? '',
-			'preferred_time'     => $data['pref_time'] ?? '',
-			'message'            => $data['message'] ?? '',
-			'is_urgent'          => ! empty( $data['urgent'] ) ? 1 : 0,
-			'marketing_optin'    => $marketing_optin,
-			'marketing_optin_at' => $marketing_optin_at,
-			'status'             => 'new',
-			'staff_notes'        => $staff_notes,
+			'submitted_at'             => $now,
+			'name'                     => $data['name'] ?? '',
+			'email'                    => $email,
+			'phone'                    => $data['phone'] ?? '',
+			'preferred_dates'          => $data['dates'] ?? '',
+			'date_from'                => $date_from,
+			'date_to'                  => $date_to,
+			'num_guests'               => $data['guests'] ?? '',
+			'care_requirements'        => $data['care'] ?? '',
+			'accessibility'            => $data['access'] ?? '',
+			'funding_type'             => $data['funding'] ?? '',
+			'contact_preference'       => $data['contact_pref'] ?? '',
+			'preferred_time'           => $data['pref_time'] ?? '',
+			'message'                  => $data['message'] ?? '',
+			'is_urgent'                => ! empty( $data['urgent'] ) ? 1 : 0,
+			'marketing_optin'          => $marketing_optin,
+			'marketing_optin_at'       => $marketing_optin_at,
+			'privacy_consented_at'     => $privacy_consented_at,
+			'privacy_policy_version'   => $policy_version,
+			'health_data_consent'      => $health_consent,
+			'health_data_consented_at' => $health_consented_at,
+			'status'                   => 'new',
+			'staff_notes'              => $staff_notes,
 		),
-		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s' )
+		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
 	);
 
 	if ( $result ) {

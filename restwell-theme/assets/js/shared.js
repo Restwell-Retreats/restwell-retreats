@@ -720,8 +720,29 @@
      * inconsistent across browsers and easy to miss on a checkbox.
      * Returns the first invalid field, or null if the panel is clean.
      */
+    function msFieldError(input) {
+      var wrapper = input && input.closest ? input.closest('.field') : null;
+      return wrapper ? wrapper.querySelector('.field-error') : null;
+    }
+
+    function msSyncHealthConsentRequired() {
+      var healthBox = document.getElementById('enq-health-consent');
+      if (!healthBox) return;
+      var care = document.getElementById('enq-care');
+      var access = document.getElementById('enq-access');
+      var hasNotes = (care && care.value.trim() !== '') || (access && access.value.trim() !== '');
+      healthBox.required = hasNotes;
+      if (hasNotes) return;
+      var wrapper = healthBox.closest('.field');
+      if (wrapper) wrapper.classList.remove('is-invalid');
+      healthBox.setAttribute('aria-invalid', 'false');
+      var errorEl = msFieldError(healthBox);
+      if (errorEl) errorEl.hidden = true;
+    }
+
     function msValidatePanel(panel) {
       if (!panel) return null;
+      msSyncHealthConsentRequired();
       var fields = Array.prototype.slice.call(panel.querySelectorAll('[required]'));
       var firstInvalid = null;
       fields.forEach(function (input) {
@@ -729,8 +750,7 @@
         var ok = input.checkValidity();
         if (wrapper) wrapper.classList.toggle('is-invalid', !ok);
         input.setAttribute('aria-invalid', ok ? 'false' : 'true');
-        var errorId = input.getAttribute('aria-describedby');
-        var errorEl = errorId ? document.getElementById(errorId) : null;
+        var errorEl = msFieldError(input);
         if (errorEl) errorEl.hidden = ok;
         if (!ok && !firstInvalid) firstInvalid = input;
       });
@@ -741,14 +761,17 @@
     multistep.addEventListener('change', msClearFieldError);
     function msClearFieldError(event) {
       var input = event.target;
+      if (input && (input.id === 'enq-care' || input.id === 'enq-access')) {
+        msSyncHealthConsentRequired();
+      }
       var wrapper = input.closest ? input.closest('.field') : null;
       if (!wrapper || !wrapper.classList.contains('is-invalid') || !input.checkValidity()) return;
       wrapper.classList.remove('is-invalid');
       input.setAttribute('aria-invalid', 'false');
-      var errorId = input.getAttribute('aria-describedby');
-      var errorEl = errorId ? document.getElementById(errorId) : null;
+      var errorEl = msFieldError(input);
       if (errorEl) errorEl.hidden = true;
     }
+    msSyncHealthConsentRequired();
 
     function msGoToStep(step) {
       msCurrent = step;
@@ -822,6 +845,7 @@
           msForm.hidden = false;
         }
         msSuccess.hidden = true;
+        msSyncHealthConsentRequired();
         msGoToStep(1);
       });
     }

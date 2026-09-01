@@ -22,13 +22,13 @@ $restwell_crm_modules = array(
 	'handlers.php',
 	'status-transition.php',
 	'mailing-list.php',
+	'retention.php',
 	'dashboard.php',
 	'enquiries.php',
 );
 
-// Public form pipeline. In production the mu-plugin (wp-content/mu-plugins/
-// restwell-crm) loads its own copies first; these theme copies are the fallback
-// for theme-only installs (Local, Playground) so the enquiry form works there.
+// Public form pipeline. The mu-plugin loader requires these same files from
+// this directory; skip a second include when RESTWELL_CRM_VERSION is already set.
 if ( ! defined( 'RESTWELL_CRM_VERSION' ) ) {
 	$restwell_crm_modules[] = 'form-notify.php';
 	$restwell_crm_modules[] = 'emails.php';

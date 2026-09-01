@@ -169,6 +169,47 @@ function restwell_page_content_text( $post_id, $key, $fallback = '' ) {
 }
 
 /**
+ * Honest editor note for the Page content metabox (what actually goes live).
+ *
+ * @param WP_Post|null $post Page being edited.
+ * @return string Plain text for esc_html().
+ */
+function restwell_page_content_editor_notice( $post = null ) {
+	if ( ! $post instanceof WP_Post ) {
+		return '';
+	}
+
+	$front_id = (int) get_option( 'page_on_front', 0 );
+	if ( $front_id > 0 && (int) $post->ID === $front_id ) {
+		return __( 'On the homepage, the live site reads the Hero heading and intro, plus hero media. Guest reviews are live Google reviews when the Places API is set, otherwise the Testimonials tab — paste the guest’s words, do not rewrite. Partners heading, intro, CTA and logos go live from the Partners tab (theme images until a logo is uploaded). Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	$template = (string) get_page_template_slug( $post );
+	$legal    = array(
+		'template-privacy-policy.php',
+		'template-terms-and-conditions.php',
+		'template-accessibility-policy.php',
+	);
+	if ( in_array( $template, $legal, true ) ) {
+		return __( 'Label, heading, intro, and body HTML go live. The hero image is used when one is set (otherwise the theme stock coastline). Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	if ( 'template-faq.php' === $template ) {
+		return __( 'Heading, intro, and the FAQ question/answer fields on this page go live. Homepage FAQ is in the theme (inc/homepage-faq.php). How It Works has its own FAQ fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	if ( 'template-enquire.php' === $template ) {
+		return __( 'Hero heading and intro go live. Success heading and bodies appear after a guest submits the form (duplicate submissions keep a fixed message). Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	if ( $template !== '' ) {
+		return __( 'Hero heading, intro, and hero image go live where this template reads them. Most body copy on concept pages lives in the theme PHP, not in this panel. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	return __( 'Pick a section, edit the fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+}
+
+/**
  * Front page definitions.
  */
 function restwell_get_front_page_field_definitions() {
@@ -283,22 +324,18 @@ function restwell_get_front_page_field_definitions() {
 			'home_comparison_row4_restwell'  => restwell_field( __( 'Row 4: Restwell', 'restwell-retreats' ) ),
 			'home_comparison_row4_other'     => restwell_field( __( 'Row 4: hotel / care setting', 'restwell-retreats' ) ),
 		),
-		'FAQ' => array(
-			'home_faq_label'   => restwell_field( __( 'Section label', 'restwell-retreats' ) ),
-			'home_faq_heading' => restwell_field( __( 'Section heading (h2). Clear and save empty to hide this section.', 'restwell-retreats' ) ),
-		),
 		'Trust' => array(
 			'trust_label'           => restwell_field( __( 'Section label (optional)', 'restwell-retreats' ) ),
 			'trust_heading'         => restwell_field( __( 'Section heading (optional)', 'restwell-retreats' ) ),
 			'trust_badge_image_id'  => restwell_field( __( 'Badge image (attachment ID, e.g. CQC)', 'restwell-retreats' ), 'image' ),
 			'trust_line'            => restwell_field( __( 'Trust line: title · badge, split by middle dot (e.g. Care with Continuity of Care Services · CQC regulated)', 'restwell-retreats' ) ),
-			'trust_partner_url'     => restwell_field( __( 'Care partner website URL (Continuity of Care Services)', 'restwell-retreats' ) ),
+			'trust_partner_url'     => restwell_field( __( 'Continuity website URL (sister company)', 'restwell-retreats' ) ),
 			'trust_cqc_profile_url' => restwell_field( __( 'CQC location profile URL (Continuity\'s inspection page)', 'restwell-retreats' ) ),
 		),
 		'Testimonials' => array(
 			'testimonial_label'   => restwell_field( __( 'Section label (optional)', 'restwell-retreats' ) ),
 			'testimonial_heading' => restwell_field( __( 'Section heading (e.g. What guests say)', 'restwell-retreats' ) ),
-			'testimonial_1_quote' => restwell_field( __( 'Testimonial 1 quote', 'restwell-retreats' ), 'textarea' ),
+			'testimonial_1_quote' => restwell_field( __( 'Testimonial 1 quote — guest’s consecutive words from the review, unchanged', 'restwell-retreats' ), 'textarea' ),
 			'testimonial_1_name'  => restwell_field( __( 'Testimonial 1 name', 'restwell-retreats' ) ),
 			'testimonial_1_role'  => restwell_field( __( 'Testimonial 1 role/location (optional)', 'restwell-retreats' ) ),
 			'testimonial_2_quote' => restwell_field( __( 'Testimonial 2 quote', 'restwell-retreats' ), 'textarea' ),
@@ -757,9 +794,9 @@ function restwell_get_enquire_field_definitions() {
 		),
 		'Form' => array(
 			'enq_form_heading'        => restwell_field( __( 'Form heading (h2)', 'restwell-retreats' ) ),
-			'enq_success_heading'     => restwell_field( __( 'Success message heading', 'restwell-retreats' ) ),
-			'enq_success_body'        => restwell_field( __( 'Success message body (e.g. one to two working days)', 'restwell-retreats' ), 'textarea' ),
-			'enq_success_urgent_body' => restwell_field( __( 'Success message body when urgent', 'restwell-retreats' ), 'textarea' ),
+			'enq_success_heading'     => restwell_field( __( 'Success message heading (default and urgent)', 'restwell-retreats' ) ),
+			'enq_success_body'        => restwell_field( __( 'Success message body (default). Aim for a 48-hour reply, not working days.', 'restwell-retreats' ), 'textarea' ),
+			'enq_success_urgent_body' => restwell_field( __( 'Success message body when urgent (48-hour window, not working days)', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Sidebar' => array(
 			'enq_contact_heading' => restwell_field( __( 'Sidebar contact card heading', 'restwell-retreats' ) ),

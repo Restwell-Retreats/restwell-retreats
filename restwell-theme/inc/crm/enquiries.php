@@ -250,6 +250,12 @@ function restwell_crm_enquiries_page() {
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-export-form">
 				<?php wp_nonce_field( 'restwell_crm_export_csv' ); ?>
 				<input type="hidden" name="action" value="restwell_crm_export_csv" />
+				<?php if ( restwell_crm_can_export_sensitive() ) : ?>
+					<label class="rw-export-sensitive">
+						<input type="checkbox" name="include_sensitive" value="1" />
+						<?php esc_html_e( 'Include care and accessibility notes', 'restwell-retreats' ); ?>
+					</label>
+				<?php endif; ?>
 				<button type="submit" class="page-title-action">
 					&#8659; <?php esc_html_e( 'Export CSV', 'restwell-retreats' ); ?>
 				</button>
@@ -723,6 +729,38 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 						if ( ! empty( $row->marketing_optin ) && ! empty( $row->marketing_optin_at ) ) {
 							$contact_fields[ __( 'Marketing opted in at', 'restwell-retreats' ) ] = esc_html(
 								date_i18n( 'j M Y, H:i', strtotime( $row->marketing_optin_at ) )
+							);
+						}
+						if ( ! empty( $row->privacy_consented_at ) ) {
+							$privacy_stamp = date_i18n( 'j M Y, H:i', strtotime( (string) $row->privacy_consented_at ) );
+							$policy_ver    = isset( $row->privacy_policy_version ) ? trim( (string) $row->privacy_policy_version ) : '';
+							$contact_fields[ __( 'Privacy consent', 'restwell-retreats' ) ] = esc_html(
+								$policy_ver
+									? sprintf(
+										/* translators: 1: datetime, 2: policy version */
+										__( 'Yes — %1$s (policy %2$s)', 'restwell-retreats' ),
+										$privacy_stamp,
+										$policy_ver
+									)
+									: sprintf(
+										/* translators: %s: datetime */
+										__( 'Yes — %s', 'restwell-retreats' ),
+										$privacy_stamp
+									)
+							);
+						}
+						if ( ! empty( $row->health_data_consent ) ) {
+							$health_stamp = ! empty( $row->health_data_consented_at )
+								? date_i18n( 'j M Y, H:i', strtotime( (string) $row->health_data_consented_at ) )
+								: '';
+							$contact_fields[ __( 'Health-data consent', 'restwell-retreats' ) ] = esc_html(
+								$health_stamp
+									? sprintf(
+										/* translators: %s: datetime */
+										__( 'Yes — care/accessibility notes — %s', 'restwell-retreats' ),
+										$health_stamp
+									)
+									: __( 'Yes — care/accessibility notes', 'restwell-retreats' )
 							);
 						}
 						// Preferred dates moved out of this read-only block — they get

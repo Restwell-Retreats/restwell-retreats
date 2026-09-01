@@ -40,6 +40,26 @@ function restwell_get_public_site_host(): string {
 }
 
 /**
+ * Stable version stamp stored on enquiry consent (YYYY-MM-DD).
+ * Bump when the privacy policy body that guests consent to changes.
+ *
+ * @return string
+ */
+function restwell_privacy_policy_version(): string {
+	return '2026-09-01';
+}
+
+/**
+ * Human-readable last-updated date for the privacy policy body.
+ *
+ * @return string
+ */
+function restwell_privacy_policy_updated_label(): string {
+	$ts = strtotime( restwell_privacy_policy_version() . ' UTC' );
+	return $ts ? gmdate( 'j F Y', $ts ) : restwell_privacy_policy_version();
+}
+
+/**
  * Returns minimal Privacy Policy body HTML (used by template-privacy-policy when legal_body_html is empty).
  *
  * @return string HTML string.
@@ -55,21 +75,23 @@ function restwell_get_privacy_policy_content(): string {
 <p>The data controller for personal information collected through this site is ' . $entity . '.</p>
 
 <h2>What information we collect and why</h2>
-<p>When you use our enquiry form we collect: your name, email address, phone number, and any care or accessibility information you choose to share. We use this on the basis of our legitimate interests to respond to your enquiry and, if you go on to book, to perform the contract for your stay.</p>
-<p>We do not sell your personal information. We share it only with our care partner, Continuity of Care Services (CQC-regulated), when care support is part of your booking and you have agreed to that arrangement.</p>
+<p>When you use our enquiry form we collect your name, email address, phone number, and the message you send. We also keep any stay dates, guest numbers, funding notes, and contact preferences you choose to add. The legal basis is your consent, recorded when you tick the privacy box on the form. If you later book, we also use the same details to perform the contract for your stay.</p>
+<p>Care requirements and accessibility needs are optional. Those notes can include health information. We only store them if you tick the separate health-data box. The legal basis for that is your explicit consent (UK GDPR Article 9). You can ask us to delete those notes at any time by emailing us.</p>
+<p>We do not sell your personal information. We do not share enquiry details with our sister company, Continuity of Care Services (CQC-regulated), unless a stay with optional care is later agreed in writing. Ticking the enquiry form does not share your data with Continuity.</p>
 
 <h2>Cookies and analytics</h2>
-<p>We use cookies for essential site functionality and, where you consent, for analytics (Google Analytics 4). You can change preferences using the cookie controls shown on your first visit.</p>
+<p>Essential cookies keep the site working (for example, security checks on forms and remembering the cookie choice you make). We do not use advertising cookies.</p>
+<p>Analytics cookies (Google Analytics 4, and Metricool if it is configured) are optional. They are not set until you choose Accept analytics on the cookie banner, or later via Cookie settings in the footer. You can reject analytics and still use the site. Analytics scripts stay off until you consent, even if analytics is turned on later.</p>
 
 <h2>How long we keep your data</h2>
-<p>We keep enquiry and booking-related records for up to three years so we can answer follow-up questions and meet regulatory and insurance expectations. You can ask us to delete your data sooner where the law allows.</p>
+<p>We keep enquiry and booking-related records for up to three years so we can answer follow-up questions and meet regulatory and insurance expectations. Optional care and accessibility notes are kept for a shorter period: 12 months if the enquiry does not become a booking, or 90 days after the stay if it does. You can ask us to delete your data sooner where the law allows.</p>
 
 <h2>Your rights</h2>
-<p>Under UK GDPR you may: ask what data we hold about you; ask us to correct mistakes; ask us to delete or restrict use of your data in certain cases; object to some processing; and complain to the <a href="https://www.ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner\'s Office (ICO)<span class="sr-only"> (opens in new tab)</span></a>.</p>
+<p>Under UK GDPR you may: ask what data we hold about you; ask us to correct mistakes; ask us to delete or restrict use of your data in certain cases; object to some processing; withdraw consent (including health-data consent) without affecting the lawfulness of processing before you withdraw; and complain to the <a href="https://www.ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner\'s Office (ICO)<span class="sr-only"> (opens in new tab)</span></a>.</p>
 <p>To exercise these rights, email <a href="' . $mailto_href . '">' . esc_html( $email ) . '</a>.</p>
 
 <h2>Changes to this policy</h2>
-<p>We may update this policy from time to time. The current version is always on this page. Last updated: ' . esc_html( gmdate( 'F Y' ) ) . '.</p>';
+<p>We may update this policy from time to time. The current version is always on this page (policy ' . esc_html( restwell_privacy_policy_version() ) . '). Last updated: ' . esc_html( restwell_privacy_policy_updated_label() ) . '.</p>';
 }
 
 /**
@@ -198,7 +220,7 @@ function restwell_get_privacy_policy_page_defaults() {
 	return array(
 		'legal_label'         => 'Your information',
 		'legal_heading'       => 'Privacy Policy',
-		'legal_intro'         => 'Who is responsible for your data, what we collect when you enquire or book, cookies, retention, and your UK GDPR rights (including contacting the ICO).',
+		'legal_intro'         => 'Who is responsible for your data, what we collect on the enquiry form (including optional care notes), cookie choices, retention, and your UK GDPR rights (including contacting the ICO).',
 		'legal_hero_image_id' => 0,
 		'legal_body_html'     => '',
 	);

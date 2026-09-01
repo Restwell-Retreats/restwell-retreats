@@ -50,10 +50,10 @@ SparkToro’s own caveat still applies to Restwell: branded, local, and high-int
 
 ## Worked snippet (Home)
 
-Overwrite already points this way. Keep it.
+Guest title and meta from [`copy-overwrites/home.md`](../../copy-overwrites/home.md) (1 Sep 2026). Write-toward primary is still `accessible holiday cottages by the sea` in [`LANES.md`](LANES.md) — that is not the live title.
 
-- Title: `Accessible holiday cottages by the sea, one bungalow` (52 characters). Query first. “One bungalow” is the click reason against Sykes / National Trust / Accessible Holiday Escapes.
-- Meta: one bungalow, wet room, hoist, millimetres, add home care with Continuity of Care Services on the same enquiry. Proof, then enquire.
+- Title: `Accessible holiday cottage in Whitstable, sleeps five` (53 characters). Query language first, then place and occupancy against Sykes / National Trust / Accessible Holiday Escapes. “One bungalow” lives in the meta, not the title.
+- Meta: `One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and you can add home care if you’d like it.`
 
 Do not retitle Home as holidays with carers provided. That SERP is operators. The searcher who wants Restwell has already left it.
 

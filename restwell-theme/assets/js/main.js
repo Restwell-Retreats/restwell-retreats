@@ -953,8 +953,8 @@
 	 * Behaviour:
 	 *   - Persist non-sensitive form fields to localStorage on input/change
 	 *     (debounced).
-	 *   - On a fresh load, restore the draft and show a subtle "we restored
-	 *     your details" notice with a Discard control.
+	 *   - On a fresh load, restore the draft silently so a dropped connection
+	 *     or evicted tab does not wipe the form. Do not announce the restore.
 	 *   - Server-flashed values (post-validation re-render) always win — we
 	 *     never let stale localStorage clobber what the server just sent back.
 	 *   - Clear on submit so a successful send wipes the draft.
@@ -975,8 +975,7 @@
 		// Versioned key so we can change the stored shape later without exhuming
 		// bad drafts from returning visitors.
 		var KEY = 'restwell_enquiry_draft_v1';
-		// Drop drafts older than a week — by then the user has clearly moved on
-		// and seeing a 12-day-old "Restored your details" banner is jarring.
+		// Drop drafts older than a week — by then the user has clearly moved on.
 		var MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 		// Long enough to coalesce burst typing into one write; short enough that
 		// closing the tab right after typing still captures the latest state.
@@ -1081,8 +1080,7 @@
 				fields[name] = v;
 			});
 			if (!anyValue) {
-				// Empty form means there's nothing worth restoring later. Wipe
-				// any stale draft so the next visit doesn't show the notice.
+				// Empty form means there's nothing worth restoring later.
 				try { storage.removeItem(KEY); } catch (e) {}
 				hasUnsavedInput = false;
 				return;
@@ -1121,68 +1119,6 @@
 			}
 		}
 
-		function relativeMinutes(savedAt) {
-			var minutes = Math.max(1, Math.round((Date.now() - savedAt) / 60000));
-			if (minutes < 60) {
-				return minutes + (minutes === 1 ? ' minute ago' : ' minutes ago');
-			}
-			var hours = Math.round(minutes / 60);
-			if (hours < 24) {
-				return hours + (hours === 1 ? ' hour ago' : ' hours ago');
-			}
-			var days = Math.round(hours / 24);
-			return days + (days === 1 ? ' day ago' : ' days ago');
-		}
-
-		function showRestoredNotice(draft) {
-			var notice = document.createElement('div');
-			notice.className = 'restwell-enq-draft-notice';
-			notice.setAttribute('role', 'status');
-			// polite (not assertive) — the user already knows they came back to
-			// the form. A jolting screen-reader interrupt is the wrong volume.
-			notice.setAttribute('aria-live', 'polite');
-
-			var p = document.createElement('p');
-			p.className = 'restwell-enq-draft-notice__text';
-			p.appendChild(document.createTextNode('We restored your details from ' + relativeMinutes(draft.savedAt) + '. '));
-
-			var discard = document.createElement('button');
-			discard.type = 'button';
-			discard.className = 'restwell-enq-draft-notice__discard';
-			discard.textContent = 'Discard and start fresh';
-
-			discard.addEventListener('click', function () {
-				PERSIST_FIELDS.forEach(function (name) {
-					writeField(getField(name), '');
-				});
-				clearDraft();
-				notice.remove();
-				// Send the user back to step 1 so the cleared form makes sense
-				// in context — they shouldn't be staring at an empty step 3.
-				// shared.js owns step navigation for this form (panels are
-				// `.form-step[data-step-panel]`, back button is `[data-step-prev]`).
-				var visiblePanel = form.querySelector('.form-step:not([hidden])');
-				var currentPanelNum = visiblePanel ? parseInt(visiblePanel.getAttribute('data-step-panel'), 10) : 1;
-				var backBtn = form.querySelector('[data-step-prev]');
-				while (currentPanelNum > 1 && backBtn) {
-					backBtn.click();
-					currentPanelNum--;
-				}
-				var name = getField('enq_name');
-				if (name) name.focus();
-			});
-
-			p.appendChild(discard);
-			notice.appendChild(p);
-
-			var heading = form.querySelector('h2');
-			if (heading && heading.parentNode) {
-				heading.parentNode.insertBefore(notice, heading.nextSibling);
-			} else {
-				form.insertBefore(notice, form.firstChild);
-			}
-		}
-
 		// Capture date inputs once so applyDraft() can re-fire the change event.
 		var dateFromAfterRestore = form.querySelector('#enq_date_from');
 		var dateToAfterRestore   = form.querySelector('#enq_date_to');
@@ -1197,7 +1133,6 @@
 			var draft = loadDraft();
 			if (draft) {
 				applyDraft(draft);
-				showRestoredNotice(draft);
 				hasUnsavedInput = true;
 			}
 		}
@@ -1214,8 +1149,7 @@
 		form.addEventListener('change', scheduleSave, { passive: true });
 
 		// Clear on submit. The next page load is the success view, which has
-		// no form to restore into; clearing here also covers the "tab restore
-		// after a successful submit" case so users don't see a phantom notice.
+		// no form to restore into.
 		form.addEventListener('submit', function () {
 			clearDraft();
 		});
@@ -2289,12 +2223,9 @@
 		// Legacy FAQ markup (details / .faq-filter-pill) until every template is concept-ported.
 		safeInit('initFaqTabs', initFaqTabs);
 		safeInit('initFaqToggleA11y', initFaqToggleA11y);
-		safeInit('initHomeFaqAccordion', initHomeFaqAccordion);
-		safeInit('initMultiStepForm', initMultiStepForm);
 		safeInit('initFaqQuestionFormValidation', initFaqQuestionFormValidation);
-		// Must run AFTER initMultiStepForm() so the multi-step controller has
-		// already wired up showStep() and date-range constraints; the draft
-		// restore can then dispatch a 'change' event safely without racing.
+		// Draft restore. The enquire stepper lives in shared.js; this only
+		// rehydrates saved field values and dispatches change events.
 		safeInit('initEnquiryDraftPersistence', initEnquiryDraftPersistence);
 		safeInit('initWifPersonaNav', initWifPersonaNav);
 		safeInit('initPropPageNav', initPropPageNav);

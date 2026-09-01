@@ -6,7 +6,9 @@ Assign one person (host or admin) to own this.
 
 ## Banked reviews
 
-Full guest reviews (and suggested short excerpts) live in [`docs/guest-reviews-bank.md`](../docs/guest-reviews-bank.md). Use that file when rotating homepage quotes.
+Full guest reviews live in [`docs/guest-reviews-bank.md`](../docs/guest-reviews-bank.md). Use that file when rotating quotes.
+
+**Always paste consecutive words from the review.** Do not rewrite, paraphrase, stitch distant sentences, or sanitise banned phrases. If the guest wrote “fully accessible”, the cite keeps it.
 
 ## After each stay (within one week)
 
@@ -16,7 +18,9 @@ Full guest reviews (and suggested short excerpts) live in [`docs/guest-reviews-b
 
 ## In WordPress
 
-When you have a quote + permission, add it under the Home page **Page Content Fields**: testimonial fields 1–5. The homepage section appears automatically when at least one quote is saved.
+Live homepage reviews come from the Google Places API when a key is set, otherwise from Home → Page content → Testimonials (verbatim guest words). Hardcoded fallbacks in `inc/homepage-content.php` apply only when that tab is empty.
+
+When rotating a static pull-quote in a template, paste consecutive text from `docs/guest-reviews-bank.md` (or the live Google listing). Do not house-style the guest’s words.
 
 ## Do not
 

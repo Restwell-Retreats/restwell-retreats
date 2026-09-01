@@ -130,7 +130,7 @@ get_template_part(
         <h2 id="quote-h" class="sr-only">What guests say</h2>
         <figure class="pull-quote">
           <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-          <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad&rsquo;s complex needs. Vicky and Keeley could not do enough for us. Our stay was comfortable and a home away from home.</blockquote>
+          <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad&rsquo;s complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.</blockquote>
           <figcaption class="pull-quote__cite">M.W.<span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
         </figure>
       </div>

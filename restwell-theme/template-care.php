@@ -91,7 +91,7 @@ get_template_part(
             <p class="care__note">We add nothing until you agree the support package.</p>
             <a class="text-link" href="<?php echo esc_url(  restwell_nav_resolve_page_url( 'pricing' )  . '#care-rates' ); ?>">See care guide rates</a>
           </div>
-          <div class="care__brand" aria-label="Care partner and CQC rating">
+          <div class="care__brand" aria-label="Sister company and CQC rating">
             <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
               <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
             </a>
@@ -218,7 +218,7 @@ get_template_part(
         <figure class="pull-quote">
           <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
           <blockquote class="pull-quote__text">Our support team recently stayed at Restwell Retreats while supporting our client on a UK holiday, and they were extremely impressed with the accommodation. Everything is clean, well-maintained, and fully accessible for clients who require disabled access, including wide doors, no thresholds, and a portable ramp for accessing the community. The toilet system is outstanding and makes a significant difference to the client’s comfort and dignity.</blockquote>
-          <figcaption class="pull-quote__cite">G.G.<span class="pull-quote__role">Support team lead &middot; excerpt from a Google review</span></figcaption>
+          <figcaption class="pull-quote__cite">G.G.<span class="pull-quote__role">Support team lead &middot; Google review</span></figcaption>
         </figure>
       </div>
     </section>

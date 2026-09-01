@@ -67,9 +67,7 @@ function restwell_page_content_required_fields( $post = null ) {
 
 	$front_id = (int) get_option( 'page_on_front', 0 );
 	if ( $front_id > 0 && (int) $post->ID === $front_id ) {
-		$required['hero_media_id']          = __( 'Hero background image or video', 'restwell-retreats' );
-		$required['hero_cta_primary_label'] = __( 'Hero primary button label', 'restwell-retreats' );
-		$required['hero_cta_primary_url']   = __( 'Hero primary button URL', 'restwell-retreats' );
+		$required['hero_media_id'] = __( 'Hero background image or video', 'restwell-retreats' );
 		return $required;
 	}
 

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Whether the current view uses a full photo hero (transparent nav over media).
  *
- * Compact interiors (policies, guest guide, 404, singles) keep a solid header.
+ * Compact interiors (guest guide, 404, singles) keep a solid header.
  *
  * @return bool
  */
@@ -21,14 +21,15 @@ function restwell_page_has_photo_hero() {
 		return true;
 	}
 
-	if ( is_404() || is_singular( 'post' ) || is_search() ) {
+	if ( is_404() || is_singular( 'post' ) ) {
 		return false;
 	}
 
+	if ( is_search() ) {
+		return true;
+	}
+
 	$compact = array(
-		'template-privacy-policy.php',
-		'template-terms-and-conditions.php',
-		'template-accessibility-policy.php',
 		'page-guest-guide.php',
 	);
 	if ( is_page_template( $compact ) ) {
@@ -51,6 +52,9 @@ function restwell_page_has_photo_hero() {
 		'template-care.php',
 		'template-our-story.php',
 		'template-whitstable-guide.php',
+		'template-privacy-policy.php',
+		'template-terms-and-conditions.php',
+		'template-accessibility-policy.php',
 	);
 
 	return is_page_template( $photo );

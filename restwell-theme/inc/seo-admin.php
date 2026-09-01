@@ -638,7 +638,6 @@ function restwell_seo_admin_schema_status( WP_Post $post, string $template ): ar
 		__( 'CollectionPage', 'restwell-retreats' ) => ( 'template-resources.php' === $template ),
 		__( 'Service (optional care)', 'restwell-retreats' ) => ( 'template-care.php' === $template ),
 		__( 'ContactPage', 'restwell-retreats' ) => ( 'template-enquire.php' === $template ),
-		__( 'HowTo', 'restwell-retreats' ) => ( 'template-how-it-works.php' === $template ),
 		__( 'TouristDestination', 'restwell-retreats' ) => ( 'template-whitstable-guide.php' === $template ),
 		__( 'BlogPosting', 'restwell-retreats' ) => ( 'post' === $post->post_type ),
 	);

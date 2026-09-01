@@ -38,7 +38,7 @@ That canvas is the current demand clock: live SERPs, Trends, booking calendar, s
 | [LANES.md](LANES.md) | URL → job → primary, plus owner rules |
 | [serp-click-psychology-2026-08-28.md](serp-click-psychology-2026-08-28.md) | CTR / zero-click studies. They will not click page 2 |
 | Demand clock 28 Aug 2026 | [restwell-seo-pestle-swot-2026-08-28.canvas.tsx](/Users/elliesmith/.cursor/projects/Users-elliesmith-Developer-Projects-restwell-retreats/canvases/restwell-seo-pestle-swot-2026-08-28.canvas.tsx) |
-| [care-phrase-demand-2026-08-28.md](care-phrase-demand-2026-08-28.md) | Trends numbers folded into the canvas. Relative only |
+| [care-phrase-demand-2026-08-28.md](care-phrase-demand-2026-08-28.md) | Trends numbers folded into the demand-clock canvas. Relative only |
 | [SOURCES.md](SOURCES.md) | Pointers to code + optional deep docs |
 | [GEMINI-DEEP-RESEARCH.md](GEMINI-DEEP-RESEARCH.md) | Research prompt, not a site plan |
 | [aug-research.md](aug-research.md) | Evidence only. Do not lock lanes from this alone |

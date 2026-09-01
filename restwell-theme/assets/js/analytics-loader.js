@@ -17,6 +17,39 @@
 	 *
 	 * @return {boolean} Whether analytical / analytics cookies are allowed.
 	 */
+	/**
+	 * Theme first-party cookie `restwell_cookie_consent` = JSON `{ "v": 1, "analytics": true|false }`.
+	 * When present, it is the only source of truth (overrides leftover third-party CMP cookies).
+	 *
+	 * @return {boolean|null} true/false when set, null when absent or unreadable.
+	 */
+	function restwellFirstPartyAnalyticsConsent() {
+		try {
+			if (!document.cookie) {
+				return null;
+			}
+			var prefix = 'restwell_cookie_consent=';
+			var parts = document.cookie.split(';');
+			var i;
+			var p;
+			var raw;
+			var data;
+			for (i = 0; i < parts.length; i++) {
+				p = parts[i].trim();
+				if (p.indexOf(prefix) !== 0) {
+					continue;
+				}
+				raw = p.substring(prefix.length);
+				data = JSON.parse(decodeURIComponent(raw));
+				if (typeof data.analytics === 'boolean') {
+					return data.analytics;
+				}
+				return null;
+			}
+		} catch (e) {}
+		return null;
+	}
+
 	function restwellCookieadminConsentAllowsAnalytics() {
 		try {
 			if (!document.cookie) {
@@ -120,7 +153,26 @@
 	}
 
 	if (mode === 'consent_gated') {
+		document.addEventListener('restwell-analytics-allow', function () {
+			window.restwellGrantAnalyticsConsent();
+		});
+
+		function restwellTryFirstPartyConsent() {
+			var choice = restwellFirstPartyAnalyticsConsent();
+			if (choice === true) {
+				window.restwellGrantAnalyticsConsent();
+				return true;
+			}
+			if (choice === false) {
+				return true; // decided; do not fall through to other CMPs
+			}
+			return false;
+		}
+
 		function restwellTryCookieadminConsent() {
+			if (restwellFirstPartyAnalyticsConsent() !== null) {
+				return restwellTryFirstPartyConsent();
+			}
 			if (restwellCookieadminConsentAllowsAnalytics()) {
 				window.restwellGrantAnalyticsConsent();
 				return true;
@@ -128,7 +180,11 @@
 			return false;
 		}
 
-		// CookieAdmin: returning visitors + accept without full page reload (poll; cheap stop once granted).
+		// Returning visitors with a first-party choice: honour it and skip other CMPs.
+		if (restwellTryFirstPartyConsent()) {
+			return;
+		}
+
 		restwellTryCookieadminConsent();
 		var cookieadminPolls = 0;
 		var cookieadminPollMax = 150;
@@ -138,10 +194,6 @@
 				clearInterval(cookieadminIv);
 			}
 		}, 400);
-
-		document.addEventListener('restwell-analytics-allow', function () {
-			window.restwellGrantAnalyticsConsent();
-		});
 
 		window.addEventListener('CookiebotOnAccept', function () {
 			try {

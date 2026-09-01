@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 26;
+const RESTWELL_SCHEMA_VERSION = 30;
 
 function restwell_migrate_homepage_faq_meta_v1() {
 	if ( get_option( 'restwell_home_faq_meta_migrated_v1', '' ) === '1' ) {
@@ -2383,6 +2383,9 @@ function restwell_migrate_home_hero_intro_v23() {
  * One-time: ship 28 Aug copy overhaul onto existing pages (titles, H1s, intros, FAQs).
  *
  * Force-writes guest-facing copy keys from PHP defaults so live post meta is not left stale.
+ *
+ * Historical one-shot: do not copy this force-write pattern. Later copy fixes must
+ * compare stored values and only replace matching legacy strings (see restwell_migrate_audit_copy_fixes_v27).
  */
 function restwell_migrate_copy_overhaul_v24() {
 	if ( get_option( 'restwell_copy_overhaul_v24', '' ) === '1' ) {
@@ -2719,6 +2722,327 @@ function restwell_migrate_strip_em_dashes_v26() {
 }
 
 /**
+ * One-time: value-compare copy fixes from the 28 Aug audit (no force clobber).
+ *
+ * Replaces matching legacy strings only: privacy "care partner", sofa bed in the
+ * living area, enquire working-days success copy, and de-indexes the defunct
+ * beaches post that 301s to the canonical guide.
+ */
+function restwell_migrate_audit_copy_fixes_v27() {
+	if ( get_option( 'restwell_audit_copy_fixes_v27', '' ) === '1' ) {
+		return;
+	}
+
+	$replace_if_exact = static function ( $slug, $post_type, $key, $old, $new ) {
+		$page = get_page_by_path( $slug, OBJECT, $post_type );
+		if ( ! $page instanceof WP_Post ) {
+			return;
+		}
+		$cur = (string) get_post_meta( (int) $page->ID, $key, true );
+		if ( trim( $cur ) === $old ) {
+			update_post_meta( (int) $page->ID, $key, $new );
+		}
+	};
+
+	$privacy = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( $privacy instanceof WP_Post ) {
+		$html = (string) get_post_meta( (int) $privacy->ID, 'legal_body_html', true );
+		$old  = 'our care partner, Continuity of Care Services';
+		$new  = 'our sister company, Continuity of Care Services';
+		if ( $html !== '' && false !== strpos( $html, $old ) ) {
+			update_post_meta( (int) $privacy->ID, 'legal_body_html', str_replace( $old, $new, $html ) );
+		}
+	}
+
+	$replace_if_exact(
+		'home',
+		'page',
+		'why_item1_desc',
+		'The whole bungalow is yours: living space, kitchen, two bedrooms plus a sofa bed in the living area (sleeps up to five), with the privacy of a self-catering stay.',
+		'The whole bungalow is yours: living space, kitchen, two bedrooms plus a sofa bed in the conservatory (sleeps up to five), with the privacy of a self-catering stay.'
+	);
+	$replace_if_exact(
+		'the-property',
+		'page',
+		'prop_bedrooms',
+		'Two bedrooms, plus a sofa bed in the living area. Sleeps up to five.',
+		'Two bedrooms, plus a sofa bed in the conservatory. Sleeps up to five.'
+	);
+	$replace_if_exact(
+		'enquire',
+		'page',
+		'enq_success_heading',
+		'Thank you. We have your enquiry.',
+		'We’ve got your enquiry'
+	);
+	$replace_if_exact(
+		'enquire',
+		'page',
+		'enq_success_body',
+		'We usually respond within one to two working days (often sooner), using your preferred contact method where you have told us one. If your dates are tight, say so in your message and we will prioritise a quick first reply.',
+		'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.'
+	);
+	$replace_if_exact(
+		'enquire',
+		'page',
+		'enq_success_urgent_body',
+		'You marked this as time-sensitive. We will prioritise your request and aim to respond within one working day where possible, using your preferred contact method.',
+		'We’ve flagged this for a priority callback and aim to contact you sooner than our usual 48-hour window. If you need to speak now, call 01622 809881.'
+	);
+
+	$old_beaches = get_page_by_path( 'accessible-beaches-kent-coast', OBJECT, 'post' );
+	if ( $old_beaches instanceof WP_Post ) {
+		update_post_meta( (int) $old_beaches->ID, 'meta_noindex', 1 );
+		$dup_title = 'A guide to accessible beaches and coastal walks in Kent';
+		if ( 0 === strcasecmp( trim( (string) $old_beaches->post_title ), $dup_title ) ) {
+			wp_update_post(
+				array(
+					'ID'         => (int) $old_beaches->ID,
+					'post_title' => 'Level promenades and shingle beaches on the Kent coast',
+				)
+			);
+		}
+	}
+
+	update_option( 'restwell_audit_copy_fixes_v27', '1' );
+}
+
+/**
+ * Retry leftover 28 Aug copy fixes if v27 marked complete without matching stored meta.
+ *
+ * Looks up Enquire by template as well as slug. Replaces success copy that still
+ * mentions working days, and sofa / privacy strings v27 may have missed.
+ */
+function restwell_migrate_audit_copy_fixes_v28() {
+	if ( get_option( 'restwell_audit_copy_fixes_v28', '' ) === '1' ) {
+		return;
+	}
+
+	$page_by_path_or_template = static function ( $slug, $template ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( $page instanceof WP_Post ) {
+			return $page;
+		}
+		$found = get_pages(
+			array(
+				'meta_key'   => '_wp_page_template',
+				'meta_value' => $template,
+				'number'     => 1,
+			)
+		);
+		return ( ! empty( $found ) && $found[0] instanceof WP_Post ) ? $found[0] : null;
+	};
+
+	$replace_if_exact = static function ( $page, $key, $old, $new ) {
+		if ( ! $page instanceof WP_Post ) {
+			return;
+		}
+		$cur = (string) get_post_meta( (int) $page->ID, $key, true );
+		if ( trim( $cur ) === $old ) {
+			update_post_meta( (int) $page->ID, $key, $new );
+		}
+	};
+
+	$home = get_page_by_path( 'home', OBJECT, 'page' );
+	$replace_if_exact(
+		$home,
+		'why_item1_desc',
+		'The whole bungalow is yours: living space, kitchen, two bedrooms plus a sofa bed in the living area (sleeps up to five), with the privacy of a self-catering stay.',
+		'The whole bungalow is yours: living space, kitchen, two bedrooms plus a sofa bed in the conservatory (sleeps up to five), with the privacy of a self-catering stay.'
+	);
+
+	$property = $page_by_path_or_template( 'the-property', 'template-property.php' );
+	$replace_if_exact(
+		$property,
+		'prop_bedrooms',
+		'Two bedrooms, plus a sofa bed in the living area. Sleeps up to five.',
+		'Two bedrooms, plus a sofa bed in the conservatory. Sleeps up to five.'
+	);
+
+	$enquire = $page_by_path_or_template( 'enquire', 'template-enquire.php' );
+	if ( $enquire instanceof WP_Post ) {
+		$pid = (int) $enquire->ID;
+		$replace_if_exact( $enquire, 'enq_success_heading', 'Thank you. We have your enquiry.', 'We’ve got your enquiry' );
+		$body = (string) get_post_meta( $pid, 'enq_success_body', true );
+		if ( false !== stripos( $body, 'working days' ) ) {
+			update_post_meta(
+				$pid,
+				'enq_success_body',
+				'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.'
+			);
+		}
+		$urgent = (string) get_post_meta( $pid, 'enq_success_urgent_body', true );
+		if ( false !== stripos( $urgent, 'working days' ) ) {
+			update_post_meta(
+				$pid,
+				'enq_success_urgent_body',
+				'We’ve flagged this for a priority callback and aim to contact you sooner than our usual 48-hour window. If you need to speak now, call 01622 809881.'
+			);
+		}
+	}
+
+	$privacy = $page_by_path_or_template( 'privacy-policy', 'template-privacy-policy.php' );
+	if ( $privacy instanceof WP_Post ) {
+		$html = (string) get_post_meta( (int) $privacy->ID, 'legal_body_html', true );
+		$old  = 'our care partner, Continuity of Care Services';
+		$new  = 'our sister company, Continuity of Care Services';
+		if ( $html !== '' && false !== strpos( $html, $old ) ) {
+			update_post_meta( (int) $privacy->ID, 'legal_body_html', str_replace( $old, $new, $html ) );
+		}
+	}
+
+	update_option( 'restwell_audit_copy_fixes_v28', '1' );
+}
+
+/**
+ * Align stored privacy HTML and analytics load mode with enquiry consent + first-party CMP.
+ */
+function restwell_migrate_privacy_consent_v29() {
+	if ( get_option( 'restwell_privacy_consent_v29', '' ) === '1' ) {
+		return;
+	}
+
+	$mode    = (string) get_option( 'restwell_analytics_load_mode', '' );
+	$allowed = array( 'head', 'footer_deferred', 'consent_gated' );
+	if ( '' === $mode || ! in_array( $mode, $allowed, true ) || 'consent_gated' !== $mode ) {
+		update_option( 'restwell_analytics_load_mode', 'consent_gated', false );
+	}
+
+	$page_by_path_or_template = static function ( $slug, $template ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( $page instanceof WP_Post ) {
+			return $page;
+		}
+		$found = get_pages(
+			array(
+				'meta_key'   => '_wp_page_template',
+				'meta_value' => $template,
+				'number'     => 1,
+			)
+		);
+		return ( ! empty( $found ) && $found[0] instanceof WP_Post ) ? $found[0] : null;
+	};
+
+	$privacy = $page_by_path_or_template( 'privacy-policy', 'template-privacy-policy.php' );
+	if ( $privacy instanceof WP_Post ) {
+		$pid  = (int) $privacy->ID;
+		$html = (string) get_post_meta( $pid, 'legal_body_html', true );
+		if ( $html !== '' && (
+			false !== strpos( $html, 'legitimate interests to respond to your enquiry' )
+			|| false !== strpos( $html, 'cookie controls shown on your first visit' )
+		) ) {
+			delete_post_meta( $pid, 'legal_body_html' );
+		}
+
+		$intro     = trim( (string) get_post_meta( $pid, 'legal_intro', true ) );
+		$old_intro = 'Who is responsible for your data, what we collect when you enquire or book, cookies, retention, and your UK GDPR rights (including contacting the ICO).';
+		$new_intro = 'Who is responsible for your data, what we collect on the enquiry form (including optional care notes), cookie choices, retention, and your UK GDPR rights (including contacting the ICO).';
+		if ( $intro === $old_intro ) {
+			update_post_meta( $pid, 'legal_intro', $new_intro );
+		}
+	}
+
+	update_option( 'restwell_privacy_consent_v29', '1' );
+}
+
+/**
+ * Site title, Funding & Support slug, homepage Partners/Testimonials seeds.
+ */
+function restwell_migrate_site_identity_v30() {
+	if ( get_option( 'restwell_site_identity_v30', '' ) === '1' ) {
+		return;
+	}
+
+	$blogname = trim( (string) get_option( 'blogname', '' ) );
+	if ( '' === $blogname || 0 === strcasecmp( $blogname, 'restwell' ) ) {
+		update_option( 'blogname', 'Restwell Retreats' );
+	}
+
+	$funding = get_page_by_path( 'funding-and-support', OBJECT, 'page' );
+	$res     = get_page_by_path( 'resources', OBJECT, 'page' );
+	if ( $res instanceof WP_Post && ! ( $funding instanceof WP_Post ) ) {
+		$update = array(
+			'ID'        => (int) $res->ID,
+			'post_name' => 'funding-and-support',
+		);
+		if ( 'Resources' === $res->post_title ) {
+			$update['post_title'] = 'Funding & Support';
+		}
+		wp_update_post( $update );
+	}
+
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $blog_id > 0 ) {
+		$blog = get_post( $blog_id );
+		if ( $blog instanceof WP_Post && in_array( $blog->post_name, array( 'news', 'uncategorized' ), true ) ) {
+			wp_update_post(
+				array(
+					'ID'        => $blog_id,
+					'post_name' => 'blog',
+				)
+			);
+		}
+	}
+
+	$privacy = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( $privacy instanceof WP_Post ) {
+		$html = (string) get_post_meta( (int) $privacy->ID, 'legal_body_html', true );
+		$old  = 'We keep enquiry and booking-related records for up to three years so we can answer follow-up questions and meet regulatory and insurance expectations. You can ask us to delete your data sooner where the law allows.';
+		$new  = 'We keep enquiry and booking-related records for up to three years so we can answer follow-up questions and meet regulatory and insurance expectations. Optional care and accessibility notes are kept for a shorter period: 12 months if the enquiry does not become a booking, or 90 days after the stay if it does. You can ask us to delete your data sooner where the law allows.';
+		if ( '' !== $html && false !== strpos( $html, $old ) ) {
+			update_post_meta( (int) $privacy->ID, 'legal_body_html', str_replace( $old, $new, $html ) );
+		}
+	}
+
+	$front_id = (int) get_option( 'page_on_front', 0 );
+	if ( $front_id > 0 ) {
+		$partner_swaps = array(
+			'home_partners_label'    => array(
+				'Trusted partners' => 'Behind Restwell',
+			),
+			'home_partners_heading'  => array(
+				'Specialist Partners' => 'Who built it, and who we work with',
+			),
+			'home_partners_intro'    => array(
+				'The full story of how we adapted Restwell, who built it, and who supports guests today.' => 'Specialist firms adapted the house.',
+			),
+			'home_partners_cta_text' => array(
+				'See our journey' => 'Read the full story',
+			),
+			'home_partners_cta_url'  => array(
+				'/how-it-works/' => '/our-story/',
+			),
+		);
+		foreach ( $partner_swaps as $key => $map ) {
+			$current = (string) get_post_meta( $front_id, $key, true );
+			if ( isset( $map[ $current ] ) ) {
+				update_post_meta( $front_id, $key, $map[ $current ] );
+			}
+		}
+
+		$quote_1 = trim( (string) get_post_meta( $front_id, 'testimonial_1_quote', true ) );
+		if ( '' === $quote_1 && function_exists( 'restwell_homepage_testimonial_hard_fallbacks' ) ) {
+			$i = 1;
+			foreach ( restwell_homepage_testimonial_hard_fallbacks() as $item ) {
+				update_post_meta( $front_id, 'testimonial_' . $i . '_quote', $item['quote'] );
+				update_post_meta( $front_id, 'testimonial_' . $i . '_name', $item['name'] );
+				update_post_meta( $front_id, 'testimonial_' . $i . '_role', $item['role'] );
+				++$i;
+			}
+			if ( '' === trim( (string) get_post_meta( $front_id, 'testimonial_label', true ) ) ) {
+				update_post_meta( $front_id, 'testimonial_label', 'What guests say' );
+			}
+			if ( '' === trim( (string) get_post_meta( $front_id, 'testimonial_heading', true ) ) ) {
+				update_post_meta( $front_id, 'testimonial_heading', 'What guests wrote after staying' );
+			}
+		}
+	}
+
+	flush_rewrite_rules( false );
+	update_option( 'restwell_site_identity_v30', '1' );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2782,6 +3106,10 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_copy_overhaul_v24',
 		'restwell_victoria_registered_manager_v25',
 		'restwell_strip_em_dashes_v26',
+		'restwell_audit_copy_fixes_v27',
+		'restwell_audit_copy_fixes_v28',
+		'restwell_privacy_consent_v29',
+		'restwell_site_identity_v30',
 	);
 }
 
@@ -2934,6 +3262,14 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_victoria_registered_manager_v25', 65 );
 	add_action( 'init', 'restwell_migrate_strip_em_dashes_v26', 75 );
 	add_action( 'after_switch_theme', 'restwell_migrate_strip_em_dashes_v26', 66 );
+	add_action( 'init', 'restwell_migrate_audit_copy_fixes_v27', 76 );
+	add_action( 'after_switch_theme', 'restwell_migrate_audit_copy_fixes_v27', 67 );
+	add_action( 'init', 'restwell_migrate_audit_copy_fixes_v28', 77 );
+	add_action( 'after_switch_theme', 'restwell_migrate_audit_copy_fixes_v28', 68 );
+	add_action( 'init', 'restwell_migrate_privacy_consent_v29', 78 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_consent_v29', 69 );
+	add_action( 'init', 'restwell_migrate_site_identity_v30', 79 );
+	add_action( 'after_switch_theme', 'restwell_migrate_site_identity_v30', 70 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

@@ -239,7 +239,7 @@ get_template_part(
               </tbody>
             </table>
             <div class="care-rates__footer">
-              <div class="care-rates__brands care__brand" aria-label="Care partner and CQC rating">
+              <div class="care-rates__brands care__brand" aria-label="Sister company and CQC rating">
                 <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
                   <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
                 </a>

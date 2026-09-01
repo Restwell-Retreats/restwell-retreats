@@ -109,7 +109,23 @@ function restwell_build_csp_directives() {
 }
 
 /**
- * Send Content-Security-Policy-Report-Only (or enforced when opted in).
+ * Whether CSP may be enforced (production HTTPS only, after a clean report-only week).
+ */
+function restwell_csp_enforce_allowed() {
+	if ( ! is_ssl() ) {
+		return false;
+	}
+	if ( function_exists( 'restwell_is_production_environment' ) && ! restwell_is_production_environment() ) {
+		return false;
+	}
+	return (bool) apply_filters( 'restwell_enable_csp_enforce', false );
+}
+
+/**
+ * Send Content-Security-Policy-Report-Only (or enforced after a clean week on production HTTPS).
+ *
+ * Enforce stays off until `restwell_enable_csp_enforce` is true *and* the request
+ * is production HTTPS. Local HTTP never sends CSP.
  */
 function restwell_send_content_security_policy() {
 	if ( ! is_ssl() || ! restwell_csp_report_only_enabled() ) {
@@ -119,12 +135,10 @@ function restwell_send_content_security_policy() {
 	// Ensure nonce exists for this request.
 	restwell_get_csp_nonce();
 
-	$value = implode( '; ', restwell_build_csp_directives() );
-	$header_name = 'Content-Security-Policy-Report-Only';
-
-	if ( apply_filters( 'restwell_enable_csp_enforce', false ) ) {
-		$header_name = 'Content-Security-Policy';
-	}
+	$value       = implode( '; ', restwell_build_csp_directives() );
+	$header_name = restwell_csp_enforce_allowed()
+		? 'Content-Security-Policy'
+		: 'Content-Security-Policy-Report-Only';
 
 	header( $header_name . ': ' . $value );
 }

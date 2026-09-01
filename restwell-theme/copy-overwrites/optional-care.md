@@ -1,6 +1,6 @@
 # Optional care `/optional-care/`
 
-**Layer:** `care_heading` `care_intro`. Never “fully accessible” in Restwell-owned copy. Never a published care lead time: it depends on the person and on who’s working that week. CQC belongs to Continuity, never to Restwell. This page is not Continuity’s Maidstone homepage. Voice: the Welcome Guide.
+**Layer:** `care_heading` `care_intro`. Never “fully accessible” in Restwell-owned copy. The attributed Google review on this page stays verbatim. Never a published care lead time: it depends on the person and on who’s working that week. CQC belongs to Continuity, never to Restwell. This page is not Continuity’s Maidstone homepage. Voice: the Welcome Guide.
 
 ## Title
 
