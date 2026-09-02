@@ -1,8 +1,8 @@
 # Restwell Analytics Event Schema (GA4)
 
-Last updated: 2026-04-22
+Last updated: 2026-09-01
 Owner: Restwell marketing + theme maintainer
-Scope: Theme-tracked frontend interaction events (`assets/js/main.js`)
+Scope: Theme-tracked frontend interaction events (`assets/js/main.js`; enquire/gallery/nav split files do not emit these)
 
 ---
 
@@ -53,10 +53,11 @@ Do not introduce near-duplicates (for example `form_start`, `faq_opened`, `ctaCl
   - `cta_location` (string)
   - `cta_label` (string)
   - `target_url` (string URL or path)
+  - `cta_text` (string; dual-track alias of `cta_label` until reports migrate)
 - `phone_number_clicked`
-  - `phone_number` (string)
+  - `phone_number` (string; from `tel:` href, not typed PII)
 - `email_clicked`
-  - `email_address` (string)
+  - `email_address` (string; from `mailto:` href, address only)
 
 ---
 
@@ -78,9 +79,12 @@ No event naming or parameter changes should be merged without updating this file
 4. **One-way migrations:** If renaming is unavoidable, dual-track old + new for one release, then remove old and annotate here.
 5. **PR requirement:** Any analytics change must include:
    - code change
-   - schema update in this file
-   - one-line GA4 validation note in PR description
+   - this file updated
+   - one-line GA4 validation note in the PR description
+   - confirmation that `consent_gated` still blocks gtag until analytics consent
 6. **Debug verification:** Validate in GA4 DebugView after deploy before announcing complete.
+
+`accessibility_spec_viewed` fires only when the pathname (trailing slashes stripped) is exactly `/accessibility`. It must not fire on `/accessibility-policy/`.
 
 ---
 

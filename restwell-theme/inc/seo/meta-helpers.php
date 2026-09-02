@@ -263,14 +263,8 @@ function restwell_document_title_parts( $parts ) {
 	}
 
 	if ( $injected ) {
-		// Injected titles are self-contained: the tagline must never be appended as well.
-		// Drop the site name too when the title already carries the brand.
-		unset( $parts['tagline'] );
-
-		$site = isset( $parts['site'] ) ? trim( (string) $parts['site'] ) : '';
-		if ( $site !== '' && ! empty( $parts['title'] ) && restwell_title_already_includes_site_brand( $parts['title'], $site ) ) {
-			unset( $parts['site'] );
-		}
+		// Custom SEO titles and request-level fallbacks are self-contained.
+		unset( $parts['tagline'], $parts['site'] );
 	}
 
 	return $parts;

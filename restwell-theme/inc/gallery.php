@@ -13,6 +13,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'RESTWELL_PROPERTY_IMAGE_WIDTH', 1920 );
 
 /**
+ * Inline SVG icon (replaces Phosphor webfont on concept surfaces).
+ *
+ * @param string $name caret-left, caret-right, close, or check.
+ * @return string Markup safe to echo (hard-coded SVG, no user input).
+ */
+function restwell_icon_svg( $name ) {
+	$svgs = array(
+		'caret-left'  => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+		'caret-right' => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+		'close'       => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
+		'check'       => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+	);
+	return isset( $svgs[ $name ] ) ? $svgs[ $name ] : '';
+}
+
+/**
  * Registered size slug for 1920px-wide property visuals.
  *
  * @return string
@@ -1029,13 +1045,13 @@ function restwell_render_gallery_carousel( $image_ids, $args = array() ) {
 
 	echo '<div class="restwell-carousel__controls">';
 	echo '<button type="button" class="restwell-carousel__btn restwell-carousel__btn--prev" data-carousel-prev aria-label="' . esc_attr__( 'Previous photo', 'restwell-retreats' ) . '">';
-	echo '<i class="ph-bold ph-caret-left" aria-hidden="true"></i>';
+	echo restwell_icon_svg( 'caret-left' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG.
 	echo '</button>';
 	echo '<p class="restwell-carousel__status" data-carousel-status aria-live="polite" aria-atomic="true">';
 	echo esc_html( '1 / ' . $total );
 	echo '</p>';
 	echo '<button type="button" class="restwell-carousel__btn restwell-carousel__btn--next" data-carousel-next aria-label="' . esc_attr__( 'Next photo', 'restwell-retreats' ) . '">';
-	echo '<i class="ph-bold ph-caret-right" aria-hidden="true"></i>';
+	echo restwell_icon_svg( 'caret-right' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG.
 	echo '</button>';
 	echo '</div>';
 

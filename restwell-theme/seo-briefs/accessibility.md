@@ -1,6 +1,6 @@
 # SEO Content Brief — Accessibility (Access Statement)
 
-Source page: `restwell-theme/mockups/accessibility-concept.html`
+Source page: `restwell-theme/template-accessibility.php`
 
 ## 1. Keyword Strategy
 

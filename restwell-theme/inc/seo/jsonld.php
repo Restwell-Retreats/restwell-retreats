@@ -79,6 +79,7 @@ function restwell_build_jsonld_organization() {
 			'@id'         => restwell_get_organization_schema_id(),
 			'name'        => $site_name,
 			'url'         => $site_url,
+			'telephone'   => restwell_get_public_phone_tel(),
 			'description' => get_bloginfo( 'description' ),
 			'address'     => array_merge(
 				array( '@type' => 'PostalAddress' ),
@@ -144,6 +145,9 @@ function restwell_output_structured_data() {
 	if ( is_page_template( 'template-enquire.php' ) ) {
 		restwell_output_jsonld_contact_page();
 	}
+
+	// How it works is a booking funnel (Enquire → Confirm → Arrive), not a DIY
+	// procedure. Do not emit HowTo JSON-LD on that template.
 
 	if ( is_page_template( 'template-our-story.php' ) ) {
 		restwell_output_jsonld_about_page();
@@ -542,7 +546,7 @@ function restwell_output_jsonld_accommodation_service() {
 		$name = (string) get_post_meta( $pid, 'prop_hero_heading', true );
 	}
 	if ( $name === '' ) {
-		$name = get_bloginfo( 'name' ) . ': ' . __( 'Accessible holiday accommodation, Whitstable', 'restwell-retreats' );
+		$name = restwell_get_schema_brand_name() . ': ' . __( 'Accessible holiday accommodation, Whitstable', 'restwell-retreats' );
 	}
 
 	$desc = (string) get_post_meta( $pid, 'meta_description', true );
@@ -631,7 +635,7 @@ function restwell_output_jsonld_accommodation_service() {
  * WebSite only - used on front page (Organization + LocalBusiness output separately).
  */
 function restwell_output_jsonld_website_only() {
-	$site_name = get_bloginfo( 'name' );
+	$site_name = restwell_get_schema_brand_name();
 	$site_url  = home_url( '/' );
 	// Sitelinks search box: WordPress core search query param `s`.
 	$search_url_template = home_url( '/?s={search_term_string}' );
@@ -680,7 +684,7 @@ function restwell_output_jsonld_front_page_webpage() {
 		'isPartOf'      => array(
 			'@type' => 'WebSite',
 			'url'   => home_url( '/' ),
-			'name'  => get_bloginfo( 'name' ),
+			'name'  => restwell_get_schema_brand_name(),
 		),
 	);
 	restwell_print_jsonld( $schema );
@@ -794,7 +798,7 @@ function restwell_output_jsonld_homepage_faq() {
  * WebSite + Organization - output on interior pages.
  */
 function restwell_output_jsonld_website_organization() {
-	$site_name = get_bloginfo( 'name' );
+	$site_name = restwell_get_schema_brand_name();
 	$site_url  = home_url( '/' );
 
 	$website = array(
@@ -949,7 +953,7 @@ function restwell_output_jsonld_article() {
 	$excerpt     = wp_strip_all_tags( get_the_excerpt( $pid ) );
 	$date_pub    = get_the_date( 'c', $pid );
 	$date_mod    = get_the_modified_date( 'c', $pid );
-	$author_name = get_bloginfo( 'name' ); // site name as author for brand articles
+	$author_name = restwell_get_schema_brand_name(); // site name as author for brand articles
 
 	$image_url = '';
 	$thumb_id  = get_post_thumbnail_id( $pid );
@@ -966,7 +970,7 @@ function restwell_output_jsonld_article() {
 	$publisher_org = restwell_jsonld_with_same_as(
 		array(
 			'@type' => 'Organization',
-			'name'  => get_bloginfo( 'name' ),
+			'name'  => restwell_get_schema_brand_name(),
 			'url'   => home_url( '/' ),
 		)
 	);
@@ -993,7 +997,7 @@ function restwell_output_jsonld_article() {
 		'isPartOf'         => array(
 			'@type' => 'WebSite',
 			'url'   => home_url( '/' ),
-			'name'  => get_bloginfo( 'name' ),
+			'name'  => restwell_get_schema_brand_name(),
 		),
 	);
 
@@ -1267,7 +1271,7 @@ function restwell_output_jsonld_about_page() {
 				'@type' => 'WebSite',
 				'@id'   => trailingslashit( home_url( '/' ) ) . '#website',
 				'url'   => home_url( '/' ),
-				'name'  => get_bloginfo( 'name' ),
+				'name'  => restwell_get_schema_brand_name(),
 			),
 			'about'       => array(
 				'@id' => restwell_get_organization_schema_id(),
@@ -1588,7 +1592,7 @@ function restwell_output_jsonld_legal_webpage() {
 			'isPartOf'    => array(
 				'@type' => 'WebSite',
 				'url'   => home_url( '/' ),
-				'name'  => get_bloginfo( 'name' ),
+				'name'  => restwell_get_schema_brand_name(),
 			),
 		)
 	);

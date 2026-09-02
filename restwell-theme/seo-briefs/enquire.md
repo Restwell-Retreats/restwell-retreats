@@ -1,6 +1,6 @@
 # SEO Content Brief — Enquire
 
-Source page: `restwell-theme/mockups/enquire-concept.html`
+Source page: `restwell-theme/template-enquire.php`
 
 ## 1. Keyword Strategy
 

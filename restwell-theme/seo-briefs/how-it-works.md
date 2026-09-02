@@ -1,6 +1,6 @@
 # SEO Content Brief — How It Works
 
-Source page: `restwell-theme/mockups/how-it-works-concept.html`
+Source page: `restwell-theme/template-how-it-works.php`
 
 ## 1. Keyword Strategy
 

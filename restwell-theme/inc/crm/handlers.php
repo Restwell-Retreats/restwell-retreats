@@ -14,6 +14,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Blank care and accessibility columns unless a privileged sensitive export was requested.
+ *
+ * @param array<int, array<string, mixed>> $rows Enquiry rows as associative arrays.
+ * @param bool                             $include_sensitive True when the operator opted in and is allowed to.
+ * @return array<int, array<string, mixed>>
+ */
+function restwell_crm_redact_sensitive_export_rows( array $rows, bool $include_sensitive ): array {
+	if ( $include_sensitive ) {
+		return $rows;
+	}
+	foreach ( $rows as &$row ) {
+		if ( isset( $row['care_requirements'] ) ) {
+			$row['care_requirements'] = '';
+		}
+		if ( isset( $row['accessibility'] ) ) {
+			$row['accessibility'] = '';
+		}
+	}
+	unset( $row );
+	return $rows;
+}
+
+/**
  * Stream all enquiries as a UTF-8 CSV download.
  */
 function restwell_crm_handle_export_csv() {
@@ -50,17 +73,7 @@ function restwell_crm_handle_export_csv() {
 		$rows = array();
 	}
 
-	if ( ! $include_sensitive ) {
-		foreach ( $rows as &$row ) {
-			if ( isset( $row['care_requirements'] ) ) {
-				$row['care_requirements'] = '';
-			}
-			if ( isset( $row['accessibility'] ) ) {
-				$row['accessibility'] = '';
-			}
-		}
-		unset( $row );
-	}
+	$rows = restwell_crm_redact_sensitive_export_rows( $rows, $include_sensitive );
 
 	// Append to audit log before streaming headers (headers cannot be sent before update_option).
 	$export_log_entry = array(
@@ -98,6 +111,56 @@ function restwell_crm_handle_export_csv() {
 	exit;
 }
 add_action( 'admin_post_restwell_crm_export_csv', 'restwell_crm_handle_export_csv' );
+
+/**
+ * Send a one-line test to the notify address (or admin email) so SMTP / Mailpit can be proved.
+ */
+function restwell_crm_handle_send_test_mail(): void {
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
+	}
+	check_admin_referer( 'restwell_crm_send_test_mail' );
+
+	$redirect = static function ( string $status ): void {
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'page'      => 'restwell-crm',
+					'smtp_test' => $status,
+				),
+				admin_url( 'admin.php' )
+			)
+		);
+		exit;
+	};
+
+	if ( false !== get_transient( 'restwell_crm_smtp_test_lock' ) ) {
+		$redirect( 'rate' );
+	}
+
+	$to = (string) get_option( 'restwell_enquiry_notify_email', '' );
+	if ( ! is_email( $to ) ) {
+		$to = (string) get_option( 'admin_email', '' );
+	}
+	if ( ! is_email( $to ) ) {
+		$redirect( 'no_recipient' );
+	}
+
+	$transport = ( function_exists( 'restwell_smtp_is_configured' ) && restwell_smtp_is_configured() )
+		? 'SMTP'
+		: 'PHP mail';
+	$subject   = '[Restwell] Test email from CRM';
+	$body      = "This is a test from the Restwell CRM dashboard.\nTransport: {$transport}\n";
+	$headers   = array( 'Content-Type: text/plain; charset=UTF-8' );
+
+	$ok = function_exists( 'restwell_wp_mail_with_retry' )
+		? restwell_wp_mail_with_retry( $to, $subject, $body, $headers )
+		: wp_mail( $to, $subject, $body, $headers );
+
+	set_transient( 'restwell_crm_smtp_test_lock', 1, 5 * MINUTE_IN_SECONDS );
+	$redirect( $ok ? 'ok' : 'fail' );
+}
+add_action( 'admin_post_restwell_crm_send_test_mail', 'restwell_crm_handle_send_test_mail' );
 
 /**
  * Send the post-stay follow-up email for a closed enquiry.
@@ -157,9 +220,13 @@ function restwell_crm_handle_save_settings() {
 		: '';
 	$mailchimp_api_key = preg_replace( '/[^A-Za-z0-9\-]/', '', trim( $mailchimp_api_key ) );
 	$mailchimp_key_blocked = false;
+	$is_production         = function_exists( 'wp_get_environment_type' ) && 'production' === wp_get_environment_type();
+	if ( ! $is_production && function_exists( 'restwell_is_production_environment' ) ) {
+		$is_production = restwell_is_production_environment();
+	}
 	// Prefer RESTWELL_MAILCHIMP_API_KEY in wp-config; option is fallback only and must not autoload.
-	// Production must not persist the key in wp_options.
-	if ( function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment() ) {
+	// Never persist the key in wp_options when WP_ENVIRONMENT_TYPE is production.
+	if ( $is_production ) {
 		if ( '' !== $mailchimp_api_key || ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
 			$mailchimp_key_blocked = true;
 		}

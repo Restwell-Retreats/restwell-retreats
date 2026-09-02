@@ -102,39 +102,38 @@ function restwell_sitemap_exclude_demo_and_noindex_pages( $args, $post_type ) {
 		}
 	}
 
-	$noindex_ids = array();
-	$paged       = 1;
-	$per_page    = 200;
-	do {
-		$batch = get_posts(
-			array(
-				'post_type'        => $post_type,
-				'post_status'      => 'publish',
-				'posts_per_page'   => $per_page,
-				'paged'            => $paged,
-				'fields'           => 'ids',
-				'no_found_rows'    => true,
-				'suppress_filters' => true,
-				'meta_key'         => 'meta_noindex',
-				'meta_value'       => '1',
-			)
-		);
-		if ( ! is_array( $batch ) || array() === $batch ) {
-			break;
-		}
-		$noindex_ids = array_merge( $noindex_ids, array_map( 'intval', $batch ) );
-		++$paged;
-	} while ( count( $batch ) === $per_page );
-	if ( array() !== $noindex_ids ) {
-		$exclude_ids = array_merge( $exclude_ids, $noindex_ids );
-	}
-
 	$exclude_ids = array_values( array_unique( array_filter( $exclude_ids ) ) );
-	if ( empty( $exclude_ids ) ) {
-		return $args;
+	if ( ! empty( $exclude_ids ) ) {
+		$args['post__not_in'] = $exclude_ids;
 	}
 
-	$args['post__not_in'] = $exclude_ids;
+	// Exclude meta_noindex=1 without a posts_per_page cap (a 51st noindex URL
+	// used to leak into wp-sitemap). NOT EXISTS keeps ordinary posts in.
+	$noindex_clause = array(
+		'relation' => 'OR',
+		array(
+			'key'     => 'meta_noindex',
+			'compare' => 'NOT EXISTS',
+		),
+		array(
+			'key'     => 'meta_noindex',
+			'value'   => '1',
+			'compare' => '!=',
+		),
+	);
+	$existing_meta = ( isset( $args['meta_query'] ) && is_array( $args['meta_query'] ) )
+		? $args['meta_query']
+		: array();
+	if ( array() === $existing_meta ) {
+		$args['meta_query'] = $noindex_clause;
+	} else {
+		$args['meta_query'] = array(
+			'relation' => 'AND',
+			$existing_meta,
+			$noindex_clause,
+		);
+	}
+
 	return $args;
 }
 add_filter( 'wp_sitemaps_posts_query_args', 'restwell_sitemap_exclude_demo_and_noindex_pages', 10, 2 );

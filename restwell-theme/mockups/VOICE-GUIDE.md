@@ -132,4 +132,4 @@ Roughly once per page. Easy to overdo or misplace — treat these as hard rules,
 What changed: direct address, exclamation mark at the warmth peak, "just let us know" open-door phrase, "suitable" doing quiet risk-assessment work without sounding bureaucratic, assistance dogs folded in naturally rather than as a separate compliance clause.
 
 ---
-*Compiled from analysis of "Welcome to Restwell Retreats" (guest guide) and applied across restwell-theme/mockups/*-concept.html during the 2026-08-19 copy pass.*
+*Compiled from analysis of "Welcome to Restwell Retreats" (guest guide) and applied across live PHP templates. Original 2026-08-19 copy pass used HTML mockups, which were removed 2 Sep 2026.*

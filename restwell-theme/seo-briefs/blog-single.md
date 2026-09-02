@@ -1,6 +1,6 @@
 # SEO Content Brief — Blog Article Template
 
-Source page: `restwell-theme/mockups/blog-single-concept.html`
+Source page: `restwell-theme/single.php`
 Worked example used throughout: "Accessible beaches and promenades near Whitstable"
 
 ## 1. Keyword Strategy
@@ -89,8 +89,8 @@ Tags: Whitstable · Access · Promenade
 ### Section 3 — Related reading
 H2: Related reading
 Card: "What to pack" → blog-single (placeholder link)
-Card: "Whitstable guide" → whitstable-guide-concept.html
-Card: "The property" → property-concept.html
+Card: "Whitstable guide" → `/whitstable-area-guide/`
+Card: "The property" → `/the-property/`
 
 ### Footer
 Restwell · Sister company: Continuity of Care Services · CQC inspection profile · Accessible holidays, Whitstable, Kent

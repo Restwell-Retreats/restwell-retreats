@@ -29,6 +29,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Whether transactional SMTP constants are present.
+ *
+ * Does not prove delivery. Local WP-CLI / the CRM test button prove wp_mail().
+ *
+ * @return bool
+ */
+function restwell_smtp_is_configured(): bool {
+	return defined( 'RESTWELL_SMTP_HOST' ) && is_string( RESTWELL_SMTP_HOST ) && RESTWELL_SMTP_HOST !== '';
+}
+
+/**
  * Configure PHPMailer when RESTWELL_SMTP_HOST is defined.
  *
  * @param \PHPMailer\PHPMailer\PHPMailer $phpmailer PHPMailer instance.

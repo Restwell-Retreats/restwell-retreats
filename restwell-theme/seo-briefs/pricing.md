@@ -1,6 +1,6 @@
 # SEO Content Brief — Pricing
 
-Source page: `restwell-theme/mockups/pricing-concept.html`
+Source page: `restwell-theme/template-pricing.php`
 
 ## 1. Keyword Strategy
 

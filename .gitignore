@@ -152,6 +152,10 @@ restwell-theme/restwell-theme
 # Mockup screenshot dumps (regenerable)
 restwell-theme/mockups/_shots/
 
+# PHPUnit local cache
+.phpunit.result.cache
+**/.phpunit.result.cache
+
 # Personal notes and reference docs
 ideas.md
 SEO_Web_Development.md

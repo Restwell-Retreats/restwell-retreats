@@ -75,6 +75,18 @@ function restwell_crm_dashboard_page() {
 		<?php if ( isset( $_GET['mailchimp_key_blocked'] ) && absint( wp_unslash( $_GET['mailchimp_key_blocked'] ) ) ) : ?>
 			<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'The Mailchimp API key was not saved. On production it must live in RESTWELL_MAILCHIMP_API_KEY (wp-config or the environment), not in the database.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
+		<?php
+		$smtp_test = isset( $_GET['smtp_test'] ) ? sanitize_key( wp_unslash( $_GET['smtp_test'] ) ) : '';
+		if ( 'ok' === $smtp_test ) :
+			?>
+			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Test email handed to wp_mail. Check the notify inbox, or Mailpit on Local.', 'restwell-retreats' ); ?></p></div>
+		<?php elseif ( 'fail' === $smtp_test ) : ?>
+			<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'wp_mail returned false. Check SMTP constants or the mail log.', 'restwell-retreats' ); ?></p></div>
+		<?php elseif ( 'rate' === $smtp_test ) : ?>
+			<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'Wait five minutes before sending another test email.', 'restwell-retreats' ); ?></p></div>
+		<?php elseif ( 'no_recipient' === $smtp_test ) : ?>
+			<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Set a notify email (or a WordPress admin email) before sending a test.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
 
 		<!-- Stat tiles -->
 		<div class="rw-stat-grid" role="list" aria-label="<?php esc_attr_e( 'Dashboard summary metrics', 'restwell-retreats' ); ?>">
@@ -341,6 +353,26 @@ function restwell_crm_dashboard_page() {
 									</p>
 								</td>
 							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Mail transport', 'restwell-retreats' ); ?></th>
+								<td>
+									<?php
+									$smtp_configured = function_exists( 'restwell_smtp_is_configured' ) && restwell_smtp_is_configured();
+									?>
+									<p>
+										<?php
+										echo esc_html(
+											$smtp_configured
+												? __( 'SMTP constants are set (RESTWELL_SMTP_HOST).', 'restwell-retreats' )
+												: __( 'No RESTWELL_SMTP_HOST. wp_mail uses PHP mail (Local Mailpit catches this).', 'restwell-retreats' )
+										);
+										?>
+									</p>
+									<p class="description">
+										<?php esc_html_e( 'Does not prove a production inbox. Use Send test email after Save if the notify address is empty.', 'restwell-retreats' ); ?>
+									</p>
+								</td>
+							</tr>
 						<tr>
 							<th scope="row">
 								<label for="restwell_mailchimp_api_key">
@@ -455,6 +487,14 @@ function restwell_crm_dashboard_page() {
 							</tr>
 						</table>
 					<?php submit_button( __( 'Save', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
+				</form>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-smtp-test-form">
+					<?php wp_nonce_field( 'restwell_crm_send_test_mail' ); ?>
+					<input type="hidden" name="action" value="restwell_crm_send_test_mail" />
+					<?php submit_button( __( 'Send test email', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
+					<p class="description">
+						<?php esc_html_e( 'Sends one line to the notify address, or the WordPress admin email if notify is empty. Limited to once every five minutes.', 'restwell-retreats' ); ?>
+					</p>
 				</form>
 				</div>
 			</div>

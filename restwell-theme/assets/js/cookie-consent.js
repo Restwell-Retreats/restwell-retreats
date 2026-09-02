@@ -59,10 +59,24 @@
 		return document.querySelector('[data-cookie-banner]');
 	}
 
+	function announce(message) {
+		var status = document.querySelector('[data-cookie-status]');
+		if (status) {
+			status.textContent = message;
+		}
+	}
+
 	function hideBanner() {
 		var banner = getBanner();
+		var active = document.activeElement;
 		if (banner) {
 			banner.hidden = true;
+		}
+		if (active && banner && banner.contains(active)) {
+			var settings = document.querySelector('[data-cookie-settings]');
+			if (settings && typeof settings.focus === 'function') {
+				settings.focus({ preventScroll: true });
+			}
 		}
 	}
 
@@ -73,17 +87,10 @@
 		}
 	}
 
-	function focusSettings() {
-		var settings = document.querySelector('[data-cookie-settings]');
-		if (settings && typeof settings.focus === 'function') {
-			settings.focus();
-		}
-	}
-
-	function focusAccept() {
-		var accept = document.querySelector('[data-cookie-accept]');
-		if (accept && typeof accept.focus === 'function') {
-			accept.focus();
+	function focusFirstAction() {
+		var first = document.querySelector('[data-cookie-reject], [data-cookie-accept]');
+		if (first && typeof first.focus === 'function') {
+			first.focus();
 		}
 	}
 
@@ -95,19 +102,20 @@
 		if (t.closest('[data-cookie-accept]')) {
 			writeConsent(true);
 			hideBanner();
+			announce('Analytics cookies on.');
 			document.dispatchEvent(new Event('restwell-analytics-allow'));
-			focusSettings();
 			return;
 		}
 		if (t.closest('[data-cookie-reject]')) {
 			writeConsent(false);
 			hideBanner();
-			focusSettings();
+			announce('Analytics cookies off.');
+			document.dispatchEvent(new Event('restwell-analytics-deny'));
 			return;
 		}
 		if (t.closest('[data-cookie-settings]')) {
 			showBanner();
-			focusAccept();
+			focusFirstAction();
 		}
 	});
 

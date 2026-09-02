@@ -1,6 +1,6 @@
 # SEO Content Brief — Who It's For
 
-Source page: `restwell-theme/mockups/who-its-for-concept.html`
+Source page: `restwell-theme/template-who-its-for.php`
 
 ## 1. Keyword Strategy
 

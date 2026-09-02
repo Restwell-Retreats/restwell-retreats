@@ -1,6 +1,6 @@
 # SEO Content Brief — Blog (Index)
 
-Source page: `restwell-theme/mockups/blog-concept.html`
+Source page: `restwell-theme/index.php` (posts listing)
 
 ## 1. Keyword Strategy
 

@@ -1,6 +1,6 @@
 # SEO Content Brief — Funding & Support (Resources)
 
-Source page: `restwell-theme/mockups/resources-concept.html`
+Source page: `restwell-theme/template-resources.php`
 
 ## 1. Keyword Strategy
 

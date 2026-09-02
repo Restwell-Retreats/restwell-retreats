@@ -52,6 +52,18 @@ function restwell_crm_save_enquiry( array $data ): array {
 		}
 	}
 
+	if ( empty( $data['privacy_consent'] ) ) {
+		return array(
+			'id'           => false,
+			'is_duplicate' => false,
+		);
+	}
+
+	if ( empty( $data['health_data_consent'] ) ) {
+		$data['care']   = '';
+		$data['access'] = '';
+	}
+
 	// Normalise optional date columns; store NULL when blank.
 	$date_from = ! empty( $data['date_from'] ) ? $data['date_from'] : null;
 	$date_to   = ! empty( $data['date_to'] ) ? $data['date_to'] : null;

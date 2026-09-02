@@ -126,6 +126,10 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 	$result['seo_meta_applied'] = true;
 	$result['seo_meta_forced']  = (bool) $overwrite_seo;
 
+	if ( function_exists( 'restwell_apply_copy_overwrites' ) ) {
+		$result['copy_overwrites'] = restwell_apply_copy_overwrites( $overwrite_seo );
+	}
+
 	// Priority blog posts (idempotent; pass $force so re-run updates content).
 	restwell_seed_priority_blog_posts( $result, $force );
 

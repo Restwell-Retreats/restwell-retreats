@@ -191,6 +191,10 @@ function restwell_preload_phosphor_icon_fonts() {
 	if ( is_admin() ) {
 		return;
 	}
+	// Concept surfaces use inline SVGs; do not fetch Phosphor WOFF2.
+	if ( function_exists( 'restwell_is_concept_surface' ) && restwell_is_concept_surface() ) {
+		return;
+	}
 
 	$theme_uri = get_template_directory_uri();
 	$fonts     = array(

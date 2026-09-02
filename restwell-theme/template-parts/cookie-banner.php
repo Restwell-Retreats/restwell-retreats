@@ -30,13 +30,14 @@ $has_choice  = function_exists( 'restwell_cookie_consent_has_choice' ) && restwe
 		<div class="cookie-banner__copy">
 			<p id="restwell-cookie-banner-title" class="cookie-banner__title"><?php esc_html_e( 'Cookies', 'restwell-retreats' ); ?></p>
 			<p class="cookie-banner__text">
-				<?php esc_html_e( 'Essential cookies keep the site working. Optional analytics cookies (Google Analytics, and Metricool if it is turned on) stay off unless you accept them.', 'restwell-retreats' ); ?>
+				<?php esc_html_e( 'Essential cookies keep the site working. Optional analytics cookies stay off unless you accept them.', 'restwell-retreats' ); ?>
 				<a class="cookie-banner__link" href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>
 			</p>
+			<p class="sr-only" data-cookie-status aria-live="polite"></p>
 		</div>
 		<div class="cookie-banner__actions">
-			<button type="button" class="btn btn-gold" data-cookie-accept><?php esc_html_e( 'Accept analytics', 'restwell-retreats' ); ?></button>
 			<button type="button" class="btn btn-outline-light" data-cookie-reject><?php esc_html_e( 'Reject analytics', 'restwell-retreats' ); ?></button>
+			<button type="button" class="btn btn-outline-light" data-cookie-accept><?php esc_html_e( 'Accept analytics', 'restwell-retreats' ); ?></button>
 		</div>
 	</div>
 </div>

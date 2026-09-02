@@ -117,7 +117,7 @@
    * 5. Density contexts: body.page--interior may point roles at denser steps
    *    on small screens, then rejoin the shared ladder at md.
    *
-   * Governance (enforced by mockups/_check_spacing.py)
+   * Governance (enforced by tools/_check_spacing.py)
    * A. Justification — every --rhythm-* token needs a comment (same line or
    *    the line above) explaining why no existing role fits. Ladder steps
    *    0–3 may share a group comment; dense/tight/lead variants need their
@@ -1006,13 +1006,32 @@ body.nav-open { overflow: hidden; }
      keep the lower band strong enough for white H1 + lede contrast. */
   background: linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.48) 50%, rgba(12, 35, 42, 0.74) 100%);
 }
-/* Enquire (and similar pale-sky photos): darker from the bottom up where the copy sits. */
+/* Enquire (and similar pale-sky photos): darken the copy column, keep the photo. */
 .hero--overlay-heavy .hero__media::after {
-  background: linear-gradient(0deg, rgba(12, 35, 42, 0.88) 0%, rgba(12, 35, 42, 0.62) 45%, rgba(12, 35, 42, 0.34) 100%);
+  /* Keep the hut row visible; contrast lives on the copy panel below. */
+  background:
+    linear-gradient(90deg, rgba(12, 35, 42, 0.42) 0%, rgba(12, 35, 42, 0.18) 52%, rgba(12, 35, 42, 0.08) 100%),
+    linear-gradient(180deg, rgba(12, 35, 42, 0.16) 0%, rgba(12, 35, 42, 0.38) 100%);
+}
+.hero--overlay-heavy .hero__text {
+  padding: var(--space-5);
+  background: rgba(12, 35, 42, 0.82);
+  border-radius: 1.25rem;
+}
+.hero--overlay-heavy .hero__text h1,
+.hero--overlay-heavy .hero__text p {
+  text-shadow: none;
+}
+.restwell-carousel__btn svg,
+.restwell-lightbox__btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
 }
 .hero__media-img {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1064,7 +1083,7 @@ body.nav-open { overflow: hidden; }
   max-width: var(--hero-title-measure);
 }
 .hero__text p {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.92);
   max-width: var(--hero-measure);
   font-size: var(--type-lede-size);
   line-height: var(--type-lede-leading);
@@ -1103,7 +1122,7 @@ body.nav-open { overflow: hidden; }
     background: linear-gradient(180deg, rgba(12, 35, 42, 0.48) 0%, rgba(12, 35, 42, 0.42) 45%, rgba(12, 35, 42, 0.68) 100%);
   }
   .hero--overlay-heavy .hero__media::after {
-    background: linear-gradient(0deg, rgba(12, 35, 42, 0.90) 0%, rgba(12, 35, 42, 0.70) 50%, rgba(12, 35, 42, 0.48) 100%);
+    background: linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.36) 40%, rgba(12, 35, 42, 0.52) 100%);
   }
   .hero__media:not(:has(.hero__media-img)) {
     background:
@@ -5195,7 +5214,7 @@ fieldset.form-stack {
 
 /*
  * ---------------------------------------------------------------------------
- * Homepage section patterns (reusable across concept mockups)
+ * Homepage section patterns (reusable across pages)
  * ---------------------------------------------------------------------------
  */
 

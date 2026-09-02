@@ -1,6 +1,9 @@
 /**
  * Deferred / consent-gated loading for GA4 and Metricool (front-end only).
  *
+ * Theme first-party cookie `restwell_cookie_consent` = JSON `{ "v": 1, "analytics": true|false }`
+ * is the only consent source when loadMode is consent_gated.
+ *
  * @package Restwell_Retreats
  */
 (function () {
@@ -8,19 +11,10 @@
 
 	var cfg = typeof restwellAnalytics !== 'undefined' ? restwellAnalytics : {};
 	var granted = false;
+	var gaLoaded = false;
+	var metricoolLoaded = false;
 
 	/**
-	 * CookieAdmin (cookieadmin.net), free tier: consent is stored in cookie `cookieadmin_consent`
-	 * as JSON — e.g. accept all `{ "accept": "true" }`, or per-category `{ "analytics": "true" }`.
-	 * Pro is not required; GCM defaults/update for GA4 come from the theme (PHP loader + this script).
-	 * The plugin does not dispatch an “after consent” event; we read the cookie (see plugin consent.js).
-	 *
-	 * @return {boolean} Whether analytical / analytics cookies are allowed.
-	 */
-	/**
-	 * Theme first-party cookie `restwell_cookie_consent` = JSON `{ "v": 1, "analytics": true|false }`.
-	 * When present, it is the only source of truth (overrides leftover third-party CMP cookies).
-	 *
 	 * @return {boolean|null} true/false when set, null when absent or unreadable.
 	 */
 	function restwellFirstPartyAnalyticsConsent() {
@@ -50,37 +44,13 @@
 		return null;
 	}
 
-	function restwellCookieadminConsentAllowsAnalytics() {
-		try {
-			if (!document.cookie) {
-				return false;
-			}
-			var prefix = 'cookieadmin_consent=';
-			var parts = document.cookie.split(';');
-			var i;
-			var p;
-			var raw;
-			var data;
-			for (i = 0; i < parts.length; i++) {
-				p = parts[i].trim();
-				if (p.indexOf(prefix) !== 0) {
-					continue;
-				}
-				raw = p.substring(prefix.length);
-				data = JSON.parse(decodeURIComponent(raw));
-				if (data.accept === 'true') {
-					return true;
-				}
-				if (data.reject === 'true') {
-					return false;
-				}
-				if (data.analytics === 'true') {
-					return true;
-				}
-				return false;
-			}
-		} catch (e) {}
-		return false;
+	function ensureGtag() {
+		window.dataLayer = window.dataLayer || [];
+		window.gtag =
+			window.gtag ||
+			function () {
+				window.dataLayer.push(arguments);
+			};
 	}
 
 	window.restwellGrantAnalyticsConsent = function () {
@@ -88,13 +58,7 @@
 			return;
 		}
 		granted = true;
-
-		window.dataLayer = window.dataLayer || [];
-		window.gtag =
-			window.gtag ||
-			function () {
-				window.dataLayer.push(arguments);
-			};
+		ensureGtag();
 
 		if (cfg.gaId) {
 			loadGa(cfg.gaId, !!cfg.consentGated);
@@ -104,7 +68,27 @@
 		}
 	};
 
+	window.restwellRevokeAnalyticsConsent = function () {
+		granted = false;
+		ensureGtag();
+		window.gtag('consent', 'update', {
+			analytics_storage: 'denied',
+			ad_storage: 'denied',
+			ad_user_data: 'denied',
+			ad_personalization: 'denied'
+		});
+	};
+
 	function loadGa(mid, useConsentUpdate) {
+		if (gaLoaded) {
+			if (useConsentUpdate) {
+				window.gtag('consent', 'update', {
+					analytics_storage: 'granted'
+				});
+			}
+			return;
+		}
+		gaLoaded = true;
 		var s = document.createElement('script');
 		s.async = true;
 		s.src =
@@ -113,7 +97,7 @@
 			window.gtag('js', new Date());
 			if (useConsentUpdate) {
 				window.gtag('consent', 'update', {
-					analytics_storage: 'granted',
+					analytics_storage: 'granted'
 				});
 			}
 			window.gtag('config', mid);
@@ -122,6 +106,10 @@
 	}
 
 	function loadMetricool(hash) {
+		if (metricoolLoaded) {
+			return;
+		}
+		metricoolLoaded = true;
 		function inject() {
 			if (typeof window.beTracker !== 'undefined' && window.beTracker.t) {
 				window.beTracker.t({ hash: hash });
@@ -156,86 +144,12 @@
 		document.addEventListener('restwell-analytics-allow', function () {
 			window.restwellGrantAnalyticsConsent();
 		});
-
-		function restwellTryFirstPartyConsent() {
-			var choice = restwellFirstPartyAnalyticsConsent();
-			if (choice === true) {
-				window.restwellGrantAnalyticsConsent();
-				return true;
-			}
-			if (choice === false) {
-				return true; // decided; do not fall through to other CMPs
-			}
-			return false;
-		}
-
-		function restwellTryCookieadminConsent() {
-			if (restwellFirstPartyAnalyticsConsent() !== null) {
-				return restwellTryFirstPartyConsent();
-			}
-			if (restwellCookieadminConsentAllowsAnalytics()) {
-				window.restwellGrantAnalyticsConsent();
-				return true;
-			}
-			return false;
-		}
-
-		// Returning visitors with a first-party choice: honour it and skip other CMPs.
-		if (restwellTryFirstPartyConsent()) {
-			return;
-		}
-
-		restwellTryCookieadminConsent();
-		var cookieadminPolls = 0;
-		var cookieadminPollMax = 150;
-		var cookieadminIv = setInterval(function () {
-			cookieadminPolls++;
-			if (granted || restwellTryCookieadminConsent() || cookieadminPolls >= cookieadminPollMax) {
-				clearInterval(cookieadminIv);
-			}
-		}, 400);
-
-		window.addEventListener('CookiebotOnAccept', function () {
-			try {
-				if (
-					window.Cookiebot &&
-					window.Cookiebot.consent &&
-					window.Cookiebot.consent.statistics
-				) {
-					window.restwellGrantAnalyticsConsent();
-				}
-			} catch (e) {}
+		document.addEventListener('restwell-analytics-deny', function () {
+			window.restwellRevokeAnalyticsConsent();
 		});
 
-		document.addEventListener('cookieyes_consent_update', function (ev) {
-			try {
-				var raw = ev.detail;
-				var data =
-					typeof raw === 'object' && raw !== null
-						? raw
-						: JSON.parse(raw || '{}');
-				if (
-					data.accepted &&
-					data.accepted.indexOf &&
-					data.accepted.indexOf('analytics') !== -1
-				) {
-					window.restwellGrantAnalyticsConsent();
-					return;
-				}
-				if (data.categories && data.categories.analytics === true) {
-					window.restwellGrantAnalyticsConsent();
-				}
-			} catch (e) {}
-		});
-
-		document.addEventListener('cmplz_fire_categories', function () {
-			try {
-				if (document.cookie.indexOf('cmplz_statistics=allow') !== -1) {
-					window.restwellGrantAnalyticsConsent();
-				}
-			} catch (e) {}
-		});
-
-		return;
+		if (restwellFirstPartyAnalyticsConsent() === true) {
+			window.restwellGrantAnalyticsConsent();
+		}
 	}
 })();

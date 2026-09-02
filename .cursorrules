@@ -28,28 +28,27 @@ Never modify anything in /client/, /server/, /shared/, or /patches/.
 - Additional PHP functions go in /inc/ (split logically: enqueue.php, helpers.php, post-types.php)
 
 ## HTML/CSS
-- Maintain the existing HTML structure and class names from the React source where possible
-- CSS variables preferred for colours and spacing
-- BEM naming convention for any new CSS classes
+- Maintain existing HTML structure and class names where they already exist
+- **shared.css is canonical** (CSS variables, BEM). New public UI goes there, not in Tailwind.
+- Tailwind (`assets/css/tailwind.css`) is legacy for unported surfaces only. Do not add new Tailwind utilities to live templates.
 - No jQuery — vanilla JS only
 
-## Mockup spacing governance
+## Spacing governance
 When editing `restwell-theme/assets/css/shared.css`, follow the SPACING SYSTEM rules in that file:
-new `--rhythm-*` tokens need a justification comment; component rules consume tokens (not length literals); `@media` remaps tokens, never padding/margin/gap literals. Run `python3 restwell-theme/mockups/_check_spacing.py` before finishing. Mockups load that file via `../assets/css/shared.css` — do not add a second copy under `mockups/`.
+new `--rhythm-*` tokens need a justification comment; component rules consume tokens (not length literals); `@media` remaps tokens, never padding/margin/gap literals. Run `python3 restwell-theme/tools/_check_spacing.py` before finishing.
 
 ## Frontend & UI/UX Design
 When generating or modifying HTML/PHP/CSS, follow these design principles:
-1. **Whitespace is king**: Use generous padding and margins. Favor open, airy layouts. Use Tailwind's spacing scale intentionally (e.g., py-16, gap-8). Never cramp elements.
-2. **Typography matters**: Never output a raw `<p>` or `<h1>` without considering line-height (leading-relaxed, leading-tight), font weight, and subtle text colors (e.g., text-gray-600 for body copy, not pure black).
-3. **Premium borders & shadows**: Avoid harsh, thick borders. Use subtle touches like border-white/20, shadow-sm, or shadow-[0_8px_30px_rgb(0,0,0,0.04)].
-4. **Soft corners**: Use rounded-2xl for large cards and rounded-full for pills/icons unless instructed otherwise.
-5. **Tailwind first**: Always use Tailwind utility classes. Never write custom CSS unless necessary for complex animations or pseudo-elements.
-6. **Interactive states**: Include smooth transitions on clickable elements (e.g., hover:bg-opacity-80 transition-all duration-300 ease-in-out hover:-translate-y-1).
+1. **Whitespace is king**: Use generous padding and margins. Favor open, airy layouts. Never cramp elements.
+2. **Typography matters**: Never output a raw `<p>` or `<h1>` without considering line-height, font weight, and muted body colour (not pure black).
+3. **Premium borders & shadows**: Avoid harsh, thick borders. Use subtle borders and soft shadows.
+4. **Soft corners**: Large cards are generously rounded; pills/icons are full-round unless instructed otherwise.
+5. **Interactive states**: Include visible hover/focus and smooth transitions on clickable elements.
 
 ## Content Management
-- Any hardcoded strings that editors might need to change should become ACF fields
-- Use get_field() / the_field() for ACF content
-- Always include fallback content if ACF field is empty
+- Editors change copy in **Page content** meta boxes (`inc/page-meta-definitions.php`), not ACF. Do not add `get_field()` / `the_field()`.
+- `copy-overwrites/` is the editorial brief; WordPress post meta is runtime. Theme Setup runs `restwell_apply_copy_overwrites()`.
+- Always include fallback content if a meta field is empty.
 
 ## JavaScript
 - Preserve existing Map.tsx logic — translate to vanilla JS

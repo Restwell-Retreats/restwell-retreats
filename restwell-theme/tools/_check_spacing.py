@@ -18,8 +18,8 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-DEFAULT_CSS = ROOT.parent / "assets" / "css" / "shared.css"
+THEME = Path(__file__).resolve().parent.parent
+DEFAULT_CSS = THEME / "assets" / "css" / "shared.css"
 
 SPACING_PROP_RE = re.compile(
     r"^(?P<prop>"

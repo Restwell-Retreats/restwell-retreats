@@ -1,6 +1,6 @@
 # SEO Content Brief — Optional Care
 
-Source page: `restwell-theme/mockups/care-concept.html`
+Source page: `restwell-theme/template-care.php`
 
 ## 1. Keyword Strategy
 
@@ -27,7 +27,7 @@ The current H1 ("Care during your stay, only if you want it") is strong, on-bran
 - **Meta title (existing):** `Care During Your Stay | Accessible Holidays | Restwell Retreats` — 65 characters, slightly over the 60-char guideline; consider trimming if this gets formally seeded.
 - **Meta description (existing):** `Optional, CQC-regulated care during your self-catering stay in Whitstable, arranged through Continuity of Care Services. Or bring your own carer. Ask us.` — 158 characters, within range.
 - **Headings:** single H1, seven H2s across the subnav sections (About → Support → Own carer → Steps → CQC → Professionals → FAQ) — clean ladder, no skips.
-- **Live slug (from the page's own JSON-LD):** `/care-during-your-stay/` — note this differs from the mockup filename `care-concept.html`; use the JSON-LD value as the source of truth for the live URL, not the filename pattern.
+- **Live slug (from the page's own JSON-LD):** `/care-during-your-stay/`
 
 ## 4. User Experience & Conversion
 

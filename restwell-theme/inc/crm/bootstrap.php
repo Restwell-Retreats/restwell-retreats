@@ -23,6 +23,7 @@ $restwell_crm_modules = array(
 	'status-transition.php',
 	'mailing-list.php',
 	'retention.php',
+	'privacy.php',
 	'dashboard.php',
 	'enquiries.php',
 );

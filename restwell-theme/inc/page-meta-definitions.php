@@ -203,7 +203,7 @@ function restwell_page_content_editor_notice( $post = null ) {
 	}
 
 	if ( $template !== '' ) {
-		return __( 'Hero heading, intro, and hero image go live where this template reads them. Most body copy on concept pages lives in the theme PHP, not in this panel. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+		return __( 'Hero heading, intro, and hero image go live where this template reads them. Most body copy on these templates lives in the theme PHP, not in this panel. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
 	}
 
 	return __( 'Pick a section, edit the fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
@@ -237,28 +237,18 @@ function restwell_get_front_page_field_definitions() {
 			'home_partner_1_name'    => restwell_field( __( 'Partner 1 name', 'restwell-retreats' ) ),
 			'home_partner_1_url'     => restwell_field( __( 'Partner 1 URL', 'restwell-retreats' ) ),
 			'home_partner_1_logo_id' => restwell_field( __( 'Partner 1 logo image (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'home_partner_1_blurb'   => restwell_field( __( 'Partner 1 hover blurb (short)', 'restwell-retreats' ) ),
-			'home_partner_1_logo_scale' => restwell_field( __( 'Partner 1 logo scale (optional, default 1.75)', 'restwell-retreats' ), 'number' ),
 			'home_partner_2_name'    => restwell_field( __( 'Partner 2 name', 'restwell-retreats' ) ),
 			'home_partner_2_url'     => restwell_field( __( 'Partner 2 URL', 'restwell-retreats' ) ),
 			'home_partner_2_logo_id' => restwell_field( __( 'Partner 2 logo image (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'home_partner_2_blurb'   => restwell_field( __( 'Partner 2 hover blurb (short)', 'restwell-retreats' ) ),
-			'home_partner_2_logo_scale' => restwell_field( __( 'Partner 2 logo scale (optional, default 1.85)', 'restwell-retreats' ), 'number' ),
 			'home_partner_3_name'    => restwell_field( __( 'Partner 3 name', 'restwell-retreats' ) ),
 			'home_partner_3_url'     => restwell_field( __( 'Partner 3 URL', 'restwell-retreats' ) ),
 			'home_partner_3_logo_id' => restwell_field( __( 'Partner 3 logo image (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'home_partner_3_blurb'   => restwell_field( __( 'Partner 3 hover blurb (short)', 'restwell-retreats' ) ),
-			'home_partner_3_logo_scale' => restwell_field( __( 'Partner 3 logo scale (optional, default 1.7)', 'restwell-retreats' ), 'number' ),
 			'home_partner_4_name'    => restwell_field( __( 'Partner 4 name', 'restwell-retreats' ) ),
 			'home_partner_4_url'     => restwell_field( __( 'Partner 4 URL', 'restwell-retreats' ) ),
 			'home_partner_4_logo_id' => restwell_field( __( 'Partner 4 logo image (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'home_partner_4_blurb'   => restwell_field( __( 'Partner 4 hover blurb (short)', 'restwell-retreats' ) ),
-			'home_partner_4_logo_scale' => restwell_field( __( 'Partner 4 logo scale (optional, default 1.65)', 'restwell-retreats' ), 'number' ),
 			'home_partner_5_name'    => restwell_field( __( 'Partner 5 name', 'restwell-retreats' ) ),
 			'home_partner_5_url'     => restwell_field( __( 'Partner 5 URL', 'restwell-retreats' ) ),
 			'home_partner_5_logo_id' => restwell_field( __( 'Partner 5 logo image (attachment ID)', 'restwell-retreats' ), 'image' ),
-			'home_partner_5_blurb'   => restwell_field( __( 'Partner 5 hover blurb (short)', 'restwell-retreats' ) ),
-			'home_partner_5_logo_scale' => restwell_field( __( 'Partner 5 logo scale (optional, default 1.6)', 'restwell-retreats' ), 'number' ),
 		),
 		'Area & funding' => array(
 			'home_teaser_label'         => restwell_field( __( 'Section label (empty = hide band)', 'restwell-retreats' ) ),

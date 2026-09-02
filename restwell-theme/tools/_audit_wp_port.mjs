@@ -1,6 +1,6 @@
 /**
  * Comprehensive WP theme port audit: SEO + UI across pages and breakpoints.
- * Run: node restwell-theme/mockups/_audit_wp_port.mjs
+ * Run: node restwell-theme/tools/_audit_wp_port.mjs
  */
 import { chromium } from 'playwright';
 import { writeFileSync } from 'fs';
@@ -16,25 +16,25 @@ const BREAKPOINTS = [
 ];
 
 const PAGES = [
-  { id: 'home', path: '/', mockup: 'homepage-concept.html' },
-  { id: 'our-story', path: '/our-story/', mockup: 'our-story-concept.html' },
-  { id: 'the-property', path: '/the-property/', mockup: 'property-concept.html' },
-  { id: 'accessibility', path: '/accessibility/', mockup: 'accessibility-concept.html' },
-  { id: 'pricing', path: '/pricing/', mockup: 'pricing-concept.html' },
-  { id: 'how-it-works', path: '/how-it-works/', mockup: 'how-it-works-concept.html' },
-  { id: 'who-its-for', path: '/who-its-for/', mockup: 'who-its-for-concept.html' },
-  { id: 'whitstable', path: '/whitstable-area-guide/', mockup: 'whitstable-guide-concept.html' },
-  { id: 'resources', path: '/resources/', mockup: 'resources-concept.html' },
-  { id: 'optional-care', path: '/optional-care/', mockup: 'care-concept.html' },
-  { id: 'faq', path: '/faq/', mockup: 'faq-concept.html' },
-  { id: 'enquire', path: '/enquire/', mockup: 'enquire-concept.html' },
-  { id: 'blog', path: '/blog/', mockup: 'blog-concept.html' },
-  { id: 'privacy', path: '/privacy-policy/', mockup: 'privacy-concept.html' },
-  { id: 'terms', path: '/terms-and-conditions/', mockup: 'terms-concept.html' },
-  { id: 'a11y-policy', path: '/accessibility-policy/', mockup: 'accessibility-policy-concept.html' },
-  { id: '404', path: '/this-page-does-not-exist-audit-404/', mockup: '404-concept.html' },
-  { id: 'guest-guide', path: '/guest-guide/', mockup: 'guest-guide-concept.html' },
-  { id: 'sample-page', path: '/sample-page/', mockup: 'page-concept.html' },
+  { id: 'home', path: '/' },
+  { id: 'our-story', path: '/our-story/' },
+  { id: 'the-property', path: '/the-property/' },
+  { id: 'accessibility', path: '/accessibility/' },
+  { id: 'pricing', path: '/pricing/' },
+  { id: 'how-it-works', path: '/how-it-works/' },
+  { id: 'who-its-for', path: '/who-its-for/' },
+  { id: 'whitstable', path: '/whitstable-area-guide/' },
+  { id: 'resources', path: '/resources/' },
+  { id: 'optional-care', path: '/optional-care/' },
+  { id: 'faq', path: '/faq/' },
+  { id: 'enquire', path: '/enquire/' },
+  { id: 'blog', path: '/blog/' },
+  { id: 'privacy', path: '/privacy-policy/' },
+  { id: 'terms', path: '/terms-and-conditions/' },
+  { id: 'a11y-policy', path: '/accessibility-policy/' },
+  { id: '404', path: '/this-page-does-not-exist-audit-404/' },
+  { id: 'guest-guide', path: '/guest-guide/' },
+  { id: 'sample-page', path: '/sample-page/' },
 ];
 
 const BANNED = [/fully[\s-]?accessible/gi];
@@ -56,7 +56,6 @@ async function collectPage(page, meta) {
     return {
       id: meta.id,
       path: meta.path,
-      mockup: meta.mockup,
       status: 0,
       error: String(e.message || e),
       issues: [{ sev: 'fail', area: 'load', msg: String(e.message || e) }],
@@ -305,7 +304,6 @@ async function collectPage(page, meta) {
   return {
     id: meta.id,
     path: meta.path,
-    mockup: meta.mockup,
     status,
     finalUrl,
     seo: {

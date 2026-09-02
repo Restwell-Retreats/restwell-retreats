@@ -4817,8 +4817,12 @@
     transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
-  .restwell-carousel__btn i {
+  .restwell-carousel__btn i,
+  .restwell-carousel__btn svg {
     font-size: 1.35rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    display: block;
     line-height: 1;
   }
 

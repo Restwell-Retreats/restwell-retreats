@@ -35,6 +35,7 @@ function restwell_concept_page_templates() {
 		'404',
 		'blog',
 		'page',
+		'search',
 	);
 }
 
@@ -83,6 +84,11 @@ function restwell_is_concept_surface() {
 
 	if ( in_array( 'page', $ported, true ) && is_page() && ! is_page_template() ) {
 		$cached = true;
+		return $cached;
+	}
+
+	if ( in_array( 'search', $ported, true ) && is_search() ) {
+		$cached = true;
 	}
 
 	return $cached;
@@ -97,6 +103,10 @@ function restwell_dequeue_tailwind_on_concept() {
 	}
 	wp_dequeue_style( 'restwell-tailwind' );
 	wp_deregister_style( 'restwell-tailwind' );
+	wp_dequeue_style( 'phosphor-icons-regular' );
+	wp_dequeue_style( 'phosphor-icons-bold' );
+	wp_deregister_style( 'phosphor-icons-regular' );
+	wp_deregister_style( 'phosphor-icons-bold' );
 }
 add_action( 'wp_enqueue_scripts', 'restwell_dequeue_tailwind_on_concept', 100 );
 

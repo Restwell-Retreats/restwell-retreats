@@ -265,6 +265,46 @@ function restwell_crm_enquiries_page() {
 		<?php if ( isset( $_GET['updated'] ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Changes saved.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
+		<?php if ( isset( $_GET['dsr_erased'] ) ) : ?>
+			<div class="notice notice-success is-dismissible"><p>
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %d: number of CRM rows anonymised. */
+						_n( '%d CRM record anonymised.', '%d CRM records anonymised.', absint( $_GET['dsr_erased'] ), 'restwell-retreats' ),
+						absint( $_GET['dsr_erased'] )
+					)
+				);
+				?>
+			</p></div>
+		<?php endif; ?>
+		<?php
+		$dsr_error = isset( $_GET['dsr_error'] ) ? sanitize_key( wp_unslash( $_GET['dsr_error'] ) ) : '';
+		if ( 'email' === $dsr_error ) :
+			?>
+			<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Enter a valid email address to export.', 'restwell-retreats' ); ?></p></div>
+		<?php elseif ( 'confirm' === $dsr_error ) : ?>
+			<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Email and confirmation must match before records can be anonymised.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
+
+		<div class="rw-dsr-box">
+			<p class="description"><?php esc_html_e( 'Subject-access request: export or anonymise CRM rows for one email. WordPress → Tools → Export/Erase Personal Data also covers these tables.', 'restwell-retreats' ); ?></p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-dsr-form">
+				<?php wp_nonce_field( 'restwell_crm_dsr' ); ?>
+				<label for="rw-dsr-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label>
+				<input id="rw-dsr-email" type="email" name="dsr_email" required autocomplete="off" />
+				<button type="submit" name="action" value="restwell_crm_dsr_export" class="button"><?php esc_html_e( 'Export this email', 'restwell-retreats' ); ?></button>
+				<?php if ( restwell_crm_can_erase_personal_data() ) : ?>
+					<label for="rw-dsr-email-confirm"><?php esc_html_e( 'Confirm email to anonymise', 'restwell-retreats' ); ?></label>
+					<input id="rw-dsr-email-confirm" type="email" name="dsr_email_confirm" autocomplete="off" />
+					<label for="rw-dsr-confirm">
+						<input id="rw-dsr-confirm" type="checkbox" name="dsr_confirm" value="1" />
+						<?php esc_html_e( 'This is a valid erasure request and cannot be undone.', 'restwell-retreats' ); ?>
+					</label>
+					<button type="submit" name="action" value="restwell_crm_dsr_erase" class="button button-secondary"><?php esc_html_e( 'Anonymise this email', 'restwell-retreats' ); ?></button>
+				<?php endif; ?>
+			</form>
+		</div>
 
 		<?php restwell_crm_render_enquiries_panel( $list ); ?>
 	</div>
@@ -753,15 +793,27 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 							$health_stamp = ! empty( $row->health_data_consented_at )
 								? date_i18n( 'j M Y, H:i', strtotime( (string) $row->health_data_consented_at ) )
 								: '';
-							$contact_fields[ __( 'Health-data consent', 'restwell-retreats' ) ] = esc_html(
-								$health_stamp
-									? sprintf(
+							$health_policy = isset( $row->privacy_policy_version ) ? trim( (string) $row->privacy_policy_version ) : '';
+							if ( $health_stamp && $health_policy ) {
+								$contact_fields[ __( 'Health-data consent', 'restwell-retreats' ) ] = esc_html(
+									sprintf(
+										/* translators: 1: datetime, 2: policy version */
+										__( 'Yes — care/accessibility notes — %1$s (policy %2$s)', 'restwell-retreats' ),
+										$health_stamp,
+										$health_policy
+									)
+								);
+							} elseif ( $health_stamp ) {
+								$contact_fields[ __( 'Health-data consent', 'restwell-retreats' ) ] = esc_html(
+									sprintf(
 										/* translators: %s: datetime */
 										__( 'Yes — care/accessibility notes — %s', 'restwell-retreats' ),
 										$health_stamp
 									)
-									: __( 'Yes — care/accessibility notes', 'restwell-retreats' )
-							);
+								);
+							} else {
+								$contact_fields[ __( 'Health-data consent', 'restwell-retreats' ) ] = esc_html__( 'Yes — care/accessibility notes', 'restwell-retreats' );
+							}
 						}
 						// Preferred dates moved out of this read-only block — they get
 						// their own editable panel below so staff can update them without

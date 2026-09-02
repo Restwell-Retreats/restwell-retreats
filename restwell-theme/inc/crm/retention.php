@@ -85,9 +85,8 @@ function restwell_crm_purge_unused_health_fields(): void {
  */
 function restwell_crm_anonymise_expired_enquiries(): void {
 	global $wpdb;
-	$table       = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	$notes_table = $wpdb->prefix . RESTWELL_NOTES_TABLE;
-	$now         = current_time( 'mysql' );
+	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$now   = current_time( 'mysql' );
 	if ( ! is_string( $now ) || '' === $now ) {
 		return;
 	}
@@ -108,28 +107,169 @@ function restwell_crm_anonymise_expired_enquiries(): void {
 		if ( $id < 1 ) {
 			continue;
 		}
-		$wpdb->update(
-			$table,
-			array(
-				'name'               => '',
-				'email'              => '',
-				'phone'              => '',
-				'preferred_dates'    => '',
-				'num_guests'         => '',
-				'care_requirements'  => '',
-				'accessibility'      => '',
-				'message'            => '',
-				'staff_notes'        => '',
-				'contact_preference' => '',
-				'preferred_time'     => '',
-				'anonymised_at'      => $now,
-			),
-			array( 'id' => $id ),
-			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
-			array( '%d' )
-		);
-		$wpdb->delete( $notes_table, array( 'enquiry_id' => $id ), array( '%d' ) );
+		restwell_crm_anonymise_enquiry_id( $id, $now );
 	}
+}
+
+/**
+ * Anonymise one enquiry row and delete its staff notes.
+ *
+ * @param int    $id  Enquiry id.
+ * @param string $now MySQL datetime; empty uses current_time.
+ * @return bool
+ */
+function restwell_crm_anonymise_enquiry_id( int $id, string $now = '' ): bool {
+	global $wpdb;
+	$id = absint( $id );
+	if ( $id < 1 ) {
+		return false;
+	}
+	if ( '' === $now ) {
+		$now = current_time( 'mysql' );
+		if ( ! is_string( $now ) || '' === $now ) {
+			return false;
+		}
+	}
+	$table       = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$notes_table = $wpdb->prefix . RESTWELL_NOTES_TABLE;
+	$updated     = $wpdb->update(
+		$table,
+		array(
+			'name'               => '',
+			'email'              => '',
+			'phone'              => '',
+			'preferred_dates'    => '',
+			'num_guests'         => '',
+			'care_requirements'  => '',
+			'accessibility'      => '',
+			'message'            => '',
+			'staff_notes'        => '',
+			'contact_preference' => '',
+			'preferred_time'     => '',
+			'anonymised_at'      => $now,
+		),
+		array(
+			'id' => $id,
+		),
+		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' ),
+		array( '%d' )
+	);
+	if ( false === $updated ) {
+		return false;
+	}
+	$wpdb->delete( $notes_table, array( 'enquiry_id' => $id ), array( '%d' ) );
+	return true;
+}
+
+/**
+ * Enquiry ids for an email that have not been anonymised.
+ *
+ * @param string $email Address.
+ * @return int[]
+ */
+function restwell_crm_enquiry_ids_for_email( string $email ): array {
+	global $wpdb;
+	$email = strtolower( sanitize_email( $email ) );
+	if ( ! is_email( $email ) ) {
+		return array();
+	}
+	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$ids   = $wpdb->get_col(
+		$wpdb->prepare(
+			'SELECT id FROM %i WHERE anonymised_at IS NULL AND LOWER(email) = %s',
+			$table,
+			$email
+		)
+	);
+	if ( ! is_array( $ids ) ) {
+		return array();
+	}
+	return array_values( array_filter( array_map( 'absint', $ids ) ) );
+}
+
+/**
+ * Anonymise all live enquiry rows for an email.
+ *
+ * @param string $email Address.
+ * @return int Rows anonymised.
+ */
+function restwell_crm_anonymise_enquiries_by_email( string $email ): int {
+	$now   = current_time( 'mysql' );
+	$count = 0;
+	foreach ( restwell_crm_enquiry_ids_for_email( $email ) as $id ) {
+		if ( restwell_crm_anonymise_enquiry_id( $id, is_string( $now ) ? $now : '' ) ) {
+			++$count;
+		}
+	}
+	return $count;
+}
+
+/**
+ * Anonymise FAQ questions for an email.
+ *
+ * @param string $email Address.
+ * @return int Rows updated.
+ */
+function restwell_crm_anonymise_faq_by_email( string $email ): int {
+	global $wpdb;
+	$email = strtolower( sanitize_email( $email ) );
+	if ( ! is_email( $email ) ) {
+		return 0;
+	}
+	$table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
+	$now   = current_time( 'mysql' );
+	if ( ! is_string( $now ) || '' === $now ) {
+		return 0;
+	}
+	$updated = $wpdb->query(
+		$wpdb->prepare(
+			"UPDATE %i
+			SET name = '',
+				email = '',
+				question = '',
+				source_url = '',
+				anonymised_at = %s
+			WHERE anonymised_at IS NULL
+			AND LOWER(email) = %s",
+			$table,
+			$now,
+			$email
+		)
+	);
+	return is_int( $updated ) ? $updated : 0;
+}
+
+/**
+ * Anonymise guest-guide rows for an email.
+ *
+ * @param string $email Address.
+ * @return int Rows updated.
+ */
+function restwell_crm_anonymise_guests_by_email( string $email ): int {
+	global $wpdb;
+	$email = strtolower( sanitize_email( $email ) );
+	if ( ! is_email( $email ) ) {
+		return 0;
+	}
+	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
+	$now   = current_time( 'mysql' );
+	if ( ! is_string( $now ) || '' === $now ) {
+		return 0;
+	}
+	$updated = $wpdb->query(
+		$wpdb->prepare(
+			"UPDATE %i
+			SET name = '',
+				email = '',
+				anonymised_at = %s
+			WHERE anonymised_at IS NULL
+			AND LOWER(email) = %s",
+			$table,
+			$now,
+			$email
+		)
+	);
+	return is_int( $updated ) ? $updated : 0;
 }
 
 /**

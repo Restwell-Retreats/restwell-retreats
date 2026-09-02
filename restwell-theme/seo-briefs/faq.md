@@ -1,6 +1,6 @@
 # SEO Content Brief — FAQ
 
-Source page: `restwell-theme/mockups/faq-concept.html`
+Source page: `restwell-theme/template-faq.php`
 
 ## 1. Keyword Strategy
 

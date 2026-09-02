@@ -299,6 +299,12 @@ function restwell_handle_enquire_submit(): void {
 		restwell_enquire_redirect_flash( $redirect, $errors, $fields_flash );
 	}
 
+	// Defence in depth: never persist care/access notes without Art. 9 consent.
+	if ( ! $health_consent ) {
+		$care   = '';
+		$access = '';
+	}
+
 	// Normalise dates for storage: blank invalid pairs already rejected.
 	// Shared helper so admin date edits (crm.php) produce identical strings.
 	$dates = restwell_format_enquiry_date_range( $date_from, $date_to );

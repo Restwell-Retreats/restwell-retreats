@@ -103,11 +103,6 @@ function restwell_page_content_required_fields( $post = null ) {
 		case 'template-resources.php':
 			$required['res_intro'] = __( 'Intro paragraph', 'restwell-retreats' );
 			break;
-		case 'template-privacy-policy.php':
-		case 'template-terms-and-conditions.php':
-		case 'template-accessibility-policy.php':
-			$required['legal_body_html'] = __( 'Document body', 'restwell-retreats' );
-			break;
 	}
 
 	return $required;

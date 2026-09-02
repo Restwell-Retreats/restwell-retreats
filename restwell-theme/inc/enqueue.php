@@ -33,6 +33,7 @@ function restwell_enqueue_scripts() {
 
 	// Serve minified assets in production; fall back to unminified when SCRIPT_DEBUG is on.
 	$use_min = ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+	$is_concept = function_exists( 'restwell_is_concept_surface' ) && restwell_is_concept_surface();
 
 	wp_enqueue_style(
 		'restwell-fonts',
@@ -41,34 +42,33 @@ function restwell_enqueue_scripts() {
 		restwell_theme_asset_version( '/assets/css/fonts.css' )
 	);
 
-	/*
-	 * Phosphor Icons (@phosphor-icons/web): kept for unported Tailwind surfaces / legacy icons.
-	 * Concept chrome uses CSS hamburger (shared.css), not Phosphor.
-	 */
-	wp_enqueue_style(
-		'phosphor-icons-regular',
-		$theme_uri . '/assets/fonts/phosphor/regular/style.css',
-		array(),
-		restwell_theme_asset_version( '/assets/fonts/phosphor/regular/style.css' )
-	);
-	wp_enqueue_style(
-		'phosphor-icons-bold',
-		$theme_uri . '/assets/fonts/phosphor/bold/style.css',
-		array( 'phosphor-icons-regular' ),
-		restwell_theme_asset_version( '/assets/fonts/phosphor/bold/style.css' )
-	);
+	if ( ! $is_concept ) {
+		/*
+		 * Phosphor Icons: legacy Tailwind surfaces only.
+		 * Concept chrome and gallery use CSS / inline SVG.
+		 */
+		wp_enqueue_style(
+			'phosphor-icons-regular',
+			$theme_uri . '/assets/fonts/phosphor/regular/style.css',
+			array(),
+			restwell_theme_asset_version( '/assets/fonts/phosphor/regular/style.css' )
+		);
+		wp_enqueue_style(
+			'phosphor-icons-bold',
+			$theme_uri . '/assets/fonts/phosphor/bold/style.css',
+			array( 'phosphor-icons-regular' ),
+			restwell_theme_asset_version( '/assets/fonts/phosphor/bold/style.css' )
+		);
 
-	// tailwind.css is always built minified via `npm run build` (Tailwind CLI --minify).
-	// Dequeued on concept surfaces via restwell_dequeue_tailwind_on_concept().
-	wp_enqueue_style(
-		'restwell-tailwind',
-		$theme_uri . '/assets/css/tailwind.css',
-		array( 'phosphor-icons-bold' ),
-		restwell_theme_asset_version( '/assets/css/tailwind.css' )
-	);
+		wp_enqueue_style(
+			'restwell-tailwind',
+			$theme_uri . '/assets/css/tailwind.css',
+			array( 'phosphor-icons-bold' ),
+			restwell_theme_asset_version( '/assets/css/tailwind.css' )
+		);
+	}
 
-	// Mockup design system — global chrome. Enqueued after Tailwind so it wins on cascade
-	// when both load; does not depend on Tailwind so it survives concept hard-cut dequeue.
+	// Mockup design system — global chrome. Default stylesheet for public pages.
 	wp_enqueue_style(
 		'restwell-shared',
 		$theme_uri . '/assets/css/shared.css',
@@ -90,48 +90,44 @@ function restwell_enqueue_scripts() {
 		true
 	);
 
-	$main_js = $use_min ? '/assets/js/main.min.js' : '/assets/js/main.js';
-	wp_enqueue_script(
-		'restwell-main',
-		$theme_uri . $main_js,
-		array( 'restwell-shared' ),
-		restwell_theme_asset_version( $main_js ),
-		true
+	$js_suffix = $use_min ? '.min.js' : '.js';
+	$front_js  = array(
+		'restwell-nav'     => '/assets/js/nav' . $js_suffix,
+		'restwell-enquire' => '/assets/js/enquire' . $js_suffix,
+		'restwell-gallery' => '/assets/js/gallery' . $js_suffix,
+		'restwell-main'    => '/assets/js/main' . $js_suffix,
 	);
+	foreach ( $front_js as $handle => $relative ) {
+		wp_enqueue_script(
+			$handle,
+			$theme_uri . $relative,
+			array( 'restwell-shared' ),
+			restwell_theme_asset_version( $relative ),
+			true
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'restwell_enqueue_scripts' );
 
 /**
- * Defer shared.js with main.js.
- *
- * @param string $tag    Script HTML.
- * @param string $handle Handle.
- * @param string $src    Src (unused).
- * @return string
- */
-function restwell_defer_shared_script( $tag, $handle, $src ) {
-	unset( $src );
-	if ( 'restwell-shared' !== $handle ) {
-		return $tag;
-	}
-	if ( false !== strpos( $tag, ' defer' ) ) {
-		return $tag;
-	}
-	return str_replace( '<script ', '<script defer ', $tag );
-}
-add_filter( 'script_loader_tag', 'restwell_defer_shared_script', 10, 3 );
-
-/**
- * Load main.js with defer (non-blocking) for better LCP / main-thread work.
+ * Defer front-end theme scripts (non-blocking).
  *
  * @param string $tag    The script HTML.
  * @param string $handle Script handle.
  * @param string $src    Source URL (unused).
  * @return string
  */
-function restwell_defer_main_script( $tag, $handle, $src ) {
+function restwell_defer_front_script( $tag, $handle, $src ) {
 	unset( $src );
-	if ( 'restwell-main' !== $handle ) {
+	$deferred = array(
+		'restwell-shared',
+		'restwell-nav',
+		'restwell-enquire',
+		'restwell-gallery',
+		'restwell-main',
+		'restwell-analytics-loader',
+	);
+	if ( ! in_array( $handle, $deferred, true ) ) {
 		return $tag;
 	}
 	if ( false !== strpos( $tag, ' defer' ) ) {
@@ -139,27 +135,7 @@ function restwell_defer_main_script( $tag, $handle, $src ) {
 	}
 	return str_replace( '<script ', '<script defer ', $tag );
 }
-add_filter( 'script_loader_tag', 'restwell_defer_main_script', 10, 3 );
-
-/**
- * Load analytics-loader.js with defer when enqueued (footer deferred / CMP modes).
- *
- * @param string $tag    The script HTML.
- * @param string $handle Script handle.
- * @param string $src    Source URL (unused).
- * @return string
- */
-function restwell_defer_analytics_loader_script( $tag, $handle, $src ) {
-	unset( $src );
-	if ( 'restwell-analytics-loader' !== $handle ) {
-		return $tag;
-	}
-	if ( false !== strpos( $tag, ' defer' ) ) {
-		return $tag;
-	}
-	return str_replace( '<script ', '<script defer ', $tag );
-}
-add_filter( 'script_loader_tag', 'restwell_defer_analytics_loader_script', 10, 3 );
+add_filter( 'script_loader_tag', 'restwell_defer_front_script', 10, 3 );
 
 /**
  * Enqueue polished admin styles for Restwell CRM screens.

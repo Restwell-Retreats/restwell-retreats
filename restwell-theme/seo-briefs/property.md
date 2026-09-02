@@ -1,6 +1,6 @@
 # SEO Content Brief — The Property
 
-Source page: `restwell-theme/mockups/property-concept.html`
+Source page: `restwell-theme/template-property.php`
 
 ## 1. Keyword Strategy
 
@@ -25,7 +25,7 @@ Use the primary phrase in the H1/lede and once more around the Location section.
 - **Meta description (existing, in sync):** `Accessible bungalow Whitstable: single-storey, step-free layout with room-by-room specs, inclusions and optional care for your party.` — 134 characters.
 - **Headings:** single H1 (`Inside the accessible bungalow in Whitstable`) is unique to this page — good. Nine H2s follow the subnav order (Bedrooms → Location), each with its own `id` for anchor jumps — keep this 1:1 mapping when editing, the subnav's `href="#id"` depends on it.
 - **Image alt text:** already strong sitewide practice on this page (e.g. "Amico ceiling track hoist in the accessible bedroom", "Level-access wet room shower with grab rails and fold-down seat") — genuinely descriptive, not keyword-stuffed. Model other pages on this one.
-- **URL/slug:** live slug is `/the-property/` (see `inc/seo-content-seed-meta.php`). Mockup filename `property-concept.html` is a build artifact, not the live URL — no change needed there.
+- **URL/slug:** live slug is `/the-property/` (see `inc/seo-content-seed-meta.php`).
 
 ## 4. User Experience & Conversion
 

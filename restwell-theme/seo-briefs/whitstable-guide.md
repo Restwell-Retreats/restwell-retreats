@@ -1,6 +1,6 @@
 # SEO Content Brief — Whitstable Area Guide
 
-Source page: `restwell-theme/mockups/whitstable-guide-concept.html`
+Source page: `restwell-theme/template-whitstable-guide.php`
 
 ## 1. Keyword Strategy
 

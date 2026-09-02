@@ -19,6 +19,7 @@ const RESTWELL_SETUP_NONCE_NAME   = 'restwell_theme_setup_nonce';
 $restwell_theme_setup_modules = array(
 	'meta-helpers.php',
 	'page-defaults.php',
+	'apply-overwrites.php',
 	'admin.php',
 	'logos.php',
 	'runner.php',
