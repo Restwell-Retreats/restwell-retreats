@@ -48,18 +48,18 @@ $media_id   = absint( $args['media_id'] );
 $image_url  = trim( (string) $args['image_url'] );
 $image_alt  = trim( (string) $args['image_alt'] );
 $overlay    = sanitize_key( (string) $args['overlay'] );
-$post_id    = absint( $args['post_id'] );
+$hero_post_id    = absint( $args['post_id'] );
 
 if ( $heading === '' ) {
 	return;
 }
 
-if ( $post_id < 1 ) {
-	$post_id = (int) get_queried_object_id();
+if ( $hero_post_id < 1 ) {
+	$hero_post_id = (int) get_queried_object_id();
 }
 
-if ( $media_id < 1 && $post_id > 0 && function_exists( 'restwell_page_hero_attachment_id' ) ) {
-	$media_id = restwell_page_hero_attachment_id( $post_id );
+if ( $media_id < 1 && $hero_post_id > 0 && function_exists( 'restwell_page_hero_attachment_id' ) ) {
+	$media_id = restwell_page_hero_attachment_id( $hero_post_id );
 }
 
 if ( $image_url === '' ) {
@@ -70,8 +70,8 @@ if ( $image_url === '' ) {
 		$from_att  = wp_get_attachment_image_url( $media_id, $size );
 		$image_url = $from_att ? $from_att : '';
 	}
-	if ( $image_url === '' && $post_id > 0 && function_exists( 'restwell_page_hero_image_url' ) ) {
-		$image_url = restwell_page_hero_image_url( $post_id );
+	if ( $image_url === '' && $hero_post_id > 0 && function_exists( 'restwell_page_hero_image_url' ) ) {
+		$image_url = restwell_page_hero_image_url( $hero_post_id );
 	}
 	if ( $image_url === '' && function_exists( 'restwell_theme_image_url' ) ) {
 		$image_url = restwell_theme_image_url( 'stock/restwell-whitstable-coastline-panorama.webp' );
@@ -81,8 +81,8 @@ if ( $image_url === '' ) {
 if ( $image_alt === '' && $media_id > 0 && function_exists( 'restwell_attachment_image_alt' ) ) {
 	$image_alt = restwell_attachment_image_alt( $media_id );
 }
-if ( $image_alt === '' && $post_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) ) {
-	$image_alt = restwell_page_hero_image_alt( $post_id, $heading );
+if ( $image_alt === '' && $hero_post_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) ) {
+	$image_alt = restwell_page_hero_image_alt( $hero_post_id, $heading );
 }
 if ( $image_alt === '' && function_exists( 'restwell_theme_image_alt' ) ) {
 	$image_alt = restwell_theme_image_alt( 'stock/restwell-whitstable-coastline-panorama.webp' );

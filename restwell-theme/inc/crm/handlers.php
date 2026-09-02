@@ -371,8 +371,8 @@ function restwell_crm_handle_update_stay_dates(): void {
 	if ( ! $existing ) {
 		wp_die( esc_html__( 'Enquiry not found.', 'restwell-retreats' ) );
 	}
-	$old_from = $existing->date_from ?: '';
-	$old_to   = $existing->date_to ?: '';
+	$old_from = (string) $existing->date_from;
+	$old_to   = (string) $existing->date_to;
 
 	if ( $old_from === $date_from && $old_to === $date_to ) {
 		// Nothing changed — don't pollute the activity log with empty diffs.
@@ -398,8 +398,8 @@ function restwell_crm_handle_update_stay_dates(): void {
 	$note       = sprintf(
 		/* translators: 1: previous stay-date range or "(none)", 2: new stay-date range or "(none)" */
 		__( 'Stay dates updated: %1$s → %2$s', 'restwell-retreats' ),
-		restwell_format_enquiry_date_range( $old_from, $old_to ) ?: $none_label,
-		restwell_format_enquiry_date_range( $date_from, $date_to ) ?: $none_label
+		restwell_first_nonempty_string( restwell_format_enquiry_date_range( $old_from, $old_to ), $none_label ),
+		restwell_first_nonempty_string( restwell_format_enquiry_date_range( $date_from, $date_to ), $none_label )
 	);
 	restwell_service_crm_gateway()->add_enquiry_note( $enquiry_id, $note );
 

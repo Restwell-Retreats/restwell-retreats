@@ -248,7 +248,7 @@ function restwell_video_compressor_acquire_lock(): bool {
 	if ( false !== get_transient( RESTWELL_VIDEO_COMPRESS_LOCK ) ) {
 		return false;
 	}
-	set_transient( RESTWELL_VIDEO_COMPRESS_LOCK, get_current_user_id() ?: 1, 5 * MINUTE_IN_SECONDS );
+	set_transient( RESTWELL_VIDEO_COMPRESS_LOCK, max( 1, (int) get_current_user_id() ), 5 * MINUTE_IN_SECONDS );
 	return true;
 }
 
@@ -370,9 +370,9 @@ function restwell_video_compressor_handle_ajax() {
 		);
 	}
 
-	// Give FFmpeg time to finish — this request may take a while.
-	// phpcs:ignore WordPress.PHP.IniSet.Risky
-	ini_set( 'max_execution_time', '120' );
+	if ( function_exists( 'set_time_limit' ) ) {
+		set_time_limit( 120 );
+	}
 
 	// Find FFmpeg.
 	$ffmpeg = restwell_video_compressor_find_ffmpeg();

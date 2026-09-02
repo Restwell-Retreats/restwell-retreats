@@ -128,15 +128,35 @@ function restwell_handle_faq_question_submit(): void {
 		? restwell_mail_staff_subject( 'faq', (int) $row_id )
 		: restwell_mail_staff_subject( 'faq_save_failed' );
 	$lines    = array(
-		sprintf( __( 'Name: %s', 'restwell-retreats' ), $name ),
-		sprintf( __( 'Email: %s', 'restwell-retreats' ), $email ),
-		sprintf( __( 'Phone: %s', 'restwell-retreats' ), $phone ),
-		sprintf( __( 'Marketing updates consent: %s', 'restwell-retreats' ), $marketing_optin ? __( 'Yes (opted in)', 'restwell-retreats' ) : __( 'No (not opted in)', 'restwell-retreats' ) ),
+		sprintf(
+			/* translators: %s: submitter name */
+			__( 'Name: %s', 'restwell-retreats' ),
+			$name
+		),
+		sprintf(
+			/* translators: %s: submitter email */
+			__( 'Email: %s', 'restwell-retreats' ),
+			$email
+		),
+		sprintf(
+			/* translators: %s: submitter phone */
+			__( 'Phone: %s', 'restwell-retreats' ),
+			$phone
+		),
+		sprintf(
+			/* translators: %s: yes or no */
+			__( 'Marketing updates consent: %s', 'restwell-retreats' ),
+			$marketing_optin ? __( 'Yes (opted in)', 'restwell-retreats' ) : __( 'No (not opted in)', 'restwell-retreats' )
+		),
 		'',
 		__( 'Question:', 'restwell-retreats' ),
 		$message,
 		'',
-		sprintf( __( 'Saved as submission #%s in the site database.', 'restwell-retreats' ), $row_id ? (string) $row_id : '?' ),
+		sprintf(
+			/* translators: %s: submission ID */
+			__( 'Saved as submission #%s in the site database.', 'restwell-retreats' ),
+			$row_id ? (string) $row_id : '?'
+		),
 	);
 	$headers = array_values(
 		array_filter(

@@ -664,7 +664,7 @@ function restwell_crm_enquiry_detail( int $id ) {
 	// Format follow-up datetime for the datetime-local input (YYYY-MM-DDTHH:MM).
 	$follow_up_value = '';
 	if ( ! empty( $row->follow_up_at ) ) {
-		$follow_up_value = date( 'Y-m-d\TH:i', strtotime( $row->follow_up_at ) );
+		$follow_up_value = wp_date( 'Y-m-d\TH:i', strtotime( $row->follow_up_at ) );
 	}
 
 	// Promote-to-guest URL.
@@ -1011,8 +1011,8 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 
 						<p class="rw-submitted-meta">
 							<?php
-							/* translators: %s: formatted date */
 							printf(
+								/* translators: %s: formatted date */
 								esc_html__( 'Submitted %s', 'restwell-retreats' ),
 								esc_html( date_i18n( 'j F Y \a\t H:i', strtotime( $row->submitted_at ) ) )
 							);

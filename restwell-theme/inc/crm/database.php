@@ -130,11 +130,11 @@ function restwell_crm_maybe_create_table() {
 	// Backfill legacy enquiry consent stored in staff_notes.
 	$wpdb->query(
 		$wpdb->prepare(
-			"UPDATE %i
+			'UPDATE %i
 			SET marketing_optin = 1,
 				marketing_optin_at = COALESCE(marketing_optin_at, submitted_at)
 			WHERE marketing_optin = 0
-			AND staff_notes LIKE %s",
+			AND staff_notes LIKE %s',
 			$enq_table,
 			'%Marketing updates consent: Yes%'
 		)

@@ -17,16 +17,16 @@ get_header();
 while ( have_posts() ) :
 	the_post();
 
-	$post_id   = get_the_ID();
-	$title     = get_the_title();
+	$entry_id   = get_the_ID();
+	$entry_title     = get_the_title();
 	$excerpt   = trim( (string) get_the_excerpt() );
 	if ( $excerpt === '' ) {
 		$excerpt = wp_trim_words( wp_strip_all_tags( get_the_content( null, false ) ), 28, '…' );
 	}
-	$category  = function_exists( 'restwell_get_primary_category' ) ? restwell_get_primary_category( $post_id ) : '';
-	$read_mins = function_exists( 'restwell_estimate_read_time' ) ? restwell_estimate_read_time( get_post_field( 'post_content', $post_id ) ) : 1;
+	$category  = function_exists( 'restwell_get_primary_category' ) ? restwell_get_primary_category( $entry_id ) : '';
+	$read_mins = function_exists( 'restwell_estimate_read_time' ) ? restwell_estimate_read_time( get_post_field( 'post_content', $entry_id ) ) : 1;
 	$author    = get_the_author();
-	$crumb     = wp_html_excerpt( $title, 42, '…' );
+	$crumb     = wp_html_excerpt( $entry_title, 42, '…' );
 	?>
 <section class="hero hero--interior hero--place" aria-labelledby="page-h">
 	<div class="hero__media" aria-hidden="true"></div>
@@ -38,7 +38,7 @@ while ( have_posts() ) :
 				<li aria-current="page"><?php echo esc_html( $crumb ); ?></li>
 			</ol>
 			<div class="hero__text">
-				<h1 id="page-h"><?php echo esc_html( $title ); ?></h1>
+				<h1 id="page-h"><?php echo esc_html( $entry_title ); ?></h1>
 				<?php if ( $excerpt !== '' ) : ?>
 					<p><?php echo esc_html( $excerpt ); ?></p>
 				<?php endif; ?>

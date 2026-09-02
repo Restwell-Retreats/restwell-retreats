@@ -44,7 +44,7 @@ $fields = array(
 	'rank_math_canonical_url',
 );
 
-$posts = get_posts(
+$export_posts = get_posts(
 	array(
 		'post_type'      => array( 'page', 'post' ),
 		'post_status'    => array( 'publish', 'draft', 'private' ),
@@ -56,50 +56,50 @@ $posts = get_posts(
 
 $rows = array();
 
-foreach ( $posts as $post ) {
-	$id       = (int) $post->ID;
-	$template = get_page_template_slug( $id );
+foreach ( $export_posts as $export_post ) {
+	$export_id = (int) $export_post->ID;
+	$template  = get_page_template_slug( $export_id );
 
 	$defaults = function_exists( 'restwell_get_seo_default_meta_for_post_id' )
-		? restwell_get_seo_default_meta_for_post_id( $id )
+		? restwell_get_seo_default_meta_for_post_id( $export_id )
 		: array(
 			'meta_title'       => '',
 			'meta_description' => '',
 			'focus_keyphrase'  => '',
 		);
 
-	$custom_title = (string) get_post_meta( $id, 'meta_title', true );
-	$custom_desc  = (string) get_post_meta( $id, 'meta_description', true );
-	$custom_focus = (string) get_post_meta( $id, 'focus_keyphrase', true );
-	$canonical    = (string) get_post_meta( $id, 'meta_canonical', true );
-	$noindex      = (bool) get_post_meta( $id, 'meta_noindex', true );
-	$og_image_id  = absint( get_post_meta( $id, 'og_image_id', true ) );
+	$custom_title = (string) get_post_meta( $export_id, 'meta_title', true );
+	$custom_desc  = (string) get_post_meta( $export_id, 'meta_description', true );
+	$custom_focus = (string) get_post_meta( $export_id, 'focus_keyphrase', true );
+	$canonical    = (string) get_post_meta( $export_id, 'meta_canonical', true );
+	$noindex      = (bool) get_post_meta( $export_id, 'meta_noindex', true );
+	$og_image_id  = absint( get_post_meta( $export_id, 'og_image_id', true ) );
 
 	$effective_noindex = $noindex || ( 'page-guest-guide.php' === $template );
 
 	$rows[] = array(
-		'id'                        => $id,
-		'post_type'                 => $post->post_type,
-		'post_status'               => $post->post_status,
-		'slug'                      => $post->post_name,
-		'title'                     => get_the_title( $id ),
-		'url'                       => get_permalink( $id ),
-		'template'                  => $template,
-		'custom_meta_title'         => $custom_title,
-		'effective_meta_title'      => $custom_title ?: ( $defaults['meta_title'] ?? '' ),
-		'custom_meta_description'   => $custom_desc,
-		'effective_meta_description'=> $custom_desc ?: ( $defaults['meta_description'] ?? '' ),
-		'custom_focus_keyphrase'    => $custom_focus,
-		'effective_focus_keyphrase' => $custom_focus ?: ( $defaults['focus_keyphrase'] ?? '' ),
-		'meta_canonical'            => $canonical,
-		'meta_noindex'              => $noindex ? '1' : '0',
-		'effective_noindex'         => $effective_noindex ? '1' : '0',
-		'og_image_id'               => $og_image_id ?: '',
-		'og_image_url'              => $og_image_id ? wp_get_attachment_image_url( $og_image_id, 'full' ) : '',
-		'rank_math_title'           => get_post_meta( $id, 'rank_math_title', true ),
-		'rank_math_description'     => get_post_meta( $id, 'rank_math_description', true ),
-		'rank_math_focus_keyword'   => get_post_meta( $id, 'rank_math_focus_keyword', true ),
-		'rank_math_canonical_url'   => get_post_meta( $id, 'rank_math_canonical_url', true ),
+		'id'                         => $export_id,
+		'post_type'                  => $export_post->post_type,
+		'post_status'                => $export_post->post_status,
+		'slug'                       => $export_post->post_name,
+		'title'                      => get_the_title( $export_id ),
+		'url'                        => get_permalink( $export_id ),
+		'template'                   => $template,
+		'custom_meta_title'          => $custom_title,
+		'effective_meta_title'       => $custom_title !== '' ? $custom_title : ( $defaults['meta_title'] ?? '' ),
+		'custom_meta_description'    => $custom_desc,
+		'effective_meta_description' => $custom_desc !== '' ? $custom_desc : ( $defaults['meta_description'] ?? '' ),
+		'custom_focus_keyphrase'     => $custom_focus,
+		'effective_focus_keyphrase'  => $custom_focus !== '' ? $custom_focus : ( $defaults['focus_keyphrase'] ?? '' ),
+		'meta_canonical'             => $canonical,
+		'meta_noindex'               => $noindex ? '1' : '0',
+		'effective_noindex'          => $effective_noindex ? '1' : '0',
+		'og_image_id'                => $og_image_id > 0 ? (string) $og_image_id : '',
+		'og_image_url'               => $og_image_id ? wp_get_attachment_image_url( $og_image_id, 'full' ) : '',
+		'rank_math_title'            => get_post_meta( $export_id, 'rank_math_title', true ),
+		'rank_math_description'      => get_post_meta( $export_id, 'rank_math_description', true ),
+		'rank_math_focus_keyword'    => get_post_meta( $export_id, 'rank_math_focus_keyword', true ),
+		'rank_math_canonical_url'    => get_post_meta( $export_id, 'rank_math_canonical_url', true ),
 	);
 }
 

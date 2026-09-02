@@ -331,7 +331,7 @@ function restwell_seo_pages_render_list( string $post_type, string $menu_slug ) 
 
 			$rows[] = array(
 				'post_id'        => $post_id,
-				'title'          => get_the_title() ?: __( '(no title)', 'restwell-retreats' ),
+				'title'          => restwell_first_nonempty_string( get_the_title(), __( '(no title)', 'restwell-retreats' ) ),
 				'edit_url'       => $edit_url,
 				'content_url'    => $content_url,
 				'permalink'      => get_permalink( $post_id ),
@@ -532,7 +532,7 @@ function restwell_seo_pages_render_edit_screen( int $post_id, string $post_type,
 				sprintf(
 					/* translators: %s: page or post title */
 					__( 'SEO: %s', 'restwell-retreats' ),
-					get_the_title( $post ) ?: __( '(no title)', 'restwell-retreats' )
+					restwell_first_nonempty_string( get_the_title( $post ), __( '(no title)', 'restwell-retreats' ) )
 				)
 			);
 			?>

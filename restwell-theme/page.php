@@ -17,9 +17,9 @@ get_header();
 while ( have_posts() ) :
 	the_post();
 
-	$title   = get_the_title();
+	$page_title   = get_the_title();
 	$excerpt = trim( (string) get_the_excerpt() );
-	$crumb   = wp_html_excerpt( $title, 48, '…' );
+	$crumb   = wp_html_excerpt( $page_title, 48, '…' );
 	?>
 	<section class="hero hero--interior" aria-labelledby="page-h">
 		<div class="container">
@@ -30,7 +30,7 @@ while ( have_posts() ) :
 					<li aria-current="page"><?php echo esc_html( $crumb ); ?></li>
 				</ol>
 				<div class="hero__text">
-					<h1 id="page-h"><?php echo esc_html( $title ); ?></h1>
+					<h1 id="page-h"><?php echo esc_html( $page_title ); ?></h1>
 					<?php if ( $excerpt !== '' ) : ?>
 						<p><?php echo esc_html( $excerpt ); ?></p>
 					<?php endif; ?>

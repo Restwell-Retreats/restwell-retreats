@@ -132,7 +132,7 @@ function restwell_output_ga4() {
 		return;
 	}
 	?>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $mid ); ?>"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $mid ); ?>"></script> <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- GA4 fallback when the footer loader is off. ?>
 <script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}

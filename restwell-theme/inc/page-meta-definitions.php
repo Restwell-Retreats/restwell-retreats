@@ -560,8 +560,21 @@ function restwell_get_how_it_works_field_definitions() {
 		'hiw_included_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
 	);
 	for ( $i = 1; $i <= 6; $i++ ) {
-		$included[ "hiw_included_{$i}_title" ] = restwell_field( __( "Item $i title", 'restwell-retreats' ) );
-		$included[ "hiw_included_{$i}_desc" ]  = restwell_field( __( "Item $i description (optional)", 'restwell-retreats' ), 'textarea' );
+		$included[ "hiw_included_{$i}_title" ] = restwell_field(
+			sprintf(
+				/* translators: %d: item number */
+				__( 'Item %d title', 'restwell-retreats' ),
+				$i
+			)
+		);
+		$included[ "hiw_included_{$i}_desc" ]  = restwell_field(
+			sprintf(
+				/* translators: %d: item number */
+				__( 'Item %d description (optional)', 'restwell-retreats' ),
+				$i
+			),
+			'textarea'
+		);
 	}
 	$faq = array(
 		'hiw_faq_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
@@ -569,8 +582,21 @@ function restwell_get_how_it_works_field_definitions() {
 		'hiw_faq_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
 	);
 	for ( $i = 1; $i <= 3; $i++ ) {
-		$faq[ "hiw_faq_{$i}_q" ] = restwell_field( __( "Question $i", 'restwell-retreats' ) );
-		$faq[ "hiw_faq_{$i}_a" ] = restwell_field( __( "Answer $i", 'restwell-retreats' ), 'textarea' );
+		$faq[ "hiw_faq_{$i}_q" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Question %d', 'restwell-retreats' ),
+				$i
+			)
+		);
+		$faq[ "hiw_faq_{$i}_a" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Answer %d', 'restwell-retreats' ),
+				$i
+			),
+			'textarea'
+		);
 	}
 	return array(
 		'Header' => array(
@@ -679,9 +705,28 @@ function restwell_get_accessibility_field_definitions() {
 function restwell_get_faq_field_definitions() {
 	$faq_section = array();
 	for ( $i = 1; $i <= 15; $i++ ) {
-		$faq_section[ "faq_{$i}_q" ]   = restwell_field( __( "Question $i", 'restwell-retreats' ) );
-		$faq_section[ "faq_{$i}_a" ]   = restwell_field( __( "Answer $i", 'restwell-retreats' ), 'textarea' );
-		$faq_section[ "faq_{$i}_cat" ] = restwell_field( __( "Question $i category (about | booking | care | local | funding)", 'restwell-retreats' ) );
+		$faq_section[ "faq_{$i}_q" ]   = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Question %d', 'restwell-retreats' ),
+				$i
+			)
+		);
+		$faq_section[ "faq_{$i}_a" ]   = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Answer %d', 'restwell-retreats' ),
+				$i
+			),
+			'textarea'
+		);
+		$faq_section[ "faq_{$i}_cat" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Question %d category (about | booking | care | local | funding)', 'restwell-retreats' ),
+				$i
+			)
+		);
 	}
 	return array(
 		'Header' => array(

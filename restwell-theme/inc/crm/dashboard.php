@@ -165,7 +165,19 @@ function restwell_crm_dashboard_page() {
 								<?php foreach ( $follow_up_rows as $r ) : ?>
 									<tr>
 										<td data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
-											<a class="rw-tap-link" href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $r->id ), admin_url( 'admin.php' ) ) ); ?>">
+											<a class="rw-tap-link" href="
+											<?php
+											echo esc_url(
+												add_query_arg(
+													array(
+														'page' => 'restwell-enquiries',
+														'view' => $r->id,
+													),
+													admin_url( 'admin.php' )
+												)
+											);
+											?>
+																			">
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
@@ -214,11 +226,23 @@ function restwell_crm_dashboard_page() {
 									?>
 									<tr>
 										<td data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
-											<a class="rw-tap-link" href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-enquiries', 'view' => $r->id ), admin_url( 'admin.php' ) ) ); ?>">
+											<a class="rw-tap-link" href="
+											<?php
+											echo esc_url(
+												add_query_arg(
+													array(
+														'page' => 'restwell-enquiries',
+														'view' => $r->id,
+													),
+													admin_url( 'admin.php' )
+												)
+											);
+											?>
+																			">
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
-										<td class="rw-table-meta" data-label="<?php echo esc_attr__( 'Dates', 'restwell-retreats' ); ?>"><?php echo esc_html( $r->preferred_dates ?: '-' ); ?></td>
+										<td class="rw-table-meta" data-label="<?php echo esc_attr__( 'Dates', 'restwell-retreats' ); ?>"><?php echo esc_html( restwell_first_nonempty_string( $r->preferred_dates ?? '', '-' ) ); ?></td>
 										<td data-label="<?php echo esc_attr__( 'Action', 'restwell-retreats' ); ?>">
 											<a href="<?php echo esc_url( $promote_url ); ?>" class="button button-small rw-tap-button">
 												<?php esc_html_e( 'Add to Guide', 'restwell-retreats' ); ?>

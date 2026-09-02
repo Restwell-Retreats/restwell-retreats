@@ -206,7 +206,13 @@ function restwell_page_content_meta_box_callback( WP_Post $post ) {
 						echo '<button type="button" class="restwell-nav-tab' . esc_attr( $active ) . '" data-panel="' . esc_attr( $panel_id ) . '" data-section="' . esc_attr( $section ) . '" role="tab" aria-selected="' . ( 0 === $index ? 'true' : 'false' ) . '">';
 						echo '<span class="restwell-nav-tab__label">' . esc_html( $section ) . '</span>';
 						if ( $badges > 0 ) {
-							echo '<span class="restwell-nav-tab__flag" aria-label="' . esc_attr( sprintf( __( '%d issues', 'restwell-retreats' ), $badges ) ) . '">' . esc_html( (string) $badges ) . '</span>';
+							echo '<span class="restwell-nav-tab__flag" aria-label="' . esc_attr(
+								sprintf(
+									/* translators: %d: number of issues */
+									__( '%d issues', 'restwell-retreats' ),
+									$badges
+								)
+							) . '">' . esc_html( (string) $badges ) . '</span>';
 						}
 						echo '</button>';
 						echo '</li>';

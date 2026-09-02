@@ -49,7 +49,11 @@ if ( ! empty( $review_items ) ) :
 					<li>
 						<article class="testimonial-card">
 							<blockquote class="testimonial-card__quote"><?php echo esc_html( $google_review['text'] ); ?></blockquote>
-							<footer class="testimonial-card__name"><?php echo esc_html( $google_review['name'] ); ?><?php if ( '' !== $google_review['relative_time'] ) : ?><span class="testimonial-card__role">Google review<?php echo '' !== $google_review['relative_time'] ? ' &middot; ' . esc_html( $google_review['relative_time'] ) : ''; ?></span><?php endif; ?></footer>
+							<footer class="testimonial-card__name"><?php echo esc_html( $google_review['name'] ); ?>
+							<?php
+							if ( '' !== $google_review['relative_time'] ) :
+								?>
+								<span class="testimonial-card__role">Google review<?php echo '' !== $google_review['relative_time'] ? ' &middot; ' . esc_html( $google_review['relative_time'] ) : ''; ?></span><?php endif; ?></footer>
 						</article>
 					</li>
 				<?php endforeach; ?>

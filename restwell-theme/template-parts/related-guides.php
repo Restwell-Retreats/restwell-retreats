@@ -19,13 +19,13 @@ if ( ! is_array( $data ) ) {
 $heading        = isset( $data['heading'] ) ? (string) $data['heading'] : __( 'Related guides', 'restwell-retreats' );
 $intro          = isset( $data['intro'] ) ? (string) $data['intro'] : '';
 $heading_id     = isset( $data['heading_id'] ) ? (string) $data['heading_id'] : 'restwell-related-guides-heading';
-$posts          = isset( $data['posts'] ) && is_array( $data['posts'] ) ? $data['posts'] : array();
+$guide_posts          = isset( $data['posts'] ) && is_array( $data['posts'] ) ? $data['posts'] : array();
 $siblings       = isset( $data['siblings'] ) && is_array( $data['siblings'] ) ? $data['siblings'] : array();
 $conversion     = isset( $data['conversion'] ) && is_array( $data['conversion'] ) ? $data['conversion'] : array();
 $category_url   = isset( $data['category_url'] ) ? (string) $data['category_url'] : '';
 $category_name  = isset( $data['category_name'] ) ? (string) $data['category_name'] : '';
 
-if ( empty( $posts ) && empty( $siblings ) && empty( $conversion ) ) {
+if ( empty( $guide_posts ) && empty( $siblings ) && empty( $conversion ) ) {
 	return;
 }
 ?>
@@ -39,9 +39,9 @@ if ( empty( $posts ) && empty( $siblings ) && empty( $conversion ) ) {
 			<?php endif; ?>
 		</header>
 
-		<?php if ( ! empty( $posts ) ) : ?>
+		<?php if ( ! empty( $guide_posts ) ) : ?>
 			<ul class="link-list">
-				<?php foreach ( $posts as $guide_post ) : ?>
+				<?php foreach ( $guide_posts as $guide_post ) : ?>
 					<?php
 					if ( ! $guide_post instanceof WP_Post ) {
 						continue;

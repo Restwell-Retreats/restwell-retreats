@@ -221,7 +221,13 @@ function restwell_get_request_level_title_fallback() {
 	}
 
 	if ( is_author() ) {
-		return restwell_build_meta_title( sprintf( __( 'Articles by %s', 'restwell-retreats' ), get_the_author_meta( 'display_name', get_queried_object_id() ) ) );
+		return restwell_build_meta_title(
+			sprintf(
+				/* translators: %s: author display name */
+				__( 'Articles by %s', 'restwell-retreats' ),
+				get_the_author_meta( 'display_name', get_queried_object_id() )
+			)
+		);
 	}
 
 	if ( is_date() ) {
@@ -229,7 +235,13 @@ function restwell_get_request_level_title_fallback() {
 	}
 
 	if ( is_search() ) {
-		return restwell_build_meta_title( sprintf( __( 'Search results for %s', 'restwell-retreats' ), get_search_query() ) );
+		return restwell_build_meta_title(
+			sprintf(
+				/* translators: %s: search query */
+				__( 'Search results for %s', 'restwell-retreats' ),
+				get_search_query()
+			)
+		);
 	}
 
 	return restwell_build_meta_title( get_bloginfo( 'description' ) );

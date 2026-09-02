@@ -383,13 +383,13 @@ function restwell_apply_property_facts_to_faq_items( array $items ): array {
 	$answer_map = array();
 
 	if ( function_exists( 'restwell_get_property_facts_faq_features_answer' ) ) {
-		$answer_map[ 'what accessibility features does the property have?' ] = restwell_get_property_facts_faq_features_answer();
+		$answer_map['what accessibility features does the property have?'] = restwell_get_property_facts_faq_features_answer();
 	}
 	if ( function_exists( 'restwell_get_property_facts_faq_hoist_answer' ) ) {
-		$answer_map[ 'is the property suitable for hoists and profiling beds?' ] = restwell_get_property_facts_faq_hoist_answer();
+		$answer_map['is the property suitable for hoists and profiling beds?'] = restwell_get_property_facts_faq_hoist_answer();
 	}
 	if ( function_exists( 'restwell_get_property_facts_faq_wheelchair_answer' ) ) {
-		$answer_map[ 'is the whole house wheelchair accessible?' ] = restwell_get_property_facts_faq_wheelchair_answer();
+		$answer_map['is the whole house wheelchair accessible?'] = restwell_get_property_facts_faq_wheelchair_answer();
 	}
 
 	if ( empty( $answer_map ) ) {

@@ -95,7 +95,7 @@ add_action( RESTWELL_CRM_REMINDER_HOOK, 'restwell_crm_reminder_run' );
  * reminded enquiries.
  */
 function restwell_crm_reminder_run(): void {
-	$stale_hours  = (int) apply_filters( 'restwell_crm_reminder_stale_hours',  RESTWELL_CRM_REMINDER_STALE_HOURS );
+	$stale_hours  = (int) apply_filters( 'restwell_crm_reminder_stale_hours', RESTWELL_CRM_REMINDER_STALE_HOURS );
 	$repeat_hours = (int) apply_filters( 'restwell_crm_reminder_repeat_hours', RESTWELL_CRM_REMINDER_REPEAT_HOURS );
 
 	// Defensive clamping — a misconfigured filter must not turn this cron
@@ -170,7 +170,7 @@ function restwell_crm_reminder_fetch_stale( int $stale_hours, int $repeat_hours 
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
 
 	$now            = current_time( 'mysql' );
-	$stale_cutoff   = gmdate( 'Y-m-d H:i:s', strtotime( $now ) - ( $stale_hours  * HOUR_IN_SECONDS ) );
+	$stale_cutoff   = gmdate( 'Y-m-d H:i:s', strtotime( $now ) - ( $stale_hours * HOUR_IN_SECONDS ) );
 	$repeat_cutoff  = gmdate( 'Y-m-d H:i:s', strtotime( $now ) - ( $repeat_hours * HOUR_IN_SECONDS ) );
 
 	$results = $wpdb->get_results(
@@ -328,12 +328,14 @@ function restwell_crm_reminder_log_dry_run( int $enquiry_id, string $recipient, 
 		return;
 	}
 	// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-	error_log( sprintf(
-		'[Restwell CRM Reminder][dry-run] enquiry #%d → %s | %s',
-		$enquiry_id,
-		$recipient,
-		$subject
-	) );
+	error_log(
+		sprintf(
+			'[Restwell CRM Reminder][dry-run] enquiry #%d → %s | %s',
+			$enquiry_id,
+			$recipient,
+			$subject
+		)
+	);
 }
 
 // =============================================================================

@@ -132,7 +132,7 @@ get_template_part(
 				<p><a class="btn btn-outline-teal" href="tel:<?php echo esc_attr( $phone_tel ); ?>"><?php echo esc_html( $phone_number ); ?></a></p>
 			</div>
 			<?php else : ?>
-			<?php if ( $enq_errors ) : ?>
+				<?php if ( $enq_errors ) : ?>
 			<div class="form-errors" role="alert" tabindex="-1">
 				<p><strong><?php esc_html_e( 'Please check the form and try again.', 'restwell-retreats' ); ?></strong></p>
 				<ul>

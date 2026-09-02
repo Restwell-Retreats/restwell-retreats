@@ -159,3 +159,14 @@ function restwell_get_post_card_thumb( $post_id, $size ) {
 	return array( $thumb, $alt );
 }
 
+/**
+ * Trimmed string, or $fallback when empty.
+ *
+ * @param mixed  $value    Candidate value.
+ * @param string $fallback Used when trim( (string) $value ) is empty.
+ * @return string
+ */
+function restwell_first_nonempty_string( $value, $fallback ) {
+	$value = trim( (string) $value );
+	return $value !== '' ? $value : (string) $fallback;
+}

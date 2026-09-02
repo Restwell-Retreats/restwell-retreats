@@ -51,7 +51,7 @@ function restwell_maybe_remove_classic_editor_for_structured_pages() {
 	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$post_id = absint( wp_unslash( $_GET['post'] ) );
 	} elseif ( isset( $_POST['post_ID'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$post_id = absint( wp_unslash( $_POST['post_ID'] ) );
+		$post_id = absint( wp_unslash( $_POST['post_ID'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 	}
 
 	if ( ! $post_id || 'page' !== get_post_type( $post_id ) ) {
@@ -141,7 +141,7 @@ function restwell_promote_post_taxonomy_meta_boxes() {
 
 	add_meta_box(
 		'categorydiv',
-		__( 'Categories' ),
+		__( 'Categories', 'restwell-retreats' ),
 		'post_categories_meta_box',
 		'post',
 		'side',
@@ -149,7 +149,7 @@ function restwell_promote_post_taxonomy_meta_boxes() {
 	);
 	add_meta_box(
 		'tagsdiv-post_tag',
-		__( 'Tags' ),
+		__( 'Tags', 'restwell-retreats' ),
 		'post_tags_meta_box',
 		'post',
 		'side',

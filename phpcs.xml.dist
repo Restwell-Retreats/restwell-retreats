@@ -23,8 +23,22 @@
 	<exclude-pattern>restwell-theme/assets/css/tailwind.css</exclude-pattern>
 	<exclude-pattern>*/package-lock.json</exclude-pattern>
 
-	<rule ref="WordPress-Extra"/>
+	<!-- Extra includes Core (tabs). phpcbf applies that indent. Yoda is excluded:
+	     293 flips of readable `===` order, not a security sniff. -->
+	<rule ref="WordPress-Extra">
+		<exclude name="WordPress.PHP.YodaConditions"/>
+	</rule>
 	<rule ref="PHPCompatibilityWP"/>
+
+	<!-- Walker lives in nav.php; CRM gateway class lives in services/bootstrap.php. -->
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>*/inc/nav.php</exclude-pattern>
+		<exclude-pattern>*/inc/services/bootstrap.php</exclude-pattern>
+	</rule>
+	<rule ref="Universal.Files.SeparateFunctionsFromOO.Mixed">
+		<exclude-pattern>*/inc/nav.php</exclude-pattern>
+		<exclude-pattern>*/inc/services/bootstrap.php</exclude-pattern>
+	</rule>
 
 	<!-- Thin wrapper around wp_get_attachment_image(), which WPCS already trusts as pre-escaped. -->
 	<rule ref="WordPress.Security.EscapeOutput">

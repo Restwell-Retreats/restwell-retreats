@@ -50,6 +50,8 @@ function restwell_phpmailer_smtp_init( $phpmailer ) {
 	}
 
 	$phpmailer->isSMTP();
+	// PHPMailer's public API is PascalCase; WPCS snake_case does not apply.
+	// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 	$phpmailer->Host = (string) RESTWELL_SMTP_HOST;
 	$phpmailer->Port = defined( 'RESTWELL_SMTP_PORT' ) ? absint( RESTWELL_SMTP_PORT ) : 587;
 
@@ -70,6 +72,7 @@ function restwell_phpmailer_smtp_init( $phpmailer ) {
 	} else {
 		$phpmailer->SMTPAuth = false;
 	}
+	// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 	if ( defined( 'RESTWELL_SMTP_FROM' ) && is_email( RESTWELL_SMTP_FROM ) ) {
 		$name = defined( 'RESTWELL_SMTP_FROM_NAME' ) ? (string) RESTWELL_SMTP_FROM_NAME : '';

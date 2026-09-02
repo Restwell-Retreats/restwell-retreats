@@ -424,7 +424,10 @@ get_header();
 					<?php endif; ?>
 					<?php if ( $gg_checkin ) : ?>
 						<strong><?php esc_html_e( 'Check-in:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_checkin ); ?>
-						<?php if ( $gg_checkout ) : ?> · <?php endif; ?>
+						<?php
+						if ( $gg_checkout ) :
+							?>
+							· <?php endif; ?>
 					<?php endif; ?>
 					<?php if ( $gg_checkout ) : ?>
 						<strong><?php esc_html_e( 'Check-out:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_checkout ); ?>

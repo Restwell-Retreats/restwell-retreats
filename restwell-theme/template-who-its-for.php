@@ -51,276 +51,276 @@ get_template_part(
 );
 ?>
 
-    <nav class="subnav" aria-label="On this page">
-      <div class="container">
-        <ul class="subnav__list">
-          <li><a href="#situations">Situations</a></li>
-          <li><a href="#access">Access</a></li>
-          <li><a href="#care">Care</a></li>
-          <li><a href="#funding">Funding</a></li>
-          <li><a href="#next">Next steps</a></li>
-          <li><a href="#faq">FAQ</a></li>
-        </ul>
-      </div>
-    </nav>
+	<nav class="subnav" aria-label="On this page">
+	  <div class="container">
+		<ul class="subnav__list">
+		  <li><a href="#situations">Situations</a></li>
+		  <li><a href="#access">Access</a></li>
+		  <li><a href="#care">Care</a></li>
+		  <li><a href="#funding">Funding</a></li>
+		  <li><a href="#next">Next steps</a></li>
+		  <li><a href="#faq">FAQ</a></li>
+		</ul>
+	  </div>
+	</nav>
 
-    <section class="section-y band-white" id="situations" aria-labelledby="situations-h">
-      <div class="container split">
-        <div>
-          <header class="section-head section-head--tight">
-            <p class="eyebrow">Your situation</p>
-            <h2 id="situations-h">Who Restwell is built for</h2>
-            <p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.</p>
-          </header>
-          <ul class="persona-list" role="list">
-            <li class="persona-list__item">
-              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <div>
-                <h3>Guests and families</h3>
-                <p>Hoist and wet room already fitted; measurements published; a private home, not a hotel room.</p>
-              </div>
-            </li>
-            <li class="persona-list__item">
-              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.2-5 5-5s5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 19c.2-2.6 1.9-4.5 4.3-4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-              <div>
-                <h3>Carers and support workers</h3>
-                <p>Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.</p>
-              </div>
-            </li>
-            <li class="persona-list__item">
-              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="4.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4.5V3.8A1.8 1.8 0 0 1 10.8 2h2.4A1.8 1.8 0 0 1 15 3.8v.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 12.2l2 2 4-4.5M8.5 17h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <div>
-                <h3>Occupational therapists</h3>
-                <p>Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.</p>
-              </div>
-            </li>
-            <li class="persona-list__item">
-              <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 21V6.5L12 3l8 3.5V21M9 21v-5h6v5M4 21h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <div>
-                <h3>Commissioners &amp; social care</h3>
-                <p>Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living space in the accessible bungalow" width="900" height="675" loading="lazy" />
-        </div>
-      </div>
-    </section>
+	<section class="section-y band-white" id="situations" aria-labelledby="situations-h">
+	  <div class="container split">
+		<div>
+		  <header class="section-head section-head--tight">
+			<p class="eyebrow">Your situation</p>
+			<h2 id="situations-h">Who Restwell is built for</h2>
+			<p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.</p>
+		  </header>
+		  <ul class="persona-list" role="list">
+			<li class="persona-list__item">
+			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+			  <div>
+				<h3>Guests and families</h3>
+				<p>Hoist and wet room already fitted; measurements published; a private home, not a hotel room.</p>
+			  </div>
+			</li>
+			<li class="persona-list__item">
+			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.2-5 5-5s5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 19c.2-2.6 1.9-4.5 4.3-4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+			  <div>
+				<h3>Carers and support workers</h3>
+				<p>Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.</p>
+			  </div>
+			</li>
+			<li class="persona-list__item">
+			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="4.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4.5V3.8A1.8 1.8 0 0 1 10.8 2h2.4A1.8 1.8 0 0 1 15 3.8v.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 12.2l2 2 4-4.5M8.5 17h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+			  <div>
+				<h3>Occupational therapists</h3>
+				<p>Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.</p>
+			  </div>
+			</li>
+			<li class="persona-list__item">
+			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 21V6.5L12 3l8 3.5V21M9 21v-5h6v5M4 21h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+			  <div>
+				<h3>Commissioners &amp; social care</h3>
+				<p>Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.</p>
+			  </div>
+			</li>
+		  </ul>
+		</div>
+		<div class="split__media" data-reveal>
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living space in the accessible bungalow" width="900" height="675" loading="lazy" />
+		</div>
+	  </div>
+	</section>
 
-    <section class="section-y band-subtle" id="access" aria-labelledby="access-h">
-      <div class="container">
-        <header class="section-head">
-          <p class="eyebrow">See the access</p>
-          <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
-          <p class="lede">These three items are on site before arrival, not hired for the week.</p>
-        </header>
-        <ul class="card-grid card-grid--3" role="list">
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-3-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
-          <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/kitchen.png' ) ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
-        </ul>
-        <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
-      </div>
-    </section>
+	<section class="section-y band-subtle" id="access" aria-labelledby="access-h">
+	  <div class="container">
+		<header class="section-head">
+		  <p class="eyebrow">See the access</p>
+		  <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
+		  <p class="lede">These three items are on site before arrival, not hired for the week.</p>
+		</header>
+		<ul class="card-grid card-grid--3" role="list">
+		  <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-3-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
+		  <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
+		  <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/kitchen.png' ) ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
+		</ul>
+		<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
+	  </div>
+	</section>
 
-    <section class="section-y band-white" aria-labelledby="quote-h">
-      <div class="container">
-        <h2 id="quote-h" class="sr-only">What guests say</h2>
-        <figure class="pull-quote">
-          <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-          <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad&rsquo;s complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.</blockquote>
-          <figcaption class="pull-quote__cite">M.W.<span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
-        </figure>
-      </div>
-    </section>
+	<section class="section-y band-white" aria-labelledby="quote-h">
+	  <div class="container">
+		<h2 id="quote-h" class="sr-only">What guests say</h2>
+		<figure class="pull-quote">
+		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
+		  <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad&rsquo;s complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.</blockquote>
+		  <figcaption class="pull-quote__cite">M.W.<span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
+		</figure>
+	  </div>
+	</section>
 
-    <section class="section-y band-teal" id="care" aria-labelledby="care-h">
-      <div class="container">
-        <div class="split">
-          <div class="band-teal__stack">
-            <p class="eyebrow eyebrow--on-dark">Optional care</p>
-            <h2 id="care-h">Care on site, only if you want it</h2>
-            <p class="lede">Our sister company, Continuity of Care Services, is CQC-rated Good and shares our enquiry line, 01622 809881, so care can start in the same conversation as your booking. Bring your own team instead, if that works better.</p>
-            <ul class="checklist">
-              <li>Personal care: washing, dressing and daily routines at agreed times</li>
-              <li>Visiting care: daytime visits or support for a promenade or town trip</li>
-              <li>Mobility and hoisting: ceiling-track transfers and wet-room kit already on site</li>
-            </ul>
-            <div class="band-teal__actions">
-              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">Learn about optional care</a>
-              <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Ask about care options</a>
-            </div>
-          </div>
-          <div class="split__media" data-reveal>
-            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-1-LS.jpg' ) ); ?>" alt="Rise and recline chair providing extra support during a stay" width="900" height="675" loading="lazy" />
-          </div>
-        </div>
-      </div>
-    </section>
+	<section class="section-y band-teal" id="care" aria-labelledby="care-h">
+	  <div class="container">
+		<div class="split">
+		  <div class="band-teal__stack">
+			<p class="eyebrow eyebrow--on-dark">Optional care</p>
+			<h2 id="care-h">Care on site, only if you want it</h2>
+			<p class="lede">Our sister company, Continuity of Care Services, is CQC-rated Good and shares our enquiry line, 01622 809881, so care can start in the same conversation as your booking. Bring your own team instead, if that works better.</p>
+			<ul class="checklist">
+			  <li>Personal care: washing, dressing and daily routines at agreed times</li>
+			  <li>Visiting care: daytime visits or support for a promenade or town trip</li>
+			  <li>Mobility and hoisting: ceiling-track transfers and wet-room kit already on site</li>
+			</ul>
+			<div class="band-teal__actions">
+			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">Learn about optional care</a>
+			  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Ask about care options</a>
+			</div>
+		  </div>
+		  <div class="split__media" data-reveal>
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-1-LS.jpg' ) ); ?>" alt="Rise and recline chair providing extra support during a stay" width="900" height="675" loading="lazy" />
+		  </div>
+		</div>
+	  </div>
+	</section>
 
-    <section class="section-y band-white" id="funding" aria-labelledby="funding-h">
-      <div class="container">
-        <header class="section-head">
-          <p class="eyebrow">Funding</p>
-          <h2 id="funding-h">Who we can invoice</h2>
-          <p class="lede">If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.</p>
-        </header>
-        <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; support hub</a></p>
-      </div>
-    </section>
+	<section class="section-y band-white" id="funding" aria-labelledby="funding-h">
+	  <div class="container">
+		<header class="section-head">
+		  <p class="eyebrow">Funding</p>
+		  <h2 id="funding-h">Who we can invoice</h2>
+		  <p class="lede">If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.</p>
+		</header>
+		<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; support hub</a></p>
+	  </div>
+	</section>
 
-    <section class="section-y band-subtle process" id="next" aria-labelledby="next-h">
-      <div class="container">
-        <header class="section-head section-head--center process__head">
-          <p class="eyebrow">Next steps</p>
-          <h2 id="next-h">Enquire, match the house, then deposit</h2>
-          <p class="lede">No online checkout maze. You get a straight yes/no on kit fit before any money changes hands.</p>
-        </header>
-        <div class="process__layout">
-          <div class="process__media" data-reveal>
-            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
-          </div>
-          <ol class="process-list">
-            <li>
-              <span class="process-list__index" aria-hidden="true">01</span>
-              <div class="process-list__body">
-                <h3>Share requirements</h3>
-                <p class="process-list__meta">Start here</p>
-                <p>Dates, chair/hoist needs, funding contact, and whether you want Continuity care.</p>
-              </div>
-            </li>
-            <li>
-              <span class="process-list__index" aria-hidden="true">02</span>
-              <div class="process-list__body">
-                <h3>Confirm suitability</h3>
-                <p class="process-list__meta">We reply</p>
-                <p>We check doorway widths and on-site kit against your party, and say if Restwell is the wrong house.</p>
-              </div>
-            </li>
-            <li>
-              <span class="process-list__index" aria-hidden="true">03</span>
-              <div class="process-list__body">
-                <h3>Book and prepare</h3>
-                <p class="process-list__meta">When you’re ready</p>
-                <p>50% deposit, welcome pack, and a Continuity intro only if you asked for care.</p>
-              </div>
-            </li>
-          </ol>
-        </div>
-      </div>
-    </section>
-    <section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
-      <div class="container">
-        <div class="faq__layout">
-          <header class="faq__intro">
-            <p class="eyebrow">Suitability</p>
-            <h2 id="faq-h">Planning &amp; respite FAQ</h2>
-            <p class="lede">Complex-care planning order, and when a private bungalow beats care-home respite, or doesn’t.</p>
-          </header>
-          <div class="faq-list faq-list--split" data-faq-accordion>
-            <div class="faq-list__col">
-            <div class="faq-item is-open">
-              <button type="button" class="faq-item__trigger" aria-expanded="true" id="wif-q1" aria-controls="wif-q1-a">
-                <span>How do I plan a holiday when someone has complex care needs?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q1-a" role="region" aria-labelledby="wif-q1">
-                <p>Work in this order: match published access specs to the person’s equipment; set staffing (daytime, sleep-in vs waking night, backup); decide who pays lodging vs care; get kit confirmation in writing; sort medication, transport and emergency contacts. Only lock dates once those are clear.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q2" aria-controls="wif-q2-a">
-                <span>How do I plan a holiday if I have complex care needs?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q2-a" role="region" aria-labelledby="wif-q2" hidden>
-                <p>Start on the Accessibility page for Restwell’s door widths and hoist. Then coordinate carers or Continuity, confirm slings, sort prescriptions, build buffer into travel, and agree a backup if a carer is ill. Enquire with dates and care needs once that list is drafted.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q3" aria-controls="wif-q3-a">
-                <span>How should I prepare for an accessible holiday?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q3-a" role="region" aria-labelledby="wif-q3" hidden>
-                <p>Confirm access details in writing; pack slings, meds, chargers and comfort items the house won’t supply; share care plans with anyone covering the stay; note nearest accessible parking, toilets and pharmacy; keep Restwell and care-provider numbers to hand.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q4" aria-controls="wif-q4-a">
-                <span>What belongs on a disabled holiday checklist?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q4-a" role="region" aria-labelledby="wif-q4" hidden>
-                <p>Five lists: access needs; medical; care rota and backup; documents (funding letters, insurance, access statement); comfort and daily living. Tick each against Restwell’s published kit so you don’t pack what is already on site, or assume kit that isn’t.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q5" aria-controls="wif-q5-a">
-                <span>Is a holiday possible if someone has complex needs?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q5-a" role="region" aria-labelledby="wif-q5" hidden>
-                <p>Yes, if doorway widths, overnight staffing and transfers match before you travel. Start with measurements and the care rota, not brochure photos. This page and Accessibility are the fit check before you enquire.</p>
-              </div>
-            </div>
-            </div>
-            <div class="faq-list__col">
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q6" aria-controls="wif-q6-a">
-                <span>Is a holiday cottage better than a respite care placement for disabled adults?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
-                <p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q7" aria-controls="wif-q7-a">
-                <span>Can we take a disabled holiday instead of care-home respite?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q7-a" role="region" aria-labelledby="wif-q7" hidden>
-                <p>Yes when risk, staffing and equipment fit a private bungalow: Restwell with optional Continuity care is one such option. It is not a substitute for registered residential care when that is clinically required.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q8" aria-controls="wif-q8-a">
-                <span>How does an accessible holiday let compare with respite care?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q8-a" role="region" aria-labelledby="wif-q8" hidden>
-                <p>Compare environment (private home vs care setting), independence, how care is delivered, cost lines, family involvement and clinical suitability. Restwell is a private adapted bungalow with optional Continuity care, not a care home.</p>
-              </div>
-            </div>
-            <div class="faq-item">
-              <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q9" aria-controls="wif-q9-a">
-                <span>What is the difference between a respite break and an accessible holiday?</span>
-                <span class="faq-item__icon" aria-hidden="true"></span>
-              </button>
-              <div class="faq-item__panel" id="wif-q9-a" role="region" aria-labelledby="wif-q9" hidden>
-                <p>Respite usually means planned carer relief or continued formal care under funding language. An accessible holiday describes a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions.</p>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+	<section class="section-y band-subtle process" id="next" aria-labelledby="next-h">
+	  <div class="container">
+		<header class="section-head section-head--center process__head">
+		  <p class="eyebrow">Next steps</p>
+		  <h2 id="next-h">Enquire, match the house, then deposit</h2>
+		  <p class="lede">No online checkout maze. You get a straight yes/no on kit fit before any money changes hands.</p>
+		</header>
+		<div class="process__layout">
+		  <div class="process__media" data-reveal>
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
+		  </div>
+		  <ol class="process-list">
+			<li>
+			  <span class="process-list__index" aria-hidden="true">01</span>
+			  <div class="process-list__body">
+				<h3>Share requirements</h3>
+				<p class="process-list__meta">Start here</p>
+				<p>Dates, chair/hoist needs, funding contact, and whether you want Continuity care.</p>
+			  </div>
+			</li>
+			<li>
+			  <span class="process-list__index" aria-hidden="true">02</span>
+			  <div class="process-list__body">
+				<h3>Confirm suitability</h3>
+				<p class="process-list__meta">We reply</p>
+				<p>We check doorway widths and on-site kit against your party, and say if Restwell is the wrong house.</p>
+			  </div>
+			</li>
+			<li>
+			  <span class="process-list__index" aria-hidden="true">03</span>
+			  <div class="process-list__body">
+				<h3>Book and prepare</h3>
+				<p class="process-list__meta">When you’re ready</p>
+				<p>50% deposit, welcome pack, and a Continuity intro only if you asked for care.</p>
+			  </div>
+			</li>
+		  </ol>
+		</div>
+	  </div>
+	</section>
+	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+	  <div class="container">
+		<div class="faq__layout">
+		  <header class="faq__intro">
+			<p class="eyebrow">Suitability</p>
+			<h2 id="faq-h">Planning &amp; respite FAQ</h2>
+			<p class="lede">Complex-care planning order, and when a private bungalow beats care-home respite, or doesn’t.</p>
+		  </header>
+		  <div class="faq-list faq-list--split" data-faq-accordion>
+			<div class="faq-list__col">
+			<div class="faq-item is-open">
+			  <button type="button" class="faq-item__trigger" aria-expanded="true" id="wif-q1" aria-controls="wif-q1-a">
+				<span>How do I plan a holiday when someone has complex care needs?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q1-a" role="region" aria-labelledby="wif-q1">
+				<p>Work in this order: match published access specs to the person’s equipment; set staffing (daytime, sleep-in vs waking night, backup); decide who pays lodging vs care; get kit confirmation in writing; sort medication, transport and emergency contacts. Only lock dates once those are clear.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q2" aria-controls="wif-q2-a">
+				<span>How do I plan a holiday if I have complex care needs?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q2-a" role="region" aria-labelledby="wif-q2" hidden>
+				<p>Start on the Accessibility page for Restwell’s door widths and hoist. Then coordinate carers or Continuity, confirm slings, sort prescriptions, build buffer into travel, and agree a backup if a carer is ill. Enquire with dates and care needs once that list is drafted.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q3" aria-controls="wif-q3-a">
+				<span>How should I prepare for an accessible holiday?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q3-a" role="region" aria-labelledby="wif-q3" hidden>
+				<p>Confirm access details in writing; pack slings, meds, chargers and comfort items the house won’t supply; share care plans with anyone covering the stay; note nearest accessible parking, toilets and pharmacy; keep Restwell and care-provider numbers to hand.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q4" aria-controls="wif-q4-a">
+				<span>What belongs on a disabled holiday checklist?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q4-a" role="region" aria-labelledby="wif-q4" hidden>
+				<p>Five lists: access needs; medical; care rota and backup; documents (funding letters, insurance, access statement); comfort and daily living. Tick each against Restwell’s published kit so you don’t pack what is already on site, or assume kit that isn’t.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q5" aria-controls="wif-q5-a">
+				<span>Is a holiday possible if someone has complex needs?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q5-a" role="region" aria-labelledby="wif-q5" hidden>
+				<p>Yes, if doorway widths, overnight staffing and transfers match before you travel. Start with measurements and the care rota, not brochure photos. This page and Accessibility are the fit check before you enquire.</p>
+			  </div>
+			</div>
+			</div>
+			<div class="faq-list__col">
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q6" aria-controls="wif-q6-a">
+				<span>Is a holiday cottage better than a respite care placement for disabled adults?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
+				<p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q7" aria-controls="wif-q7-a">
+				<span>Can we take a disabled holiday instead of care-home respite?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q7-a" role="region" aria-labelledby="wif-q7" hidden>
+				<p>Yes when risk, staffing and equipment fit a private bungalow: Restwell with optional Continuity care is one such option. It is not a substitute for registered residential care when that is clinically required.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q8" aria-controls="wif-q8-a">
+				<span>How does an accessible holiday let compare with respite care?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q8-a" role="region" aria-labelledby="wif-q8" hidden>
+				<p>Compare environment (private home vs care setting), independence, how care is delivered, cost lines, family involvement and clinical suitability. Restwell is a private adapted bungalow with optional Continuity care, not a care home.</p>
+			  </div>
+			</div>
+			<div class="faq-item">
+			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q9" aria-controls="wif-q9-a">
+				<span>What is the difference between a respite break and an accessible holiday?</span>
+				<span class="faq-item__icon" aria-hidden="true"></span>
+			  </button>
+			  <div class="faq-item__panel" id="wif-q9-a" role="region" aria-labelledby="wif-q9" hidden>
+				<p>Respite usually means planned carer relief or continued formal care under funding language. An accessible holiday describes a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions.</p>
+			  </div>
+			</div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
 
-    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-      <div class="mid-cta__media" aria-hidden="true"></div>
-      <div class="mid-cta__inner">
-        <h2 id="mid-cta-h">Describe the party and equipment</h2>
-        <p>We’ll say straight whether the bungalow fits, or where it doesn’t.</p>
-        <div class="mid-cta__btns">
-          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read accessibility</a>
-        </div>
-      </div>
-    </section>
+	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+	  <div class="mid-cta__media" aria-hidden="true"></div>
+	  <div class="mid-cta__inner">
+		<h2 id="mid-cta-h">Describe the party and equipment</h2>
+		<p>We’ll say straight whether the bungalow fits, or where it doesn’t.</p>
+		<div class="mid-cta__btns">
+		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read accessibility</a>
+		</div>
+	  </div>
+	</section>
 
 </main>
 

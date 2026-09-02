@@ -285,7 +285,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 			'post_type'     => 'post',
 			'post_content'  => wp_kses_post( $article['content'] ),
 			'post_excerpt'  => $article['excerpt'],
-			'post_author'   => get_current_user_id() ?: 1,
+			'post_author'   => max( 1, (int) get_current_user_id() ),
 		);
 		if ( $cat_id ) {
 			$insert_args['post_category'] = array( $cat_id );

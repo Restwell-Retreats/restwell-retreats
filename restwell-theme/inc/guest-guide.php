@@ -261,7 +261,7 @@ function restwell_gg_get_guests(): array {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
 	$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY created_at ASC', $table ), ARRAY_A );
-	return $rows ?: array();
+	return is_array( $rows ) ? $rows : array();
 }
 
 /**
@@ -275,12 +275,12 @@ function restwell_gg_get_guests(): array {
 function restwell_gg_add_guest( string $name, string $email, string $send_date, int $enquiry_id = 0 ): void {
 	global $wpdb;
 	// Normalise datetime-local format to MySQL datetime.
-	$send_date_mysql = $send_date ? date( 'Y-m-d H:i:s', strtotime( str_replace( 'T', ' ', $send_date ) ) ) : null;
+	$send_date_mysql = $send_date ? wp_date( 'Y-m-d H:i:s', strtotime( str_replace( 'T', ' ', $send_date ) ) ) : null;
 
 	$wpdb->insert(
 		$wpdb->prefix . RESTWELL_GUESTS_TABLE,
 		array(
-			'enquiry_id' => $enquiry_id ?: null,
+			'enquiry_id' => $enquiry_id > 0 ? $enquiry_id : null,
 			'name'       => $name,
 			'email'      => $email,
 			'send_date'  => $send_date_mysql,
@@ -329,7 +329,7 @@ function restwell_gg_mark_sent( int $id ): void {
 function restwell_get_guest_by_email( string $email ): ?object {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
-	return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE email = %s ORDER BY id DESC LIMIT 1', $table, $email ) ) ?: null;
+	return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE email = %s ORDER BY id DESC LIMIT 1', $table, $email ) );
 }
 
 /**
@@ -387,7 +387,7 @@ function restwell_gg_find_guest( int $id ): ?array {
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
 	$row = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id ), ARRAY_A );
-	return $row ?: null;
+	return is_array( $row ) ? $row : null;
 }
 
 // =============================================================================
@@ -763,7 +763,7 @@ function restwell_guest_guide_settings_page() {
 				?>
 				<tr>
 					<td class="column-name" data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
-						<?php echo esc_html( $guest['name'] ?: '-' ); ?>
+						<?php echo esc_html( restwell_first_nonempty_string( $guest['name'] ?? '', '-' ) ); ?>
 					</td>
 					<td class="column-email" data-label="<?php echo esc_attr__( 'Email', 'restwell-retreats' ); ?>">
 						<?php if ( ! empty( $guest['email'] ) ) : ?>
@@ -831,7 +831,19 @@ function restwell_guest_guide_settings_page() {
 						</form>
 						<a
 							class="button button-link button-small rw-gg-preview-link"
-							href="<?php echo esc_url( add_query_arg( array( 'page' => 'restwell-guest-guide', 'preview_guest' => $guest['id'] ), admin_url( 'admin.php' ) ) . '#rw-gg-email-preview' ); ?>"
+							href="
+							<?php
+							echo esc_url(
+								add_query_arg(
+									array(
+										'page' => 'restwell-guest-guide',
+										'preview_guest' => $guest['id'],
+									),
+									admin_url( 'admin.php' )
+								) . '#rw-gg-email-preview'
+							);
+							?>
+									"
 						>
 							<?php esc_html_e( 'View email', 'restwell-retreats' ); ?>
 						</a>

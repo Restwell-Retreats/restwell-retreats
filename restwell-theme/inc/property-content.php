@@ -476,20 +476,20 @@ function restwell_get_property_room_fallback_highlight( $room_key, $post_id = 0 
 			'desc'  => __( 'Open-plan living with conservatory access', 'restwell-retreats' ),
 		),
 		'bedroom'    => array(
-			'title' => trim( (string) $m( 'prop_feature_5' ) ) ?: __( 'Ceiling track hoist', 'restwell-retreats' ),
-			'desc'  => trim( (string) $m( 'prop_feature_5_desc' ) ) ?: __( 'Full room coverage in the accessible bedroom', 'restwell-retreats' ),
+			'title' => restwell_first_nonempty_string( $m( 'prop_feature_5' ), __( 'Ceiling track hoist', 'restwell-retreats' ) ),
+			'desc'  => restwell_first_nonempty_string( $m( 'prop_feature_5_desc' ), __( 'Full room coverage in the accessible bedroom', 'restwell-retreats' ) ),
 		),
 		'wetroom'    => array(
-			'title' => trim( (string) $m( 'prop_feature_2' ) ) ?: __( 'Accessible wet room', 'restwell-retreats' ),
+			'title' => restwell_first_nonempty_string( $m( 'prop_feature_2' ), __( 'Accessible wet room', 'restwell-retreats' ) ),
 			'desc'  => __( 'Roll-in shower, grab rails and adjustable basin', 'restwell-retreats' ),
 		),
 		'garden'     => array(
-			'title' => trim( (string) $m( 'prop_feature_4' ) ) ?: __( 'Driveway for two cars', 'restwell-retreats' ),
-			'desc'  => trim( (string) $m( 'prop_feature_4_desc' ) ) ?: __( 'Step-free patio and enclosed garden', 'restwell-retreats' ),
+			'title' => restwell_first_nonempty_string( $m( 'prop_feature_4' ), __( 'Driveway for two cars', 'restwell-retreats' ) ),
+			'desc'  => restwell_first_nonempty_string( $m( 'prop_feature_4_desc' ), __( 'Step-free patio and enclosed garden', 'restwell-retreats' ) ),
 		),
 		'throughout' => array(
-			'title' => trim( (string) $m( 'prop_feature_6' ) ) ?: __( 'Step-free throughout', 'restwell-retreats' ),
-			'desc'  => trim( (string) $m( 'prop_feature_6_desc' ) ) ?: __( 'Wide doorways on one level', 'restwell-retreats' ),
+			'title' => restwell_first_nonempty_string( $m( 'prop_feature_6' ), __( 'Step-free throughout', 'restwell-retreats' ) ),
+			'desc'  => restwell_first_nonempty_string( $m( 'prop_feature_6_desc' ), __( 'Wide doorways on one level', 'restwell-retreats' ) ),
 		),
 	);
 

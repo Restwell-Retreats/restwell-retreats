@@ -593,7 +593,7 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 	$facebook_url = 'https://www.facebook.com/restwellretreats/reviews';
 	$first_name = $name ? explode( ' ', trim( $name ) )[0] : 'there';
 	$subject    = $site . ' | ' . __( 'Thank you for staying with us', 'restwell-retreats' );
-	$preview    = __( "It was a pleasure having you. We hope you felt truly at home.", 'restwell-retreats' );
+	$preview    = __( 'It was a pleasure having you. We hope you felt truly at home.', 'restwell-retreats' );
 
 	$dates_row = $stay_dates
 		? restwell_email_info_table( array( __( 'Stay', 'restwell-retreats' ) => esc_html( $stay_dates ) ) )

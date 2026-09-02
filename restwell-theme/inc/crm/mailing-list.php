@@ -53,7 +53,7 @@ function restwell_crm_mailing_list_page(): void {
 			$faq_table
 		),
 		ARRAY_A
-	);	?>
+	);  ?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Mailing list', 'restwell-retreats' ); ?></h1>
 		<p class="description">
@@ -62,7 +62,19 @@ function restwell_crm_mailing_list_page(): void {
 		<?php if ( empty( $rows ) ) : ?>
 			<p><?php esc_html_e( 'No opted-in contacts yet.', 'restwell-retreats' ); ?></p>
 		<?php else : ?>
-			<p><strong><?php echo esc_html( sprintf( __( 'Total subscribers: %d', 'restwell-retreats' ), count( $rows ) ) ); ?></strong></p>
+			<p>
+				<strong>
+					<?php
+					echo esc_html(
+						sprintf(
+							/* translators: %d: subscriber count */
+							__( 'Total subscribers: %d', 'restwell-retreats' ),
+							count( $rows )
+						)
+					);
+					?>
+				</strong>
+			</p>
 			<table class="widefat striped">
 				<thead>
 					<tr>

@@ -194,7 +194,10 @@ function restwell_handle_enquire_submit(): void {
 		$redirect = '';
 	}
 	if ( ! $redirect ) {
-		$redirect = wp_get_referer() ?: home_url( '/enquire/' );
+		$redirect = wp_get_referer();
+		if ( ! $redirect ) {
+			$redirect = home_url( '/enquire/' );
+		}
 	}
 
 	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ RESTWELL_ENQUIRE_NONCE_NAME ] ) ), RESTWELL_ENQUIRE_NONCE_ACTION ) ) {

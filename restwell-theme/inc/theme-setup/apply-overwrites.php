@@ -53,15 +53,15 @@ function restwell_copy_overwrite_section_text( string $markdown, string $heading
 		$rest = substr( $rest, 0, (int) $next[0][1] );
 	}
 	$rest = trim( $rest );
-		if ( '' === $rest ) {
-			return '';
-		}
+	if ( '' === $rest ) {
+		return '';
+	}
 		$lines   = preg_split( '/\r\n|\r|\n/', $rest );
 		$buffer  = array();
 		$started = false;
-		foreach ( $lines as $line ) {
-			$trim = trim( $line );
-			if ( '' === $trim ) {
+	foreach ( $lines as $line ) {
+		$trim = trim( $line );
+		if ( '' === $trim ) {
 			if ( $started ) {
 				break;
 			}

@@ -104,7 +104,7 @@ function restwell_get_meta_description_for_request() {
 	if ( is_category() || is_tag() || is_tax() ) {
 		$term = get_queried_object();
 		if ( $term && ! is_wp_error( $term ) ) {
-			$td = term_description( $term, $term->taxonomy );
+			$td = term_description( $term );
 			if ( $td ) {
 				return restwell_trim_meta_text( $td, 150 ) . '. ' . __( 'Browse the latest posts in this topic.', 'restwell-retreats' );
 			}

@@ -107,9 +107,13 @@ function restwell_seo_checklist_keyphrase_tokens_match( string $haystack_norm, s
 	if ( str_contains( $haystack_norm, $kp_norm ) ) {
 		return true;
 	}
+	$split_tokens = preg_split( '/\s+/', $kp_norm );
+	if ( ! is_array( $split_tokens ) ) {
+		$split_tokens = array();
+	}
 	$tokens = array_values(
 		array_filter(
-			preg_split( '/\s+/', $kp_norm ) ?: array(),
+			$split_tokens,
 			static function ( $t ) {
 				return is_string( $t ) && mb_strlen( $t ) >= 3;
 			}

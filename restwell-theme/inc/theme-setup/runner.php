@@ -186,7 +186,7 @@ function restwell_ensure_blog_posts_page() {
 				'post_name'   => 'home',
 				'post_status' => 'publish',
 				'post_type'   => 'page',
-				'post_content'=> '',
+				'post_content' => '',
 			),
 			true
 		);

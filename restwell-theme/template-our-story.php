@@ -51,101 +51,101 @@ get_template_part(
 );
 ?>
 
-    <nav class="subnav" aria-label="On this page">
-      <div class="container">
-        <ul class="subnav__list">
-          <li><a href="#origin">How it started</a></li>
-          <li><a href="#shaped">Shaped by real needs</a></li>
-          <li><a href="#specialists">Built with specialists</a></li>
-          <li><a href="#next">What's next</a></li>
-        </ul>
-      </div>
-    </nav>
+	<nav class="subnav" aria-label="On this page">
+	  <div class="container">
+		<ul class="subnav__list">
+		  <li><a href="#origin">How it started</a></li>
+		  <li><a href="#shaped">Shaped by real needs</a></li>
+		  <li><a href="#specialists">Built with specialists</a></li>
+		  <li><a href="#next">What's next</a></li>
+		</ul>
+	  </div>
+	</nav>
 
-    <section class="section-y band-white" id="origin" aria-labelledby="origin-h">
-      <div class="container split">
-        <div>
-          <header class="section-head section-head--tight">
-            <p class="eyebrow">How it started</p>
-            <h2 id="origin-h">The pattern</h2>
-            <p class="lede">Victoria Walker owns Restwell Retreats and is the CQC registered manager of Continuity of Care Services, our sister company. After more than ten years of providing home care for people with different access needs, she often heard the same thing: it’s hard to find truly accessible holiday accommodation, and places that claim to be “wheelchair friendly” often don’t meet real needs.</p>
-          </header>
-          <p>She bought a bungalow in Whitstable that needed a lot of work and set out to improve it. She got the keys in early March, and just four weeks later, with help from family, friends, and three specialist teams, Restwell was ready. Now, guests can enjoy a holiday without the usual barriers, confusion or last-minute surprises.</p>
-        </div>
-        <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/journey/101-russel-drive-archive.webp' ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
-        </div>
-      </div>
-    </section>
+	<section class="section-y band-white" id="origin" aria-labelledby="origin-h">
+	  <div class="container split">
+		<div>
+		  <header class="section-head section-head--tight">
+			<p class="eyebrow">How it started</p>
+			<h2 id="origin-h">The pattern</h2>
+			<p class="lede">Victoria Walker owns Restwell Retreats and is the CQC registered manager of Continuity of Care Services, our sister company. After more than ten years of providing home care for people with different access needs, she often heard the same thing: it’s hard to find truly accessible holiday accommodation, and places that claim to be “wheelchair friendly” often don’t meet real needs.</p>
+		  </header>
+		  <p>She bought a bungalow in Whitstable that needed a lot of work and set out to improve it. She got the keys in early March, and just four weeks later, with help from family, friends, and three specialist teams, Restwell was ready. Now, guests can enjoy a holiday without the usual barriers, confusion or last-minute surprises.</p>
+		</div>
+		<div class="split__media" data-reveal>
+		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/journey/101-russel-drive-archive.webp' ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
+		</div>
+	  </div>
+	</section>
 
-    <section class="section-y band-subtle" id="shaped" aria-labelledby="shaped-h">
-      <div class="container split split--flip">
-        <div>
-          <header class="section-head section-head--tight">
-            <p class="eyebrow">Shaped by real needs</p>
-            <h2 id="shaped-h">Designed by the people who’d actually stay here</h2>
-            <p class="lede">The layout, equipment and accessibility features were shaped by real people, not just planned on paper. Individuals with muscular dystrophy, cerebral palsy, and those recovering from strokes helped us by sharing their personal insights before the bungalow was finished. They told us what mattered for transfers, what got in the way, and what “accessible” really meant for them.</p>
-          </header>
-          <p>That’s why the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility page</a> lists exact measurements in millimetres, so you can check the fit yourself before you book.</p>
-        </div>
-        <div class="split__media" data-reveal>
-          <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
-        </div>
-      </div>
-    </section>
+	<section class="section-y band-subtle" id="shaped" aria-labelledby="shaped-h">
+	  <div class="container split split--flip">
+		<div>
+		  <header class="section-head section-head--tight">
+			<p class="eyebrow">Shaped by real needs</p>
+			<h2 id="shaped-h">Designed by the people who’d actually stay here</h2>
+			<p class="lede">The layout, equipment and accessibility features were shaped by real people, not just planned on paper. Individuals with muscular dystrophy, cerebral palsy, and those recovering from strokes helped us by sharing their personal insights before the bungalow was finished. They told us what mattered for transfers, what got in the way, and what “accessible” really meant for them.</p>
+		  </header>
+		  <p>That’s why the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility page</a> lists exact measurements in millimetres, so you can check the fit yourself before you book.</p>
+		</div>
+		<div class="split__media" data-reveal>
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
+		</div>
+	  </div>
+	</section>
 
-    <section class="section-y band-white" aria-labelledby="quote-h">
-      <div class="container">
-        <h2 id="quote-h" class="sr-only">What a guest wrote after staying</h2>
-        <figure class="pull-quote">
-          <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-          <blockquote class="pull-quote__text">it truly amazes me, just how much work has gone into this &ldquo;home from home&rdquo; literally everything you may require, is provided.. I will most definitely be back.. 10/10 from me, as there was NOTHING i needed to ask for, as Restwell Retreats had catered for it all already</blockquote>
-          <figcaption class="pull-quote__cite">M.P.<span class="pull-quote__role">Wheelchair user &middot; Google review</span></figcaption>
-        </figure>
-      </div>
-    </section>
+	<section class="section-y band-white" aria-labelledby="quote-h">
+	  <div class="container">
+		<h2 id="quote-h" class="sr-only">What a guest wrote after staying</h2>
+		<figure class="pull-quote">
+		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
+		  <blockquote class="pull-quote__text">it truly amazes me, just how much work has gone into this &ldquo;home from home&rdquo; literally everything you may require, is provided.. I will most definitely be back.. 10/10 from me, as there was NOTHING i needed to ask for, as Restwell Retreats had catered for it all already</blockquote>
+		  <figcaption class="pull-quote__cite">M.P.<span class="pull-quote__role">Wheelchair user &middot; Google review</span></figcaption>
+		</figure>
+	  </div>
+	</section>
 
-    <section class="section-y band-teal" id="specialists" aria-labelledby="specialists-h">
-      <div class="container">
-        <div class="split">
-          <div class="band-teal__stack">
-            <p class="eyebrow eyebrow--on-dark">Built with specialists</p>
-            <h2 id="specialists-h">Occupational therapists, not guesswork</h2>
-            <p class="lede">The accessible bedroom and wet room were designed with advice from occupational therapists at Kent Community Health NHS Trust and built by <a class="text-link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer">Care Spaces by Wealden Rehab<span class="sr-only"> (opens in new tab)</span></a> and <a class="text-link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"> (opens in new tab)</span></a>. That way, the equipment works for a genuine range of needs, rather than one imagined “average” guest. The companies we worked with understood Victoria’s vision from the start and finished everything within just one month.</p>
-            <p>Continuity of Care Services, our sister company, takes the same approach if you want support during your stay. Victoria is Continuity’s registered manager; the CQC rating of Good is theirs, not Restwell’s.</p>
-            <div class="band-teal__actions">
-              <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access specs</a>
-              <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>
-            </div>
-          </div>
-          <div class="split__media" data-reveal>
-            <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the profiling bed" width="900" height="675" loading="lazy" />
-          </div>
-        </div>
-      </div>
-    </section>
+	<section class="section-y band-teal" id="specialists" aria-labelledby="specialists-h">
+	  <div class="container">
+		<div class="split">
+		  <div class="band-teal__stack">
+			<p class="eyebrow eyebrow--on-dark">Built with specialists</p>
+			<h2 id="specialists-h">Occupational therapists, not guesswork</h2>
+			<p class="lede">The accessible bedroom and wet room were designed with advice from occupational therapists at Kent Community Health NHS Trust and built by <a class="text-link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer">Care Spaces by Wealden Rehab<span class="sr-only"> (opens in new tab)</span></a> and <a class="text-link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"> (opens in new tab)</span></a>. That way, the equipment works for a genuine range of needs, rather than one imagined “average” guest. The companies we worked with understood Victoria’s vision from the start and finished everything within just one month.</p>
+			<p>Continuity of Care Services, our sister company, takes the same approach if you want support during your stay. Victoria is Continuity’s registered manager; the CQC rating of Good is theirs, not Restwell’s.</p>
+			<div class="band-teal__actions">
+			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access specs</a>
+			  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>
+			</div>
+		  </div>
+		  <div class="split__media" data-reveal>
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the profiling bed" width="900" height="675" loading="lazy" />
+		  </div>
+		</div>
+	  </div>
+	</section>
 
-    <section class="section-y band-subtle" id="next" aria-labelledby="next-h">
-      <div class="container">
-        <header class="section-head section-head--tight">
-          <p class="eyebrow">What’s next</p>
-          <h2 id="next-h">One bungalow so far</h2>
-          <p class="lede">The next question people usually ask, once they know it works, is whether there’ll be more places like this. We don’t have news yet, but if there is a second bungalow, it’ll be built the same way this one was: around the people who’ll actually stay, not around guesswork.</p>
-        </header>
-      </div>
-    </section>
+	<section class="section-y band-subtle" id="next" aria-labelledby="next-h">
+	  <div class="container">
+		<header class="section-head section-head--tight">
+		  <p class="eyebrow">What’s next</p>
+		  <h2 id="next-h">One bungalow so far</h2>
+		  <p class="lede">The next question people usually ask, once they know it works, is whether there’ll be more places like this. We don’t have news yet, but if there is a second bungalow, it’ll be built the same way this one was: around the people who’ll actually stay, not around guesswork.</p>
+		</header>
+	  </div>
+	</section>
 
-    <section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-      <div class="mid-cta__media" aria-hidden="true"></div>
-      <div class="mid-cta__inner">
-        <h2 id="mid-cta-h">See what that means in the bungalow.</h2>
-        <p>You can look at door widths, hoist details, and room photos before reaching out.</p>
-        <div class="mid-cta__btns">
-          <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-          <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>
-        </div>
-      </div>
-    </section>
+	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
+	  <div class="mid-cta__media" aria-hidden="true"></div>
+	  <div class="mid-cta__inner">
+		<h2 id="mid-cta-h">See what that means in the bungalow.</h2>
+		<p>You can look at door widths, hoist details, and room photos before reaching out.</p>
+		<div class="mid-cta__btns">
+		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>
+		</div>
+	  </div>
+	</section>
 
 </main>
 

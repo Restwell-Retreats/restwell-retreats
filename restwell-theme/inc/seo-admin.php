@@ -439,7 +439,7 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 	$corpora    = restwell_get_effective_content_for_seo( $post );
 	$plain      = $corpora['plain'];
 	$html       = $corpora['html'];
-	$title      = $meta_title ?: $post->post_title;
+	$title      = $meta_title !== '' ? $meta_title : $post->post_title;
 	$desc       = $meta_desc;
 	$kp         = restwell_seo_admin_normalize_for_keyphrase_match( $focus_kp );
 	$title_l    = restwell_seo_admin_normalize_for_keyphrase_match( $title );
@@ -660,6 +660,9 @@ function restwell_seo_admin_save_fields( $post_id, $post ) {
 		return;
 	}
 
+	// Caller (restwell_seo_pages_handle_save) already verified restwell_seo_nonce.
+	// phpcs:disable WordPress.Security.NonceVerification.Missing
+
 	$fields = array(
 		'focus_keyphrase'  => 'sanitize_text_field',
 		'meta_title'       => 'sanitize_text_field',
@@ -667,12 +670,12 @@ function restwell_seo_admin_save_fields( $post_id, $post ) {
 	);
 
 	foreach ( $fields as $key => $sanitiser ) {
-		if ( isset( $_POST[ $key ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified by caller
+		if ( isset( $_POST[ $key ] ) ) {
 			update_post_meta( $post_id, $key, call_user_func( $sanitiser, wp_unslash( $_POST[ $key ] ) ) );
 		}
 	}
 
-	if ( isset( $_POST['og_image_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if ( isset( $_POST['og_image_id'] ) ) {
 		$og_image_id = absint( $_POST['og_image_id'] );
 		if ( $og_image_id > 0 ) {
 			update_post_meta( $post_id, 'og_image_id', $og_image_id );
@@ -681,18 +684,19 @@ function restwell_seo_admin_save_fields( $post_id, $post ) {
 		}
 	}
 
-	if ( isset( $_POST['meta_og_type'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if ( isset( $_POST['meta_og_type'] ) ) {
 		$og_type = sanitize_key( wp_unslash( $_POST['meta_og_type'] ) );
 		if ( in_array( $og_type, array( 'website', 'article' ), true ) ) {
 			update_post_meta( $post_id, 'meta_og_type', $og_type );
 		}
 	}
 
-	if ( isset( $_POST['meta_canonical'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if ( isset( $_POST['meta_canonical'] ) ) {
 		$canonical = esc_url_raw( wp_unslash( $_POST['meta_canonical'] ) );
 		update_post_meta( $post_id, 'meta_canonical', $canonical );
 	}
 
-	$noindex = isset( $_POST['meta_noindex'] ) ? absint( $_POST['meta_noindex'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$noindex = isset( $_POST['meta_noindex'] ) ? absint( $_POST['meta_noindex'] ) : 0;
 	update_post_meta( $post_id, 'meta_noindex', $noindex );
+	// phpcs:enable WordPress.Security.NonceVerification.Missing
 }
