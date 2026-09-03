@@ -391,7 +391,6 @@
 
 	ready(function () {
 		safeInit('initScrollToTop', initScrollToTop);
-		safeInit('initSectionJumpNav', initSectionJumpNav);
 		safeInit('initWifPersonaNav', initWifPersonaNav);
 		safeInit('initPropPageNav', initPropPageNav);
 		safeInit('initPricingPageNav', initPricingPageNav);
