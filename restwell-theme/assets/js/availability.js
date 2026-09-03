@@ -81,6 +81,7 @@
 		var fromField = root.querySelector('[data-availability-from-field]');
 		var toField = root.querySelector('[data-availability-to-field]');
 		var stay = root.querySelector('[data-availability-stay]');
+		var clearBtn = root.querySelector('[data-availability-clear]');
 		var prompt = root.querySelector('[data-availability-prompt]');
 		var defaultPrompt = prompt ? prompt.textContent : '';
 		var quoteBox = root.querySelector('[data-availability-quote]');
@@ -251,6 +252,7 @@
 		function setStay(from, to, extendHint) {
 			var complete = !!(from && to);
 			if (stay) stay.classList.toggle('is-empty', !complete);
+			if (clearBtn) clearBtn.hidden = !complete;
 			if (fromField) fromField.classList.toggle('is-active', !from);
 			if (toField) toField.classList.remove('is-active');
 			if (fromEl) fromEl.textContent = from ? prettyDay(from) : '—';
@@ -340,6 +342,15 @@
 			announceStay(arrival, lastNight);
 		}
 
+		function clearStay() {
+			startIso = '';
+			endIso = '';
+			clearHope();
+			setEnquire('', '');
+			setStay('', '');
+			setLive('Selection cleared.');
+		}
+
 		function onPick(iso) {
 			if (booked[iso]) return;
 			var oneNight = !!(startIso && endIso && startIso === endIso);
@@ -372,6 +383,10 @@
 			if (!iso) return;
 			onPick(iso);
 		});
+
+		if (clearBtn) {
+			clearBtn.addEventListener('click', clearStay);
+		}
 
 		if (prevBtn) {
 			prevBtn.addEventListener('click', function () {

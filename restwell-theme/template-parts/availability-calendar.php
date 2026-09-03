@@ -245,28 +245,39 @@ $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : 
 			<aside class="availability__stay is-empty" data-availability-stay>
 				<header class="availability__stay-head">
 					<h3 class="availability__stay-title"><?php esc_html_e( 'Your stay', 'restwell-retreats' ); ?></h3>
-					<p class="availability__stay-times">
-						<?php
-						echo esc_html(
-							sprintf(
-								/* translators: 1: check-in time, 2: check-out time */
-								__( 'Arrive from %1$s. Leave by %2$s.', 'restwell-retreats' ),
-								$check_in,
-								$check_out
-							)
-						);
-						?>
-					</p>
+					<button type="button" class="availability__stay-clear" data-availability-clear hidden><?php esc_html_e( 'Clear', 'restwell-retreats' ); ?></button>
 				</header>
 				<div class="availability__fields">
 					<div class="availability__field" data-availability-from-field>
 						<span class="availability__field-label"><?php esc_html_e( 'Arrive', 'restwell-retreats' ); ?></span>
 						<span class="availability__field-value" data-availability-from><?php esc_html_e( '—', 'restwell-retreats' ); ?></span>
+						<span class="availability__stay-times">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %s: check-in time */
+									__( 'from %s', 'restwell-retreats' ),
+									$check_in
+								)
+							);
+							?>
+						</span>
 					</div>
 					<span class="availability__stay-arrow" aria-hidden="true">→</span>
 					<div class="availability__field" data-availability-to-field>
 						<span class="availability__field-label"><?php esc_html_e( 'Leave', 'restwell-retreats' ); ?></span>
 						<span class="availability__field-value" data-availability-to><?php esc_html_e( '—', 'restwell-retreats' ); ?></span>
+						<span class="availability__stay-times">
+							<?php
+							echo esc_html(
+								sprintf(
+									/* translators: %s: check-out time */
+									__( 'by %s', 'restwell-retreats' ),
+									$check_out
+								)
+							);
+							?>
+						</span>
 					</div>
 				</div>
 				<p class="availability__stay-prompt" data-availability-prompt><?php esc_html_e( 'Tap a night to start.', 'restwell-retreats' ); ?></p>
