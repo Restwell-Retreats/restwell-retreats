@@ -23,6 +23,9 @@ if ( $footer_cqc_profile_url === '' ) {
 $logo_url = function_exists( 'restwell_get_logo_url' ) ? restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) : '';
 $brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_brand_lockup() : get_bloginfo( 'name' );
 
+$footer_phone = (string) get_option( 'restwell_phone_number', '01622 809881' );
+$footer_phone_tel = preg_replace( '/[^0-9+]/', '', $footer_phone );
+
 $faq_url      = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'faq' ) : home_url( '/faq/' );
 $privacy_url  = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'privacy-policy' ) : home_url( '/privacy-policy/' );
 $terms_url    = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'terms-and-conditions' ) : home_url( '/terms-and-conditions/' );
@@ -56,6 +59,11 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 				</a>
 			</p>
 			<p class="site-footer__partner-line"><?php esc_html_e( 'Accessible holidays, Whitstable, Kent', 'restwell-retreats' ); ?></p>
+			<p class="site-footer__partner-line">
+				<a href="tel:<?php echo esc_attr( $footer_phone_tel ); ?>"><?php echo esc_html( $footer_phone ); ?></a>
+				<span aria-hidden="true"> &middot; </span>
+				<a href="mailto:hello@restwellretreats.co.uk">hello@restwellretreats.co.uk</a>
+			</p>
 		</div>
 		<div class="site-footer__bottom">
 			<nav class="site-footer__legal" aria-label="<?php esc_attr_e( 'Legal', 'restwell-retreats' ); ?>">
