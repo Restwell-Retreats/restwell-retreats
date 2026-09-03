@@ -21,9 +21,9 @@ $restwell_prop_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_prop_id,
 		'prop_hero_subtitle',
-		'This is a room-by-room look round Restwell, a single-storey adapted bungalow on a quiet street in Whitstable that sleeps up to five. There are two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden.'
+		'A room-by-room look round Restwell: a single-storey adapted bungalow in Whitstable that sleeps up to five.'
 	)
-	: 'This is a room-by-room look round Restwell, a single-storey adapted bungalow on a quiet street in Whitstable that sleeps up to five. There are two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden.';
+	: 'A room-by-room look round Restwell: a single-storey adapted bungalow in Whitstable that sleeps up to five.';
 ?>
 
 

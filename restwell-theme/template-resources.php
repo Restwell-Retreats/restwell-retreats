@@ -38,8 +38,8 @@ $restwell_res_heading = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_res_id, 'res_heading', 'Paying for a break, without the guesswork' )
 	: 'Paying for a break, without the guesswork';
 $restwell_res_intro   = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_res_id, 'res_intro', 'Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.' )
-	: 'Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.';
+	? restwell_page_content_text( $restwell_res_id, 'res_intro', 'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.' )
+	: 'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.';
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,

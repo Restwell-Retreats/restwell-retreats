@@ -65,7 +65,7 @@ function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
 		'hero_heading'             => 'An accessible bungalow by the sea, at your own pace',
-		'hero_subheading'          => 'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.',
+		'hero_subheading'          => 'One private, step-free bungalow by the sea in Whitstable. The whole house is yours, and it isn’t a care home or a respite centre.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'Get in touch',
 		'hero_cta_primary_url'     => '/enquire/',
@@ -194,7 +194,7 @@ function restwell_get_property_page_defaults() {
 
 		'prop_hero_label'               => 'The bungalow',
 		'prop_hero_heading'             => 'A proper look round the bungalow',
-		'prop_hero_subtitle'            => 'This is a room-by-room look round Restwell, a single-storey adapted bungalow on a quiet street in Whitstable that sleeps up to five. There are two bedrooms, a level-access wet room, an open living and kitchen space, and French doors onto a level patio and garden.',
+		'prop_hero_subtitle'            => 'A room-by-room look round Restwell: a single-storey adapted bungalow in Whitstable that sleeps up to five.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -376,7 +376,7 @@ function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
 		'hiw_heading' => 'The bookends of a holiday should be the easy bit',
-		'hiw_intro'   => 'Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.',
+		'hiw_intro'   => 'Booking Restwell is three steps: enquire, confirm with a deposit, and arrive from 3pm using a key safe.',
 
 		'hiw_steps_label'   => 'THREE-STEP PROCESS',
 		'hiw_steps_heading' => 'Enquire, confirm, arrive',
@@ -441,7 +441,7 @@ function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
 		'acc_heading' => 'The wet room, the hoists, and every measurement',
-		'acc_intro'   => 'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.',
+		'acc_intro'   => 'The full access statement for Restwell: exact door widths, hoist capacity and the level-access wet room.',
 
 		'acc_room_label'      => 'The property',
 		'acc_room_heading'    => 'Room by room',
@@ -482,7 +482,7 @@ function restwell_get_faq_page_defaults() {
 	$defaults = array(
 		'faq_label'        => 'FAQ',
 		'faq_heading'      => 'Questions people ask before they book',
-		'faq_intro'        => 'Short answers to the things we’re asked most: what Restwell is, whether a wheelchair fits, how care works, what it costs, and who we can invoice. Each answer links to the page that goes into proper detail.',
+		'faq_intro'        => 'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.',
 		'faq_list_label'   => '',
 		'faq_list_heading' => 'Frequently asked questions',
 
@@ -513,7 +513,7 @@ function restwell_get_enquire_page_defaults() {
 	return array(
 		'enq_label'   => 'Get in touch',
 		'enq_heading' => 'Get in touch whenever you’re ready',
-		'enq_intro'   => 'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.',
+		'enq_intro'   => 'Send your dates and what you need, and we’ll reply within 48 hours. There’s no deposit until you’ve decided it fits.',
 
 		'enq_form_heading'        => 'Tell us about your stay',
 		'enq_success_heading'     => 'We’ve got your enquiry',
@@ -538,7 +538,7 @@ function restwell_get_pricing_page_defaults() {
 		'pricing_label'         => 'Pricing & dates',
 		'pricing_heading'       => 'What a stay here costs',
 		'pricing_subheading'    => 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. The rate is the same whoever we invoice.',
-		'pricing_intro'         => 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. Midweek nights are £185 off-peak and £200 peak, with weekend nights in the table below. A 50% deposit reserves your dates and the balance is due a week before you arrive. The rate is the same whoever we invoice.',
+		'pricing_intro'         => 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.',
 		'pricing_hero_cta_text' => 'Tell us your dates',
 		'pricing_hero_cta_url'  => '/enquire/',
 		'pricing_hero_cta_promise' => 'No deposit until you’ve decided the house fits.',
@@ -563,7 +563,7 @@ function restwell_get_resources_page_defaults() {
 	return array(
 		'res_label'   => 'Funding & support',
 		'res_heading' => 'Paying for a break, without the guesswork',
-		'res_intro'   => 'Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.',
+		'res_intro'   => 'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.',
 
 		'res_fund_heading' => 'How to fund your stay',
 		'res_fund_body'    => "Many guests use a combination of personal savings, direct payments, and charitable grants to fund their stay.\n\nIf you receive a personal budget or direct payment from your local authority or NHS, you may be able to use this towards your stay, particularly if care support is included. We recommend speaking to your care coordinator or social worker in the first instance.\n\nWe are happy to provide documentation to support a funding application.",
@@ -616,7 +616,7 @@ function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'           => 'Who it is for',
 		'wif_heading'         => 'Is this the right house for your group?',
-		'wif_intro'           => 'Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.',
+		'wif_intro'           => 'Built for disabled adults, families and carers, in parties of up to five. A holiday let, not a care home or respite centre.',
 		'wif_hero_image_id'   => 0,
 		'wif_family_title'    => 'For guests and families',
 		'wif_family_body'     => '"Accessible" and "wheelchair friendly" are used loosely by a lot of accommodation. People book in good faith and arrive to find a step at the entrance, a bathroom that is too small to turn, or a hoist that is not actually there. Restwell works the other way: the ceiling track hoist is already fitted in the accessible bedroom, the wet room has a roll-in shower with turning space, and every doorway and corridor is sized for a powerchair. The full measurements are published on our accessibility page. Check them before you enquire, not after. This is a private home, not a converted hotel room. No shared spaces, no clinical layout, and no surprises on arrival.',
@@ -645,7 +645,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
 		'wg_heading'       => 'What a day out from the bungalow is actually like',
-		'wg_intro'         => 'Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.',
+		'wg_intro'         => 'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.',
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'The promenade from Tankerton Slopes',
 		'wg_about_body'    => "A paved promenade route of about two miles, west from the property at the top of Tankerton Slopes. Marine Parade clifftop is wide and flat with weather shelters and benches. At the right tide you can watch The Street, a natural shingle spit, emerge almost 800 metres into the estuary.\nSloped paths down to the beach are steep and easier with a companion for manual wheelchair users. The lower promenade then runs unbroken west past the painted beach huts to Whitstable Castle gardens, town and harbour.",
@@ -701,7 +701,7 @@ function restwell_get_care_page_defaults() {
 	return array(
 		'care_label'   => 'Optional care',
 		'care_heading' => 'Care during your stay, arranged in the same conversation',
-		'care_intro'   => 'Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.',
+		'care_intro'   => 'Optional home care from Continuity of Care Services, our CQC-rated sister company, arranged on the same enquiry.',
 	);
 }
 

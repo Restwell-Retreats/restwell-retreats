@@ -21,9 +21,9 @@ $restwell_wg_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wg_id,
 		'wg_intro',
-		'Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.'
+		'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.'
 	)
-	: 'Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.';
+	: 'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.';
 ?>
 
 

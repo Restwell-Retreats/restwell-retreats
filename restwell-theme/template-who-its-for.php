@@ -21,9 +21,9 @@ $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,
 		'wif_intro',
-		'Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.'
+		'Built for disabled adults, families and carers, in parties of up to five. A holiday let, not a care home or respite centre.'
 	)
-	: 'Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.';
+	: 'Built for disabled adults, families and carers, in parties of up to five. A holiday let, not a care home or respite centre.';
 ?>
 
 

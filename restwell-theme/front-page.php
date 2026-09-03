@@ -26,9 +26,9 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_subheading',
-		'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.'
+		'One private, step-free bungalow by the sea in Whitstable. The whole house is yours, and it isn’t a care home or a respite centre.'
 	)
-	: 'Restwell is one private adapted bungalow by the sea in Whitstable, and the whole house is yours for the stay. It’s single-storey and step-free, with a level-access wet room and a ceiling track hoist over the profiling bed. It isn’t a care home, and it isn’t a respite centre.';
+	: 'One private, step-free bungalow by the sea in Whitstable. The whole house is yours, and it isn’t a care home or a respite centre.';
 
 $partners     = function_exists( 'restwell_get_homepage_partners' )
 	? restwell_get_homepage_partners( $home_id )

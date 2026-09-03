@@ -21,9 +21,9 @@ $restwell_faq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_faq_id,
 		'faq_intro',
-		'Short answers to the things we’re asked most: what Restwell is, whether a wheelchair fits, how care works, what it costs, and who we can invoice. Each answer links to the page that goes into proper detail.'
+		'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.'
 	)
-	: 'Short answers to the things we’re asked most: what Restwell is, whether a wheelchair fits, how care works, what it costs, and who we can invoice. Each answer links to the page that goes into proper detail.';
+	: 'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.';
 ?>
 
 

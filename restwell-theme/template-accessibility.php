@@ -21,9 +21,9 @@ $restwell_acc_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_acc_id,
 		'acc_intro',
-		'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.'
+		'The full access statement for Restwell: exact door widths, hoist capacity and the level-access wet room.'
 	)
-	: 'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.';
+	: 'The full access statement for Restwell: exact door widths, hoist capacity and the level-access wet room.';
 ?>
 
 

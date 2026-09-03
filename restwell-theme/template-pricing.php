@@ -66,8 +66,8 @@ $restwell_pricing_heading = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_pricing_id, 'pricing_heading', 'What a stay here costs' )
 	: 'What a stay here costs';
 $restwell_pricing_intro   = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_pricing_id, 'pricing_intro', 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. Midweek nights are £185 off-peak and £200 peak, with weekend nights in the table below. A 50% deposit reserves your dates and the balance is due a week before you arrive. The rate is the same whoever we invoice.' )
-	: 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. Midweek nights are £185 off-peak and £200 peak, with weekend nights in the table below. A 50% deposit reserves your dates and the balance is due a week before you arrive. The rate is the same whoever we invoice.';
+	? restwell_page_content_text( $restwell_pricing_id, 'pricing_intro', 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.' )
+	: 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.';
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,

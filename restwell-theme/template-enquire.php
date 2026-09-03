@@ -60,9 +60,9 @@ $restwell_enq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_enq_id,
 		'enq_intro',
-		'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.'
+		'Send your dates and what you need, and we’ll reply within 48 hours. There’s no deposit until you’ve decided it fits.'
 	)
-	: 'Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.';
+	: 'Send your dates and what you need, and we’ll reply within 48 hours. There’s no deposit until you’ve decided it fits.';
 
 $enq_success_heading_default = __( 'We’ve got your enquiry', 'restwell-retreats' );
 $enq_success_body_default    = __( 'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' );

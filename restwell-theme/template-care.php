@@ -21,9 +21,9 @@ $restwell_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_care_id,
 		'care_intro',
-		'Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.'
+		'Optional home care from Continuity of Care Services, our CQC-rated sister company, arranged on the same enquiry.'
 	)
-	: 'Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.';
+	: 'Optional home care from Continuity of Care Services, our CQC-rated sister company, arranged on the same enquiry.';
 ?>
 
 

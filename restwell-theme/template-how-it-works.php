@@ -21,9 +21,9 @@ $restwell_hiw_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,
 		'hiw_intro',
-		'Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.'
+		'Booking Restwell is three steps: enquire, confirm with a deposit, and arrive from 3pm using a key safe.'
 	)
-	: 'Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.';
+	: 'Booking Restwell is three steps: enquire, confirm with a deposit, and arrive from 3pm using a key safe.';
 ?>
 
 
