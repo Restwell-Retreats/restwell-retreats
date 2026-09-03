@@ -4704,6 +4704,45 @@ button.availability__num:focus-visible {
   width: 100%;
   box-sizing: border-box;
 }
+.availability__enquiry {
+  width: min(42rem, calc(100% - 2rem));
+  max-height: calc(100vh - 2rem);
+  margin: auto;
+  padding: var(--space-6);
+  border: 0;
+  border-top: 4px solid var(--warm-gold);
+  color: var(--ink);
+  background: var(--white);
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 22%);
+}
+.availability__enquiry::backdrop {
+  background: rgb(27 77 92 / 68%);
+}
+.availability__enquiry-close {
+  float: right;
+  border: 0;
+  padding: .25rem .5rem;
+  color: var(--deep-teal);
+  background: transparent;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.availability__enquiry h3 {
+  margin: 0 2rem var(--space-2) 0;
+  color: var(--deep-teal);
+  font-family: var(--font-display);
+  font-size: var(--type-h3);
+}
+.availability__enquiry > p {
+  margin: 0 0 var(--space-5);
+}
+.availability__enquiry .step-indicator {
+  margin-bottom: var(--space-5);
+}
+.availability__enquiry .form-step > .btn {
+  margin-top: var(--space-3);
+}
 
 /*
  * Payment steps — editorial sequence (matches .process-list indices).

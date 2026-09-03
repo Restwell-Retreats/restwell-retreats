@@ -294,21 +294,26 @@ $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : 
 				<div class="availability__cta">
 					<a class="btn btn-gold" data-availability-enquire href="#availability-enquiry"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
 				</div>
-				<div class="availability__enquiry" data-availability-enquiry hidden>
-					<h4><?php esc_html_e( 'Tell us about your stay', 'restwell-retreats' ); ?></h4>
+				<dialog class="availability__enquiry" data-availability-enquiry data-multistep>
+					<button class="availability__enquiry-close" type="button" data-availability-enquiry-close aria-label="<?php esc_attr_e( 'Close enquiry form', 'restwell-retreats' ); ?>">&times;</button>
+					<h3><?php esc_html_e( 'Tell us about your stay', 'restwell-retreats' ); ?></h3>
 					<p><?php esc_html_e( 'Your selected dates are already included. Add your details and we will reply within 48 hours.', 'restwell-retreats' ); ?></p>
-					<form class="form-stack" action="<?php echo esc_url( $enquire_url ); ?>" method="post">
+					<ol class="step-indicator" data-step-indicator role="list" aria-label="<?php esc_attr_e( 'Enquiry form progress', 'restwell-retreats' ); ?>">
+						<li class="step-indicator__item is-current" data-step-item="1" aria-current="step"><span class="step-indicator__marker" aria-hidden="true"><span class="step-indicator__num">1</span></span><span class="step-indicator__label"><?php esc_html_e( 'About you', 'restwell-retreats' ); ?></span></li>
+						<li class="step-indicator__connector" aria-hidden="true"></li>
+						<li class="step-indicator__item" data-step-item="2"><span class="step-indicator__marker" aria-hidden="true"><span class="step-indicator__num">2</span></span><span class="step-indicator__label"><?php esc_html_e( 'Your needs', 'restwell-retreats' ); ?></span></li>
+						<li class="step-indicator__connector" aria-hidden="true"></li>
+						<li class="step-indicator__item" data-step-item="3"><span class="step-indicator__marker" aria-hidden="true"><span class="step-indicator__num">3</span></span><span class="step-indicator__label"><?php esc_html_e( 'Send', 'restwell-retreats' ); ?></span></li>
+					</ol>
+					<form class="form-stack restwell-enq-form" data-multistep-form data-live-submit="1" action="<?php echo esc_url( $enquire_url ); ?>" method="post">
 						<?php wp_nonce_field( RESTWELL_ENQUIRE_NONCE_ACTION, RESTWELL_ENQUIRE_NONCE_NAME ); ?>
 						<input type="hidden" name="restwell_enquire" value="1" />
 						<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $enquire_url ); ?>" />
 						<input type="hidden" name="enq_date_from" data-availability-enquiry-from value="" />
 						<input type="hidden" name="enq_date_to" data-availability-enquiry-to value="" />
-						<div class="field"><label for="availability-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label><input id="availability-name" name="enq_name" autocomplete="name" required /></div>
-						<div class="field"><label for="availability-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label><input id="availability-email" name="enq_email" type="email" autocomplete="email" required /></div>
-						<div class="field"><label for="availability-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label><input id="availability-phone" name="enq_phone" type="tel" autocomplete="tel" required /></div>
-						<div class="field"><label for="availability-message"><?php esc_html_e( 'Message', 'restwell-retreats' ); ?></label><textarea id="availability-message" name="enq_message" rows="3" required></textarea></div>
-						<div class="field"><label for="availability-consent"><input id="availability-consent" type="checkbox" name="enq_consent" value="1" required /> <?php esc_html_e( 'I agree to Restwell contacting me about this enquiry.', 'restwell-retreats' ); ?></label></div>
-						<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button>
+						<div class="form-step" data-step-panel="1"><div class="field"><label for="availability-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label><input id="availability-name" name="enq_name" autocomplete="name" required /></div><div class="field"><label for="availability-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label><input id="availability-email" name="enq_email" type="email" autocomplete="email" required /></div><div class="field"><label for="availability-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label><input id="availability-phone" name="enq_phone" type="tel" autocomplete="tel" required /></div><button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button></div>
+						<div class="form-step" data-step-panel="2" hidden><div class="field"><label for="availability-message"><?php esc_html_e( 'Message', 'restwell-retreats' ); ?></label><textarea id="availability-message" name="enq_message" rows="4" required></textarea></div><button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button> <button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button></div>
+						<div class="form-step" data-step-panel="3" hidden><div class="field"><label for="availability-consent"><input id="availability-consent" type="checkbox" name="enq_consent" value="1" required /> <?php esc_html_e( 'I agree to Restwell contacting me about this enquiry.', 'restwell-retreats' ); ?></label></div><button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button> <button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button></div>
 					</form>
 				</div>
 			</aside>

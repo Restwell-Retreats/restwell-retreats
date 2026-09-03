@@ -76,6 +76,7 @@
 		var live = root.querySelector('[data-availability-live]');
 		var enquire = root.querySelector('[data-availability-enquire]');
 			var enquiryPanel = root.querySelector('[data-availability-enquiry]');
+			var enquiryClose = root.querySelector('[data-availability-enquiry-close]');
 			var enquiryFrom = root.querySelector('[data-availability-enquiry-from]');
 			var enquiryTo = root.querySelector('[data-availability-enquiry-to]');
 		var enquireUrl = root.getAttribute('data-enquire-url') || '';
@@ -310,7 +311,7 @@
 				enquire.classList.remove('is-disabled');
 				enquire.removeAttribute('aria-disabled');
 				enquire.removeAttribute('tabindex');
-				if (enquiryPanel) enquiryPanel.hidden = true;
+				if (enquiryPanel && enquiryPanel.open) enquiryPanel.close();
 				return;
 			}
 			enquire.classList.remove('is-disabled');
@@ -410,12 +411,15 @@
 				}
 				if (enquiryPanel) {
 					event.preventDefault();
-					enquiryPanel.hidden = false;
-					enquiryPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					if (typeof enquiryPanel.showModal === 'function') enquiryPanel.showModal();
 					var firstField = enquiryPanel.querySelector('input:not([type="hidden"])');
 					if (firstField) firstField.focus({ preventScroll: true });
 				}
 			});
+
+			if (enquiryClose && enquiryPanel) {
+				enquiryClose.addEventListener('click', function () { enquiryPanel.close(); });
+			}
 		}
 
 		if (prevBtn) {
