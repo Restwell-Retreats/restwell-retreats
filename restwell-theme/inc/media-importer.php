@@ -116,5 +116,21 @@ function restwell_media_match_key( $filename, $attachment_map ) {
 		$stem = substr( $stem, 0, -5 );
 	}
 	$alias = $stem . '.webp';
-	return isset( $attachment_map[ $alias ] ) ? $alias : '';
+	if ( isset( $attachment_map[ $alias ] ) ) {
+		return $alias;
+	}
+
+	$preferred = '';
+	foreach ( $attachment_map as $attachment_key => $attachment_id ) {
+		$attachment_stem = pathinfo( $attachment_key, PATHINFO_FILENAME );
+		$attachment_stem = preg_replace( '/-[0-9]+$/', '', $attachment_stem );
+		if ( $attachment_stem !== $stem ) {
+			continue;
+		}
+		if ( '.webp' === substr( $attachment_key, -5 ) ) {
+			return $attachment_key;
+		}
+		$preferred = $attachment_key;
+	}
+	return $preferred;
 }
