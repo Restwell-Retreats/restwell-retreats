@@ -56,29 +56,7 @@ function restwell_analytics_use_footer_loader() {
  * Consent Mode defaults before gtag loads (consent_gated + GA4 only).
  */
 function restwell_output_ga4_consent_default() {
-	if ( 'consent_gated' !== restwell_get_analytics_load_mode() ) {
-		return;
-	}
-	if ( ! restwell_analytics_use_footer_loader() ) {
-		return;
-	}
-	$mid = restwell_analytics_ga4_measurement_id_sanitized();
-	if ( $mid === '' ) {
-		return;
-	}
-	?>
-<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('consent', 'default', {
-	analytics_storage: 'denied',
-	ad_storage: 'denied',
-	ad_user_data: 'denied',
-	ad_personalization: 'denied',
-	wait_for_update: 500
-});
-</script>
-	<?php
+	return;
 }
 add_action( 'wp_head', 'restwell_output_ga4_consent_default', 1 );
 
@@ -119,27 +97,38 @@ function restwell_enqueue_analytics_loader() {
 }
 add_action( 'wp_enqueue_scripts', 'restwell_enqueue_analytics_loader', 25 );
 
+function restwell_enqueue_head_analytics() {
+	if ( is_admin() || restwell_analytics_use_footer_loader() ) {
+		return;
+	}
+
+	$ga_id          = restwell_analytics_ga4_measurement_id_sanitized();
+	$metricool_hash = restwell_analytics_metricool_hash_sanitized();
+	if ( $ga_id === '' && $metricool_hash === '' ) {
+		return;
+	}
+
+	$version = (string) wp_get_theme()->get( 'Version' );
+	if ( 'consent_gated' === restwell_get_analytics_load_mode() && $ga_id !== '' ) {
+		wp_enqueue_script( 'restwell-analytics-consent', get_template_directory_uri() . '/assets/js/analytics-consent.js', array(), $version, false );
+	}
+	wp_enqueue_script( 'restwell-analytics-head', get_template_directory_uri() . '/assets/js/analytics-head.js', array(), $version, false );
+	wp_localize_script(
+		'restwell-analytics-head',
+		'restwellAnalytics',
+		array(
+			'gaId'          => $ga_id,
+			'metricoolHash' => $metricool_hash,
+		)
+	);
+}
+add_action( 'wp_enqueue_scripts', 'restwell_enqueue_head_analytics', 25 );
+
 /**
  * Output Google Analytics 4 gtag when measurement ID is set (head mode only).
  */
 function restwell_output_ga4() {
-	if ( restwell_analytics_use_footer_loader() ) {
-		return;
-	}
-
-	$mid = restwell_analytics_ga4_measurement_id_sanitized();
-	if ( $mid === '' ) {
-		return;
-	}
-	?>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $mid ); ?>"></script> <?php // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- GA4 fallback when the footer loader is off. ?>
-<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '<?php echo esc_js( $mid ); ?>');
-</script>
-	<?php
+	return;
 }
 add_action( 'wp_head', 'restwell_output_ga4', 20 );
 
@@ -147,22 +136,7 @@ add_action( 'wp_head', 'restwell_output_ga4', 20 );
  * Output Metricool tracking snippet when a hash is set (head mode only).
  */
 function restwell_output_metricool_tracker() {
-	if ( restwell_analytics_use_footer_loader() ) {
-		return;
-	}
-
-	$hash = restwell_analytics_metricool_hash_sanitized();
-	if ( $hash === '' ) {
-		return;
-	}
-	?>
-<script<?php echo restwell_csp_script_nonce_attr(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-function loadScript(a){
-var b=document.getElementsByTagName("head")[0],c=document.createElement("script");
-c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}
-loadScript(function(){beTracker.t({hash:"<?php echo esc_js( $hash ); ?>"})});
-</script>
-	<?php
+	return;
 }
 add_action( 'wp_head', 'restwell_output_metricool_tracker', 20 );
 

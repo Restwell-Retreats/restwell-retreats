@@ -181,7 +181,7 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 
 		<!-- OG image -->
 		<div class="rw-seo__field rw-seo__og-image-row">
-			<label class="rw-seo__label"><?php esc_html_e( 'OG / social image', 'restwell-retreats' ); ?></label>
+			<label class="rw-seo__label" for="rw_og_image_id"><?php esc_html_e( 'OG / social image', 'restwell-retreats' ); ?></label>
 			<input type="hidden" id="rw_og_image_id" name="og_image_id" value="<?php echo esc_attr( (string) $og_image_id ); ?>" />
 			<div class="rw-seo__og-thumb" id="rw-og-thumb">
 				<?php if ( $og_image_url ) : ?>

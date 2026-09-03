@@ -22,7 +22,7 @@ function restwell_theme_email_wrap_welcome( string $content, string $preview = '
 	$home      = esc_url( home_url( '/' ) );
 	$year      = gmdate( 'Y' );
 	$phone     = esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) );
-	$logo_url  = esc_url( trailingslashit( $font_base ) . 'assets/images/long_logo.png' );
+	$logo_url  = esc_url( restwell_theme_image_url( 'long_logo.png' ) );
 	$pre_header = $preview
 		? '<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;color:#F5EDE0;line-height:1px;">' . esc_html( $preview ) . '&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;</div>'
 		: '';

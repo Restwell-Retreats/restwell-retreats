@@ -189,7 +189,7 @@ function restwell_output_social_meta() {
 
 	// Last resort: theme stock coastline (covers unknown pages / Playground gaps).
 	if ( ! $image_url ) {
-		$image_url = get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastline-panorama.webp';
+			 $image_url = restwell_theme_image_url( 'stock/restwell-whitstable-coastline-panorama.webp' );
 	}
 
 	$image_width  = 0;

@@ -234,7 +234,7 @@ function restwell_page_hero_image_url( $post_id = 0 ) {
 		return restwell_theme_image_url( 'stock/restwell-whitstable-coastline-panorama.webp' );
 	}
 
-	return get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastline-panorama.webp';
+	return restwell_theme_image_url( 'stock/restwell-whitstable-coastline-panorama.webp' );
 }
 
 /**

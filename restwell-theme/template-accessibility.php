@@ -86,6 +86,7 @@ get_template_part(
 				  </div>
 				</div>
 			  </div>
+			  <label class="screen-reader-text" for="fit-check-input">Wheelchair width slider</label>
 			  <input type="range" id="fit-check-input" min="500" max="1050" step="1" value="700" data-fit-input aria-labelledby="fit-check-label" aria-describedby="fit-check-summary" />
 			  <div class="fit-check__scale" aria-hidden="true">
 				<span data-fit-min-label>500mm</span>
@@ -252,7 +253,7 @@ get_template_part(
 	<section class="section-y band-white">
 	  <div class="container split">
 		<div class="split__media">
-		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastal-pathway.webp' ); ?>" alt="Flat, paved coastal pathway along Tankerton promenade" width="900" height="675" loading="lazy" decoding="async" />
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastal-pathway.webp' ) ); ?>" alt="Flat, paved coastal pathway along Tankerton promenade" width="900" height="675" loading="lazy" decoding="async" />
 		</div>
 		<div>
 		  <header class="section-head">

@@ -130,10 +130,10 @@ function restwell_preload_front_page_hero_image() {
 		}
 	}
 
-	$concept_rel = '/assets/images/stock/restwell-whitstable-promenade-golden-hour.jpg';
-	$concept_abs = get_template_directory() . $concept_rel;
-	if ( is_readable( $concept_abs ) ) {
-		echo '<link rel="preload" as="image" href="' . esc_url( get_template_directory_uri() . $concept_rel ) . '" fetchpriority="high" />' . "\n";
+	$concept_rel = 'stock/restwell-whitstable-promenade-golden-hour.jpg';
+	$concept_url = function_exists( 'restwell_theme_image_url' ) ? restwell_theme_image_url( $concept_rel ) : '';
+	if ( $concept_url !== '' && 0 !== strpos( $concept_url, get_template_directory_uri() . '/assets/images/' ) ) {
+		echo '<link rel="preload" as="image" href="' . esc_url( $concept_url ) . '" fetchpriority="high" />' . "\n";
 		return;
 	}
 
@@ -164,14 +164,105 @@ function restwell_preload_front_page_hero_image() {
 }
 add_action( 'wp_head', 'restwell_preload_front_page_hero_image', 1 );
 
+function restwell_output_media_site_icon() {
+	$icon_url = restwell_theme_media_url( 'logo.png' );
+	if ( $icon_url !== '' ) {
+		echo '<link rel="icon" href="' . esc_url( $icon_url ) . '" />' . "\n";
+	}
+}
+add_action( 'wp_head', 'restwell_output_media_site_icon', 1 );
+
+function restwell_redirect_favicon_request() {
+	$request_path = wp_parse_url( home_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH );
+	if ( '/favicon.ico' !== $request_path ) {
+		return;
+	}
+	$icon_url = restwell_theme_media_url( 'logo.png' );
+	if ( $icon_url !== '' ) {
+		wp_safe_redirect( $icon_url, 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'restwell_redirect_favicon_request', 1 );
+
 /**
  * Theme-bundled image URL, preferring a resized WebP under assets/images/.../opt/ when present.
  *
  * @param string $relative Path under assets/images/ (e.g. bungalow/EX-1-LS.jpg).
  * @return string Absolute theme URI.
  */
+function restwell_theme_media_url( string $relative ): string {
+	$filename = wp_basename( wp_parse_url( $relative, PHP_URL_PATH ) );
+	if ( $filename === '' ) {
+		return '';
+	}
+
+	static $media_urls      = array();
+	static $attachment_urls = null;
+	static $attachment_stems = null;
+	if ( array_key_exists( $filename, $media_urls ) ) {
+		return $media_urls[ $filename ];
+	}
+
+	$stem      = pathinfo( $filename, PATHINFO_FILENAME );
+	$extension = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
+	$filenames = array( $filename );
+	if ( in_array( $extension, array( 'jpg', 'jpeg', 'png' ), true ) ) {
+		$filenames[] = $stem . '.webp';
+	}
+
+	if ( null === $attachment_urls ) {
+		$attachment_urls = array();
+		$attachment_stems = array();
+		$attachments     = get_posts(
+			array(
+				'post_type'      => 'attachment',
+				'post_status'    => 'inherit',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+			)
+		);
+		foreach ( $attachments as $attachment_id ) {
+			$attached_file = (string) get_post_meta( $attachment_id, '_wp_attached_file', true );
+			$attached_name = strtolower( wp_basename( $attached_file ) );
+			if ( $attached_name !== '' ) {
+				$attachment_urls[ $attached_name ] = (string) wp_get_attachment_url( (int) $attachment_id );
+				$attachment_stems[ pathinfo( $attached_name, PATHINFO_FILENAME ) ] = $attachment_urls[ $attached_name ];
+			}
+		}
+	}
+
+	$media_urls[ $filename ] = '';
+	foreach ( array_unique( $filenames ) as $candidate ) {
+		$candidate = strtolower( $candidate );
+		if ( isset( $attachment_urls[ $candidate ] ) ) {
+			$media_urls[ $filename ] = $attachment_urls[ $candidate ];
+			break;
+		}
+		$stem       = pathinfo( $candidate, PATHINFO_FILENAME );
+		$extension  = pathinfo( $candidate, PATHINFO_EXTENSION );
+		if ( isset( $attachment_stems[ $stem ] ) ) {
+			$media_urls[ $filename ] = $attachment_stems[ $stem ];
+			break;
+		}
+		$pattern    = '/^' . preg_quote( $stem, '/' ) . '-[0-9]+\.' . preg_quote( $extension, '/' ) . '$/';
+		foreach ( $attachment_urls as $attached_name => $url ) {
+			if ( preg_match( $pattern, $attached_name ) ) {
+				$media_urls[ $filename ] = $url;
+				break 2;
+			}
+		}
+	}
+	return $media_urls[ $filename ];
+}
+
 function restwell_theme_image_url( string $relative ): string {
 	$relative = ltrim( str_replace( '\\', '/', $relative ), '/' );
+	$media_url = restwell_theme_media_url( $relative );
+	if ( $media_url !== '' ) {
+		return $media_url;
+	}
 	$base     = get_template_directory() . '/assets/images/';
 	$dir      = dirname( $relative );
 	$stem     = pathinfo( $relative, PATHINFO_FILENAME );

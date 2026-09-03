@@ -91,7 +91,7 @@ get_template_part(
 		  </ul>
 		</div>
 		<div class="split__media">
-		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastal-pathway.webp' ); ?>" alt="Level coastal pathway at Whitstable" width="900" height="675" loading="lazy" />
+				  <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastal-pathway.webp' ) ); ?>" alt="Level coastal pathway at Whitstable" width="900" height="675" loading="lazy" />
 		</div>
 	  </div>
 	</section>
@@ -99,7 +99,7 @@ get_template_part(
 	<section class="section-y band-white" id="parking" aria-labelledby="parking-h">
 	  <div class="container split split--flip split--media-first">
 		<div class="split__media">
-		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/russell-drive-whitstable.webp' ); ?>" alt="Quiet residential street near Tankerton" width="900" height="675" loading="lazy" />
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/russell-drive-whitstable.webp' ) ); ?>" alt="Quiet residential street near Tankerton" width="900" height="675" loading="lazy" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">
@@ -135,21 +135,21 @@ get_template_part(
 		</header>
 		<div class="place-list place-list--3">
 		  <article class="place-list__item">
-			<img class="place-list__thumb" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-beach-huts.webp' ); ?>" alt="Colourful beach huts along the Whitstable seafront" width="640" height="400" loading="lazy" decoding="async" />
+					   <img class="place-list__thumb" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts.webp' ) ); ?>" alt="Colourful beach huts along the Whitstable seafront" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://whitstablecastle.co.uk/" target="_blank" rel="noopener noreferrer">Whitstable Castle &amp; Gardens<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Promenade stop</p>
 			<p>Paved grounds and Orangery Tearooms with an accessible loo, a level stop about halfway along the promenade.</p>
 			<p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227281726">Call 01227 281726</a></p>
 		  </article>
 		  <article class="place-list__item">
-			<img class="place-list__thumb" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-sunset-pier.webp' ); ?>" alt="Whitstable harbour area at sunset" width="640" height="400" loading="lazy" decoding="async" />
+					   <img class="place-list__thumb" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-sunset-pier.webp' ) ); ?>" alt="Whitstable harbour area at sunset" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.canterbury.co.uk/whitstable-harbour/" target="_blank" rel="noopener noreferrer">Whitstable Harbour<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Town &amp; seafood</p>
 			<p>Working oyster port. South Quay Shed has a lift to a quieter upper floor. Surfaces can be uneven, take it steady at peak times.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
-			<img class="place-list__thumb" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-coastal-walk.webp' ); ?>" alt="Coastal walk near the Whitstable beach pubs" width="640" height="400" loading="lazy" decoding="async" />
+					   <img class="place-list__thumb" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastal-walk.webp' ) ); ?>" alt="Coastal walk near the Whitstable beach pubs" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.thepubonthebeach.co.uk/" target="_blank" rel="noopener noreferrer">The Old Neptune<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Beach pub</p>
 			<p>Pub on the shingle. The terrace on firm ground is the realistic option: sloping floors inside, no step-free entrance.</p>
@@ -192,7 +192,7 @@ get_template_part(
 		  </div>
 		</div>
 		<div class="split__media">
-		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/restwell-whitstable-marina-sunset.webp' ); ?>" alt="Whitstable seafront near Tankerton, where several step-free dining options sit" width="900" height="675" loading="lazy" />
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-marina-sunset.webp' ) ); ?>" alt="Whitstable seafront near Tankerton, where several step-free dining options sit" width="900" height="675" loading="lazy" />
 		</div>
 	  </div>
 	</section>
@@ -248,19 +248,19 @@ get_template_part(
 		</header>
 		<ul class="card-grid card-grid--3" role="list">
 		  <li><article class="media-card">
-			<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/whitstable-days-out.webp' ); ?>" alt="Woodland day out near the Kent coast" width="640" height="480" loading="lazy" />
+					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/whitstable-days-out.webp' ) ); ?>" alt="Woodland day out near the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p>~30 minutes. Mostly accessible woodland paths; scooters bookable ahead on 01227 209621.</p>
 			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
-			<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
+					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.dreamland.co.uk/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Dreamland, Margate<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p>Wheelchair accessible park; Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
 			<p class="place-list__actions"><a href="https://www.dreamland.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Dreamland website<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
-			<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' ); ?>" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
+					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' ) ); ?>" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.canterbury-cathedral.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Canterbury<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p>~20 minutes by car. Cathedral Welcome Centre lends wheelchairs; riverside and Westgate Gardens are smoother than the cobbles.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury-cathedral.org/visit/" class="text-link" target="_blank" rel="noopener noreferrer">Cathedral visit info<span class="sr-only"> (opens in new tab)</span></a></p>

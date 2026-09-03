@@ -85,7 +85,7 @@ get_template_part(
 		  <p>Somebody would arrive after a three-hour drive to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we wrote down every measurement, including the ones that aren’t flattering, because that was the whole problem: nobody else had.</p>
 		</div>
 		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/journey/101-russel-drive-archive.webp' ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/101-russel-drive-archive.webp' ) ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
 		</div>
 	  </div>
 	</section>

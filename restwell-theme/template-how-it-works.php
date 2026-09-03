@@ -71,7 +71,7 @@ get_template_part(
 		</header>
 		<div class="process__layout">
 		  <div class="process__media" data-reveal>
-			<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/patio-1.png' ); ?>" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
+					<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/patio-1.png' ) ); ?>" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
 		  </div>
 		  <ol class="process-list">
 			<li>
@@ -103,7 +103,7 @@ get_template_part(
 	<section class="section-y band-subtle" id="arrival" aria-labelledby="arrival-h">
 	  <div class="container split split--flip split--cover">
 		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/bungalow/entrance.png' ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
+			 <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">

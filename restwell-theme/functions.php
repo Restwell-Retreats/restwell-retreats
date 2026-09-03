@@ -48,6 +48,9 @@ require_once get_template_directory() . '/inc/page-content-checklist.php';
 require_once get_template_directory() . '/inc/nav.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/page-hero.php';
+if ( ! function_exists( 'restwell_register_media_importer_page' ) ) {
+	require_once get_template_directory() . '/inc/media-importer.php';
+}
 require_once get_template_directory() . '/inc/places-reviews.php';
 require_once get_template_directory() . '/inc/occupancy.php';
 require_once get_template_directory() . '/inc/post-helpers.php';

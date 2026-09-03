@@ -51,9 +51,9 @@ function restwell_upload_theme_logos( array &$result ) {
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 
 	$logos = array(
-		'restwell_logo_long_id'     => 'long_logo.png',
-		'restwell_logo_stacked_id'  => 'logo.png',
-		'restwell_logo_infinity_id' => 'restwellinfinity.png',
+			'restwell_logo_long_id'     => 'long_logo.webp',
+			'restwell_logo_stacked_id'  => 'logo.webp',
+			'restwell_logo_infinity_id' => 'restwellinfinity.webp',
 	);
 
 	foreach ( $logos as $mod_key => $filename ) {
