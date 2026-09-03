@@ -4710,6 +4710,7 @@ button.availability__num:focus-visible {
   margin: auto;
   padding: var(--space-6);
   border: 0;
+  border-radius: 4px;
   border-top: 4px solid var(--warm-gold);
   color: var(--ink);
   background: var(--white);
@@ -4720,13 +4721,23 @@ button.availability__num:focus-visible {
 }
 .availability__enquiry-close {
   float: right;
-  border: 0;
-  padding: .25rem .5rem;
+  display: inline-grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  border-radius: 50%;
+  padding: 0;
   color: var(--deep-teal);
   background: transparent;
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
+}
+.availability__enquiry-close:hover,
+.availability__enquiry-close:focus-visible {
+  color: var(--white);
+  background: var(--deep-teal);
 }
 .availability__enquiry h3 {
   margin: 0 2rem var(--space-2) 0;
