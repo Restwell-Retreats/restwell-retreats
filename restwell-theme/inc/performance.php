@@ -165,10 +165,8 @@ function restwell_preload_front_page_hero_image() {
 add_action( 'wp_head', 'restwell_preload_front_page_hero_image', 1 );
 
 function restwell_output_media_site_icon() {
-	$icon_url = restwell_theme_media_url( 'logo.png' );
-	if ( $icon_url !== '' ) {
-		echo '<link rel="icon" href="' . esc_url( $icon_url ) . '" />' . "\n";
-	}
+	$icon_url = get_template_directory_uri() . '/assets/favicon.png';
+	echo '<link rel="icon" href="' . esc_url( $icon_url ) . '" type="image/png" />' . "\n";
 }
 add_action( 'wp_head', 'restwell_output_media_site_icon', 1 );
 
@@ -177,11 +175,8 @@ function restwell_redirect_favicon_request() {
 	if ( '/favicon.ico' !== $request_path ) {
 		return;
 	}
-	$icon_url = restwell_theme_media_url( 'logo.png' );
-	if ( $icon_url !== '' ) {
-		wp_safe_redirect( $icon_url, 301 );
-		exit;
-	}
+	wp_safe_redirect( get_template_directory_uri() . '/assets/favicon.png', 301 );
+	exit;
 }
 add_action( 'template_redirect', 'restwell_redirect_favicon_request', 1 );
 
