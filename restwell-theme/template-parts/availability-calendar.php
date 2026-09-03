@@ -292,8 +292,7 @@ $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : 
 					<p class="availability__stay-foot" data-availability-foot><?php esc_html_e( 'Published bungalow rates. Nothing is reserved until we reply.', 'restwell-retreats' ); ?></p>
 				</div>
 				<div class="availability__cta">
-					<a class="btn btn-gold is-disabled" data-availability-enquire aria-disabled="true" tabindex="-1" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
-					<a class="btn btn-outline-teal" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Without dates', 'restwell-retreats' ); ?></a>
+					<a class="btn btn-gold" data-availability-enquire href="#availability-enquiry"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
 				</div>
 				<div class="availability__enquiry" data-availability-enquiry hidden>
 					<h4><?php esc_html_e( 'Tell us about your stay', 'restwell-retreats' ); ?></h4>

@@ -305,11 +305,11 @@
 		function setEnquire(fromNight, toNight) {
 			if (!enquire) return;
 			if (!fromNight || !toNight) {
-				enquire.setAttribute('href', enquireUrl);
-				enquire.removeAttribute('aria-label');
-				enquire.classList.add('is-disabled');
-				enquire.setAttribute('aria-disabled', 'true');
-				enquire.setAttribute('tabindex', '-1');
+				enquire.setAttribute('href', '#availability-enquiry');
+				enquire.setAttribute('aria-label', 'Enquire without dates');
+				enquire.classList.remove('is-disabled');
+				enquire.removeAttribute('aria-disabled');
+				enquire.removeAttribute('tabindex');
 				if (enquiryPanel) enquiryPanel.hidden = true;
 				return;
 			}
