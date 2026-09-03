@@ -2880,6 +2880,12 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   font-size: var(--type-meta-size);
   line-height: var(--leading-snug);
 }
+.care-rates__note p {
+  margin: 0 0 0.35em;
+}
+.care-rates__note p:last-child {
+  margin-bottom: 0;
+}
 .care-rates__ctas {
   display: flex;
   flex-wrap: wrap;

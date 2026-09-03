@@ -252,7 +252,12 @@ get_template_part(
 				  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
 				</a>
 			  </div>
-			  <p class="care-rates__note">There may be extra charges for bank holidays and complex care. Next review: <?php echo esc_html( $pricing['care']['valid_label'] ); ?>.</p>
+			  <div class="care-rates__note">
+				<?php foreach ( $pricing['care']['notes'] as $_care_note ) : ?>
+				  <p><?php echo esc_html( $_care_note ); ?></p>
+				<?php endforeach; ?>
+				<p><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></p>
+			  </div>
 			  <div class="care-rates__ctas">
 				<a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
 				<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
