@@ -105,6 +105,7 @@ get_template_part(
 				</div>
 				<div class="field"><label for="ask-name">Name</label><input id="ask-name" name="faq_q_name" autocomplete="name" /></div>
 				<div class="field"><label for="ask-email">Email</label><input id="ask-email" name="faq_q_email" type="email" autocomplete="email" required /></div>
+				<div class="field"><label for="ask-phone">Phone</label><input id="ask-phone" name="faq_q_phone" type="tel" autocomplete="tel" required /></div>
 				<div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" name="faq_q_message" required rows="4"></textarea></div>
 				<div class="form-actions"><button class="btn btn-gold" type="submit">Send question</button></div>
 			  </form>

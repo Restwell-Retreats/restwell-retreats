@@ -295,6 +295,23 @@ $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : 
 					<a class="btn btn-gold is-disabled" data-availability-enquire aria-disabled="true" tabindex="-1" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
 					<a class="btn btn-outline-teal" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Without dates', 'restwell-retreats' ); ?></a>
 				</div>
+				<div class="availability__enquiry" data-availability-enquiry hidden>
+					<h4><?php esc_html_e( 'Tell us about your stay', 'restwell-retreats' ); ?></h4>
+					<p><?php esc_html_e( 'Your selected dates are already included. Add your details and we will reply within 48 hours.', 'restwell-retreats' ); ?></p>
+					<form class="form-stack" action="<?php echo esc_url( $enquire_url ); ?>" method="post">
+						<?php wp_nonce_field( RESTWELL_ENQUIRE_NONCE_ACTION, RESTWELL_ENQUIRE_NONCE_NAME ); ?>
+						<input type="hidden" name="restwell_enquire" value="1" />
+						<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $enquire_url ); ?>" />
+						<input type="hidden" name="enq_date_from" data-availability-enquiry-from value="" />
+						<input type="hidden" name="enq_date_to" data-availability-enquiry-to value="" />
+						<div class="field"><label for="availability-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label><input id="availability-name" name="enq_name" autocomplete="name" required /></div>
+						<div class="field"><label for="availability-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label><input id="availability-email" name="enq_email" type="email" autocomplete="email" required /></div>
+						<div class="field"><label for="availability-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label><input id="availability-phone" name="enq_phone" type="tel" autocomplete="tel" required /></div>
+						<div class="field"><label for="availability-message"><?php esc_html_e( 'Message', 'restwell-retreats' ); ?></label><textarea id="availability-message" name="enq_message" rows="3" required></textarea></div>
+						<div class="field"><label for="availability-consent"><input id="availability-consent" type="checkbox" name="enq_consent" value="1" required /> <?php esc_html_e( 'I agree to Restwell contacting me about this enquiry.', 'restwell-retreats' ); ?></label></div>
+						<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button>
+					</form>
+				</div>
 			</aside>
 			</div>
 		</div>

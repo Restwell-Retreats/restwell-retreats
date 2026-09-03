@@ -75,6 +75,9 @@
 		var nextBtn = root.querySelector('[data-availability-next]');
 		var live = root.querySelector('[data-availability-live]');
 		var enquire = root.querySelector('[data-availability-enquire]');
+			var enquiryPanel = root.querySelector('[data-availability-enquiry]');
+			var enquiryFrom = root.querySelector('[data-availability-enquiry-from]');
+			var enquiryTo = root.querySelector('[data-availability-enquiry-to]');
 		var enquireUrl = root.getAttribute('data-enquire-url') || '';
 		var fromEl = root.querySelector('[data-availability-from]');
 		var toEl = root.querySelector('[data-availability-to]');
@@ -307,6 +310,7 @@
 				enquire.classList.add('is-disabled');
 				enquire.setAttribute('aria-disabled', 'true');
 				enquire.setAttribute('tabindex', '-1');
+				if (enquiryPanel) enquiryPanel.hidden = true;
 				return;
 			}
 			enquire.classList.remove('is-disabled');
@@ -320,6 +324,8 @@
 				'href',
 				enquireUrl + join + 'enq_date_from=' + encodeURIComponent(arrival) + '&enq_date_to=' + encodeURIComponent(departure)
 			);
+			if (enquiryFrom) enquiryFrom.value = arrival;
+			if (enquiryTo) enquiryTo.value = departure;
 			var count = nightsInclusive(arrival, lastNight).length;
 			enquire.setAttribute(
 				'aria-label',
@@ -400,6 +406,14 @@
 			enquire.addEventListener('click', function (event) {
 				if (enquire.classList.contains('is-disabled')) {
 					event.preventDefault();
+					return;
+				}
+				if (enquiryPanel) {
+					event.preventDefault();
+					enquiryPanel.hidden = false;
+					enquiryPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					var firstField = enquiryPanel.querySelector('input:not([type="hidden"])');
+					if (firstField) firstField.focus({ preventScroll: true });
 				}
 			});
 		}
