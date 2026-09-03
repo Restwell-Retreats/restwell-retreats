@@ -423,17 +423,25 @@ function restwell_handle_enquire_submit(): void {
 
 	$to      = restwell_get_submission_notify_email();
 	$subject = restwell_mail_staff_subject( $urgent ? 'urgent_enquiry' : 'enquiry', (int) $enquiry_id );
-	$headers = array_values(
-		array_filter(
-			array(
-				'Content-Type: text/plain; charset=UTF-8',
-				restwell_mail_reply_to_header( $email ),
-			)
+	$notification = restwell_email_enquiry_notification(
+		array(
+			'id'           => (int) $enquiry_id,
+			'name'         => $name,
+			'email'        => $email,
+			'phone'        => $phone,
+			'contact_pref' => $contact_pref,
+			'pref_time'    => $pref_time,
+			'dates'        => $dates,
+			'guests'       => $guests,
+			'funding'      => $funding,
+			'care'         => $care,
+			'access'       => $access,
+			'message'      => $message,
+			'urgent'       => $urgent,
 		)
 	);
-	$body   .= "\n\nCRM enquiry ID: #" . (string) $enquiry_id;
 
-	$staff_sent = restwell_wp_mail_with_retry( $to, $subject, $body, $headers );
+	$staff_sent = restwell_wp_mail_with_retry( $to, $notification['subject'], $notification['body'], $notification['headers'] );
 	if ( ! $staff_sent ) {
 		restwell_service_crm_gateway()->add_enquiry_note(
 			(int) $enquiry_id,

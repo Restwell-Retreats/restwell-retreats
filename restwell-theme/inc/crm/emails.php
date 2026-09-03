@@ -359,6 +359,54 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
 	);
 }
 
+/**
+ * Build the internal enquiry notification email for staff.
+ *
+ * @param array<string, mixed> $data Enquiry data and CRM id.
+ * @return array{ subject: string, body: string, headers: string[] }
+ */
+function restwell_email_enquiry_notification( array $data ): array {
+  $id      = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
+  $name    = isset( $data['name'] ) ? (string) $data['name'] : '';
+  $email   = isset( $data['email'] ) ? (string) $data['email'] : '';
+  $phone   = isset( $data['phone'] ) ? (string) $data['phone'] : '';
+  $urgent  = ! empty( $data['urgent'] );
+  $subject = restwell_mail_staff_subject( $urgent ? 'urgent_enquiry' : 'enquiry', $id );
+  $rows    = array(
+    __( 'Name', 'restwell-retreats' )              => $name,
+    __( 'Email', 'restwell-retreats' )             => '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>',
+    __( 'Phone', 'restwell-retreats' )             => '<a href="tel:' . esc_attr( preg_replace( '/[^0-9+]/', '', $phone ) ) . '">' . esc_html( $phone ) . '</a>',
+    __( 'Preferred contact', 'restwell-retreats' ) => isset( $data['contact_pref'] ) ? (string) $data['contact_pref'] : '',
+    __( 'Best time to call', 'restwell-retreats' ) => isset( $data['pref_time'] ) ? (string) $data['pref_time'] : '',
+    __( 'Preferred dates', 'restwell-retreats' )   => isset( $data['dates'] ) ? (string) $data['dates'] : '',
+    __( 'Guests', 'restwell-retreats' )            => isset( $data['guests'] ) ? (string) $data['guests'] : '',
+    __( 'Funding type', 'restwell-retreats' )     => isset( $data['funding'] ) ? restwell_enquiry_funding_label( (string) $data['funding'] ) : '',
+  );
+  $rows = array_filter( $rows, static function ( $value ) {
+    return '' !== trim( wp_strip_all_tags( (string) $value ) );
+  } );
+
+  $sections = '';
+  foreach ( array( 'care' => __( 'Care requirements', 'restwell-retreats' ), 'access' => __( 'Accessibility needs', 'restwell-retreats' ), 'message' => __( 'Message', 'restwell-retreats' ) ) as $key => $label ) {
+    $value = isset( $data[ $key ] ) ? trim( (string) $data[ $key ] ) : '';
+    if ( '' !== $value ) {
+      $sections .= '<p style="margin:24px 0 8px;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#1B4D5C;">' . esc_html( $label ) . '</p><div style="padding:14px 16px;background:#F5EDE0;border-left:3px solid #D4A853;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:14px;line-height:1.6;color:#2d4a52;white-space:pre-line;">' . esc_html( $value ) . '</div>';
+    }
+  }
+
+  $content = restwell_email_banner( $urgent ? __( 'Urgent enquiry', 'restwell-retreats' ) : __( 'New enquiry', 'restwell-retreats' ), $name )
+    . ( $urgent ? '<p style="margin:0 0 20px;padding:12px 16px;background:#FEF3C7;border-left:4px solid #D4A853;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:14px;font-weight:600;color:#92400E;">' . esc_html__( 'Priority callback requested.', 'restwell-retreats' ) . '</p>' : '' )
+    . restwell_email_info_table( $rows )
+    . $sections
+    . '<p style="margin:28px 0 0;font-family:\'Inter\',system-ui,Arial,sans-serif;font-size:12px;color:#6B7D82;">' . esc_html( sprintf( __( 'CRM enquiry ID: #%d', 'restwell-retreats' ), $id ) ) . '</p>';
+
+  return array(
+    'subject' => $subject,
+    'body'    => restwell_email_wrap( $content, $urgent ? __( 'Urgent Restwell enquiry requiring a priority callback.', 'restwell-retreats' ) : __( 'New Restwell enquiry received.', 'restwell-retreats' ) ),
+    'headers' => array( 'Content-Type: text/html; charset=UTF-8', restwell_mail_reply_to_header( $email ) ),
+  );
+}
+
 // ---------------------------------------------------------------------------
 // 2. Guest Guide invitation
 // ---------------------------------------------------------------------------
