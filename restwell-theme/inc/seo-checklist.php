@@ -523,6 +523,25 @@ function restwell_seo_checklist_sitewide(): array {
 		);
 	}
 
+	if ( function_exists( 'restwell_bing_webmaster_is_configured' ) && ! restwell_bing_webmaster_is_configured() ) {
+		$issues[] = array(
+			'id'       => 'bing_api',
+			'severity' => 'info',
+			'message'  => __( 'Bing Webmaster API key is empty — sitemap and URL pings to Bing are off (the msvalidate.01 field is separate).', 'restwell-retreats' ),
+			'field'    => 'restwell_bing_webmaster_api_key',
+		);
+	} elseif ( function_exists( 'restwell_bing_webmaster_get_status' ) ) {
+		$bing_status = restwell_bing_webmaster_get_status();
+		if ( empty( $bing_status['ok'] ) && $bing_status['message'] !== '' ) {
+			$issues[] = array(
+				'id'       => 'bing_api_status',
+				'severity' => ! empty( $bing_status['key_ok'] ) ? 'info' : 'warn',
+				'message'  => $bing_status['message'],
+				'field'    => 'restwell_bing_webmaster_api_key',
+			);
+		}
+	}
+
 	$ga4 = trim( (string) get_option( 'restwell_ga4_measurement_id', '' ) );
 	if ( $ga4 === '' ) {
 		$issues[] = array(

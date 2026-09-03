@@ -183,32 +183,3 @@ function restwell_theme_image_url( string $relative ): string {
 	}
 	return get_template_directory_uri() . '/assets/images/' . $relative;
 }
-
-/**
- * Preload self-hosted Phosphor icon WOFF2 files to reduce icon flash before CSS @font-face resolves.
- */
-function restwell_preload_phosphor_icon_fonts() {
-	if ( is_admin() ) {
-		return;
-	}
-	// Concept surfaces use inline SVGs; do not fetch Phosphor WOFF2.
-	if ( function_exists( 'restwell_is_concept_surface' ) && restwell_is_concept_surface() ) {
-		return;
-	}
-
-	$theme_uri = get_template_directory_uri();
-	$fonts     = array(
-		'/assets/fonts/phosphor/regular/Phosphor.woff2',
-		'/assets/fonts/phosphor/bold/Phosphor-Bold.woff2',
-	);
-
-	foreach ( $fonts as $relative_path ) {
-		$full = get_template_directory() . $relative_path;
-		if ( ! is_readable( $full ) ) {
-			continue;
-		}
-		$href = $theme_uri . $relative_path;
-		echo '<link rel="preload" href="' . esc_url( $href ) . '" as="font" type="font/woff2" crossorigin />' . "\n";
-	}
-}
-add_action( 'wp_head', 'restwell_preload_phosphor_icon_fonts', 2 );

@@ -252,13 +252,31 @@
 			}
 		}
 
+		function parseYmd(value) {
+			return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : '';
+		}
+
+		function readUrlStayDates() {
+			try {
+				var params = new URLSearchParams(window.location.search);
+				var from = parseYmd(params.get('enq_date_from') || '');
+				var to = parseYmd(params.get('enq_date_to') || '');
+				if (!from && !to) return null;
+				return { from: from, to: to };
+			} catch (e) {
+				return null;
+			}
+		}
+
 		// Capture date inputs once so applyDraft() can re-fire the change event.
-		var dateFromAfterRestore = form.querySelector('#enq_date_from');
-		var dateToAfterRestore   = form.querySelector('#enq_date_to');
+		var dateFromAfterRestore = form.querySelector('#enq-from') || form.querySelector('[name="enq_date_from"]');
+		var dateToAfterRestore   = form.querySelector('#enq-to') || form.querySelector('[name="enq_date_to"]');
 
 		var hasUnsavedInput = false;
+		var urlDates = readUrlStayDates();
+		var flashOnly = isServerPrefilled() && !urlDates;
 
-		if (isServerPrefilled()) {
+		if (flashOnly) {
 			// Server flash carried the user's submitted values. Treat that as
 			// "unsaved" so beforeunload still warns them off accidental nav.
 			hasUnsavedInput = true;
@@ -267,6 +285,21 @@
 			if (draft) {
 				applyDraft(draft);
 				hasUnsavedInput = true;
+			}
+			if (urlDates) {
+				if (urlDates.from && dateFromAfterRestore) {
+					dateFromAfterRestore.value = urlDates.from;
+				}
+				if (urlDates.to && dateToAfterRestore) {
+					dateToAfterRestore.value = urlDates.to;
+				}
+				hasUnsavedInput = true;
+				if (dateFromAfterRestore) {
+					try {
+						dateFromAfterRestore.dispatchEvent(new Event('change', { bubbles: true }));
+					} catch (e) { /* ignore */ }
+				}
+				persistDraft();
 			}
 		}
 

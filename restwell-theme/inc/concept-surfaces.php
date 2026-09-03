@@ -1,6 +1,6 @@
 <?php
 /**
- * Concept (mockup) surface helpers: hard Tailwind cut per ported template.
+ * Concept surface helpers: body class restwell-concept for shared.css pages.
  *
  * @package Restwell_Retreats
  */
@@ -93,22 +93,6 @@ function restwell_is_concept_surface() {
 
 	return $cached;
 }
-
-/**
- * Dequeue Tailwind on concept surfaces (hard cut).
- */
-function restwell_dequeue_tailwind_on_concept() {
-	if ( ! restwell_is_concept_surface() ) {
-		return;
-	}
-	wp_dequeue_style( 'restwell-tailwind' );
-	wp_deregister_style( 'restwell-tailwind' );
-	wp_dequeue_style( 'phosphor-icons-regular' );
-	wp_dequeue_style( 'phosphor-icons-bold' );
-	wp_deregister_style( 'phosphor-icons-regular' );
-	wp_deregister_style( 'phosphor-icons-bold' );
-}
-add_action( 'wp_enqueue_scripts', 'restwell_dequeue_tailwind_on_concept', 100 );
 
 /**
  * Body classes for interior density (mockup shared.css) and concept surfaces.

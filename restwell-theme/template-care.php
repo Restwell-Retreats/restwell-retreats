@@ -191,7 +191,7 @@ get_template_part(
 			<span class="payment-steps__index" aria-hidden="true">03</span>
 			<div class="payment-steps__body">
 			  <h3>Guide rates, then your figure</h3>
-			  <p>Guide rates live on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>">Pricing</a>. Continuity quotes your care cost once hours and tasks are agreed.</p>
+			  <p>Guide rates live on <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>">Pricing & dates</a>. Continuity quotes your care cost once hours and tasks are agreed.</p>
 			</div>
 		  </li>
 		</ol>
@@ -305,7 +305,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="care-q5-a" role="region" aria-labelledby="care-q5" hidden>
-				<p>On the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>">Pricing</a> page. They are Continuity guide rates only. Continuity quotes your care cost once hours and tasks are agreed.</p>
+				<p>On <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>">Pricing & dates</a>. They are Continuity guide rates only. Continuity quotes your care cost once hours and tasks are agreed.</p>
 			  </div>
 			</div>
 			</div>

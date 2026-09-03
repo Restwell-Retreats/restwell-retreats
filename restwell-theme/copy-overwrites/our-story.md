@@ -16,13 +16,11 @@ Why Restwell exists
 
 ## Opening paragraph (print directly under the H1)
 
-Restwell Retreats is an adapted holiday bungalow in Whitstable, run by Victoria Walker. Continuity of Care Services is our sister company; Victoria is their CQC registered manager. They work from the same office on the same phone number. Restwell provides the house; Continuity provide any care.
+We started Restwell because of a gap we kept running into from the other side of it.
 
 ## Intro
 
-We started Restwell because of a gap we kept running into from the other side of it.
-
-Continuity of Care Services has been supporting people in their own homes across Kent for years. In that time we lost count of the number of families who wanted a holiday and couldn’t make one work, not because of money, and not because of the care, but because the houses on offer weren’t honest. A listing would say accessible and mean a handrail. Somebody would arrive after a three-hour drive to find a doorway they couldn’t get through.
+Continuity of Care Services has been supporting people in their own homes across Kent for years. In that time we lost count of the number of families who wanted a holiday and couldn’t make one work, not because of money, and not because of the care, but because the houses on offer weren’t honest. Somebody would arrive after a three-hour drive to find a doorway they couldn’t get through.
 
 So we bought a bungalow and adapted it properly. Then we wrote down every measurement, including the ones that aren’t flattering, because the whole problem was that nobody else had.
 

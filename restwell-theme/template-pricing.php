@@ -81,7 +81,7 @@ get_template_part(
 				'url'   => home_url( '/' ),
 			),
 			array(
-				'label' => 'Pricing',
+				'label' => 'Pricing & dates',
 				'url'   => '',
 			),
 		),
@@ -94,6 +94,7 @@ get_template_part(
 	  <div class="container">
 		<ul class="subnav__list">
 		  <li><a href="#rates">Rates</a></li>
+		  <li><a href="#availability">Dates</a></li>
 		  <li><a href="#payment">Payment</a></li>
 		  <li><a href="#care-rates">Optional care</a></li>
 		  <li><a href="#faq">FAQ</a></li>
@@ -155,7 +156,7 @@ get_template_part(
 		  <details class="peak-dates" data-peak-dates>
 			<summary class="peak-dates__summary">
 			  <h3 id="peak-dates-h" class="peak-dates__summary-title">Peak season dates</h3>
-			  <span class="peak-dates__summary-hint">All other dates are off-peak</span>
+			  <span class="peak-dates__summary-hint">All other dates are off-peak.</span>
 			  <span class="peak-dates__summary-action">
 				<span class="peak-dates__action-open">Show dates</span>
 				<span class="peak-dates__action-close">Hide dates</span>
@@ -171,6 +172,10 @@ get_template_part(
 		</div>
 	  </div>
 	</section>
+
+	<?php
+	get_template_part( 'template-parts/availability-calendar' );
+	?>
 
 	<section class="section-y band-subtle" id="payment" aria-labelledby="payment-h">
 	  <div class="container">

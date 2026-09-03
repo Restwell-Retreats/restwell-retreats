@@ -24,6 +24,15 @@ $enq_flash  = function_exists( 'restwell_enquire_consume_flash' ) ? restwell_enq
 $enq_errors = ( $enq_flash && ! empty( $enq_flash['errors'] ) ) ? $enq_flash['errors'] : array();
 $enq_fields = ( $enq_flash && ! empty( $enq_flash['fields'] ) ) ? $enq_flash['fields'] : array();
 
+$enq_get_from = '';
+$enq_get_to   = '';
+if ( empty( $enq_fields ) && function_exists( 'restwell_occupancy_sanitize_ymd' ) ) {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public diary prefill.
+	$enq_get_from = isset( $_GET['enq_date_from'] ) ? restwell_occupancy_sanitize_ymd( wp_unslash( $_GET['enq_date_from'] ) ) : '';
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public diary prefill.
+	$enq_get_to = isset( $_GET['enq_date_to'] ) ? restwell_occupancy_sanitize_ymd( wp_unslash( $_GET['enq_date_to'] ) ) : '';
+}
+
 /**
  * Repopulate a posted field after validation flash.
  *
@@ -206,8 +215,8 @@ get_template_part(
 					<fieldset class="form-stack">
 						<legend class="form-legend"><?php esc_html_e( 'Your stay', 'restwell-retreats' ); ?></legend>
 						<div class="form-grid form-grid--2">
-							<div class="field"><label for="enq-from"><?php esc_html_e( 'Arrival (optional)', 'restwell-retreats' ); ?></label><input id="enq-from" name="enq_date_from" type="date" value="<?php echo esc_attr( $enq_val( 'enq_date_from', $enq_fields ) ); ?>" /></div>
-							<div class="field"><label for="enq-to"><?php esc_html_e( 'Departure (optional)', 'restwell-retreats' ); ?></label><input id="enq-to" name="enq_date_to" type="date" value="<?php echo esc_attr( $enq_val( 'enq_date_to', $enq_fields ) ); ?>" /></div>
+							<div class="field"><label for="enq-from"><?php esc_html_e( 'Arrival (optional)', 'restwell-retreats' ); ?></label><input id="enq-from" name="enq_date_from" type="date" value="<?php echo esc_attr( $enq_val( 'enq_date_from', $enq_fields, $enq_get_from ) ); ?>" /></div>
+							<div class="field"><label for="enq-to"><?php esc_html_e( 'Departure (optional)', 'restwell-retreats' ); ?></label><input id="enq-to" name="enq_date_to" type="date" value="<?php echo esc_attr( $enq_val( 'enq_date_to', $enq_fields, $enq_get_to ) ); ?>" /></div>
 							<div class="field"><label for="enq-guests"><?php esc_html_e( 'Guests', 'restwell-retreats' ); ?></label><input id="enq-guests" name="enq_guests" type="number" min="1" max="5" value="<?php echo esc_attr( $enq_val( 'enq_guests', $enq_fields, '2' ) ); ?>" /></div>
 							<div class="field"><label for="enq-fund"><?php esc_html_e( 'Funding type', 'restwell-retreats' ); ?></label>
 								<select id="enq-fund" name="enq_funding">
@@ -219,6 +228,7 @@ get_template_part(
 								</select>
 							</div>
 						</div>
+						<p class="field-hint"><?php esc_html_e( 'Tell us the dates that would work. We’ll check them when we reply. You can see booked nights on', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>#availability"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a>.</p>
 						<div class="field"><label for="enq-urgent"><input id="enq-urgent" type="checkbox" name="enq_urgent" value="1" <?php checked( $enq_val( 'enq_urgent', $enq_fields ), '1' ); ?> /> <?php esc_html_e( 'This enquiry is time-sensitive', 'restwell-retreats' ); ?></label></div>
 					</fieldset>
 					<div class="form-actions form-actions--split">

@@ -548,6 +548,7 @@ div[id] {
 .comparison-list + p,
 .comparison-list + .link-stack,
 .comparison-list + .download-panel,
+.testimonials__grid + .testimonials__more,
 .stat-row + .section-head,
 .stat-row + .invoice-pair,
 .section-head + .invoice-pair,
@@ -4211,6 +4212,461 @@ body:has(.subnav) {
 }
 
 /*
+ * House diary — booked nights from the Outlook ICS feed.
+ * Full-width grid: date + nightly rate in each cell. First/last nights are
+ * solid teal; nights between sit on a light band. Stay summary sits beside
+ * the calendar from lg.
+ */
+.availability {
+  --availability-gap: var(--section-stack-gap);
+  --availability-layout-gap: var(--grid-gap);
+  --availability-legend-gap: var(--space-3) var(--space-6);
+  --availability-nav: 2.75rem; /* 44px hit area for month chevrons */
+  --availability-cell-min: 2.75rem; /* 44px tap target */
+  --availability-cell-pad: var(--space-2) 0 var(--space-1);
+  --availability-card-pad: var(--panel-pad);
+  --availability-card-gap: var(--space-5);
+  --availability-stay-gap: var(--space-5);
+  --availability-stay-width: 22rem;
+  --availability-stay-sticky-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
+  --availability-cell-radius: var(--radius);
+  --availability-wd-size: var(--type-meta-size);
+  --availability-num-size: var(--text-sm);
+  --availability-price-size: var(--text-2xs);
+  --availability-key-mark: var(--space-5);
+  display: grid;
+  gap: var(--availability-gap);
+}
+@media (min-width: 768px) {
+  .availability {
+    --availability-cell-min: 3.25rem; /* date + rate stack needs a taller cell */
+  }
+}
+.availability__layout {
+  display: grid;
+  gap: var(--availability-layout-gap);
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .availability__layout {
+    grid-template-columns: minmax(0, 1fr) var(--availability-stay-width);
+  }
+}
+.availability__card,
+.availability__stay {
+  padding: var(--availability-card-pad);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--deep-teal) 5%, transparent);
+}
+.availability__card {
+  display: grid;
+  gap: var(--availability-card-gap);
+  min-width: 0;
+}
+.availability__toolbar {
+  display: grid;
+  grid-template-columns: var(--availability-nav) minmax(0, 1fr) var(--availability-nav);
+  align-items: center;
+  column-gap: var(--space-2);
+}
+.availability__choose {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--muted-grey);
+}
+.availability__nav {
+  width: var(--availability-nav);
+  height: var(--availability-nav);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted-grey);
+  font-size: var(--text-lg);
+  line-height: 1;
+  cursor: pointer;
+}
+.availability__nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.availability__nav:focus-visible {
+  outline: 2px solid var(--deep-teal);
+  outline-offset: 2px;
+}
+@media (hover: hover) {
+  .availability__nav:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
+    color: var(--deep-teal);
+  }
+}
+.availability__months {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--grid-gap);
+}
+@media (min-width: 768px) {
+  .availability__months {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.availability__month-title {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+  text-align: center;
+}
+.availability__grid {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0 var(--space-1);
+}
+.availability__grid th {
+  padding: 0 0 var(--space-2);
+  font-size: var(--availability-wd-size);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-grey);
+  text-align: center;
+}
+.availability__grid th abbr {
+  text-decoration: none;
+}
+.availability__day {
+  position: relative;
+  padding: 0;
+  text-align: center;
+  vertical-align: top;
+  font-size: var(--availability-num-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--deep-teal);
+}
+.availability__num {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em; /* optical: date stacked on price */
+  width: 100%;
+  min-height: var(--availability-cell-min);
+  margin: 0;
+  padding: var(--availability-cell-pad);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.availability__date {
+  font-weight: var(--weight-semibold);
+}
+.availability__price {
+  font-size: var(--availability-price-size);
+  font-weight: var(--weight-regular);
+  color: var(--muted-grey);
+  white-space: nowrap;
+}
+button.availability__num {
+  cursor: pointer;
+}
+button.availability__num:focus-visible {
+  outline: 2px solid var(--deep-teal);
+  outline-offset: -2px;
+  border-radius: var(--availability-cell-radius);
+}
+@media (hover: hover) {
+  .availability__day.is-pick:not(.is-hope):hover {
+    background: color-mix(in srgb, var(--deep-teal) 8%, var(--white));
+    border-radius: var(--availability-cell-radius);
+  }
+}
+.availability__day.is-hope {
+  background: color-mix(in srgb, var(--deep-teal) 12%, var(--white));
+  color: var(--deep-teal);
+}
+.availability__day.is-hope .availability__price {
+  color: var(--muted-grey);
+}
+.availability__day.is-hope-start,
+.availability__day.is-hope-end {
+  background: var(--deep-teal);
+  color: var(--white);
+}
+.availability__day.is-hope-start .availability__price,
+.availability__day.is-hope-end .availability__price {
+  color: color-mix(in srgb, var(--white) 82%, var(--deep-teal));
+}
+.availability__day.is-hope-start,
+.availability__grid td:nth-child(1).is-hope {
+  border-start-start-radius: var(--availability-cell-radius);
+  border-end-start-radius: var(--availability-cell-radius);
+}
+.availability__day.is-hope-end,
+.availability__grid td:nth-child(7).is-hope {
+  border-start-end-radius: var(--availability-cell-radius);
+  border-end-end-radius: var(--availability-cell-radius);
+}
+@media (hover: hover) {
+  .availability__day.is-hope-start.is-pick:hover,
+  .availability__day.is-hope-end.is-pick:hover {
+    background: var(--deep-teal);
+  }
+}
+.availability__day.is-hope-start button.availability__num:focus-visible,
+.availability__day.is-hope-end button.availability__num:focus-visible {
+  outline-color: var(--white);
+}
+.availability__day.is-booked .availability__date,
+.availability__day.is-booked .availability__price {
+  color: var(--muted-grey);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.availability__day.is-peak::before {
+  content: "";
+  position: absolute;
+  top: 0.12em; /* optical: gold peak mark above the date */
+  left: 50%;
+  width: 0.28em;
+  height: 0.28em;
+  margin-left: -0.14em; /* optical: centre the peak dot */
+  border-radius: 50%;
+  background: var(--warm-gold);
+  z-index: 2;
+  pointer-events: none;
+}
+.availability__day.is-past:not(.is-booked) .availability__num {
+  color: color-mix(in srgb, var(--muted-grey) 55%, var(--white));
+}
+.availability__day.is-past:not(.is-booked) .availability__price {
+  color: color-mix(in srgb, var(--muted-grey) 45%, var(--white));
+}
+.availability__day.is-today .availability__date {
+  font-weight: var(--weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 0.12em; /* optical: today mark under the numeral */
+}
+.availability__day.is-hope-start .availability__date,
+.availability__day.is-hope-end .availability__date {
+  text-decoration: none;
+}
+.availability__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--availability-legend-gap);
+  margin: 0;
+  padding: var(--space-4) 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  list-style: none;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--muted-grey);
+}
+.availability__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.availability__key-mark {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: var(--availability-key-mark);
+  height: var(--availability-key-mark);
+  border-radius: 0.2em; /* optical: mini diary cell */
+  box-sizing: border-box;
+}
+.availability__key.is-open .availability__key-mark {
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 28%, transparent);
+  background: var(--white);
+}
+.availability__key.is-hope .availability__key-mark {
+  background: var(--deep-teal);
+}
+.availability__key.is-booked .availability__key-mark {
+  border: 1px solid color-mix(in srgb, var(--muted-grey) 35%, transparent);
+  background: color-mix(in srgb, var(--muted-grey) 8%, var(--white));
+}
+.availability__key.is-booked .availability__key-mark::after {
+  content: "";
+  position: absolute;
+  left: 0.12em; /* optical: strike inset */
+  right: 0.12em;
+  top: 50%;
+  border-top: 1px solid var(--muted-grey);
+}
+.availability__key.is-peak .availability__key-mark {
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 14%, transparent);
+  background: var(--white);
+}
+.availability__key.is-peak .availability__key-mark::before {
+  content: "";
+  position: absolute;
+  top: 0.18em; /* optical: gold peak mark */
+  left: 50%;
+  width: 0.32em;
+  height: 0.32em;
+  margin-left: -0.16em; /* optical: centre the peak dot */
+  border-radius: 50%;
+  background: var(--warm-gold);
+}
+.availability__live {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--muted-grey);
+}
+.availability__live:empty {
+  display: none;
+}
+.availability__stay {
+  display: grid;
+  gap: var(--availability-stay-gap);
+  align-content: start;
+}
+@media (min-width: 1024px) {
+  .availability__stay {
+    position: sticky;
+    top: var(--availability-stay-sticky-top);
+  }
+}
+.availability__stay-head {
+  display: grid;
+  gap: var(--space-2);
+}
+.availability__stay-title {
+  margin: 0;
+  font-size: var(--text-xl);
+}
+.availability__stay-times {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--muted-grey);
+}
+.availability__fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--space-3);
+}
+.availability__stay-arrow {
+  align-self: center;
+  color: var(--muted-grey);
+  font-size: var(--text-lg);
+  line-height: 1;
+}
+.availability__field {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 14%, transparent);
+  border-radius: var(--radius);
+  background: var(--bg-subtle);
+}
+.availability__field.is-active {
+  border-color: var(--deep-teal);
+  box-shadow: inset 0 0 0 1px var(--deep-teal);
+  background: var(--white);
+}
+.availability__field-label {
+  display: block;
+  font-size: var(--type-meta-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-grey);
+}
+.availability__field-value {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+}
+.availability__stay-prompt,
+.availability__stay-foot {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--muted-grey);
+}
+.availability__quote {
+  display: grid;
+  gap: var(--space-3);
+}
+.availability__stay-count {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+}
+.availability__stay-prompt[hidden],
+.availability__quote[hidden] {
+  display: none;
+}
+.availability__breakdown {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+.availability__breakdown > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.availability__breakdown dt {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+}
+.availability__breakdown dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--deep-teal);
+  font-weight: var(--weight-semibold);
+}
+.availability__total {
+  padding-top: var(--space-3);
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.availability__total dt,
+.availability__total dd {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+}
+.availability__cta {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+.availability__cta .btn {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/*
  * Payment steps — editorial sequence (matches .process-list indices).
  * Large serif gold numerals; no filled pills. Phone: index | copy. Desktop: stack.
  */
@@ -5905,24 +6361,39 @@ body.lightbox-open {
   border-bottom: 0;
 }
 
-/* Testimonials — equal-height cards; attribution pinned to the bottom so
-   uneven quote lengths don’t leave one card looking short. */
-.testimonials { background: var(--deep-teal); color: var(--white); }
+/* Testimonials — teal band, white cards (same recipe as .info-card).
+   Guest words stay on a light surface so they read as quotes, not brand copy. */
+.testimonials {
+  background: var(--deep-teal);
+  color: var(--white);
+}
+.testimonials h2 {
+  color: var(--white);
+}
+.testimonials :focus-visible {
+  outline-color: var(--warm-gold-hero);
+}
+.testimonials .text-link {
+  color: var(--warm-gold-hero);
+  text-decoration-color: color-mix(in srgb, var(--warm-gold-hero) 45%, transparent);
+}
+.testimonials .text-link:hover {
+  color: var(--white);
+  text-decoration-color: var(--white);
+}
 .testimonials__grid {
-  --testimonials-gap: var(--space-5);
   display: grid;
-  gap: var(--testimonials-gap);
+  gap: var(--grid-gap);
   align-items: stretch;
 }
 @media (min-width: 768px) {
   .testimonials__grid {
-    --testimonials-gap: var(--space-6);
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 1024px) {
   .testimonials__grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 .testimonials__grid > li {
@@ -5932,36 +6403,58 @@ body.lightbox-open {
 .testimonial-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
   width: 100%;
   height: 100%;
-  padding: 0;
-  background: none;
-  border: 0;
-  border-radius: 0;
+  padding: var(--panel-pad);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.16);
+  color: var(--deep-teal);
+}
+.testimonial-card__mark {
+  font-family: var(--font-serif);
+  font-size: var(--type-display-sm);
+  line-height: 0.85;
+  color: var(--warm-gold-text);
 }
 .testimonial-card__quote {
-  font-family: var(--font-serif);
-  font-size: var(--text-base);
-  line-height: 1.65;
-  color: var(--white);
-  text-wrap: pretty;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
   flex: 1 1 auto;
   margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--body-secondary);
+  text-wrap: pretty;
 }
-.testimonial-card__name {
+.testimonial-card__quote p {
+  margin: 0;
+  flex: 1 1 auto;
+  color: inherit;
+}
+.testimonial-card__quote footer {
+  margin-top: auto;
+}
+.testimonial-card__cite {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-style: normal;
+}
+.testimonial-card__name {
+  font-weight: var(--weight-semibold);
   font-size: var(--text-md);
-  color: var(--white);
-  margin-top: auto;
+  color: var(--deep-teal);
 }
 .testimonial-card__role {
-  font-weight: 400;
+  font-weight: var(--weight-regular);
   font-size: var(--text-xs);
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted-grey);
 }
 
 /*

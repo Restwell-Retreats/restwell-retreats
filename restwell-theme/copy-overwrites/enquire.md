@@ -39,7 +39,7 @@ A few things that might save you a question:
 
 Name, email, phone, dates, funding, access needs, message.
 
-The dates field is what you’re hoping for, not a claim that those nights are available. Occupancy will sit on an iCal once it’s ready; until then we check by hand when you write, which is usually the same day.
+The dates field is the stay they’d like, not a hold. Point them to booked nights on Pricing & dates (`#availability`). We still confirm by hand when we reply.
 
 Keep the access field open text rather than tick boxes. People’s needs don’t fit a dropdown, and asking them to squeeze into one is the exact experience this whole site exists to avoid.
 

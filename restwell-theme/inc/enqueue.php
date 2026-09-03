@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Version string for a theme file (filemtime) so deploys bust LiteSpeed / CDN caches without a manual style.css bump.
  *
- * @param string $relative_path Path under the theme directory, e.g. '/assets/css/tailwind.css'.
+ * @param string $relative_path Path under the theme directory, e.g. '/assets/css/shared.css'.
  * @return string
  */
 function restwell_theme_asset_version( $relative_path ) {
@@ -33,7 +33,6 @@ function restwell_enqueue_scripts() {
 
 	// Serve minified assets in production; fall back to unminified when SCRIPT_DEBUG is on.
 	$use_min = ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
-	$is_concept = function_exists( 'restwell_is_concept_surface' ) && restwell_is_concept_surface();
 
 	wp_enqueue_style(
 		'restwell-fonts',
@@ -42,31 +41,7 @@ function restwell_enqueue_scripts() {
 		restwell_theme_asset_version( '/assets/css/fonts.css' )
 	);
 
-	if ( ! $is_concept ) {
-		/*
-		 * Phosphor Icons: legacy Tailwind surfaces only.
-		 * Concept chrome and gallery use CSS / inline SVG.
-		 */
-		wp_enqueue_style(
-			'phosphor-icons-regular',
-			$theme_uri . '/assets/fonts/phosphor/regular/style.css',
-			array(),
-			restwell_theme_asset_version( '/assets/fonts/phosphor/regular/style.css' )
-		);
-		wp_enqueue_style(
-			'phosphor-icons-bold',
-			$theme_uri . '/assets/fonts/phosphor/bold/style.css',
-			array( 'phosphor-icons-regular' ),
-			restwell_theme_asset_version( '/assets/fonts/phosphor/bold/style.css' )
-		);
-
-		wp_enqueue_style(
-			'restwell-tailwind',
-			$theme_uri . '/assets/css/tailwind.css',
-			array( 'phosphor-icons-bold' ),
-			restwell_theme_asset_version( '/assets/css/tailwind.css' )
-		);
-	}
+	// shared.css is the live design system. Tailwind / Phosphor are not enqueued.
 
 	// Mockup design system — global chrome. Default stylesheet for public pages.
 	wp_enqueue_style(
@@ -106,6 +81,23 @@ function restwell_enqueue_scripts() {
 			true
 		);
 	}
+
+	if ( is_page_template( 'template-pricing.php' )
+		&& function_exists( 'restwell_occupancy_is_configured' )
+		&& restwell_occupancy_is_configured()
+	) {
+		$availability_rel = '/assets/js/availability' . $js_suffix;
+		if ( $use_min && ! is_readable( get_template_directory() . $availability_rel ) ) {
+			$availability_rel = '/assets/js/availability.js';
+		}
+		wp_enqueue_script(
+			'restwell-availability',
+			$theme_uri . $availability_rel,
+			array( 'restwell-shared' ),
+			restwell_theme_asset_version( $availability_rel ),
+			true
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'restwell_enqueue_scripts' );
 
@@ -125,6 +117,7 @@ function restwell_defer_front_script( $tag, $handle, $src ) {
 		'restwell-enquire',
 		'restwell-gallery',
 		'restwell-main',
+		'restwell-availability',
 		'restwell-analytics-loader',
 	);
 	if ( ! in_array( $handle, $deferred, true ) ) {

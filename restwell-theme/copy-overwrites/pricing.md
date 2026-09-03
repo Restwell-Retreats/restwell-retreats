@@ -1,4 +1,4 @@
-# Pricing `/pricing/`
+# Pricing & dates `/pricing/`
 
 **Layer:** `pricing_heading` `pricing_intro`. Figures print from `restwell_get_pricing()` in `inc/pricing.php` and nowhere else. Occupancy is still [NEEDS FACT], so no seasonal offers, no “from £”, no last-minute anything. Never “fully accessible” in Restwell-owned copy. Voice: the Welcome Guide.
 

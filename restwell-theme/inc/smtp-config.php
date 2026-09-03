@@ -18,6 +18,10 @@
  *   define( 'RESTWELL_MAILCHIMP_AUDIENCE_ID', 'audienceid' );       // optional
  *   define( 'RESTWELL_MAILCHIMP_SERVER_PREFIX', 'us15' );           // optional
  *
+ * Optional Bing Webmaster REST API (JSON only — SOAP/POX retired 31 Aug 2026):
+ *
+ *   define( 'RESTWELL_BING_WEBMASTER_API_KEY', 'your-bing-api-key' );
+ *
  * DNS (outside WordPress): add SPF, DKIM, and DMARC for the From domain so messages
  * reach inboxes. Use your host or transactional provider’s documentation.
  *

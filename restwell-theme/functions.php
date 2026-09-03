@@ -49,6 +49,7 @@ require_once get_template_directory() . '/inc/nav.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/page-hero.php';
 require_once get_template_directory() . '/inc/places-reviews.php';
+require_once get_template_directory() . '/inc/occupancy.php';
 require_once get_template_directory() . '/inc/post-helpers.php';
 require_once get_template_directory() . '/inc/privacy-page-bootstrap.php';
 require_once get_template_directory() . '/inc/redirects.php';

@@ -101,7 +101,7 @@ function restwell_get_theme_setup_defaults() {
 		'testimonial_2_quote' => '10/10 from me, as there was NOTHING i needed to ask for, as Restwell Retreats had catered for it all already.. and with the complex care I need, this is worth it\'s weight in gold',
 		'testimonial_2_name'  => 'M.P.',
 		'testimonial_2_role'  => 'Wheelchair user · Google review',
-		'testimonial_3_quote' => 'The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.',
+		'testimonial_3_quote' => 'The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning',
 		'testimonial_3_name'  => 'M.Z.',
 		'testimonial_3_role'  => 'Guest · Google review',
 
@@ -535,7 +535,7 @@ function restwell_get_pricing_page_defaults() {
 		: array();
 
 	$defaults = array(
-		'pricing_label'         => 'Pricing',
+		'pricing_label'         => 'Pricing & dates',
 		'pricing_heading'       => 'What a stay here costs',
 		'pricing_subheading'    => 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. The rate is the same whoever we invoice.',
 		'pricing_intro'         => 'A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. Midweek nights are £185 off-peak and £200 peak, with weekend nights in the table below. A 50% deposit reserves your dates and the balance is due a week before you arrive. The rate is the same whoever we invoice.',
@@ -714,7 +714,7 @@ function restwell_get_our_story_page_defaults() {
 	return array(
 		'story_label'   => 'Our story',
 		'story_heading' => 'Why Restwell exists',
-		'story_intro'   => 'Restwell Retreats is an adapted holiday bungalow in Whitstable, run by Victoria Walker. Continuity of Care Services is our sister company; Victoria is their CQC registered manager. They work from the same office on the same phone number. Restwell provides the house; Continuity provide any care.',
+		'story_intro'   => 'We started Restwell because of a gap we kept running into from the other side of it.',
 	);
 }
 

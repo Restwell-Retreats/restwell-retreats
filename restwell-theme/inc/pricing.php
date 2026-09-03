@@ -270,6 +270,115 @@ function restwell_format_gbp( $amount, ?int $decimals = null ): string {
 }
 
 /**
+ * Whether a Y-m-d night is a weekend night (Friday–Sunday).
+ *
+ * @param string $ymd Date string Y-m-d.
+ * @return bool
+ */
+function restwell_is_weekend_night( string $ymd ): bool {
+	$ymd = trim( $ymd );
+	$dt  = DateTimeImmutable::createFromFormat( 'Y-m-d', $ymd );
+	if ( ! $dt || $dt->format( 'Y-m-d' ) !== $ymd ) {
+		return false;
+	}
+	return (int) $dt->format( 'N' ) >= 5;
+}
+
+/**
+ * Published nightly bungalow rate for one overnight date.
+ *
+ * @param string $ymd Date string Y-m-d.
+ * @return int Pounds. Zero when the date is invalid.
+ */
+function restwell_night_rate_gbp( string $ymd ): int {
+	$ymd = trim( $ymd );
+	if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $ymd ) ) {
+		return 0;
+	}
+	$pricing = restwell_get_pricing();
+	$season  = restwell_is_peak_date( $ymd ) ? 'peak' : 'off_peak';
+	$field   = restwell_is_weekend_night( $ymd ) ? 'weekend_night' : 'midweek_night';
+	if ( ! isset( $pricing['seasons'][ $season ][ $field ] ) ) {
+		return 0;
+	}
+	return (int) $pricing['seasons'][ $season ][ $field ];
+}
+
+/**
+ * Guide bungalow total for overnight dates.
+ *
+ * A contiguous stretch of 7/14/… nights in a single season uses the published
+ * week rate. Mixed peak/off-peak stretches stay on the nightly sum.
+ *
+ * @param string[] $nights Y-m-d overnight dates.
+ * @return array{nights:int,total:int,weekly:bool}
+ */
+function restwell_guide_stay_total( array $nights ): array {
+	$unique = array();
+	foreach ( $nights as $iso ) {
+		$iso = trim( (string) $iso );
+		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $iso ) ) {
+			$unique[ $iso ] = true;
+		}
+	}
+	ksort( $unique );
+	$list  = array_keys( $unique );
+	$count = count( $list );
+	if ( 0 === $count ) {
+		return array(
+			'nights' => 0,
+			'total'  => 0,
+			'weekly' => false,
+		);
+	}
+
+	$sum        = 0;
+	$peak_n     = 0;
+	$contiguous = true;
+	$prev       = null;
+	foreach ( $list as $iso ) {
+		$sum += restwell_night_rate_gbp( $iso );
+		if ( restwell_is_peak_date( $iso ) ) {
+			++$peak_n;
+		}
+		if ( null !== $prev ) {
+			$expected = DateTimeImmutable::createFromFormat( 'Y-m-d', $prev );
+			if ( ! $expected || $expected->modify( '+1 day' )->format( 'Y-m-d' ) !== $iso ) {
+				$contiguous = false;
+			}
+		}
+		$prev = $iso;
+	}
+
+	$pricing   = restwell_get_pricing();
+	$week_off  = (int) $pricing['seasons']['off_peak']['full_week'];
+	$week_peak = (int) $pricing['seasons']['peak']['full_week'];
+	if ( $contiguous && $count >= 7 && 0 === $count % 7 ) {
+		$weeks = (int) ( $count / 7 );
+		if ( $peak_n === $count && $week_peak > 0 ) {
+			return array(
+				'nights' => $count,
+				'total'  => $weeks * $week_peak,
+				'weekly' => true,
+			);
+		}
+		if ( 0 === $peak_n && $week_off > 0 ) {
+			return array(
+				'nights' => $count,
+				'total'  => $weeks * $week_off,
+				'weekly' => true,
+			);
+		}
+	}
+
+	return array(
+		'nights' => $count,
+		'total'  => $sum,
+		'weekly' => false,
+	);
+}
+
+/**
  * Whether a Y-m-d date falls in a peak season range.
  *
  * @param string $ymd Date string Y-m-d.

@@ -133,7 +133,7 @@ function restwell_get_primary_nav_structure() {
 					'slug'  => 'accessibility',
 				),
 				array(
-					'label' => __( 'Pricing', 'restwell-retreats' ),
+					'label' => __( 'Pricing & dates', 'restwell-retreats' ),
 					'slug'  => 'pricing',
 				),
 				array(

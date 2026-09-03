@@ -224,6 +224,30 @@ function restwell_crm_handle_save_settings() {
 	if ( ! $is_production && function_exists( 'restwell_is_production_environment' ) ) {
 		$is_production = restwell_is_production_environment();
 	}
+
+	$ical_url        = isset( $_POST['restwell_ical_feed_url'] )
+		? (string) wp_unslash( $_POST['restwell_ical_feed_url'] )
+		: '';
+	$ical_url        = function_exists( 'restwell_occupancy_sanitize_feed_url' )
+		? restwell_occupancy_sanitize_feed_url( $ical_url )
+		: '';
+	$ical_clear      = isset( $_POST['restwell_ical_feed_url_clear'] )
+		&& '1' === sanitize_text_field( wp_unslash( $_POST['restwell_ical_feed_url_clear'] ) );
+	$ical_from_const = defined( 'RESTWELL_ICAL_FEED_URL' ) && '' !== (string) RESTWELL_ICAL_FEED_URL;
+	if ( $is_production || $ical_from_const ) {
+		unset( $ical_url, $ical_clear );
+	} elseif ( '' !== $ical_url ) {
+		update_option( 'restwell_ical_feed_url', $ical_url, false );
+		if ( function_exists( 'restwell_occupancy_flush_cache' ) ) {
+			restwell_occupancy_flush_cache();
+		}
+	} elseif ( $ical_clear ) {
+		update_option( 'restwell_ical_feed_url', '', false );
+		if ( function_exists( 'restwell_occupancy_flush_cache' ) ) {
+			restwell_occupancy_flush_cache();
+		}
+	}
+
 	// Prefer RESTWELL_MAILCHIMP_API_KEY in wp-config; option is fallback only and must not autoload.
 	// Never persist the key in wp_options when WP_ENVIRONMENT_TYPE is production.
 	if ( $is_production ) {

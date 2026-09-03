@@ -12,6 +12,9 @@ class EnquireJsSplitTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringNotContainsString( 'initMultiStepForm', $js );
 		$this->assertStringContainsString( 'initEnquiryDateConstraints', $js );
 		$this->assertStringContainsString( '#enq-from', $js );
+		$this->assertStringContainsString( '#enq-to', $js );
+		$this->assertStringContainsString( 'readUrlStayDates', $js );
+		$this->assertStringNotContainsString( "querySelector('#enq_date_from')", $js );
 		$this->assertStringContainsString( 'initEnquiryDraftPersistence', $js );
 	}
 }

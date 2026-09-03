@@ -5,7 +5,7 @@
 | **Type** | Standalone custom theme (not a child theme) |
 | **PHP** | 7.4+ (`style.css` → `Requires PHP`) |
 | **WordPress** | 6.4+ (`Requires at least`) |
-| **Stack** | PHP templates, Tailwind CSS v3, vanilla JS (no React/npm runtime in production) |
+| **Stack** | PHP templates, `shared.css`, vanilla JS (no React/npm runtime in production) |
 
 Custom front end for [Restwell Retreats](https://restwellretreats.co.uk/): accessible holiday property marketing, enquiry flows, blog, and guest arrival guide. CRM, enquiries, and transactional email live in the **Restwell CRM** must-use plugin (`wp-content/mu-plugins/restwell-crm/`); the theme loads that plugin from the monorepo when it is not already active.
 
@@ -16,8 +16,8 @@ Custom front end for [Restwell Retreats](https://restwellretreats.co.uk/): acces
 | Step | Command / action |
 |------|------------------|
 | 1. Clone | Clone the monorepo and `cd restwell-theme` |
-| 2. Install | `npm install` |
-| 3. Develop CSS/JS | `npm run dev` (watches Tailwind; rebuild JS manually or run `npm run build`) |
+| 2. Install | Optional: `npm install` is not required for CSS. Use it only if you need the JS minify script |
+| 3. Develop CSS/JS | Edit `assets/css/shared.css` and `assets/js/*.js`. Run `npm run build` to minify JS |
 | 4. WordPress | Symlink or copy `restwell-theme` into `wp-content/themes/`; activate **Restwell Retreats** |
 | 5. CRM (local) | Ensure `wp-content/mu-plugins/restwell-crm/` is present (theme `functions.php` can bootstrap it from the monorepo sibling path) |
 | 6. First-time content | **WP Admin → Restwell → Theme Setup** — create pages, seed home meta; tick **Seed media** on first install (logos/partners + image sizes) |
@@ -29,10 +29,9 @@ Custom front end for [Restwell Retreats](https://restwellretreats.co.uk/): acces
 
 | Script | What it does | Output |
 |--------|----------------|--------|
-| `npm run dev` | Tailwind watch: `input.css` → `tailwind.css` | `assets/css/tailwind.css` (unminified) |
-| `npm run build` | Minify Tailwind + terser on front-end JS | `assets/css/tailwind.css` (minified), `assets/js/main.min.js`, `assets/js/analytics-loader.min.js` |
+| `npm run build` | Terser on front-end JS | `assets/js/*.min.js` |
 
-Production enqueues **minified** assets when `SCRIPT_DEBUG` is not set (`inc/enqueue.php`). After changing `assets/js/main.js` or `analytics-loader.js`, run `npm run build` before deploy.
+Production enqueues **minified** JS when `SCRIPT_DEBUG` is not set (`inc/enqueue.php`). After changing `assets/js/*.js`, run `npm run build` before deploy. Public CSS is `assets/css/shared.css` (edit in place; not compiled). Unused Tailwind source lives in `docs/archive/tailwind-source/` and is not enqueued.
 
 Phosphor icon CSS and self-hosted Inter/Lora fonts are committed under `assets/`; they are not built by npm.
 
@@ -50,7 +49,7 @@ PHP in `restwell-theme/` is checked from the **monorepo root** (not inside `rest
 
 **Requirements:** PHP and [Composer](https://getcomposer.org/) on your machine. Dev dependencies live in root `composer.json`; `vendor/` is gitignored.
 
-**Config:** [`phpcs.xml.dist`](../phpcs.xml.dist) — scans `restwell-theme/**/*.php`; `minimum_wp_version` 6.4; `testVersion` 7.4-; `text_domain` `restwell-retreats`; `prefix` `restwell`. Excludes `node_modules`, `vendor`, and generated `assets/css/tailwind.css`. CLI flags: progress, sniff codes, source (`psn`).
+**Config:** [`phpcs.xml.dist`](../phpcs.xml.dist) — scans `restwell-theme/**/*.php`; `minimum_wp_version` 6.4; `testVersion` 7.4-; `text_domain` `restwell-retreats`; `prefix` `restwell`. Excludes `node_modules`, `vendor`, migration archives, and archived `docs/archive/tailwind-source/tailwind.css`. CLI flags: progress, sniff codes, source (`psn`).
 
 `composer phpcs` exits **2** when violations are found (expected on first run). Fix incrementally with `composer phpcbf` where marked `[x]`, then hand-fix the rest.
 
@@ -121,7 +120,7 @@ WordPress resolves URLs from **page slug** (`post_name`), not the PHP filename. 
 | `template-whitstable-guide.php` | Whitstable Guide | `whitstable-area-guide` | `/whitstable-area-guide/` |
 | `template-faq.php` | FAQ | `faq` | `/faq/` |
 | `template-enquire.php` | Enquire | `enquire` | `/enquire/` |
-| `template-pricing.php` | Pricing | `pricing` | `/pricing/` |
+| `template-pricing.php` | Pricing & dates | `pricing` | `/pricing/` |
 | `template-resources.php` | Resources | `resources` | `/resources/` |
 | `page-guest-guide.php` | Guest Arrival Guide | `guest-guide` | `/guest-guide/` *(email-gated)* |
 | `template-privacy-policy.php` | Privacy Policy | `privacy-policy` | `/privacy-policy/` *(may follow Settings → Privacy)* |
@@ -192,7 +191,7 @@ Run after uploading a new theme zip or merging a release branch.
 
 | # | Task | Why |
 |---|------|-----|
-| 1 | `npm run build` before zipping | Ship minified CSS/JS |
+| 1 | `npm run build` before zipping | Ship minified JS (`shared.css` is edited in place) |
 | 2 | Upload & activate theme | WP Admin → Appearance → Themes |
 | 3 | **Settings → Permalinks → Save** | Flush rewrite rules (redirects, `llms.txt`, CRM routes) |
 | 4 | Regenerate thumbnails | CLI: `wp media regenerate --yes` or **Theme Setup** image regen — enables `restwell-hero` / `restwell-cta-bg` sizes |

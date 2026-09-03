@@ -20,7 +20,8 @@
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>restwell-theme/tests/*</exclude-pattern>
 	<exclude-pattern>restwell-theme/inc/theme-setup/migrations-archive-v1-v28.php</exclude-pattern>
-	<exclude-pattern>restwell-theme/assets/css/tailwind.css</exclude-pattern>
+	<exclude-pattern>restwell-theme/inc/theme-setup/migrations-archive-v29-v31.php</exclude-pattern>
+	<exclude-pattern>restwell-theme/docs/archive/tailwind-source/tailwind.css</exclude-pattern>
 	<exclude-pattern>*/package-lock.json</exclude-pattern>
 
 	<!-- Extra includes Core (tabs). phpcbf applies that indent. Yoda is excluded:

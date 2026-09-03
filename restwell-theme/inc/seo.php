@@ -18,6 +18,7 @@ $restwell_seo_modules = array(
 	'canonical.php',
 	'analytics.php',
 	'jsonld.php',
+	'bing-webmaster.php',
 );
 foreach ( $restwell_seo_modules as $restwell_seo_module ) {
 	require_once __DIR__ . '/seo/' . $restwell_seo_module;

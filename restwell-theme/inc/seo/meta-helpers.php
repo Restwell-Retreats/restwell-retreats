@@ -153,13 +153,13 @@ function restwell_trim_meta_text( $text, $max_length = 160 ) {
  * @return string
  */
 function restwell_build_meta_title( $primary ) {
-	$site    = restwell_normalize_meta_text( get_bloginfo( 'name' ) );
+	$site    = restwell_get_schema_brand_name();
 	$primary = restwell_trim_meta_text( $primary, 56 );
 
 	if ( $primary === '' ) {
 		return $site;
 	}
-	if ( $site === '' ) {
+	if ( restwell_title_already_includes_site_brand( $primary, $site ) ) {
 		return restwell_trim_meta_text( $primary, 60 );
 	}
 
@@ -178,6 +178,10 @@ function restwell_build_meta_title( $primary ) {
  * @return string
  */
 function restwell_get_request_level_title_fallback() {
+	if ( is_404() ) {
+		return restwell_build_meta_title( __( 'Page not found', 'restwell-retreats' ) );
+	}
+
 	if ( is_front_page() ) {
 		$front_id = (int) get_option( 'page_on_front', 0 );
 		if ( $front_id > 0 ) {
@@ -269,7 +273,7 @@ function restwell_document_title_parts( $parts ) {
 				$injected       = true;
 			}
 		}
-	} elseif ( ! is_404() ) {
+	} else {
 		$parts['title'] = restwell_get_request_level_title_fallback();
 		$injected       = true;
 	}

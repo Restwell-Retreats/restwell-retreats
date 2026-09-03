@@ -202,7 +202,7 @@ function restwell_homepage_testimonial_hard_fallbacks() {
 			'role'  => 'Wheelchair user · Google review',
 		),
 		array(
-			'quote' => 'The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.',
+			'quote' => 'The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location. One of the highlights was waking up to the sound of birds singing each morning',
 			'name'  => 'M.Z.',
 			'role'  => 'Guest · Google review',
 		),

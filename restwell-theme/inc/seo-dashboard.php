@@ -33,6 +33,7 @@ function restwell_seo_dashboard_widget_render() {
 	<p class="description"><?php esc_html_e( 'Use this list as a recurring check. Pair with Google Search Console performance and coverage reports.', 'restwell-retreats' ); ?></p>
 	<ul style="list-style:disc;padding-left:1.25em;">
 		<li><?php esc_html_e( 'Search Console: coverage issues, Core Web Vitals, top queries and CTR.', 'restwell-retreats' ); ?></li>
+		<li><?php esc_html_e( 'Bing Webmaster (REST): crawl stats, query stats, Copilot discovery.', 'restwell-retreats' ); ?></li>
 		<li><?php esc_html_e( 'Analytics: landing pages, enquiry conversions, and campaign UTMs.', 'restwell-retreats' ); ?></li>
 		<li>
 			<?php
