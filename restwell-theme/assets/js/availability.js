@@ -128,8 +128,8 @@
 		}
 
 		function clearHope() {
-			root.querySelectorAll('.availability__day.is-hope, .availability__day.is-hope-start, .availability__day.is-hope-end').forEach(function (td) {
-				td.classList.remove('is-hope', 'is-hope-start', 'is-hope-end');
+			root.querySelectorAll('.availability__day.is-hope, .availability__day.is-hope-start, .availability__day.is-hope-end, .availability__day.is-hope-checkout').forEach(function (td) {
+				td.classList.remove('is-hope', 'is-hope-start', 'is-hope-end', 'is-hope-checkout');
 			});
 			root.querySelectorAll('button[data-iso][aria-pressed]').forEach(function (btn) {
 				btn.setAttribute('aria-pressed', 'false');
@@ -152,6 +152,8 @@
 				var btn = td.querySelector('button[data-iso]');
 				if (btn) btn.setAttribute('aria-pressed', 'true');
 			});
+			var checkoutCell = dayCell(addDays(nights[nights.length - 1], 1));
+			if (checkoutCell) checkoutCell.classList.add('is-hope-checkout');
 		}
 
 		function isWeekendNight(iso) {
@@ -302,8 +304,14 @@
 			if (!fromNight || !toNight) {
 				enquire.setAttribute('href', enquireUrl);
 				enquire.removeAttribute('aria-label');
+				enquire.classList.add('is-disabled');
+				enquire.setAttribute('aria-disabled', 'true');
+				enquire.setAttribute('tabindex', '-1');
 				return;
 			}
+			enquire.classList.remove('is-disabled');
+			enquire.removeAttribute('aria-disabled');
+			enquire.removeAttribute('tabindex');
 			var arrival = fromNight < toNight ? fromNight : toNight;
 			var lastNight = fromNight < toNight ? toNight : fromNight;
 			var departure = addDays(lastNight, 1);
@@ -386,6 +394,14 @@
 
 		if (clearBtn) {
 			clearBtn.addEventListener('click', clearStay);
+		}
+
+		if (enquire) {
+			enquire.addEventListener('click', function (event) {
+				if (enquire.classList.contains('is-disabled')) {
+					event.preventDefault();
+				}
+			});
 		}
 
 		if (prevBtn) {

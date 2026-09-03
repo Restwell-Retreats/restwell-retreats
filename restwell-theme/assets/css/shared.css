@@ -656,6 +656,12 @@ blockquote:not(.pull-quote__text),
   transition: transform var(--duration-fast) ease, background var(--duration-fast) ease, border-color var(--duration-fast) ease;
 }
 .btn:hover { transform: translateY(-1px); }
+.btn.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn.is-disabled:hover { transform: none; }
 /* No blanket outline-color override here: the global :focus-visible default
    (deep-teal, 9.3:1 on white) already works on light backgrounds, which is
    most buttons. Dark-background contexts (hero, mid-cta, band-teal) need a
@@ -3088,7 +3094,7 @@ body:has(.subnav) {
 }
 
 .layout-sidebar {
-  --sidebar-gap: var(--space-8);
+  --sidebar-gap: var(--space-14);
   /* Clears sticky site header when contact card pins beside the form */
   --sidebar-sticky-top: calc(var(--header-offset) + var(--space-4));
   display: grid;
@@ -4437,6 +4443,14 @@ button.availability__num:focus-visible {
 .availability__day.is-hope-start button.availability__num:focus-visible,
 .availability__day.is-hope-end button.availability__num:focus-visible {
   outline-color: var(--white);
+}
+.availability__day.is-hope-checkout::after {
+  content: "";
+  position: absolute;
+  inset: 0.2em;
+  border: 1.5px dashed var(--deep-teal);
+  border-radius: var(--availability-cell-radius);
+  pointer-events: none;
 }
 .availability__day.is-booked .availability__date,
 .availability__day.is-booked .availability__price {
