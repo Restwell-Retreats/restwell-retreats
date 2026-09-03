@@ -704,7 +704,6 @@ blockquote:not(.pull-quote__text),
   min-height: var(--tap-target, 2.75rem);
   font: inherit;
   font-weight: var(--type-ui-weight);
-  font-size: var(--type-ui-size);
   color: var(--deep-teal);
   text-decoration: underline;
   text-decoration-thickness: 1px;

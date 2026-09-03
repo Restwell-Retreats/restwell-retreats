@@ -228,7 +228,7 @@ get_template_part(
 								</select>
 							</div>
 						</div>
-						<p class="field-hint"><?php esc_html_e( 'Tell us the dates that would work. We’ll check them when we reply. You can see booked nights on', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>#availability"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a>.</p>
+						<p class="field-hint"><?php esc_html_e( 'Tell us the dates that would work. We’ll check them when we reply. You can see when Restwell is available on:', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>#availability"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a>.</p>
 						<div class="field"><label for="enq-urgent"><input id="enq-urgent" type="checkbox" name="enq_urgent" value="1" <?php checked( $enq_val( 'enq_urgent', $enq_fields ), '1' ); ?> /> <?php esc_html_e( 'This enquiry is time-sensitive', 'restwell-retreats' ); ?></label></div>
 					</fieldset>
 					<div class="form-actions form-actions--split">
