@@ -150,8 +150,20 @@ function restwell_crm_handle_send_test_mail(): void {
 		? 'SMTP'
 		: 'PHP mail';
 	$subject   = '[Restwell] Test email from CRM';
-	$body      = "This is a test from the Restwell CRM dashboard.\nTransport: {$transport}\n";
-	$headers   = array( 'Content-Type: text/plain; charset=UTF-8' );
+	$body      = restwell_email_staff_body(
+		array(
+			'label'   => __( 'Delivery test', 'restwell-retreats' ),
+			'heading' => __( 'Your mail settings are working', 'restwell-retreats' ),
+			'intro'   => __( 'This was sent from the Restwell CRM dashboard. If it looks right here, notification emails will look right too.', 'restwell-retreats' ),
+			'rows'    => array(
+				__( 'Transport', 'restwell-retreats' ) => $transport,
+				__( 'Sent', 'restwell-retreats' )      => wp_date( 'D j M Y \a\t H:i' ),
+			),
+			'note'    => __( 'Delivery to your inbox proves wp_mail() works. It does not prove SPF, DKIM or DMARC are set up for the sending domain.', 'restwell-retreats' ),
+			'preview' => __( 'CRM delivery test', 'restwell-retreats' ),
+		)
+	);
+	$headers   = restwell_email_staff_headers();
 
 	$ok = function_exists( 'restwell_wp_mail_with_retry' )
 		? restwell_wp_mail_with_retry( $to, $subject, $body, $headers )

@@ -67,7 +67,8 @@ get_template_part(
 		<ul class="subnav__list">
 		  <li><a href="#origin">The gap</a></li>
 		  <li><a href="#month">Four weeks</a></li>
-		  <li><a href="#host">Who runs Restwell</a></li>
+		  <li><a href="#host">Who runs both</a></li>
+		  <li><a href="#companies">Two companies</a></li>
 		  <li><a href="#shaped">Built around real stays</a></li>
 		  <li><a href="#next">What's next</a></li>
 		</ul>
@@ -99,19 +100,21 @@ get_template_part(
 		</header>
 		<div class="process__layout">
 		  <div class="process__media" data-reveal>
-			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="The adapted bungalow as it is now, with a level driveway and front garden" width="900" height="1200" loading="lazy" />
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="The adapted bungalow as it is now, with a level driveway and front garden" width="1600" height="1000" loading="lazy" />
 		  </div>
 		  <ol class="process-list">
 			<li>
 			  <span class="process-list__index" aria-hidden="true">01</span>
 			  <div class="process-list__body">
-				<h3><?php esc_html_e( 'Early March', 'restwell-retreats' ); ?></h3>
-				<p><?php esc_html_e( 'We got the keys. The bungalow needed more than a lick of paint.', 'restwell-retreats' ); ?></p>
+				<p class="process-list__meta"><?php esc_html_e( 'Early March', 'restwell-retreats' ); ?></p>
+				<h3><?php esc_html_e( 'We got the keys', 'restwell-retreats' ); ?></h3>
+				<p><?php esc_html_e( 'The bungalow needed more than a lick of paint.', 'restwell-retreats' ); ?></p>
 			  </div>
 			</li>
 			<li>
 			  <span class="process-list__index" aria-hidden="true">02</span>
 			  <div class="process-list__body">
+				<p class="process-list__meta"><?php esc_html_e( 'During the build', 'restwell-retreats' ); ?></p>
 				<h3><?php esc_html_e( 'The specialists', 'restwell-retreats' ); ?></h3>
 				<p>
 					<?php esc_html_e( 'The accessible bedroom and wet room were built by', 'restwell-retreats' ); ?>
@@ -124,8 +127,9 @@ get_template_part(
 			<li>
 			  <span class="process-list__index" aria-hidden="true">03</span>
 			  <div class="process-list__body">
-				<h3><?php esc_html_e( 'Four weeks later', 'restwell-retreats' ); ?></h3>
-				<p><?php esc_html_e( 'The bungalow was ready. The millimetres went on the Accessibility page, not into a brochure line.', 'restwell-retreats' ); ?></p>
+				<p class="process-list__meta"><?php esc_html_e( 'Four weeks later', 'restwell-retreats' ); ?></p>
+				<h3><?php esc_html_e( 'The bungalow was ready', 'restwell-retreats' ); ?></h3>
+				<p><?php esc_html_e( 'Then we measured all of it and wrote the numbers down.', 'restwell-retreats' ); ?></p>
 			  </div>
 			</li>
 		  </ol>
@@ -134,11 +138,26 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="host" aria-labelledby="host-h">
+	  <div class="container split">
+		<div>
+		  <header class="section-head section-head--tight">
+			<p class="eyebrow">Who runs both</p>
+			<h2 id="host-h">Victoria Walker</h2>
+			<p class="lede">The link between the two companies is a person. Victoria owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day you are more likely to speak to someone else in the office, and they work across both as well.</p>
+		  </header>
+		</div>
+		<div class="split__media" data-reveal>
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker.jpg' ) ); ?>" width="1600" height="1200" loading="lazy" decoding="async" />
+		</div>
+	  </div>
+	</section>
+
+	<section class="section-y band-subtle" id="companies" aria-labelledby="companies-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
-		  <p class="eyebrow">Who runs Restwell</p>
-		  <h2 id="host-h">Victoria Walker</h2>
-		  <p class="lede">Victoria owns Restwell Retreats, a private adapted bungalow in Whitstable. She is the CQC registered manager of sister company Continuity of Care Services. Restwell is not a registered care provider; Continuity’s CQC rating of Good is theirs.</p>
+		  <p class="eyebrow">Two companies</p>
+		  <h2 id="companies-h">Two companies, one conversation</h2>
+		  <p class="lede">Restwell is the house. Continuity is the care. They bill you separately, and that is deliberate rather than awkward: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.</p>
 		</header>
 		<dl class="comparison-list">
 		  <div class="comparison-list__item">
@@ -154,14 +173,14 @@ get_template_part(
 		  <div class="comparison-list__item">
 			<dt><?php esc_html_e( 'Same conversation', 'restwell-retreats' ); ?></dt>
 			<dd>
-				<?php esc_html_e( 'One office, one number. You won’t be handed to a different team.', 'restwell-retreats' ); ?>
+				<?php esc_html_e( 'One office, one number. The house and the care get sorted in the same call.', 'restwell-retreats' ); ?>
 				<a class="text-link" href="<?php echo esc_url( 'tel:' . $restwell_host_tel ); ?>"><?php echo esc_html( $restwell_host_phone ); ?></a>
 			</dd>
 		  </div>
 		</dl>
 		<div class="care-page__trust">
 		  <div class="care__foot-copy">
-			<p class="care__note"><?php esc_html_e( 'The CQC rating belongs to Continuity. Read the published report yourself rather than take our word for it.', 'restwell-retreats' ); ?></p>
+			<p class="care__note"><?php esc_html_e( 'Restwell is not a registered care provider and doesn’t pretend to be one. We’re a house. We mention Continuity’s rating so you know exactly who is accountable for the care, and can go and read the report yourself.', 'restwell-retreats' ); ?></p>
 			<a class="text-link" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Read Continuity’s CQC profile', 'restwell-retreats' ); ?><span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a>
 		  </div>
 		  <div class="care__brand" aria-label="<?php echo esc_attr__( 'Sister company and CQC rating', 'restwell-retreats' ); ?>">
@@ -176,18 +195,17 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="shaped" aria-labelledby="shaped-h">
+	<section class="section-y band-white" id="shaped" aria-labelledby="shaped-h">
 	  <div class="container split split--flip">
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Shaped by real needs</p>
 			<h2 id="shaped-h">Designed with the people who’d actually stay</h2>
-			<p class="lede">The layout and kit were shaped by real people, not planned on paper. Individuals with muscular dystrophy, cerebral palsy, and those recovering from strokes told us what mattered for transfers, what got in the way, and what “accessible” meant for them.</p>
+			<p class="lede">Individuals with muscular dystrophy, cerebral palsy, and people recovering from strokes told us what mattered for transfers, what got in the way, and what “accessible” meant for them. The layout and the kit came from those conversations rather than from a plan on paper.</p>
 		  </header>
-		  <p>That’s why the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Accessibility page</a> lists exact measurements in millimetres, so you can check the fit yourself before you book.</p>
 		</div>
 		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="1200" height="750" loading="lazy" />
 		</div>
 	  </div>
 	</section>
@@ -196,16 +214,16 @@ get_template_part(
 	  <div class="container">
 		<div class="split">
 		  <div class="band-teal__stack">
-			<p class="eyebrow eyebrow--on-dark">Built with specialists</p>
-			<h2 id="specialists-h">Occupational therapists, not guesswork</h2>
-			<p class="lede">The companies we worked with understood the brief from the start: the kit has to work for a genuine range of needs, rather than one imagined average guest. Continuity of Care Services takes the same approach if you want support during your stay. The CQC rating of Good is theirs, not Restwell’s.</p>
+			<p class="eyebrow eyebrow--on-dark">Check it yourself</p>
+			<h2 id="specialists-h">The numbers are published so you don’t have to trust us</h2>
+			<p class="lede">Every measurement is on the Accessibility page, including the ones that aren’t flattering. Measure your own chair, your own hoist, your own doorways at home, and compare them. That is what the houses we kept sending people to would never do.</p>
 			<div class="band-teal__actions">
 			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read the access specs</a>
 			  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">Tour the property</a>
 			</div>
 		  </div>
 		  <div class="split__media" data-reveal>
-			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the profiling bed" width="900" height="675" loading="lazy" />
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the profiling bed" width="1600" height="1000" loading="lazy" />
 		  </div>
 		</div>
 	  </div>
@@ -225,9 +243,9 @@ get_template_part(
 	<section class="section-y band-subtle" id="next" aria-labelledby="next-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
-		  <p class="eyebrow">What’s next</p>
-		  <h2 id="next-h">One bungalow so far</h2>
-		  <p class="lede">The next question people usually ask, once they know it works, is whether there’ll be more places like this. We don’t have news yet. If there is a second bungalow, it’ll be built the same way this one was: around the people who’ll actually stay, not around guesswork.</p>
+		  <p class="eyebrow">What we’re trying to do</p>
+		  <h2 id="next-h">Nothing very complicated</h2>
+		  <p class="lede">Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in a single conversation, without anyone having to explain their situation four times to four different people.</p>
 		</header>
 		<p class="lede"><?php esc_html_e( 'Rest Easy, Stay Well.', 'restwell-retreats' ); ?></p>
 	  </div>

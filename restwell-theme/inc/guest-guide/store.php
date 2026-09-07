@@ -171,17 +171,36 @@ function restwell_guest_guide_confirm_read( string $email ): void {
 	// Notify the admin.
 	$notify = (string) get_option( 'restwell_enquiry_notify_email', 'hello@restwellretreats.co.uk' );
 	$site   = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
+	$body = function_exists( 'restwell_email_staff_body' )
+		? restwell_email_staff_body(
+			array(
+				'label'   => __( 'Arrival guide', 'restwell-retreats' ),
+				'heading' => __( 'A guest has read the arrival guide', 'restwell-retreats' ),
+				'rows'    => array(
+					__( 'Guest', 'restwell-retreats' ) => (string) $guest->name,
+					__( 'Email', 'restwell-retreats' ) => (string) $email,
+				),
+				'note'    => __( 'Sent automatically when a guest confirms they have read the arrival guide.', 'restwell-retreats' ),
+				'preview' => __( 'Arrival guide confirmed', 'restwell-retreats' ),
+			)
+		)
+		: sprintf(
+			/* translators: 1: guest name, 2: guest email */
+			__( '%1$s (%2$s) confirmed they have read the guest arrival guide.', 'restwell-retreats' ),
+			$guest->name,
+			$email
+		);
+
+	$headers = function_exists( 'restwell_email_staff_headers' )
+		? restwell_email_staff_headers()
+		: array( 'Content-Type: text/plain; charset=UTF-8' );
+
 	wp_mail(
 		$notify,
 		/* translators: %s: guest display name */
 		sprintf( __( '[%s] Guest confirmed reading the arrival guide', 'restwell-retreats' ), $site ),
-		sprintf(
-			/* translators: 1: guest name, 2: guest email */
-			__( '%1$s (%2$s) confirmed they have read the guest arrival guide.', 'restwell-retreats' ),
-			esc_html( $guest->name ),
-			esc_html( $email )
-		),
-		array( 'Content-Type: text/plain; charset=UTF-8' )
+		$body,
+		$headers
 	);
 }
 

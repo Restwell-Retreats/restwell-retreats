@@ -2269,7 +2269,24 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   /* Prefer photo first when the section’s job is the visual proof */
   .split--media-first > .split__media { order: 1; }
   .split--media-first > *:not(.split__media) { order: 2; }
+
+  /*
+   * Stacked band (below the 900px two-column switch). Every media block pins an
+   * aspect ratio and fills the container, so between roughly 700px and 899px a
+   * 4/3 becomes ~578px tall and a 4/5 over 1000px - the page turns into a stack
+   * of near-full-screen photos. Cap the height and let object-fit crop. Phones
+   * are unaffected: at 375px these are already well under 60vh.
+   */
+  .split__media img,
+  .process__media img,
+  .media-card img {
+    /* Safety net for short viewports, e.g. a phone held landscape. */
+    max-height: 60vh;
+    object-fit: cover;
+  }
 }
+
+
 @media (min-width: 900px) {
   .split {
     --split-gap: var(--space-10);
@@ -2289,6 +2306,22 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   border-radius: var(--radius-lg);
   background: var(--driftwood);
 }
+
+/*
+ * Tablet band: the layout has stacked but the container is still wide, so a
+ * portrait or 4/3 ratio at full width produces a near-full-screen photo (at
+ * 850px a 4/3 measured 771x578, a 4/5 over 1000px tall). Letterbox instead, so
+ * the image stays a supporting element rather than a page of its own. Phones
+ * below 600px keep the taller ratios, which read correctly at that width.
+ */
+@media (min-width: 600px) and (max-width: 899px) {
+  .split__media img,
+  .media-card img {
+    aspect-ratio: 16 / 10;
+  }
+
+}
+
 /* Tall copy column: fill the media cell so the photo matches text height */
 @media (min-width: 900px) {
   .split--cover {
@@ -4851,6 +4884,7 @@ button.availability__num:focus-visible {
   --process-body-gap: var(--space-4);
   --process-item-gap: var(--space-5);
   --process-marker: 2.5rem;
+  --process-figure-size: 2.75rem;
   --process-rail: color-mix(in srgb, var(--deep-teal) 16%, transparent);
   --process-marker-bg: var(--soft-sand);
   --process-marker-fg: var(--deep-teal);
@@ -4882,6 +4916,15 @@ button.availability__num:focus-visible {
   border-radius: 0;
   display: block;
 }
+
+/* Tablet band: see the note by .split__media img. A 4/5 at ~770px wide is over
+   960px tall, so letterbox it once the layout has stacked but is still wide. */
+@media (min-width: 600px) and (max-width: 899px) {
+  .process__media img {
+    aspect-ratio: 3 / 2;
+  }
+}
+
 .process-list {
   --process-rail-x: calc(var(--process-marker) / 2);
   order: 1;
@@ -4894,19 +4937,9 @@ button.availability__num:focus-visible {
   position: relative;
   min-width: 0;
 }
-.process-list::before {
-  content: "";
-  position: absolute;
-  left: var(--process-rail-x);
-  top: calc(var(--process-marker) / 2);
-  bottom: calc(var(--process-marker) / 2);
-  width: 1px;
-  background: var(--process-rail);
-  transform: translateX(-50%);
-}
 .process-list > li {
   display: grid;
-  grid-template-columns: var(--process-marker) minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   column-gap: var(--process-item-gap);
   align-items: start;
   margin: 0;
@@ -4915,25 +4948,27 @@ button.availability__num:focus-visible {
   position: relative;
   z-index: 1;
 }
-.process-list__index {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--process-marker);
-  height: var(--process-marker);
-  border-radius: var(--radius);
-  background: var(--process-marker-bg);
-  color: var(--process-marker-fg);
-  font-family: var(--font-serif);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  box-shadow: 0 0 0 4px var(--white);
+.process-list > li + li {
+  border-top: 1px solid var(--driftwood);
+  padding-top: var(--process-step-gap);
 }
-.process.band-subtle .process-list__index {
-  box-shadow: 0 0 0 4px var(--bg-subtle);
+/*
+ * Margin figure, not a badge. The old rounded tile plus connector read as a
+ * progress stepper - status vocabulary for a section that has no status. The
+ * numeral is decorative texture (aria-hidden); sequence comes from the <ol>.
+ */
+.process-list__index {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--process-figure-size);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 0.85;
+  color: var(--driftwood);
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  user-select: none;
 }
 .process-list__body {
   display: flex;
@@ -4944,19 +4979,20 @@ button.availability__num:focus-visible {
 }
 .process-list h3 {
   margin: 0;
+  order: 1;
   font-size: var(--type-h3);
   color: var(--deep-teal);
   line-height: var(--leading-tight);
 }
 .process-list__meta {
   margin: 0;
-  order: 1;
+  order: 0;
   font-size: var(--type-meta-size);
   font-weight: var(--type-eyebrow-weight);
   letter-spacing: var(--type-eyebrow-tracking);
   text-transform: uppercase;
   line-height: var(--leading-snug);
-  color: var(--muted-grey);
+  color: var(--warm-gold-text);
 }
 .process-list__body > p:not(.process-list__meta) {
   margin: 0;
@@ -4973,6 +5009,7 @@ button.availability__num:focus-visible {
     --process-body-gap: var(--space-4);
     --process-item-gap: var(--space-5);
     --process-marker: 2.75rem;
+  --process-figure-size: 3.75rem;
     --process-after-head: var(--space-12);
   }
   .process__layout {
@@ -5004,7 +5041,7 @@ button.availability__num:focus-visible {
     align-self: start;
   }
   .process-list__index {
-    font-size: var(--text-md);
+    font-size: var(--process-figure-size);
   }
 }
 

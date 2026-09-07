@@ -233,7 +233,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			  <h2 id="care-h">Yes if you want it, and no, you don’t have to</h2>
 			</header>
 			<div class="care__intro-body">
-			  <p class="lede">Plenty of guests bring their own person, or simply manage the way they do at home, and that’s completely fine. If you would like professional home care, Continuity of Care Services can come to you. They’re our sister company, they already know this house, and they’re rated Good by the CQC. One conversation covers both.</p>
+			  <p class="lede">Plenty of guests bring their own person, or simply manage the way they do at home, and that’s completely fine. If you would like professional home care, Continuity of Care Services can come to you. They’re our sister company, in the same office on the same phone, and they’re rated Good by the CQC. One conversation covers both.</p>
 			</div>
 		  </div>
 		  <div class="care__foot">

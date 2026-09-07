@@ -33,6 +33,7 @@ $restwell_crm_modules = array(
 if ( ! defined( 'RESTWELL_CRM_VERSION' ) ) {
 	$restwell_crm_modules[] = 'form-notify.php';
 	$restwell_crm_modules[] = 'emails.php';
+	$restwell_crm_modules[] = 'email-staff.php';
 	$restwell_crm_modules[] = 'mailchimp.php';
 	$restwell_crm_modules[] = 'crm-reminders.php';
 	$restwell_crm_modules[] = 'enquire-handler.php';

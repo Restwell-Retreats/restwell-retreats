@@ -374,15 +374,35 @@ function restwell_handle_enquire_submit(): void {
 		// Rare DB failure: still email staff the payload so nothing is lost.
 		$to      = restwell_get_submission_notify_email();
 		$subject = restwell_mail_staff_subject( 'enquiry_save_failed' );
-		$headers = array_values(
-			array_filter(
+		// This fires when the database insert failed, so keep the raw payload in
+		// the email: it may be the only copy of the enquiry. Degrade to plain
+		// text if the template is unavailable for any reason.
+		if ( function_exists( 'restwell_email_staff_body' ) ) {
+			$fallback_body = restwell_email_staff_body(
 				array(
-					'Content-Type: text/plain; charset=UTF-8',
-					restwell_mail_reply_to_header( $email ),
+					'label'       => __( 'Enquiry not saved', 'restwell-retreats' ),
+					'heading'     => __( 'This enquiry could not be written to the database', 'restwell-retreats' ),
+					'urgent'      => true,
+					'intro'       => __( 'The full submission is below because this email may be the only copy. Please record it manually and check the site logs.', 'restwell-retreats' ),
+					'quote'       => $body,
+					'quote_label' => __( 'Full submission', 'restwell-retreats' ),
+					'note'        => __( 'Sent automatically because the CRM insert returned false.', 'restwell-retreats' ),
+					'preview'     => __( 'An enquiry failed to save', 'restwell-retreats' ),
 				)
-			)
-		);
-		restwell_wp_mail_with_retry( $to, $subject, $body . "\n\n[CRM insert returned false]", $headers );
+			);
+			$fallback_headers = restwell_email_staff_headers( (string) $email );
+		} else {
+			$fallback_body    = $body . "\r\n\r\n[CRM insert returned false]";
+			$fallback_headers = array_values(
+				array_filter(
+					array(
+						'Content-Type: text/plain; charset=UTF-8',
+						restwell_mail_reply_to_header( $email ),
+					)
+				)
+			);
+		}
+		restwell_wp_mail_with_retry( $to, $subject, $fallback_body, $fallback_headers );
 		restwell_enquire_redirect_flash(
 			$redirect,
 			array(

@@ -237,53 +237,55 @@ function restwell_crm_reminder_build_email( object $row, int $stale_hours ): arr
 		admin_url( 'admin.php' )
 	);
 
-	$lines   = array();
-	$lines[] = sprintf(
-		/* translators: %d: number of hours since the enquiry was submitted. */
-		__( 'This enquiry has been sitting in "new" for about %d hours. Please follow up or reassign.', 'restwell-retreats' ),
-		$age_hours
+	$rows = array(
+		__( 'Name', 'restwell-retreats' )  => (string) $row->name,
+		__( 'Email', 'restwell-retreats' ) => (string) $row->email,
 	);
-	$lines[] = '';
-	$lines[] = '— Enquiry summary —';
-	$lines[] = 'Name:    ' . (string) $row->name;
-	$lines[] = 'Email:   ' . (string) $row->email;
 	if ( '' !== (string) $row->phone ) {
-		$lines[] = 'Phone:   ' . (string) $row->phone;
+		$rows[ __( 'Phone', 'restwell-retreats' ) ] = (string) $row->phone;
 	}
 	if ( '' !== (string) $row->preferred_dates ) {
-		$lines[] = 'Dates:   ' . (string) $row->preferred_dates;
+		$rows[ __( 'Dates', 'restwell-retreats' ) ] = (string) $row->preferred_dates;
 	}
 	if ( '' !== (string) $row->num_guests ) {
-		$lines[] = 'Guests:  ' . (string) $row->num_guests;
+		$rows[ __( 'Guests', 'restwell-retreats' ) ] = (string) $row->num_guests;
 	}
-	$lines[] = 'Submitted: ' . mysql2date( 'D j M Y \a\t H:i', (string) $row->submitted_at );
+	$rows[ __( 'Submitted', 'restwell-retreats' ) ] = mysql2date( 'D j M Y \a\t H:i', (string) $row->submitted_at );
 	if ( $urgent ) {
-		$lines[] = 'Urgent:  yes (flagged by guest at submission)';
+		$rows[ __( 'Urgent', 'restwell-retreats' ) ] = __( 'Yes, flagged by the guest at submission', 'restwell-retreats' );
 	}
-	if ( '' !== (string) $row->message ) {
-		$lines[] = '';
-		$lines[] = '— Their message —';
-		$lines[] = wp_strip_all_tags( (string) $row->message );
-	}
-	$lines[] = '';
-	$lines[] = __( 'Open in CRM:', 'restwell-retreats' );
-	$lines[] = $crm_url;
-	$lines[] = '';
-	$lines[] = sprintf(
-		/* translators: %d: stale-threshold hours. */
-		__( '(Auto-sent because the enquiry crossed the %dh stale threshold. You will not be reminded again about this enquiry for at least 24 hours.)', 'restwell-retreats' ),
-		$stale_hours
-	);
 
-	$body    = implode( "\n", $lines );
-	$headers = array_values(
-		array_filter(
-			array(
-				'Content-Type: text/plain; charset=UTF-8',
-				restwell_mail_reply_to_header( (string) $row->email ),
-			)
+	$body = restwell_email_staff_body(
+		array(
+			'label'      => __( 'Needs a follow-up', 'restwell-retreats' ),
+			'heading'    => sprintf(
+				/* translators: %d: enquiry ID. */
+				__( 'Waiting on enquiry #%d', 'restwell-retreats' ),
+				(int) $row->id
+			),
+			'urgent'     => $urgent,
+			'intro'      => sprintf(
+				/* translators: %d: number of hours since the enquiry was submitted. */
+				__( 'It came in about %d hours ago and nobody has picked it up yet. Please follow up or reassign.', 'restwell-retreats' ),
+				$age_hours
+			),
+			'rows'         => $rows,
+			'quote'      => (string) $row->message,
+			'button_url' => $crm_url,
+			'note'       => sprintf(
+				/* translators: %d: stale-threshold hours. */
+				__( 'Sent automatically because this enquiry crossed the %dh stale threshold. You will not be reminded about it again for at least 24 hours.', 'restwell-retreats' ),
+				$stale_hours
+			),
+			'preview'    => sprintf(
+				/* translators: %d: number of hours since the enquiry was submitted. */
+				__( 'Waiting %d hours for a reply', 'restwell-retreats' ),
+				$age_hours
+			),
 		)
 	);
+
+	$headers = restwell_email_staff_headers( (string) $row->email );
 
 	return array(
 		'subject' => $subject,

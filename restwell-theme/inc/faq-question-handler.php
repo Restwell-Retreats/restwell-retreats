@@ -127,48 +127,45 @@ function restwell_handle_faq_question_submit(): void {
 	$subject  = $row_id
 		? restwell_mail_staff_subject( 'faq', (int) $row_id )
 		: restwell_mail_staff_subject( 'faq_save_failed' );
-	$lines    = array(
-		sprintf(
-			/* translators: %s: submitter name */
-			__( 'Name: %s', 'restwell-retreats' ),
-			$name
-		),
-		sprintf(
-			/* translators: %s: submitter email */
-			__( 'Email: %s', 'restwell-retreats' ),
-			$email
-		),
-		sprintf(
-			/* translators: %s: submitter phone */
-			__( 'Phone: %s', 'restwell-retreats' ),
-			$phone
-		),
-		sprintf(
-			/* translators: %s: yes or no */
-			__( 'Marketing updates consent: %s', 'restwell-retreats' ),
-			$marketing_optin ? __( 'Yes (opted in)', 'restwell-retreats' ) : __( 'No (not opted in)', 'restwell-retreats' )
-		),
-		'',
-		__( 'Question:', 'restwell-retreats' ),
-		$message,
-		'',
-		sprintf(
-			/* translators: %s: submission ID */
-			__( 'Saved as submission #%s in the site database.', 'restwell-retreats' ),
-			$row_id ? (string) $row_id : '?'
-		),
+	$rows = array(
+		__( 'Name', 'restwell-retreats' )  => $name,
+		__( 'Email', 'restwell-retreats' ) => $email,
 	);
-	$headers = array_values(
-		array_filter(
-			array(
-				'Content-Type: text/plain; charset=UTF-8',
-				function_exists( 'restwell_mail_reply_to_header' ) ? restwell_mail_reply_to_header( $email ) : ( 'Reply-To: ' . $email ),
-			)
+	if ( '' !== trim( (string) $phone ) ) {
+		$rows[ __( 'Phone', 'restwell-retreats' ) ] = $phone;
+	}
+	$rows[ __( 'Marketing updates', 'restwell-retreats' ) ] = $marketing_optin
+		? __( 'Yes, opted in', 'restwell-retreats' )
+		: __( 'No, not opted in', 'restwell-retreats' );
+
+	$body = restwell_email_staff_body(
+		array(
+			'label'       => __( 'Question from the FAQ page', 'restwell-retreats' ),
+			'heading'     => $row_id
+				? sprintf(
+					/* translators: %d: submission ID. */
+					__( 'Someone asked a question (#%d)', 'restwell-retreats' ),
+					(int) $row_id
+				)
+				: __( 'Someone asked a question', 'restwell-retreats' ),
+			'rows'        => $rows,
+			'quote'       => (string) $message,
+			'quote_label' => __( 'Their question', 'restwell-retreats' ),
+			'note'        => $row_id
+				? sprintf(
+					/* translators: %d: submission ID. */
+					__( 'Saved as submission #%d in the site database. Reply to this email to answer them directly.', 'restwell-retreats' ),
+					(int) $row_id
+				)
+				: __( 'This could not be saved to the database, so this email is the only copy. Reply to it to answer them directly.', 'restwell-retreats' ),
+			'preview'     => __( 'A new question from the FAQ page', 'restwell-retreats' ),
 		)
 	);
 
+	$headers = restwell_email_staff_headers( (string) $email );
+
 	if ( ! $row_id ) {
-		$sent = restwell_wp_mail_with_retry( $to, $subject, implode( "\n", $lines ), $headers );
+		$sent = restwell_wp_mail_with_retry( $to, $subject, $body, $headers );
 		if ( $sent ) {
 			wp_safe_redirect( add_query_arg( 'question_sent', '1', $back ) . '#faq-question-form' );
 		} else {
@@ -183,7 +180,7 @@ function restwell_handle_faq_question_submit(): void {
 		exit;
 	}
 
-	$sent = restwell_wp_mail_with_retry( $to, $subject, implode( "\n", $lines ), $headers );
+	$sent = restwell_wp_mail_with_retry( $to, $subject, $body, $headers );
 	if ( $sent ) {
 		restwell_service_crm_gateway()->mark_faq_notify_sent( $row_id );
 		wp_safe_redirect( add_query_arg( 'question_sent', '1', $back ) . '#faq-question-form' );

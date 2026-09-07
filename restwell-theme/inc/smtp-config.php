@@ -84,3 +84,27 @@ function restwell_phpmailer_smtp_init( $phpmailer ) {
 	}
 }
 add_action( 'phpmailer_init', 'restwell_phpmailer_smtp_init' );
+
+/**
+ * Normalise mail bodies to CRLF line endings.
+ *
+ * RFC 5322 requires CRLF. Our mail bodies are built with bare "\n", which
+ * PHPMailer quoted-printable-encodes as a literal "=0A" rather than treating as
+ * a line break; the MIME body then fails to decode and recipients see raw
+ * "=0A" / "=E2=80=94" / "=E2=94=80" escapes instead of text. Guest mail is the
+ * worst affected because it uses box-drawing rules and curly punctuation.
+ *
+ * Hooked on wp_mail rather than our send wrapper because several senders call
+ * wp_mail() directly and would otherwise bypass the fix.
+ *
+ * @param array $args wp_mail() arguments.
+ * @return array
+ */
+function restwell_mail_normalise_line_endings( $args ) {
+	if ( isset( $args['message'] ) && is_string( $args['message'] ) ) {
+		$message            = str_replace( array( "\r\n", "\r" ), "\n", $args['message'] );
+		$args['message'] = str_replace( "\n", "\r\n", $message );
+	}
+	return $args;
+}
+add_filter( 'wp_mail', 'restwell_mail_normalise_line_endings', 5 );
