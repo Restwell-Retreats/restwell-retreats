@@ -147,7 +147,7 @@ get_template_part(
 		  </header>
 		</div>
 		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker.jpg' ) ); ?>" width="1600" height="1200" loading="lazy" decoding="async" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker.webp' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker.webp' ) ); ?>" width="1600" height="1200" loading="lazy" decoding="async" />
 		</div>
 	  </div>
 	</section>

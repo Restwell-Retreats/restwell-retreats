@@ -246,7 +246,7 @@ function restwell_page_hero_image_url( $post_id = 0 ) {
  */
 function restwell_theme_image_alt_map() {
 	return array(
-		'journey/victoria-walker.jpg'                              => __( 'Victoria Walker cutting the ribbon at the Restwell Retreats bungalow', 'restwell-retreats' ),
+		'journey/victoria-walker.webp'                              => __( 'Victoria Walker cutting the ribbon at the Restwell Retreats bungalow', 'restwell-retreats' ),
 		'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg' => __( 'Colourful beach huts along Tankerton promenade at sunset, Whitstable', 'restwell-retreats' ),
 		'stock/restwell-kent-riverside-brick-house.jpg'             => __( 'Brick house beside a riverside path in Kent', 'restwell-retreats' ),
 		'stock/restwell-whitstable-promenade-golden-hour.jpg'       => __( 'Tankerton promenade at golden hour, Whitstable', 'restwell-retreats' ),
