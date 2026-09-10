@@ -2,7 +2,8 @@
 /**
  * Public booked-nights diary (Pricing).
  *
- * $args['months'] int Months from the current month (default 12).
+ * $args['months'] int Months to render initially (default 2). Further months
+ * are built client-side from data-booked / data-pricing on Next.
  *
  * @package Restwell_Retreats
  */
@@ -18,7 +19,8 @@ if ( ! function_exists( 'restwell_occupancy_is_configured' ) || ! restwell_occup
 $availability_args = wp_parse_args(
 	$args ?? array(),
 	array(
-		'months' => 12,
+		'months'     => 2,
+		'max_months' => 12,
 	)
 );
 
@@ -28,7 +30,8 @@ if ( empty( $occupancy['ok'] ) ) {
 }
 
 $booked_lookup = array_fill_keys( $occupancy['dates'], true );
-$month_count   = max( 1, min( 18, (int) $availability_args['months'] ) );
+$month_count   = max( 1, min( 4, (int) $availability_args['months'] ) );
+$max_months    = max( $month_count, min( 18, (int) $availability_args['max_months'] ) );
 $london        = new DateTimeZone( 'Europe/London' );
 $today         = new DateTime( 'today', $london );
 $today_iso     = $today->format( 'Y-m-d' );
@@ -71,6 +74,35 @@ $week_off   = isset( $pricing['seasons']['off_peak']['full_week'] ) ? (int) $pri
 $week_peak  = isset( $pricing['seasons']['peak']['full_week'] ) ? (int) $pricing['seasons']['peak']['full_week'] : 0;
 $check_in   = isset( $pricing['check_in'] ) ? (string) $pricing['check_in'] : '15:00';
 $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : '11:00';
+
+$pricing_payload = array(
+	'off_mid'   => isset( $pricing['seasons']['off_peak']['midweek_night'] ) ? (int) $pricing['seasons']['off_peak']['midweek_night'] : 0,
+	'off_wknd'  => isset( $pricing['seasons']['off_peak']['weekend_night'] ) ? (int) $pricing['seasons']['off_peak']['weekend_night'] : 0,
+	'peak_mid'  => isset( $pricing['seasons']['peak']['midweek_night'] ) ? (int) $pricing['seasons']['peak']['midweek_night'] : 0,
+	'peak_wknd' => isset( $pricing['seasons']['peak']['weekend_night'] ) ? (int) $pricing['seasons']['peak']['weekend_night'] : 0,
+	'peaks'     => array(),
+);
+if ( ! empty( $pricing['peak_ranges'] ) && is_array( $pricing['peak_ranges'] ) ) {
+	foreach ( $pricing['peak_ranges'] as $range ) {
+		$pricing_payload['peaks'][] = array(
+			's' => isset( $range['start'] ) ? (string) $range['start'] : '',
+			'e' => isset( $range['end'] ) ? (string) $range['end'] : '',
+		);
+	}
+}
+$booked_json   = wp_json_encode( array_values( $occupancy['dates'] ) );
+$pricing_json  = wp_json_encode( $pricing_payload );
+$weekday_short = wp_json_encode(
+	array(
+		__( 'Mo', 'restwell-retreats' ),
+		__( 'Tu', 'restwell-retreats' ),
+		__( 'We', 'restwell-retreats' ),
+		__( 'Th', 'restwell-retreats' ),
+		__( 'Fr', 'restwell-retreats' ),
+		__( 'Sa', 'restwell-retreats' ),
+		__( 'Su', 'restwell-retreats' ),
+	)
+);
 ?>
 <section class="section-y band-subtle" id="availability" aria-labelledby="availability-h">
 	<div class="container">
@@ -84,6 +116,11 @@ $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : 
 			data-enquire-url="<?php echo esc_url( $enquire_url ); ?>"
 			data-week-offpeak="<?php echo esc_attr( (string) $week_off ); ?>"
 			data-week-peak="<?php echo esc_attr( (string) $week_peak ); ?>"
+			data-max-months="<?php echo esc_attr( (string) $max_months ); ?>"
+			data-today="<?php echo esc_attr( $today_iso ); ?>"
+			data-booked="<?php echo esc_attr( is_string( $booked_json ) ? $booked_json : '[]' ); ?>"
+			data-pricing="<?php echo esc_attr( is_string( $pricing_json ) ? $pricing_json : '{}' ); ?>"
+			data-weekdays="<?php echo esc_attr( is_string( $weekday_short ) ? $weekday_short : '[]' ); ?>"
 		>
 			<div class="availability__layout">
 			<div class="availability__card">
@@ -280,7 +317,7 @@ $check_out  = isset( $pricing['check_out'] ) ? (string) $pricing['check_out'] : 
 						</span>
 					</div>
 				</div>
-				<p class="availability__stay-prompt" data-availability-prompt><?php esc_html_e( 'Tap a night to start.', 'restwell-retreats' ); ?></p>
+				<p class="availability__stay-prompt" data-availability-prompt><?php esc_html_e( 'Tap your arrival date.', 'restwell-retreats' ); ?></p>
 				<div class="availability__quote" data-availability-quote hidden>
 					<p class="availability__stay-count" data-availability-count></p>
 					<dl class="availability__breakdown" data-availability-breakdown>

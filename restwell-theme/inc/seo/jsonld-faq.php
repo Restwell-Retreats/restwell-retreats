@@ -153,7 +153,7 @@ function restwell_get_faq_page_default_pairs() {
 		),
 		array(
 			'q'   => 'Can we add home care?',
-			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
+			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Care is quoted separately from the bungalow. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
 			'cat' => 'care',
 		),
 		array(
@@ -273,6 +273,17 @@ function restwell_output_jsonld_pricing_faq() {
  * @return array<int, array{q: string, a: string}>
  */
 function restwell_get_resources_faq_pairs() {
+	$page_id = 0;
+	$page    = get_page_by_path( 'funding-and-support', OBJECT, 'page' );
+	if ( $page instanceof WP_Post ) {
+		$page_id = (int) $page->ID;
+	}
+
+	$complaints_a = 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.';
+	if ( $page_id > 0 && function_exists( 'restwell_page_content_text' ) ) {
+		$complaints_a = restwell_page_content_text( $page_id, 'res_complaints_body', $complaints_a );
+	}
+
 	return array(
 		array(
 			'q' => 'Can NHS Continuing Healthcare funding be used for a holiday?',
@@ -296,7 +307,7 @@ function restwell_get_resources_faq_pairs() {
 		),
 		array(
 			'q' => 'What if my funding application is refused?',
-			'a' => 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
+			'a' => $complaints_a,
 		),
 	);
 }

@@ -13,7 +13,8 @@
   --muted-grey: #3A5A63;
   --body-secondary: #2d4a52;
   --white: #fff;
-  --bg-subtle: #F8FAFA;
+  /* Warm wash (not cold grey-green) so alternating bands stay coastal, not clinical */
+  --bg-subtle: color-mix(in srgb, var(--soft-sand) 38%, #F7F9F9);
 
   /* Dedicated dark ink for text ON gold fills — #1B4D5C on #D4A853 measures ~4.2:1,
      which fails WCAG AA (4.5:1) at the button's actual 15px/600 size. This measures ~6.2:1. */
@@ -65,6 +66,9 @@
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
+  /* Display/serif: regular weight (never bold Lora). Italic only via rare emphasis rules. */
+  --type-display-weight: var(--weight-regular);
+  --type-display-style: normal;
 
   /* 3. Semantic roles */
   --type-body-size: var(--text-base);
@@ -89,7 +93,8 @@
    * rem coefficient below fits the previous pure-vw curve to a 400–1200px
    * fluid range, matching --type-display's existing rem+vw pattern.
    */
-  --type-h1: clamp(var(--text-3xl), 1.15rem + 2.8vw, 3.25rem);
+  /* Mobile floor 2.25rem (was 1.85) — hero display was only ~1.74× body @390 */
+  --type-h1: clamp(2.25rem, 1.2rem + 4.2vw, 3.25rem);
   --type-h2: clamp(var(--text-2xl), 1.175rem + 1.3vw, 2.15rem);
   --type-h3: clamp(var(--text-lg), 1.038rem + 0.35vw, 1.3rem);
   --type-display: clamp(2.75rem, 2rem + 2vw, 3.75rem);
@@ -249,7 +254,10 @@
   --rw-measure-care: min(48rem, 100%);
 
   --radius: 0.75rem;
+  --radius-sm: 0.5rem;
   --radius-lg: 1.15rem;
+  /* Buttons / fields — not stadium pills (chips keep 999px) */
+  --radius-control: 0.65rem;
 
   /* Stacking scale — global layers only (things that can plausibly stack
    * against OTHER components on the page). Values of 1–3 used elsewhere to
@@ -279,7 +287,7 @@
   --hero-measure: min(34rem, 100%);
   --hero-title-measure: min(14em, 100%);
   --hero-content-measure: min(40rem, 100%);
-  --hero-min-h: min(70svh, 34rem);
+  --hero-min-h: min(78svh, 38rem);
   /* Concept review banner removed — keep token at 0 so offsets stay consistent */
   --banner-h: 0px;
   /* Header padding (space-4 × 2) + nav/toggle row (2.75rem) */
@@ -317,7 +325,7 @@
     --hero-copy-gap: var(--rhythm-hero-copy-2);
     --hero-cta-gap: var(--rhythm-hero-cta-2);
     --hero-min-h: min(90svh, 50rem);
-    /* Keep in sync with .site-header: pad-block + 2.75rem nav row (was 4.5 — clipped subnav) */
+    /* Keep in sync with .site-header: pad-block + 2.75rem nav row */
     --header-offset: 4.75rem;
     /* Let the lede/tldr measure breathe with the viewport instead of
        staying pinned at the mobile 34rem cap — it was reading noticeably
@@ -338,6 +346,8 @@
     --hero-min-h: min(92svh, 54rem);
     --hero-interior-min-h: min(42svh, 26rem);
     --hero-measure: clamp(34rem, 50vw, 46rem);
+    /* Measured header height ~83px once desktop nav+Enquire show */
+    --header-offset: 5.2rem;
   }
 }
 
@@ -383,6 +393,8 @@ html {
   /* Match hero top so rubber-band overscroll doesn’t flash a random void colour */
   background: var(--deep-teal);
   overscroll-behavior-y: none;
+  /* Free-scroll + hash jumps clear the fixed header (and sticky subnav when set) */
+  scroll-padding-top: calc(var(--banner-h) + var(--header-offset) + var(--subnav-h) + var(--space-3));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -417,13 +429,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* In-page anchors clear the fixed header (+ optional concept banner). */
 section[id],
-div[id] {
+div[id],
+#main-content h2[id],
+#main-content [id] {
   scroll-margin-top: calc(var(--banner-h) + var(--header-offset) + var(--space-3));
 }
 /* Sticky .subnav sits under the header — give jump targets extra room. */
 .subnav ~ section[id],
 .subnav ~ section .info-card[id],
-.subnav ~ section .funding-route[id] {
+.subnav ~ section .funding-route[id],
+.subnav ~ #main-content h2[id],
+body:has(.subnav) #main-content h2[id],
+body:has(.subnav) #main-content [id] {
   scroll-margin-top: calc(var(--banner-h) + var(--header-offset) + var(--subnav-h) + var(--space-3));
 }
 
@@ -572,15 +589,32 @@ div[id] {
 
 h1, h2, h3 {
   font-family: var(--font-serif);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
+  font-style: normal;
   line-height: var(--leading-tight);
   letter-spacing: -0.02em;
   margin: 0;
   text-wrap: balance;
 }
-h1 { font-size: var(--type-h1); }
+h1 {
+  font-size: var(--type-h1);
+}
 h2 { font-size: var(--type-h2); }
 h3 { font-size: var(--type-h3); }
+
+/* Guest quotes use Inter roman — Lora italic reads as “editorialised” guest voice.
+   Decorative marks may stay serif; the words themselves match body UI. */
+.pull-quote__text,
+.testimonial-card__quote,
+.quote-block__text {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-weight: var(--weight-regular);
+}
+blockquote:not(.pull-quote__text):not(.testimonial-card__quote):not(.quote-block__text) {
+  font-style: italic;
+  font-weight: var(--type-display-weight);
+}
 
 .lede {
   color: var(--muted-grey);
@@ -646,11 +680,12 @@ blockquote:not(.pull-quote__text),
   gap: var(--space-2);
   min-height: 2.75rem;
   padding: var(--space-3) var(--space-5);
-  border-radius: 999px;
-  font-size: var(--type-ui-size);
-  font-weight: var(--type-ui-weight);
+  border-radius: var(--radius-control);
   text-decoration: none;
   border: 2px solid transparent;
+  /* Buttons inherited body 400, which reads underweight against the label
+     size; carry a consistent semibold across every button (design-audit c3). */
+  font-weight: var(--weight-semibold);
   cursor: pointer;
   touch-action: manipulation;
   transition: transform var(--duration-fast) ease, background var(--duration-fast) ease, border-color var(--duration-fast) ease;
@@ -798,7 +833,8 @@ button.text-link {
 .logo {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: 500;
+  font-weight: var(--type-display-weight);
+  font-style: normal;
   letter-spacing: -0.02em;
   color: var(--white);
   text-decoration: none;
@@ -832,11 +868,10 @@ button.text-link {
   align-items: center;
   gap: var(--space-3);
 }
-/* Below 1024px the mobile nav panel has its own full-width "Send an enquiry" button,
-   so showing this one too — sat right next to the close icon — just duplicated it
-   and cluttered the bar. One clear CTA per state instead of two competing for space. */
+/* Below 900px the mobile nav panel owns Enquire. From 900px show the header
+   chip so tablet widths are not a one-handed reach failure waiting for 1024. */
 .site-header__actions .btn-gold { display: none; }
-@media (min-width: 1024px) {
+@media (min-width: 900px) {
   .site-header__actions .btn-gold { display: inline-flex; }
 }
 
@@ -1008,9 +1043,11 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  /* Lighter at the top so coastal / bungalow photos read as photos;
-     keep the lower band strong enough for white H1 + lede contrast. */
-  background: linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.48) 50%, rgba(12, 35, 42, 0.74) 100%);
+  /* Left column for copy + light top tint for the header. Photo stays open
+     on the right — no muddy full-frame wash. */
+  background:
+    linear-gradient(105deg, rgba(12, 35, 42, 0.82) 0%, rgba(12, 35, 42, 0.58) 32%, rgba(12, 35, 42, 0.22) 58%, rgba(12, 35, 42, 0.06) 100%),
+    linear-gradient(180deg, rgba(12, 35, 42, 0.35) 0%, rgba(12, 35, 42, 0.08) 28%, rgba(12, 35, 42, 0.12) 62%, rgba(12, 35, 42, 0.45) 100%);
 }
 /* Enquire (and similar pale-sky photos): darken the copy column, keep the photo. */
 .hero--overlay-heavy .hero__media::after {
@@ -1087,6 +1124,7 @@ body.nav-open { overflow: hidden; }
      --hero-measure (34rem), which quietly overrode this and forced long
      interior titles into an uneven 3-line wrap on desktop. */
   max-width: var(--hero-title-measure);
+  text-shadow: 0 1px 2px rgba(12, 35, 42, 0.45), 0 8px 24px rgba(12, 35, 42, 0.28);
 }
 .hero__text p {
   color: rgba(255, 255, 255, 0.92);
@@ -1097,6 +1135,7 @@ body.nav-open { overflow: hidden; }
   text-align-last: auto;
   text-justify: auto;
   word-spacing: normal;
+  text-shadow: 0 1px 2px rgba(12, 35, 42, 0.4);
 }
 .hero__tldr {
   color: rgba(255, 255, 255, 0.9);
@@ -1110,49 +1149,73 @@ body.nav-open { overflow: hidden; }
   flex-wrap: wrap;
   gap: var(--hero-cta-gap);
 }
+/* Photo hero owns a larger display size than interior text heroes: the global
+   --type-h1 caps at 3.25rem, which read timid on the full-bleed coastal image
+   at 1440px+. Scoped so interior heroes keep the standard h1 (design-audit c1). */
+.hero:not(.hero--interior) h1 {
+  font-size: clamp(2.25rem, 1.2rem + 4.2vw, 3.6rem);
+}
 .hero__note {
   font-size: var(--text-sm);
-  color: rgba(255, 255, 255, 0.72);
+  /* Sits over the photo's lower scrim; 0.72 dropped under 4.5:1 over lighter
+     crops. 0.88 clears it while staying visibly secondary (design-audit c5). */
+  color: rgba(255, 255, 255, 0.88);
 }
 .hero__scroll-hint { display: none; }
 
 /*
- * Hero — mobile layout only (centering, measures, media).
- * Padding / gaps / min-height come from rhythm tokens above.
+ * Hero — mobile: bottom-left composition so the photo reads above the copy.
+ * Centred mid-stack + even wash was the clunky template look.
  */
 @media (max-width: 767px) {
   .hero {
-    align-items: stretch;
+    align-items: flex-end;
   }
   .hero__media::after {
-    background: linear-gradient(180deg, rgba(12, 35, 42, 0.48) 0%, rgba(12, 35, 42, 0.42) 45%, rgba(12, 35, 42, 0.68) 100%);
+    /* Bottom-weighted only — upper ~half of photo stays visible. */
+    background: linear-gradient(
+      180deg,
+      rgba(12, 35, 42, 0.12) 0%,
+      rgba(12, 35, 42, 0.2) 42%,
+      rgba(12, 35, 42, 0.72) 78%,
+      rgba(12, 35, 42, 0.86) 100%
+    );
   }
   .hero--overlay-heavy .hero__media::after {
-    background: linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.36) 40%, rgba(12, 35, 42, 0.52) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(12, 35, 42, 0.14) 0%,
+      rgba(12, 35, 42, 0.28) 48%,
+      rgba(12, 35, 42, 0.78) 100%
+    );
   }
   .hero__media:not(:has(.hero__media-img)) {
     background:
-      linear-gradient(180deg, rgba(12, 35, 42, 0.48) 0%, rgba(12, 35, 42, 0.42) 45%, rgba(12, 35, 42, 0.68) 100%),
+      linear-gradient(180deg, rgba(12, 35, 42, 0.2) 0%, rgba(12, 35, 42, 0.55) 55%, rgba(12, 35, 42, 0.82) 100%),
       url('../images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
   }
+  .hero__media-img {
+    object-position: center 35%;
+  }
   .hero__content {
-    margin-inline: auto;
+    margin-inline: 0;
     margin-top: 0;
     width: 100%;
     max-width: 100%;
     min-height: calc(var(--hero-min-h) - var(--banner-h));
-    align-items: center;
-    text-align: center;
-    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: flex-end;
   }
   /* Interior hero has no photo/CTAs to justify the photo-hero's height —
      content-sized below lg, per --hero-interior-min-h. */
   .hero.hero--interior .hero__content {
     min-height: calc(var(--hero-interior-min-h) - var(--banner-h));
+    justify-content: center;
   }
   .hero__text {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     width: 100%;
     max-width: min(26rem, 100%);
   }
@@ -1160,12 +1223,12 @@ body.nav-open { overflow: hidden; }
     max-width: none;
   }
   .hero__text p {
-    margin-inline: auto;
+    margin-inline: 0;
     max-width: 22rem;
     font-size: var(--type-lede-size);
     line-height: var(--type-lede-leading);
-    text-align: center;
-    text-align-last: center;
+    text-align: left;
+    text-align-last: left;
     text-justify: auto;
     word-spacing: normal;
     hyphens: manual;
@@ -1176,23 +1239,37 @@ body.nav-open { overflow: hidden; }
     width: 100%;
     max-width: 18rem;
   }
-  /* One clear action on mobile — live site validated this: secondary CTA and
-     the reassurance line both hidden ≤767px in favour of a single full-width
-     primary and a "scroll to explore" cue. Both reappear at ≥768px. */
-  .hero__ctas .btn-outline-light { display: none; }
+  /* One clear primary on mobile; secondary demotes to a text-link (real href to
+     /the-property/), not a scroll-only cue. Scroll-hint stays hidden. */
+  .hero__ctas .btn-outline-light {
+    display: inline-flex;
+    width: auto;
+    align-self: flex-start;
+    min-height: var(--tap-target, 2.75rem);
+    padding: var(--space-2) var(--space-1);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: var(--type-ui-weight);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: rgba(255, 255, 255, 0.45);
+  }
+  .hero__ctas .btn-outline-light:hover {
+    background: transparent;
+    color: var(--white);
+    text-decoration-color: var(--white);
+    transform: none;
+  }
   .hero__note { display: none; }
-  .hero__ctas .btn {
+  .hero__ctas .btn-gold {
     width: 100%;
     min-height: 2.75rem;
   }
   .hero__scroll-hint {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    max-width: 18rem;
-    margin: 0;
-    padding-top: var(--space-4);
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    display: none;
   }
   .hero__scroll-link {
     display: flex;
@@ -1851,7 +1928,15 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 
 /* Shared interior utilities */
-.band-subtle { background: var(--bg-subtle); }
+.band-subtle {
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--soft-sand) 55%, var(--white)) 0%,
+      var(--bg-subtle) 42%,
+      color-mix(in srgb, var(--driftwood) 22%, var(--white)) 100%
+    );
+}
 .band-white { background: var(--white); }
 .band-teal {
   /* Soft depth — flat teal reads as a slab on mobile */
@@ -1911,6 +1996,14 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   flex-direction: column;
   gap: var(--band-teal-stack-gap);
   max-width: 40rem;
+}
+/* Sentence + link tease (full Continuity panel lives on /optional-care/) */
+.band-teal__stack--tease {
+  max-width: var(--rw-measure-care, 36rem);
+  gap: var(--space-3);
+}
+.band-teal__stack--tease .lede {
+  margin: 0;
 }
 /* Stack gap owns spacing — kill utility sibling margins that double it */
 .band-teal__stack > * { margin-top: 0; }
@@ -2140,6 +2233,14 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   font-size: var(--text-base);
   line-height: 1.65;
 }
+.persona-list__item p + p,
+.persona-list__item p + .checklist,
+.persona-list__item .checklist + p {
+  margin-top: var(--space-3);
+}
+.persona-list__item .checklist {
+  margin: 0;
+}
 .section-head + .persona-list { margin-top: var(--space-2); }
 
 /*
@@ -2249,6 +2350,90 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   line-height: 1.65;
 }
 
+/*
+ * Accessibility room-by-room: one hero photo + lightbox for the rest.
+ */
+.section-head + .room-access__toc {
+  margin-top: var(--section-stack-gap); /* follow-on under the room intro */
+}
+.room-access__media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.room-access__photo {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.room-access__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--driftwood);
+}
+.room-access__photo:focus-visible {
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .room-access__photo:hover img {
+    transform: scale(1.02);
+  }
+  .room-access__photo img {
+    transition: transform var(--duration-base) ease;
+  }
+}
+.room-access__hint {
+  margin: 0;
+  color: var(--muted-grey);
+  font-size: var(--type-meta-size);
+  line-height: var(--leading-snug);
+}
+.room-access__copy .checklist {
+  margin-top: 0;
+}
+.room-access__more-kit {
+  margin-top: var(--space-4); /* disclosure under the summary checklist */
+}
+.room-access__more-kit > summary {
+  cursor: pointer;
+  color: var(--deep-teal);
+  font-weight: 600;
+  list-style: none;
+}
+.room-access__more-kit > summary::-webkit-details-marker {
+  display: none;
+}
+.room-access__more-kit > summary::marker {
+  content: "";
+}
+.room-access__more-kit > summary:focus {
+  outline: none;
+}
+.room-access__more-kit > summary:focus-visible {
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.room-access__more-kit > summary::before {
+  content: "+ ";
+  font-weight: 700;
+}
+.room-access__more-kit[open] > summary::before {
+  content: "− ";
+}
+.room-access__more-kit .checklist {
+  margin-top: var(--space-3); /* kit lines under the summary control */
+}
+
 .split {
   --split-gap: var(--space-5);
   display: grid;
@@ -2269,6 +2454,9 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   /* Prefer photo first when the section’s job is the visual proof */
   .split--media-first > .split__media { order: 1; }
   .split--media-first > *:not(.split__media) { order: 2; }
+  /* Room-by-room: photo-led proof before the checklist on phone */
+  .room-access .split > .split__media { order: 1; }
+  .room-access .split > *:not(.split__media) { order: 2; }
 
   /*
    * Stacked band (below the 900px two-column switch). Every media block pins an
@@ -2374,23 +2562,32 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 
 /* Walk times / key figures — open stack, no card chrome.
    Dividers only between items — outer top/bottom borders floated in section
-   padding and read as stray hairlines (esp. after a subnav). */
+   padding and read as stray hairlines (esp. after a subnav).
+   Grid targets the <dl>: .stat children live there, not on .stat-row. */
 .stat-row {
   --stat-row-gap: 0;
   --stat-pad-y: var(--space-4);
+}
+.stat-row dl {
+  margin: 0;
   display: grid;
   gap: var(--stat-row-gap);
 }
-.stat-row dl { margin: 0; }
 .stat {
   padding: var(--stat-pad-y) 0;
   border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  display: flex;
+  flex-direction: column;
 }
 .stat:last-child { border-bottom: 0; }
+/* HTML is <dt> then <dd>; lead with the figure on every breakpoint. */
+.stat__value { order: -1; }
 @media (min-width: 700px) {
   .stat-row {
     --stat-row-gap: var(--space-6);
     --stat-pad-y: var(--space-5);
+  }
+  .stat-row dl {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .stat {
@@ -2418,8 +2615,6 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     column-gap: var(--space-3);
     align-items: baseline;
   }
-  /* dt prints before dd; keep the value leading the row */
-  .stat__value { order: -1; }
   .stat__value {
     margin: 0;
     font-size: var(--text-lg);
@@ -2528,7 +2723,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   color: var(--deep-teal);
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: 600;
+  font-weight: var(--type-display-weight);
   line-height: 1.2;
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -2647,7 +2842,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-lg);
-  font-weight: 600;
+  font-weight: var(--type-display-weight);
   color: var(--deep-teal);
 }
 .fit-check__summary--tight { color: var(--warm-gold-text); }
@@ -2733,7 +2928,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: 600;
+  font-weight: var(--type-display-weight);
   color: var(--deep-teal);
 }
 .width-guide__lede,
@@ -2836,7 +3031,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--fact-dt-size);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
   color: var(--deep-teal);
   line-height: var(--leading-tight);
   font-variant-numeric: tabular-nums;
@@ -3289,7 +3484,7 @@ body:has(.subnav) {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
 }
@@ -3456,7 +3651,7 @@ body:has(.subnav) {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
 }
@@ -3681,7 +3876,7 @@ body:has(.subnav) {
 .data-table--rates .is-price,
 .data-table .is-price {
   font-family: var(--font-serif);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
   font-size: var(--rates-price-size, var(--text-lg));
   color: var(--deep-teal);
   font-variant-numeric: tabular-nums;
@@ -3892,9 +4087,8 @@ body:has(.subnav) {
   line-height: var(--leading-snug);
 }
 
-/* Peak season dates — disclosure. Reads as a clear control (not a caption):
-   teal border, gold action chip, larger chevron. Guests must not miss which
-   calendar windows are peak before they enquire. */
+/* Peak season dates — disclosure. Clear control, not a second primary CTA:
+   teal border + outline action chip (gold reserved for Enquire). */
 .peak-dates {
   --peak-list-mt: var(--space-3);
   --peak-item-pad-y: var(--space-2);
@@ -3906,7 +4100,6 @@ body:has(.subnav) {
   padding: 0;
   border-radius: var(--radius-lg);
   background: var(--white);
-  /* Hairline border keeps the disclosure quiet — the gold chip is the loud part. */
   border: 1px solid color-mix(in srgb, var(--deep-teal) 25%, transparent);
   box-shadow: 0 4px 18px rgb(15 35 42 / 0.06);
 }
@@ -3928,6 +4121,20 @@ body:has(.subnav) {
 @media (hover: hover) {
   .peak-dates__summary:hover { background: color-mix(in srgb, var(--deep-teal) 4%, var(--white)); }
 }
+/* ≤430: stack the action under the copy so it doesn't collide with .scroll-top (fixed BR). */
+@media (max-width: 430px) {
+  .peak-dates__summary {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "hint"
+      "action";
+    row-gap: var(--space-3);
+  }
+  .peak-dates__summary-action {
+    justify-self: start;
+  }
+}
 .peak-dates__summary:focus { outline: none; }
 .peak-dates__summary:focus-visible {
   outline: 3px solid var(--warm-gold);
@@ -3935,7 +4142,7 @@ body:has(.subnav) {
 }
 .peak-dates__summary::-webkit-details-marker { display: none; }
 .peak-dates__summary::marker { content: ""; }
-/* Gold action chip — “Show dates” must read as the interactive affordance. */
+/* Outline chip — interactive affordance without competing with Enquire gold. */
 .peak-dates__summary-action {
   grid-area: action;
   display: inline-flex;
@@ -3943,19 +4150,20 @@ body:has(.subnav) {
   gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   min-height: 2.75rem;
-  border-radius: 999px;
-  background: var(--warm-gold);
-  color: var(--ink-on-gold);
+  border-radius: var(--radius-control, 0.65rem);
+  background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
+  color: var(--deep-teal);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 28%, transparent);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-tight);
   white-space: nowrap;
-  box-shadow: 0 1px 0 rgb(15 35 42 / 0.08);
 }
 @media (hover: hover) {
   .peak-dates__summary:hover .peak-dates__summary-action,
   .peak-dates__summary:focus-visible .peak-dates__summary-action {
-    background: var(--warm-gold-hero);
+    background: color-mix(in srgb, var(--deep-teal) 10%, var(--white));
+    border-color: color-mix(in srgb, var(--deep-teal) 42%, transparent);
   }
 }
 .peak-dates .peak-dates__action-open { display: inline; }
@@ -3982,7 +4190,7 @@ body:has(.subnav) {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--peak-title-size);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
   line-height: var(--leading-tight);
   letter-spacing: -0.015em;
   color: var(--deep-teal);
@@ -3996,7 +4204,6 @@ body:has(.subnav) {
 .peak-dates__list {
   display: grid;
   gap: 0;
-  /* List lives inside the card now the padding moved onto the summary */
   margin: 0;
   padding: var(--space-2) var(--space-5) var(--space-4);
   list-style: none;
@@ -4028,8 +4235,17 @@ body:has(.subnav) {
 .peak-dates__range {
   min-width: 0;
   color: var(--deep-teal);
-  /* Allow wrap so open peak can't force .rates-block wider than max-width */
   white-space: normal;
+}
+/* Open list is long on phones (7 seasons) — tighten via token remap. */
+@media (max-width: 639px) {
+  .peak-dates {
+    /* Justification: open disclosure was 533px / 844vh (~63%); keep rows scannable, cut dead pad. */
+    --peak-item-pad-y: var(--space-1);
+  }
+  .peak-dates__list {
+    padding-block: var(--space-1) var(--space-3);
+  }
 }
 @media (min-width: 640px) {
   .peak-dates__list {
@@ -4042,6 +4258,10 @@ body:has(.subnav) {
   }
   .peak-dates__list li:nth-last-child(2):nth-child(odd) {
     border-bottom: 0;
+  }
+  /* 7 seasons → orphan on last row; span full width so it doesn’t float half-empty. */
+  .peak-dates__list li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 }
 
@@ -4140,7 +4360,7 @@ body:has(.subnav) {
   align-items: flex-start;
   gap: var(--space-1);
   font-family: var(--font-serif);
-  font-weight: var(--weight-medium);
+  font-weight: var(--type-display-weight);
   font-size: var(--rates-examples-price-size);
   color: var(--deep-teal);
   font-variant-numeric: tabular-nums;
@@ -4773,7 +4993,7 @@ button.availability__num:focus-visible {
   background: var(--deep-teal);
 }
 .availability__enquiry h3 {
-  margin: 0 2rem var(--space-2) 0;
+  margin: 0 2.75rem var(--space-2) 0; /* fixed chrome: clear absolute close control */
   color: var(--deep-teal);
   font-family: var(--font-display);
   font-size: var(--type-h3);
@@ -5080,6 +5300,7 @@ fieldset.form-stack {
 .form-legend {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
+  font-weight: var(--type-display-weight);
   margin-bottom: var(--space-2);
   padding: 0;
   color: var(--deep-teal);
@@ -5620,14 +5841,41 @@ fieldset.form-stack {
 .care {
   background: var(--white);
 }
+/* Home tease: one sharp line + link (full panel lives on /optional-care/) */
+.care--tease .care__tease {
+  /* Flattened from a tinted, bordered panel to open text: it's a single tease
+     on white, not a card, and the box read as mild card-itis (design-audit c12). */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: var(--rw-measure-care);
+  margin-inline: auto;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+.care--tease .care__tease h2 {
+  font-size: var(--type-h3);
+  font-weight: var(--weight-semibold);
+}
+.care--tease .care__tease .lede {
+  margin: 0;
+  color: color-mix(in srgb, var(--deep-teal) 78%, transparent);
+}
 .care__panel {
   --care-panel-gap: var(--space-8);
   --care-type-pad-y: var(--space-5);
   --care-type-pad-x: 0;
   --care-foot-gap: var(--space-5);
+  --care-panel-pad: var(--panel-pad);
   display: flex;
   flex-direction: column;
   gap: var(--care-panel-gap);
+  padding: var(--care-panel-pad);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--soft-sand) 32%, var(--white));
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
 }
 .care__intro .section-head {
   margin-bottom: var(--space-4);
@@ -5682,6 +5930,7 @@ fieldset.form-stack {
     --care-type-pad-y: 0;
     --care-type-pad-x: var(--space-6);
     --care-foot-gap: var(--space-6);
+    --care-panel-pad: var(--rhythm-panel-3);
   }
   .care__types {
     grid-template-columns: repeat(3, 1fr);
@@ -6245,21 +6494,18 @@ body.lightbox-open {
     flex-direction: column;
   }
   /*
-   * Photo used to lead here (order:-1) and bleed straight off the hero's own
-   * full-bleed photo below it — a hard, unlabelled cut from a dark scrim
-   * coastline shot into a bright house exterior. Flipping to text-first
-   * (matching desktop) gives the section a heading before any image.
+   * Text-first here (matching desktop) so the section has a heading before any
+   * image, and the house photo doesn't butt straight onto the hero's own
+   * full-bleed coastline shot. Order now comes from source order (copy before
+   * media in the DOM) rather than flex `order`, so source = visual = SR order
+   * (design-audit c8).
    */
   .property__media-wrap {
-    order: 0;
     width: calc(100% + (2 * var(--rw-gutter-x)));
     margin-inline: calc(-1 * var(--rw-gutter-x));
     min-height: 13rem;
     aspect-ratio: 16 / 10;
     border-radius: 0;
-  }
-  .property__copy {
-    order: -1;
   }
   .property__cta-row {
     flex-direction: column;
@@ -6281,14 +6527,12 @@ body.lightbox-open {
     align-items: center;
   }
   .property__media-wrap {
-    order: 0;
     min-height: 22rem;
     aspect-ratio: auto;
     height: 100%;
     border-radius: var(--radius-lg);
   }
   .property__copy {
-    order: -1;
     max-width: none;
   }
 }
@@ -6359,7 +6603,7 @@ body.lightbox-open {
   gap: var(--space-2);
   padding-block: var(--comparison-item-pad-y);
   padding-inline: var(--comparison-item-pad-x);
-  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 8%, var(--driftwood));
 }
 .comparison-list__item:first-child { padding-top: 0; }
 .comparison-list__item:last-child {
@@ -6399,7 +6643,7 @@ body.lightbox-open {
   }
   .comparison-list__item {
     border-bottom: 0;
-    border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--deep-teal) 8%, var(--driftwood));
   }
   .comparison-list__item:first-child {
     padding-left: 0;
@@ -6551,7 +6795,8 @@ body.lightbox-open {
   gap: var(--space-4);
   flex: 1 1 auto;
   margin: 0;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
+  font-style: normal;
   font-size: var(--text-base);
   line-height: var(--leading-body);
   color: var(--body-secondary);
@@ -6585,8 +6830,8 @@ body.lightbox-open {
 
 /*
  * Pull-quote — a single featured review dropped into a plain band, no card.
- * Big serif mark + serif text gives it a different texture to every other
- * section on the page instead of one more box in a grid.
+ * Serif decorative mark + Inter body keeps guest words looking like speech,
+ * not Restwell display copy.
  *
  * Isolated mid-page copy sits in the measure with equal air on both
  * container walls (not parked on the left rail). text-align must be set on
@@ -6596,12 +6841,18 @@ body.lightbox-open {
 .pull-quote {
   --pull-quote-gap: var(--space-4);
   --pull-quote-measure: 38rem;
+  --pull-quote-pad-y: var(--space-6);
+  --pull-quote-pad-x: var(--space-5);
   width: min(var(--pull-quote-measure), 100%);
   margin-inline: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--pull-quote-gap);
+  padding-block: var(--pull-quote-pad-y);
+  padding-inline: var(--pull-quote-pad-x);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--soft-sand) 45%, transparent);
   text-align: center;
 }
 .pull-quote__mark {
@@ -6614,9 +6865,10 @@ body.lightbox-open {
 }
 .pull-quote__text {
   margin: 0;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: var(--type-display-sm);
-  font-weight: 500;
+  font-weight: var(--weight-regular);
+  font-style: normal;
   line-height: 1.55;
   color: var(--deep-teal);
   text-align: center;
@@ -6886,9 +7138,9 @@ body.lightbox-open {
 
 /* First-party cookie banner — PECR analytics choice. z-cookie sits under skip-link. */
 .cookie-banner {
-  --cookie-banner-pad-y: var(--space-4);
-  --cookie-banner-gap: var(--space-4);
-  --cookie-banner-actions-gap: var(--space-3);
+  --cookie-banner-pad-y: var(--space-3);
+  --cookie-banner-gap: var(--space-3);
+  --cookie-banner-actions-gap: var(--space-2);
   position: fixed;
   z-index: var(--z-cookie);
   left: 0;
@@ -6900,7 +7152,7 @@ body.lightbox-open {
     calc(var(--cookie-banner-pad-y) + env(safe-area-inset-bottom))
     max(var(--rw-gutter-x), env(safe-area-inset-right));
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
-  max-height: 70vh;
+  max-height: 40vh;
   overflow-y: auto;
 }
 .cookie-banner[hidden] {
@@ -6915,17 +7167,17 @@ body.lightbox-open {
   margin-inline: auto;
 }
 .cookie-banner__title {
-  margin: 0 0 var(--space-2);
+  margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-snug);
   color: var(--white);
 }
 .cookie-banner__text {
   margin: 0;
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-leading);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
   color: rgba(255, 255, 255, 0.9);
 }
 .cookie-banner__link {
@@ -6937,15 +7189,44 @@ body.lightbox-open {
 }
 .cookie-banner__actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--cookie-banner-actions-gap);
+}
+.cookie-banner__actions .btn {
+  flex: 1 1 0;
+  min-height: 2.5rem;
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
 }
 .cookie-banner .btn:focus-visible {
   outline-color: var(--warm-gold-hero);
 }
+/* Phones: one compact row — title + short line + side-by-side actions */
+@media (max-width: 430px) {
+  .cookie-banner {
+    --cookie-banner-pad-y: var(--space-2);
+    --cookie-banner-gap: var(--space-2);
+    max-height: 28vh;
+  }
+  .cookie-banner__copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+  .cookie-banner__title {
+    font-size: var(--text-sm);
+  }
+  .cookie-banner__text {
+    flex: 1 1 12rem;
+    font-size: var(--text-xs);
+    line-height: 1.4;
+  }
+}
 @media (min-width: 768px) {
   .cookie-banner {
-    --cookie-banner-pad-y: var(--space-5);
+    --cookie-banner-pad-y: var(--space-4);
+    max-height: none;
   }
   .cookie-banner__inner {
     flex-direction: row;
@@ -6954,6 +7235,9 @@ body.lightbox-open {
   }
   .cookie-banner__actions {
     flex-shrink: 0;
+  }
+  .cookie-banner__actions .btn {
+    flex: 0 0 auto;
   }
 }
 

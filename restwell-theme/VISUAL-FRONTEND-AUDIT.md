@@ -1,3 +1,5 @@
+**Update (2026-09-10):** Live visual matrix + fixes recorded in [docs/PRODUCTION-AUDIT-2026-09-10.md](docs/PRODUCTION-AUDIT-2026-09-10.md) (hero scrim, `.stat-row` 3-column grid). March findings below are historical.
+
 # Visual Frontend Audit Report
 
 **Remediation status (2026-07-05):** Many contrast, rhythm, and touch-target items from this March 2026 audit were addressed in subsequent homepage polish and audit sprints. See [AUDIT.md](docs/archive/AUDIT.md) scorecard and [PERFECT-SITE-PLAN.md](docs/archive/PERFECT-SITE-PLAN.md) (archived) for fix history. Use this file for **remaining UX findings** and [COPY-PASTE-PROCESS.md](COPY-PASTE-PROCESS.md) §Visual pass (page pipeline step 9).

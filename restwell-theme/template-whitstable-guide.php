@@ -13,17 +13,113 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$restwell_wg_id      = (int) get_queried_object_id();
-$restwell_wg_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_wg_id, 'wg_heading', 'What a day out from the bungalow is actually like' )
-	: 'What a day out from the bungalow is actually like';
-$restwell_wg_intro   = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text(
-		$restwell_wg_id,
-		'wg_intro',
-		'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.'
+$restwell_wg_id = (int) get_queried_object_id();
+
+$wg_txt = static function ( $key, $fallback ) use ( $restwell_wg_id ) {
+	return function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wg_id, $key, $fallback )
+		: $fallback;
+};
+
+$wg_lines = static function ( $key, array $fallback_lines ) use ( $wg_txt ) {
+	$raw   = $wg_txt( $key, implode( "\n", $fallback_lines ) );
+	$lines = array_values(
+		array_filter(
+			array_map( 'trim', explode( "\n", str_replace( "\r\n", "\n", $raw ) ) )
+		)
+	);
+	return ! empty( $lines ) ? $lines : $fallback_lines;
+};
+
+$wg_spot_src = static function ( $n, $fallback_path ) use ( $restwell_wg_id ) {
+	$id = 0;
+	if ( function_exists( 'restwell_page_content_meta_or_default' ) ) {
+		$id = absint( restwell_page_content_meta_or_default( $restwell_wg_id, "wg_spotlight_image_{$n}_id" ) );
+	}
+	if ( $id > 0 ) {
+		$url = wp_get_attachment_image_url( $id, 'large' );
+		if ( is_string( $url ) && '' !== $url ) {
+			return $url;
+		}
+	}
+	return function_exists( 'restwell_theme_image_url' )
+		? restwell_theme_image_url( $fallback_path )
+		: '';
+};
+
+$restwell_wg_heading = $wg_txt( 'wg_heading', 'What a day out from the bungalow is actually like' );
+$restwell_wg_intro   = $wg_txt(
+	'wg_intro',
+	'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.'
+);
+
+$wg_about_heading = $wg_txt( 'wg_about_heading', 'Tankerton promenade' );
+$wg_about_body    = $wg_txt(
+	'wg_about_body',
+	'About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep, stick to the promenade for level sea air.'
+);
+
+$wg_parking_heading = $wg_txt( 'wg_getting_here_heading', 'At the house and in town' );
+$wg_parking_body    = $wg_txt(
+	'wg_getting_here_body',
+	'Start from the driveway when you can. Harbour ANPR is the one that catches people out.'
+);
+
+$wg_access_label   = $wg_txt( 'wg_access_label', 'Along the route' );
+$wg_access_heading = $wg_txt( 'wg_access_heading', 'Castle, harbour and beach pub' );
+$wg_access_intro   = $wg_txt(
+	'wg_access_intro',
+	'Level stops on the promenade route, with access notes and links so you can check opening times before you set out.'
+);
+
+$wg_eating_label   = $wg_txt( 'wg_eating_label', 'Places to eat' );
+$wg_eating_heading = $wg_txt( 'wg_eating_heading', 'Pubs and restaurants near the house' );
+$wg_eating_intro   = $wg_txt(
+	'wg_eating_intro',
+	'The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings, call ahead if access is critical.'
+);
+
+$wg_planning_label   = $wg_txt( 'wg_planning_label', 'Loos along the way' );
+$wg_planning_heading = $wg_txt( 'wg_planning_heading', 'Accessible toilets' );
+$wg_planning_intro   = $wg_txt(
+	'wg_planning_intro',
+	'Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.'
+);
+$wg_toilet_bullets   = $wg_lines(
+	'wg_planning_before_bullets',
+	array(
+		'Behind the sailing club at the foot of the slopes',
+		'By the Marine Parade cafe at the top',
+		'Under the promenade cafe near the castle',
+		'Changing Places: Whitstable Harbour WC, Harbour Road',
+		'JoJo’s Tankerton and Marine Hotel (venue accessible loos)',
 	)
-	: 'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.';
+);
+
+$wg_travel_heading = $wg_txt( 'wg_getting_around_heading', 'Station, buses and taxis' );
+$wg_travel_body    = $wg_txt(
+	'wg_getting_around_body',
+	'Travel times from London are in the strip above. Below: how to move around Whitstable once you’ve arrived.'
+);
+
+$wg_towns_heading = $wg_txt( 'wg_towns_heading', 'Wildwood, Dreamland and Canterbury' );
+$wg_towns_body    = $wg_txt(
+	'wg_towns_body',
+	'Check each venue’s site for scooter hire, companion tickets and parking for your dates.'
+);
+
+$wg_stop_1_src = $wg_spot_src( 1, 'stock/restwell-whitstable-beach-huts.webp' );
+$wg_stop_1_alt = $wg_txt( 'wg_spotlight_image_1_caption', 'Colourful beach huts along the Whitstable seafront' );
+$wg_stop_2_src = $wg_spot_src( 2, 'stock/restwell-whitstable-sunset-pier.webp' );
+$wg_stop_2_alt = $wg_txt( 'wg_spotlight_image_2_caption', 'Whitstable harbour area at sunset' );
+$wg_stop_3_src = $wg_spot_src( 3, 'stock/restwell-whitstable-coastal-walk.webp' );
+$wg_stop_3_alt = $wg_txt( 'wg_spotlight_image_3_caption', 'Coastal walk near the Whitstable beach pubs' );
+
+$wg_related_heading = $wg_txt( 'wg_related_heading', 'Local Whitstable guides' );
+$wg_related_intro   = $wg_txt(
+	'wg_related_intro',
+	'Long-tail notes on parking, trains, eating out, beaches and quieter timing. This page stays the Whitstable Kent coast overview.'
+);
 ?>
 
 
@@ -81,8 +177,8 @@ get_template_part(
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Coastal walk</p>
-			<h2 id="promenade-h">Tankerton promenade</h2>
-			<p class="lede">About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep, stick to the promenade for level sea air.</p>
+			<h2 id="promenade-h"><?php echo esc_html( $wg_about_heading ); ?></h2>
+			<p class="lede"><?php echo esc_html( $wg_about_body ); ?></p>
 		  </header>
 		  <ul class="checklist">
 			<li>Wide, surfaced path with weather shelters and benches</li>
@@ -104,8 +200,8 @@ get_template_part(
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Parking, plainly</p>
-			<h2 id="parking-h">At the house and in town</h2>
-			<p class="lede">Start from the driveway when you can. Harbour ANPR is the one that catches people out.</p>
+			<h2 id="parking-h"><?php echo esc_html( $wg_parking_heading ); ?></h2>
+			<p class="lede"><?php echo esc_html( $wg_parking_body ); ?></p>
 		  </header>
 		  <dl class="comparison-list">
 			<div class="comparison-list__item">
@@ -129,27 +225,27 @@ get_template_part(
 	<section class="section-y band-subtle" id="stops" aria-labelledby="stops-h">
 	  <div class="container">
 		<header class="section-head">
-		  <p class="eyebrow">Along the route</p>
-		  <h2 id="stops-h">Castle, harbour and beach pub</h2>
-		  <p class="lede">Level stops on the promenade route, with access notes and links so you can check opening times before you set out.</p>
+		  <p class="eyebrow"><?php echo esc_html( $wg_access_label ); ?></p>
+		  <h2 id="stops-h"><?php echo esc_html( $wg_access_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wg_access_intro ); ?></p>
 		</header>
 		<div class="place-list place-list--3">
 		  <article class="place-list__item">
-					   <img class="place-list__thumb" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts.webp' ) ); ?>" alt="Colourful beach huts along the Whitstable seafront" width="640" height="400" loading="lazy" decoding="async" />
+					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_1_src ); ?>" alt="<?php echo esc_attr( $wg_stop_1_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://whitstablecastle.co.uk/" target="_blank" rel="noopener noreferrer">Whitstable Castle &amp; Gardens<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Promenade stop</p>
 			<p>Paved grounds and Orangery Tearooms with an accessible loo, a level stop about halfway along the promenade.</p>
 			<p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227281726">Call 01227 281726</a></p>
 		  </article>
 		  <article class="place-list__item">
-					   <img class="place-list__thumb" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-sunset-pier.webp' ) ); ?>" alt="Whitstable harbour area at sunset" width="640" height="400" loading="lazy" decoding="async" />
+					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_2_src ); ?>" alt="<?php echo esc_attr( $wg_stop_2_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.canterbury.co.uk/whitstable-harbour/" target="_blank" rel="noopener noreferrer">Whitstable Harbour<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Town &amp; seafood</p>
 			<p>Working oyster port. South Quay Shed has a lift to a quieter upper floor. Surfaces can be uneven, take it steady at peak times.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
-					   <img class="place-list__thumb" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastal-walk.webp' ) ); ?>" alt="Coastal walk near the Whitstable beach pubs" width="640" height="400" loading="lazy" decoding="async" />
+					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_3_src ); ?>" alt="<?php echo esc_attr( $wg_stop_3_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.thepubonthebeach.co.uk/" target="_blank" rel="noopener noreferrer">The Old Neptune<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Beach pub</p>
 			<p>Pub on the shingle. The terrace on firm ground is the realistic option: sloping floors inside, no step-free entrance.</p>
@@ -163,9 +259,9 @@ get_template_part(
 	  <div class="container split split--media-first">
 		<div>
 		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Places to eat</p>
-			<h2 id="eat-h">Pubs and restaurants near the house</h2>
-			<p class="lede">The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings, call ahead if access is critical.</p>
+			<p class="eyebrow"><?php echo esc_html( $wg_eating_label ); ?></p>
+			<h2 id="eat-h"><?php echo esc_html( $wg_eating_heading ); ?></h2>
+			<p class="lede"><?php echo esc_html( $wg_eating_intro ); ?></p>
 		  </header>
 		  <div class="place-list place-list--stack">
 		  <article class="place-list__item">
@@ -200,16 +296,14 @@ get_template_part(
 	<section class="section-y section-y--compact band-subtle" id="toilets" aria-labelledby="toilets-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
-		  <p class="eyebrow">Loos along the way</p>
-		  <h2 id="toilets-h">Accessible toilets</h2>
-		  <p class="lede">Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.</p>
+		  <p class="eyebrow"><?php echo esc_html( $wg_planning_label ); ?></p>
+		  <h2 id="toilets-h"><?php echo esc_html( $wg_planning_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wg_planning_intro ); ?></p>
 		</header>
 		<ul class="checklist checklist--2">
-		  <li>Behind the sailing club at the foot of the slopes</li>
-		  <li>By the Marine Parade cafe at the top</li>
-		  <li>Under the promenade cafe near the castle</li>
-		  <li>Changing Places: Whitstable Harbour WC, Harbour Road</li>
-		  <li>JoJo’s Tankerton and Marine Hotel (venue accessible loos)</li>
+		  <?php foreach ( $wg_toilet_bullets as $wg_toilet_line ) : ?>
+		  <li><?php echo esc_html( $wg_toilet_line ); ?></li>
+		  <?php endforeach; ?>
 		</ul>
 		<p><a href="https://www.changing-places.org/find" class="text-link" target="_blank" rel="noopener noreferrer">Changing Places map<span class="sr-only"> (opens in new tab)</span></a></p>
 	  </div>
@@ -219,8 +313,8 @@ get_template_part(
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">Getting around</p>
-		  <h2 id="travel-h">Station, buses and taxis</h2>
-		  <p class="lede">Travel times from London are in the strip above. Below: how to move around Whitstable once you’ve arrived.</p>
+		  <h2 id="travel-h"><?php echo esc_html( $wg_travel_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wg_travel_body ); ?></p>
 		</header>
 		<dl class="fact-dl">
 		  <div>
@@ -243,8 +337,8 @@ get_template_part(
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">Further afield</p>
-		  <h2 id="days-out-h">Wildwood, Dreamland and Canterbury</h2>
-		  <p class="lede">Check each venue’s site for scooter hire, companion tickets and parking for your dates.</p>
+		  <h2 id="days-out-h"><?php echo esc_html( $wg_towns_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wg_towns_body ); ?></p>
 		</header>
 		<ul class="card-grid card-grid--3" role="list">
 		  <li><article class="media-card">
@@ -349,25 +443,40 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-	  <div class="mid-cta__media" aria-hidden="true"></div>
-	  <div class="mid-cta__inner">
-		<h2 id="mid-cta-h">Ask for route notes for your party</h2>
-		<p>Tell us chair size and energy levels, then look inside the bungalow.</p>
-		<div class="mid-cta__btns">
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">See the bungalow</a>
-		</div>
-	  </div>
-	</section>
+	<?php
+	$mid_cta_heading = $wg_txt( 'wg_cta_heading', __( 'Ask for route notes for your party', 'restwell-retreats' ) );
+	$mid_cta_intro   = $wg_txt(
+		'wg_cta_body',
+		__( 'Tell us chair size and energy levels, then look inside the bungalow.', 'restwell-retreats' )
+	);
+	$mid_cta_primary_label = $wg_txt( 'wg_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) );
+	$mid_cta_primary_url   = $wg_txt( 'wg_cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) );
+
+	$mid_cta_secondary_label = $wg_txt( 'wg_cta_secondary_label', __( 'See the bungalow', 'restwell-retreats' ) );
+	$mid_cta_secondary_url   = $wg_txt( 'wg_cta_secondary_url', restwell_nav_resolve_page_url( 'the-property' ) );
+
+	get_template_part(
+		'template-parts/mid-cta',
+		null,
+		array(
+			'heading'         => $mid_cta_heading,
+			'intro'           => $mid_cta_intro,
+			'primary_label'   => $mid_cta_primary_label,
+			'primary_url'     => $mid_cta_primary_url,
+			'secondary_label' => $mid_cta_secondary_label,
+			'secondary_url'   => $mid_cta_secondary_url,
+		)
+	);
+	?>
+
 
 <?php
 if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
 	restwell_render_pillar_related_guides(
 		'whitstable-area-guide',
 		array(
-			'heading' => __( 'Local Whitstable guides', 'restwell-retreats' ),
-			'intro'   => __( 'Long-tail notes on parking, trains, eating out, beaches and quieter timing. This page stays the Whitstable Kent coast overview.', 'restwell-retreats' ),
+			'heading' => $wg_related_heading,
+			'intro'   => $wg_related_intro,
 		)
 	);
 }

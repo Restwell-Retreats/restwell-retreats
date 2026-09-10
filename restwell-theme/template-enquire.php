@@ -51,6 +51,10 @@ $enq_val = static function ( string $key, array $fields, string $default = '' ):
 $funding_selected = $enq_val( 'enq_funding', $enq_fields, 'self' );
 $phone_number     = (string) get_option( 'restwell_phone_number', '01622 809881' );
 $phone_tel        = preg_replace( '/\s+/', '', $phone_number );
+$public_email     = (string) get_option( 'restwell_public_email', 'hello@restwellretreats.co.uk' );
+if ( '' === $public_email || ! is_email( $public_email ) ) {
+	$public_email = 'hello@restwellretreats.co.uk';
+}
 
 $restwell_enq_id      = (int) get_queried_object_id();
 $restwell_enq_heading = function_exists( 'restwell_page_content_text' )
@@ -256,8 +260,8 @@ get_template_part(
 		</div>
 		<aside class="sidebar-card" aria-label="<?php esc_attr_e( 'Contact details', 'restwell-retreats' ); ?>">
 			<h2><?php esc_html_e( 'Talk to us', 'restwell-retreats' ); ?></h2>
-			<p><strong><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></strong><br /><a href="tel:01622809881">01622 809881</a></p>
-			<p><strong><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></strong><br /><a href="mailto:hello@restwellretreats.co.uk">hello@restwellretreats.co.uk</a></p>
+			<p><strong><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></strong><br /><a href="tel:<?php echo esc_attr( $phone_tel ); ?>"><?php echo esc_html( $phone_number ); ?></a></p>
+			<p><strong><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></strong><br /><a href="mailto:<?php echo esc_attr( $public_email ); ?>"><?php echo esc_html( $public_email ); ?></a></p>
 			<p><strong><?php esc_html_e( 'Where', 'restwell-retreats' ); ?></strong><br />Whitstable, Kent</p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & support', 'restwell-retreats' ); ?></a></p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>"><?php esc_html_e( 'Who it’s for', 'restwell-retreats' ); ?></a></p>

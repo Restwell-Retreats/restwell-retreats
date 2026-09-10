@@ -70,7 +70,8 @@
 	}
 
 	function initDiary(root) {
-		var months = root.querySelectorAll('[data-availability-month]');
+		var monthsHost = root.querySelector('.availability__months');
+		var months = Array.prototype.slice.call(root.querySelectorAll('[data-availability-month]'));
 		var prevBtn = root.querySelector('[data-availability-prev]');
 		var nextBtn = root.querySelector('[data-availability-next]');
 		var live = root.querySelector('[data-availability-live]');
@@ -95,17 +96,153 @@
 		var totalEl = root.querySelector('[data-availability-total]');
 		var weekOff = parseInt(root.getAttribute('data-week-offpeak') || '0', 10);
 		var weekPeak = parseInt(root.getAttribute('data-week-peak') || '0', 10);
-		if (!months.length) return;
+		var maxMonths = parseInt(root.getAttribute('data-max-months') || '12', 10);
+		var todayIso = root.getAttribute('data-today') || formatIso(new Date());
+		if (!months.length || !monthsHost) return;
 
 		var index = 0;
 		var startIso = '';
 		var endIso = '';
 		var booked = {};
 		var twoUp = window.matchMedia('(min-width: 768px)');
+		var pricing = { off_mid: 0, off_wknd: 0, peak_mid: 0, peak_wknd: 0, peaks: [] };
+		var weekdayShort = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
+		try {
+			var bookedList = JSON.parse(root.getAttribute('data-booked') || '[]');
+			if (Array.isArray(bookedList)) {
+				bookedList.forEach(function (iso) {
+					booked[iso] = true;
+				});
+			}
+		} catch (e) { /* keep empty */ }
 		root.querySelectorAll('.availability__day.is-booked[data-iso]').forEach(function (td) {
 			booked[td.getAttribute('data-iso')] = true;
 		});
+		try {
+			var p = JSON.parse(root.getAttribute('data-pricing') || '{}');
+			if (p && typeof p === 'object') {
+				pricing = {
+					off_mid: parseInt(p.off_mid || 0, 10),
+					off_wknd: parseInt(p.off_wknd || 0, 10),
+					peak_mid: parseInt(p.peak_mid || 0, 10),
+					peak_wknd: parseInt(p.peak_wknd || 0, 10),
+					peaks: Array.isArray(p.peaks) ? p.peaks : []
+				};
+			}
+		} catch (e2) { /* defaults */ }
+		try {
+			var wd = JSON.parse(root.getAttribute('data-weekdays') || '[]');
+			if (Array.isArray(wd) && wd.length === 7) weekdayShort = wd;
+		} catch (e3) { /* defaults */ }
+
+		function isPeakIso(iso) {
+			return pricing.peaks.some(function (r) {
+				return r && r.s && r.e && iso >= r.s && iso <= r.e;
+			});
+		}
+
+		function isWeekendIso(iso) {
+			var n = parseIso(iso).getDay();
+			/* Match PHP restwell_is_weekend_night: Fri + Sat (ISO N >= 5). */
+			return n === 5 || n === 6;
+		}
+
+		function rateFor(iso) {
+			var peak = isPeakIso(iso);
+			if (isWeekendIso(iso)) {
+				return peak ? pricing.peak_wknd : pricing.off_wknd;
+			}
+			return peak ? pricing.peak_mid : pricing.off_mid;
+		}
+
+		function pad2(n) {
+			return n < 10 ? '0' + n : String(n);
+		}
+
+		function monthLabel(y, m0) {
+			try {
+				return new Date(y, m0, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+			} catch (e) {
+				return y + '-' + pad2(m0 + 1);
+			}
+		}
+
+		function ensureMonths(neededIndex) {
+			while (months.length <= neededIndex && months.length < maxMonths) {
+				var base = months[0].querySelector('[data-iso]');
+				var seed = base ? base.getAttribute('data-iso') : todayIso;
+				var dt = parseIso(seed);
+				dt.setDate(1);
+				dt.setMonth(dt.getMonth() + months.length);
+				var y = dt.getFullYear();
+				var m0 = dt.getMonth();
+				var daysIn = new Date(y, m0 + 1, 0).getDate();
+				var lead = (new Date(y, m0, 1).getDay() + 6) % 7; /* Mon=0 */
+				var key = y + '-' + pad2(m0 + 1);
+				var id = 'availability-m-' + key;
+				var name = monthLabel(y, m0);
+				var article = document.createElement('article');
+				article.className = 'availability__month';
+				article.setAttribute('data-availability-month', '');
+				article.setAttribute('aria-labelledby', id);
+				article.hidden = true;
+				var head = '<h3 id="' + id + '" class="availability__month-title">' + name + '</h3>';
+				var thead = '<thead><tr>' + weekdayShort.map(function (w) {
+					return '<th scope="col"><abbr title="">' + w + '</abbr></th>';
+				}).join('') + '</tr></thead>';
+				var cells = '';
+				var cell = 0;
+				cells += '<tr>';
+				for (var p = 0; p < lead; p++) {
+					cells += '<td class="availability__day is-pad" aria-hidden="true"></td>';
+					cell++;
+				}
+				for (var day = 1; day <= daysIn; day++) {
+					if (cell % 7 === 0 && cell > 0) cells += '</tr><tr>';
+					var iso = y + '-' + pad2(m0 + 1) + '-' + pad2(day);
+					var classes = ['availability__day'];
+					var isBooked = !!booked[iso];
+					var isToday = iso === todayIso;
+					var isPast = iso < todayIso;
+					var isPeak = isPeakIso(iso);
+					var isPick = !isBooked && !isPast;
+					var rate = rateFor(iso);
+					if (isBooked) classes.push('is-booked');
+					if (isToday) classes.push('is-today');
+					if (isPast) classes.push('is-past');
+					if (isPeak) classes.push('is-peak');
+					if (isPick) classes.push('is-pick');
+					var aria = day + ' ' + name;
+					if (rate > 0) aria += ', £' + rate;
+					if (isPeak) aria += ', Peak season';
+					cells += '<td class="' + classes.join(' ') + '" data-iso="' + iso + '"';
+					if (rate > 0) cells += ' data-rate="' + rate + '"';
+					if (isPeak) cells += ' data-peak="1"';
+					if (isToday) cells += ' aria-current="date"';
+					cells += '>';
+					if (isPick) {
+						cells += '<button type="button" class="availability__num" data-iso="' + iso + '" aria-pressed="false" aria-label="' + aria.replace(/"/g, '&quot;') + '">';
+					} else {
+						cells += '<span class="availability__num">';
+					}
+					cells += '<span class="availability__date">' + day + '</span>';
+					if (rate > 0) cells += '<span class="availability__price">£' + rate + '</span>';
+					cells += isPick ? '</button>' : '</span>';
+					if (isBooked) cells += '<span class="sr-only">Booked</span>';
+					cells += '</td>';
+					cell++;
+				}
+				while (cell % 7 !== 0) {
+					cells += '<td class="availability__day is-pad" aria-hidden="true"></td>';
+					cell++;
+				}
+				cells += '</tr>';
+				article.innerHTML = head + '<table class="availability__grid"><caption class="sr-only">' + name + '</caption>' + thead + '<tbody>' + cells + '</tbody></table>';
+				monthsHost.appendChild(article);
+				months.push(article);
+			}
+		}
 
 		function visibleCount() {
 			return twoUp.matches ? 2 : 1;
@@ -113,7 +250,11 @@
 
 		function showMonth(nextIndex) {
 			var vis = visibleCount();
-			var maxStart = Math.max(0, months.length - vis);
+			var lastNeeded = Math.min(maxMonths - 1, Math.max(0, nextIndex + vis - 1));
+			ensureMonths(lastNeeded);
+			months = Array.prototype.slice.call(root.querySelectorAll('[data-availability-month]'));
+			var maxStart = Math.max(0, maxMonths - vis);
+			maxStart = Math.min(maxStart, Math.max(0, months.length - vis));
 			if (nextIndex < 0) nextIndex = 0;
 			if (nextIndex > maxStart) nextIndex = maxStart;
 			index = nextIndex;
@@ -123,7 +264,8 @@
 				month.hidden = !on;
 			});
 			if (prevBtn) prevBtn.disabled = index === 0;
-			if (nextBtn) nextBtn.disabled = index >= maxStart;
+			/* Keep Next enabled until we have rendered maxMonths (lazy-build on click). */
+			if (nextBtn) nextBtn.disabled = index >= maxMonths - vis;
 		}
 
 		function rangeTouchesBooked(from, to) {
@@ -143,6 +285,15 @@
 
 		function dayCell(iso) {
 			return root.querySelector('.availability__day[data-iso="' + iso + '"]');
+		}
+
+		function paintArrival(iso) {
+			clearHope();
+			var td = dayCell(iso);
+			if (!td) return;
+			td.classList.add('is-hope', 'is-hope-start');
+			var btn = td.querySelector('button[data-iso]');
+			if (btn) btn.setAttribute('aria-pressed', 'true');
 		}
 
 		function paintHope(from, to) {
@@ -257,18 +408,18 @@
 		}
 
 		function setStay(from, to, extendHint) {
+			var awaitingLeave = !!(from && !to);
 			var complete = !!(from && to);
-			if (stay) stay.classList.toggle('is-empty', !complete);
-			if (clearBtn) clearBtn.hidden = !complete;
+			if (stay) stay.classList.toggle('is-empty', !from);
+			if (clearBtn) clearBtn.hidden = !from;
 			if (fromField) fromField.classList.toggle('is-active', !from);
-			if (toField) toField.classList.remove('is-active');
+			if (toField) toField.classList.toggle('is-active', awaitingLeave);
 			if (fromEl) fromEl.textContent = from ? prettyDay(from) : '—';
 			if (toEl) {
-				if (!from) {
+				if (!complete) {
 					toEl.textContent = '—';
 				} else {
-					var last = to || from;
-					toEl.textContent = prettyDay(addDays(last, 1));
+					toEl.textContent = prettyDay(addDays(to, 1));
 				}
 			}
 			if (!complete) {
@@ -277,7 +428,7 @@
 				clearBreakdownRows();
 				if (prompt) {
 					prompt.hidden = false;
-					prompt.textContent = defaultPrompt;
+					prompt.textContent = awaitingLeave ? 'Tap your leave date.' : defaultPrompt;
 				}
 				return;
 			}
@@ -297,7 +448,7 @@
 			if (prompt) {
 				if (extendHint) {
 					prompt.hidden = false;
-					prompt.textContent = 'Tap another night to stay longer.';
+					prompt.textContent = 'Tap another date to start a new stay.';
 				} else {
 					prompt.hidden = true;
 				}
@@ -343,10 +494,19 @@
 			var nights = nightsInclusive(arrival, lastNight);
 			var leave = prettyDay(addDays(lastNight, 1));
 			if (nights.length === 1) {
-				setLive('One night, leaving ' + leave + '. Tap another night to stay longer.');
+				setLive('One night, leaving ' + leave + '.');
 			} else {
 				setLive(nights.length + ' nights, leaving ' + leave + '.');
 			}
+		}
+
+		function setArrivalOnly(iso) {
+			startIso = iso;
+			endIso = '';
+			paintArrival(iso);
+			setEnquire('', '');
+			setStay(iso, '', false);
+			setLive('Arrive ' + prettyDay(iso) + '. Tap your leave date.');
 		}
 
 		function applyStay(arrival, lastNight, extendHint) {
@@ -369,15 +529,29 @@
 
 		function onPick(iso) {
 			if (booked[iso]) return;
-			var oneNight = !!(startIso && endIso && startIso === endIso);
-			if (!startIso || !oneNight) {
-				applyStay(iso, iso, true);
+
+			/* Fresh pick, or restart after a completed stay. */
+			if (!startIso || endIso) {
+				setArrivalOnly(iso);
 				return;
 			}
+
+			/* Arrival set; this click is the leave (departure) date. */
 			if (iso === startIso) {
+				var sameDay = 'Choose a later leave date — stays are overnight.';
+				if (prompt) {
+					prompt.hidden = false;
+					prompt.textContent = sameDay;
+				}
+				setLive(sameDay);
 				return;
 			}
-			if (rangeTouchesBooked(startIso, iso)) {
+
+			var arrival = startIso < iso ? startIso : iso;
+			var departure = startIso < iso ? iso : startIso;
+			var lastNight = addDays(departure, -1);
+
+			if (rangeTouchesBooked(arrival, lastNight)) {
 				var blocked = 'Those nights are already held. Try a stretch that doesn’t cross a booking.';
 				if (prompt) {
 					prompt.hidden = false;
@@ -386,9 +560,8 @@
 				setLive(blocked);
 				return;
 			}
-			var arrival = startIso < iso ? startIso : iso;
-			var lastNight = startIso < iso ? iso : startIso;
-			applyStay(arrival, lastNight, false);
+
+			applyStay(arrival, lastNight, true);
 		}
 
 		root.addEventListener('click', function (event) {
@@ -442,6 +615,8 @@
 		}
 		if (nextBtn) {
 			nextBtn.addEventListener('click', function () {
+				var vis = visibleCount();
+				ensureMonths(Math.min(maxMonths - 1, index + vis));
 				showMonth(index + 1);
 			});
 		}

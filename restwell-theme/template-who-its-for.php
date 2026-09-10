@@ -24,6 +24,289 @@ $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 		'Built for disabled adults, families and carers, in parties of up to five. A holiday let, not a care home or respite centre.'
 	)
 	: 'Built for disabled adults, families and carers, in parties of up to five. A holiday let, not a care home or respite centre.';
+
+$wif_defaults = function_exists( 'restwell_get_who_its_for_page_defaults' )
+	? restwell_get_who_its_for_page_defaults()
+	: array();
+
+$wif_audience_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_wif_id, 'wif_audience_heading', 'Who Restwell is built for' )
+	: 'Who Restwell is built for';
+$wif_audience_intro   = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_wif_id,
+		'wif_audience_intro',
+		'Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.'
+	)
+	: 'Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.';
+
+$wif_default_family_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'family' )
+	: array(
+		'Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.',
+		'Published access measurements before you commit.',
+		'A private self-catering layout: your daily routines run on your schedule.',
+	);
+$wif_default_carers_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'carers' )
+	: array(
+		'Separate sleeping area for the support worker or carer.',
+		'Wet room designed for assisted personal care on the same level.',
+		'You have a legal right to a Carer\'s Assessment under the Care Act 2014.',
+	);
+$wif_default_ot_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'ot' )
+	: array(
+		'Doorway widths, turning circles, hoist specs, and wet room measurements on request.',
+		'Transfer clearances and equipment positioning confirmed if not already published.',
+		'Referral conversations welcomed before any booking commitment.',
+	);
+$wif_default_commissioners_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
+	? restwell_get_property_facts_persona_bullets( 'commissioners' )
+	: array(
+		'Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.',
+		'Documentation provided: property spec, access measurements, and CQC-registered care provider confirmation.',
+		'Direct payments, personal health budgets, and CHC pathways all supported.',
+	);
+
+$wif_resolve_url = static function ( $key, $fallback ) use ( $restwell_wif_id, $wif_defaults ) {
+	if ( function_exists( 'restwell_post_meta_url' ) && ! empty( $wif_defaults ) ) {
+		$url = restwell_post_meta_url( $restwell_wif_id, $key, $wif_defaults );
+		if ( is_string( $url ) && '' !== $url ) {
+			return $url;
+		}
+	}
+	$raw = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wif_id, $key, $fallback )
+		: $fallback;
+	$raw = trim( (string) $raw );
+	if ( '' === $raw ) {
+		$raw = $fallback;
+	}
+	if ( preg_match( '#^https?://#i', $raw ) ) {
+		return $raw;
+	}
+	return home_url( $raw );
+};
+
+$wif_personas = array(
+	array(
+		'icon'             => 'home',
+		'title'            => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_family_title', 'Guests and families' )
+			: 'Guests and families',
+		'body'             => function_exists( 'restwell_wif_persona_intro_body' )
+			? restwell_wif_persona_intro_body(
+				$restwell_wif_id,
+				'wif_family_body',
+				'wif_family_detail_body',
+				'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.'
+			)
+			: ( function_exists( 'restwell_page_content_text' )
+				? restwell_page_content_text( $restwell_wif_id, 'wif_family_body', 'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.' )
+				: 'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.' ),
+		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
+			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_family_detail_bullets', $wif_default_family_bullets )
+			: $wif_default_family_bullets,
+		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_family_inline_cta_label', 'Read accessibility specification' )
+			: 'Read accessibility specification',
+		'inline_cta_url'   => $wif_resolve_url( 'wif_family_inline_cta_url', '/accessibility/' ),
+		'svg'              => '<path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+	),
+	array(
+		'icon'             => 'carers',
+		'title'            => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_carers_title', 'Carers and support workers' )
+			: 'Carers and support workers',
+		'body'             => function_exists( 'restwell_wif_persona_intro_body' )
+			? restwell_wif_persona_intro_body(
+				$restwell_wif_id,
+				'wif_carers_body',
+				'wif_carers_detail_body',
+				'Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.'
+			)
+			: ( function_exists( 'restwell_page_content_text' )
+				? restwell_page_content_text( $restwell_wif_id, 'wif_carers_body', 'Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.' )
+				: 'Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.' ),
+		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
+			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_carers_detail_bullets', $wif_default_carers_bullets )
+			: $wif_default_carers_bullets,
+		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_carers_inline_cta_label', 'Ask a suitability question' )
+			: 'Ask a suitability question',
+		'inline_cta_url'   => $wif_resolve_url( 'wif_carers_inline_cta_url', '/enquire/' ),
+		'svg'              => '<circle cx="8.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.2-5 5-5s5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 19c.2-2.6 1.9-4.5 4.3-4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+	),
+	array(
+		'icon'             => 'ot',
+		'title'            => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_ot_title', 'Occupational therapists' )
+			: 'Occupational therapists',
+		'body'             => function_exists( 'restwell_wif_persona_intro_body' )
+			? restwell_wif_persona_intro_body(
+				$restwell_wif_id,
+				'wif_ot_body',
+				'wif_ot_detail_body',
+				'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.'
+			)
+			: ( function_exists( 'restwell_page_content_text' )
+				? restwell_page_content_text( $restwell_wif_id, 'wif_ot_body', 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.' )
+				: 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.' ),
+		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
+			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_ot_detail_bullets', $wif_default_ot_bullets )
+			: $wif_default_ot_bullets,
+		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_ot_inline_cta_label', 'Review accessibility details' )
+			: 'Review accessibility details',
+		'inline_cta_url'   => $wif_resolve_url( 'wif_ot_inline_cta_url', '/accessibility/' ),
+		'svg'              => '<rect x="5" y="4.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4.5V3.8A1.8 1.8 0 0 1 10.8 2h2.4A1.8 1.8 0 0 1 15 3.8v.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 12.2l2 2 4-4.5M8.5 17h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+	),
+	array(
+		'icon'             => 'commissioners',
+		'title'            => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_title', 'Commissioners & social care' )
+			: 'Commissioners & social care',
+		'body'             => function_exists( 'restwell_wif_persona_intro_body' )
+			? restwell_wif_persona_intro_body(
+				$restwell_wif_id,
+				'wif_commissioners_body',
+				'wif_commissioners_detail_body',
+				'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.'
+			)
+			: ( function_exists( 'restwell_page_content_text' )
+				? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_body', 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.' )
+				: 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.' ),
+		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
+			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_commissioners_detail_bullets', $wif_default_commissioners_bullets )
+			: $wif_default_commissioners_bullets,
+		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_inline_cta_label', 'Enquire about a funded stay' )
+			: 'Enquire about a funded stay',
+		'inline_cta_url'   => $wif_resolve_url( 'wif_commissioners_inline_cta_url', '/enquire/' ),
+		'svg'              => '<path d="M4 21V6.5L12 3l8 3.5V21M9 21v-5h6v5M4 21h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+	),
+);
+
+$wif_visual_intro = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_wif_id,
+		'wif_visual_intro',
+		'These three items are on site before arrival, not hired for the week.'
+	)
+	: 'These three items are on site before arrival, not hired for the week.';
+
+$wif_kit_cards = array(
+	array(
+		'fallback_src' => 'bungalow/WR-3-LS.jpg',
+		'fallback_alt' => 'Level-access wet room with grab rails',
+		'title'        => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_1_caption', 'Level-access wet room' )
+			: 'Level-access wet room',
+		'body'         => 'Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.',
+		'slot_index'   => 0,
+	),
+	array(
+		'fallback_src' => 'bungalow/BD2-6-LS.jpg',
+		'fallback_alt' => 'Amico ceiling track hoist over the bed',
+		'title'        => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_2_caption', 'Ceiling track hoist' )
+			: 'Ceiling track hoist',
+		'body'         => 'Full-room Amico track over the profiling bed; mobile hoist also on site.',
+		'slot_index'   => 1,
+	),
+	array(
+		'fallback_src' => 'bungalow/kitchen.png',
+		'fallback_alt' => 'Kitchen with wheel-under worksurface',
+		'title'        => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_3_caption', 'Reachable kitchen' )
+			: 'Reachable kitchen',
+		'body'         => 'Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).',
+		'slot_index'   => 2,
+	),
+);
+
+$wif_gallery_slots = function_exists( 'restwell_get_wif_gallery_slots' )
+	? restwell_get_wif_gallery_slots( $restwell_wif_id )
+	: array();
+
+$wif_funding_heading = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text( $restwell_wif_id, 'wif_funding_heading', 'Who we can invoice' )
+	: 'Who we can invoice';
+$wif_funding_body    = function_exists( 'restwell_page_content_text' )
+	? restwell_page_content_text(
+		$restwell_wif_id,
+		'wif_funding_body',
+		'If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.'
+	)
+	: 'If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.';
+
+$wif_fund_la_bullets = function_exists( 'restwell_wif_bullet_list' )
+	? restwell_wif_bullet_list(
+		$restwell_wif_id,
+		'wif_fund_la_bullets',
+		array(
+			'Begins with a Care and Support Assessment. Unpaid carers can request a Carer\'s Assessment too (Care Act 2014).',
+			'Direct payments: you receive the funding and choose your provider.',
+			'Capital limits 2024/25: above £23,250 you pay in full; below £14,250 is usually ignored.',
+		)
+	)
+	: array();
+$wif_fund_phb_bullets = function_exists( 'restwell_wif_bullet_list' )
+	? restwell_wif_bullet_list(
+		$restwell_wif_id,
+		'wif_fund_phb_bullets',
+		array(
+			'Available for people with continuing healthcare needs, subject to eligibility assessment.',
+			'Your ICB or NHS continuing healthcare team manages the application.',
+			'A private adapted setting can be written into a care and support plan where clinically appropriate.',
+		)
+	)
+	: array();
+$wif_fund_private_bullets = function_exists( 'restwell_wif_bullet_list' )
+	? restwell_wif_bullet_list(
+		$restwell_wif_id,
+		'wif_fund_private_bullets',
+		array(
+			'The same clear accessibility information and direct answers as for funded guests.',
+			'Documentation for insurers or employers if you need it.',
+			'No pressure: we tell you plainly whether the property is a good fit.',
+		)
+	)
+	: array();
+
+$wif_funding_routes = array(
+	array(
+		'title'     => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_la_title', 'Local authority & direct payments' )
+			: 'Local authority & direct payments',
+		'bullets'   => $wif_fund_la_bullets,
+		'cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_la_cta_label', 'Direct payments guide' )
+			: 'Direct payments guide',
+		'cta_url'   => $wif_resolve_url( 'wif_fund_la_cta_url', '/direct-payment-holiday-accommodation/' ),
+	),
+	array(
+		'title'     => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_phb_title', 'Personal health budget' )
+			: 'Personal health budget',
+		'bullets'   => $wif_fund_phb_bullets,
+		'cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_phb_cta_label', 'PHB and funding overview' )
+			: 'PHB and funding overview',
+		'cta_url'   => $wif_resolve_url( 'wif_fund_phb_cta_url', '/resources/' ),
+	),
+	array(
+		'title'     => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_private_title', 'Private / self-funded' )
+			: 'Private / self-funded',
+		'bullets'   => $wif_fund_private_bullets,
+		'cta_label' => function_exists( 'restwell_page_content_text' )
+			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_private_cta_label', 'Ask about your dates' )
+			: 'Ask about your dates',
+		'cta_url'   => $wif_resolve_url( 'wif_fund_private_cta_url', '/enquire/' ),
+	),
+);
 ?>
 
 
@@ -69,38 +352,36 @@ get_template_part(
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Your situation</p>
-			<h2 id="situations-h">Who Restwell is built for</h2>
-			<p class="lede">Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.</p>
+			<h2 id="situations-h"><?php echo esc_html( $wif_audience_heading ); ?></h2>
+			<p class="lede"><?php echo esc_html( $wif_audience_intro ); ?></p>
 		  </header>
 		  <ul class="persona-list" role="list">
+			<?php foreach ( $wif_personas as $persona ) : ?>
 			<li class="persona-list__item">
-			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><?php echo $persona['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG paths. ?></svg></span>
 			  <div>
-				<h3>Guests and families</h3>
-				<p>Hoist and wet room already fitted; measurements published; a private home, not a hotel room.</p>
+				<h3><?php echo esc_html( $persona['title'] ); ?></h3>
+				<?php
+				$body_paras = function_exists( 'restwell_wif_split_body_paragraphs' )
+					? restwell_wif_split_body_paragraphs( $persona['body'] )
+					: array( $persona['body'] );
+				foreach ( $body_paras as $para ) :
+					?>
+				<p><?php echo esc_html( $para ); ?></p>
+				<?php endforeach; ?>
+				<?php if ( ! empty( $persona['bullets'] ) ) : ?>
+				<ul class="checklist">
+					<?php foreach ( $persona['bullets'] as $bullet ) : ?>
+					<li><?php echo esc_html( $bullet ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+				<?php endif; ?>
+				<?php if ( '' !== trim( (string) $persona['inline_cta_label'] ) ) : ?>
+				<p><a class="text-link" href="<?php echo esc_url( $persona['inline_cta_url'] ); ?>"><?php echo esc_html( $persona['inline_cta_label'] ); ?></a></p>
+				<?php endif; ?>
 			  </div>
 			</li>
-			<li class="persona-list__item">
-			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="8.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.2-5 5-5s5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 19c.2-2.6 1.9-4.5 4.3-4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-			  <div>
-				<h3>Carers and support workers</h3>
-				<p>Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.</p>
-			  </div>
-			</li>
-			<li class="persona-list__item">
-			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="4.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4.5V3.8A1.8 1.8 0 0 1 10.8 2h2.4A1.8 1.8 0 0 1 15 3.8v.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 12.2l2 2 4-4.5M8.5 17h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-			  <div>
-				<h3>Occupational therapists</h3>
-				<p>Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.</p>
-			  </div>
-			</li>
-			<li class="persona-list__item">
-			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 21V6.5L12 3l8 3.5V21M9 21v-5h6v5M4 21h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-			  <div>
-				<h3>Commissioners &amp; social care</h3>
-				<p>Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.</p>
-			  </div>
-			</li>
+			<?php endforeach; ?>
 		  </ul>
 		</div>
 		<div class="split__media" data-reveal>
@@ -114,12 +395,52 @@ get_template_part(
 		<header class="section-head">
 		  <p class="eyebrow">See the access</p>
 		  <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
-		  <p class="lede">These three items are on site before arrival, not hired for the week.</p>
+		  <p class="lede"><?php echo esc_html( $wif_visual_intro ); ?></p>
 		</header>
 		<ul class="card-grid card-grid--3" role="list">
-		  <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-3-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="640" height="480" loading="lazy" /><h3>Level-access wet room</h3><p>Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.</p></article></li>
-		  <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="Amico ceiling track hoist over the bed" width="640" height="480" loading="lazy" /><h3>Ceiling track hoist</h3><p>Full-room Amico track over the profiling bed; mobile hoist also on site.</p></article></li>
-		  <li><article class="media-card"><img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/kitchen.png' ) ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" /><h3>Reachable kitchen</h3><p>Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).</p></article></li>
+		  <?php foreach ( $wif_kit_cards as $kit_card ) : ?>
+			<?php
+			$slot       = $wif_gallery_slots[ $kit_card['slot_index'] ] ?? array();
+			$slot_id    = (int) ( $slot['id'] ?? 0 );
+			$slot_alt   = trim( (string) ( $slot['caption'] ?? '' ) );
+			$img_alt    = '' !== $slot_alt ? $slot_alt : $kit_card['fallback_alt'];
+			$kit_body   = $kit_card['body'];
+			?>
+		  <li>
+			<article class="media-card">
+			  <?php if ( $slot_id > 0 && function_exists( 'restwell_get_property_attachment_image' ) ) : ?>
+				<?php
+				echo restwell_get_property_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper returns escaped HTML.
+					$slot_id,
+					'grid',
+					array(
+						'alt' => $img_alt,
+					)
+				);
+				?>
+			  <?php elseif ( $slot_id > 0 ) : ?>
+				<?php
+				echo wp_get_attachment_image(
+					$slot_id,
+					'large',
+					false,
+					array(
+						'alt'      => $img_alt,
+						'loading'  => 'lazy',
+						'decoding' => 'async',
+						'width'    => 640,
+						'height'   => 480,
+					)
+				);
+				?>
+			  <?php else : ?>
+			  <img src="<?php echo esc_url( restwell_theme_image_url( $kit_card['fallback_src'] ) ); ?>" alt="<?php echo esc_attr( $kit_card['fallback_alt'] ); ?>" width="640" height="480" loading="lazy" />
+			  <?php endif; ?>
+			  <h3><?php echo esc_html( $kit_card['title'] ); ?></h3>
+			  <p><?php echo esc_html( $kit_body ); ?></p>
+			</article>
+		  </li>
+		  <?php endforeach; ?>
 		</ul>
 		<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
 	  </div>
@@ -136,26 +457,13 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-teal" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--compact band-teal" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="split">
-		  <div class="band-teal__stack">
-			<p class="eyebrow eyebrow--on-dark">Optional care</p>
-			<h2 id="care-h">Care on site, only if you want it</h2>
-			<p class="lede">Our sister company, Continuity of Care Services, is CQC-rated Good and shares our enquiry line, 01622 809881, so care can start in the same conversation as your booking. Bring your own team instead, if that works better.</p>
-			<ul class="checklist">
-			  <li>Personal care: washing, dressing and daily routines at agreed times</li>
-			  <li>Visiting care: daytime visits or support for a promenade or town trip</li>
-			  <li>Mobility and hoisting: ceiling-track transfers and wet-room kit already on site</li>
-			</ul>
-			<div class="band-teal__actions">
-			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">Learn about optional care</a>
-			  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Ask about care options</a>
-			</div>
-		  </div>
-		  <div class="split__media" data-reveal>
-			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-1-LS.jpg' ) ); ?>" alt="Rise and recline chair providing extra support during a stay" width="900" height="675" loading="lazy" />
-		  </div>
+		<div class="band-teal__stack band-teal__stack--tease">
+		  <p class="eyebrow eyebrow--on-dark"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
+		  <h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
+		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if that works better.', 'restwell-retreats' ); ?></p>
+		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
 		</div>
 	  </div>
 	</section>
@@ -164,9 +472,28 @@ get_template_part(
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">Funding</p>
-		  <h2 id="funding-h">Who we can invoice</h2>
-		  <p class="lede">If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.</p>
+		  <h2 id="funding-h"><?php echo esc_html( $wif_funding_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wif_funding_body ); ?></p>
 		</header>
+		<ul class="card-grid card-grid--3" role="list">
+		  <?php foreach ( $wif_funding_routes as $route ) : ?>
+		  <li>
+			<article class="media-card">
+			  <h3><?php echo esc_html( $route['title'] ); ?></h3>
+			  <?php if ( ! empty( $route['bullets'] ) ) : ?>
+			  <ul class="checklist">
+				<?php foreach ( $route['bullets'] as $bullet ) : ?>
+				<li><?php echo esc_html( $bullet ); ?></li>
+				<?php endforeach; ?>
+			  </ul>
+			  <?php endif; ?>
+			  <?php if ( '' !== trim( (string) $route['cta_label'] ) ) : ?>
+			  <p><a class="text-link" href="<?php echo esc_url( $route['cta_url'] ); ?>"><?php echo esc_html( $route['cta_label'] ); ?></a></p>
+			  <?php endif; ?>
+			</article>
+		  </li>
+		  <?php endforeach; ?>
+		</ul>
 		<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; support hub</a></p>
 	  </div>
 	</section>
@@ -310,17 +637,45 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-	  <div class="mid-cta__media" aria-hidden="true"></div>
-	  <div class="mid-cta__inner">
-		<h2 id="mid-cta-h">Describe the party and equipment</h2>
-		<p>We’ll say straight whether the bungalow fits, or where it doesn’t.</p>
-		<div class="mid-cta__btns">
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Read accessibility</a>
-		</div>
-	  </div>
-	</section>
+	<?php
+	$mid_cta_heading = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wif_id, 'wif_cta_heading', __( 'Describe the party and equipment', 'restwell-retreats' ) )
+		: __( 'Describe the party and equipment', 'restwell-retreats' );
+	$mid_cta_intro   = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text(
+			$restwell_wif_id,
+			'wif_cta_body',
+			__( 'We’ll say straight whether the bungalow fits, or where it doesn’t.', 'restwell-retreats' )
+		)
+		: __( 'We’ll say straight whether the bungalow fits, or where it doesn’t.', 'restwell-retreats' );
+	$mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wif_id, 'wif_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
+		: __( 'Enquire', 'restwell-retreats' );
+	$mid_cta_primary_url   = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wif_id, 'wif_cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) )
+		: restwell_nav_resolve_page_url( 'enquire' );
+
+	$mid_cta_secondary_label = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wif_id, 'wif_cta_secondary_label', __( 'Read accessibility', 'restwell-retreats' ) )
+		: __( 'Read accessibility', 'restwell-retreats' );
+	$mid_cta_secondary_url   = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_wif_id, 'wif_cta_secondary_url', restwell_nav_resolve_page_url( 'accessibility' ) )
+		: restwell_nav_resolve_page_url( 'accessibility' );
+
+	get_template_part(
+		'template-parts/mid-cta',
+		null,
+		array(
+			'heading'         => $mid_cta_heading,
+			'intro'           => $mid_cta_intro,
+			'primary_label'   => $mid_cta_primary_label,
+			'primary_url'     => $mid_cta_primary_url,
+			'secondary_label' => $mid_cta_secondary_label,
+			'secondary_url'   => $mid_cta_secondary_url,
+		)
+	);
+	?>
+
 
 </main>
 

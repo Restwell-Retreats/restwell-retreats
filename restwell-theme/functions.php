@@ -34,6 +34,9 @@ require_once get_template_directory() . '/inc/enqueue.php';
 require_once get_template_directory() . '/inc/concept-surfaces.php';
 require_once get_template_directory() . '/inc/faq.php';
 require_once get_template_directory() . '/inc/faq-question-handler.php';
+// Media Library gallery helpers (carousel, JSON-LD, admin alt notices). Concept pages that
+// only use shared.js [data-gallery] still load this file; keep it — helpers are called from
+// property/accessibility/SEO paths, not from the concept lightbox markup itself.
 require_once get_template_directory() . '/inc/gallery.php';
 require_once get_template_directory() . '/inc/property-facts.php';
 require_once get_template_directory() . '/inc/pricing.php';

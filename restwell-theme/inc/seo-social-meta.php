@@ -144,19 +144,31 @@ function restwell_output_social_meta() {
 	}
 
 	// Image - og_image_id → featured image (posts) → template hero image → page stock map → coastline.
+	// Prefer a social-sized derivative (large) over Media Library masters (often multi-MB).
 	$image_url           = '';
 	$image_attachment_id = 0;
+	$pick_social_attachment_url = static function ( $attachment_id ) {
+		$attachment_id = absint( $attachment_id );
+		if ( $attachment_id < 1 ) {
+			return '';
+		}
+		$url = wp_get_attachment_image_url( $attachment_id, 'large' );
+		if ( ! $url ) {
+			$url = wp_get_attachment_image_url( $attachment_id, 'full' );
+		}
+		return is_string( $url ) ? $url : '';
+	};
 	if ( $pid ) {
 		$og_img_id = absint( get_post_meta( $pid, 'og_image_id', true ) );
 		if ( $og_img_id ) {
-			$image_url           = wp_get_attachment_image_url( $og_img_id, 'full' );
+			$image_url           = $pick_social_attachment_url( $og_img_id );
 			$image_attachment_id = $image_url ? $og_img_id : 0;
 		}
 		// Featured image for pages and posts.
 		if ( ! $image_url ) {
 			$thumb_id = get_post_thumbnail_id( $pid );
 			if ( $thumb_id ) {
-				$image_url           = wp_get_attachment_image_url( $thumb_id, 'full' );
+				$image_url           = $pick_social_attachment_url( $thumb_id );
 				$image_attachment_id = $image_url ? $thumb_id : 0;
 			}
 		}
@@ -168,13 +180,36 @@ function restwell_output_social_meta() {
 			foreach ( $hero_keys as $key ) {
 				$hero_id = absint( get_post_meta( $pid, $key, true ) );
 				if ( $hero_id ) {
-					$candidate = wp_get_attachment_image_url( $hero_id, 'full' );
+					$candidate = $pick_social_attachment_url( $hero_id );
 					if ( $candidate ) {
 						$image_url           = $candidate;
 						$image_attachment_id = $hero_id;
 						break;
 					}
 				}
+			}
+		}
+	}
+
+	// Prefer theme Opt stock when the attachment is only a seeded full-size master
+	// of a known page image (lighter OG payload; same visual).
+	if ( $image_attachment_id > 0 && function_exists( 'restwell_get_default_og_image_url_for_request' ) ) {
+		$mapped = restwell_get_default_og_image_url_for_request( $pid );
+		if ( $mapped !== '' ) {
+			$file       = (string) get_attached_file( $image_attachment_id );
+			$map_stem   = pathinfo( wp_parse_url( $mapped, PHP_URL_PATH ) ?: '', PATHINFO_FILENAME );
+			$file_stem  = pathinfo( $file, PATHINFO_FILENAME );
+			// Strip common WP / seed suffixes for stem compare.
+			$file_stem = preg_replace( '/-(?:scaled|hero|\d{2,4}x\d{2,4})$/', '', (string) $file_stem );
+			$map_stem  = preg_replace( '/-(?:scaled|hero|\d{2,4}x\d{2,4})$/', '', (string) $map_stem );
+			$stems_match = ( $map_stem && $file_stem && 0 === strcasecmp( $map_stem, $file_stem ) );
+			if ( ! $stems_match && $map_stem && $file_stem ) {
+				// Seeded Media Library copies sometimes keep a trailing -hero.
+				$stems_match = ( 0 === stripos( $file_stem, $map_stem ) ) || ( 0 === stripos( $map_stem, $file_stem ) );
+			}
+			if ( $stems_match ) {
+				$image_url           = $mapped;
+				$image_attachment_id = 0;
 			}
 		}
 	}

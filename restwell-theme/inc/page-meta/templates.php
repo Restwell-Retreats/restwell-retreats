@@ -13,34 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * How It Works page.
  */
 function restwell_get_how_it_works_field_definitions() {
-	$included = array(
-		'hiw_included_label'   => restwell_field( __( 'Section label', 'restwell-retreats' ) ),
-		'hiw_included_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
-		'hiw_included_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
-	);
-	for ( $i = 1; $i <= 6; $i++ ) {
-		$included[ "hiw_included_{$i}_title" ] = restwell_field(
-			sprintf(
-				/* translators: %d: item number */
-				__( 'Item %d title', 'restwell-retreats' ),
-				$i
-			)
-		);
-		$included[ "hiw_included_{$i}_desc" ]  = restwell_field(
-			sprintf(
-				/* translators: %d: item number */
-				__( 'Item %d description (optional)', 'restwell-retreats' ),
-				$i
-			),
-			'textarea'
-		);
-	}
-	$faq = array(
+	$faq_count = function_exists( 'restwell_get_how_it_works_faq_defaults' )
+		? max( 1, count( restwell_get_how_it_works_faq_defaults() ) )
+		: 4;
+	$faq       = array(
 		'hiw_faq_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
 		'hiw_faq_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
 		'hiw_faq_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
 	);
-	for ( $i = 1; $i <= 3; $i++ ) {
+	for ( $i = 1; $i <= $faq_count; $i++ ) {
 		$faq[ "hiw_faq_{$i}_q" ] = restwell_field(
 			sprintf(
 				/* translators: %d: question number */
@@ -59,18 +40,13 @@ function restwell_get_how_it_works_field_definitions() {
 	}
 	return array(
 		'Header' => array(
-			'hiw_hero_image_id'           => restwell_field( __( 'Hero background image ID (optional)', 'restwell-retreats' ), 'media' ),
-			'hiw_label'                   => restwell_field( __( 'Hero eyebrow label (e.g. WHITSTABLE, KENT)', 'restwell-retreats' ) ),
-			'hiw_heading'                 => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
-			'hiw_intro'                   => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
-			'hiw_hero_cta_text'           => restwell_field( __( 'Hero primary CTA label (optional)', 'restwell-retreats' ) ),
-			'hiw_hero_cta_url'            => restwell_field( __( 'Hero primary CTA URL (optional)', 'restwell-retreats' ) ),
-			'hiw_hero_cta_secondary_text' => restwell_field( __( 'Hero secondary CTA label (optional)', 'restwell-retreats' ) ),
-			'hiw_hero_cta_secondary_url'  => restwell_field( __( 'Hero secondary CTA URL (optional)', 'restwell-retreats' ) ),
-			'hiw_hero_cta_promise'        => restwell_field( __( 'Hero promise line (optional)', 'restwell-retreats' ) ),
+			'hiw_hero_image_id' => restwell_field( __( 'Hero background image ID (optional)', 'restwell-retreats' ), 'media' ),
+			'hiw_label'         => restwell_field( __( 'Hero eyebrow label (optional)', 'restwell-retreats' ) ),
+			'hiw_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
+			'hiw_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Steps' => array(
-			'hiw_steps_label'   => restwell_field( __( 'Steps section label (e.g. FOUR-STEP PROCESS)', 'restwell-retreats' ) ),
+			'hiw_steps_label'   => restwell_field( __( 'Steps section label (e.g. How it works)', 'restwell-retreats' ) ),
 			'hiw_steps_heading' => restwell_field( __( 'Steps section heading (h2)', 'restwell-retreats' ) ),
 			'hiw_steps_intro'   => restwell_field( __( 'Steps section intro paragraph', 'restwell-retreats' ), 'textarea' ),
 			'hiw_step1_title'   => restwell_field( __( 'Step 1 title', 'restwell-retreats' ) ),
@@ -79,26 +55,45 @@ function restwell_get_how_it_works_field_definitions() {
 			'hiw_step2_body'    => restwell_field( __( 'Step 2 body', 'restwell-retreats' ), 'textarea' ),
 			'hiw_step3_title'   => restwell_field( __( 'Step 3 title', 'restwell-retreats' ) ),
 			'hiw_step3_body'    => restwell_field( __( 'Step 3 body', 'restwell-retreats' ), 'textarea' ),
-			'hiw_step4_title'   => restwell_field( __( 'Step 4 title', 'restwell-retreats' ) ),
-			'hiw_step4_body'    => restwell_field( __( 'Step 4 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_step4_title'   => restwell_field( __( 'Step 4 title (optional — leave blank to hide)', 'restwell-retreats' ) ),
+			'hiw_step4_body'    => restwell_field( __( 'Step 4 body (optional)', 'restwell-retreats' ), 'textarea' ),
 		),
-		'Care CTA' => array(
+		'Arrival' => array(
+			'hiw_arrival_label'       => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'hiw_arrival_heading'     => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'hiw_arrival_lede'        => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'hiw_arrival_1_dt'        => restwell_field( __( 'Comparison 1 title', 'restwell-retreats' ) ),
+			'hiw_arrival_1_dd'        => restwell_field( __( 'Comparison 1 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_arrival_2_dt'        => restwell_field( __( 'Comparison 2 title', 'restwell-retreats' ) ),
+			'hiw_arrival_2_dd'        => restwell_field( __( 'Comparison 2 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_arrival_3_dt'        => restwell_field( __( 'Comparison 3 title', 'restwell-retreats' ) ),
+			'hiw_arrival_3_dd'        => restwell_field( __( 'Comparison 3 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_arrival_link1_label' => restwell_field( __( 'Link 1 label (e.g. Tour the property)', 'restwell-retreats' ) ),
+			'hiw_arrival_link2_label' => restwell_field( __( 'Link 2 label (e.g. Door widths and kit notes)', 'restwell-retreats' ) ),
+		),
+		'Care band' => array(
 			'hiw_care_cta_label'   => restwell_field( __( 'Band eyebrow label', 'restwell-retreats' ) ),
 			'hiw_care_cta_heading' => restwell_field( __( 'Band heading', 'restwell-retreats' ) ),
 			'hiw_care_cta_body'    => restwell_field( __( 'Band body (short)', 'restwell-retreats' ), 'textarea' ),
-			'hiw_care_cta_btn'     => restwell_field( __( 'Button label', 'restwell-retreats' ) ),
-			'hiw_care_cta_url'     => restwell_field( __( 'Button URL', 'restwell-retreats' ) ),
+			'hiw_care_type1_title' => restwell_field( __( 'Care type 1 title', 'restwell-retreats' ) ),
+			'hiw_care_type1_text'  => restwell_field( __( 'Care type 1 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_care_type2_title' => restwell_field( __( 'Care type 2 title', 'restwell-retreats' ) ),
+			'hiw_care_type2_text'  => restwell_field( __( 'Care type 2 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_care_type3_title' => restwell_field( __( 'Care type 3 title', 'restwell-retreats' ) ),
+			'hiw_care_type3_text'  => restwell_field( __( 'Care type 3 body', 'restwell-retreats' ), 'textarea' ),
+			'hiw_care_note'        => restwell_field( __( 'Footnote under care types', 'restwell-retreats' ), 'textarea' ),
+			'hiw_care_cta_btn'     => restwell_field( __( 'Primary link label', 'restwell-retreats' ) ),
+			'hiw_care_cta_url'     => restwell_field( __( 'Primary link URL', 'restwell-retreats' ) ),
+			'hiw_care_rates_label' => restwell_field( __( 'Secondary rates link label', 'restwell-retreats' ) ),
+			'hiw_care_rates_url'   => restwell_field( __( 'Secondary rates link URL', 'restwell-retreats' ) ),
 		),
-		'What\'s included' => $included,
 		'Bottom CTA' => array(
-			'hiw_cta_label'           => restwell_field( __( 'CTA section eyebrow (optional)', 'restwell-retreats' ) ),
 			'hiw_cta_heading'         => restwell_field( __( 'CTA heading (e.g. Ready to plan your break?)', 'restwell-retreats' ) ),
 			'hiw_cta_body'            => restwell_field( __( 'CTA body paragraph', 'restwell-retreats' ), 'textarea' ),
 			'hiw_cta_primary_label'   => restwell_field( __( 'Primary button label', 'restwell-retreats' ) ),
 			'hiw_cta_primary_url'     => restwell_field( __( 'Primary button URL', 'restwell-retreats' ) ),
 			'hiw_cta_secondary_label' => restwell_field( __( 'Secondary button label', 'restwell-retreats' ) ),
 			'hiw_cta_secondary_url'   => restwell_field( __( 'Secondary button URL', 'restwell-retreats' ) ),
-			'hiw_cta_promise'         => restwell_field( __( 'CTA promise line (optional)', 'restwell-retreats' ) ),
 		),
 		'Common questions' => $faq,
 	);
@@ -108,12 +103,51 @@ function restwell_get_how_it_works_field_definitions() {
  * Accessibility page.
  */
 function restwell_get_accessibility_field_definitions() {
+	$faq = array(
+		'acc_faq_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+		'acc_faq_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+		'acc_faq_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+	);
+	for ( $i = 1; $i <= 10; $i++ ) {
+		$faq[ "acc_faq_{$i}_q" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Question %d', 'restwell-retreats' ),
+				$i
+			)
+		);
+		$faq[ "acc_faq_{$i}_a" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Answer %d', 'restwell-retreats' ),
+				$i
+			),
+			'textarea'
+		);
+	}
+
 	return array(
 		'Header' => array(
 			'acc_hero_image_id' => restwell_field( __( 'Hero background image (attachment ID, optional)', 'restwell-retreats' ), 'media' ),
 			'acc_label'         => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
 			'acc_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
 			'acc_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Key measurements' => array(
+			'acc_stat_1_label' => restwell_field( __( 'Stat 1 label (e.g. Clear opening, front door)', 'restwell-retreats' ) ),
+			'acc_stat_1_value' => restwell_field( __( 'Stat 1 value (e.g. 965mm)', 'restwell-retreats' ) ),
+			'acc_stat_2_label' => restwell_field( __( 'Stat 2 label', 'restwell-retreats' ) ),
+			'acc_stat_2_value' => restwell_field( __( 'Stat 2 value', 'restwell-retreats' ) ),
+			'acc_stat_3_label' => restwell_field( __( 'Stat 3 label', 'restwell-retreats' ) ),
+			'acc_stat_3_value' => restwell_field( __( 'Stat 3 value', 'restwell-retreats' ) ),
+		),
+		'Door fit checker' => array(
+			'acc_fit_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'acc_fit_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'acc_fit_intro'   => restwell_field( __( 'Intro under the heading', 'restwell-retreats' ), 'textarea' ),
+			'acc_fit_note'    => restwell_field( __( 'Guide note under the gauges', 'restwell-retreats' ), 'textarea' ),
+			'acc_fit_guide_heading' => restwell_field( __( 'Typical widths aside heading', 'restwell-retreats' ) ),
+			'acc_fit_guide_intro'   => restwell_field( __( 'Typical widths aside intro', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Feature photos' => array(
 			'acc_gallery_label'     => restwell_field( __( 'Gallery section label (optional)', 'restwell-retreats' ) ),
@@ -124,6 +158,7 @@ function restwell_get_accessibility_field_definitions() {
 		'Property: room by room' => array(
 			'acc_room_label'      => restwell_field( __( 'Room-by-room section label (optional)', 'restwell-retreats' ) ),
 			'acc_room_heading'    => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'acc_room_intro'      => restwell_field( __( 'Short intro under the heading (optional)', 'restwell-retreats' ), 'textarea' ),
 			'acc_arrival_heading' => restwell_field( __( 'Arrival & entrance (h3)', 'restwell-retreats' ) ),
 			'acc_arrival_body'    => restwell_field( __( 'Arrival body (bullets or paragraph)', 'restwell-retreats' ), 'textarea' ),
 			'acc_inside_heading'  => restwell_field( __( 'Inside the property (h3)', 'restwell-retreats' ) ),
@@ -148,6 +183,7 @@ function restwell_get_accessibility_field_definitions() {
 			'acc_dest_reality_heading'   => restwell_field( __( 'The reality (h3)', 'restwell-retreats' ) ),
 			'acc_dest_reality_body'      => restwell_field( __( 'The reality body', 'restwell-retreats' ), 'textarea' ),
 		),
+		'Access FAQ' => $faq,
 		'Contact CTA' => array(
 			'acc_cta_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
 			'acc_cta_body'    => restwell_field( __( 'Body paragraph', 'restwell-retreats' ), 'textarea' ),
@@ -231,7 +267,30 @@ function restwell_get_pricing_field_definitions() {
 			'pricing_hero_cta_url'     => restwell_field( __( 'Hero primary CTA URL', 'restwell-retreats' ) ),
 			'pricing_hero_cta_promise' => restwell_field( __( 'Hero CTA promise line (optional)', 'restwell-retreats' ) ),
 		),
+		'Bungalow rates' => array(
+			'pricing_rates_label'   => restwell_field( __( 'Rates section eyebrow', 'restwell-retreats' ) ),
+			'pricing_rates_heading' => restwell_field( __( 'Rates section heading (h2)', 'restwell-retreats' ) ),
+			'pricing_rates_intro'   => restwell_field( __( 'Rates section intro (lede). Rate numbers stay in the theme.', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Payment' => array(
+			'pricing_payment_label'   => restwell_field( __( 'Payment section eyebrow', 'restwell-retreats' ) ),
+			'pricing_payment_heading' => restwell_field( __( 'Payment section heading (h2)', 'restwell-retreats' ) ),
+			'pricing_payment_intro'   => restwell_field( __( 'Payment section intro (lede). “Funding & Support” becomes a link when present.', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Optional care rates' => array(
+			'pricing_care_rates_label'   => restwell_field( __( 'Care rates section eyebrow', 'restwell-retreats' ) ),
+			'pricing_care_rates_heading' => restwell_field( __( 'Care rates section heading (h2)', 'restwell-retreats' ) ),
+			'pricing_care_rates_intro'   => restwell_field( __( 'Care rates section intro (lede). Guide rate numbers stay in the theme.', 'restwell-retreats' ), 'textarea' ),
+		),
 		'FAQ' => $faq,
+		'CTA' => array(
+			'pricing_cta_heading'         => restwell_field( __( 'CTA heading (h2)', 'restwell-retreats' ) ),
+			'pricing_cta_body'            => restwell_field( __( 'CTA body paragraph', 'restwell-retreats' ), 'textarea' ),
+			'pricing_cta_primary_label'   => restwell_field( __( 'Primary button label', 'restwell-retreats' ) ),
+			'pricing_cta_primary_url'     => restwell_field( __( 'Primary button URL', 'restwell-retreats' ) ),
+			'pricing_cta_secondary_label' => restwell_field( __( 'Secondary button label', 'restwell-retreats' ) ),
+			'pricing_cta_secondary_url'   => restwell_field( __( 'Secondary button URL', 'restwell-retreats' ) ),
+		),
 	);
 }
 
@@ -478,12 +537,110 @@ function restwell_get_legal_policy_field_definitions() {
  * @return array<string, array<string, array{label:string,type:string}>>
  */
 function restwell_get_care_field_definitions() {
+	$faq = array(
+		'care_faq_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+		'care_faq_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+		'care_faq_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+	);
+	for ( $i = 1; $i <= 5; $i++ ) {
+		$faq[ "care_faq_{$i}_q" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Question %d', 'restwell-retreats' ),
+				$i
+			)
+		);
+		$faq[ "care_faq_{$i}_a" ] = restwell_field(
+			sprintf(
+				/* translators: %d: question number */
+				__( 'Answer %d', 'restwell-retreats' ),
+				$i
+			),
+			'textarea'
+		);
+	}
+
 	return array(
 		'Header' => array(
 			'care_hero_image_id' => restwell_field( __( 'Hero background image (attachment ID, optional)', 'restwell-retreats' ), 'media' ),
 			'care_label'         => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
 			'care_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
 			'care_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Sister company' => array(
+			'care_sister_label'       => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'care_sister_heading'     => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'care_sister_lede'        => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'care_sister_1_title'     => restwell_field( __( 'Comparison 1 title', 'restwell-retreats' ) ),
+			'care_sister_1_body'      => restwell_field( __( 'Comparison 1 body', 'restwell-retreats' ), 'textarea' ),
+			'care_sister_2_title'     => restwell_field( __( 'Comparison 2 title', 'restwell-retreats' ) ),
+			'care_sister_2_body'      => restwell_field( __( 'Comparison 2 body', 'restwell-retreats' ), 'textarea' ),
+			'care_sister_3_title'     => restwell_field( __( 'Comparison 3 title', 'restwell-retreats' ) ),
+			'care_sister_3_body'      => restwell_field( __( 'Comparison 3 body', 'restwell-retreats' ), 'textarea' ),
+			'care_sister_note'        => restwell_field( __( 'Trust note', 'restwell-retreats' ), 'textarea' ),
+			'care_sister_rates_label' => restwell_field( __( 'Rates link label', 'restwell-retreats' ) ),
+		),
+		'Support options' => array(
+			'care_support_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'care_support_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'care_support_1_title' => restwell_field( __( 'Item 1 title', 'restwell-retreats' ) ),
+			'care_support_1_body'  => restwell_field( __( 'Item 1 body', 'restwell-retreats' ), 'textarea' ),
+			'care_support_2_title' => restwell_field( __( 'Item 2 title', 'restwell-retreats' ) ),
+			'care_support_2_body'  => restwell_field( __( 'Item 2 body', 'restwell-retreats' ), 'textarea' ),
+			'care_support_3_title' => restwell_field( __( 'Item 3 title', 'restwell-retreats' ) ),
+			'care_support_3_body'  => restwell_field( __( 'Item 3 body', 'restwell-retreats' ), 'textarea' ),
+			'care_support_4_title' => restwell_field( __( 'Item 4 title', 'restwell-retreats' ) ),
+			'care_support_4_body'  => restwell_field( __( 'Item 4 body', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Own carer' => array(
+			'care_own_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'care_own_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'care_own_1_title' => restwell_field( __( 'Comparison 1 title', 'restwell-retreats' ) ),
+			'care_own_1_body'  => restwell_field( __( 'Comparison 1 body', 'restwell-retreats' ), 'textarea' ),
+			'care_own_2_title' => restwell_field( __( 'Comparison 2 title', 'restwell-retreats' ) ),
+			'care_own_2_body'  => restwell_field( __( 'Comparison 2 body', 'restwell-retreats' ), 'textarea' ),
+			'care_own_3_title' => restwell_field( __( 'Comparison 3 title', 'restwell-retreats' ) ),
+			'care_own_3_body'  => restwell_field( __( 'Comparison 3 body', 'restwell-retreats' ), 'textarea' ),
+		),
+		'How care works' => array(
+			'care_how_label'       => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'care_how_heading'     => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'care_how_lede'        => restwell_field( __( 'Section intro (plain text; How It Works link stays in the template)', 'restwell-retreats' ), 'textarea' ),
+			'care_how_step1_title' => restwell_field( __( 'Step 1 title', 'restwell-retreats' ) ),
+			'care_how_step1_body'  => restwell_field( __( 'Step 1 body', 'restwell-retreats' ), 'textarea' ),
+			'care_how_step2_title' => restwell_field( __( 'Step 2 title', 'restwell-retreats' ) ),
+			'care_how_step2_body'  => restwell_field( __( 'Step 2 body', 'restwell-retreats' ), 'textarea' ),
+			'care_how_step3_title' => restwell_field( __( 'Step 3 title', 'restwell-retreats' ) ),
+			'care_how_step3_body'  => restwell_field( __( 'Step 3 body (plain text; Pricing & dates link stays in the template)', 'restwell-retreats' ), 'textarea' ),
+		),
+		'CQC' => array(
+			'care_cqc_label'      => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'care_cqc_heading'    => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'care_cqc_body_1'     => restwell_field( __( 'Body paragraph 1', 'restwell-retreats' ), 'textarea' ),
+			'care_cqc_body_2'     => restwell_field( __( 'Body paragraph 2', 'restwell-retreats' ), 'textarea' ),
+			'care_cqc_link_label' => restwell_field( __( 'CQC profile link label', 'restwell-retreats' ) ),
+		),
+		'Professionals' => array(
+			'care_pro_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'care_pro_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'care_pro_lede'    => restwell_field( __( 'Section intro (plain text; Who It’s For link stays in the template)', 'restwell-retreats' ), 'textarea' ),
+			'care_pro_1_title' => restwell_field( __( 'Comparison 1 title', 'restwell-retreats' ) ),
+			'care_pro_1_body'  => restwell_field( __( 'Comparison 1 body (plain text)', 'restwell-retreats' ), 'textarea' ),
+			'care_pro_2_title' => restwell_field( __( 'Comparison 2 title', 'restwell-retreats' ) ),
+			'care_pro_2_body'  => restwell_field( __( 'Comparison 2 body', 'restwell-retreats' ), 'textarea' ),
+			'care_pro_3_title' => restwell_field( __( 'Comparison 3 title', 'restwell-retreats' ) ),
+			'care_pro_3_body'  => restwell_field( __( 'Comparison 3 body (plain text)', 'restwell-retreats' ), 'textarea' ),
+			'care_pro_4_title' => restwell_field( __( 'Comparison 4 title', 'restwell-retreats' ) ),
+			'care_pro_4_body'  => restwell_field( __( 'Comparison 4 body', 'restwell-retreats' ), 'textarea' ),
+		),
+		'FAQ'        => $faq,
+		'Bottom CTA' => array(
+			'care_cta_heading'         => restwell_field( __( 'CTA heading (h2)', 'restwell-retreats' ) ),
+			'care_cta_body'            => restwell_field( __( 'CTA body paragraph', 'restwell-retreats' ), 'textarea' ),
+			'care_cta_primary_label'   => restwell_field( __( 'Primary button label', 'restwell-retreats' ) ),
+			'care_cta_primary_url'     => restwell_field( __( 'Primary button URL', 'restwell-retreats' ) ),
+			'care_cta_secondary_label' => restwell_field( __( 'Secondary button label', 'restwell-retreats' ) ),
+			'care_cta_secondary_url'   => restwell_field( __( 'Secondary button URL', 'restwell-retreats' ) ),
 		),
 	);
 }
@@ -500,6 +657,69 @@ function restwell_get_our_story_field_definitions() {
 			'story_label'         => restwell_field( __( 'Hero eyebrow label', 'restwell-retreats' ) ),
 			'story_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
 			'story_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Origin' => array(
+			'story_origin_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_origin_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_origin_lede'    => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'story_origin_body'    => restwell_field( __( 'Body paragraph under the intro', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Month / build' => array(
+			'story_month_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_month_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_month_lede'    => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'story_month_1_meta'  => restwell_field( __( 'Step 1 meta label', 'restwell-retreats' ) ),
+			'story_month_1_title' => restwell_field( __( 'Step 1 title', 'restwell-retreats' ) ),
+			'story_month_1_body'  => restwell_field( __( 'Step 1 body', 'restwell-retreats' ), 'textarea' ),
+			'story_month_2_meta'  => restwell_field( __( 'Step 2 meta label', 'restwell-retreats' ) ),
+			'story_month_2_title' => restwell_field( __( 'Step 2 title', 'restwell-retreats' ) ),
+			'story_month_2_body'  => restwell_field( __( 'Step 2 body (plain text; partner links stay in the template when using the default)', 'restwell-retreats' ), 'textarea' ),
+			'story_month_3_meta'  => restwell_field( __( 'Step 3 meta label', 'restwell-retreats' ) ),
+			'story_month_3_title' => restwell_field( __( 'Step 3 title', 'restwell-retreats' ) ),
+			'story_month_3_body'  => restwell_field( __( 'Step 3 body', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Host' => array(
+			'story_host_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_host_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_host_lede'    => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Companies' => array(
+			'story_companies_label'      => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_companies_heading'    => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_companies_lede'       => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'story_companies_1_title'    => restwell_field( __( 'Item 1 title', 'restwell-retreats' ) ),
+			'story_companies_1_body'     => restwell_field( __( 'Item 1 body', 'restwell-retreats' ), 'textarea' ),
+			'story_companies_2_title'    => restwell_field( __( 'Item 2 title', 'restwell-retreats' ) ),
+			'story_companies_2_body'     => restwell_field( __( 'Item 2 body', 'restwell-retreats' ), 'textarea' ),
+			'story_companies_3_title'    => restwell_field( __( 'Item 3 title', 'restwell-retreats' ) ),
+			'story_companies_3_body'     => restwell_field( __( 'Item 3 body (phone link stays in the template)', 'restwell-retreats' ), 'textarea' ),
+			'story_companies_note'       => restwell_field( __( 'Trust note', 'restwell-retreats' ), 'textarea' ),
+			'story_companies_cqc_label'  => restwell_field( __( 'CQC profile link label', 'restwell-retreats' ) ),
+		),
+		'Shaped' => array(
+			'story_shaped_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_shaped_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_shaped_lede'    => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Specialists' => array(
+			'story_specialists_label'       => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_specialists_heading'     => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_specialists_lede'        => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+			'story_specialists_btn1_label'  => restwell_field( __( 'Primary button label', 'restwell-retreats' ) ),
+			'story_specialists_btn2_label'  => restwell_field( __( 'Secondary button label', 'restwell-retreats' ) ),
+		),
+		'Next' => array(
+			'story_next_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
+			'story_next_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
+			'story_next_lede'    => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
+		),
+		'Bottom CTA' => array(
+			'story_cta_heading'         => restwell_field( __( 'CTA heading (h2)', 'restwell-retreats' ) ),
+			'story_cta_body'            => restwell_field( __( 'CTA body paragraph', 'restwell-retreats' ), 'textarea' ),
+			'story_cta_primary_label'   => restwell_field( __( 'Primary button label', 'restwell-retreats' ) ),
+			'story_cta_primary_url'     => restwell_field( __( 'Primary button URL', 'restwell-retreats' ) ),
+			'story_cta_secondary_label' => restwell_field( __( 'Secondary button label', 'restwell-retreats' ) ),
+			'story_cta_secondary_url'   => restwell_field( __( 'Secondary button URL', 'restwell-retreats' ) ),
 		),
 	);
 }

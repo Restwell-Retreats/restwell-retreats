@@ -1,9 +1,11 @@
 /* Self-hosted Inter + Lora variable fonts.
-   Paths are relative to this file (assets/css/). */
+   Paths are relative to this file (assets/css/).
+   Prefer woff2; keep ttf as fallback for older browsers. */
 
 @font-face {
   font-family: "Inter";
-  src: url("../fonts/inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("../fonts/inter/Inter-VariableFont_opsz,wght.woff2") format("woff2"),
+       url("../fonts/inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -11,7 +13,8 @@
 
 @font-face {
   font-family: "Inter";
-  src: url("../fonts/inter/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("../fonts/inter/Inter-Italic-VariableFont_opsz,wght.woff2") format("woff2"),
+       url("../fonts/inter/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
   font-weight: 100 900;
   font-style: italic;
   font-display: swap;
@@ -19,7 +22,8 @@
 
 @font-face {
   font-family: "Lora";
-  src: url("../fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
+  src: url("../fonts/lora/Lora-VariableFont_wght.woff2") format("woff2"),
+       url("../fonts/lora/Lora-VariableFont_wght.ttf") format("truetype");
   font-weight: 400 700;
   font-style: normal;
   font-display: swap;
@@ -27,7 +31,8 @@
 
 @font-face {
   font-family: "Lora";
-  src: url("../fonts/lora/Lora-Italic-VariableFont_wght.ttf") format("truetype");
+  src: url("../fonts/lora/Lora-Italic-VariableFont_wght.woff2") format("woff2"),
+       url("../fonts/lora/Lora-Italic-VariableFont_wght.ttf") format("truetype");
   font-weight: 400 700;
   font-style: italic;
   font-display: swap;

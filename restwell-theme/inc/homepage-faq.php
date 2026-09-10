@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function restwell_get_homepage_faq_defaults(): array {
 	$q1_text = __(
-		'No. It’s a private bungalow holiday: one house, by the sea, for your party alone. Home care is optional and comes from our sister company if you want it.',
+		'No. It’s a private bungalow holiday: one house, by the sea, for your party alone. Optional home care comes from our sister company, Continuity, and is arranged separately if you want it.',
 		'restwell-retreats'
 	);
 	$q1_html = '<p>' . esc_html( $q1_text ) . '</p>';
@@ -37,7 +37,7 @@ function restwell_get_homepage_faq_defaults(): array {
 	$q2_html = '<p>' . esc_html( $q2_text ) . '</p>';
 
 	$q3_text = __(
-		'Yes. Continuity of Care Services can come in while you’re staying. Mention it when you enquire, or ring us on 01622 809881.',
+		'Yes. Continuity of Care Services can come in while you’re staying. Care is quoted separately from the bungalow. Mention it when you enquire, or ring us on 01622 809881.',
 		'restwell-retreats'
 	);
 	$q3_html = '<p>' . esc_html( $q3_text ) . '</p>';

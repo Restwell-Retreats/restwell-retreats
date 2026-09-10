@@ -99,6 +99,55 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 		return apply_filters( 'restwell_faq_items', $items_out, $scope, $pricing_pid );
 	}
 
+	if ( 'how-it-works' === $scope ) {
+		$items    = array();
+		$hiw_page = get_page_by_path( 'how-it-works', OBJECT, 'page' );
+		$hiw_pid  = $hiw_page ? (int) $hiw_page->ID : 0;
+		$hiw_max  = function_exists( 'restwell_get_how_it_works_faq_defaults' )
+			? max( 1, count( restwell_get_how_it_works_faq_defaults() ) )
+			: 4;
+
+		if ( $hiw_pid > 0 ) {
+			for ( $i = 1; $i <= $hiw_max; $i++ ) {
+				$q = (string) get_post_meta( $hiw_pid, "hiw_faq_{$i}_q", true );
+				$a = (string) get_post_meta( $hiw_pid, "hiw_faq_{$i}_a", true );
+				if ( $q !== '' && $a !== '' ) {
+					if ( function_exists( 'restwell_normalize_editorial_dashes' ) ) {
+						$q = restwell_normalize_editorial_dashes( $q );
+						$a = restwell_normalize_editorial_dashes( $a );
+					}
+					$items[] = array(
+						'q'   => $q,
+						'a'   => $a,
+						'cat' => 'booking',
+					);
+				}
+			}
+		}
+
+		if ( empty( $items ) && function_exists( 'restwell_get_how_it_works_faq_defaults' ) ) {
+			foreach ( restwell_get_how_it_works_faq_defaults() as $row ) {
+				$items[] = array(
+					'q'   => $row['q'],
+					'a'   => $row['a'],
+					'cat' => isset( $row['cat'] ) ? $row['cat'] : 'booking',
+				);
+			}
+		}
+
+		/**
+		 * Filter How It Works FAQ items.
+		 *
+		 * @param array<int, array{q:string,a:string,cat:string}> $items Items.
+		 * @param string                                          $scope Scope key.
+		 * @param int                                             $pid   How It Works page ID.
+		 */
+		$items_out = function_exists( 'restwell_apply_property_facts_to_faq_items' )
+			? restwell_apply_property_facts_to_faq_items( $items )
+			: $items;
+		return apply_filters( 'restwell_faq_items', $items_out, $scope, $hiw_pid );
+	}
+
 	if ( 'homepage' === $scope && function_exists( 'restwell_get_homepage_faq_defaults' ) ) {
 		$items = array();
 		foreach ( restwell_get_homepage_faq_defaults() as $row ) {
@@ -155,19 +204,6 @@ function restwell_get_faq_items( string $scope = 'faq-page' ): array {
 				'cat' => isset( $row['cat'] ) ? $row['cat'] : 'about',
 			);
 		}
-	}
-
-	if ( 'how-it-works' === $scope ) {
-		// How It Works uses its own distinct FAQ set to avoid duplicate content with the FAQ page.
-		$hiw_items = array();
-		foreach ( restwell_get_how_it_works_faq_defaults() as $row ) {
-			$hiw_items[] = array(
-				'q'   => $row['q'],
-				'a'   => $row['a'],
-				'cat' => isset( $row['cat'] ) ? $row['cat'] : 'booking',
-			);
-		}
-		$items = $hiw_items;
 	}
 
 	/**

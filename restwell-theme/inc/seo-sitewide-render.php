@@ -107,6 +107,11 @@ function restwell_seo_sitewide_render_business_card( $issues ) {
 						<p class="rw-seo-field__hint"><?php esc_html_e( 'Also used in the site footer and email templates.', 'restwell-retreats' ); ?></p>
 					<?php restwell_seo_sitewide_field_close(); ?>
 
+					<?php restwell_seo_sitewide_field_open( 'restwell_public_email', __( 'Public email', 'restwell-retreats' ), $issues ); ?>
+						<input type="email" class="rw-seo-field__input" id="restwell_public_email" name="restwell_public_email" value="<?php echo esc_attr( (string) get_option( 'restwell_public_email', 'hello@restwellretreats.co.uk' ) ); ?>" />
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Shown in the site footer and enquire page contact details.', 'restwell-retreats' ); ?></p>
+					<?php restwell_seo_sitewide_field_close(); ?>
+
 					<?php restwell_seo_sitewide_field_open( 'restwell_business_street', __( 'Business street', 'restwell-retreats' ), $issues ); ?>
 						<input type="text" class="rw-seo-field__input" id="restwell_business_street" name="restwell_business_street" value="<?php echo esc_attr( (string) get_option( 'restwell_business_street', 'Vinters Business Park' ) ); ?>" />
 					<?php restwell_seo_sitewide_field_close(); ?>

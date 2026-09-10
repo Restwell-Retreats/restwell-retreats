@@ -173,7 +173,7 @@ function restwell_page_content_editor_notice( $post = null ) {
 
 	$front_id = (int) get_option( 'page_on_front', 0 );
 	if ( $front_id > 0 && (int) $post->ID === $front_id ) {
-		return __( 'On the homepage, the live site reads the Hero heading and intro, plus hero media. Guest reviews are live Google reviews when the Places API is set, otherwise the Testimonials tab — paste the guest’s words, do not rewrite. Partners heading, intro, CTA and logos go live from the Partners tab (theme images until a logo is uploaded). Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+		return __( 'On the homepage, the live site reads Hero (heading, intro, CTAs, reassurance, media), Property snapshot, Area & funding cards, Comparison heading/cards (Why Restwell items), Partners, Testimonials (or live Google reviews), the Optional care band, FAQ section label/heading (answers come from the theme FAQ list), and the bottom CTA tab. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
 	}
 
 	$template = (string) get_page_template_slug( $post );
@@ -186,6 +186,10 @@ function restwell_page_content_editor_notice( $post = null ) {
 		return __( 'Label, heading, intro, and body HTML go live. The hero image is used when one is set (otherwise the theme stock coastline). Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
 	}
 
+	if ( 'template-property.php' === $template ) {
+		return __( 'Live on the page: hero heading/intro, room-tour headings and bodies (bedrooms, wet room, living, kitchen, conservatory, outside), gallery label/heading, care heading/body, location heading/body, and the bottom CTA. Section eyebrows, checklist items, gallery thumbnails, and the Whitstable guide link sentence stay in the theme for now. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
 	if ( 'template-faq.php' === $template ) {
 		return __( 'Heading, intro, and the FAQ question/answer fields on this page go live. Homepage FAQ is in the theme (inc/homepage-faq.php). How It Works has its own FAQ fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
 	}
@@ -194,8 +198,20 @@ function restwell_page_content_editor_notice( $post = null ) {
 		return __( 'Hero heading and intro go live. Success heading and bodies appear after a guest submits the form (duplicate submissions keep a fixed message). Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
 	}
 
+	if ( 'template-how-it-works.php' === $template ) {
+		return __( 'Live on the page: hero heading/intro, the three (or four) process steps, the care band heading/body/link, FAQ section labels, and the bottom CTA. Arrival details and care-type rows stay in the theme for now. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	if ( 'template-pricing.php' === $template ) {
+		return __( 'Live on the page: hero heading/intro, bungalow-rates / payment / care-rates section labels and intros, FAQ fields, and the bottom CTA. Rate tables and payment step amounts stay in the theme. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
+	if ( 'template-care.php' === $template || 'template-our-story.php' === $template ) {
+		return __( 'Live on the page: hero eyebrow, heading, intro, hero image, and the bottom CTA. Mid-page story and care sections still live in the theme PHP. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+	}
+
 	if ( $template !== '' ) {
-		return __( 'Hero heading, intro, and hero image go live where this template reads them. Most body copy on these templates lives in the theme PHP, not in this panel. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
+		return __( 'Hero heading, intro, hero image, and bottom CTA fields (where defined) go live. Much of the mid-page body copy still lives in the theme PHP for these concept templates — check the metabox notice against what you change. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );
 	}
 
 	return __( 'Pick a section, edit the fields. Search titles and meta live under SEO in the admin menu.', 'restwell-retreats' );

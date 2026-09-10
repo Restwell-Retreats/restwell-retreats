@@ -40,6 +40,11 @@ function restwell_seo_sitewide_handle_save() {
 		: '';
 	update_option( 'restwell_phone_number', $phone );
 
+	$public_email = isset( $_POST['restwell_public_email'] )
+		? sanitize_email( wp_unslash( $_POST['restwell_public_email'] ) )
+		: '';
+	update_option( 'restwell_public_email', $public_email );
+
 	$business_street = isset( $_POST['restwell_business_street'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_business_street'] ) )
 		: '';

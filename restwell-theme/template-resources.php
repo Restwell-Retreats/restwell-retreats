@@ -33,13 +33,53 @@ foreach (
 
 <main id="main-content">
 <?php
-$restwell_res_id      = (int) get_queried_object_id();
-$restwell_res_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_res_id, 'res_heading', 'Paying for a break, without the guesswork' )
-	: 'Paying for a break, without the guesswork';
-$restwell_res_intro   = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_res_id, 'res_intro', 'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.' )
-	: 'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.';
+$restwell_res_id = (int) get_queried_object_id();
+
+$res_txt = static function ( $key, $fallback ) use ( $restwell_res_id ) {
+	return function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_res_id, $key, $fallback )
+		: $fallback;
+};
+
+$restwell_res_heading = $res_txt( 'res_heading', 'Paying for a break, without the guesswork' );
+$restwell_res_intro   = $res_txt(
+	'res_intro',
+	'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.'
+);
+
+$res_fund_heading = $res_txt( 'res_fund_heading', 'The house and the care can sit on different invoices' );
+$res_fund_body    = $res_txt(
+	'res_fund_body',
+	'A council or CHC team will often pay for care hours, and not the bungalow, or the other way round. Continuity is our sister company, so you still ring us once.'
+);
+
+$res_chc_heading = $res_txt( 'res_chc_heading', 'Continuing Healthcare and personal health budgets' );
+$res_chc_body    = $res_txt(
+	'res_chc_body',
+	'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that, which is why we keep it on a separate invoice.'
+);
+
+$res_grants_heading = $res_txt( 'res_grants_heading', 'Grants and key contacts' );
+$res_grants_body    = $res_txt(
+	'res_grants_body',
+	'These are the organisations people actually use. We can’t say yes on their behalf, but we can send whatever paperwork they ask for.'
+);
+// Plain lede field: if legacy meta still holds markup, fall back to the clean default.
+if ( false !== strpos( (string) $res_grants_body, '<' ) ) {
+	$res_grants_body = 'These are the organisations people actually use. We can’t say yes on their behalf, but we can send whatever paperwork they ask for.';
+}
+
+$res_contacts_heading = $res_txt( 'res_contacts_heading', 'Who to call' );
+$res_contacts_body    = $res_txt( 'res_contacts_body', '' );
+
+$res_complaints_body = $res_txt(
+	'res_complaints_body',
+	'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.'
+);
+if ( false !== strpos( (string) $res_complaints_body, '<' ) ) {
+	$res_complaints_body = 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.';
+}
+
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,
@@ -90,8 +130,8 @@ get_template_part(
 		</div>
 		<header class="section-head">
 		  <p class="eyebrow">How the bills work</p>
-		  <h2 id="basics-h">The house and the care can sit on different invoices</h2>
-		  <p class="lede">A council or CHC team will often pay for care hours, and not the bungalow, or the other way round. Continuity is our sister company, so you still ring us once.</p>
+		  <h2 id="basics-h"><?php echo esc_html( $res_fund_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $res_fund_body ); ?></p>
 		</header>
 		<div class="invoice-pair">
 		  <article class="invoice-card">
@@ -154,8 +194,8 @@ get_template_part(
 		  <article class="funding-route" id="nhs">
 			<div class="funding-route__copy">
 			  <p class="eyebrow">NHS</p>
-			  <h3>Continuing Healthcare and personal health budgets</h3>
-			  <p>Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that, which is why we keep it on a separate invoice.</p>
+			  <h3><?php echo esc_html( $res_chc_heading ); ?></h3>
+			  <p><?php echo esc_html( $res_chc_body ); ?></p>
 			</div>
 			<div class="cover-split">
 			  <div class="cover-split__col cover-split__col--yes">
@@ -222,8 +262,8 @@ get_template_part(
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">Quick reference</p>
-		  <h2 id="directory-h">Grants and key contacts</h2>
-		  <p class="lede">These are the organisations people actually use. We can’t say yes on their behalf, but we can send whatever paperwork they ask for.</p>
+		  <h2 id="directory-h"><?php echo esc_html( $res_grants_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $res_grants_body ); ?></p>
 		</header>
 		<div class="fund-directory">
 		<div>
@@ -262,7 +302,10 @@ get_template_part(
 		</ul>
 		</div>
 		<div>
-		  <p class="fund-directory__label">Who to call</p>
+		  <p class="fund-directory__label"><?php echo esc_html( $res_contacts_heading ); ?></p>
+		  <?php if ( '' !== trim( wp_strip_all_tags( $res_contacts_body ) ) ) : ?>
+			<div class="prose"><?php echo wp_kses_post( $res_contacts_body ); ?></div>
+		  <?php else : ?>
 		  <ul class="contact-list">
 			<li class="contact-list__item">
 			  <div class="contact-list__org">
@@ -293,6 +336,7 @@ get_template_part(
 			  <p class="contact-list__action"><a href="tel:01622809881">01622 809881</a></p>
 			</li>
 		  </ul>
+		  <?php endif; ?>
 		  <p class="fund-directory__follow"><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#payment' ); ?>">How invoicing works on pricing</a></p>
 		</div>
 		</div>
@@ -316,7 +360,7 @@ get_template_part(
 		<aside class="download-panel">
 		  <h3>We’ll send a quote and the access statement</h3>
 		  <p>Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
+		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire</a>
 		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>">Published rates</a>
 		</aside>
 	  </div>
@@ -382,7 +426,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="res-q6-a" role="region" aria-labelledby="res-q6" hidden>
-				<p>You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.</p>
+				<p><?php echo esc_html( $res_complaints_body ); ?></p>
 			  </div>
 			</div>
 		  </div>
@@ -402,17 +446,32 @@ if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
 }
 ?>
 
-	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-	  <div class="mid-cta__media" aria-hidden="true"></div>
-	  <div class="mid-cta__inner">
-		<h2 id="mid-cta-h">Send us your dates and who to invoice.</h2>
-		<p>We’ll reply with a bungalow quote at the published rates, the access statement, and Continuity care on the same thread if you asked for it. Just let us know the dates.</p>
-		<div class="mid-cta__btns">
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>">See published rates</a>
-		</div>
-	  </div>
-	</section>
+	<?php
+	$mid_cta_heading = $res_txt( 'res_cta_heading', __( 'Send us your dates and who to invoice.', 'restwell-retreats' ) );
+	$mid_cta_intro   = $res_txt(
+		'res_cta_body',
+		__( 'We’ll reply with a bungalow quote at the published rates, the access statement, and Continuity care on the same thread if you asked for it. Just let us know the dates.', 'restwell-retreats' )
+	);
+	$mid_cta_primary_label = $res_txt( 'res_cta_btn', __( 'Enquire', 'restwell-retreats' ) );
+	$mid_cta_primary_url   = $res_txt( 'res_cta_url', restwell_nav_resolve_page_url( 'enquire' ) );
+
+	$mid_cta_secondary_label = __( 'See published rates', 'restwell-retreats' );
+	$mid_cta_secondary_url   = restwell_nav_resolve_page_url( 'pricing' );
+
+	get_template_part(
+		'template-parts/mid-cta',
+		null,
+		array(
+			'heading'         => $mid_cta_heading,
+			'intro'           => $mid_cta_intro,
+			'primary_label'   => $mid_cta_primary_label,
+			'primary_url'     => $mid_cta_primary_url,
+			'secondary_label' => $mid_cta_secondary_label,
+			'secondary_url'   => $mid_cta_secondary_url,
+		)
+	);
+	?>
+
 
 </main>
 

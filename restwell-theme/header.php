@@ -49,14 +49,16 @@ $brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_bran
 
 		<nav aria-label="<?php esc_attr_e( 'Primary', 'restwell-retreats' ); ?>">
 			<?php
-			// Prefer concept fallback IA (mockup source of truth). Assigned Primary menus
-			// can be re-enabled with Restwell_Concept_Nav_Walker once curated in WP admin.
-			restwell_render_primary_nav_fallback();
+			if ( function_exists( 'restwell_render_primary_nav' ) ) {
+				restwell_render_primary_nav();
+			} else {
+				restwell_render_primary_nav_fallback();
+			}
 			?>
 		</nav>
 
 		<div class="site-header__actions">
-			<a class="btn btn-gold" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Enquire Now', 'restwell-retreats' ); ?></a>
+			<a class="btn btn-gold" href="<?php echo esc_url( $enquire_url ); ?>"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
 			<button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'restwell-retreats' ); ?>">
 				<span class="nav-toggle__icon" aria-hidden="true"><span></span></span>
 			</button>

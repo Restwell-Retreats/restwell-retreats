@@ -645,21 +645,6 @@ function restwell_get_property_room_tour_sections( $post_id = 0 ) {
 
 	$slots = array(
 		array(
-			'key'            => 'living',
-			'heading_key'    => 'prop_living_heading',
-			'body_key'       => 'prop_living_body',
-			'image_key'      => 'prop_tour_living_image_id',
-			'image_confirm'  => 'living room/kitchen photo',
-			'keywords'       => array(
-				'living room',
-				'open-plan living',
-				'kitchen',
-				'conservatory',
-				'lounge',
-				'living area',
-			),
-		),
-		array(
 			'key'            => 'bedroom',
 			'heading_key'    => 'prop_bedrooms_section_heading',
 			'body_key'       => 'prop_bedrooms_section_body',
@@ -687,6 +672,48 @@ function restwell_get_property_room_tour_sections( $post_id = 0 ) {
 				'shower',
 				'bathroom',
 				'washroom',
+			),
+		),
+		array(
+			'key'            => 'living',
+			'heading_key'    => 'prop_living_heading',
+			'body_key'       => 'prop_living_body',
+			'image_key'      => 'prop_tour_living_image_id',
+			'image_confirm'  => 'living room photo',
+			'keywords'       => array(
+				'living room',
+				'open-plan living',
+				'lounge',
+				'living area',
+				'rise-and-recline',
+			),
+		),
+		array(
+			'key'            => 'kitchen',
+			'heading_key'    => 'prop_kitchen_heading',
+			'body_key'       => 'prop_kitchen_body',
+			'image_key'      => 'prop_tour_kitchen_image_id',
+			'image_confirm'  => 'kitchen photo',
+			'keywords'       => array(
+				'kitchen',
+				'wheel-under',
+				'worksurface',
+				'hob',
+				'oven',
+			),
+		),
+		array(
+			'key'            => 'conservatory',
+			'heading_key'    => 'prop_conservatory_heading',
+			'body_key'       => 'prop_conservatory_body',
+			'image_key'      => 'prop_tour_conservatory_image_id',
+			'image_confirm'  => 'conservatory photo',
+			'keywords'       => array(
+				'conservatory',
+				'sofa bed',
+				'dining',
+				'laundry',
+				'patio doors',
 			),
 		),
 		array(

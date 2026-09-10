@@ -5,27 +5,37 @@
 (function () {
   'use strict';
 
-  /* ---------- Gallery lightbox ---------- */
-  var gallery = document.querySelector('[data-gallery]');
+  /* ---------- Gallery lightbox ----------
+   * Supports multiple [data-gallery] roots on one page (e.g. room tours +
+   * equipment gallery). Slides are scoped to the gallery that opened.
+   */
+  var galleries = document.querySelectorAll('[data-gallery]');
   var lightbox = document.getElementById('gallery-lightbox');
-  if (gallery && lightbox) {
+  if (galleries.length && lightbox) {
     var imageEl = lightbox.querySelector('[data-lightbox-image]');
     var captionEl = lightbox.querySelector('[data-lightbox-caption]');
     var statusEl = lightbox.querySelector('[data-lightbox-status]');
     var closeBtn = lightbox.querySelector('[data-lightbox-close]');
     var prevBtn = lightbox.querySelector('[data-lightbox-prev]');
     var nextBtn = lightbox.querySelector('[data-lightbox-next]');
-    var slides = Array.prototype.map.call(
-      gallery.querySelectorAll('.gallery__open img'),
-      function (img) {
-        return {
-          url: img.currentSrc || img.src,
-          alt: img.alt || ''
-        };
-      }
-    );
+    var slides = [];
     var index = 0;
     var lastFocus = null;
+
+    function collectSlides(galleryRoot) {
+      /* Primary openers (.gallery__open img) plus non-tabbable extras
+         (img[data-gallery-slide]) keep lightbox sets complete without
+         focusable nodes inside aria-hidden / visually-hidden stores. */
+      return Array.prototype.map.call(
+        galleryRoot.querySelectorAll('.gallery__open img, img[data-gallery-slide]'),
+        function (img) {
+          return {
+            url: img.currentSrc || img.src,
+            alt: img.alt || ''
+          };
+        }
+      );
+    }
 
     function showSlide(nextIndex) {
       if (!slides.length) return;
@@ -46,7 +56,9 @@
       });
     }
 
-    function openLightbox(startIndex) {
+    function openLightbox(galleryRoot, startIndex) {
+      slides = collectSlides(galleryRoot);
+      if (!slides.length) return;
       lastFocus = document.activeElement;
       showSlide(typeof startIndex === 'number' ? startIndex : 0);
       lightbox.removeAttribute('hidden');
@@ -62,16 +74,19 @@
       document.body.classList.remove('lightbox-open');
       setLightboxBackgroundInert(false);
       imageEl.removeAttribute('src');
+      slides = [];
       if (lastFocus && typeof lastFocus.focus === 'function') {
         lastFocus.focus();
       }
     }
 
-    gallery.addEventListener('click', function (event) {
-      var trigger = event.target.closest('[data-gallery-open]');
-      if (!trigger || !gallery.contains(trigger)) return;
-      var start = parseInt(trigger.getAttribute('data-gallery-index'), 10);
-      openLightbox(isNaN(start) ? 0 : start);
+    Array.prototype.forEach.call(galleries, function (gallery) {
+      gallery.addEventListener('click', function (event) {
+        var trigger = event.target.closest('[data-gallery-open]');
+        if (!trigger || !gallery.contains(trigger)) return;
+        var start = parseInt(trigger.getAttribute('data-gallery-index'), 10);
+        openLightbox(gallery, isNaN(start) ? 0 : start);
+      });
     });
 
     closeBtn.addEventListener('click', closeLightbox);

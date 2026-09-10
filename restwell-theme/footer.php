@@ -25,6 +25,10 @@ $brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_bran
 
 $footer_phone = (string) get_option( 'restwell_phone_number', '01622 809881' );
 $footer_phone_tel = preg_replace( '/[^0-9+]/', '', $footer_phone );
+$footer_email = (string) get_option( 'restwell_public_email', 'hello@restwellretreats.co.uk' );
+if ( '' === $footer_email || ! is_email( $footer_email ) ) {
+	$footer_email = 'hello@restwellretreats.co.uk';
+}
 
 $faq_url      = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'faq' ) : home_url( '/faq/' );
 $privacy_url  = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'privacy-policy' ) : home_url( '/privacy-policy/' );
@@ -62,7 +66,7 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 			<p class="site-footer__partner-line">
 				<a href="tel:<?php echo esc_attr( $footer_phone_tel ); ?>"><?php echo esc_html( $footer_phone ); ?></a>
 				<span aria-hidden="true"> &middot; </span>
-				<a href="mailto:hello@restwellretreats.co.uk">hello@restwellretreats.co.uk</a>
+				<a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a>
 			</p>
 		</div>
 		<div class="site-footer__bottom">

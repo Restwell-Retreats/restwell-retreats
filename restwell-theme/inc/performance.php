@@ -254,18 +254,22 @@ function restwell_theme_media_url( string $relative ): string {
 
 function restwell_theme_image_url( string $relative ): string {
 	$relative = ltrim( str_replace( '\\', '/', $relative ), '/' );
-	$media_url = restwell_theme_media_url( $relative );
-	if ( $media_url !== '' ) {
-		return $media_url;
-	}
 	$base     = get_template_directory() . '/assets/images/';
 	$dir      = dirname( $relative );
 	$stem     = pathinfo( $relative, PATHINFO_FILENAME );
 	$opt_rel  = ( '.' === $dir || '' === $dir )
 		? 'opt/' . $stem . '.webp'
 		: $dir . '/opt/' . $stem . '.webp';
+
+	// Prefer theme-bundled Opt WebP over Media Library full originals (often multi-MB masters).
 	if ( is_readable( $base . $opt_rel ) ) {
 		return get_template_directory_uri() . '/assets/images/' . $opt_rel;
 	}
+
+	$media_url = restwell_theme_media_url( $relative );
+	if ( $media_url !== '' ) {
+		return $media_url;
+	}
+
 	return get_template_directory_uri() . '/assets/images/' . $relative;
 }

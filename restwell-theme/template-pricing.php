@@ -68,6 +68,49 @@ $restwell_pricing_heading = function_exists( 'restwell_page_content_text' )
 $restwell_pricing_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_pricing_id, 'pricing_intro', 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.' )
 	: 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.';
+
+$pricing_txt = static function ( $key, $fallback ) use ( $restwell_pricing_id ) {
+	return function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_pricing_id, $key, $fallback )
+		: $fallback;
+};
+
+$pricing_rates_label   = $pricing_txt( 'pricing_rates_label', __( 'Bungalow rates', 'restwell-retreats' ) );
+$pricing_rates_heading = $pricing_txt( 'pricing_rates_heading', __( 'Published bungalow rates', 'restwell-retreats' ) );
+$pricing_rates_intro   = $pricing_txt(
+	'pricing_rates_intro',
+	__( 'The bungalow sleeps five people. Prices vary for midweek (Monday to Thursday) and weekend (Friday to Sunday) nights. Care is optional and has a separate charge.', 'restwell-retreats' )
+);
+$pricing_payment_label   = $pricing_txt( 'pricing_payment_label', __( 'Deposits and balance', 'restwell-retreats' ) );
+$pricing_payment_heading = $pricing_txt( 'pricing_payment_heading', __( 'How payment works', 'restwell-retreats' ) );
+$pricing_payment_intro   = $pricing_txt(
+	'pricing_payment_intro',
+	__( 'You can pay by bank transfer or card. For information about invoicing different funders, see Funding & Support.', 'restwell-retreats' )
+);
+$pricing_care_rates_label   = $pricing_txt( 'pricing_care_rates_label', __( 'Guide rates', 'restwell-retreats' ) );
+$pricing_care_rates_heading = $pricing_txt( 'pricing_care_rates_heading', __( 'Optional care while you stay', 'restwell-retreats' ) );
+$pricing_care_rates_intro   = $pricing_txt(
+	'pricing_care_rates_intro',
+	__( 'Guide rates for care from Continuity depend on the hours and tasks you need. Continuity will give you a quote after you speak with them.', 'restwell-retreats' )
+);
+
+/**
+ * Turn a phrase inside already-escaped copy into an internal text link.
+ *
+ * @param string $escaped Escaped HTML text.
+ * @param string $phrase  Visible phrase to wrap.
+ * @param string $url     Destination URL.
+ * @return string
+ */
+$pricing_link_phrase = static function ( $escaped, $phrase, $url ) {
+	$needle = esc_html( $phrase );
+	if ( '' === $needle || false === strpos( $escaped, $needle ) ) {
+		return $escaped;
+	}
+	$link = '<a class="text-link" href="' . esc_url( $url ) . '">' . $needle . '</a>';
+	return str_replace( $needle, $link, $escaped );
+};
+
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,
@@ -105,9 +148,13 @@ get_template_part(
 	<section class="section-y band-white" id="rates" aria-labelledby="rates-h">
 	  <div class="container">
 		<header class="section-head">
-		  <p class="eyebrow">Bungalow rates</p>
-		  <h2 id="rates-h">Published bungalow rates</h2>
-		  <p class="lede">The bungalow sleeps five people. Prices vary for midweek (Monday to Thursday) and weekend (Friday to Sunday) nights. Care is optional and has a separate charge.</p>
+		  <?php if ( '' !== $pricing_rates_label ) : ?>
+		  <p class="eyebrow"><?php echo esc_html( $pricing_rates_label ); ?></p>
+		  <?php endif; ?>
+		  <h2 id="rates-h"><?php echo esc_html( $pricing_rates_heading ); ?></h2>
+		  <?php if ( '' !== $pricing_rates_intro ) : ?>
+		  <p class="lede"><?php echo esc_html( $pricing_rates_intro ); ?></p>
+		  <?php endif; ?>
 		</header>
 		<div class="rates-block">
 		  <div class="rates-panel">
@@ -180,9 +227,13 @@ get_template_part(
 	<section class="section-y band-subtle" id="payment" aria-labelledby="payment-h">
 	  <div class="container">
 		<header class="section-head">
-		  <p class="eyebrow">Deposits and balance</p>
-		  <h2 id="payment-h">How payment works</h2>
-		  <p class="lede">You can pay by bank transfer or card. For information about invoicing different funders, see <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; Support</a>.</p>
+		  <?php if ( '' !== $pricing_payment_label ) : ?>
+		  <p class="eyebrow"><?php echo esc_html( $pricing_payment_label ); ?></p>
+		  <?php endif; ?>
+		  <h2 id="payment-h"><?php echo esc_html( $pricing_payment_heading ); ?></h2>
+		  <?php if ( '' !== $pricing_payment_intro ) : ?>
+		  <p class="lede"><?php echo wp_kses_post( $pricing_link_phrase( esc_html( $pricing_payment_intro ), 'Funding & Support', restwell_nav_resolve_page_url( 'resources' ) ) ); ?></p>
+		  <?php endif; ?>
 		</header>
 		<ol class="payment-steps">
 		  <li class="payment-steps__item">
@@ -214,9 +265,13 @@ get_template_part(
 	<section class="section-y band-white" id="care-rates" aria-labelledby="care-rates-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
-		  <p class="eyebrow">Guide rates</p>
-		  <h2 id="care-rates-h">Optional care while you stay</h2>
-		  <p class="lede">Guide rates for care from Continuity depend on the hours and tasks you need. Continuity will give you a quote after you speak with them.</p>
+		  <?php if ( '' !== $pricing_care_rates_label ) : ?>
+		  <p class="eyebrow"><?php echo esc_html( $pricing_care_rates_label ); ?></p>
+		  <?php endif; ?>
+		  <h2 id="care-rates-h"><?php echo esc_html( $pricing_care_rates_heading ); ?></h2>
+		  <?php if ( '' !== $pricing_care_rates_intro ) : ?>
+		  <p class="lede"><?php echo esc_html( $pricing_care_rates_intro ); ?></p>
+		  <?php endif; ?>
 		</header>
 		<div class="care-rates">
 		  <div class="rates-panel">
@@ -318,17 +373,44 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-	  <div class="mid-cta__media" aria-hidden="true"></div>
-	  <div class="mid-cta__inner">
-		<h2 id="mid-cta-h">Enquire about dates and care.</h2>
-		<p>Let us know your arrival dates, access needs, and if you want support from Continuity. You do not need to pay a deposit until you decide.</p>
-		<div class="mid-cta__btns">
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'how-it-works' ) ); ?>">How booking works</a>
-		</div>
-	  </div>
-	</section>
+	<?php
+	$restwell_pricing_id = (int) get_queried_object_id();
+	$pricing_mid_cta_heading = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_heading', __( 'Enquire about dates and care', 'restwell-retreats' ) )
+		: __( 'Enquire about dates and care', 'restwell-retreats' );
+	$pricing_mid_cta_intro = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text(
+			$restwell_pricing_id,
+			'pricing_cta_body',
+			__( 'Let us know your arrival dates, access needs, and if you want support from Continuity. You do not need to pay a deposit until you decide.', 'restwell-retreats' )
+		)
+		: __( 'Let us know your arrival dates, access needs, and if you want support from Continuity. You do not need to pay a deposit until you decide.', 'restwell-retreats' );
+	$pricing_mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
+		: __( 'Enquire', 'restwell-retreats' );
+	$pricing_mid_cta_primary_url = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) )
+		: restwell_nav_resolve_page_url( 'enquire' );
+	$pricing_mid_cta_secondary_label = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_secondary_label', __( 'Check availability', 'restwell-retreats' ) )
+		: __( 'Check availability', 'restwell-retreats' );
+	$pricing_mid_cta_secondary_url = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_secondary_url', '#availability' )
+		: '#availability';
+
+	get_template_part(
+		'template-parts/mid-cta',
+		null,
+		array(
+			'heading'         => $pricing_mid_cta_heading,
+			'intro'           => $pricing_mid_cta_intro,
+			'primary_label'   => $pricing_mid_cta_primary_label,
+			'primary_url'     => $pricing_mid_cta_primary_url,
+			'secondary_label' => $pricing_mid_cta_secondary_label,
+			'secondary_url'   => $pricing_mid_cta_secondary_url,
+		)
+	);
+	?>
 
 </main>
 

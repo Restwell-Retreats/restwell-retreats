@@ -47,6 +47,7 @@ function restwell_get_property_heading_refresh_maps() {
 		),
 		'prop_living_heading' => array(
 			'Living room, kitchen and conservatory' => (string) ( $defaults['prop_living_heading'] ?? '' ),
+			'Wheel-under kitchen and open-plan living' => (string) ( $defaults['prop_living_heading'] ?? '' ),
 		),
 		'prop_bedrooms_section_heading' => array(
 			'The accessible bedroom and a double'           => (string) ( $defaults['prop_bedrooms_section_heading'] ?? '' ),
@@ -54,9 +55,13 @@ function restwell_get_property_heading_refresh_maps() {
 		),
 		'prop_wetroom_heading' => array(
 			'Level-access wet room' => (string) ( $defaults['prop_wetroom_heading'] ?? '' ),
+			'Roll-in wet room with adjustable basin' => (string) ( $defaults['prop_wetroom_heading'] ?? '' ),
 		),
+		'prop_kitchen_heading' => array(),
+		'prop_conservatory_heading' => array(),
 		'prop_garden_heading' => array(
 			'Accessible garden and parking' => (string) ( $defaults['prop_garden_heading'] ?? '' ),
+			'Private drive, patio and step-free garden' => (string) ( $defaults['prop_garden_heading'] ?? '' ),
 		),
 		'prop_throughout_heading' => array(
 			'Wide doorways throughout'                   => (string) ( $defaults['prop_throughout_heading'] ?? '' ),
@@ -70,12 +75,15 @@ function restwell_get_property_heading_refresh_maps() {
 		),
 		'prop_gallery_heading' => array(
 			'Take a look around' => (string) ( $defaults['prop_gallery_heading'] ?? '' ),
+			'Photo tour of the accessible bungalow' => (string) ( $defaults['prop_gallery_heading'] ?? '' ),
 		),
 		'prop_care_heading' => array(
 			'Care and the welcome' => (string) ( $defaults['prop_care_heading'] ?? '' ),
+			'Optional care and welcome hamper' => (string) ( $defaults['prop_care_heading'] ?? '' ),
 		),
 		'prop_location_heading' => array(
 			'Whitstable and around' => (string) ( $defaults['prop_location_heading'] ?? '' ),
+			'Whitstable, Tankerton Beach and the Kent coast' => (string) ( $defaults['prop_location_heading'] ?? '' ),
 		),
 		'prop_nearby_heading' => array(
 			'Explore Whitstable' => (string) ( $defaults['prop_nearby_heading'] ?? '' ),
@@ -354,19 +362,32 @@ function restwell_get_property_room_tour_heading( $post_id = 0 ) {
 function restwell_get_property_room_feature_keyword_map() {
 	return array(
 		'living'   => array(
-			'kitchen',
-			'conservatory',
-			'broadband',
-			'wi-fi',
-			'wifi',
 			'living room',
 			'lounge',
 			'open-plan',
 			'open plan',
-			'dining',
-			'worksurface',
+			'rise-and-recline',
+			'netflix',
+			'armchair',
 			'fireplace',
 			'hamper',
+		),
+		'kitchen'  => array(
+			'kitchen',
+			'wheel-under',
+			'worksurface',
+			'hob',
+			'oven',
+			'dishwasher',
+			'microwave',
+		),
+		'conservatory' => array(
+			'conservatory',
+			'sofa bed',
+			'dining',
+			'laundry',
+			'washing machine',
+			'tumble dryer',
 		),
 		'bedroom'  => array(
 			'accessible bedroom',
@@ -472,8 +493,16 @@ function restwell_get_property_room_fallback_highlight( $room_key, $post_id = 0 
 
 	$fallbacks = array(
 		'living'     => array(
+			'title' => __( 'Rise-and-recline armchair', 'restwell-retreats' ),
+			'desc'  => __( 'Open-plan living with clear turning space', 'restwell-retreats' ),
+		),
+		'kitchen'    => array(
 			'title' => __( 'Wheel-under kitchen worksurface', 'restwell-retreats' ),
-			'desc'  => __( 'Open-plan living with conservatory access', 'restwell-retreats' ),
+			'desc'  => __( 'Lowered counter, slide-under oven and cooking basics', 'restwell-retreats' ),
+		),
+		'conservatory' => array(
+			'title' => __( 'Conservatory with sofa bed', 'restwell-retreats' ),
+			'desc'  => __( 'Level patio access and laundry facilities', 'restwell-retreats' ),
 		),
 		'bedroom'    => array(
 			'title' => restwell_first_nonempty_string( $m( 'prop_feature_5' ), __( 'Ceiling track hoist', 'restwell-retreats' ) ),
@@ -545,12 +574,14 @@ function restwell_ensure_property_section_highlights( $highlights, $room_key, $p
 function restwell_get_property_room_nav_label( $tour ) {
 	$key = (string) ( $tour['key'] ?? '' );
 	$labels = array(
-		'living'     => __( 'Living', 'restwell-retreats' ),
-		'bedroom'    => __( 'Bedrooms', 'restwell-retreats' ),
-		'bedrooms'   => __( 'Bedrooms', 'restwell-retreats' ),
-		'wetroom'    => __( 'Wet room', 'restwell-retreats' ),
-		'garden'     => __( 'Garden', 'restwell-retreats' ),
-		'throughout' => __( 'Access', 'restwell-retreats' ),
+		'living'       => __( 'Living', 'restwell-retreats' ),
+		'kitchen'      => __( 'Kitchen', 'restwell-retreats' ),
+		'conservatory' => __( 'Conservatory', 'restwell-retreats' ),
+		'bedroom'      => __( 'Bedrooms', 'restwell-retreats' ),
+		'bedrooms'     => __( 'Bedrooms', 'restwell-retreats' ),
+		'wetroom'      => __( 'Wet room', 'restwell-retreats' ),
+		'garden'       => __( 'Outside', 'restwell-retreats' ),
+		'throughout'   => __( 'Access', 'restwell-retreats' ),
 	);
 
 	if ( isset( $labels[ $key ] ) ) {

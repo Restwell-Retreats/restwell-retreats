@@ -115,17 +115,37 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="mid-cta mid-cta--plain section-y--cta" aria-labelledby="mid-cta-h">
-	  <div class="mid-cta__media" aria-hidden="true"></div>
-	  <div class="mid-cta__inner">
-		<h2 id="mid-cta-h">Send dates and access needs</h2>
-		<p>We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.</p>
-		<div class="mid-cta__btns">
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire Now</a>
-		  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">See access details</a>
-		</div>
-	  </div>
-	</section>
+	<?php
+	$faq_mid_cta_heading = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_faq_id, 'faq_cta_heading', __( 'Send dates and access needs', 'restwell-retreats' ) )
+		: __( 'Send dates and access needs', 'restwell-retreats' );
+	$faq_mid_cta_intro   = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text(
+			$restwell_faq_id,
+			'faq_cta_body',
+			__( 'We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.', 'restwell-retreats' )
+		)
+		: __( 'We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.', 'restwell-retreats' );
+	$faq_mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_faq_id, 'faq_cta_btn', __( 'Enquire', 'restwell-retreats' ) )
+		: __( 'Enquire', 'restwell-retreats' );
+	$faq_mid_cta_primary_url   = function_exists( 'restwell_page_content_text' )
+		? restwell_page_content_text( $restwell_faq_id, 'faq_cta_url', restwell_nav_resolve_page_url( 'enquire' ) )
+		: restwell_nav_resolve_page_url( 'enquire' );
+
+	get_template_part(
+		'template-parts/mid-cta',
+		null,
+		array(
+			'heading'         => $faq_mid_cta_heading,
+			'intro'           => $faq_mid_cta_intro,
+			'primary_label'   => $faq_mid_cta_primary_label,
+			'primary_url'     => $faq_mid_cta_primary_url,
+			'secondary_label' => __( 'See access details', 'restwell-retreats' ),
+			'secondary_url'   => restwell_nav_resolve_page_url( 'accessibility' ),
+		)
+	);
+	?>
 
 </main>
 

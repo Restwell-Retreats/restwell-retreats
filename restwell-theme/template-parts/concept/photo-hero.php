@@ -14,6 +14,7 @@
  *     @type string $image_url  Optional absolute image URL override.
  *     @type string $image_alt  Optional alt text override.
  *     @type string $overlay    Optional 'heavy' for a darker bottom-up scrim (enquire photo hero).
+ *     @type string $variant    Optional hero height: 'place' (default mid-height interior), 'full' (homepage-tall).
  *     @type int    $post_id    Page ID for Featured/stock resolution (default queried object).
  * }
  */
@@ -35,6 +36,7 @@ $args = wp_parse_args(
 		'image_url'  => '',
 		'image_alt'  => '',
 		'overlay'    => '',
+		'variant'    => 'place',
 		'post_id'    => 0,
 	)
 );
@@ -47,7 +49,11 @@ $crumbs     = is_array( $args['crumbs'] ) ? $args['crumbs'] : array();
 $media_id   = absint( $args['media_id'] );
 $image_url  = trim( (string) $args['image_url'] );
 $image_alt  = trim( (string) $args['image_alt'] );
-$overlay    = sanitize_key( (string) $args['overlay'] );
+$overlay = sanitize_key( (string) $args['overlay'] );
+$variant = sanitize_key( (string) $args['variant'] );
+if ( ! in_array( $variant, array( 'place', 'full' ), true ) ) {
+	$variant = 'place';
+}
 $hero_post_id    = absint( $args['post_id'] );
 
 if ( $heading === '' ) {
@@ -91,6 +97,10 @@ if ( $image_alt === '' ) {
 	$image_alt = $heading;
 }
 $hero_class = 'hero';
+if ( 'place' === $variant ) {
+	// Mid-height coastal/property plane — avoids homepage-tall empty voids on interior pages.
+	$hero_class .= ' hero--interior hero--place';
+}
 if ( 'heavy' === $overlay ) {
 	$hero_class .= ' hero--overlay-heavy';
 }

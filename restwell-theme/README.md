@@ -21,7 +21,7 @@ Custom front end for [Restwell Retreats](https://restwellretreats.co.uk/): acces
 | 4. WordPress | Symlink or copy `restwell-theme` into `wp-content/themes/`; activate **Restwell Retreats** |
 | 5. CRM (local) | Ensure `wp-content/mu-plugins/restwell-crm/` is present (theme `functions.php` can bootstrap it from the monorepo sibling path) |
 | 6. First-time content | **WP Admin → Restwell → Theme Setup** — create pages, seed home meta; tick **Seed media** on first install (logos/partners + image sizes) |
-| 7. Deploy | Run `npm run build`, zip the `restwell-theme` folder, **Appearance → Themes → Add New → Upload** |
+| 7. Deploy | Prefer `./tools/build-slim-theme.sh` (drops masters with Opt WebP). Or zip the full theme. Upload via **Appearance → Themes** |
 
 ---
 
@@ -177,6 +177,7 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 |-----|-------|
 | [DESIGN-SYSTEM.md](./DESIGN-SYSTEM.md) | Colours, type, spacing, components, Tailwind conventions |
 | [VISUAL-FRONTEND-AUDIT.md](./VISUAL-FRONTEND-AUDIT.md) | UI audit notes and remediation tracking |
+| [docs/PRODUCTION-AUDIT-2026-09-10.md](./docs/PRODUCTION-AUDIT-2026-09-10.md) | Production elevation audit (code + visual matrix + smoke, Sep 2026) |
 | [docs/seo/](./docs/seo/) | **Agent entry pack** — `@` this folder; lanes + source pointers |
 | [SEO-INTENT-ONPAGE-PLAN.md](./SEO-INTENT-ONPAGE-PLAN.md) | Deep SEO / AEO / GEO warehouse (not the daily brief) |
 | [SEO-PROGRESS-MATRIX.md](./SEO-PROGRESS-MATRIX.md) | Progress scoreboard companion to the SEO plan |
@@ -189,18 +190,30 @@ This theme does **not** use ACF. Editors use native WordPress meta boxes and the
 
 Run after uploading a new theme zip or merging a release branch.
 
+### Image weight (masters vs Opt)
+
+- Runtime delivery prefers `assets/images/**/opt/*.webp` via `restwell_theme_image_url()` / SEO social helpers.
+- Keep JPEG/PNG **masters** in the git working tree for regeneration (`tools/generate-opt-webp.sh`).
+- For production uploads, build a slim package that drops masters when an Opt sibling exists:
+
+```bash
+npm run build
+./restwell-theme/tools/build-slim-theme.sh /tmp/restwell-theme-slim.tgz
+```
+
 | # | Task | Why |
 |---|------|-----|
-| 1 | `npm run build` before zipping | Ship minified JS (`shared.css` is edited in place) |
-| 2 | Upload & activate theme | WP Admin → Appearance → Themes |
-| 3 | **Settings → Permalinks → Save** | Flush rewrite rules (redirects, `llms.txt`, CRM routes) |
-| 4 | Regenerate thumbnails | CLI: `wp media regenerate --yes` or **Theme Setup** image regen — enables `restwell-hero` / `restwell-cta-bg` sizes |
-| 5 | LiteSpeed / cache purge | Avoid stale CSS/JS after deploy |
-| 6 | Verify security headers (HTTPS) | `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` (`functions.php`) |
-| 7 | CSP | Default **Report-Only** in `inc/csp.php`; review console, then enable enforce only when ready (`restwell_enable_csp_enforce`) |
-| 8 | Smoke-test key URLs | `/`, `/enquire/`, `/faq/`, `/guest-guide/`, one blog post |
-| 9 | CRM mu-plugin present on production | Enquiry forms and guest guide depend on `restwell-crm` |
-| 10 | Optional: Theme Setup (non-destructive) | New environment only — creates pages/seeds meta without overwriting if already seeded |
+| 1 | `npm run build` before packaging | Ship minified JS (`shared.css` is edited in place) |
+| 2 | Prefer slim tarball (above) or zip full theme | Slim omits redundant masters; full tree is fine for staging |
+| 3 | Upload & activate theme | WP Admin → Appearance → Themes |
+| 4 | **Settings → Permalinks → Save** | Flush rewrite rules (redirects, `llms.txt`, CRM routes) |
+| 5 | Regenerate thumbnails | CLI: `wp media regenerate --yes` or **Theme Setup** image regen — enables `restwell-hero` / `restwell-cta-bg` sizes |
+| 6 | LiteSpeed / cache purge | Avoid stale CSS/JS after deploy |
+| 7 | Verify security headers (HTTPS) | `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` (`functions.php`) |
+| 8 | CSP | Default **Report-Only** in `inc/csp.php`; review console, then enable enforce only when ready (`restwell_enable_csp_enforce`) |
+| 9 | Smoke-test key URLs | `/`, `/enquire/`, `/faq/`, `/guest-guide/`, one blog post |
+| 10 | CRM mu-plugin present on production | Enquiry forms and guest guide depend on `restwell-crm` |
+| 11 | Optional: Theme Setup (non-destructive) | New environment only — creates pages/seeds meta without overwriting if already seeded |
 
 ---
 

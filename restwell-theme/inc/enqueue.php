@@ -57,30 +57,62 @@ function restwell_enqueue_scripts() {
 		restwell_theme_asset_version( '/assets/css/shared-wp.css' )
 	);
 
+	$shared_rel = '/assets/js/shared.js';
+	if ( $use_min && is_readable( get_template_directory() . '/assets/js/shared.min.js' ) ) {
+		$shared_rel = '/assets/js/shared.min.js';
+	}
 	wp_enqueue_script(
 		'restwell-shared',
-		$theme_uri . '/assets/js/shared.js',
+		$theme_uri . $shared_rel,
 		array(),
-		restwell_theme_asset_version( '/assets/js/shared.js' ),
+		restwell_theme_asset_version( $shared_rel ),
 		true
 	);
 
 	$js_suffix = $use_min ? '.min.js' : '.js';
-	$front_js  = array(
-		'restwell-nav'     => '/assets/js/nav' . $js_suffix,
-		'restwell-enquire' => '/assets/js/enquire' . $js_suffix,
-		'restwell-gallery' => '/assets/js/gallery' . $js_suffix,
-		'restwell-main'    => '/assets/js/main' . $js_suffix,
+
+	// Always: nav chrome + shared behaviours (scroll-top, sticky header, mobile menu).
+	$nav_rel = '/assets/js/nav' . $js_suffix;
+	if ( $use_min && ! is_readable( get_template_directory() . $nav_rel ) ) {
+		$nav_rel = '/assets/js/nav.js';
+	}
+	wp_enqueue_script(
+		'restwell-nav',
+		$theme_uri . $nav_rel,
+		array( 'restwell-shared' ),
+		restwell_theme_asset_version( $nav_rel ),
+		true
 	);
-	foreach ( $front_js as $handle => $relative ) {
+
+	$main_rel = '/assets/js/main' . $js_suffix;
+	if ( $use_min && ! is_readable( get_template_directory() . $main_rel ) ) {
+		$main_rel = '/assets/js/main.js';
+	}
+	wp_enqueue_script(
+		'restwell-main',
+		$theme_uri . $main_rel,
+		array( 'restwell-shared' ),
+		restwell_theme_asset_version( $main_rel ),
+		true
+	);
+
+	// Enquire form validation — enquire template only.
+	if ( is_page_template( 'template-enquire.php' ) ) {
+		$enquire_rel = '/assets/js/enquire' . $js_suffix;
+		if ( $use_min && ! is_readable( get_template_directory() . $enquire_rel ) ) {
+			$enquire_rel = '/assets/js/enquire.js';
+		}
 		wp_enqueue_script(
-			$handle,
-			$theme_uri . $relative,
+			'restwell-enquire',
+			$theme_uri . $enquire_rel,
 			array( 'restwell-shared' ),
-			restwell_theme_asset_version( $relative ),
+			restwell_theme_asset_version( $enquire_rel ),
 			true
 		);
 	}
+
+	// Media-library gallery JS is only needed when that markup is rendered.
+	// Concept pages use shared.js [data-gallery] lightbox instead.
 
 	if ( is_page_template( 'template-pricing.php' )
 		&& function_exists( 'restwell_occupancy_is_configured' )

@@ -277,9 +277,29 @@ function restwell_render_primary_nav_fallback() {
 }
 
 /**
- * Mobile sheet markup matching mockup groups.
+ * Desktop primary nav: Appearance → Menus when assigned, else mockup fallback.
  */
-function restwell_render_mobile_nav() {
+function restwell_render_primary_nav() {
+	if ( has_nav_menu( 'primary' ) ) {
+		wp_nav_menu(
+			array(
+				'theme_location' => 'primary',
+				'container'      => false,
+				'menu_class'     => 'nav',
+				'depth'          => 2,
+				'fallback_cb'    => 'restwell_render_primary_nav_fallback',
+				'walker'         => new Restwell_Concept_Nav_Walker(),
+			)
+		);
+		return;
+	}
+	restwell_render_primary_nav_fallback();
+}
+
+/**
+ * Mobile sheet fallback markup matching mockup groups.
+ */
+function restwell_render_mobile_nav_fallback() {
 	$structure   = restwell_get_primary_nav_structure();
 	$enquire_url = restwell_nav_resolve_page_url( 'enquire' );
 
@@ -306,8 +326,39 @@ function restwell_render_mobile_nav() {
 	}
 	echo '</ul>';
 	echo '<div class="mobile-nav__cta">';
-	echo '<a class="btn btn-gold" href="' . esc_url( $enquire_url ) . '">' . esc_html__( 'Enquire Now', 'restwell-retreats' ) . '</a>';
+	echo '<a class="btn btn-gold" href="' . esc_url( $enquire_url ) . '">' . esc_html__( 'Enquire', 'restwell-retreats' ) . '</a>';
 	echo '</div>';
+}
+
+/**
+ * Mobile sheet: same Primary menu as desktop when assigned; else mockup fallback.
+ *
+ * Choice: generate from the WP menu (flattened group labels + links) so desktop and
+ * mobile stay in sync. Nested depth > 1 is not supported by the sheet markup.
+ */
+function restwell_render_mobile_nav() {
+	$enquire_url = restwell_nav_resolve_page_url( 'enquire' );
+
+	if ( has_nav_menu( 'primary' ) ) {
+		echo '<ul class="mobile-nav__list">';
+		wp_nav_menu(
+			array(
+				'theme_location' => 'primary',
+				'container'      => false,
+				'items_wrap'     => '%3$s',
+				'depth'          => 2,
+				'fallback_cb'    => false,
+				'walker'         => new Restwell_Concept_Mobile_Nav_Walker(),
+			)
+		);
+		echo '</ul>';
+		echo '<div class="mobile-nav__cta">';
+		echo '<a class="btn btn-gold" href="' . esc_url( $enquire_url ) . '">' . esc_html__( 'Enquire', 'restwell-retreats' ) . '</a>';
+		echo '</div>';
+		return;
+	}
+
+	restwell_render_mobile_nav_fallback();
 }
 
 /**
@@ -419,6 +470,102 @@ class Restwell_Concept_Nav_Walker extends Walker_Nav_Menu {
 	public function end_el( &$output, $item, $depth = 0, $args = null ) {
 		$enquire_url = restwell_nav_resolve_page_url( 'enquire' );
 		if ( 0 === (int) $depth && $enquire_url && untrailingslashit( (string) $item->url ) === untrailingslashit( $enquire_url ) ) {
+			return;
+		}
+		$output .= '</li>';
+	}
+}
+
+/**
+ * Walker: Primary menu → flat mobile sheet (group labels + links, no nested lists).
+ */
+class Restwell_Concept_Mobile_Nav_Walker extends Walker_Nav_Menu {
+
+	/**
+	 * Item IDs whose <li> was already closed in start_el (group labels / skipped).
+	 *
+	 * @var array<int, true>
+	 */
+	private $restwell_closed_ids = array();
+
+	/**
+	 * No nested <ul> — sheet is a flat list.
+	 *
+	 * @param string   $output Output.
+	 * @param int      $depth  Depth.
+	 * @param stdClass $args   Args.
+	 */
+	public function start_lvl( &$output, $depth = 0, $args = null ) {
+		// Intentionally empty: mobile sheet flattens children as sibling <li>s.
+	}
+
+	/**
+	 * After a top-level group's children, emit the mockup rule separator.
+	 *
+	 * @param string   $output Output.
+	 * @param int      $depth  Depth.
+	 * @param stdClass $args   Args.
+	 */
+	public function end_lvl( &$output, $depth = 0, $args = null ) {
+		if ( 0 === (int) $depth ) {
+			$output .= '<li class="mobile-nav__rule" aria-hidden="true"></li>';
+		}
+	}
+
+	/**
+	 * @param string   $output Output.
+	 * @param WP_Post  $item   Item.
+	 * @param int      $depth  Depth.
+	 * @param stdClass $args   Args.
+	 * @param int      $id     ID.
+	 */
+	public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+		$classes      = empty( $item->classes ) ? array() : (array) $item->classes;
+		$has_children = in_array( 'menu-item-has-children', $classes, true );
+		$is_current   = in_array( 'current-menu-item', $classes, true ) || in_array( 'current_page_item', $classes, true );
+
+		$enquire_url = restwell_nav_resolve_page_url( 'enquire' );
+		if ( 0 === (int) $depth && $enquire_url && untrailingslashit( (string) $item->url ) === untrailingslashit( $enquire_url ) ) {
+			$this->restwell_closed_ids[ (int) $item->ID ] = true;
+			return;
+		}
+
+		if ( 0 === (int) $depth && $has_children ) {
+			$output                                      .= '<li><span class="mobile-nav__group-label">' . esc_html( $item->title ) . '</span></li>';
+			$this->restwell_closed_ids[ (int) $item->ID ] = true;
+			return;
+		}
+
+		$atts = array(
+			'title'  => ! empty( $item->attr_title ) ? $item->attr_title : '',
+			'target' => ! empty( $item->target ) ? $item->target : '',
+			'rel'    => ! empty( $item->xfn ) ? $item->xfn : '',
+			'href'   => ! empty( $item->url ) ? $item->url : '',
+		);
+		if ( $is_current ) {
+			$atts['aria-current'] = 'page';
+			$atts['class']        = 'is-active';
+		}
+
+		$attributes = '';
+		foreach ( $atts as $attr => $value ) {
+			if ( is_scalar( $value ) && '' !== $value ) {
+				$value       = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
+				$attributes .= ' ' . $attr . '="' . $value . '"';
+			}
+		}
+
+		$output .= '<li><a' . $attributes . '>' . esc_html( $item->title ) . '</a>';
+	}
+
+	/**
+	 * @param string   $output Output.
+	 * @param WP_Post  $item   Item.
+	 * @param int      $depth  Depth.
+	 * @param stdClass $args   Args.
+	 */
+	public function end_el( &$output, $item, $depth = 0, $args = null ) {
+		if ( isset( $this->restwell_closed_ids[ (int) $item->ID ] ) ) {
 			return;
 		}
 		$output .= '</li>';

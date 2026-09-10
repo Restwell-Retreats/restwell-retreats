@@ -247,7 +247,7 @@ function restwell_handle_enquire_submit(): void {
 	$privacy_consent = ! empty( $_POST['enq_consent'] );
 	$health_consent  = ! empty( $_POST['enq_health_consent'] );
 	$contact_pref = isset( $_POST['enq_contact_preference'] ) ? sanitize_key( wp_unslash( $_POST['enq_contact_preference'] ) ) : '';
-	$pref_time    = isset( $_POST['enq_preferred_time'] ) ? sanitize_key( wp_unslash( $_POST['enq_preferred_time'] ) ) : '';
+	$pref_time    = isset( $_POST['enq_preferred_time'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_preferred_time'] ) ) : '';
 
 	$fields_flash = array(
 		'enq_name'               => $name,
