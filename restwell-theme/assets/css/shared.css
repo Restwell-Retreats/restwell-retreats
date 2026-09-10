@@ -13,8 +13,8 @@
   --muted-grey: #3A5A63;
   --body-secondary: #2d4a52;
   --white: #fff;
-  /* Warm wash (not cold grey-green) so alternating bands stay coastal, not clinical */
-  --bg-subtle: color-mix(in srgb, var(--soft-sand) 38%, #F7F9F9);
+  /* Cool near-white. A warm sand wash was trialled in the design audit and reverted: it read dingy under the display headings. */
+  --bg-subtle: #F8FAFA;
 
   /* Dedicated dark ink for text ON gold fills — #1B4D5C on #D4A853 measures ~4.2:1,
      which fails WCAG AA (4.5:1) at the button's actual 15px/600 size. This measures ~6.2:1. */
@@ -66,8 +66,8 @@
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
-  /* Display/serif: regular weight (never bold Lora). Italic only via rare emphasis rules. */
-  --type-display-weight: var(--weight-regular);
+  /* Display/serif: semibold (never bold Lora). Italic only via rare emphasis rules. */
+  --type-display-weight: var(--weight-semibold);
   --type-display-style: normal;
 
   /* 3. Semantic roles */
@@ -256,8 +256,8 @@
   --radius: 0.75rem;
   --radius-sm: 0.5rem;
   --radius-lg: 1.15rem;
-  /* Buttons / fields — not stadium pills (chips keep 999px) */
-  --radius-control: 0.65rem;
+  /* Pill. The design audit trialled 0.65rem; it read corporate against the coastal brand, so buttons keep their pill. */
+  --radius-control: 999px;
 
   /* Stacking scale — global layers only (things that can plausibly stack
    * against OTHER components on the page). Values of 1–3 used elsewhere to
@@ -6507,6 +6507,15 @@ body.lightbox-open {
     aspect-ratio: 16 / 10;
     border-radius: 0;
   }
+  .property__cta-row .btn {
+    min-height: 2.75rem;
+  }
+}
+
+/* Buttons only stretch on true phone widths. From 600-899px there is ample room
+   for them to sit inline at their natural width; stretching them turned the long
+   labels into full-bleed slabs at iPad portrait (design-audit follow-up). */
+@media (max-width: 599px) {
   .property__cta-row {
     flex-direction: column;
     align-items: stretch;
@@ -6514,7 +6523,6 @@ body.lightbox-open {
   }
   .property__cta-row .btn {
     width: 100%;
-    min-height: 2.75rem;
   }
 }
 
@@ -6760,10 +6768,19 @@ body.lightbox-open {
   .testimonials__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  /* With an odd count the final card was orphaned in a 2-up grid, leaving a
+     large empty well beside it at iPad portrait. Let it span the row instead
+     (design-audit follow-up). Only applies while the grid is 2-up. */
+  .testimonials__grid > li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 @media (min-width: 1024px) {
   .testimonials__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .testimonials__grid > li:last-child:nth-child(odd) {
+    grid-column: auto;
   }
 }
 .testimonials__grid > li {
