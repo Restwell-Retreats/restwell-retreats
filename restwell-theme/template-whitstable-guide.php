@@ -256,7 +256,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="eat" aria-labelledby="eat-h">
-	  <div class="container split split--media-first">
+	  <div class="container split split--media-first split--media-top">
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow"><?php echo esc_html( $wg_eating_label ); ?></p>

@@ -1382,6 +1382,11 @@ body.nav-open { overflow: hidden; }
   text-align: center;
   text-wrap: balance;
 }
+/* The band head is centred, so a left-hanging tail link read as a stray
+   fragment rather than the band's closing action. */
+.faq__layout > .faq-cta {
+  text-align: center;
+}
 
 .faq-list--measure {
   --faq-rule: color-mix(in srgb, var(--deep-teal) 12%, transparent);
@@ -2397,6 +2402,22 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   font-size: var(--type-meta-size);
   line-height: var(--leading-snug);
 }
+/* Each room's media column is a stack of several photos, so it runs many times
+   the height of its checklist. The inherited .split centring left the heading
+   stranded halfway down the article with blank space beside the first photos.
+   Pin the copy to the top instead and let it ride the stack as you scroll. */
+@media (min-width: 900px) {
+  .room-access .split {
+    align-items: start;
+  }
+  .room-access__copy {
+    position: sticky;
+    top: calc(var(--banner-h, 0px) + var(--header-offset) + var(--space-4));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .room-access__copy { position: static; }
+}
 .room-access__copy .checklist {
   margin-top: 0;
 }
@@ -2439,6 +2460,18 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   display: grid;
   gap: var(--split-gap);
   align-items: center;
+}
+/* A lone photo beside a long copy column. The default centring stranded it in
+   the middle of the whitespace, level with nothing. Pin it to the top and let
+   it ride the column as you read. */
+@media (min-width: 900px) {
+  .split--media-top {
+    align-items: start;
+  }
+  .split--media-top > .split__media {
+    position: sticky;
+    top: calc(var(--banner-h, 0px) + var(--header-offset) + var(--space-4));
+  }
 }
 /*
  * Phone: always copy then photo. Alternating DOM order was stacking two
@@ -5844,10 +5877,13 @@ fieldset.form-stack {
 /* Home tease: one sharp line + link (full panel lives on /optional-care/) */
 .care--tease .care__tease {
   /* Flattened from a tinted, bordered panel to open text: it's a single tease
-     on white, not a card, and the box read as mild card-itis (design-audit c12). */
+     on white, not a card, and the box read as mild card-itis (design-audit c12).
+     Centred like every other band head on the page — left-aligned with an h3
+     heading it read as an unfinished fragment between two full bands. */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: var(--space-3);
   max-width: var(--rw-measure-care);
   margin-inline: auto;
@@ -5856,8 +5892,8 @@ fieldset.form-stack {
   border: 0;
 }
 .care--tease .care__tease h2 {
-  font-size: var(--type-h3);
-  font-weight: var(--weight-semibold);
+  font-size: var(--type-h2);
+  font-weight: var(--type-display-weight);
 }
 .care--tease .care__tease .lede {
   margin: 0;

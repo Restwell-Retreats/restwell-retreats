@@ -348,7 +348,7 @@ get_template_part(
 	</nav>
 
 	<section class="section-y band-white" id="situations" aria-labelledby="situations-h">
-	  <div class="container split">
+	  <div class="container split split--media-top">
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Your situation</p>
