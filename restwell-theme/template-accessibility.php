@@ -552,6 +552,176 @@ get_template_part(
 	  </div>
 	</section>
 
+
+	<?php
+	/*
+	 * Equipment register.
+	 *
+	 * This is the section that separates /accessibility/ from /the-property/:
+	 * the property page is the tour, this is the risk-assessment document an OT,
+	 * case manager or deputy needs before they can sign off a stay. Named makes
+	 * and models, safe working loads and clearances — no marketing adjectives.
+	 * Figures come from the manufacturers' own spec sheets.
+	 */
+	$acc_equipment = array(
+		array(
+			'name'  => __( 'Amico GoLift 400 — ceiling track hoist', 'restwell-retreats' ),
+			'where' => __( 'Main bedroom, over the profiling bed', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Safe working load', 'restwell-retreats' )   => __( '180 kg / 28 st', 'restwell-retreats' ),
+				__( 'Lift and lower', 'restwell-retreats' )      => __( 'Powered', 'restwell-retreats' ),
+				__( 'Traverse', 'restwell-retreats' )            => __( 'Manual', 'restwell-retreats' ),
+				__( 'Trolley', 'restwell-retreats' )             => __( 'Fixed', 'restwell-retreats' ),
+				__( 'Attachment', 'restwell-retreats' )          => __( 'Lifting strap with loop', 'restwell-retreats' ),
+				__( 'Coverage', 'restwell-retreats' )            => __( 'Full-room', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'name'  => __( 'Joerns Oxford Midi 180 — mobile hoist', 'restwell-retreats' ),
+			'where' => __( 'Kept in the bungalow, usable in any room', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Safe working load', 'restwell-retreats' )       => __( '180 kg / 28 st', 'restwell-retreats' ),
+				__( 'Turning radius', 'restwell-retreats' )          => __( '1235 mm', 'restwell-retreats' ),
+				__( 'Legs open, external', 'restwell-retreats' )     => __( '1170 mm', 'restwell-retreats' ),
+				__( 'Legs closed, external', 'restwell-retreats' )   => __( '600 mm', 'restwell-retreats' ),
+				__( 'Leg height', 'restwell-retreats' )              => __( '100 mm', 'restwell-retreats' ),
+				__( 'Ground clearance', 'restwell-retreats' )        => __( '25 mm', 'restwell-retreats' ),
+				__( 'Spreader bar height', 'restwell-retreats' )     => __( '525–1660 mm', 'restwell-retreats' ),
+				__( 'Emergency descent', 'restwell-retreats' )       => __( 'Manual', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'name'  => __( 'Accora CommunityBed — profiling bed', 'restwell-retreats' ),
+			'where' => __( 'Main bedroom, under the ceiling track. A second bed can be set up on request', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Safe working load', 'restwell-retreats' )      => __( '215 kg / 34 st', 'restwell-retreats' ),
+				__( 'Maximum user weight', 'restwell-retreats' )    => __( '180 kg / 28 st', 'restwell-retreats' ),
+				__( 'Mattress platform', 'restwell-retreats' )      => __( '900 × 2000 mm', 'restwell-retreats' ),
+				__( 'Overall frame', 'restwell-retreats' )          => __( '930 × 2250 mm', 'restwell-retreats' ),
+				__( 'Platform height', 'restwell-retreats' )        => __( '220–800 mm', 'restwell-retreats' ),
+				__( 'Profiling', 'restwell-retreats' )              => __( 'Four-section: backrest with auto-regression, kneebreak, Trendelenburg and anti-Trendelenburg', 'restwell-retreats' ),
+				__( 'Mattress', 'restwell-retreats' )               => __( 'Accora Allevia Comfort FirmEdge, 90 cm', 'restwell-retreats' ),
+				__( 'Side rails', 'restwell-retreats' )             => __( 'Fabric siderail set, 200 cm', 'restwell-retreats' ),
+				__( 'Minimum user height', 'restwell-retreats' )    => __( '1460 mm', 'restwell-retreats' ),
+			),
+			'note'  => __( 'We have two of these beds, and we set the bedrooms up around your party rather than to a fixed plan. A second profiling bed can go in the second bedroom, or both can go in one room if you would rather stay together. Tell us how you move and who is sleeping where when you enquire, and the room will be laid out that way before you arrive.', 'restwell-retreats' ),
+		),
+		array(
+			'name'  => __( 'RAZ-AT — tilt-in-space shower commode chair', 'restwell-retreats' ),
+			'where' => __( 'Wet room', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Tilt-in-space', 'restwell-retreats' )    => __( '40°, with tilt-assist pedal', 'restwell-retreats' ),
+				__( 'Seat height', 'restwell-retreats' )      => __( '560 mm', 'restwell-retreats' ),
+				__( 'Backrest', 'restwell-retreats' )         => __( 'AdjustaBack, 50 cm, with flip-up armrests', 'restwell-retreats' ),
+				__( 'Seat module', 'restwell-retreats' )      => __( 'Moulded, front opening', 'restwell-retreats' ),
+				__( 'Footplates', 'restwell-retreats' )       => __( 'Adjustable 410–520 mm, folding plate', 'restwell-retreats' ),
+				__( 'Castors', 'restwell-retreats' )          => __( 'Four dual-locking, 5 inch', 'restwell-retreats' ),
+				__( 'Also fitted', 'restwell-retreats' )      => __( 'Moulded headrest, autoclavable commode pan, adjustable hip belt', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'name'  => __( 'Geberit AquaClean Mera Care — wash-dry WC', 'restwell-retreats' ),
+			'where' => __( 'Wet room', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Wash', 'restwell-retreats' )       => __( 'WhirlSpray shower, plus lady shower', 'restwell-retreats' ),
+				__( 'Dry', 'restwell-retreats' )        => __( 'Warm air dryer', 'restwell-retreats' ),
+				__( 'Controls', 'restwell-retreats' )   => __( 'Remote control and touchless wall panel', 'restwell-retreats' ),
+				__( 'Also', 'restwell-retreats' )       => __( 'Odour extraction, soft-closing seat', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'name'  => __( 'Height-adjustable swing basin', 'restwell-retreats' ),
+			'where' => __( 'Wet room', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Height range', 'restwell-retreats' )   => __( '750–950 mm, manual adjustment', 'restwell-retreats' ),
+				__( 'Mounting', 'restwell-retreats' )       => __( 'Swing basin with dock-in unit', 'restwell-retreats' ),
+				__( 'Tap', 'restwell-retreats' )            => __( 'Thermostatic mixer, lever operation, safe-touch body, TMV3 approved', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'name'  => __( 'Mira Select Flex EV — shower valve', 'restwell-retreats' ),
+			'where' => __( 'Wet room', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Type', 'restwell-retreats' )    => __( 'Thermostatic', 'restwell-retreats' ),
+				__( 'Fittings', 'restwell-retreats' ) => __( 'Long riser rail, 2 m hose and handset', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'name'  => __( 'AAL RS4 — transfer and standing aid', 'restwell-retreats' ),
+			'where' => __( 'Kept in the bungalow', 'restwell-retreats' ),
+			'note'  => __( 'The RS4 is an Able Assist device. It is not an Arjo Sara Stedy, and the two are not interchangeable in a handling plan — please check your care plan names the right one.', 'restwell-retreats' ),
+			'specs' => array(
+				__( 'Safe working load', 'restwell-retreats' ) => __( '185 kg', 'restwell-retreats' ),
+			),
+		),
+	);
+	?>
+
+	<section class="section-y band-white" id="equipment" aria-labelledby="equipment-h">
+	  <div class="container">
+		<header class="section-head section-head--tight">
+		  <p class="eyebrow"><?php esc_html_e( 'Equipment register', 'restwell-retreats' ); ?></p>
+		  <h2 id="equipment-h"><?php esc_html_e( 'Named kit, with the numbers a risk assessment needs', 'restwell-retreats' ); ?></h2>
+		  <p class="lede"><?php esc_html_e( 'Every piece of equipment fitted in the bungalow, by make and model, with safe working loads and clearances taken from the manufacturers’ own spec sheets. If you need a measurement that isn’t here, ask and we will go and measure it.', 'restwell-retreats' ); ?></p>
+		</header>
+
+		<div class="equip-notice">
+		  <h3 class="equip-notice__title"><?php esc_html_e( 'Please bring your own slings', 'restwell-retreats' ); ?></h3>
+		  <p><?php esc_html_e( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ); ?></p>
+		</div>
+
+		<ul class="equip-list" role="list">
+		  <?php foreach ( $acc_equipment as $acc_equip_item ) : ?>
+		  <li class="equip-card">
+			<h3 class="equip-card__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h3>
+			<?php if ( ! empty( $acc_equip_item['where'] ) ) : ?>
+			<p class="equip-card__where"><?php echo esc_html( $acc_equip_item['where'] ); ?></p>
+			<?php endif; ?>
+			<dl class="equip-card__specs">
+			  <?php foreach ( $acc_equip_item['specs'] as $acc_equip_label => $acc_equip_value ) : ?>
+			  <div class="equip-spec">
+				<dt><?php echo esc_html( $acc_equip_label ); ?></dt>
+				<dd><?php echo esc_html( $acc_equip_value ); ?></dd>
+			  </div>
+			  <?php endforeach; ?>
+			</dl>
+			<?php if ( ! empty( $acc_equip_item['note'] ) ) : ?>
+			<p class="equip-card__note"><?php echo esc_html( $acc_equip_item['note'] ); ?></p>
+			<?php endif; ?>
+		  </li>
+		  <?php endforeach; ?>
+		</ul>
+
+		<div class="equip-notice equip-notice--quiet">
+		  <h3 class="equip-notice__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></h3>
+		  <p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
+		</div>
+
+		<?php
+		$acc_plan_rel  = 'bungalow/floor-plan.webp';
+		$acc_plan_path = get_template_directory() . '/assets/images/' . $acc_plan_rel;
+		?>
+		<figure class="floor-plan" id="floor-plan">
+		  <?php if ( file_exists( $acc_plan_path ) ) : ?>
+		  <img
+			src="<?php echo esc_url( restwell_theme_image_url( $acc_plan_rel ) ); ?>"
+			alt="<?php echo esc_attr__( 'Floor plan of the bungalow, showing room layout, door positions and the ceiling track route.', 'restwell-retreats' ); ?>"
+			width="1400"
+			height="990"
+			loading="lazy"
+			decoding="async"
+		  />
+		  <?php else : ?>
+		  <div class="floor-plan__placeholder">
+			<p class="floor-plan__placeholder-title"><?php esc_html_e( 'Floor plan', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'We are redrawing the plan to match the finished bungalow. Until it is here, ask us for any measurement you need and we will take it for you.', 'restwell-retreats' ); ?></p>
+			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Request a measurement', 'restwell-retreats' ); ?></a>
+		  </div>
+		  <?php endif; ?>
+		  <figcaption class="floor-plan__caption"><?php esc_html_e( 'Room layout, door positions and the ceiling track route.', 'restwell-retreats' ); ?></figcaption>
+		</figure>
+	  </div>
+	</section>
 	<section id="rooms" aria-labelledby="rooms-h">
 	  <div class="section-y band-white">
 		<div class="container">

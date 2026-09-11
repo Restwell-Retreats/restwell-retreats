@@ -7294,3 +7294,150 @@ body.lightbox-open {
   }
 }
 
+
+/* ---------------------------------------------------------------------------
+ * Equipment register (/accessibility/)
+ *
+ * The page's reason to exist separately from /the-property/: a reference table
+ * an OT or case manager reads to sign off a stay, not a tour. Specs are set in
+ * a tabular dl so a label/value pair never splits across a card boundary, and
+ * the whole thing stays legible in print — people take this to a care meeting.
+ * ------------------------------------------------------------------------- */
+.equip-notice {
+  /* Full container width: the section head is left-aligned and the cards below
+     are a full-width grid, so a centred readable-width box read as indented. */
+  margin: 0 0 var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 2px solid color-mix(in srgb, var(--warm-gold) 55%, transparent);
+  background: color-mix(in srgb, var(--warm-gold) 10%, var(--white));
+}
+.equip-notice--quiet {
+  border-color: color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  background: color-mix(in srgb, var(--deep-teal) 5%, var(--white));
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-7);
+}
+.equip-notice__title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--type-h3);
+  font-weight: var(--type-display-weight);
+}
+.equip-notice p {
+  margin: 0;
+  color: var(--body-secondary);
+}
+
+.equip-list {
+  display: grid;
+  gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 768px) {
+  .equip-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.equip-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 14%, transparent);
+  background: var(--white);
+}
+.equip-card__name {
+  margin: 0;
+  font-size: var(--type-h3);
+  font-weight: var(--type-display-weight);
+}
+.equip-card__where {
+  margin: 0;
+  color: var(--muted-grey);
+  font-size: var(--type-meta-size);
+}
+.equip-card__specs {
+  margin: var(--space-2) 0 0;
+  display: grid;
+  gap: 0;
+}
+.equip-spec {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+/* Narrow cards stack the pair rather than squeezing the value to two words. */
+@media (max-width: 479px) {
+  .equip-spec {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
+.equip-spec dt {
+  margin: 0;
+  color: var(--muted-grey);
+  font-size: var(--type-meta-size);
+}
+.equip-spec dd {
+  margin: 0;
+  color: var(--deep-teal);
+  font-weight: var(--weight-medium);
+  text-wrap: pretty;
+}
+.equip-card__note {
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  color: var(--body-secondary);
+  font-size: var(--text-sm);
+}
+
+.floor-plan {
+  /* Full container width: a floor plan is read for detail, and the real drawing
+     needs the pixels. Matches the notices above it rather than text measure. */
+  margin: var(--space-7) 0 0;
+}
+.floor-plan img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 14%, transparent);
+}
+.floor-plan__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  border-radius: var(--radius-lg);
+  border: 2px dashed color-mix(in srgb, var(--deep-teal) 28%, transparent);
+  background: color-mix(in srgb, var(--deep-teal) 3%, var(--white));
+  color: var(--body-secondary);
+}
+.floor-plan__placeholder-title {
+  margin: 0;
+  color: var(--deep-teal);
+  font-family: var(--font-serif);
+  font-size: var(--type-h3);
+  font-weight: var(--type-display-weight);
+}
+.floor-plan__placeholder p {
+  margin: 0;
+  max-width: 34rem;
+}
+.floor-plan__caption {
+  margin-top: var(--space-3);
+  color: var(--muted-grey);
+  font-size: var(--type-meta-size);
+  text-align: center;
+}
+/* The placeholder describes itself; don't caption an absent plan. */
+.floor-plan:has(.floor-plan__placeholder) .floor-plan__caption {
+  display: none;
+}
