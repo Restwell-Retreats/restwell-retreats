@@ -2,8 +2,7 @@
 /**
  * CRM include entry (theme).
  *
- * Loaded by functions.php after the mu-plugin bootstrap. Modules are required
- * from inc/crm/bootstrap.php by the mu-plugin `crm.php` entry point.
+ * Loaded from functions.php. Modules live in inc/crm/.
  *
  * @package Restwell_Retreats
  */

@@ -99,6 +99,7 @@ function restwell_crm_save_enquiry( array $data ): array {
 			'funding_type'             => $data['funding'] ?? '',
 			'contact_preference'       => $data['contact_pref'] ?? '',
 			'preferred_time'           => $data['pref_time'] ?? '',
+			'heard_about'              => $data['heard_about'] ?? '',
 			'message'                  => $data['message'] ?? '',
 			'is_urgent'                => ! empty( $data['urgent'] ) ? 1 : 0,
 			'marketing_optin'          => $marketing_optin,
@@ -110,7 +111,7 @@ function restwell_crm_save_enquiry( array $data ): array {
 			'status'                   => 'new',
 			'staff_notes'              => $staff_notes,
 		),
-		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
+		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
 	);
 
 	if ( $result ) {
@@ -128,10 +129,14 @@ function restwell_crm_save_enquiry( array $data ): array {
 /**
  * Persist an FAQ page question (always store before attempting email).
  *
- * @param array{name:string,email:string,question:string,source_url?:string,marketing_optin?:bool|int|string} $data Sanitised fields.
+ * @param array{name:string,email:string,phone?:string,question:string,source_url?:string,marketing_optin?:bool|int|string,privacy_consent?:bool} $data Sanitised fields.
  * @return int|false Inserted row ID, or false on failure.
  */
 function restwell_faq_save_submission( array $data ) {
+	if ( empty( $data['privacy_consent'] ) ) {
+		return false;
+	}
+
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
 	$marketing_optin    = ! empty( $data['marketing_optin'] ) ? 1 : 0;
@@ -139,16 +144,21 @@ function restwell_faq_save_submission( array $data ) {
 	$result = $wpdb->insert(
 		$table,
 		array(
-			'submitted_at' => current_time( 'mysql' ),
-			'name'         => $data['name'] ?? '',
-			'email'        => $data['email'] ?? '',
-			'question'     => $data['question'] ?? '',
-			'notify_sent'  => 0,
-			'marketing_optin' => $marketing_optin,
-			'marketing_optin_at' => $marketing_optin_at,
-			'source_url'   => $data['source_url'] ?? '',
+			'submitted_at'        => current_time( 'mysql' ),
+			'name'                => $data['name'] ?? '',
+			'email'               => $data['email'] ?? '',
+			'phone'               => $data['phone'] ?? '',
+			'question'            => $data['question'] ?? '',
+			'notify_sent'         => 0,
+			'marketing_optin'         => $marketing_optin,
+			'marketing_optin_at'      => $marketing_optin_at,
+			'source_url'              => $data['source_url'] ?? '',
+			'privacy_consented_at'    => ! empty( $data['privacy_consent'] ) ? current_time( 'mysql' ) : null,
+			'privacy_policy_version'  => function_exists( 'restwell_privacy_policy_version' )
+				? restwell_privacy_policy_version()
+				: '',
 		),
-		array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s' )
+		array( '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s' )
 	);
 	return $result ? (int) $wpdb->insert_id : false;
 }

@@ -9,23 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Load Restwell CRM when the mu-plugin is not present (e.g. Local / Playground with only the theme mounted).
- * Production should use wp-content/mu-plugins/restwell-crm.php; candidates cover WP_CONTENT_DIR and the monorepo sibling.
- */
-if ( ! function_exists( 'restwell_crm_capability' ) ) {
-	$crm_candidates = array(
-		WP_CONTENT_DIR . '/mu-plugins/restwell-crm/restwell-crm.php',
-		dirname( get_template_directory() ) . '/wp-content/mu-plugins/restwell-crm/restwell-crm.php',
-	);
-	foreach ( $crm_candidates as $crm_bootstrap ) {
-		if ( is_readable( $crm_bootstrap ) ) {
-			require_once $crm_bootstrap;
-			break;
-		}
-	}
-}
-
 require_once get_template_directory() . '/inc/admin-meta-boxes.php';
 require_once get_template_directory() . '/inc/blog-categories.php';
 require_once get_template_directory() . '/inc/internal-links.php';
@@ -73,6 +56,8 @@ require_once get_template_directory() . '/inc/smtp-config.php';
 require_once get_template_directory() . '/inc/social-profiles.php';
 require_once get_template_directory() . '/inc/theme-setup.php';
 require_once get_template_directory() . '/inc/seo-keyword-map.php';
+// CRM (enquiries, FAQ inbox, mail) lives in the theme. Removing the old
+// mu-plugin does not drop rw_enquiries / related tables.
 require_once get_template_directory() . '/inc/crm.php';
 require_once get_template_directory() . '/inc/services/bootstrap.php';
 require_once get_template_directory() . '/inc/tldr.php';

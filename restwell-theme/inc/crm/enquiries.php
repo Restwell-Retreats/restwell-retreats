@@ -138,83 +138,74 @@ function restwell_crm_enquiries_page() {
 	}
 
 	$list = restwell_crm_get_enquiries_list_data( $table );
-
-	$status_filter = $list['status_filter'];
-	$search        = $list['search'];
-	$orderby       = $list['orderby'];
-	$order         = $list['order'];
-	$current_page  = $list['current_page'];
-	$total         = $list['total'];
-	$total_pages   = $list['total_pages'];
-	$rows          = $list['rows'];
-	$counts        = $list['counts'];
-	$statuses      = $list['statuses'];
-	$base_url      = $list['base_url'];
-	$now_mysql     = $list['now_mysql'];
 	?>
 	<div class="wrap restwell-admin restwell-admin-enquiries">
-		<div class="rw-page-toolbar">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Enquiries', 'restwell-retreats' ); ?></h1>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-export-form">
-				<?php wp_nonce_field( 'restwell_crm_export_csv' ); ?>
-				<input type="hidden" name="action" value="restwell_crm_export_csv" />
-				<?php if ( restwell_crm_can_export_sensitive() ) : ?>
-					<label class="rw-export-sensitive">
-						<input type="checkbox" name="include_sensitive" value="1" />
-						<?php esc_html_e( 'Include care and accessibility notes', 'restwell-retreats' ); ?>
-					</label>
-				<?php endif; ?>
-				<button type="submit" class="page-title-action">
-					&#8659; <?php esc_html_e( 'Export CSV', 'restwell-retreats' ); ?>
-				</button>
-			</form>
-		</div>
+		<h1 class="rw-page-title"><?php esc_html_e( 'Enquiries', 'restwell-retreats' ); ?></h1>
 
 		<?php if ( isset( $_GET['updated'] ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Changes saved.', 'restwell-retreats' ); ?></p></div>
-		<?php endif; ?>
-		<?php if ( isset( $_GET['dsr_erased'] ) ) : ?>
-			<div class="notice notice-success is-dismissible"><p>
-				<?php
-				echo esc_html(
-					sprintf(
-						/* translators: %d: number of CRM rows anonymised. */
-						_n( '%d CRM record anonymised.', '%d CRM records anonymised.', absint( $_GET['dsr_erased'] ), 'restwell-retreats' ),
-						absint( $_GET['dsr_erased'] )
-					)
-				);
-				?>
-			</p></div>
 		<?php endif; ?>
 		<?php
 		$dsr_error = isset( $_GET['dsr_error'] ) ? sanitize_key( wp_unslash( $_GET['dsr_error'] ) ) : '';
 		if ( 'email' === $dsr_error ) :
 			?>
 			<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Enter a valid email address to export.', 'restwell-retreats' ); ?></p></div>
-		<?php elseif ( 'confirm' === $dsr_error ) : ?>
-			<div class="notice notice-error is-dismissible"><p><?php esc_html_e( 'Email and confirmation must match before records can be anonymised.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
 
-		<div class="rw-dsr-box">
-			<p class="description"><?php esc_html_e( 'Subject-access request: export or anonymise CRM rows for one email. WordPress → Tools → Export/Erase Personal Data also covers these tables.', 'restwell-retreats' ); ?></p>
+		<?php restwell_crm_render_enquiries_panel( $list ); ?>
+		<?php restwell_crm_render_enquiries_export_tools(); ?>
+	</div>
+	<?php
+}
+
+/**
+ * CSV and subject-access export, kept off the main list.
+ */
+function restwell_crm_render_enquiries_export_tools(): void {
+	?>
+	<details class="rw-enquiries-tools">
+		<summary><?php esc_html_e( 'Export', 'restwell-retreats' ); ?></summary>
+		<div class="rw-enquiries-tools__body">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-export-form">
+				<?php wp_nonce_field( 'restwell_crm_export_csv' ); ?>
+				<input type="hidden" name="action" value="restwell_crm_export_csv" />
+				<p class="rw-enquiries-tools__label"><?php esc_html_e( 'All enquiries (CSV)', 'restwell-retreats' ); ?></p>
+				<div class="rw-enquiries-tools__grid">
+					<label class="rw-export-date">
+						<span class="rw-enquiries-tools__field-label"><?php esc_html_e( 'From', 'restwell-retreats' ); ?></span>
+						<input type="date" name="submitted_from" />
+					</label>
+					<label class="rw-export-date">
+						<span class="rw-enquiries-tools__field-label"><?php esc_html_e( 'To', 'restwell-retreats' ); ?></span>
+						<input type="date" name="submitted_to" />
+					</label>
+					<?php if ( restwell_crm_can_export_sensitive() ) : ?>
+						<label class="rw-export-sensitive">
+							<input type="checkbox" name="include_sensitive" value="1" />
+							<?php esc_html_e( 'Include care notes', 'restwell-retreats' ); ?>
+						</label>
+					<?php endif; ?>
+					<button type="submit" class="button button-primary rw-enquiries-tools__submit">
+						<?php esc_html_e( 'Download CSV', 'restwell-retreats' ); ?>
+					</button>
+				</div>
+				<p class="description rw-enquiries-tools__hint"><?php esc_html_e( 'Leave dates blank for everything.', 'restwell-retreats' ); ?></p>
+			</form>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-dsr-form">
 				<?php wp_nonce_field( 'restwell_crm_dsr' ); ?>
-				<label for="rw-dsr-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label>
-				<input id="rw-dsr-email" type="email" name="dsr_email" required autocomplete="off" />
-				<button type="submit" name="action" value="restwell_crm_dsr_export" class="button"><?php esc_html_e( 'Export this email', 'restwell-retreats' ); ?></button>
-				<?php if ( restwell_crm_can_erase_personal_data() ) : ?>
-					<label for="rw-dsr-email-confirm"><?php esc_html_e( 'Confirm email to anonymise', 'restwell-retreats' ); ?></label>
-					<input id="rw-dsr-email-confirm" type="email" name="dsr_email_confirm" autocomplete="off" />
-					<label for="rw-dsr-confirm">
-						<input id="rw-dsr-confirm" type="checkbox" name="dsr_confirm" value="1" />
-						<?php esc_html_e( 'This is a valid erasure request and cannot be undone.', 'restwell-retreats' ); ?>
+				<input type="hidden" name="action" value="restwell_crm_dsr_export" />
+				<p class="rw-enquiries-tools__label"><?php esc_html_e( 'One email (subject access)', 'restwell-retreats' ); ?></p>
+				<div class="rw-enquiries-tools__grid rw-enquiries-tools__grid--dsr">
+					<label class="rw-dsr-email-field" for="rw-dsr-email">
+						<span class="rw-enquiries-tools__field-label"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></span>
+						<input id="rw-dsr-email" type="email" name="dsr_email" required autocomplete="off" />
 					</label>
-					<button type="submit" name="action" value="restwell_crm_dsr_erase" class="button button-secondary"><?php esc_html_e( 'Anonymise this email', 'restwell-retreats' ); ?></button>
-				<?php endif; ?>
+					<button type="submit" class="button button-primary rw-enquiries-tools__submit">
+						<?php esc_html_e( 'Export', 'restwell-retreats' ); ?>
+					</button>
+				</div>
 			</form>
 		</div>
-
-		<?php restwell_crm_render_enquiries_panel( $list ); ?>
-	</div>
+	</details>
 	<?php
 }

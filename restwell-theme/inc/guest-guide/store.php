@@ -168,8 +168,10 @@ function restwell_guest_guide_confirm_read( string $email ): void {
 		);
 	}
 
-	// Notify the admin.
-	$notify = (string) get_option( 'restwell_enquiry_notify_email', 'hello@restwellretreats.co.uk' );
+	// Notify the shared mailbox.
+	$notify = function_exists( 'restwell_get_submission_notify_email' )
+		? restwell_get_submission_notify_email()
+		: 'hello@restwellretreats.co.uk';
 	$site   = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
 	$body = function_exists( 'restwell_email_staff_body' )
 		? restwell_email_staff_body(

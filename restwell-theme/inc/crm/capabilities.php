@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RESTWELL_CRM_DB_VERSION', '3.7' );
+define( 'RESTWELL_CRM_DB_VERSION', '3.10' );
 define( 'RESTWELL_CRM_TABLE', 'rw_enquiries' );
 define( 'RESTWELL_NOTES_TABLE', 'rw_enquiry_notes' );
 define( 'RESTWELL_GUESTS_TABLE', 'rw_guests' );

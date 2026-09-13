@@ -10,14 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Email address for new enquiry and FAQ question notifications (Restwell dashboard setting).
+ * Shared mailbox for new enquiry and FAQ question notifications.
+ *
+ * Always hello@ — not configurable from the CRM dashboard (avoids diverted mail).
  *
  * @return string
  */
 function restwell_get_submission_notify_email(): string {
-	$email = (string) get_option( 'restwell_enquiry_notify_email', 'hello@restwellretreats.co.uk' );
-	$email = sanitize_email( $email );
-	return $email && is_email( $email ) ? $email : 'hello@restwellretreats.co.uk';
+	return 'hello@restwellretreats.co.uk';
 }
 
 /**

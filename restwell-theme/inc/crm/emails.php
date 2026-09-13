@@ -378,6 +378,9 @@ function restwell_email_enquiry_notification( array $data ): array {
     __( 'Phone', 'restwell-retreats' )             => '<a href="tel:' . esc_attr( preg_replace( '/[^0-9+]/', '', $phone ) ) . '">' . esc_html( $phone ) . '</a>',
     __( 'Preferred contact', 'restwell-retreats' ) => isset( $data['contact_pref'] ) ? (string) $data['contact_pref'] : '',
     __( 'Best time to call', 'restwell-retreats' ) => isset( $data['pref_time'] ) ? (string) $data['pref_time'] : '',
+    __( 'How they heard about us', 'restwell-retreats' ) => ( isset( $data['heard_about'] ) && function_exists( 'restwell_enquiry_heard_about_label' ) )
+      ? restwell_enquiry_heard_about_label( (string) $data['heard_about'] )
+      : ( isset( $data['heard_about'] ) ? (string) $data['heard_about'] : '' ),
     __( 'Preferred dates', 'restwell-retreats' )   => isset( $data['dates'] ) ? (string) $data['dates'] : '',
     __( 'Guests', 'restwell-retreats' )            => isset( $data['guests'] ) ? (string) $data['guests'] : '',
     __( 'Funding type', 'restwell-retreats' )     => isset( $data['funding'] ) ? restwell_enquiry_funding_label( (string) $data['funding'] ) : '',
@@ -679,14 +682,17 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 }
 
 /**
- * Convenience wrapper - send the post-stay thank you directly via wp_mail().
+ * Convenience wrapper - send the post-stay thank you with one retry.
  *
  * @param string $email      Guest's email address.
  * @param string $name       Guest's display name.
  * @param string $stay_dates Optional human-readable stay dates.
- * @return bool Whether wp_mail() reported success.
+ * @return bool Whether mail reported success at least once.
  */
 function restwell_send_post_stay_email( string $email, string $name, string $stay_dates = '' ): bool {
 	$mail = restwell_email_post_stay( $email, $name, $stay_dates );
+	if ( function_exists( 'restwell_wp_mail_with_retry' ) ) {
+		return restwell_wp_mail_with_retry( $email, $mail['subject'], $mail['body'], $mail['headers'] );
+	}
 	return (bool) wp_mail( $email, $mail['subject'], $mail['body'], $mail['headers'] );
 }

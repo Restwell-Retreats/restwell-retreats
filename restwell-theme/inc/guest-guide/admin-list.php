@@ -26,7 +26,24 @@ function restwell_gg_admin_render_guest_list( $guests, $admin_post ) {
 		</p>
 
 		<?php if ( empty( $guests ) ) : ?>
-			<p class="rw-empty-copy"><?php esc_html_e( 'No guests yet. Add one using the form below.', 'restwell-retreats' ); ?></p>
+			<section class="rw-guest-guide-empty" aria-labelledby="rw-guest-guide-empty-title">
+				<div class="rw-enquiries-empty">
+					<div class="rw-enquiries-empty__inner">
+						<div class="rw-enquiries-empty__icon" aria-hidden="true">
+							<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+								<path d="M26 8h-8a4 4 0 0 0-4 4v24a4 4 0 0 0 4 4h16a4 4 0 0 0 4-4V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								<path d="M30 8l6 6-14 14h-6V22L30 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</div>
+						<p id="rw-guest-guide-empty-title" class="rw-enquiries-empty__title">
+							<?php esc_html_e( 'No guests yet', 'restwell-retreats' ); ?>
+						</p>
+						<p class="rw-enquiries-empty__text">
+							<?php esc_html_e( 'Add each confirmed guest below. The invitation email sends automatically at the scheduled time, or you can send it manually.', 'restwell-retreats' ); ?>
+						</p>
+					</div>
+				</div>
+			</section>
 		<?php else : ?>
 		<div class="rw-table-shell rw-table-shell--guest-guide">
 		<table class="widefat striped rw-guest-guide-table">

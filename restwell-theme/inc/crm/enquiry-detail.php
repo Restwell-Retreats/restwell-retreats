@@ -77,6 +77,42 @@ function restwell_crm_enquiry_detail( int $id ) {
 		<?php if ( isset( $_GET['stay_dates_unchanged'] ) ) : ?>
 			<div class="notice notice-info is-dismissible"><p><?php esc_html_e( 'Stay dates were already set to those values — nothing to update.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
+		<?php if ( isset( $_GET['contact_updated'] ) ) : ?>
+			<div class="notice notice-success is-dismissible">
+				<p>
+					<?php
+					if ( 'conflict' === sanitize_key( wp_unslash( $_GET['contact_guest'] ?? '' ) ) ) {
+						esc_html_e( 'Contact details saved. The guest-guide row was left unchanged because that email is already used on another guest.', 'restwell-retreats' );
+					} else {
+						esc_html_e( 'Contact details saved. The change has been recorded in the activity log.', 'restwell-retreats' );
+					}
+					?>
+				</p>
+			</div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['contact_unchanged'] ) ) : ?>
+			<div class="notice notice-info is-dismissible"><p><?php esc_html_e( 'Contact details were already set to those values — nothing to update.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
+		<?php
+		$contact_error = isset( $_GET['contact_error'] )
+			? sanitize_key( wp_unslash( $_GET['contact_error'] ) )
+			: '';
+		?>
+		<?php if ( $contact_error !== '' ) : ?>
+			<div class="notice notice-error is-dismissible">
+				<p>
+					<?php
+					if ( 'email' === $contact_error ) {
+						esc_html_e( 'That email address is not valid. Check for typos such as ggmail.co.uk.', 'restwell-retreats' );
+					} elseif ( 'phone' === $contact_error ) {
+						esc_html_e( 'Enter a valid phone number (digits, spaces, +, -, and brackets; at least seven digits).', 'restwell-retreats' );
+					} else {
+						esc_html_e( 'Name cannot be empty.', 'restwell-retreats' );
+					}
+					?>
+				</p>
+			</div>
+		<?php endif; ?>
 		<?php
 		$stay_dates_error = isset( $_GET['stay_dates_error'] )
 			? sanitize_key( wp_unslash( $_GET['stay_dates_error'] ) )
@@ -129,13 +165,13 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 
 						<?php
 						$contact_fields = array(
-							__( 'Name', 'restwell-retreats' )              => esc_html( $row->name ),
-							__( 'Email', 'restwell-retreats' )             => '<a href="mailto:' . esc_attr( $row->email ) . '">' . esc_html( $row->email ) . '</a>',
-							__( 'Phone', 'restwell-retreats' )             => $row->phone
-								? '<a href="tel:' . esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ) . '">' . esc_html( $row->phone ) . '</a>'
-								: '',
 							__( 'Preferred contact', 'restwell-retreats' ) => esc_html( $row->contact_preference ),
 							__( 'Best time to call', 'restwell-retreats' ) => esc_html( $row->preferred_time ),
+							__( 'How they heard about us', 'restwell-retreats' ) => esc_html(
+								isset( $row->heard_about ) && function_exists( 'restwell_enquiry_heard_about_label' )
+									? restwell_enquiry_heard_about_label( (string) $row->heard_about )
+									: ( isset( $row->heard_about ) ? (string) $row->heard_about : '' )
+							),
 							__( 'Marketing preference', 'restwell-retreats' ) => ! empty( $row->marketing_optin )
 								? esc_html__( 'Opted in', 'restwell-retreats' )
 								: esc_html__( 'Not opted in', 'restwell-retreats' ),
@@ -202,6 +238,54 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 						?>
 
 						<h3 class="rw-detail-section-title"><?php esc_html_e( 'Contact', 'restwell-retreats' ); ?></h3>
+						<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-contact-form">
+							<?php wp_nonce_field( 'restwell_crm_update_contact' ); ?>
+							<input type="hidden" name="action" value="restwell_crm_update_contact" />
+							<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( (string) $row->id ); ?>" />
+							<div class="rw-contact-grid">
+								<p class="rw-contact-field">
+									<label for="rw_contact_name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label>
+									<input
+										type="text"
+										id="rw_contact_name"
+										name="rw_contact_name"
+										value="<?php echo esc_attr( (string) $row->name ); ?>"
+										autocomplete="name"
+										required
+									/>
+								</p>
+								<p class="rw-contact-field">
+									<label for="rw_contact_email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label>
+									<input
+										type="email"
+										id="rw_contact_email"
+										name="rw_contact_email"
+										value="<?php echo esc_attr( (string) $row->email ); ?>"
+										autocomplete="email"
+										required
+									/>
+								</p>
+								<p class="rw-contact-field">
+									<label for="rw_contact_phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label>
+									<input
+										type="tel"
+										id="rw_contact_phone"
+										name="rw_contact_phone"
+										value="<?php echo esc_attr( (string) $row->phone ); ?>"
+										autocomplete="tel"
+										required
+									/>
+								</p>
+							</div>
+							<p class="rw-contact-actions">
+								<button type="submit" class="button button-primary">
+									<?php esc_html_e( 'Save contact details', 'restwell-retreats' ); ?>
+								</button>
+								<span class="description rw-contact-help">
+									<?php esc_html_e( 'Use this for typos (for example ggmail.co.uk). Changes are recorded in the activity log. A linked guest-guide row is updated to match. Marketing lists are not changed here.', 'restwell-retreats' ); ?>
+								</span>
+							</p>
+						</form>
 						<table class="form-table rw-readonly-table" role="presentation">
 							<?php foreach ( $contact_fields as $label => $value ) : ?>
 								<?php if ( $value ) : ?>
@@ -494,6 +578,23 @@ function restwell_crm_render_enquiry_sidebar( $row, array $notes, array $statuse
 
 				</form>
 
+				<section class="rw-quick-contact" aria-label="<?php esc_attr_e( 'Quick contact', 'restwell-retreats' ); ?>">
+					<h3 class="rw-quick-contact__title"><?php esc_html_e( 'Quick contact', 'restwell-retreats' ); ?></h3>
+					<a class="rw-quick-contact__link" href="<?php echo esc_url( $mailto ); ?>">
+						<span class="rw-quick-contact__label"><?php esc_html_e( 'Reply by email', 'restwell-retreats' ); ?></span>
+						<span class="rw-quick-contact__value"><?php echo esc_html( $row->email ); ?></span>
+					</a>
+					<?php if ( $row->phone ) : ?>
+						<a
+							class="rw-quick-contact__link"
+							href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>"
+						>
+							<span class="rw-quick-contact__label"><?php esc_html_e( 'Call', 'restwell-retreats' ); ?></span>
+							<span class="rw-quick-contact__value"><?php echo esc_html( $row->phone ); ?></span>
+						</a>
+					<?php endif; ?>
+				</section>
+
 				<!-- Activity log (append-only notes) -->
 				<div class="postbox">
 					<div class="postbox-header">
@@ -541,41 +642,37 @@ function restwell_crm_render_enquiry_sidebar( $row, array $notes, array $statuse
 								rows="3"
 								placeholder="<?php esc_attr_e( 'Add a note…', 'restwell-retreats' ); ?>"
 							></textarea>
-							<input type="submit" class="button button-secondary" value="<?php esc_attr_e( 'Add note', 'restwell-retreats' ); ?>" />
+							<button type="submit" class="button button-secondary rw-add-note-form__submit">
+								<?php esc_html_e( 'Add note', 'restwell-retreats' ); ?>
+							</button>
 						</form>
 
 					</div>
 				</div><!-- .postbox activity log -->
 
-				<!-- Quick-contact buttons (outside form so they don't submit) -->
-				<a href="<?php echo esc_url( $mailto ); ?>" class="button button-large rw-btn-block">
-					&#9993; <?php esc_html_e( 'Reply by Email', 'restwell-retreats' ); ?>
-				</a>
-				<?php if ( $row->phone ) : ?>
-					<a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>"
-					   class="button button-large rw-btn-block">
-						&#128222; <?php echo esc_html( $row->phone ); ?>
-					</a>
+				<?php if ( 'booked' === $row->status || ( 'closed' === $row->status && function_exists( 'restwell_email_post_stay' ) ) ) : ?>
+					<div class="rw-sidebar-workflow">
+						<?php if ( 'booked' === $row->status ) : ?>
+							<a href="<?php echo esc_url( $promote_url ); ?>" class="button button-primary button-large rw-btn-block">
+								<?php esc_html_e( 'Add to Guest Guide', 'restwell-retreats' ); ?>
+							</a>
+						<?php endif; ?>
+						<?php if ( 'closed' === $row->status && function_exists( 'restwell_email_post_stay' ) ) : ?>
+							<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-post-stay-form">
+								<?php wp_nonce_field( 'restwell_crm_send_post_stay_' . $row->id ); ?>
+								<input type="hidden" name="action" value="restwell_crm_send_post_stay" />
+								<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( $row->id ); ?>" />
+								<button
+									type="submit"
+									class="button button-secondary button-large rw-btn-block"
+									onclick="return confirm('<?php echo esc_js( __( 'Send post-stay email to this guest?', 'restwell-retreats' ) ); ?>');"
+								>
+									<?php esc_html_e( 'Send post-stay email', 'restwell-retreats' ); ?>
+								</button>
+							</form>
+						<?php endif; ?>
+					</div>
 				<?php endif; ?>
-
-			<?php if ( 'booked' === $row->status ) : ?>
-				<a href="<?php echo esc_url( $promote_url ); ?>"
-				   class="button button-primary button-large rw-btn-block">
-					&#10133; <?php esc_html_e( 'Add to Guest Guide', 'restwell-retreats' ); ?>
-				</a>
-			<?php endif; ?>
-
-			<?php if ( 'closed' === $row->status && function_exists( 'restwell_email_post_stay' ) ) : ?>
-				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-post-stay-form">
-					<?php wp_nonce_field( 'restwell_crm_send_post_stay_' . $row->id ); ?>
-					<input type="hidden" name="action" value="restwell_crm_send_post_stay" />
-					<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( $row->id ); ?>" />
-					<button type="submit" class="button button-large rw-btn-block"
-							onclick="return confirm('<?php esc_attr_e( 'Send post-stay email to this guest?', 'restwell-retreats' ); ?>');">
-						&#9993; <?php esc_html_e( 'Send Post-Stay Email', 'restwell-retreats' ); ?>
-					</button>
-				</form>
-			<?php endif; ?>
 
 			</div><!-- right column -->
 	<?php

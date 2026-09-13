@@ -79,6 +79,50 @@ function restwell_format_enquiry_date_range( string $date_from, string $date_to 
 }
 
 /**
+ * Compact stay dates for the enquiries list.
+ *
+ * Same-month ranges collapse to "25–27 Sep 2026" so the Dates column can
+ * stay on one line. Stored `preferred_dates` is unchanged (export / emails).
+ *
+ * @param object $row Enquiry row (date_from, date_to, preferred_dates).
+ * @return string Empty when there are no dates.
+ */
+function restwell_crm_format_list_dates( object $row ): string {
+	$from = isset( $row->date_from ) ? (string) $row->date_from : '';
+	$to   = isset( $row->date_to ) ? (string) $row->date_to : '';
+
+	if ( '' !== $from && '' !== $to ) {
+		$from_ts = strtotime( $from . ' 12:00:00' );
+		$to_ts   = strtotime( $to . ' 12:00:00' );
+		if ( $from_ts && $to_ts ) {
+			if ( gmdate( 'Y-m', $from_ts ) === gmdate( 'Y-m', $to_ts ) ) {
+				return gmdate( 'j', $from_ts ) . '–' . gmdate( 'j M Y', $to_ts );
+			}
+			if ( gmdate( 'Y', $from_ts ) === gmdate( 'Y', $to_ts ) ) {
+				return gmdate( 'j M', $from_ts ) . ' – ' . gmdate( 'j M Y', $to_ts );
+			}
+			return gmdate( 'j M Y', $from_ts ) . ' – ' . gmdate( 'j M Y', $to_ts );
+		}
+	}
+
+	if ( '' !== $from ) {
+		$from_ts = strtotime( $from . ' 12:00:00' );
+		if ( $from_ts ) {
+			return gmdate( 'j M Y', $from_ts );
+		}
+	}
+
+	if ( '' !== $to ) {
+		$to_ts = strtotime( $to . ' 12:00:00' );
+		if ( $to_ts ) {
+			return gmdate( 'j M Y', $to_ts );
+		}
+	}
+
+	return trim( (string) ( $row->preferred_dates ?? '' ) );
+}
+
+/**
  * Redirect back to the enquiry form with validation messages and field values.
  *
  * @param string               $redirect Base URL.
@@ -150,6 +194,76 @@ function restwell_enquiry_funding_label( string $slug ): string {
 		return $labels[ $slug ];
 	}
 	return $slug;
+}
+
+/**
+ * Optional “how did you hear about us” choices (slug => label).
+ *
+ * @return array<string, string>
+ */
+function restwell_enquiry_heard_about_choices(): array {
+	return array(
+		'google'         => __( 'Google or another search engine', 'restwell-retreats' ),
+		'social'         => __( 'Facebook or Instagram', 'restwell-retreats' ),
+		'continuity'     => __( 'Continuity of Care Services', 'restwell-retreats' ),
+		'professional'   => __( 'A professional (OT, social worker, case manager)', 'restwell-retreats' ),
+		'recommendation' => __( 'A friend, family member, or previous guest', 'restwell-retreats' ),
+		'listing'        => __( 'An access listing or directory', 'restwell-retreats' ),
+		'other'          => __( 'Somewhere else', 'restwell-retreats' ),
+	);
+}
+
+/**
+ * Normalise a posted heard-about slug.
+ *
+ * @param string $raw Raw POST value after sanitize_key.
+ * @return string Allowed slug or empty.
+ */
+function restwell_enquiry_normalise_heard_about( string $raw ): string {
+	$allowed = array_keys( restwell_enquiry_heard_about_choices() );
+	return in_array( $raw, $allowed, true ) ? $raw : '';
+}
+
+/**
+ * Combine slug + optional “somewhere else” detail for storage.
+ *
+ * @param string $slug   Allowed slug or empty.
+ * @param string $detail Extra words when slug is other.
+ * @return string Empty, a slug, or other:detail (max 200 chars).
+ */
+function restwell_enquiry_store_heard_about( string $slug, string $detail ): string {
+	$slug   = restwell_enquiry_normalise_heard_about( $slug );
+	$detail = sanitize_text_field( $detail );
+	if ( 'other' === $slug && '' !== $detail ) {
+		$stored = 'other:' . $detail;
+		return ( strlen( $stored ) > 200 ) ? substr( $stored, 0, 200 ) : $stored;
+	}
+	return $slug;
+}
+
+/**
+ * Human label for a stored heard-about value.
+ *
+ * @param string $stored Slug or other:detail.
+ * @return string
+ */
+function restwell_enquiry_heard_about_label( string $stored ): string {
+	$choices = restwell_enquiry_heard_about_choices();
+	if ( isset( $choices[ $stored ] ) ) {
+		return $choices[ $stored ];
+	}
+	if ( 0 === strpos( $stored, 'other:' ) ) {
+		$detail = trim( substr( $stored, strlen( 'other:' ) ) );
+		if ( '' === $detail ) {
+			return $choices['other'];
+		}
+		return sprintf(
+			/* translators: %s: visitor’s own words */
+			__( 'Somewhere else — %s', 'restwell-retreats' ),
+			$detail
+		);
+	}
+	return '';
 }
 
 /**
@@ -248,6 +362,10 @@ function restwell_handle_enquire_submit(): void {
 	$health_consent  = ! empty( $_POST['enq_health_consent'] );
 	$contact_pref = isset( $_POST['enq_contact_preference'] ) ? sanitize_key( wp_unslash( $_POST['enq_contact_preference'] ) ) : '';
 	$pref_time    = isset( $_POST['enq_preferred_time'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_preferred_time'] ) ) : '';
+	$heard_slug   = isset( $_POST['enq_heard_about'] ) ? sanitize_key( wp_unslash( $_POST['enq_heard_about'] ) ) : '';
+	$heard_slug   = restwell_enquiry_normalise_heard_about( $heard_slug );
+	$heard_other  = isset( $_POST['enq_heard_other'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_heard_other'] ) ) : '';
+	$heard_about  = restwell_enquiry_store_heard_about( $heard_slug, $heard_other );
 
 	$fields_flash = array(
 		'enq_name'               => $name,
@@ -266,6 +384,8 @@ function restwell_handle_enquire_submit(): void {
 		'enq_health_consent'     => $health_consent ? '1' : '',
 		'enq_contact_preference' => $contact_pref,
 		'enq_preferred_time'     => $pref_time,
+		'enq_heard_about'        => $heard_slug,
+		'enq_heard_other'        => $heard_other,
 	);
 
 	$errors = array();
@@ -319,6 +439,9 @@ function restwell_handle_enquire_submit(): void {
 	if ( $pref_time ) {
 		$body .= 'Best time to call: ' . $pref_time . "\n";
 	}
+	if ( $heard_about ) {
+		$body .= 'How they heard about us: ' . restwell_enquiry_heard_about_label( $heard_about ) . "\n";
+	}
 	if ( $dates ) {
 		$body .= "Preferred dates: $dates\n";
 	}
@@ -358,6 +481,7 @@ function restwell_handle_enquire_submit(): void {
 		'funding'      => $funding,
 		'contact_pref' => $contact_pref,
 		'pref_time'    => $pref_time,
+		'heard_about'  => $heard_about,
 		'message'      => $message,
 		'urgent'                 => $urgent,
 		'marketing_optin'        => $marketing_optin,
@@ -451,6 +575,7 @@ function restwell_handle_enquire_submit(): void {
 			'phone'        => $phone,
 			'contact_pref' => $contact_pref,
 			'pref_time'    => $pref_time,
+			'heard_about'  => $heard_about,
 			'dates'        => $dates,
 			'guests'       => $guests,
 			'funding'      => $funding,

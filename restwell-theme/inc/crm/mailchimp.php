@@ -159,12 +159,17 @@ function restwell_mailchimp_upsert_marketing_contact( string $email, string $nam
 	$fname = ! empty( $parts ) ? sanitize_text_field( (string) array_shift( $parts ) ) : '';
 	$lname = ! empty( $parts ) ? sanitize_text_field( trim( implode( ' ', $parts ) ) ) : '';
 
+	$phone = sanitize_text_field( trim( $phone ) );
+
 	$merge_fields = array();
 	if ( '' !== $fname ) {
 		$merge_fields['FNAME'] = $fname;
 	}
 	if ( '' !== $lname ) {
 		$merge_fields['LNAME'] = $lname;
+	}
+	if ( '' !== $phone ) {
+		$merge_fields['PHONE'] = $phone;
 	}
 
 	$payload = array(

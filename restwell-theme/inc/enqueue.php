@@ -96,8 +96,14 @@ function restwell_enqueue_scripts() {
 		true
 	);
 
-	// Enquire form validation — enquire template only.
-	if ( is_page_template( 'template-enquire.php' ) ) {
+	// Enquire form helpers — enquire page, and the pricing diary dialog (same POST).
+	$needs_enquire_js = is_page_template( 'template-enquire.php' )
+		|| (
+			is_page_template( 'template-pricing.php' )
+			&& function_exists( 'restwell_occupancy_is_configured' )
+			&& restwell_occupancy_is_configured()
+		);
+	if ( $needs_enquire_js ) {
 		$enquire_rel = '/assets/js/enquire' . $js_suffix;
 		if ( $use_min && ! is_readable( get_template_directory() . $enquire_rel ) ) {
 			$enquire_rel = '/assets/js/enquire.js';
@@ -173,6 +179,8 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 		'restwell-crm_page_restwell-enquiries',
 		'restwell-crm_page_restwell-mailing-list',
 		'restwell-crm_page_restwell-guest-guide',
+		'restwell-crm_page_restwell-availability',
+		'restwell-crm_page_restwell-faq-inbox',
 		// Legacy hook prefixes (kept so Local / older WP menus still get styles).
 		'restwell_page_restwell-enquiries',
 		'restwell_page_restwell-guest-guide',
@@ -185,6 +193,8 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 		'restwell-enquiries',
 		'restwell-mailing-list',
 		'restwell-guest-guide',
+		'restwell-availability',
+		'restwell-faq-inbox',
 	);
 
 	$load_crm_screen = in_array( $hook_suffix, $target_hooks, true )
@@ -213,13 +223,22 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 	$crm_js     = $theme_dir . '/assets/js/admin-crm-actions.js';
 	$meta_css   = $theme_dir . '/assets/css/admin-meta-fields.css';
 	$meta_js    = $theme_dir . '/assets/js/admin-meta-fields.js';
+	$fonts_css  = $theme_dir . '/assets/css/fonts.css';
 	$theme_ver  = (string) wp_get_theme()->get( 'Version' );
 	$crm_css_ver = file_exists( $crm_css ) ? (string) filemtime( $crm_css ) : $theme_ver;
+	$fonts_ver   = file_exists( $fonts_css ) ? (string) filemtime( $fonts_css ) : $theme_ver;
+
+	wp_enqueue_style(
+		'restwell-admin-fonts',
+		$theme_uri . '/assets/css/fonts.css',
+		array(),
+		$fonts_ver
+	);
 
 	wp_enqueue_style(
 		'restwell-admin-crm',
 		$theme_uri . '/assets/css/admin-crm.css',
-		array(),
+		array( 'restwell-admin-fonts' ),
 		$crm_css_ver
 	);
 
@@ -246,6 +265,9 @@ function restwell_enqueue_admin_styles( $hook_suffix ) {
 				'nonce'    => wp_create_nonce( 'restwell_crm_lead_action' ),
 				'ajaxurl'  => admin_url( 'admin-ajax.php' ),
 				'statuses' => restwell_crm_statuses(),
+				'i18n'     => array(
+					'statusHint' => __( 'Tap to change', 'restwell-retreats' ),
+				),
 			)
 		);
 	}

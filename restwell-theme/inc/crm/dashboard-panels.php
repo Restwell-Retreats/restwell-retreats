@@ -85,9 +85,24 @@ function restwell_crm_dashboard_render_stat_tiles( $stat_new_week, $stat_total, 
 	?>
 	<div class="rw-stat-grid" role="list" aria-label="<?php esc_attr_e( 'Dashboard summary metrics', 'restwell-retreats' ); ?>">
 		<?php foreach ( $tiles as $tile ) : ?>
-		<a href="<?php echo esc_url( $tile['url'] ); ?>" class="rw-stat-tile" role="listitem" style="--rw-tile-accent:<?php echo esc_attr( $tile['color'] ); ?>;">
-			<div class="rw-stat-value"><?php echo esc_html( $tile['value'] ); ?></div>
-			<div class="rw-stat-label"><?php echo esc_html( $tile['label'] ); ?></div>
+		<a
+			href="<?php echo esc_url( $tile['url'] ); ?>"
+			class="rw-stat-tile"
+			role="listitem"
+			style="--rw-tile-accent:<?php echo esc_attr( $tile['color'] ); ?>;"
+			aria-label="<?php
+			echo esc_attr(
+				sprintf(
+					/* translators: 1: metric value, 2: metric label */
+					__( '%1$s %2$s — view matching enquiries', 'restwell-retreats' ),
+					$tile['value'],
+					$tile['label']
+				)
+			);
+			?>"
+		>
+			<div class="rw-stat-value" aria-hidden="true"><?php echo esc_html( $tile['value'] ); ?></div>
+			<div class="rw-stat-label" aria-hidden="true"><?php echo esc_html( $tile['label'] ); ?></div>
 		</a>
 		<?php endforeach; ?>
 	</div>

@@ -37,7 +37,25 @@ function restwell_crm_redact_sensitive_export_rows( array $rows, bool $include_s
 }
 
 /**
- * Stream all enquiries as a UTF-8 CSV download.
+ * Accept a Y-m-d date from an export form field.
+ *
+ * @param mixed $raw Posted value.
+ * @return string Valid Y-m-d or empty string.
+ */
+function restwell_crm_sanitize_export_ymd( $raw ): string {
+	$raw = sanitize_text_field( (string) wp_unslash( $raw ) );
+	$dt  = DateTimeImmutable::createFromFormat( '!Y-m-d', $raw );
+	if ( ! $dt || $dt->format( 'Y-m-d' ) !== $raw ) {
+		return '';
+	}
+	return $raw;
+}
+
+/**
+ * Stream enquiries as a UTF-8 CSV download.
+ *
+ * Optional submitted_from / submitted_to (Y-m-d, inclusive, site timezone)
+ * limit rows by submitted_at. Blank dates export every enquiry.
  */
 function restwell_crm_handle_export_csv() {
 	if ( ! restwell_crm_can_manage() ) {
@@ -49,26 +67,46 @@ function restwell_crm_handle_export_csv() {
 		&& isset( $_POST['include_sensitive'] )
 		&& '1' === (string) wp_unslash( $_POST['include_sensitive'] );
 
+	$from = isset( $_POST['submitted_from'] ) ? restwell_crm_sanitize_export_ymd( $_POST['submitted_from'] ) : '';
+	$to   = isset( $_POST['submitted_to'] ) ? restwell_crm_sanitize_export_ymd( $_POST['submitted_to'] ) : '';
+	if ( $from && $to && $from > $to ) {
+		$swap = $from;
+		$from = $to;
+		$to   = $swap;
+	}
+
 	global $wpdb;
-	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$table       = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$where_parts = array();
+	if ( $from ) {
+		$where_parts[] = $wpdb->prepare( 'submitted_at >= %s', $from . ' 00:00:00' );
+	}
+	if ( $to ) {
+		$next_day = ( new DateTimeImmutable( $to ) )->modify( '+1 day' )->format( 'Y-m-d' );
+		$where_parts[] = $wpdb->prepare( 'submitted_at < %s', $next_day . ' 00:00:00' );
+	}
+	$where_sql = $where_parts ? ( ' WHERE ' . implode( ' AND ', $where_parts ) ) : '';
+
 	// Explicit column list — avoids pulling unexpected columns added by future migrations.
+	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_sql is only prepare() fragments.
 	$rows = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT id, submitted_at, name, email, phone,
 			        preferred_dates, date_from, date_to, num_guests,
 			        care_requirements, accessibility, funding_type,
-			        contact_preference, preferred_time, message,
+			        contact_preference, preferred_time, heard_about, message,
 			        is_urgent, marketing_optin, marketing_optin_at,
 			        privacy_consented_at, privacy_policy_version,
 			        health_data_consent, health_data_consented_at,
 			        status, staff_notes, follow_up_at,
 			        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at,
 			        anonymised_at
-			 FROM %i ORDER BY submitted_at DESC',
+			 FROM %i' . $where_sql . ' ORDER BY submitted_at DESC',
 			$table
 		),
 		ARRAY_A
 	);
+	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 	if ( ! is_array( $rows ) ) {
 		$rows = array();
 	}
@@ -81,6 +119,8 @@ function restwell_crm_handle_export_csv() {
 		'exported_at'        => gmdate( 'Y-m-d H:i:s' ),
 		'row_count'          => count( $rows ),
 		'include_sensitive'  => $include_sensitive ? 1 : 0,
+		'submitted_from'     => $from,
+		'submitted_to'       => $to,
 	);
 	$export_log = get_option( 'restwell_crm_export_log', array() );
 	if ( ! is_array( $export_log ) ) {
@@ -89,7 +129,19 @@ function restwell_crm_handle_export_csv() {
 	$export_log[] = $export_log_entry;
 	update_option( 'restwell_crm_export_log', array_slice( $export_log, -200 ) ); // keep last 200 entries
 
-	$filename = 'restwell-enquiries-' . gmdate( 'Y-m-d' ) . '.csv';
+	$filename = 'restwell-enquiries';
+	if ( $from && $to && $from === $to ) {
+		$filename .= '-' . $from;
+	} elseif ( $from && $to ) {
+		$filename .= '-' . $from . '-to-' . $to;
+	} elseif ( $from ) {
+		$filename .= '-from-' . $from;
+	} elseif ( $to ) {
+		$filename .= '-to-' . $to;
+	} else {
+		$filename .= '-' . gmdate( 'Y-m-d' );
+	}
+	$filename .= '.csv';
 
 	header( 'Content-Type: text/csv; charset=UTF-8' );
 	header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
@@ -138,10 +190,7 @@ function restwell_crm_handle_send_test_mail(): void {
 		$redirect( 'rate' );
 	}
 
-	$to = (string) get_option( 'restwell_enquiry_notify_email', '' );
-	if ( ! is_email( $to ) ) {
-		$to = (string) get_option( 'admin_email', '' );
-	}
+	$to = restwell_get_submission_notify_email();
 	if ( ! is_email( $to ) ) {
 		$redirect( 'no_recipient' );
 	}
@@ -191,8 +240,15 @@ function restwell_crm_handle_send_post_stay() {
 
 	if ( $row && function_exists( 'restwell_email_post_stay' ) ) {
 		$email_data = restwell_email_post_stay( $row->email, $row->name );
-		wp_mail( $row->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
-		restwell_service_crm_gateway()->add_enquiry_note( $id, __( 'Post-stay email sent.', 'restwell-retreats' ) );
+		$sent       = function_exists( 'restwell_wp_mail_with_retry' )
+			? restwell_wp_mail_with_retry( $row->email, $email_data['subject'], $email_data['body'], $email_data['headers'] )
+			: wp_mail( $row->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
+		restwell_service_crm_gateway()->add_enquiry_note(
+			$id,
+			$sent
+				? __( 'Post-stay email sent.', 'restwell-retreats' )
+				: __( 'Automated note: post-stay email did not send (SMTP/mail transport). Please follow up from CRM or resend manually.', 'restwell-retreats' )
+		);
 	}
 
 	wp_safe_redirect(
@@ -218,11 +274,9 @@ function restwell_crm_handle_save_settings() {
 	}
 	check_admin_referer( 'restwell_crm_settings' );
 
-	// Always persist these values — including empty string — so editors can intentionally clear stale data.
-	$email = isset( $_POST['restwell_enquiry_notify_email'] )
-		? sanitize_email( wp_unslash( $_POST['restwell_enquiry_notify_email'] ) )
-		: '';
-	update_option( 'restwell_enquiry_notify_email', $email );
+	// Notify inbox is fixed to hello@ (see restwell_get_submission_notify_email).
+	// Keep the option in sync so older readers still show the correct address.
+	update_option( 'restwell_enquiry_notify_email', 'hello@restwellretreats.co.uk', false );
 
 	// Phone, schema address, verification, analytics, property line, footer CTA, access PDF:
 	// managed under SEO → Site-wide (restwell_seo_sitewide_handle_save).
@@ -237,28 +291,7 @@ function restwell_crm_handle_save_settings() {
 		$is_production = restwell_is_production_environment();
 	}
 
-	$ical_url        = isset( $_POST['restwell_ical_feed_url'] )
-		? (string) wp_unslash( $_POST['restwell_ical_feed_url'] )
-		: '';
-	$ical_url        = function_exists( 'restwell_occupancy_sanitize_feed_url' )
-		? restwell_occupancy_sanitize_feed_url( $ical_url )
-		: '';
-	$ical_clear      = isset( $_POST['restwell_ical_feed_url_clear'] )
-		&& '1' === sanitize_text_field( wp_unslash( $_POST['restwell_ical_feed_url_clear'] ) );
-	$ical_from_const = defined( 'RESTWELL_ICAL_FEED_URL' ) && '' !== (string) RESTWELL_ICAL_FEED_URL;
-	if ( $is_production || $ical_from_const ) {
-		unset( $ical_url, $ical_clear );
-	} elseif ( '' !== $ical_url ) {
-		update_option( 'restwell_ical_feed_url', $ical_url, false );
-		if ( function_exists( 'restwell_occupancy_flush_cache' ) ) {
-			restwell_occupancy_flush_cache();
-		}
-	} elseif ( $ical_clear ) {
-		update_option( 'restwell_ical_feed_url', '', false );
-		if ( function_exists( 'restwell_occupancy_flush_cache' ) ) {
-			restwell_occupancy_flush_cache();
-		}
-	}
+	// ICS feed URL is managed on Restwell → Availability (restwell_crm_handle_save_availability).
 
 	// Prefer RESTWELL_MAILCHIMP_API_KEY in wp-config; option is fallback only and must not autoload.
 	// Never persist the key in wp_options when WP_ENVIRONMENT_TYPE is production.
@@ -283,17 +316,20 @@ function restwell_crm_handle_save_settings() {
 		: '';
 	update_option( 'restwell_mailchimp_server_prefix', $mailchimp_server_prefix, false );
 
-	$raw_cap_roles = isset( $_POST['restwell_crm_cap_roles'] ) ? (array) wp_unslash( $_POST['restwell_crm_cap_roles'] ) : array();
-	$cap_roles     = array_values(
-		array_intersect(
-			array_map( 'sanitize_key', $raw_cap_roles ),
-			array( 'administrator', 'editor', 'author' )
-		)
-	);
-	if ( empty( $cap_roles ) ) {
-		$cap_roles = array( 'administrator' );
+	// Role grants broaden PII access — administrators only.
+	if ( current_user_can( 'manage_options' ) ) {
+		$raw_cap_roles = isset( $_POST['restwell_crm_cap_roles'] ) ? (array) wp_unslash( $_POST['restwell_crm_cap_roles'] ) : array();
+		$cap_roles     = array_values(
+			array_intersect(
+				array_map( 'sanitize_key', $raw_cap_roles ),
+				array( 'administrator', 'editor', 'author' )
+			)
+		);
+		if ( empty( $cap_roles ) ) {
+			$cap_roles = array( 'administrator' );
+		}
+		update_option( 'restwell_crm_cap_roles', $cap_roles );
 	}
-	update_option( 'restwell_crm_cap_roles', $cap_roles );
 
 	$redirect_args = array(
 		'page'           => 'restwell-crm',
@@ -443,6 +479,202 @@ function restwell_crm_handle_update_stay_dates(): void {
 	exit;
 }
 add_action( 'admin_post_restwell_crm_update_stay_dates', 'restwell_crm_handle_update_stay_dates' );
+
+/**
+ * Keep a linked guest-guide row in step with enquiry contact edits.
+ *
+ * @param int    $enquiry_id Enquiry ID.
+ * @param string $old_email  Email stored before the edit.
+ * @param string $name       New name.
+ * @param string $email      New email.
+ * @return string '' if none or updated, 'conflict' if the new email belongs to another guest.
+ */
+function restwell_crm_sync_guest_guide_contact( int $enquiry_id, string $old_email, string $name, string $email ): string {
+	if ( ! defined( 'RESTWELL_GUESTS_TABLE' ) ) {
+		return '';
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . RESTWELL_GUESTS_TABLE;
+
+	$guest = $wpdb->get_row(
+		$wpdb->prepare(
+			'SELECT id, email FROM %i WHERE enquiry_id = %d ORDER BY id DESC LIMIT 1',
+			$table,
+			$enquiry_id
+		)
+	);
+	if ( ! $guest && '' !== $old_email ) {
+		$guest = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT id, email FROM %i WHERE LOWER(email) = LOWER(%s) ORDER BY id DESC LIMIT 1',
+				$table,
+				$old_email
+			)
+		);
+	}
+	if ( ! $guest ) {
+		return '';
+	}
+
+	$taken = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			'SELECT id FROM %i WHERE LOWER(email) = LOWER(%s) AND id <> %d LIMIT 1',
+			$table,
+			$email,
+			(int) $guest->id
+		)
+	);
+	if ( $taken > 0 ) {
+		return 'conflict';
+	}
+
+	$wpdb->update(
+		$table,
+		array(
+			'name'  => $name,
+			'email' => $email,
+		),
+		array( 'id' => (int) $guest->id ),
+		array( '%s', '%s' ),
+		array( '%d' )
+	);
+
+	return '';
+}
+
+/**
+ * Save name, email, and phone from the enquiry detail screen.
+ *
+ * Typos (ggmail.co.uk, missing digits) are the usual reason. Each change is
+ * written to the activity log. A linked guest-guide row is updated to match
+ * unless the new email is already used on another guest.
+ */
+function restwell_crm_handle_update_contact(): void {
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
+	}
+	check_admin_referer( 'restwell_crm_update_contact' );
+
+	$enquiry_id = absint( $_POST['rw_enquiry_id'] ?? 0 );
+	$name       = sanitize_text_field( wp_unslash( $_POST['rw_contact_name'] ?? '' ) );
+	$email      = sanitize_email( wp_unslash( $_POST['rw_contact_email'] ?? '' ) );
+	$phone_check = function_exists( 'restwell_validate_submission_phone' )
+		? restwell_validate_submission_phone( isset( $_POST['rw_contact_phone'] ) ? (string) wp_unslash( $_POST['rw_contact_phone'] ) : '' )
+		: array(
+			'phone' => sanitize_text_field( wp_unslash( $_POST['rw_contact_phone'] ?? '' ) ),
+			'error' => '',
+		);
+
+	if ( ! $enquiry_id ) {
+		wp_die( esc_html__( 'Missing enquiry ID.', 'restwell-retreats' ) );
+	}
+
+	$redirect_base = add_query_arg(
+		array(
+			'page' => 'restwell-enquiries',
+			'view' => $enquiry_id,
+		),
+		admin_url( 'admin.php' )
+	);
+
+	if ( '' === $name ) {
+		wp_safe_redirect( add_query_arg( 'contact_error', 'name', $redirect_base ) );
+		exit;
+	}
+	if ( ! is_email( $email ) ) {
+		wp_safe_redirect( add_query_arg( 'contact_error', 'email', $redirect_base ) );
+		exit;
+	}
+	if ( '' !== ( $phone_check['error'] ?? '' ) ) {
+		wp_safe_redirect( add_query_arg( 'contact_error', 'phone', $redirect_base ) );
+		exit;
+	}
+
+	$phone = (string) ( $phone_check['phone'] ?? '' );
+	if ( strlen( $name ) > 200 ) {
+		$name = substr( $name, 0, 200 );
+	}
+	if ( strlen( $phone ) > 100 ) {
+		$phone = substr( $phone, 0, 100 );
+	}
+
+	global $wpdb;
+	$table    = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$existing = $wpdb->get_row(
+		$wpdb->prepare( 'SELECT name, email, phone FROM %i WHERE id = %d', $table, $enquiry_id )
+	);
+	if ( ! $existing ) {
+		wp_die( esc_html__( 'Enquiry not found.', 'restwell-retreats' ) );
+	}
+
+	$old_name  = (string) $existing->name;
+	$old_email = (string) $existing->email;
+	$old_phone = (string) $existing->phone;
+
+	if ( $old_name === $name && strtolower( $old_email ) === strtolower( $email ) && $old_phone === $phone ) {
+		wp_safe_redirect( add_query_arg( 'contact_unchanged', '1', $redirect_base ) );
+		exit;
+	}
+
+	$wpdb->update(
+		$table,
+		array(
+			'name'  => $name,
+			'email' => $email,
+			'phone' => $phone,
+		),
+		array( 'id' => $enquiry_id ),
+		array( '%s', '%s', '%s' ),
+		array( '%d' )
+	);
+
+	$parts = array();
+	if ( $old_name !== $name ) {
+		$parts[] = sprintf(
+			/* translators: 1: previous name, 2: new name */
+			__( 'name %1$s → %2$s', 'restwell-retreats' ),
+			$old_name,
+			$name
+		);
+	}
+	if ( strtolower( $old_email ) !== strtolower( $email ) ) {
+		$parts[] = sprintf(
+			/* translators: 1: previous email, 2: new email */
+			__( 'email %1$s → %2$s', 'restwell-retreats' ),
+			$old_email,
+			$email
+		);
+	}
+	if ( $old_phone !== $phone ) {
+		$parts[] = sprintf(
+			/* translators: 1: previous phone, 2: new phone */
+			__( 'phone %1$s → %2$s', 'restwell-retreats' ),
+			$old_phone,
+			$phone
+		);
+	}
+	if ( $parts ) {
+		restwell_service_crm_gateway()->add_enquiry_note(
+			$enquiry_id,
+			sprintf(
+				/* translators: %s: comma-separated field diffs */
+				__( 'Contact details updated: %s', 'restwell-retreats' ),
+				implode( '; ', $parts )
+			)
+		);
+	}
+
+	$guest_status = restwell_crm_sync_guest_guide_contact( $enquiry_id, $old_email, $name, $email );
+	$args         = array( 'contact_updated' => '1' );
+	if ( 'conflict' === $guest_status ) {
+		$args['contact_guest'] = 'conflict';
+	}
+
+	wp_safe_redirect( add_query_arg( $args, $redirect_base ) );
+	exit;
+}
+add_action( 'admin_post_restwell_crm_update_contact', 'restwell_crm_handle_update_contact' );
 
 /**
  * Handle inline lead quick-actions from the enquiries list.

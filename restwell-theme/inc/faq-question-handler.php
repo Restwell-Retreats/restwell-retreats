@@ -1,6 +1,6 @@
 <?php
 /**
- * FAQ page “Ask a question” form: validate, persist, notify hello@ (setting), redirect with feedback.
+ * FAQ page “Ask a question” form: validate, persist, notify hello@, redirect with feedback.
  *
  * @package Restwell_Retreats
  */
@@ -82,6 +82,9 @@ function restwell_handle_faq_question_submit(): void {
 	if ( strlen( $message ) > 12000 ) {
 		$errors[] = __( 'Your question is too long. Please shorten it slightly.', 'restwell-retreats' );
 	}
+	if ( empty( $_POST['faq_q_consent'] ) ) {
+		$errors[] = __( 'Please confirm we can use this information to reply, as set out in the privacy policy.', 'restwell-retreats' );
+	}
 
 	if ( $errors ) {
 		restwell_faq_question_redirect_flash(
@@ -93,6 +96,7 @@ function restwell_handle_faq_question_submit(): void {
 				'phone'   => $phone,
 				'message' => $message,
 				'marketing_optin' => $marketing_optin ? '1' : '',
+				'consent' => empty( $_POST['faq_q_consent'] ) ? '' : '1',
 			)
 		);
 		return;
@@ -101,11 +105,13 @@ function restwell_handle_faq_question_submit(): void {
 	$source = $pid ? (string) get_permalink( $pid ) : $back;
 	$row_id = restwell_service_crm_gateway()->save_faq_submission(
 		array(
-			'name'        => $name,
-			'email'       => $email,
-			'question'    => $message,
+			'name'            => $name,
+			'email'           => $email,
+			'phone'           => $phone,
+			'question'        => $message,
 			'marketing_optin' => $marketing_optin,
-			'source_url'  => $source,
+			'privacy_consent' => true,
+			'source_url'      => $source,
 		)
 	);
 
@@ -113,7 +119,7 @@ function restwell_handle_faq_question_submit(): void {
 		$mc_ok = restwell_mailchimp_upsert_marketing_contact(
 			$email,
 			$name,
-			'',
+			$phone,
 			'faq',
 			array( 'faq-form' )
 		);
@@ -219,6 +225,33 @@ function restwell_faq_question_redirect_flash( string $url, array $errors, array
 }
 
 /**
+ * Consume one-shot FAQ flash (validation errors + field values).
+ *
+ * @return array{errors: string[], fields: array<string, mixed>}|null
+ */
+function restwell_faq_consume_flash(): ?array {
+	if ( ! isset( $_GET['faq_flash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return null;
+	}
+	$key = sanitize_text_field( wp_unslash( $_GET['faq_flash'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' === $key || ! preg_match( '/^[A-Za-z0-9]{8,32}$/', $key ) ) {
+		return null;
+	}
+	$transient_key = 'restwell_faq_flash_' . $key;
+	$data          = get_transient( $transient_key );
+	delete_transient( $transient_key );
+	if ( ! is_array( $data ) ) {
+		return null;
+	}
+	$errors = isset( $data['errors'] ) && is_array( $data['errors'] ) ? $data['errors'] : array();
+	$fields = isset( $data['fields'] ) && is_array( $data['fields'] ) ? $data['fields'] : array();
+	return array(
+		'errors' => array_values( array_filter( array_map( 'strval', $errors ) ) ),
+		'fields' => $fields,
+	);
+}
+
+/**
  * Admin: list FAQ form submissions (for follow-up when email did not send).
  */
 function restwell_faq_register_inbox_menu(): void {
@@ -242,50 +275,144 @@ function restwell_faq_inbox_page(): void {
 	}
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
-	$rows = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY submitted_at DESC LIMIT 100', $table ), ARRAY_A );
+	$rows  = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY submitted_at DESC LIMIT 100', $table ), ARRAY_A );
+	$total = is_array( $rows ) ? count( $rows ) : 0;
 	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'FAQ questions', 'restwell-retreats' ); ?></h1>
-		<p class="description"><?php esc_html_e( 'Questions submitted from the FAQ page. Rows with “Notify: No” may need a manual reply if email delivery failed.', 'restwell-retreats' ); ?></p>
+	<div class="wrap restwell-admin restwell-admin-faq-inbox">
+		<h1 class="rw-page-title"><?php esc_html_e( 'FAQ questions', 'restwell-retreats' ); ?></h1>
+		<p class="description rw-lead">
+			<?php esc_html_e( 'Questions submitted from the FAQ page. Rows marked Notify: No may need a manual reply if email delivery failed.', 'restwell-retreats' ); ?>
+		</p>
+
 		<?php if ( empty( $rows ) ) : ?>
-			<p><?php esc_html_e( 'No submissions yet.', 'restwell-retreats' ); ?></p>
+			<section class="rw-faq-inbox-empty" aria-labelledby="rw-faq-inbox-empty-title">
+				<div class="rw-enquiries-empty">
+					<div class="rw-enquiries-empty__inner">
+						<div class="rw-enquiries-empty__icon" aria-hidden="true">
+							<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+								<circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
+								<path d="M18 20a6 6 0 1 1 12 0c0 4-6 4-6 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								<circle cx="24" cy="34" r="1.5" fill="currentColor"/>
+							</svg>
+						</div>
+						<p id="rw-faq-inbox-empty-title" class="rw-enquiries-empty__title">
+							<?php esc_html_e( 'No FAQ submissions yet', 'restwell-retreats' ); ?>
+						</p>
+						<p class="rw-enquiries-empty__text">
+							<?php esc_html_e( 'When someone asks a question on the FAQ page, it will appear here with their contact details.', 'restwell-retreats' ); ?>
+						</p>
+					</div>
+				</div>
+			</section>
 		<?php else : ?>
-			<table class="widefat striped">
-			<thead>
-				<tr>
-					<th><?php esc_html_e( 'Date', 'restwell-retreats' ); ?></th>
-					<th><?php esc_html_e( 'Notify', 'restwell-retreats' ); ?></th>
-					<th><?php esc_html_e( 'Marketing opt-in', 'restwell-retreats' ); ?></th>
-					<th><?php esc_html_e( 'MC Sync', 'restwell-retreats' ); ?></th>
-					<th><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></th>
-					<th><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></th>
-					<th><?php esc_html_e( 'Question', 'restwell-retreats' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ( $rows as $r ) : ?>
-					<tr>
-						<td><?php echo esc_html( $r['submitted_at'] ?? '' ); ?></td>
-						<td><?php echo ! empty( $r['notify_sent'] ) ? esc_html__( 'Yes', 'restwell-retreats' ) : esc_html__( 'No', 'restwell-retreats' ); ?></td>
-						<td><?php echo ! empty( $r['marketing_optin'] ) ? esc_html__( 'Yes', 'restwell-retreats' ) : esc_html__( 'No', 'restwell-retreats' ); ?></td>
-						<td>
-							<?php if ( ! empty( $r['marketing_optin'] ) ) : ?>
-								<?php if ( ! empty( $r['marketing_sync_failed'] ) ) : ?>
-									<span style="color:#d63638;" title="<?php esc_attr_e( 'Mailchimp sync failed — needs manual retry', 'restwell-retreats' ); ?>">&#9888; <?php esc_html_e( 'Failed', 'restwell-retreats' ); ?></span>
-								<?php else : ?>
-									<span style="color:#00a32a;">&#10003; <?php esc_html_e( 'OK', 'restwell-retreats' ); ?></span>
-								<?php endif; ?>
-							<?php else : ?>
-								<span style="color:#646970;">&#8212;</span>
-							<?php endif; ?>
-						</td>
-						<td><?php echo esc_html( $r['name'] ?? '' ); ?></td>
-						<td><a href="mailto:<?php echo esc_attr( $r['email'] ?? '' ); ?>"><?php echo esc_html( $r['email'] ?? '' ); ?></a></td>
-						<td><?php echo esc_html( wp_trim_words( (string) ( $r['question'] ?? '' ), 40 ) ); ?></td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+			<section class="rw-faq-inbox-panel" aria-labelledby="rw-faq-inbox-heading">
+				<div class="rw-faq-inbox-panel__header">
+					<h2 id="rw-faq-inbox-heading" class="rw-faq-inbox-panel__title">
+						<?php esc_html_e( 'Recent submissions', 'restwell-retreats' ); ?>
+					</h2>
+					<p class="rw-faq-inbox-panel__count">
+						<?php
+						printf(
+							/* translators: %d: submission count */
+							esc_html( _n( '%d question', '%d questions', $total, 'restwell-retreats' ) ),
+							(int) $total
+						);
+						?>
+					</p>
+				</div>
+				<div class="rw-table-shell rw-table-shell--faq-inbox">
+					<p class="rw-table-scroll-hint"><?php esc_html_e( 'Scroll sideways if columns are hidden.', 'restwell-retreats' ); ?></p>
+					<table class="widefat striped rw-faq-inbox-table">
+						<thead>
+							<tr>
+								<th scope="col" class="column-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-question"><?php esc_html_e( 'Question', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-date"><?php esc_html_e( 'Submitted', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-notify"><?php esc_html_e( 'Notify', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-optin"><?php esc_html_e( 'Marketing', 'restwell-retreats' ); ?></th>
+								<th scope="col" class="column-sync"><?php esc_html_e( 'MC sync', 'restwell-retreats' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $rows as $r ) : ?>
+								<?php
+								$name     = (string) ( $r['name'] ?? '' );
+								$email    = (string) ( $r['email'] ?? '' );
+								$phone    = trim( (string) ( $r['phone'] ?? '' ) );
+								$question = (string) ( $r['question'] ?? '' );
+								$submitted_ts = ! empty( $r['submitted_at'] ) ? strtotime( (string) $r['submitted_at'] ) : false;
+								?>
+								<tr>
+									<td class="column-name" data-label="<?php echo esc_attr__( 'Name', 'restwell-retreats' ); ?>">
+										<?php echo esc_html( $name !== '' ? $name : '—' ); ?>
+									</td>
+									<td class="column-question" data-label="<?php echo esc_attr__( 'Question', 'restwell-retreats' ); ?>">
+										<?php echo esc_html( $question ); ?>
+									</td>
+									<td class="column-email" data-label="<?php echo esc_attr__( 'Email', 'restwell-retreats' ); ?>">
+										<?php if ( $email ) : ?>
+											<a class="rw-tap-link rw-cell-email" href="<?php echo esc_url( 'mailto:' . $email ); ?>">
+												<?php echo esc_html( $email ); ?>
+											</a>
+										<?php else : ?>
+											<span class="rw-text-dim">&mdash;</span>
+										<?php endif; ?>
+									</td>
+									<td class="column-phone" data-label="<?php echo esc_attr__( 'Phone', 'restwell-retreats' ); ?>">
+										<?php if ( $phone ) : ?>
+											<a class="rw-tap-link" href="<?php echo esc_url( 'tel:' . $phone ); ?>">
+												<?php echo esc_html( $phone ); ?>
+											</a>
+										<?php else : ?>
+											<span class="rw-text-dim">&mdash;</span>
+										<?php endif; ?>
+									</td>
+									<td class="column-date rw-text-meta" data-label="<?php echo esc_attr__( 'Submitted', 'restwell-retreats' ); ?>">
+										<?php
+										if ( $submitted_ts ) {
+											echo esc_html( date_i18n( 'j M Y, H:i', $submitted_ts ) );
+										} else {
+											?>
+											<span class="rw-text-dim">&mdash;</span>
+											<?php
+										}
+										?>
+									</td>
+									<td class="column-notify" data-label="<?php echo esc_attr__( 'Notify', 'restwell-retreats' ); ?>">
+										<?php if ( ! empty( $r['notify_sent'] ) ) : ?>
+											<span class="rw-badge rw-badge--success"><?php esc_html_e( 'Yes', 'restwell-retreats' ); ?></span>
+										<?php else : ?>
+											<span class="rw-badge rw-badge--warn"><?php esc_html_e( 'No', 'restwell-retreats' ); ?></span>
+										<?php endif; ?>
+									</td>
+									<td class="column-optin" data-label="<?php echo esc_attr__( 'Marketing', 'restwell-retreats' ); ?>">
+										<?php if ( ! empty( $r['marketing_optin'] ) ) : ?>
+											<span class="rw-badge rw-badge--optin"><?php esc_html_e( 'Opted in', 'restwell-retreats' ); ?></span>
+										<?php else : ?>
+											<span class="rw-text-dim"><?php esc_html_e( 'No', 'restwell-retreats' ); ?></span>
+										<?php endif; ?>
+									</td>
+									<td class="column-sync" data-label="<?php echo esc_attr__( 'MC sync', 'restwell-retreats' ); ?>">
+										<?php if ( ! empty( $r['marketing_optin'] ) ) : ?>
+											<?php if ( ! empty( $r['marketing_sync_failed'] ) ) : ?>
+												<span class="rw-badge rw-badge--failed" title="<?php esc_attr_e( 'Mailchimp sync failed — needs manual retry', 'restwell-retreats' ); ?>">
+													<?php esc_html_e( 'Failed', 'restwell-retreats' ); ?>
+												</span>
+											<?php else : ?>
+												<span class="rw-badge rw-badge--success"><?php esc_html_e( 'OK', 'restwell-retreats' ); ?></span>
+											<?php endif; ?>
+										<?php else : ?>
+											<span class="rw-text-dim">&mdash;</span>
+										<?php endif; ?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</section>
 		<?php endif; ?>
 	</div>
 	<?php

@@ -46,14 +46,14 @@ function restwell_crm_dashboard_render_orientation() {
 						__( 'Everything that applies to the whole site (search, analytics, and shared website copy).', 'restwell-retreats' ),
 					),
 					array(
-						__( 'Notify email, Mailchimp, who can use the CRM', 'restwell-retreats' ),
+						__( 'Notifications, Mailchimp, who can use the CRM', 'restwell-retreats' ),
 						'<a href="#rw-crm-settings">' . esc_html__( 'Dashboard → Settings (below)', 'restwell-retreats' ) . '</a>',
-						__( 'Enquiry alerts and CRM access only — not SEO or website copy.', 'restwell-retreats' ),
+						__( 'Enquiry and FAQ alerts always go to hello@restwellretreats.co.uk. Mailchimp and CRM role access only — not SEO or website copy.', 'restwell-retreats' ),
 					),
 					array(
 						__( 'House availability calendar', 'restwell-retreats' ),
-						'<a href="#rw-crm-settings">' . esc_html__( 'Dashboard → Settings (ICS URL)', 'restwell-retreats' ) . '</a>',
-						__( 'Published Outlook Website Availability feed. Titles are stripped. Prefer RESTWELL_ICAL_FEED_URL in wp-config.', 'restwell-retreats' ),
+						'<a href="' . esc_url( add_query_arg( 'page', 'restwell-availability', $base_url ) ) . '">' . esc_html__( 'Restwell → Availability', 'restwell-retreats' ) . '</a>',
+						__( 'Paste the Outlook Website Availability ICS link (ends in calendar.ics). Event titles are never shown on the site.', 'restwell-retreats' ),
 					),
 					array(
 						__( 'Enquiries (contact form submissions)', 'restwell-retreats' ),
@@ -108,7 +108,7 @@ function restwell_crm_dashboard_render_settings() {
 				<h2 class="rw-dash-panel__title"><?php esc_html_e( 'Settings', 'restwell-retreats' ); ?></h2>
 				<div class="rw-dash-panel__body">
 					<p class="description rw-description--tight-top">
-						<?php esc_html_e( 'Who gets enquiry emails, Mailchimp, the house diary ICS feed, and which roles can use the CRM.', 'restwell-retreats' ); ?>
+						<?php esc_html_e( 'Notifications always go to hello@restwellretreats.co.uk. Mailchimp and which roles can use the CRM live here. House availability ICS lives under Restwell → Availability.', 'restwell-retreats' ); ?>
 					</p>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'restwell_crm_settings' ); ?>
@@ -128,84 +128,37 @@ function restwell_crm_dashboard_render_settings() {
 						</div>
 						<table class="form-table" role="presentation">
 							<tr>
-								<th scope="row">
-									<label for="restwell_enquiry_notify_email">
-										<?php esc_html_e( 'Notify email', 'restwell-retreats' ); ?>
-									</label>
-								</th>
+								<th scope="row"><?php esc_html_e( 'Notify email', 'restwell-retreats' ); ?></th>
 								<td>
-									<input
-										type="email"
-										id="restwell_enquiry_notify_email"
-										name="restwell_enquiry_notify_email"
-										value="<?php echo esc_attr( (string) get_option( 'restwell_enquiry_notify_email', 'hello@restwellretreats.co.uk' ) ); ?>"
-										class="regular-text"
-									/>
+									<p>
+										<a href="mailto:hello@restwellretreats.co.uk">hello@restwellretreats.co.uk</a>
+									</p>
 									<p class="description">
-										<?php esc_html_e( 'New enquiry notification emails are sent here.', 'restwell-retreats' ); ?>
+										<?php esc_html_e( 'New enquiry and FAQ notifications always go to this shared mailbox.', 'restwell-retreats' ); ?>
 									</p>
 								</td>
 							</tr>
 							<tr>
 								<th scope="row">
-									<label for="restwell_ical_feed_url">
-										<?php esc_html_e( 'Availability ICS', 'restwell-retreats' ); ?>
-									</label>
+									<?php esc_html_e( 'Availability ICS', 'restwell-retreats' ); ?>
 								</th>
 								<td>
 									<?php
-									$ical_from_constant = defined( 'RESTWELL_ICAL_FEED_URL' ) && '' !== restwell_occupancy_sanitize_feed_url( (string) RESTWELL_ICAL_FEED_URL );
-									$ical_stored        = (string) get_option( 'restwell_ical_feed_url', '' );
-									$ical_prod_locked   = function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment();
-									$ical_masked        = '';
-									if ( '' !== $ical_stored ) {
-										$ical_masked = '…' . substr( $ical_stored, -12 );
-									}
 									$ical_configured = function_exists( 'restwell_occupancy_is_configured' ) && restwell_occupancy_is_configured();
-									if ( $ical_configured ) {
-										$ical_badge_class = 'rw-ga4-badge rw-ga4-badge--active';
-										$ical_badge_text  = $ical_from_constant
-											? __( 'Configured (wp-config)', 'restwell-retreats' )
-											: __( 'Configured', 'restwell-retreats' );
-									} else {
-										$ical_badge_class = 'rw-ga4-badge rw-ga4-badge--unset';
-										$ical_badge_text  = __( 'Not configured', 'restwell-retreats' );
-									}
+									$ical_badge_class = $ical_configured ? 'rw-ga4-badge rw-ga4-badge--active' : 'rw-ga4-badge rw-ga4-badge--unset';
+									$ical_badge_text  = $ical_configured
+										? __( 'Configured', 'restwell-retreats' )
+										: __( 'Not configured', 'restwell-retreats' );
 									?>
-									<div class="rw-ga4-field-wrap">
-										<input
-											type="url"
-											id="restwell_ical_feed_url"
-											name="restwell_ical_feed_url"
-											value=""
-											class="regular-text"
-											autocomplete="off"
-											placeholder="<?php echo esc_attr( $ical_masked ? $ical_masked : 'https://outlook.office365.com/owa/calendar/.../calendar.ics' ); ?>"
-											<?php disabled( $ical_from_constant || $ical_prod_locked ); ?>
-										/>
-										<span class="<?php echo esc_attr( $ical_badge_class ); ?>" aria-live="polite">
-											<?php echo esc_html( $ical_badge_text ); ?>
-										</span>
-									</div>
-									<p class="description">
-										<?php
-										if ( $ical_from_constant ) {
-											esc_html_e( 'RESTWELL_ICAL_FEED_URL is set in wp-config.php. The option field is unused while that constant is defined.', 'restwell-retreats' );
-										} elseif ( $ical_prod_locked ) {
-											esc_html_e( 'Production will not store this URL in the database. Define RESTWELL_ICAL_FEED_URL in wp-config.php.', 'restwell-retreats' );
-										} else {
-											esc_html_e( 'Paste the Website Availability ICS link (ends in calendar.ics), not the HTML preview. Leave blank to keep the stored URL. Event titles are never shown on the site.', 'restwell-retreats' );
-										}
-										?>
+									<p>
+										<span class="<?php echo esc_attr( $ical_badge_class ); ?>"><?php echo esc_html( $ical_badge_text ); ?></span>
+										<a href="<?php echo esc_url( admin_url( 'admin.php?page=restwell-availability' ) ); ?>">
+											<?php esc_html_e( 'Manage ICS link', 'restwell-retreats' ); ?>
+										</a>
 									</p>
-									<?php if ( ! $ical_from_constant && ! $ical_prod_locked ) : ?>
 									<p class="description">
-										<label>
-											<input type="checkbox" name="restwell_ical_feed_url_clear" value="1" />
-											<?php esc_html_e( 'Clear stored ICS URL on save', 'restwell-retreats' ); ?>
-										</label>
+										<?php esc_html_e( 'Paste the Outlook Website Availability link on Restwell → Availability. Event titles are never shown on the site.', 'restwell-retreats' ); ?>
 									</p>
-									<?php endif; ?>
 								</td>
 							</tr>
 							<tr>
@@ -322,8 +275,9 @@ function restwell_crm_dashboard_render_settings() {
 								<th scope="row"><?php esc_html_e( 'CRM role access', 'restwell-retreats' ); ?></th>
 								<td>
 									<?php
-									$cap_roles = restwell_crm_get_cap_roles();
-									$role_choices = array(
+									$cap_roles      = restwell_crm_get_cap_roles();
+									$can_edit_roles = current_user_can( 'manage_options' );
+									$role_choices   = array(
 										'administrator' => __( 'Administrator', 'restwell-retreats' ),
 										'editor'        => __( 'Editor', 'restwell-retreats' ),
 										'author'        => __( 'Author', 'restwell-retreats' ),
@@ -332,12 +286,20 @@ function restwell_crm_dashboard_render_settings() {
 									<div class="rw-checkbox-stack">
 									<?php foreach ( $role_choices as $role_slug => $role_label ) : ?>
 										<label>
-											<input type="checkbox" name="restwell_crm_cap_roles[]" value="<?php echo esc_attr( $role_slug ); ?>" <?php checked( in_array( $role_slug, $cap_roles, true ) ); ?> />
+											<input type="checkbox" name="restwell_crm_cap_roles[]" value="<?php echo esc_attr( $role_slug ); ?>" <?php checked( in_array( $role_slug, $cap_roles, true ) ); ?> <?php disabled( ! $can_edit_roles ); ?> />
 											<?php echo esc_html( $role_label ); ?>
 										</label>
 									<?php endforeach; ?>
 									</div>
-									<p class="description"><?php esc_html_e( 'Selected roles can access and edit CRM enquiries.', 'restwell-retreats' ); ?></p>
+									<p class="description">
+										<?php
+										echo esc_html(
+											$can_edit_roles
+												? __( 'Selected roles can access and edit CRM enquiries (including care notes needed for subject-access exports).', 'restwell-retreats' )
+												: __( 'Only administrators can change which roles access the CRM.', 'restwell-retreats' )
+										);
+										?>
+									</p>
 								</td>
 							</tr>
 						</table>
@@ -348,7 +310,7 @@ function restwell_crm_dashboard_render_settings() {
 					<input type="hidden" name="action" value="restwell_crm_send_test_mail" />
 					<?php submit_button( __( 'Send test email', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
 					<p class="description">
-						<?php esc_html_e( 'Sends one line to the notify address, or the WordPress admin email if notify is empty. Limited to once every five minutes.', 'restwell-retreats' ); ?>
+						<?php esc_html_e( 'Sends one line to hello@restwellretreats.co.uk. Limited to once every five minutes.', 'restwell-retreats' ); ?>
 					</p>
 				</form>
 				</div>

@@ -1,9 +1,7 @@
 <?php
 /**
- * Must-use loader for Restwell CRM.
- *
- * WordPress only auto-loads PHP files in the mu-plugins root; this file
- * bootstraps the plugin directory.
+ * Plugin Name: Restwell CRM (moved)
+ * Description: CRM now loads from the theme. This stub replaces the old mu-plugin loader so a leftover restwell-crm/ folder is never bootstrapped. Enquiry data stays in the database.
  *
  * @package Restwell_CRM
  */
@@ -12,4 +10,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once __DIR__ . '/restwell-crm/restwell-crm.php';
+// Intentionally empty. Do not require restwell-crm/restwell-crm.php.
+// Theme: restwell-theme/inc/crm.php → inc/crm/bootstrap.php.

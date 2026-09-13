@@ -136,7 +136,7 @@ function restwell_gg_admin_render_add_guest_form( $admin_post, $prefill_name, $p
 					</td>
 				</tr>
 			</table>
-			<?php submit_button( __( 'Add guest', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
+			<?php submit_button( __( 'Add guest', 'restwell-retreats' ), 'primary', 'submit', false, array( 'class' => 'rw-gg-add-guest-submit' ) ); ?>
 		</form>
 
 	<?php
@@ -178,7 +178,7 @@ function restwell_gg_admin_render_cc_form( $admin_post, $raw_cc ) {
 					</td>
 				</tr>
 			</table>
-			<?php submit_button( __( 'Save CC addresses', 'restwell-retreats' ), 'secondary', 'submit', false ); ?>
+			<?php submit_button( __( 'Save CC addresses', 'restwell-retreats' ), 'primary', 'submit', false, array( 'class' => 'rw-gg-save-cc-submit' ) ); ?>
 		</form>
 
 	<?php

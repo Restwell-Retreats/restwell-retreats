@@ -1,9 +1,9 @@
 <?php
 /**
- * CRM: UK GDPR subject-access export and erasure.
+ * CRM: UK GDPR subject-access export.
  *
- * Hooks WordPress Tools → Export/Erase Personal Data, and adds a CRM form to
- * export or anonymise by email.
+ * Hooks WordPress Tools → Export Personal Data, and adds a CRM form to
+ * export by email. Rows are not wiped from this screen.
  *
  * @package Restwell_CRM
  */
@@ -36,21 +36,6 @@ function restwell_crm_privacy_register_exporters( array $exporters ): array {
 add_filter( 'wp_privacy_personal_data_exporters', 'restwell_crm_privacy_register_exporters' );
 
 /**
- * Register CRM erasers for Tools → Erase Personal Data.
- *
- * @param array<string, array<string, mixed>> $erasers Erasers.
- * @return array<string, array<string, mixed>>
- */
-function restwell_crm_privacy_register_erasers( array $erasers ): array {
-	$erasers['restwell-crm'] = array(
-		'eraser_friendly_name' => __( 'Restwell CRM', 'restwell-retreats' ),
-		'callback'             => 'restwell_crm_privacy_erase_by_email',
-	);
-	return $erasers;
-}
-add_filter( 'wp_privacy_personal_data_erasers', 'restwell_crm_privacy_register_erasers' );
-
-/**
  * Export enquiry rows for an email (includes care/access — this is the subject’s own data).
  *
  * @param string $email_address Email.
@@ -72,7 +57,7 @@ function restwell_crm_privacy_export_enquiries( string $email_address, int $page
 	$rows  = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT id, submitted_at, name, email, phone, preferred_dates, date_from, date_to,
-			        num_guests, care_requirements, accessibility, funding_type, message,
+			        num_guests, care_requirements, accessibility, funding_type, heard_about, message,
 			        status, privacy_consented_at, privacy_policy_version,
 			        health_data_consent, health_data_consented_at
 			 FROM %i WHERE anonymised_at IS NULL AND LOWER(email) = %s',
@@ -125,7 +110,7 @@ function restwell_crm_privacy_export_faq( string $email_address, int $page = 1 )
 	$table = $wpdb->prefix . RESTWELL_FAQ_TABLE;
 	$rows  = $wpdb->get_results(
 		$wpdb->prepare(
-			'SELECT id, submitted_at, name, email, question, source_url
+			'SELECT id, submitted_at, name, email, phone, question, source_url, privacy_consented_at, privacy_policy_version
 			 FROM %i WHERE anonymised_at IS NULL AND LOWER(email) = %s',
 			$table,
 			$email
@@ -207,41 +192,12 @@ function restwell_crm_privacy_export_guests( string $email_address, int $page = 
 }
 
 /**
- * Anonymise CRM rows for a WordPress erasure request.
- *
- * @param string $email_address Email.
- * @param int    $page          Page.
- * @return array{items_removed: bool, items_retained: bool, messages: array<int, string>, done: bool}
- */
-function restwell_crm_privacy_erase_by_email( string $email_address, int $page = 1 ): array {
-	unset( $page );
-	$email = sanitize_email( $email_address );
-	$n     = 0;
-	if ( is_email( $email ) ) {
-		$n += restwell_crm_anonymise_enquiries_by_email( $email );
-		$n += restwell_crm_anonymise_faq_by_email( $email );
-		$n += restwell_crm_anonymise_guests_by_email( $email );
-	}
-	return array(
-		'items_removed'  => $n > 0,
-		'items_retained' => false,
-		'messages'       => array(),
-		'done'           => true,
-	);
-}
-
-/**
- * Whether the user may anonymise CRM rows (destructive).
- *
- * @return bool
- */
-function restwell_crm_can_erase_personal_data(): bool {
-	return restwell_crm_can_manage()
-		&& ( current_user_can( 'erase_others_personal_data' ) || current_user_can( 'manage_options' ) );
-}
-
-/**
  * CRM subject-access export (CSV of matching enquiry rows).
+ *
+ * Care / accessibility columns are included on purpose: only CRM managers
+ * (Administrator / Editor / Author roles granted CRM access) can run this,
+ * and SAR fulfilment needs the same special-category notes staff already see
+ * on the enquiry screen. Bulk CSV export remains separately gated.
  */
 function restwell_crm_handle_dsr_export(): void {
 	if ( ! restwell_crm_can_manage() ) {
@@ -270,7 +226,7 @@ function restwell_crm_handle_dsr_export(): void {
 			'SELECT id, submitted_at, name, email, phone,
 			        preferred_dates, date_from, date_to, num_guests,
 			        care_requirements, accessibility, funding_type,
-			        contact_preference, preferred_time, message,
+			        contact_preference, preferred_time, heard_about, message,
 			        is_urgent, marketing_optin, marketing_optin_at,
 			        privacy_consented_at, privacy_policy_version,
 			        health_data_consent, health_data_consented_at,
@@ -306,45 +262,3 @@ function restwell_crm_handle_dsr_export(): void {
 	exit;
 }
 add_action( 'admin_post_restwell_crm_dsr_export', 'restwell_crm_handle_dsr_export' );
-
-/**
- * CRM subject-access anonymise.
- */
-function restwell_crm_handle_dsr_erase(): void {
-	if ( ! restwell_crm_can_erase_personal_data() ) {
-		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
-	}
-	check_admin_referer( 'restwell_crm_dsr' );
-
-	$email         = isset( $_POST['dsr_email'] ) ? sanitize_email( wp_unslash( $_POST['dsr_email'] ) ) : '';
-	$confirm_email = isset( $_POST['dsr_email_confirm'] ) ? sanitize_email( wp_unslash( $_POST['dsr_email_confirm'] ) ) : '';
-	$confirmed     = isset( $_POST['dsr_confirm'] ) && '1' === (string) wp_unslash( $_POST['dsr_confirm'] );
-	if ( ! is_email( $email ) || strtolower( $email ) !== strtolower( $confirm_email ) || ! $confirmed ) {
-		wp_safe_redirect(
-			add_query_arg(
-				array(
-					'page'      => 'restwell-enquiries',
-					'dsr_error' => 'confirm',
-				),
-				admin_url( 'admin.php' )
-			)
-		);
-		exit;
-	}
-
-	$n  = restwell_crm_anonymise_enquiries_by_email( $email );
-	$n += restwell_crm_anonymise_faq_by_email( $email );
-	$n += restwell_crm_anonymise_guests_by_email( $email );
-
-	wp_safe_redirect(
-		add_query_arg(
-			array(
-				'page'      => 'restwell-enquiries',
-				'dsr_erased' => (string) $n,
-			),
-			admin_url( 'admin.php' )
-		)
-	);
-	exit;
-}
-add_action( 'admin_post_restwell_crm_dsr_erase', 'restwell_crm_handle_dsr_erase' );

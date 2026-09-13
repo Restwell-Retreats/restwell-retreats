@@ -92,7 +92,20 @@ function restwell_crm_apply_status_change( int $id, string $new_status, string $
 			&& function_exists( 'restwell_email_booking_confirmed' )
 		) {
 			$email_data = restwell_email_booking_confirmed( $current->name, $current->email );
-			wp_mail( $current->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
+			$sent       = function_exists( 'restwell_wp_mail_with_retry' )
+				? restwell_wp_mail_with_retry( $current->email, $email_data['subject'], $email_data['body'], $email_data['headers'] )
+				: wp_mail( $current->email, $email_data['subject'], $email_data['body'], $email_data['headers'] );
+			if ( $sent ) {
+				restwell_crm_add_note(
+					$id,
+					__( 'Booking confirmation email sent.', 'restwell-retreats' )
+				);
+			} else {
+				restwell_crm_add_note(
+					$id,
+					__( 'Automated note: booking confirmation email did not send (SMTP/mail transport). Please follow up from CRM or resend manually.', 'restwell-retreats' )
+				);
+			}
 		}
 	}
 
