@@ -164,72 +164,6 @@ function restwell_get_property_facts_area_travel(): array {
 }
 
 /**
- * Accessibility page room cards built from verified facts (headings still editable in WP meta).
- *
- * @param int $post_id Accessibility page ID.
- * @return array<int, array{heading: string, facts: array<int, string>}>
- */
-function restwell_get_accessibility_rooms_from_facts( int $post_id = 0 ): array {
-	$post_id = (int) $post_id;
-	if ( $post_id <= 0 && is_singular( 'page' ) ) {
-		$post_id = (int) get_queried_object_id();
-	}
-
-	$facts = restwell_get_property_facts();
-
-	$heading = static function ( $meta_key, $fallback ) use ( $post_id ) {
-		$stored = $post_id > 0 ? trim( (string) get_post_meta( $post_id, $meta_key, true ) ) : '';
-		return $stored !== '' ? $stored : $fallback;
-	};
-
-	return array(
-		array(
-			'heading' => $heading( 'acc_arrival_heading', __( 'Arrival & entrance', 'restwell-retreats' ) ),
-			'facts'   => array(
-				$facts['practical'][0],
-				$facts['access'][1],
-				$facts['access'][0],
-			),
-		),
-		array(
-			'heading' => $heading( 'acc_inside_heading', __( 'Inside the property', 'restwell-retreats' ) ),
-			'facts'   => array(
-				$facts['access'][2],
-				$facts['access'][0],
-				$facts['access'][4],
-			),
-		),
-		array(
-			'heading' => $heading( 'acc_bedroom_heading', __( 'Bedrooms & sleeping', 'restwell-retreats' ) ),
-			'facts'   => array(
-				$facts['sleeping'][0],
-				$facts['sleeping'][1],
-				$facts['sleeping'][2],
-				$facts['access'][4],
-			),
-		),
-		array(
-			'heading' => $heading( 'acc_bathroom_heading', __( 'Bathroom', 'restwell-retreats' ) ),
-			'facts'   => array(
-				$facts['access'][3],
-			),
-		),
-		array(
-			'heading' => $heading( 'acc_kitchen_heading', __( 'Kitchen', 'restwell-retreats' ) ),
-			'facts'   => array(
-				$facts['practical'][1],
-			),
-		),
-		array(
-			'heading' => $heading( 'acc_outdoor_heading', __( 'Outdoor spaces', 'restwell-retreats' ) ),
-			'facts'   => array(
-				$facts['access'][5],
-			),
-		),
-	);
-}
-
-/**
  * Property page room-tour keys mapped to relevant verified facts.
  *
  * @return array<string, array<int, string>>
@@ -319,7 +253,7 @@ function restwell_get_property_facts_faq_features_answer(): string {
 	return sprintf(
 		/* translators: %1$s–%5$s: verified fact phrases. */
 		__(
-			'Verified on site: %1$s, %2$s, %3$s, %4$s, and %5$s. Full room-by-room detail is on our accessibility page.',
+			'Verified on site: %1$s, %2$s, %3$s, %4$s, and %5$s. The measurements and full equipment list are on our accessibility page.',
 			'restwell-retreats'
 		),
 		$facts['access'][0],
@@ -407,4 +341,29 @@ function restwell_apply_property_facts_to_faq_items( array $items ): array {
 	}
 
 	return $items;
+}
+
+/**
+ * Markup for a headline measurement in the access-statement stats band.
+ *
+ * Splits number and unit so tabular figures do not leave a full word-space
+ * before short units (e.g. "180 kg" reads like "180  kg" at display size).
+ *
+ * @param string $value Raw figure, e.g. "965mm", "180 kg".
+ * @return string Escaped HTML with stat__amount / stat__unit spans.
+ */
+function restwell_format_acc_figure_value( string $value ): string {
+	$value = trim( $value );
+	if ( '' === $value ) {
+		return '';
+	}
+
+	if ( preg_match( '/^([\d.,×x\-–]+(?:\s*[\d.,]+)*)\s*([a-zA-Z°]+)$/', $value, $parts ) ) {
+		$amount = esc_html( trim( (string) $parts[1] ) );
+		$unit   = esc_html( trim( (string) $parts[2] ) );
+
+		return '<span class="stat__amount">' . $amount . '</span><span class="stat__unit">' . $unit . '</span>';
+	}
+
+	return '<span class="stat__amount">' . esc_html( $value ) . '</span>';
 }

@@ -20,19 +20,21 @@ We started Restwell because of a gap we kept running into from the other side of
 
 ## Intro
 
-Continuity of Care Services has been supporting people in their own homes across Kent for years. In that time we lost count of the number of families who wanted a holiday and couldn’t make one work, not because of money, and not because of the care, but because the houses on offer weren’t honest. Somebody would arrive after a three-hour drive to find a doorway they couldn’t get through.
+Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.
 
-So we bought a bungalow and adapted it properly. Then we wrote down every measurement, including the ones that aren’t flattering, because the whole problem was that nobody else had.
+Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check whether the bungalow will work for them before they set off, and discuss optional care through the same office.
+
+## How the bungalow was built
+
+Family, friends and three specialist teams helped bring the bungalow together. Occupational therapists from Kent Community Health NHS Trust came to the house before anyone stayed. They walked the bedroom and wet room and told us how we could improve it. The profiling bed we had in needed to be a different one, so we changed it.
 
 ## Two companies, and why that matters to you
 
-Restwell is the house. Continuity is the care. They’re separate companies with separate invoices, and that’s deliberate rather than accidental. Funders usually treat accommodation and care as two different budgets, so keeping them apart makes the paperwork easier rather than harder.
+Restwell provides the accommodation. Continuity of Care Services provides the optional care. They invoice separately, and that is deliberate: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.
 
-What isn’t separate is the conversation. Victoria Walker owns Restwell and is Continuity’s CQC registered manager, so the same person runs both companies. We share an office and the phone number is the same, 01622 809881, so one call can sort out both. You won’t be introduced to anybody or handed over to a different team.
+Victoria Walker owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call. The phone number is 01622 809881.
 
-The CQC rating belongs to Continuity, at location 1-2624556588. Restwell isn’t a registered care provider and we’re careful never to imply otherwise. When we mention the rating, it’s so you know precisely who is accountable for the care: Victoria, as Continuity’s registered manager. You can go and read the report yourself.
-
-Continuity’s own website is about home care in Maidstone and across Kent. It isn’t a holiday listing, and this bungalow isn’t on it.
+Restwell isn’t a registered care provider. Continuity of Care Services is, and their CQC profile is on the page (location 1-2624556588). Continuity’s own website is about home care in Maidstone and across Kent. It isn’t a holiday listing, and this bungalow isn’t on it.
 
 ## What we’re trying to do here
 
@@ -42,7 +44,7 @@ Rest Easy, Stay Well.
 
 ## CTA
 
-Come and stay → `/enquire/`
+See what that means inside the bungalow → `/enquire/`
 
 ## Note for whoever edits this next
 

@@ -2,7 +2,7 @@
 /**
  * Public booked-nights diary (Pricing).
  *
- * $args['months'] int Months to render initially (default 2). Further months
+ * $args['months'] int Months to render initially (default 1). Further months
  * are built client-side from data-booked / data-pricing on Next.
  *
  * @package Restwell_Retreats
@@ -19,7 +19,7 @@ if ( ! function_exists( 'restwell_occupancy_is_configured' ) || ! restwell_occup
 $availability_args = wp_parse_args(
 	$args ?? array(),
 	array(
-		'months'     => 2,
+		'months'     => 1,
 		'max_months' => 12,
 	)
 );
@@ -68,6 +68,9 @@ $weekdays      = array(
 $enquire_url = function_exists( 'restwell_nav_resolve_page_url' )
 	? restwell_nav_resolve_page_url( 'enquire' )
 	: home_url( '/enquire/' );
+$privacy_url = function_exists( 'restwell_nav_resolve_page_url' )
+	? restwell_nav_resolve_page_url( 'privacy-policy' )
+	: home_url( '/privacy-policy/' );
 
 $pricing    = function_exists( 'restwell_get_pricing' ) ? restwell_get_pricing() : array();
 $week_off   = isset( $pricing['seasons']['off_peak']['full_week'] ) ? (int) $pricing['seasons']['off_peak']['full_week'] : 0;
@@ -123,12 +126,12 @@ $weekday_short = wp_json_encode(
 			data-weekdays="<?php echo esc_attr( is_string( $weekday_short ) ? $weekday_short : '[]' ); ?>"
 		>
 			<div class="availability__layout">
-			<div class="availability__card">
+			<div class="availability__picker">
 			<div class="availability__toolbar">
 				<button type="button" class="availability__nav" data-availability-prev aria-label="<?php esc_attr_e( 'Previous month', 'restwell-retreats' ); ?>" disabled>
 					<span aria-hidden="true">&lsaquo;</span>
 				</button>
-				<p class="availability__choose sr-only"><?php esc_html_e( 'Change month', 'restwell-retreats' ); ?></p>
+				<p class="availability__month-label" data-availability-month-label><?php echo esc_html( $today->format( 'F Y' ) ); ?></p>
 				<button type="button" class="availability__nav" data-availability-next aria-label="<?php esc_attr_e( 'Next month', 'restwell-retreats' ); ?>">
 					<span aria-hidden="true">&rsaquo;</span>
 				</button>
@@ -154,7 +157,7 @@ $weekday_short = wp_json_encode(
 						aria-labelledby="<?php echo esc_attr( $month_id ); ?>"
 						<?php echo $is_first ? '' : ' hidden'; ?>
 					>
-						<h3 id="<?php echo esc_attr( $month_id ); ?>" class="availability__month-title"><?php echo esc_html( $month_name ); ?></h3>
+						<h3 id="<?php echo esc_attr( $month_id ); ?>" class="availability__month-title sr-only"><?php echo esc_html( $month_name ); ?></h3>
 						<table class="availability__grid">
 							<caption class="sr-only"><?php echo esc_html( $month_name ); ?></caption>
 							<thead>
@@ -326,7 +329,7 @@ $weekday_short = wp_json_encode(
 							<dd data-availability-total></dd>
 						</div>
 					</dl>
-					<p class="availability__stay-foot" data-availability-foot><?php esc_html_e( 'Published bungalow rates. Nothing is reserved until we reply.', 'restwell-retreats' ); ?></p>
+					<p class="availability__stay-foot" data-availability-foot><?php esc_html_e( 'Bungalow rates. Nothing is reserved until we reply.', 'restwell-retreats' ); ?></p>
 				</div>
 				<div class="availability__cta">
 					<a class="btn btn-gold" data-availability-enquire href="#availability-enquiry"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
@@ -348,11 +351,46 @@ $weekday_short = wp_json_encode(
 						<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $enquire_url ); ?>" />
 						<input type="hidden" name="enq_date_from" data-availability-enquiry-from value="" />
 						<input type="hidden" name="enq_date_to" data-availability-enquiry-to value="" />
-						<div class="form-step" data-step-panel="1"><div class="field"><label for="availability-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label><input id="availability-name" name="enq_name" autocomplete="name" required /></div><div class="field"><label for="availability-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label><input id="availability-email" name="enq_email" type="email" autocomplete="email" required /></div><div class="field"><label for="availability-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label><input id="availability-phone" name="enq_phone" type="tel" autocomplete="tel" required /></div><button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button></div>
-						<div class="form-step" data-step-panel="2" hidden><div class="field"><label for="availability-message"><?php esc_html_e( 'Message', 'restwell-retreats' ); ?></label><textarea id="availability-message" name="enq_message" rows="4" required></textarea></div><button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button> <button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button></div>
-						<div class="form-step" data-step-panel="3" hidden><div class="field"><label for="availability-consent"><input id="availability-consent" type="checkbox" name="enq_consent" value="1" required /> <?php esc_html_e( 'I agree to Restwell contacting me about this enquiry.', 'restwell-retreats' ); ?></label></div><button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button> <button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button></div>
+						<div class="form-step" data-step-panel="1"><div class="field"><label for="availability-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label><input id="availability-name" name="enq_name" autocomplete="name" required /></div><div class="field"><label for="availability-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label><input id="availability-email" name="enq_email" type="email" autocomplete="email" required /></div><div class="field"><label for="availability-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label><input id="availability-phone" name="enq_phone" type="tel" autocomplete="tel" required /></div><?php get_template_part( 'template-parts/enquire-heard-about', null, array( 'id_prefix' => 'availability' ) ); ?><button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button></div>
+						<div class="form-step" data-step-panel="2" hidden>
+							<div class="field">
+								<label for="availability-message"><?php esc_html_e( 'Message', 'restwell-retreats' ); ?></label>
+								<textarea id="availability-message" name="enq_message" rows="4" required></textarea>
+							</div>
+							<div class="field">
+								<label for="availability-care"><?php esc_html_e( 'Care requirements (optional)', 'restwell-retreats' ); ?></label>
+								<textarea id="availability-care" name="enq_care" rows="2" placeholder="<?php esc_attr_e( 'e.g. morning personal care, overnight support', 'restwell-retreats' ); ?>"></textarea>
+							</div>
+							<div class="field">
+								<label for="availability-access"><?php esc_html_e( 'Accessibility needs (optional)', 'restwell-retreats' ); ?></label>
+								<textarea id="availability-access" name="enq_accessibility" rows="2" placeholder="<?php esc_attr_e( 'Equipment, doorway clearances, vehicle access…', 'restwell-retreats' ); ?>"></textarea>
+							</div>
+							<button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button>
+							<button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button>
+						</div>
+						<div class="form-step" data-step-panel="3" hidden>
+							<div class="field">
+								<label for="availability-health-consent">
+									<input id="availability-health-consent" type="checkbox" name="enq_health_consent" value="1" aria-describedby="availability-health-consent-hint availability-health-consent-error" />
+									<span><?php esc_html_e( 'If I have added care or accessibility notes, I agree Restwell can use that information to reply to this enquiry. Those notes can include health information, as explained in the', 'restwell-retreats' ); ?>
+									<a class="text-link" href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>.</span>
+								</label>
+								<p class="field-hint" id="availability-health-consent-hint"><?php esc_html_e( 'Required only if you fill in care or accessibility notes above.', 'restwell-retreats' ); ?></p>
+								<p class="field-error" id="availability-health-consent-error" role="alert" hidden><?php esc_html_e( 'Confirm we can use those notes before sending.', 'restwell-retreats' ); ?></p>
+							</div>
+							<div class="field">
+								<label for="availability-consent">
+									<input id="availability-consent" type="checkbox" name="enq_consent" value="1" required aria-describedby="availability-consent-error" />
+									<span><?php esc_html_e( 'I agree to Restwell contacting me about this enquiry and to my information being handled as set out in the', 'restwell-retreats' ); ?>
+									<a class="text-link" href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a> *</span>
+								</label>
+								<p class="field-error" id="availability-consent-error" role="alert" hidden><?php esc_html_e( 'Check this box so we can contact you about your enquiry.', 'restwell-retreats' ); ?></p>
+							</div>
+							<button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button>
+							<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button>
+						</div>
 					</form>
-				</div>
+				</dialog>
 			</aside>
 			</div>
 		</div>

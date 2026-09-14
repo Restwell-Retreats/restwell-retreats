@@ -117,6 +117,7 @@
 		var PERSIST_FIELDS = [
 			'enq_name', 'enq_email', 'enq_phone',
 			'enq_contact_preference', 'enq_preferred_time',
+			'enq_heard_about', 'enq_heard_other',
 			'enq_date_from', 'enq_date_to',
 			'enq_guests', 'enq_funding', 'enq_urgent',
 			'enq_care', 'enq_accessibility', 'enq_message',
@@ -376,10 +377,31 @@
 		}
 	}
 
+	/**
+	 * Show the “somewhere else” text field only when that option is chosen.
+	 * Without JS the field stays visible, which is the no-JS fallback.
+	 */
+	function initHeardAboutOther() {
+		document.querySelectorAll('[data-heard-select]').forEach(function (select) {
+			var otherId = select.getAttribute('aria-controls');
+			var other = otherId ? document.getElementById(otherId) : null;
+			var wrap = other ? other.closest('[data-heard-other-wrap]') : null;
+			if (!wrap) {
+				return;
+			}
+			function sync() {
+				wrap.hidden = select.value !== 'other';
+			}
+			select.addEventListener('change', sync);
+			sync();
+		});
+	}
+
 	ready(function () {
 		safeInit('initRestwellFormOpenedAt', initRestwellFormOpenedAt);
 		safeInit('initEnquiryDateConstraints', initEnquiryDateConstraints);
 		safeInit('initEnquiryDraftPersistence', initEnquiryDraftPersistence);
 		safeInit('initEnquirySuccessScroll', initEnquirySuccessScroll);
+		safeInit('initHeardAboutOther', initHeardAboutOther);
 	});
 })();

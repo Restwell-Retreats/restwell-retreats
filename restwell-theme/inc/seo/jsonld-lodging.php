@@ -143,7 +143,9 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 	$site_name = restwell_get_schema_brand_name();
 	$site_url  = home_url( '/' );
 	$phone     = restwell_get_public_phone_tel();
-	$email     = (string) get_option( 'restwell_enquiry_notify_email', '' );
+	$email     = function_exists( 'restwell_get_submission_notify_email' )
+		? restwell_get_submission_notify_email()
+		: 'hello@restwellretreats.co.uk';
 
 	// Full street + postcode, house number never included (owner decision).
 	// Site-wide SEO fields override these defaults when set.

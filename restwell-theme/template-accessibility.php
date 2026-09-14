@@ -23,227 +23,49 @@ $acc_txt = static function ( $key, $fallback ) use ( $restwell_acc_id ) {
 
 $restwell_acc_label   = $acc_txt( 'acc_label', 'Accessibility' );
 $restwell_acc_heading = $acc_txt( 'acc_heading', 'The wet room, the hoists, and every measurement' );
-$restwell_acc_intro   = $acc_txt(
+$restwell_acc_hero_lede = 'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable.';
+$restwell_acc_intro     = $acc_txt(
 	'acc_intro',
-	'The full access statement for Restwell: exact door widths, hoist capacity and the level-access wet room.'
+	$restwell_acc_hero_lede
 );
+/*
+ * Stored hero ledes that belong in the statement band, or the old one-liner,
+ * would flood the photo overlay. Keep a short H1 deck; the numbers follow.
+ */
+$restwell_acc_intro_legacy = array(
+	'The full access statement for Restwell: exact door widths, hoist capacity and the level-access wet room.',
+	'This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.',
+	'We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who has been asked to sign off a stay on the strength of three photographs.',
+);
+if ( in_array( $restwell_acc_intro, $restwell_acc_intro_legacy, true ) ) {
+	$restwell_acc_intro = $restwell_acc_hero_lede;
+}
 
-$acc_room_label   = $acc_txt( 'acc_room_label', 'Access statement' );
-$acc_room_heading = $acc_txt( 'acc_room_heading', 'Room by room' );
-$acc_room_intro   = $acc_txt(
-	'acc_room_intro',
-	'Photos of each space, with the confirmed measurements and kit from our property equipment register.'
-);
-$acc_room_cards   = array(
-	array(
-		'id'      => 'arrival',
-		'nav'     => __( 'Arrival', 'restwell-retreats' ),
-		'heading' => $acc_txt( 'acc_arrival_heading', 'Arrival & entrance' ),
-		'body'    => $acc_txt(
-			'acc_arrival_body',
-			"Private resin-bound driveway: two off-road spaces (adapted vehicles welcome)\nOn-street parking outside if you need extra room. No residents permit on this road; check signs on arrival in case street rules change\nStep-free path from car to front door\nPorch outer doors 1720mm opening, with a full-width ribbed entrance mat\nInner front door 965mm clear; level threshold, no step\nPortable fold-up ramps kept for the front door — yours for the stay, including days out"
-		),
-		'photos'  => array(
-			array(
-				'src' => 'bungalow/FD-1-LS.jpg',
-				'alt' => 'Front door with a wide, level threshold',
-			),
-			array(
-				'src' => 'bungalow/entrance.webp',
-				'alt' => 'Resin-bound driveway and porch approach',
-			),
-			array(
-				'src' => 'bungalow/int-front-door.webp',
-				'alt' => 'Inner front door clear opening',
-			),
-			array(
-				'src' => 'bungalow/exterior-ramp.png',
-				'alt' => 'Portable ramp at the entrance',
-			),
-		),
-		'eager'   => true,
-	),
-	array(
-		'id'      => 'inside',
-		'nav'     => __( 'Inside', 'restwell-retreats' ),
-		'heading' => $acc_txt( 'acc_inside_heading', 'Inside the property' ),
-		'body'    => $acc_txt(
-			'acc_inside_body',
-			"All internal doors 926mm clear (white doors with black lever handles for contrast)\nOpen-plan ground floor, no internal steps\nLevel flooring throughout (no carpet lips)\nWet room on the same level as the accessible bedroom"
-		),
-		'photos'  => array(
-			array(
-				'src' => 'bungalow/LR-2-LS.jpg',
-				'alt' => 'Open-plan living space with wide hall routes between furniture',
-			),
-			array(
-				'src' => 'bungalow/LR-1-LS.jpg',
-				'alt' => 'Living room walkways kept clear for turning',
-			),
-			array(
-				'src' => 'bungalow/living-room-2.png',
-				'alt' => 'Open-plan lounge looking toward the kitchen',
-			),
-		),
-		'eager'   => false,
-	),
-	array(
-		'id'      => 'bedrooms',
-		'nav'     => __( 'Bedrooms', 'restwell-retreats' ),
-		'heading' => $acc_txt( 'acc_bedroom_heading', 'Bedrooms & sleeping' ),
-		'body'    => $acc_txt(
-			'acc_bedroom_body',
-			"Amico GoLift 400 ceiling track hoist: full-room coverage, 180kg SWL. Guests bring their own slings\nOxford Midi 180 mobile hoist, also rated to 180kg\nAccora CommunityBed profiling bed, maximum user weight 180kg; a second profiling bed on request\nAAL RS4 standing aid, rated to 185kg. Sleeps up to five (two bedrooms + conservatory sofa bed)\n---\nPressure-relieving mattress: Accora Allevia Comfort FirmEdge or Roma Medical MATT 1\nSpace for a carer on both sides of the bed\nSecond bedroom for additional guests or a support worker\nConservatory double sofa bed — tell us your party layout when you enquire"
-		),
-		'photos'  => array(
-			array(
-				'src' => 'bungalow/BD2-2-LS.jpg',
-				'alt' => 'Adjustable profiling beds in the accessible bedroom',
-			),
-			array(
-				'src' => 'bungalow/BD2-3-LS.jpg',
-				'alt' => 'Accessible bedroom with ceiling track and mobile hoist',
-			),
-			array(
-				'src' => 'bungalow/H-1-LS.jpg',
-				'alt' => 'Ceiling track hoist over the profiling bed',
-			),
-			array(
-				'src' => 'bungalow/BD1-1-LS.jpg',
-				'alt' => 'Second double bedroom',
-			),
-			array(
-				'src' => 'bungalow/BD2-6-LS.jpg',
-				'alt' => 'Amico ceiling track hoist over the profiling bed',
-			),
-		),
-		'eager'   => false,
-	),
-	array(
-		'id'      => 'wetroom',
-		'nav'     => __( 'Wet room', 'restwell-retreats' ),
-		'heading' => $acc_txt( 'acc_bathroom_heading', 'Wet room' ),
-		'body'    => $acc_txt(
-			'acc_bathroom_body',
-			"Level-access wet room with no lip. Layout and specification by <a href=\"https://www.carespaces.co.uk/\" target=\"_blank\" rel=\"noopener noreferrer\">Care Spaces</a>\nMira Select Flex TMV3 thermostatic shower, RNIB Tried & Tested\nRaz Design RAZ-AT tilt-in-space shower commode; Drive DeVilbiss stool rated to 136kg\nRopox Swing washbasin 750–950mm; Geberit AquaClean Mera Care wash-dry WC\n---\nNYMAS hinged lift-and-lock toilet support rail with drop-down leg\nPull-cord assistance alarm with reset plate and over-door light\nFloor-level drain, extractor fan, and a bin for continence products (emptied between stays)"
-		),
-		'photos'  => array(
-			array(
-				'src' => 'bungalow/WR-1-LS.jpg',
-				'alt' => 'Level-access wet room with grab rails',
-			),
-			array(
-				'src' => 'bungalow/wet-room-shower.png',
-				'alt' => 'Level-access wet room shower with grab rails and fold-down seat',
-			),
-			array(
-				'src' => 'bungalow/WR-2-LS.jpg',
-				'alt' => 'Wet room grab rails and shower',
-			),
-			array(
-				'src' => 'bungalow/WR-3-LS.jpg',
-				'alt' => 'Wet room toilet and support rail',
-			),
-			array(
-				'src' => 'bungalow/adjustable-sink.png',
-				'alt' => 'Height-adjustable Ropox washbasin',
-			),
-		),
-		'eager'   => false,
-	),
-	array(
-		'id'      => 'kitchen',
-		'nav'     => __( 'Kitchen', 'restwell-retreats' ),
-		'heading' => $acc_txt( 'acc_kitchen_heading', 'Kitchen' ),
-		'body'    => $acc_txt(
-			'acc_kitchen_body',
-			"Open-plan kitchen with wheelchair access and reachable worktops\nNEFF Slide & Hide oven — the door folds away underneath so you are not reaching across a hot open door from a seated position\nGas hob (not induction). No electromagnetic field from the cooktop, which many guests with pacemakers prefer\nMicrowave and accessible storage at lower levels"
-		),
-		'photos'  => array(
-			array(
-				'src' => 'bungalow/KT-1-LS.jpg',
-				'alt' => 'Kitchen with a reachable, wheel-under worksurface',
-			),
-			array(
-				'src' => 'bungalow/kitchen.webp',
-				'alt' => 'Open-plan kitchen looking toward the living space',
-			),
-			array(
-				'src' => 'bungalow/kitchen-portrait-view.webp',
-				'alt' => 'Kitchen worktops and NEFF Slide & Hide oven',
-			),
-		),
-		'eager'   => false,
-	),
-	array(
-		'id'      => 'outdoor',
-		'nav'     => __( 'Outside', 'restwell-retreats' ),
-		'heading' => $acc_txt( 'acc_outdoor_heading', 'Outdoor spaces' ),
-		'body'    => $acc_txt(
-			'acc_outdoor_body',
-			"Conservatory French doors 1720mm opening\nRear French doors 1720mm opening onto the patio, with a non-slip threshold ramp 20mm high × 80mm wide\nLevel patio with hard-standing suitable for wheelchairs\nEnclosed garden and BBQ area beyond the patio"
-		),
-		'photos'  => array(
-			array(
-				'src' => 'bungalow/GRDEN-1-LS.jpg',
-				'alt' => 'Level garden and patio beyond the conservatory',
-			),
-			array(
-				'src' => 'bungalow/PT-1-LS.jpg',
-				'alt' => 'Level patio and enclosed dog-friendly garden',
-			),
-			array(
-				'src' => 'bungalow/GRDEN-2-LS.jpg',
-				'alt' => 'Conservatory with level access to the resin patio',
-			),
-			array(
-				'src' => 'bungalow/conservatory-patio-doors.webp',
-				'alt' => 'Conservatory patio doors opening onto the garden',
-			),
-			array(
-				'src' => 'bungalow/ext-patio-door.webp',
-				'alt' => 'Exterior patio door with threshold ramp',
-			),
-		),
-		'eager'   => false,
-	),
-);
+$acc_stat_1_value = $acc_txt( 'acc_stat_1_value', '965mm' );
+$acc_stat_1_label = $acc_txt( 'acc_stat_1_label', 'Front door, clear opening' );
+$acc_stat_2_value = $acc_txt( 'acc_stat_2_value', '926mm' );
+$acc_stat_2_label = $acc_txt( 'acc_stat_2_label', 'Internal doors, clear width' );
+$acc_stat_3_value = $acc_txt( 'acc_stat_3_value', '180 kg' );
+$acc_stat_3_label = $acc_txt( 'acc_stat_3_label', 'Ceiling hoist, safe working load' );
+if ( 'Full-room' === $acc_stat_3_value ) {
+	$acc_stat_3_value = '180 kg';
+	if ( 'Ceiling track hoist over the bed' === $acc_stat_3_label ) {
+		$acc_stat_3_label = 'Ceiling hoist, safe working load';
+	}
+}
+$acc_statement_label   = __( 'Access statement', 'restwell-retreats' );
+$acc_statement_heading = __( 'The house in numbers', 'restwell-retreats' );
+$acc_statement_body    = __( 'We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who has been asked to sign off a stay on the strength of three photographs. If there’s a measurement we haven’t published, ring us and we’ll go and take it properly.', 'restwell-retreats' );
 
-$acc_gallery_label   = $acc_txt( 'acc_gallery_label', 'Equipment' );
-$acc_gallery_heading = $acc_txt( 'acc_gallery_heading', 'Tailored to you' );
-$acc_gallery_intro   = $acc_txt(
-	'acc_gallery_intro',
-	'We prepare the bungalow for you before you arrive, setting up the equipment you need from our list based on what you tell us when you enquire. If anything feels loose or isn’t right, please let us know right away.'
-);
-$acc_gallery_ids = function_exists( 'restwell_get_page_gallery_ids' )
-	? restwell_get_page_gallery_ids( $restwell_acc_id, 'acc_gallery_image_ids' )
-	: array();
-$acc_gallery_fallback = array(
-	array(
-		'src' => 'bungalow/H-1-LS.jpg',
-		'alt' => 'Ceiling track hoist in situ',
-	),
-	array(
-		'src' => 'bungalow/RAR-2-LS.jpg',
-		'alt' => 'Rise and recline chair',
-	),
-	array(
-		'src' => 'bungalow/WR-2-LS.jpg',
-		'alt' => 'Wet room grab rails and shower',
-	),
-	array(
-		'src' => 'bungalow/EQU-2-LS.jpg',
-		'alt' => 'Access equipment in the bedroom',
-	),
-	array(
-		'src' => 'bungalow/adjustable-sink.png',
-		'alt' => 'Height-adjustable basin',
-	),
-	array(
-		'src' => 'bungalow/exterior-ramp.png',
-		'alt' => 'Exterior threshold ramp',
-	),
-);
+$acc_host_phone = function_exists( 'restwell_get_public_phone_number' )
+	? restwell_get_public_phone_number()
+	: '01622 809881';
+$acc_host_tel   = function_exists( 'restwell_get_public_phone_tel' )
+	? restwell_get_public_phone_tel()
+	: '01622809881';
+$acc_host_email = function_exists( 'restwell_get_public_enquiry_email' )
+	? restwell_get_public_enquiry_email()
+	: 'hello@restwellretreats.co.uk';
 
 $acc_dest_label   = $acc_txt( 'acc_dest_label', 'Whitstable' );
 $acc_dest_heading = $acc_txt( 'acc_dest_heading', 'The destination, honestly.' );
@@ -282,49 +104,25 @@ $acc_faq_intro   = $acc_txt(
 	'Questions about ceiling hoist safe working loads, profiling beds, and the details that make a place truly “wheelchair friendly.”'
 );
 $acc_faq_live    = array(
-	1  => array(
-		'q' => 'Can I find a holiday cottage with a ceiling hoist in England?',
-		'a' => 'Yes, they are uncommon. Confirm fixed ceiling track vs mobile only, coverage, safe working load, sling policy, and bed position under the track. Restwell has an Amico GoLift 400 ceiling track hoist over the profiling bed, safe working load 180kg; full specs are on this page.',
+	1 => array(
+		'q' => 'Do you provide hoist slings?',
+		'a' => 'No. Bring the sling the person already uses — both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.',
 	),
-	2  => array(
+	2 => array(
 		'q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'a' => 'A ceiling track hoist is fixed to the ceiling and moves a person in a sling along a rail. It’s less bulky than most mobile units. Most guests bring their own slings. Ask about what areas it covers and who can operate it before you arrive.',
+		'a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle — unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
 	),
-	3  => array(
-		'q' => 'What should I check before booking a hoist-equipped holiday let?',
-		'a' => 'Check the hoist type and safe working load, whether the bed is under the track, if there’s same-level wet-room access, space for a second carer, parking, and what’s included versus what needs to be hired. Restwell includes the on-site hoist and wet-room kit in the bungalow rate.',
+	3 => array(
+		'q' => 'Why does a profiling bed matter in an accessible bedroom?',
+		'a' => 'It helps with positioning, pressure care and safer transfers, and it sets a working height that protects the back of whoever is providing care. A fixed divan gives you none of that, and a mobile hoist often cannot get its legs underneath one. We have two profiling beds; the accessible bedroom takes one or two.',
 	),
-	4  => array(
-		'q' => 'Can I find a holiday cottage with a profiling bed in the UK?',
-		'a' => 'Yes, but make sure the bed is actually on site, not just “available to hire.” Ask about the mattress type, size, transfer height, and hoist clearance. Restwell’s accessible bedroom has a profiling bed with a pressure-relieving mattress.',
-	),
-	5  => array(
-		'q' => 'Can I find a holiday cottage with a hospital-style or profiling bed?',
-		'a' => 'People searching for a “hospital bed holiday cottage” usually want an adjustable profiling bed at a safe transfer height, in a regular bedroom, not a hospital ward. Restwell’s accessible bedroom has this bed, with the ceiling track above it.',
-	),
-	6  => array(
-		'q' => 'Why does an adjustable or profiling bed matter in an accessible bedroom?',
-		'a' => 'Profiling beds help with positioning, pressure care, safer transfers, and overnight care routines when a fixed divan isn’t safe. At Restwell, check the controls, side-rail policy, and space for a carer beside the bed to ensure it meets your needs.',
-	),
-	7  => array(
-		'q' => 'What accessible equipment should I expect in a specialist holiday let?',
-		'a' => 'Ask for a published equipment list. Restwell includes a profiling bed, ceiling- and mobile hoists, a level-access wet room with a seat and grab rails, a height-adjustable basin, threshold ramps, and parking notes. Never assume “accessible” means a hoist is fitted.',
-	),
-	8  => array(
-		'q' => 'What should “wheelchair friendly holiday cottage” mean?',
-		'a' => 'Look for step-free routes, door widths that fit your chair, a bathroom you can use, and parking for accessible vehicles all shown in measurements and photos. If a listing only says “wheelchair friendly,” ask for an access statement or look elsewhere.',
-	),
-	9  => array(
-		'q' => 'What do I need to check before booking an accessible holiday cottage?',
-		'a' => 'Check for clear door openings, a step-free route from parking, whether there’s a wet room or adapted bath, hoist type, bed type, turning space, recent entrance and bathroom photos, sling policy, and if care can be arranged separately. Restwell shares all these details on this page.',
-	),
-	10 => array(
-		'q' => 'What makes an accessible bungalow in the UK suitable for complex needs?',
-		'a' => 'Being single-storey helps, but accessibility varies a lot. Some people need widened doorways, purpose-built wet rooms, parking, and often a hoist and profiling bed. Restwell is step-free throughout, as shown here.',
+	4 => array(
+		'q' => 'What should “wheelchair friendly” actually mean?',
+		'a' => 'It should mean published numbers you can check against your own chair and your own equipment: clear door openings, step-free routes, safe working loads, turning circles. If a listing says “wheelchair friendly” and will not give you a measurement when you ask, that tells you what you need to know. Everything we have is on this page.',
 	),
 );
 $acc_faq_items = array();
-for ( $i = 1; $i <= 10; $i++ ) {
+for ( $i = 1; $i <= count( $acc_faq_live ); $i++ ) {
 	$q = $acc_txt( "acc_faq_{$i}_q", $acc_faq_live[ $i ]['q'] );
 	$a = $acc_txt( "acc_faq_{$i}_a", $acc_faq_live[ $i ]['a'] );
 	if ( '' === trim( $q ) || '' === trim( $a ) ) {
@@ -338,13 +136,6 @@ for ( $i = 1; $i <= 10; $i++ ) {
 if ( empty( $acc_faq_items ) ) {
 	$acc_faq_items = array_values( $acc_faq_live );
 }
-
-$acc_stat_1_label = $acc_txt( 'acc_stat_1_label', 'Clear opening, front door' );
-$acc_stat_1_value = $acc_txt( 'acc_stat_1_value', '965mm' );
-$acc_stat_2_label = $acc_txt( 'acc_stat_2_label', 'Clear width, internal doors' );
-$acc_stat_2_value = $acc_txt( 'acc_stat_2_value', '926mm' );
-$acc_stat_3_label = $acc_txt( 'acc_stat_3_label', 'Ceiling track hoist over the bed' );
-$acc_stat_3_value = $acc_txt( 'acc_stat_3_value', 'Full-room' );
 
 $acc_fit_label         = $acc_txt( 'acc_fit_label', 'Door clearances' );
 $acc_fit_heading       = $acc_txt( 'acc_fit_heading', 'Compare your chair width to our doorways' );
@@ -383,42 +174,97 @@ $acc_link_phrase = static function ( $escaped, $phrase, $url ) {
 
 <main id="main-content">
 <?php
-get_template_part(
-	'template-parts/concept/photo-hero',
-	null,
-	array(
-		'heading_id' => 'page-h',
-		'heading'    => $restwell_acc_heading,
-		'eyebrow'    => $restwell_acc_label,
-		'intro'      => $restwell_acc_intro,
-		'crumbs'     => array(
-			array(
-				'label' => __( 'Home', 'restwell-retreats' ),
-				'url'   => home_url( '/' ),
-			),
-			array(
-				'label' => 'Accessibility',
-				'url'   => '',
-			),
+$acc_hero_att  = absint( get_post_meta( $restwell_acc_id, 'acc_hero_image_id', true ) );
+$acc_hero_args = array(
+	'heading_id' => 'page-h',
+	'heading'    => $restwell_acc_heading,
+	'eyebrow'    => $restwell_acc_label,
+	'intro'      => $restwell_acc_intro,
+	'overlay'    => 'heavy',
+	'crumbs'     => array(
+		array(
+			'label' => __( 'Home', 'restwell-retreats' ),
+			'url'   => home_url( '/' ),
 		),
-		'post_id'    => $restwell_acc_id,
-	)
+		array(
+			'label' => 'Accessibility',
+			'url'   => '',
+		),
+	),
+	'post_id'    => $restwell_acc_id,
+	'image_url'  => restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ),
+	'image_alt'  => function_exists( 'restwell_theme_image_alt' )
+		? restwell_theme_image_alt( 'bungalow/WR-1-LS.jpg' )
+		: __( 'Level-access wet room with grab rails and a shower commode chair', 'restwell-retreats' ),
 );
+/*
+ * Featured / seeded OG stock on this page is a Whitstable sunset. Only honour
+ * an editor-picked hero when it is not that coastal stand-in.
+ */
+if ( $acc_hero_att > 0 ) {
+	$acc_hero_file = strtolower( (string) get_attached_file( $acc_hero_att ) );
+	$acc_hero_stem = pathinfo( $acc_hero_file, PATHINFO_FILENAME );
+	$acc_is_sunset = ( false !== strpos( $acc_hero_stem, 'promenade' )
+		|| false !== strpos( $acc_hero_stem, 'golden-hour' )
+		|| false !== strpos( $acc_hero_stem, 'beach-hut' )
+		|| false !== strpos( $acc_hero_stem, 'coastline' ) );
+	if ( ! $acc_is_sunset ) {
+		$acc_hero_args['media_id']  = $acc_hero_att;
+		$acc_hero_args['image_url'] = '';
+		$acc_hero_args['image_alt'] = '';
+	}
+}
+get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 ?>
 
-	<section class="section-y section-y--compact band-white" aria-label="<?php echo esc_attr__( 'Key measurements', 'restwell-retreats' ); ?>">
+	<nav class="subnav" aria-label="<?php echo esc_attr__( 'On this page', 'restwell-retreats' ); ?>" data-toc>
 	  <div class="container">
-		<div class="stat-row">
-		  <dl>
-			<div class="stat"><dt class="stat__label"><?php echo esc_html( $acc_stat_1_label ); ?></dt><dd class="stat__value"><?php echo esc_html( $acc_stat_1_value ); ?></dd></div>
-			<div class="stat"><dt class="stat__label"><?php echo esc_html( $acc_stat_2_label ); ?></dt><dd class="stat__value"><?php echo esc_html( $acc_stat_2_value ); ?></dd></div>
-			<div class="stat"><dt class="stat__label"><?php echo esc_html( $acc_stat_3_label ); ?></dt><dd class="stat__value"><?php echo esc_html( $acc_stat_3_value ); ?></dd></div>
-		  </dl>
+		<ul class="subnav__list">
+		  <li><a href="#statement"><?php esc_html_e( 'The numbers', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#fit-check"><?php esc_html_e( 'Doorways', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#equipment"><?php esc_html_e( 'Equipment', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#destination"><?php esc_html_e( 'Whitstable', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#faq"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a></li>
+		</ul>
+	  </div>
+	</nav>
+
+	<section class="section-y band-subtle" id="statement" aria-labelledby="statement-h">
+	  <div class="container split acc-statement-split">
+		<header class="section-head section-head--tight">
+		  <p class="eyebrow"><?php echo esc_html( $acc_statement_label ); ?></p>
+		  <h2 id="statement-h"><?php echo esc_html( $acc_statement_heading ); ?></h2>
+		  <p class="lede acc-statement-split__lede"><?php echo esc_html( $acc_statement_body ); ?></p>
+		</header>
+		<?php
+		$acc_figure_kses = array(
+			'span' => array(
+				'class' => true,
+			),
+		);
+		?>
+		<div class="acc-panel acc-panel--stats">
+		  <div class="stat-row stat-row--hero">
+			<dl>
+			  <div class="stat">
+				<dt class="stat__label"><?php echo esc_html( $acc_stat_1_label ); ?></dt>
+				<dd class="stat__value"><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_stat_1_value ), $acc_figure_kses ); ?></dd>
+			  </div>
+			  <div class="stat">
+				<dt class="stat__label"><?php echo esc_html( $acc_stat_2_label ); ?></dt>
+				<dd class="stat__value"><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_stat_2_value ), $acc_figure_kses ); ?></dd>
+			  </div>
+			  <div class="stat">
+				<dt class="stat__label"><?php echo esc_html( $acc_stat_3_label ); ?></dt>
+				<dd class="stat__value"><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_stat_3_value ), $acc_figure_kses ); ?></dd>
+			  </div>
+			</dl>
+		  </div>
 		</div>
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="fit-check" aria-labelledby="fit-check-h">
+	<section class="section-y band-white" id="fit-check" aria-labelledby="fit-check-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <?php if ( '' !== $acc_fit_label ) : ?>
@@ -429,7 +275,6 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $acc_fit_intro ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<div class="fit-check-split">
 		<div class="fit-check" data-fit-check>
 		  <div class="fit-check__panel">
 			<div class="fit-check__control">
@@ -453,6 +298,32 @@ get_template_part(
 			  </div>
 			  <p class="fit-check__summary" id="fit-check-summary" data-fit-summary role="status" aria-live="polite"></p>
 			</div>
+			<div class="fit-check__presets">
+			  <h3 class="fit-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
+			  <?php if ( '' !== $acc_fit_guide_intro ) : ?>
+			  <p class="fit-check__presets-intro"><?php echo esc_html( $acc_fit_guide_intro ); ?></p>
+			  <?php endif; ?>
+			  <div class="fit-check__chips" role="group" aria-labelledby="fit-check-presets-h">
+				<button type="button" class="fit-check__chip" data-fit-preset="570" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 570 millimetres, typical transit chair', 'restwell-retreats' ); ?>">
+				  <span class="fit-check__chip-name"><?php esc_html_e( 'Transit', 'restwell-retreats' ); ?></span>
+				  <span class="fit-check__chip-size">530–610mm</span>
+				</button>
+				<button type="button" class="fit-check__chip" data-fit-preset="660" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 660 millimetres, typical self-propelled chair', 'restwell-retreats' ); ?>">
+				  <span class="fit-check__chip-name"><?php esc_html_e( 'Self-propelled', 'restwell-retreats' ); ?></span>
+				  <span class="fit-check__chip-size">635–685mm</span>
+				</button>
+				<button type="button" class="fit-check__chip" data-fit-preset="700" aria-pressed="true" aria-label="<?php echo esc_attr__( 'Set checker to 700 millimetres, typical powered chair', 'restwell-retreats' ); ?>">
+				  <span class="fit-check__chip-name"><?php esc_html_e( 'Powered', 'restwell-retreats' ); ?></span>
+				  <span class="fit-check__chip-size">600–760mm+</span>
+				</button>
+				<button type="button" class="fit-check__chip" data-fit-preset="800" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 800 millimetres, typical bariatric chair', 'restwell-retreats' ); ?>">
+				  <span class="fit-check__chip-name"><?php esc_html_e( 'Bariatric', 'restwell-retreats' ); ?></span>
+				  <span class="fit-check__chip-size">Over 760mm</span>
+				</button>
+			  </div>
+			  <p class="fit-check__presets-note"><?php esc_html_e( 'Choose a type to try a midpoint. Measure your own chair before you book.', 'restwell-retreats' ); ?></p>
+			</div>
+			<div class="fit-check__gauges">
 			<div class="fit-check__bars">
 			  <div class="fit-bar" data-fit-gauge data-door-width="965" data-fit-name="the front door">
 				<div class="fit-bar__head">
@@ -479,75 +350,16 @@ get_template_part(
 			<?php if ( '' !== $acc_fit_note ) : ?>
 			<p class="fit-check__note"><?php echo esc_html( $acc_fit_note ); ?></p>
 			<?php endif; ?>
+			<ul class="fit-check__refs">
+			  <li>
+				<a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'UK Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
+			  </li>
+			  <li>
+				<a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'BS 8300 accessible environment', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
+			  </li>
+			</ul>
+			</div>
 		  </div>
-		</div>
-		<aside class="width-guide" aria-labelledby="width-guide-h">
-		  <div class="width-guide__intro">
-			<h3 id="width-guide-h" class="width-guide__title"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
-			<?php if ( '' !== $acc_fit_guide_intro ) : ?>
-			<p class="width-guide__lede"><?php echo esc_html( $acc_fit_guide_intro ); ?></p>
-			<?php endif; ?>
-		  </div>
-		  <ul class="width-guide__list">
-			<li>
-			  <button type="button" class="width-guide__row" data-fit-preset="570" aria-label="Set checker to 570 millimetres, typical transit chair">
-				<span class="width-guide__copy">
-				  <span class="width-guide__name">Transit</span>
-				  <span class="width-guide__hint">Attendant-propelled</span>
-				</span>
-				<span class="width-guide__size">
-				  <span class="width-guide__mm">530–610mm</span>
-				  <span class="width-guide__in">21–24in</span>
-				</span>
-			  </button>
-			</li>
-			<li>
-			  <button type="button" class="width-guide__row" data-fit-preset="660" aria-label="Set checker to 660 millimetres, typical self-propelled chair">
-				<span class="width-guide__copy">
-				  <span class="width-guide__name">Self-propelled</span>
-				  <span class="width-guide__hint">Most adult manuals</span>
-				</span>
-				<span class="width-guide__size">
-				  <span class="width-guide__mm">635–685mm</span>
-				  <span class="width-guide__in">25–27in</span>
-				</span>
-			  </button>
-			</li>
-			<li>
-			  <button type="button" class="width-guide__row" data-fit-preset="700" aria-label="Set checker to 700 millimetres, typical powered chair">
-				<span class="width-guide__copy">
-				  <span class="width-guide__name">Powered</span>
-				  <span class="width-guide__hint">Electric bases</span>
-				</span>
-				<span class="width-guide__size">
-				  <span class="width-guide__mm">600–760mm+</span>
-				  <span class="width-guide__in">24–30in+</span>
-				</span>
-			  </button>
-			</li>
-			<li>
-			  <button type="button" class="width-guide__row" data-fit-preset="800" aria-label="Set checker to 800 millimetres, typical bariatric chair">
-				<span class="width-guide__copy">
-				  <span class="width-guide__name">Bariatric</span>
-				  <span class="width-guide__hint">Wide-width</span>
-				</span>
-				<span class="width-guide__size">
-				  <span class="width-guide__mm">Over 760mm</span>
-				  <span class="width-guide__in">Over 30in</span>
-				</span>
-			  </button>
-			</li>
-		  </ul>
-		  <p class="width-guide__note">Choose a type to try a midpoint in the checker. Measure your own chair before you book.</p>
-		  <ul class="width-guide__refs">
-			<li>
-			  <a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer">UK Approved Document M<span class="sr-only"> (opens in a new tab)</span></a>
-			</li>
-			<li>
-			  <a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer">BS 8300 accessible environment<span class="sr-only"> (opens in a new tab)</span></a>
-			</li>
-		  </ul>
-		</aside>
 		</div>
 	  </div>
 	</section>
@@ -561,13 +373,49 @@ get_template_part(
 	 * the property page is the tour, this is the risk-assessment document an OT,
 	 * case manager or deputy needs before they can sign off a stay. Named makes
 	 * and models, safe working loads and clearances — no marketing adjectives.
-	 * Figures come from the manufacturers' own spec sheets.
+	 * Figures come from the manufacturers' own spec sheets. Room photos live on
+	 * the property page — this register is specs only.
 	 */
 	$acc_equipment = array(
 		array(
-			'name'  => __( 'Amico GoLift 400 — ceiling track hoist', 'restwell-retreats' ),
-			'where' => __( 'Main bedroom, over the profiling bed', 'restwell-retreats' ),
-			'specs' => array(
+			'group'         => 'getting-in',
+			'name'          => __( 'Parking and getting around', 'restwell-retreats' ),
+			'where'         => __( 'Single storey, no internal steps', 'restwell-retreats' ),
+			'lead'          => true,
+			'specs'         => array(
+				__( 'Driveway', 'restwell-retreats' )          => __( 'Private, resin-bound: two off-road spaces, adapted vehicles welcome', 'restwell-retreats' ),
+				__( 'Street parking', 'restwell-retreats' )    => __( 'Outside the house if you need extra room. No residents permit on this road; check signs on arrival in case street rules change', 'restwell-retreats' ),
+				__( 'Car to front door', 'restwell-retreats' ) => __( 'Step-free path', 'restwell-retreats' ),
+				__( 'Floors', 'restwell-retreats' )            => __( 'Level flooring throughout, no carpet lips', 'restwell-retreats' ),
+				__( 'Patio', 'restwell-retreats' )             => __( 'Level hard-standing suitable for wheelchairs, with the enclosed garden and BBQ area beyond', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'group'         => 'getting-in',
+			'name'          => __( 'Doorways and thresholds', 'restwell-retreats' ),
+			'where'         => __( 'Clear openings, measured door-stop to door-stop', 'restwell-retreats' ),
+			'lead'          => true,
+			'figure'        => '965 mm',
+			'figure_label'  => __( 'Front door clear opening', 'restwell-retreats' ),
+			'specs'         => array(
+				__( 'Front door', 'restwell-retreats' )            => __( '965 mm clear, level threshold, no step', 'restwell-retreats' ),
+				__( 'Porch outer doors', 'restwell-retreats' )     => __( '1720 mm opening, with a full-width ribbed entrance mat', 'restwell-retreats' ),
+				__( 'All internal doors', 'restwell-retreats' )    => __( '926 mm clear', 'restwell-retreats' ),
+				__( 'Conservatory French doors', 'restwell-retreats' ) => __( '1720 mm opening', 'restwell-retreats' ),
+				__( 'Rear French doors', 'restwell-retreats' )     => __( '1720 mm opening, onto the patio', 'restwell-retreats' ),
+				__( 'Patio threshold ramp', 'restwell-retreats' )  => __( '20 mm high × 80 mm wide, non-slip', 'restwell-retreats' ),
+				__( 'Door furniture', 'restwell-retreats' )        => __( 'White doors with black lever handles, for contrast', 'restwell-retreats' ),
+				__( 'Portable ramps', 'restwell-retreats' )        => __( 'Fold-up ramps kept for the front door, yours for the stay and for days out', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'group'         => 'transfers',
+			'name'          => __( 'Amico GoLift 400 — ceiling track hoist', 'restwell-retreats' ),
+			'where'         => __( 'Main bedroom, over the profiling bed', 'restwell-retreats' ),
+			'lead'          => true,
+			'figure'        => '180 kg',
+			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
+			'specs'         => array(
 				__( 'Safe working load', 'restwell-retreats' )   => __( '180 kg / 28 st', 'restwell-retreats' ),
 				__( 'Lift and lower', 'restwell-retreats' )      => __( 'Powered', 'restwell-retreats' ),
 				__( 'Traverse', 'restwell-retreats' )            => __( 'Manual', 'restwell-retreats' ),
@@ -577,9 +425,34 @@ get_template_part(
 			),
 		),
 		array(
-			'name'  => __( 'Joerns Oxford Midi 180 — mobile hoist', 'restwell-retreats' ),
-			'where' => __( 'Kept in the bungalow, usable in any room', 'restwell-retreats' ),
-			'specs' => array(
+			'group'         => 'transfers',
+			'name'          => __( 'Accora CommunityBed', 'restwell-retreats' ),
+			'where'         => __( 'Accessible bedroom, under the ceiling track', 'restwell-retreats' ),
+			'lead'          => true,
+			'figure'        => '180 kg',
+			'figure_label'  => __( 'Maximum user weight', 'restwell-retreats' ),
+			'specs'         => array(
+				__( 'Safe working load', 'restwell-retreats' )      => __( '215 kg / 34 st', 'restwell-retreats' ),
+				__( 'Maximum user weight', 'restwell-retreats' )    => __( '180 kg / 28 st', 'restwell-retreats' ),
+				__( 'Mattress platform', 'restwell-retreats' )      => __( '900 × 2000 mm', 'restwell-retreats' ),
+				__( 'Overall frame', 'restwell-retreats' )          => __( '930 × 2250 mm', 'restwell-retreats' ),
+				__( 'Platform height', 'restwell-retreats' )        => __( '220–800 mm', 'restwell-retreats' ),
+				__( 'Profiling', 'restwell-retreats' )              => __( 'Four-section: backrest with auto-regression, kneebreak, Trendelenburg and anti-Trendelenburg', 'restwell-retreats' ),
+				__( 'Mattress', 'restwell-retreats' )               => __( 'Accora Allevia Comfort FirmEdge 90 cm, or Roma Medical MATT 1 — both pressure-relieving', 'restwell-retreats' ),
+				__( 'Side rails', 'restwell-retreats' )             => __( 'Fabric siderail set, 200 cm', 'restwell-retreats' ),
+				__( 'Minimum user height', 'restwell-retreats' )    => __( '1460 mm', 'restwell-retreats' ),
+				__( 'Carer access', 'restwell-retreats' )           => __( 'Space for a carer on both sides of the bed', 'restwell-retreats' ),
+			),
+			'note'  => __( 'We have two of these. The accessible bedroom can be set up with one or two, depending on what you need. Tell us when you enquire and the room will be laid out that way before you arrive.', 'restwell-retreats' ),
+		),
+		array(
+			'group'         => 'transfers',
+			'name'          => __( 'Joerns Oxford Midi 180 — mobile hoist', 'restwell-retreats' ),
+			'where'         => __( 'Kept in the bungalow, usable in any room', 'restwell-retreats' ),
+			'lead'          => true,
+			'figure'        => '180 kg',
+			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
+			'specs'         => array(
 				__( 'Safe working load', 'restwell-retreats' )       => __( '180 kg / 28 st', 'restwell-retreats' ),
 				__( 'Turning radius', 'restwell-retreats' )          => __( '1235 mm', 'restwell-retreats' ),
 				__( 'Legs open, external', 'restwell-retreats' )     => __( '1170 mm', 'restwell-retreats' ),
@@ -591,341 +464,329 @@ get_template_part(
 			),
 		),
 		array(
-			'name'  => __( 'Accora CommunityBed — profiling bed', 'restwell-retreats' ),
-			'where' => __( 'Main bedroom, under the ceiling track. A second bed can be set up on request', 'restwell-retreats' ),
-			'specs' => array(
-				__( 'Safe working load', 'restwell-retreats' )      => __( '215 kg / 34 st', 'restwell-retreats' ),
-				__( 'Maximum user weight', 'restwell-retreats' )    => __( '180 kg / 28 st', 'restwell-retreats' ),
-				__( 'Mattress platform', 'restwell-retreats' )      => __( '900 × 2000 mm', 'restwell-retreats' ),
-				__( 'Overall frame', 'restwell-retreats' )          => __( '930 × 2250 mm', 'restwell-retreats' ),
-				__( 'Platform height', 'restwell-retreats' )        => __( '220–800 mm', 'restwell-retreats' ),
-				__( 'Profiling', 'restwell-retreats' )              => __( 'Four-section: backrest with auto-regression, kneebreak, Trendelenburg and anti-Trendelenburg', 'restwell-retreats' ),
-				__( 'Mattress', 'restwell-retreats' )               => __( 'Accora Allevia Comfort FirmEdge, 90 cm', 'restwell-retreats' ),
-				__( 'Side rails', 'restwell-retreats' )             => __( 'Fabric siderail set, 200 cm', 'restwell-retreats' ),
-				__( 'Minimum user height', 'restwell-retreats' )    => __( '1460 mm', 'restwell-retreats' ),
+			'group'         => 'transfers',
+			'name'          => __( 'AAL RS4 — transfer and standing aid', 'restwell-retreats' ),
+			'compact'       => true,
+			'figure'        => '185 kg',
+			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
+			'note'          => __( 'The RS4 is an Able Assist device. It is not an Arjo Sara Stedy, and the two are not interchangeable in a handling plan — please check your care plan names the right one.', 'restwell-retreats' ),
+			'specs'         => array(
+				__( 'Safe working load', 'restwell-retreats' ) => __( '185 kg', 'restwell-retreats' ),
 			),
-			'note'  => __( 'We have two of these beds, and we set the bedrooms up around your party rather than to a fixed plan. A second profiling bed can go in the second bedroom, or both can go in one room if you would rather stay together. Tell us how you move and who is sleeping where when you enquire, and the room will be laid out that way before you arrive.', 'restwell-retreats' ),
 		),
 		array(
-			'name'  => __( 'RAZ-AT — tilt-in-space shower commode chair', 'restwell-retreats' ),
-			'where' => __( 'Wet room', 'restwell-retreats' ),
-			'specs' => array(
+			'group'         => 'wet-room',
+			'name'          => __( 'Level-access wet room', 'restwell-retreats' ),
+			'where'         => __( 'Specified by Care Spaces', 'restwell-retreats' ),
+			'lead'          => true,
+			'specs'         => array(
+				__( 'Floor', 'restwell-retreats' )               => __( 'Level access with no lip, floor-level drain', 'restwell-retreats' ),
+				__( 'Toilet support rail', 'restwell-retreats' ) => __( 'NYMAS hinged lift-and-lock, with drop-down leg', 'restwell-retreats' ),
+				__( 'Assistance alarm', 'restwell-retreats' )    => __( 'Pull-cord with reset plate and over-door light', 'restwell-retreats' ),
+				__( 'Extractor fan', 'restwell-retreats' )       => __( 'Fitted', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'group'         => 'wet-room',
+			'name'          => __( 'RAZ-AT — tilt-in-space shower commode chair', 'restwell-retreats' ),
+			'where'         => __( 'Kept in the wet room', 'restwell-retreats' ),
+			'lead'          => true,
+			'figure'        => '40°',
+			'figure_label'  => __( 'Tilt-in-space', 'restwell-retreats' ),
+			'specs'         => array(
 				__( 'Tilt-in-space', 'restwell-retreats' )    => __( '40°, with tilt-assist pedal', 'restwell-retreats' ),
 				__( 'Seat height', 'restwell-retreats' )      => __( '560 mm', 'restwell-retreats' ),
 				__( 'Backrest', 'restwell-retreats' )         => __( 'AdjustaBack, 50 cm, with flip-up armrests', 'restwell-retreats' ),
 				__( 'Seat module', 'restwell-retreats' )      => __( 'Moulded, front opening', 'restwell-retreats' ),
 				__( 'Footplates', 'restwell-retreats' )       => __( 'Adjustable 410–520 mm, folding plate', 'restwell-retreats' ),
 				__( 'Castors', 'restwell-retreats' )          => __( 'Four dual-locking, 5 inch', 'restwell-retreats' ),
-				__( 'Also fitted', 'restwell-retreats' )      => __( 'Moulded headrest, autoclavable commode pan, adjustable hip belt', 'restwell-retreats' ),
+				__( 'Headrest', 'restwell-retreats' )         => __( 'Moulded', 'restwell-retreats' ),
+				__( 'Commode pan', 'restwell-retreats' )      => __( 'Autoclavable', 'restwell-retreats' ),
+				__( 'Hip belt', 'restwell-retreats' )         => __( 'Adjustable', 'restwell-retreats' ),
 			),
 		),
 		array(
-			'name'  => __( 'Geberit AquaClean Mera Care — wash-dry WC', 'restwell-retreats' ),
-			'where' => __( 'Wet room', 'restwell-retreats' ),
-			'specs' => array(
+			'group'         => 'wet-room',
+			'name'          => __( 'Mira Select Flex EV — shower valve', 'restwell-retreats' ),
+			'figure'        => 'TMV3',
+			'figure_label'  => __( 'Thermostatic valve', 'restwell-retreats' ),
+			'specs'         => array(
+				__( 'Type', 'restwell-retreats' )    => __( 'Thermostatic, TMV3', 'restwell-retreats' ),
+				__( 'Fittings', 'restwell-retreats' ) => __( 'Long riser rail, 2 m hose and handset', 'restwell-retreats' ),
+				__( 'Accreditation', 'restwell-retreats' ) => __( 'RNIB Tried & Tested', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'group'         => 'wet-room',
+			'name'          => __( 'Drive DeVilbiss — shower stool', 'restwell-retreats' ),
+			'compact'       => true,
+			'figure'        => '136 kg',
+			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
+			'specs'         => array(
+				__( 'Safe working load', 'restwell-retreats' ) => __( '136 kg / 21 st', 'restwell-retreats' ),
+			),
+		),
+		array(
+			'group'         => 'wet-room',
+			'name'          => __( 'Geberit AquaClean Mera Care — wash-dry WC', 'restwell-retreats' ),
+			'specs'         => array(
 				__( 'Wash', 'restwell-retreats' )       => __( 'WhirlSpray shower, plus lady shower', 'restwell-retreats' ),
 				__( 'Dry', 'restwell-retreats' )        => __( 'Warm air dryer', 'restwell-retreats' ),
 				__( 'Controls', 'restwell-retreats' )   => __( 'Remote control and touchless wall panel', 'restwell-retreats' ),
-				__( 'Also', 'restwell-retreats' )       => __( 'Odour extraction, soft-closing seat', 'restwell-retreats' ),
+				__( 'Odour extraction', 'restwell-retreats' ) => __( 'Fitted, with a soft-closing seat', 'restwell-retreats' ),
 			),
 		),
 		array(
-			'name'  => __( 'Height-adjustable swing basin', 'restwell-retreats' ),
-			'where' => __( 'Wet room', 'restwell-retreats' ),
-			'specs' => array(
+			'group'         => 'wet-room',
+			'name'          => __( 'Ropox Swing — height-adjustable washbasin', 'restwell-retreats' ),
+			'figure'        => '750–950 mm',
+			'figure_label'  => __( 'Basin height range', 'restwell-retreats' ),
+			'specs'         => array(
 				__( 'Height range', 'restwell-retreats' )   => __( '750–950 mm, manual adjustment', 'restwell-retreats' ),
 				__( 'Mounting', 'restwell-retreats' )       => __( 'Swing basin with dock-in unit', 'restwell-retreats' ),
 				__( 'Tap', 'restwell-retreats' )            => __( 'Thermostatic mixer, lever operation, safe-touch body, TMV3 approved', 'restwell-retreats' ),
 			),
 		),
 		array(
-			'name'  => __( 'Mira Select Flex EV — shower valve', 'restwell-retreats' ),
-			'where' => __( 'Wet room', 'restwell-retreats' ),
-			'specs' => array(
-				__( 'Type', 'restwell-retreats' )    => __( 'Thermostatic', 'restwell-retreats' ),
-				__( 'Fittings', 'restwell-retreats' ) => __( 'Long riser rail, 2 m hose and handset', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'name'  => __( 'AAL RS4 — transfer and standing aid', 'restwell-retreats' ),
-			'where' => __( 'Kept in the bungalow', 'restwell-retreats' ),
-			'note'  => __( 'The RS4 is an Able Assist device. It is not an Arjo Sara Stedy, and the two are not interchangeable in a handling plan — please check your care plan names the right one.', 'restwell-retreats' ),
-			'specs' => array(
-				__( 'Safe working load', 'restwell-retreats' ) => __( '185 kg', 'restwell-retreats' ),
+			'group'         => 'kitchen',
+			'name'          => __( 'NEFF Slide & Hide — oven', 'restwell-retreats' ),
+			'where'         => __( 'Open-plan, wheelchair access to worktops', 'restwell-retreats' ),
+			'lead'          => true,
+			'specs'         => array(
+				__( 'Oven', 'restwell-retreats' )   => __( 'NEFF Slide & Hide — the door folds away underneath, so you are not reaching across a hot open door from a seated position', 'restwell-retreats' ),
+				__( 'Hob', 'restwell-retreats' )    => __( 'Gas, not induction — no electromagnetic field from the cooktop, which many guests with pacemakers prefer', 'restwell-retreats' ),
+				__( 'Storage', 'restwell-retreats' ) => __( 'Microwave and accessible storage at lower levels', 'restwell-retreats' ),
 			),
 		),
 	);
+
+	$acc_equip_groups = array(
+		'getting-in' => array(
+			'title' => __( 'Getting in', 'restwell-retreats' ),
+			'lede'  => __( 'The driveway is resin-bound, level, and takes two cars including an adapted vehicle. There is no step up into the house from where you park.', 'restwell-retreats' ),
+		),
+		'transfers'  => array(
+			'title' => __( 'Beds and hoists', 'restwell-retreats' ),
+			'lede'  => __( 'The accessible bedroom can be set up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
+		),
+		'wet-room'   => array(
+			'title' => __( 'Wet room', 'restwell-retreats' ),
+			'lede'  => __( 'Level-access throughout, with no lip at the entrance. Specified by Care Spaces.', 'restwell-retreats' ),
+		),
+		'kitchen'    => array(
+			'title' => __( 'Kitchen', 'restwell-retreats' ),
+			'lede'  => __( 'Worktops you can reach from a seated position. The living room has a rise-and-recline chair; rear French doors onto the patio give a 1720mm opening.', 'restwell-retreats' ),
+		),
+	);
+	$acc_grouped = array();
+	foreach ( $acc_equipment as $acc_equip_item ) {
+		$acc_gid = isset( $acc_equip_item['group'] ) ? (string) $acc_equip_item['group'] : '';
+		if ( '' === $acc_gid || ! isset( $acc_equip_groups[ $acc_gid ] ) ) {
+			$acc_gid = 'getting-in';
+		}
+		$acc_grouped[ $acc_gid ][] = $acc_equip_item;
+	}
 	?>
 
-	<section class="section-y band-white" id="equipment" aria-labelledby="equipment-h">
+	<section class="section-y band-subtle" id="equipment" aria-labelledby="equipment-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow"><?php esc_html_e( 'Equipment register', 'restwell-retreats' ); ?></p>
 		  <h2 id="equipment-h"><?php esc_html_e( 'Named kit, with the numbers a risk assessment needs', 'restwell-retreats' ); ?></h2>
 		  <p class="lede"><?php esc_html_e( 'Every piece of equipment fitted in the bungalow, by make and model, with safe working loads and clearances taken from the manufacturers’ own spec sheets. If you need a measurement that isn’t here, ask and we will go and measure it.', 'restwell-retreats' ); ?></p>
 		</header>
+		<div class="acc-register-doc">
+		  <div class="acc-register-doc__intro">
+			<aside class="download-panel equip-register__aside">
+			  <p><?php esc_html_e( 'Room-by-room photos and the property tour live on the property page. This register is the spec sheet — makes, models, and safe working loads.', 'restwell-retreats' ); ?></p>
+			  <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'Tour the property', 'restwell-retreats' ); ?></a></p>
+			</aside>
+			<div class="equip-notice equip-notice--quiet" id="equip-slings">
+			  <p class="equip-notice__title"><?php esc_html_e( 'Please bring your own slings', 'restwell-retreats' ); ?></p>
+			  <p><?php esc_html_e( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ); ?></p>
+			</div>
+		  </div>
 
-		<div class="equip-notice">
-		  <h3 class="equip-notice__title"><?php esc_html_e( 'Please bring your own slings', 'restwell-retreats' ); ?></h3>
-		  <p><?php esc_html_e( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ); ?></p>
-		</div>
-
-		<ul class="equip-list" role="list">
-		  <?php foreach ( $acc_equipment as $acc_equip_item ) : ?>
-		  <li class="equip-card">
-			<h3 class="equip-card__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h3>
-			<?php if ( ! empty( $acc_equip_item['where'] ) ) : ?>
-			<p class="equip-card__where"><?php echo esc_html( $acc_equip_item['where'] ); ?></p>
+		<?php foreach ( $acc_equip_groups as $acc_gid => $acc_gmeta ) : ?>
+			<?php
+			if ( empty( $acc_grouped[ $acc_gid ] ) ) {
+				continue;
+			}
+			$acc_group_items = $acc_grouped[ $acc_gid ];
+			$acc_gtitle      = isset( $acc_gmeta['title'] ) ? (string) $acc_gmeta['title'] : '';
+			$acc_glede       = isset( $acc_gmeta['lede'] ) ? (string) $acc_gmeta['lede'] : '';
+			$acc_heading_id  = 'equip-' . $acc_gid . '-h';
+			?>
+		<section class="equip-group" id="equip-<?php echo esc_attr( $acc_gid ); ?>" aria-labelledby="<?php echo esc_attr( $acc_heading_id ); ?>">
+		  <div class="equip-group-panel">
+		  <h3 id="<?php echo esc_attr( $acc_heading_id ); ?>" class="equip-group__title"><?php echo esc_html( $acc_gtitle ); ?></h3>
+		  <?php if ( '' !== $acc_glede ) : ?>
+		  <p class="equip-group__lede"><?php echo esc_html( $acc_glede ); ?></p>
+		  <?php endif; ?>
+		  <ul class="equip-list" role="list">
+			<?php foreach ( $acc_group_items as $acc_equip_item ) : ?>
+				<?php
+				$acc_item_lead    = ! empty( $acc_equip_item['lead'] );
+				$acc_item_compact = ! empty( $acc_equip_item['compact'] );
+				$acc_item_fold    = ! empty( $acc_equip_item['fold'] );
+				$acc_item_image   = isset( $acc_equip_item['image'] ) ? (string) $acc_equip_item['image'] : '';
+				$acc_item_figure  = isset( $acc_equip_item['figure'] ) ? (string) $acc_equip_item['figure'] : '';
+				$acc_item_flabel  = isset( $acc_equip_item['figure_label'] ) ? (string) $acc_equip_item['figure_label'] : '';
+				$acc_item_where   = isset( $acc_equip_item['where'] ) ? (string) $acc_equip_item['where'] : '';
+				$acc_item_note    = isset( $acc_equip_item['note'] ) ? (string) $acc_equip_item['note'] : '';
+				$acc_item_specs   = isset( $acc_equip_item['specs'] ) && is_array( $acc_equip_item['specs'] ) ? $acc_equip_item['specs'] : array();
+				$acc_figure_metric = '' !== $acc_item_figure && (bool) preg_match( '/\d/', $acc_item_figure );
+				$acc_show_name    = $acc_item_lead || ( $acc_equip_item['name'] !== $acc_gtitle );
+				$acc_item_class   = 'equip-item';
+				if ( $acc_item_lead ) {
+					$acc_item_class .= ' equip-item--lead';
+				} elseif ( $acc_item_compact ) {
+					$acc_item_class .= ' equip-item--compact';
+				} elseif ( $acc_item_fold ) {
+					$acc_item_class .= ' equip-item--fold';
+				}
+				$acc_item_alt = '';
+				if ( '' !== $acc_item_image ) {
+					$acc_item_alt = isset( $acc_equip_item['image_alt'] ) ? (string) $acc_equip_item['image_alt'] : '';
+					if ( '' === $acc_item_alt && function_exists( 'restwell_theme_image_alt' ) ) {
+						$acc_item_alt = restwell_theme_image_alt( $acc_item_image );
+					}
+				}
+				?>
+		  <li class="<?php echo esc_attr( $acc_item_class ); ?>">
+			<?php if ( $acc_item_lead ) : ?>
+			<div class="equip-item__mast">
+			  <?php if ( '' !== $acc_item_image ) : ?>
+			  <figure class="equip-item__photo">
+				<img src="<?php echo esc_url( restwell_theme_image_url( $acc_item_image ) ); ?>" alt="<?php echo esc_attr( $acc_item_alt ); ?>" width="900" height="675" loading="lazy" decoding="async" />
+			  </figure>
+			  <?php endif; ?>
+			  <div class="equip-item__ident">
+				<?php if ( $acc_show_name ) : ?>
+				<h4 class="equip-item__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
+				<?php endif; ?>
+				<?php if ( '' !== $acc_item_where ) : ?>
+				<p class="equip-item__where"><?php echo esc_html( $acc_item_where ); ?></p>
+				<?php endif; ?>
+				<?php if ( $acc_figure_metric ) : ?>
+				<p class="equip-item__figure">
+				  <span class="equip-item__figure-value"><?php echo esc_html( $acc_item_figure ); ?></span>
+				  <?php if ( '' !== $acc_item_flabel ) : ?>
+				  <span class="equip-item__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
+				  <?php endif; ?>
+				</p>
+				<?php endif; ?>
+			  </div>
+			  <?php if ( ! empty( $acc_item_specs ) ) : ?>
+			  <dl class="equip-item__specs">
+				<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
+				<div class="equip-spec">
+				  <dt><?php echo esc_html( $acc_equip_label ); ?></dt>
+				  <dd><?php echo esc_html( $acc_equip_value ); ?></dd>
+				</div>
+				<?php endforeach; ?>
+			  </dl>
+			  <?php endif; ?>
+			  <?php if ( '' !== $acc_item_note ) : ?>
+			  <p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
+			  <?php endif; ?>
+			</div>
+			<?php else : ?>
+			<div class="equip-item__head">
+			  <?php if ( $acc_show_name ) : ?>
+			  <h4 class="equip-item__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
+			  <?php endif; ?>
+			  <?php if ( $acc_figure_metric ) : ?>
+			  <p class="equip-item__figure">
+				<span class="equip-item__figure-value"><?php echo esc_html( $acc_item_figure ); ?></span>
+				<?php if ( '' !== $acc_item_flabel ) : ?>
+				<span class="equip-item__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
+				<?php endif; ?>
+			  </p>
+			  <?php endif; ?>
+			</div>
 			<?php endif; ?>
-			<dl class="equip-card__specs">
-			  <?php foreach ( $acc_equip_item['specs'] as $acc_equip_label => $acc_equip_value ) : ?>
+			<?php if ( $acc_item_fold ) : ?>
+			<details class="equip-item__more">
+			  <summary><?php esc_html_e( 'Specification', 'restwell-retreats' ); ?></summary>
+			<?php endif; ?>
+			<?php if ( $acc_item_fold && '' !== $acc_item_where ) : ?>
+			<p class="equip-item__where"><?php echo esc_html( $acc_item_where ); ?></p>
+			<?php endif; ?>
+			<?php if ( ! $acc_item_lead && ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
+			<dl class="equip-item__specs">
+			  <?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
 			  <div class="equip-spec">
 				<dt><?php echo esc_html( $acc_equip_label ); ?></dt>
 				<dd><?php echo esc_html( $acc_equip_value ); ?></dd>
 			  </div>
 			  <?php endforeach; ?>
 			</dl>
-			<?php if ( ! empty( $acc_equip_item['note'] ) ) : ?>
-			<p class="equip-card__note"><?php echo esc_html( $acc_equip_item['note'] ); ?></p>
 			<?php endif; ?>
-		  </li>
-		  <?php endforeach; ?>
-		</ul>
-
-		<div class="equip-notice equip-notice--quiet">
-		  <h3 class="equip-notice__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></h3>
-		  <p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
-		</div>
-
-		<?php
-		$acc_plan_rel  = 'bungalow/floor-plan.webp';
-		$acc_plan_path = get_template_directory() . '/assets/images/' . $acc_plan_rel;
-		?>
-		<figure class="floor-plan" id="floor-plan">
-		  <?php if ( file_exists( $acc_plan_path ) ) : ?>
-		  <img
-			src="<?php echo esc_url( restwell_theme_image_url( $acc_plan_rel ) ); ?>"
-			alt="<?php echo esc_attr__( 'Floor plan of the bungalow, showing room layout, door positions and the ceiling track route.', 'restwell-retreats' ); ?>"
-			width="1400"
-			height="990"
-			loading="lazy"
-			decoding="async"
-		  />
-		  <?php else : ?>
-		  <div class="floor-plan__placeholder">
-			<p class="floor-plan__placeholder-title"><?php esc_html_e( 'Floor plan', 'restwell-retreats' ); ?></p>
-			<p><?php esc_html_e( 'We are redrawing the plan to match the finished bungalow. Until it is here, ask us for any measurement you need and we will take it for you.', 'restwell-retreats' ); ?></p>
-			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Request a measurement', 'restwell-retreats' ); ?></a>
-		  </div>
-		  <?php endif; ?>
-		  <figcaption class="floor-plan__caption"><?php esc_html_e( 'Room layout, door positions and the ceiling track route.', 'restwell-retreats' ); ?></figcaption>
-		</figure>
-	  </div>
-	</section>
-	<section id="rooms" aria-labelledby="rooms-h">
-	  <div class="section-y band-white">
-		<div class="container">
-		  <header class="section-head">
-			<?php if ( '' !== $acc_room_label ) : ?>
-			<p class="eyebrow"><?php echo esc_html( $acc_room_label ); ?></p>
+			<?php if ( '' !== $acc_item_note && $acc_item_fold ) : ?>
+			<p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
 			<?php endif; ?>
-			<h2 id="rooms-h"><?php echo esc_html( $acc_room_heading ); ?></h2>
-			<?php if ( '' !== $acc_room_intro ) : ?>
-			<p class="lede"><?php echo esc_html( $acc_room_intro ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <nav class="subnav room-access__toc" aria-label="<?php echo esc_attr__( 'Jump to a room', 'restwell-retreats' ); ?>">
-			<ul class="subnav__list">
-			  <?php foreach ( $acc_room_cards as $acc_room_nav ) : ?>
-			  <li><a href="#room-<?php echo esc_attr( $acc_room_nav['id'] ); ?>"><?php echo esc_html( ! empty( $acc_room_nav['nav'] ) ? $acc_room_nav['nav'] : $acc_room_nav['heading'] ); ?></a></li>
-			  <?php endforeach; ?>
-			</ul>
-		  </nav>
-		</div>
-	  </div>
-
-	  <?php
-		foreach ( $acc_room_cards as $acc_room_i => $acc_room_card ) :
-			$acc_room_photos = isset( $acc_room_card['photos'] ) && is_array( $acc_room_card['photos'] )
-				? $acc_room_card['photos']
-				: array();
-			if ( empty( $acc_room_photos ) ) {
-				continue;
-			}
-			$acc_room_primary = $acc_room_photos[0];
-			$acc_room_count   = count( $acc_room_photos );
-			$acc_room_parts   = preg_split( '/\n---\n/', (string) $acc_room_card['body'], 2 );
-			$acc_room_summary = isset( $acc_room_parts[0] ) ? (string) $acc_room_parts[0] : '';
-			$acc_room_detail  = isset( $acc_room_parts[1] ) ? (string) $acc_room_parts[1] : '';
-			$acc_room_lines   = static function ( $raw ) {
-				$items = preg_split( '/\n+/', (string) $raw );
-				if ( ! is_array( $items ) ) {
-					return array();
-				}
-				return array_values(
-					array_filter(
-						array_map( 'trim', $items ),
-						static function ( $line ) {
-							return '' !== $line && '---' !== $line;
-						}
-					)
-				);
-			};
-			$acc_room_items        = $acc_room_lines( $acc_room_summary );
-			$acc_room_detail_items = $acc_room_lines( $acc_room_detail );
-			$acc_room_band  = ( 0 === $acc_room_i % 2 ) ? 'band-subtle' : 'band-white';
-			$acc_room_flip  = ( 0 !== $acc_room_i % 2 ) ? ' split--flip' : '';
-			$acc_room_eager = ! empty( $acc_room_card['eager'] );
-			?>
-	  <article
-		class="section-y <?php echo esc_attr( $acc_room_band ); ?> room-access"
-		id="room-<?php echo esc_attr( $acc_room_card['id'] ); ?>"
-		data-gallery
-		aria-labelledby="room-<?php echo esc_attr( $acc_room_card['id'] ); ?>-h"
-	  >
-		<div class="container split<?php echo esc_attr( $acc_room_flip ); ?>">
-		  <div class="split__media room-access__media">
-			<button
-			  type="button"
-			  class="gallery__open room-access__photo"
-			  data-gallery-open
-			  data-gallery-index="0"
-			  aria-label="<?php echo esc_attr( sprintf( /* translators: %s: room photo description */ __( 'View photos: %s', 'restwell-retreats' ), $acc_room_primary['alt'] ) ); ?>"
-			>
-			  <img
-				src="<?php echo esc_url( restwell_theme_image_url( $acc_room_primary['src'] ) ); ?>"
-				alt="<?php echo esc_attr( $acc_room_primary['alt'] ); ?>"
-				width="900"
-				height="675"
-				loading="<?php echo $acc_room_eager ? 'eager' : 'lazy'; ?>"
-				<?php echo $acc_room_eager ? 'fetchpriority="high" ' : ''; ?>decoding="async"
-			  />
-			</button>
-			<?php if ( $acc_room_count > 1 ) : ?>
-			<p class="room-access__hint">
-			  <?php
-				echo esc_html(
-					sprintf(
-						/* translators: %d: number of photos for this room */
-						_n( '%d photo', '%d photos', $acc_room_count, 'restwell-retreats' ),
-						$acc_room_count
-					)
-				);
-				?>
-			</p>
-			  <?php
-				foreach ( array_slice( $acc_room_photos, 1 ) as $acc_room_extra ) :
-					?>
-			<img
-			  data-gallery-slide
-			  hidden
-			  src="<?php echo esc_url( restwell_theme_image_url( $acc_room_extra['src'] ) ); ?>"
-			  alt="<?php echo esc_attr( $acc_room_extra['alt'] ); ?>"
-			  width="640"
-			  height="480"
-			  loading="lazy"
-			  decoding="async"
-			/>
-					<?php
-				endforeach;
-				?>
-			<?php endif; ?>
-		  </div>
-		  <div class="room-access__copy">
-			<header class="section-head section-head--tight">
-			  <h3 id="room-<?php echo esc_attr( $acc_room_card['id'] ); ?>-h"><?php echo esc_html( $acc_room_card['heading'] ); ?></h3>
-			</header>
-			<?php if ( ! empty( $acc_room_items ) ) : ?>
-			<ul class="checklist">
-			  <?php foreach ( $acc_room_items as $acc_room_item ) : ?>
-			  <li><?php echo wp_kses_post( $acc_room_item ); ?></li>
-			  <?php endforeach; ?>
-			</ul>
-			<?php endif; ?>
-			<?php if ( ! empty( $acc_room_detail_items ) ) : ?>
-			<details class="room-access__more-kit">
-			  <summary><?php echo esc_html__( 'More kit detail', 'restwell-retreats' ); ?></summary>
-			  <ul class="checklist">
-				<?php foreach ( $acc_room_detail_items as $acc_room_item ) : ?>
-				<li><?php echo wp_kses_post( $acc_room_item ); ?></li>
-				<?php endforeach; ?>
-			  </ul>
+			<?php if ( $acc_item_fold ) : ?>
 			</details>
 			<?php endif; ?>
-		  </div>
-		</div>
-	  </article>
-			<?php
-		endforeach;
-		?>
-
-	  <div class="section-y band-white">
-		<div class="container">
-		  <ul class="card-grid card-grid--2" role="list">
-			<li><article class="info-card info-card--sand info-card--flat"><h3>Specific requirement?</h3><p>Email us your needs as early as you can. We may not be able to provide every aid at short notice, but we’d much rather you ask than be unsure.</p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Send details</a></article></li>
-			<li><article class="info-card info-card--sand info-card--flat"><h3>Need precise measurements?</h3><p>You’ll find door widths and key specs here. If you need other measurements, just let us know and we’ll measure them for you.</p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Request measurements</a></article></li>
+			<?php if ( '' !== $acc_item_note && ! $acc_item_fold && ! $acc_item_lead ) : ?>
+			<p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
+			<?php endif; ?>
+		  </li>
+			<?php endforeach; ?>
 		  </ul>
+			<?php if ( 'transfers' === $acc_gid ) : ?>
+		  <div class="equip-notice equip-notice--quiet">
+			<p class="equip-notice__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
+		  </div>
+			<?php endif; ?>
+		  </div>
+		</section>
+		<?php endforeach; ?>
 		</div>
 	  </div>
 	</section>
-	<section class="section-y band-subtle" data-gallery>
-	  <div class="container">
-		<header class="section-head">
-		  <?php if ( '' !== $acc_gallery_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $acc_gallery_label ); ?></p>
-		  <?php endif; ?>
-		  <h2><?php echo esc_html( $acc_gallery_heading ); ?></h2>
-		  <?php if ( '' !== $acc_gallery_intro ) : ?>
-		  <p class="lede"><?php echo esc_html( $acc_gallery_intro ); ?></p>
-		  <?php endif; ?>
+
+	<section class="section-y section-y--compact band-white" id="acc-limits" aria-labelledby="acc-limits-h">
+	  <div class="container split acc-limits-split">
+		<header class="section-head section-head--tight">
+		  <p class="eyebrow"><?php esc_html_e( 'Limits', 'restwell-retreats' ); ?></p>
+		  <h2 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h2>
+		  <p class="lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
 		</header>
-		<ul class="gallery-grid" role="list" aria-label="Access equipment photos">
-		  <?php
-			if ( ! empty( $acc_gallery_ids ) ) :
-				foreach ( $acc_gallery_ids as $acc_gallery_index => $acc_gallery_id ) :
-					$acc_gallery_id  = absint( $acc_gallery_id );
-					$acc_gallery_src = wp_get_attachment_image_url( $acc_gallery_id, 'large' );
-					if ( ! $acc_gallery_src ) {
-						continue;
-					}
-					$acc_gallery_alt = trim( (string) get_post_meta( $acc_gallery_id, '_wp_attachment_image_alt', true ) );
-					if ( '' === $acc_gallery_alt ) {
-						$acc_gallery_alt = get_the_title( $acc_gallery_id );
-					}
-					?>
-		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="<?php echo esc_attr( (string) $acc_gallery_index ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: image description */ __( 'View full size: %s', 'restwell-retreats' ), $acc_gallery_alt ) ); ?>">
-			  <img src="<?php echo esc_url( $acc_gallery_src ); ?>" alt="<?php echo esc_attr( $acc_gallery_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
-			</button>
-		  </li>
-					<?php
-				endforeach;
-			else :
-				foreach ( $acc_gallery_fallback as $acc_gallery_index => $acc_gallery_item ) :
-					?>
-		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="<?php echo esc_attr( (string) $acc_gallery_index ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: image description */ __( 'View full size: %s', 'restwell-retreats' ), $acc_gallery_item['alt'] ) ); ?>">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( $acc_gallery_item['src'] ) ); ?>" alt="<?php echo esc_attr( $acc_gallery_item['alt'] ); ?>" width="640" height="480" loading="lazy" decoding="async" />
-			</button>
-		  </li>
-					<?php
-				endforeach;
-			endif;
-			?>
-		</ul>
+		<div class="download-panel acc-limits__card">
+		  <p class="acc-limits__contact">
+			<?php
+				echo wp_kses(
+					sprintf(
+						/* translators: 1: tel href, 2: visible phone, 3: mailto href, 4: visible email */
+						__( 'Ring <a class="text-link" href="%1$s">%2$s</a> or email <a class="text-link" href="%3$s">%4$s</a> and tell us what would make the stay work. Five guests is the limit our safety checks are based on.', 'restwell-retreats' ),
+						esc_url( 'tel:' . $acc_host_tel ),
+						esc_html( $acc_host_phone ),
+						esc_url( 'mailto:' . $acc_host_email ),
+						esc_html( $acc_host_email )
+					),
+					array(
+						'a' => array(
+							'class' => true,
+							'href'  => true,
+						),
+					)
+				);
+				?>
+		  </p>
+		</div>
 	  </div>
 	</section>
-	<section class="section-y band-white">
-	  <div class="container split">
-		<div class="split__media">
-			<img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-coastal-pathway.webp' ) ); ?>" alt="Flat, paved coastal pathway along Tankerton promenade" width="900" height="675" loading="lazy" decoding="async" />
-		</div>
-		<div>
-		  <header class="section-head">
+
+	<section class="section-y band-subtle" id="destination" aria-labelledby="destination-h">
+	  <div class="container">
+		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $acc_dest_label ) : ?>
 			<p class="eyebrow"><?php echo esc_html( $acc_dest_label ); ?></p>
 			<?php endif; ?>
-			<h2><?php echo esc_html( $acc_dest_heading ); ?></h2>
+			<h2 id="destination-h"><?php echo esc_html( $acc_dest_heading ); ?></h2>
 			<?php if ( '' !== $acc_dest_intro ) : ?>
 			<p class="lede"><?php echo esc_html( $acc_dest_intro ); ?></p>
 			<?php endif; ?>
@@ -938,13 +799,11 @@ get_template_part(
 			</div>
 			<?php endforeach; ?>
 		  </dl>
-		</div>
 	  </div>
 	</section>
-	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+	<section class="section-y band-white" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
-		<div class="faq__layout">
-		  <header class="faq__intro">
+		<header class="section-head section-head--tight">
 			<?php if ( '' !== $acc_faq_label ) : ?>
 			<p class="eyebrow"><?php echo esc_html( $acc_faq_label ); ?></p>
 			<?php endif; ?>
@@ -952,7 +811,7 @@ get_template_part(
 			<?php if ( '' !== $acc_faq_intro ) : ?>
 			<p class="lede"><?php echo esc_html( $acc_faq_intro ); ?></p>
 			<?php endif; ?>
-		  </header>
+		</header>
 		  <?php
 			$acc_faq_accordion = array();
 			foreach ( $acc_faq_items as $faq_i => $faq_row ) {
@@ -969,13 +828,12 @@ get_template_part(
 				null,
 				array(
 					'id_prefix'    => 'a11y-q',
-					'list_class'   => 'faq-list--split',
-					'wrap_columns' => true,
-					'columns'      => array( array_slice( $acc_faq_accordion, 0, 5, true ), array_slice( $acc_faq_accordion, 5, null, true ) ),
+					'list_class'   => '',
+					'wrap_columns' => false,
+					'columns'      => array( $acc_faq_accordion ),
 				)
 			);
 			?>
-		</div>
 	  </div>
 	</section>
 
@@ -985,7 +843,7 @@ if ( $restwell_access_guide instanceof WP_Post ) :
 	$restwell_access_guide_url = get_permalink( $restwell_access_guide );
 	if ( $restwell_access_guide_url ) :
 		?>
-	<section class="section-y section-y--compact band-white" aria-labelledby="access-guide-h">
+	<section class="section-y section-y--compact band-subtle" aria-labelledby="access-guide-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow">Comparing other cottages?</p>

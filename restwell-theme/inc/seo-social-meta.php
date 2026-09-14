@@ -16,8 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Theme-relative image paths for Open Graph / Featured heroes by page slug.
  *
  * Paths are under assets/images/. Place-led and local-area pages use the new
- * Kent/Whitstable stock JPGs; product pages use inviting bungalow photos
- * (garden, lounge, bedroom) rather than kit/detail documentary shots.
+ * Kent/Whitstable stock JPGs; most product pages use inviting bungalow photos
+ * (garden, lounge, bedroom). The access statement uses the wet-room lead so
+ * social shares show the kit, not a generic sunset.
  *
  * @return array<string, string> Slug => path relative to assets/images/.
  */
@@ -26,7 +27,7 @@ function restwell_get_default_og_stock_filename_map() {
 		'home'                  => 'stock/restwell-whitstable-promenade-golden-hour.jpg',
 		'our-story'             => 'stock/restwell-kent-riverside-brick-house.jpg',
 		'the-property'          => 'bungalow/GRDEN-1-LS.jpg',
-		'accessibility'         => 'stock/restwell-whitstable-promenade-golden-hour.jpg',
+		'accessibility'         => 'bungalow/WR-1-LS.jpg',
 		'pricing'               => 'bungalow/LR-2-LS.jpg',
 		'how-it-works'          => 'bungalow/BD1-2-LS.jpg',
 		'who-its-for'           => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
@@ -143,7 +144,7 @@ function restwell_output_social_meta() {
 		$url = home_url( '/' );
 	}
 
-	// Image - og_image_id → featured image (posts) → template hero image → page stock map → coastline.
+	// Image - accessibility stock (wet room) → og_image_id → featured → template hero → page stock → coastline.
 	// Prefer a social-sized derivative (large) over Media Library masters (often multi-MB).
 	$image_url           = '';
 	$image_attachment_id = 0;
@@ -158,7 +159,15 @@ function restwell_output_social_meta() {
 		}
 		return is_string( $url ) ? $url : '';
 	};
-	if ( $pid ) {
+	if ( $pid && function_exists( 'get_page_template_slug' )
+		&& 'template-accessibility.php' === (string) get_page_template_slug( $pid )
+		&& function_exists( 'restwell_get_default_og_image_url_for_request' ) ) {
+		$mapped = restwell_get_default_og_image_url_for_request( $pid );
+		if ( $mapped !== '' ) {
+			$image_url = $mapped;
+		}
+	}
+	if ( $pid && ! $image_url ) {
 		$og_img_id = absint( get_post_meta( $pid, 'og_image_id', true ) );
 		if ( $og_img_id ) {
 			$image_url           = $pick_social_attachment_url( $og_img_id );

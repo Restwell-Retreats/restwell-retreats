@@ -197,6 +197,21 @@ function restwell_enquiry_funding_label( string $slug ): string {
 }
 
 /**
+ * Map contact-preference slug to a readable label for email and CRM.
+ *
+ * @param string $slug Form value (email|phone|either).
+ * @return string
+ */
+function restwell_enquiry_contact_pref_label( string $slug ): string {
+	$labels = array(
+		'email'  => __( 'Email', 'restwell-retreats' ),
+		'phone'  => __( 'Phone', 'restwell-retreats' ),
+		'either' => __( 'Either', 'restwell-retreats' ),
+	);
+	return isset( $labels[ $slug ] ) ? $labels[ $slug ] : $slug;
+}
+
+/**
  * Optional “how did you hear about us” choices (slug => label).
  *
  * @return array<string, string>
@@ -239,6 +254,31 @@ function restwell_enquiry_store_heard_about( string $slug, string $detail ): str
 		return ( strlen( $stored ) > 200 ) ? substr( $stored, 0, 200 ) : $stored;
 	}
 	return $slug;
+}
+
+/**
+ * Map a stored enquiry row to restwell_email_enquiry_notification() input.
+ *
+ * @param object $row Enquiry row (rw_enquiries columns).
+ * @return array<string, mixed>
+ */
+function restwell_enquiry_notification_data_from_row( object $row ): array {
+	return array(
+		'id'           => isset( $row->id ) ? absint( $row->id ) : 0,
+		'name'         => isset( $row->name ) ? (string) $row->name : '',
+		'email'        => isset( $row->email ) ? (string) $row->email : '',
+		'phone'        => isset( $row->phone ) ? (string) $row->phone : '',
+		'contact_pref' => isset( $row->contact_preference ) ? (string) $row->contact_preference : '',
+		'pref_time'    => isset( $row->preferred_time ) ? (string) $row->preferred_time : '',
+		'heard_about'  => isset( $row->heard_about ) ? (string) $row->heard_about : '',
+		'dates'        => isset( $row->preferred_dates ) ? (string) $row->preferred_dates : '',
+		'guests'       => isset( $row->num_guests ) ? (string) $row->num_guests : '',
+		'funding'      => isset( $row->funding_type ) ? (string) $row->funding_type : '',
+		'care'         => isset( $row->care_requirements ) ? (string) $row->care_requirements : '',
+		'access'       => isset( $row->accessibility ) ? (string) $row->accessibility : '',
+		'message'      => isset( $row->message ) ? (string) $row->message : '',
+		'urgent'       => ! empty( $row->is_urgent ),
+	);
 }
 
 /**
@@ -565,9 +605,7 @@ function restwell_handle_enquire_submit(): void {
 		}
 	}
 
-	$to      = restwell_get_submission_notify_email();
-	$subject = restwell_mail_staff_subject( $urgent ? 'urgent_enquiry' : 'enquiry', (int) $enquiry_id );
-	$notification = restwell_email_enquiry_notification(
+	$staff_sent = restwell_send_enquiry_staff_notification(
 		array(
 			'id'           => (int) $enquiry_id,
 			'name'         => $name,
@@ -585,8 +623,6 @@ function restwell_handle_enquire_submit(): void {
 			'urgent'       => $urgent,
 		)
 	);
-
-	$staff_sent = restwell_wp_mail_with_retry( $to, $notification['subject'], $notification['body'], $notification['headers'] );
 	if ( ! $staff_sent ) {
 		restwell_service_crm_gateway()->add_enquiry_note(
 			(int) $enquiry_id,

@@ -48,7 +48,7 @@ function restwell_crm_dashboard_render_orientation() {
 					array(
 						__( 'Notifications, Mailchimp, who can use the CRM', 'restwell-retreats' ),
 						'<a href="#rw-crm-settings">' . esc_html__( 'Dashboard → Settings (below)', 'restwell-retreats' ) . '</a>',
-						__( 'Enquiry and FAQ alerts always go to hello@restwellretreats.co.uk. Mailchimp and CRM role access only — not SEO or website copy.', 'restwell-retreats' ),
+						__( 'Enquiry and FAQ alerts always go to hello@restwellretreats.co.uk. Reminder timing for unanswered New enquiries, Mailchimp, and CRM role access live here — not SEO or website copy.', 'restwell-retreats' ),
 					),
 					array(
 						__( 'House availability calendar', 'restwell-retreats' ),
@@ -108,7 +108,7 @@ function restwell_crm_dashboard_render_settings() {
 				<h2 class="rw-dash-panel__title"><?php esc_html_e( 'Settings', 'restwell-retreats' ); ?></h2>
 				<div class="rw-dash-panel__body">
 					<p class="description rw-description--tight-top">
-						<?php esc_html_e( 'Notifications always go to hello@restwellretreats.co.uk. Mailchimp and which roles can use the CRM live here. House availability ICS lives under Restwell → Availability.', 'restwell-retreats' ); ?>
+						<?php esc_html_e( 'Notifications always go to hello@restwellretreats.co.uk. Reminder timing for unanswered New enquiries, Mailchimp, and which roles can use the CRM live here. House availability ICS lives under Restwell → Availability.', 'restwell-retreats' ); ?>
 					</p>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'restwell_crm_settings' ); ?>
@@ -135,6 +135,65 @@ function restwell_crm_dashboard_render_settings() {
 									</p>
 									<p class="description">
 										<?php esc_html_e( 'New enquiry and FAQ notifications always go to this shared mailbox.', 'restwell-retreats' ); ?>
+									</p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Follow-up reminders', 'restwell-retreats' ); ?></th>
+								<td>
+									<?php
+									$reminder_enabled = function_exists( 'restwell_crm_reminder_is_enabled' )
+										? restwell_crm_reminder_is_enabled()
+										: true;
+									$reminder_stale   = function_exists( 'restwell_crm_reminder_stale_hours' )
+										? restwell_crm_reminder_stale_hours()
+										: 18;
+									$reminder_repeat  = function_exists( 'restwell_crm_reminder_repeat_hours' )
+										? restwell_crm_reminder_repeat_hours()
+										: 24;
+									?>
+									<p>
+										<label>
+											<input type="checkbox" name="restwell_crm_reminder_enabled" value="1" <?php checked( $reminder_enabled ); ?> />
+											<?php esc_html_e( 'Email hello@ when an enquiry stays in New too long', 'restwell-retreats' ); ?>
+										</label>
+									</p>
+									<p class="rw-reminder-hours">
+										<label for="restwell_crm_reminder_stale_hours">
+											<?php esc_html_e( 'First reminder after', 'restwell-retreats' ); ?>
+										</label>
+										<input
+											type="number"
+											id="restwell_crm_reminder_stale_hours"
+											name="restwell_crm_reminder_stale_hours"
+											class="small-text"
+											min="1"
+											max="168"
+											step="1"
+											value="<?php echo esc_attr( (string) $reminder_stale ); ?>"
+											required
+										/>
+										<span><?php esc_html_e( 'hours', 'restwell-retreats' ); ?></span>
+									</p>
+									<p class="rw-reminder-hours">
+										<label for="restwell_crm_reminder_repeat_hours">
+											<?php esc_html_e( 'Repeat no sooner than', 'restwell-retreats' ); ?>
+										</label>
+										<input
+											type="number"
+											id="restwell_crm_reminder_repeat_hours"
+											name="restwell_crm_reminder_repeat_hours"
+											class="small-text"
+											min="1"
+											max="168"
+											step="1"
+											value="<?php echo esc_attr( (string) $reminder_repeat ); ?>"
+											required
+										/>
+										<span><?php esc_html_e( 'hours', 'restwell-retreats' ); ?></span>
+									</p>
+									<p class="description">
+										<?php esc_html_e( 'Checked once an hour. Changing the enquiry out of New stops further reminders. Values must be between 1 and 168 hours.', 'restwell-retreats' ); ?>
 									</p>
 								</td>
 							</tr>

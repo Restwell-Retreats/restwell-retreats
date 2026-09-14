@@ -108,7 +108,7 @@ function restwell_get_accessibility_field_definitions() {
 		'acc_faq_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
 		'acc_faq_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
 	);
-	for ( $i = 1; $i <= 10; $i++ ) {
+	for ( $i = 1; $i <= 4; $i++ ) {
 		$faq[ "acc_faq_{$i}_q" ] = restwell_field(
 			sprintf(
 				/* translators: %d: question number */
@@ -148,29 +148,6 @@ function restwell_get_accessibility_field_definitions() {
 			'acc_fit_note'    => restwell_field( __( 'Guide note under the gauges', 'restwell-retreats' ), 'textarea' ),
 			'acc_fit_guide_heading' => restwell_field( __( 'Typical widths aside heading', 'restwell-retreats' ) ),
 			'acc_fit_guide_intro'   => restwell_field( __( 'Typical widths aside intro', 'restwell-retreats' ), 'textarea' ),
-		),
-		'Feature photos' => array(
-			'acc_gallery_label'     => restwell_field( __( 'Gallery section label (optional)', 'restwell-retreats' ) ),
-			'acc_gallery_heading'   => restwell_field( __( 'Gallery section heading (h2)', 'restwell-retreats' ) ),
-			'acc_gallery_intro'     => restwell_field( __( 'Short intro above the gallery (optional)', 'restwell-retreats' ), 'textarea' ),
-			'acc_gallery_image_ids' => restwell_field( __( 'Feature photos (level-access shower, ceiling hoist, step-free entrance, profiling bed, door clearances, etc.)', 'restwell-retreats' ), 'gallery' ),
-		),
-		'Property: room by room' => array(
-			'acc_room_label'      => restwell_field( __( 'Room-by-room section label (optional)', 'restwell-retreats' ) ),
-			'acc_room_heading'    => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
-			'acc_room_intro'      => restwell_field( __( 'Short intro under the heading (optional)', 'restwell-retreats' ), 'textarea' ),
-			'acc_arrival_heading' => restwell_field( __( 'Arrival & entrance (h3)', 'restwell-retreats' ) ),
-			'acc_arrival_body'    => restwell_field( __( 'Arrival body (bullets or paragraph)', 'restwell-retreats' ), 'textarea' ),
-			'acc_inside_heading'  => restwell_field( __( 'Inside the property (h3)', 'restwell-retreats' ) ),
-			'acc_inside_body'     => restwell_field( __( 'Inside body', 'restwell-retreats' ), 'textarea' ),
-			'acc_bedroom_heading' => restwell_field( __( 'Bedrooms (h3)', 'restwell-retreats' ) ),
-			'acc_bedroom_body'    => restwell_field( __( 'Bedrooms body', 'restwell-retreats' ), 'textarea' ),
-			'acc_bathroom_heading' => restwell_field( __( 'Bathroom (h3)', 'restwell-retreats' ) ),
-			'acc_bathroom_body'   => restwell_field( __( 'Bathroom body', 'restwell-retreats' ), 'textarea' ),
-			'acc_kitchen_heading' => restwell_field( __( 'Kitchen (h3)', 'restwell-retreats' ) ),
-			'acc_kitchen_body'    => restwell_field( __( 'Kitchen body', 'restwell-retreats' ), 'textarea' ),
-			'acc_outdoor_heading' => restwell_field( __( 'Outdoor spaces (h3)', 'restwell-retreats' ) ),
-			'acc_outdoor_body'    => restwell_field( __( 'Outdoor body', 'restwell-retreats' ), 'textarea' ),
 		),
 		'The destination' => array(
 			'acc_dest_label'             => restwell_field( __( 'Section label', 'restwell-retreats' ) ),

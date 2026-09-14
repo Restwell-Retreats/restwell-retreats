@@ -215,6 +215,7 @@
     var FIT_MAX = parseInt(fitInput.max, 10) || 1050;
     var MM_PER_IN = 25.4;
     var fitUnit = 'mm';
+    var fitSection = fitCheck.closest('#fit-check') || document;
 
     var formatLength = function (mm) {
       if (fitUnit === 'in') {
@@ -308,6 +309,11 @@
       fitSummary.textContent = summaryText;
       fitSummary.classList.toggle('fit-check__summary--tight', summaryState === 'tight');
       fitSummary.classList.toggle('fit-check__summary--no', summaryState === 'no');
+
+      fitSection.querySelectorAll('[data-fit-preset]').forEach(function (presetBtn) {
+        var preset = parseInt(presetBtn.getAttribute('data-fit-preset'), 10);
+        presetBtn.setAttribute('aria-pressed', ( ! isNaN(preset) && preset === chairWidth ) ? 'true' : 'false');
+      });
     };
 
     var commitNumber = function () {
@@ -354,7 +360,6 @@
     syncNumberBounds();
     renderFit();
 
-    var fitSection = fitCheck.closest('#fit-check') || document;
     fitSection.querySelectorAll('[data-fit-preset]').forEach(function (presetBtn) {
       presetBtn.addEventListener('click', function () {
         var mm = parseInt(presetBtn.getAttribute('data-fit-preset'), 10);
@@ -531,6 +536,25 @@
     }
   }
 
+  /*
+   * Horizontal-only: element.scrollIntoView() also moves the page, so a
+   * focused/active chip would yank the document. Keep the chip inside the
+   * scroller with a little inset so labels aren't clipped at the edge.
+   */
+  function scrollChipIntoScroller(el) {
+    if (!el || !el.closest) return;
+    var scroller = el.closest('.subnav__list, .pill-tabs');
+    if (!scroller) return;
+    var sRect = scroller.getBoundingClientRect();
+    var eRect = el.getBoundingClientRect();
+    var inset = 12;
+    if (eRect.left < sRect.left + inset) {
+      scroller.scrollLeft += eRect.left - sRect.left - inset;
+    } else if (eRect.right > sRect.right - inset) {
+      scroller.scrollLeft += eRect.right - sRect.right + inset;
+    }
+  }
+
   /* ---------- Sticky TOC scroll-spy ---------- */
   var tocRoot = document.querySelector('[data-toc]');
   if (tocRoot) {
@@ -541,17 +565,25 @@
         return id ? document.getElementById(id) : null;
       })
       .filter(Boolean);
+    var tocActiveId = '';
 
     function setActiveToc(id) {
+      var changed = id !== tocActiveId;
+      tocActiveId = id;
+      var activeLink = null;
       tocLinks.forEach(function (link) {
         var match = link.getAttribute('href') === '#' + id;
         link.classList.toggle('is-active', match);
         if (match) {
           link.setAttribute('aria-current', 'location');
+          activeLink = link;
         } else {
           link.removeAttribute('aria-current');
         }
       });
+      if (changed && activeLink) {
+        scrollChipIntoScroller(activeLink);
+      }
     }
 
     if (tocSections.length) {
@@ -573,12 +605,51 @@
         if (Date.now() < tocPinnedUntil) return;
         var marker = tocMarkerY();
         var current = tocSections[0].id;
+        var containing = null;
+        tocSections.forEach(function (section) {
+          var rect = section.getBoundingClientRect();
+          if (rect.top <= marker && rect.bottom > marker) {
+            containing = section.id;
+          }
+        });
+        if (containing) {
+          setActiveToc(containing);
+          return;
+        }
         tocSections.forEach(function (section) {
           if (section.getBoundingClientRect().top <= marker) {
             current = section.id;
           }
         });
         setActiveToc(current);
+      }
+
+      function applyHashToc() {
+        var hash = window.location.hash.slice(1);
+        if (!hash) return;
+        var matched = false;
+        tocSections.forEach(function (section) {
+          if (section.id === hash) {
+            matched = true;
+          }
+        });
+        if (matched) {
+          setActiveToc(hash);
+          tocPinnedUntil = Date.now() + 900;
+        }
+      }
+
+      function syncSubnavScrollAffordance() {
+        var list = tocRoot.querySelector('.subnav__list');
+        if (!list) return;
+        var overflow = list.scrollWidth > list.clientWidth + 1;
+        tocRoot.classList.toggle('is-scrollable', overflow);
+        if (!overflow) {
+          tocRoot.classList.remove('is-at-start', 'is-at-end');
+          return;
+        }
+        tocRoot.classList.toggle('is-at-start', list.scrollLeft <= 2);
+        tocRoot.classList.toggle('is-at-end', list.scrollLeft + list.clientWidth >= list.scrollWidth - 2);
       }
 
       /*
@@ -604,24 +675,38 @@
         window.requestAnimationFrame(function () {
           syncActiveToc();
           syncSubnavVisibility();
+          syncSubnavScrollAffordance();
           tocTicking = false;
         });
       }
 
+      var subnavList = tocRoot.querySelector('.subnav__list');
       window.addEventListener('scroll', requestTocSync, { passive: true });
       window.addEventListener('resize', requestTocSync);
-      window.addEventListener('hashchange', requestTocSync);
+      window.addEventListener('hashchange', function () {
+        applyHashToc();
+        requestTocSync();
+      });
+      if (subnavList) {
+        subnavList.addEventListener('scroll', syncSubnavScrollAffordance, { passive: true });
+      }
       tocLinks.forEach(function (link) {
         link.addEventListener('click', function () {
           var id = (link.getAttribute('href') || '').slice(1);
           if (!id) return;
           setActiveToc(id);
-          tocPinnedUntil = Date.now() + 500;
-          window.setTimeout(requestTocSync, 520);
+          tocPinnedUntil = Date.now() + 900;
+          window.setTimeout(requestTocSync, 920);
         });
       });
+      applyHashToc();
       syncActiveToc();
       syncSubnavVisibility();
+      syncSubnavScrollAffordance();
+      window.addEventListener('load', function () {
+        applyHashToc();
+        requestTocSync();
+      });
     }
   }
 
@@ -740,11 +825,16 @@
       return wrapper ? wrapper.querySelector('.field-error') : null;
     }
 
+    function msNamed(name) {
+      var root = msForm || multistep;
+      return root ? root.querySelector('[name="' + name + '"]') : document.querySelector('[name="' + name + '"]');
+    }
+
     function msSyncHealthConsentRequired() {
-      var healthBox = document.getElementById('enq-health-consent');
+      var healthBox = msNamed('enq_health_consent');
       if (!healthBox) return;
-      var care = document.getElementById('enq-care');
-      var access = document.getElementById('enq-access');
+      var care = msNamed('enq_care');
+      var access = msNamed('enq_accessibility');
       var hasNotes = (care && care.value.trim() !== '') || (access && access.value.trim() !== '');
       healthBox.required = hasNotes;
       if (hasNotes) return;
@@ -776,7 +866,7 @@
     multistep.addEventListener('change', msClearFieldError);
     function msClearFieldError(event) {
       var input = event.target;
-      if (input && (input.id === 'enq-care' || input.id === 'enq-access')) {
+      if (input && (input.name === 'enq_care' || input.name === 'enq_accessibility')) {
         msSyncHealthConsentRequired();
       }
       var wrapper = input.closest ? input.closest('.field') : null;
@@ -868,13 +958,7 @@
 
   /* Keep focused chips in view inside horizontally scrolling subnav / FAQ filters. */
   document.addEventListener('focusin', function (event) {
-    var el = event.target;
-    if (!el || !el.closest) return;
-    var scroller = el.closest('.subnav__list, .pill-tabs');
-    if (!scroller) return;
-    if (typeof el.scrollIntoView === 'function') {
-      el.scrollIntoView({ inline: 'nearest', block: 'nearest' });
-    }
+    scrollChipIntoScroller(event.target);
   });
 
 })();

@@ -68,7 +68,7 @@ class OccupancyCopyTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'guideTotal', $js );
 		$this->assertStringContainsString( 'fillBreakdown', $js );
 		$this->assertStringContainsString( 'data-rate', $js );
-		$this->assertStringContainsString( 'Tap another night to stay longer.', $js );
+		$this->assertStringNotContainsString( 'Tap another night to stay longer.', $js );
 		$this->assertStringNotContainsString( 'click it again', $js );
 		$this->assertStringNotContainsString( 'Click a last night', $js );
 	}

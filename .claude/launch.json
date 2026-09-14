@@ -21,6 +21,20 @@
         "restwell-theme"
       ],
       "port": 4400
+    },
+    {
+      "name": "restwell-playground",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "-y",
+        "@wp-playground/cli@latest",
+        "server",
+        "--port=9400",
+        "--site-url=http://localhost:9400",
+        "--mount-before-install=/Users/elliesmith/Developer/Projects/restwell-retreats/restwell-theme:/wordpress/wp-content/themes/restwell-theme",
+        "--blueprint=/Users/elliesmith/Developer/Projects/restwell-retreats/.claude/playground-blueprint.json"
+      ],
+      "port": 9400
     }
   ]
 }

@@ -82,8 +82,17 @@ function restwell_crm_sla_badge( object $row ): string {
 		return '';
 	}
 
-	$is_critical = $age_hours >= 18;
-	$label       = $is_critical ? __( 'New >18h', 'restwell-retreats' ) : __( 'New >2h', 'restwell-retreats' );
+	$stale_hours = function_exists( 'restwell_crm_reminder_stale_hours' )
+		? restwell_crm_reminder_stale_hours()
+		: 18;
+	$is_critical = $age_hours >= $stale_hours;
+	$label       = $is_critical
+		? sprintf(
+			/* translators: %d: hours an enquiry has sat in New. */
+			__( 'New >%dh', 'restwell-retreats' ),
+			$stale_hours
+		)
+		: __( 'New >2h', 'restwell-retreats' );
 
 	$class = $is_critical ? 'rw-sla-pill rw-sla-pill--critical' : 'rw-sla-pill rw-sla-pill--warn';
 

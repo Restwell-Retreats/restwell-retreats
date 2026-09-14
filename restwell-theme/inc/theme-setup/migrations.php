@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 53;
+const RESTWELL_SCHEMA_VERSION = 61;
 
 
 /**
@@ -1085,6 +1085,355 @@ function restwell_migrate_continuity_wording_v53() {
 }
 
 /**
+ * Design/IA: de-duplicate the access page.
+ *
+ * /accessibility/ was repeating itself — door widths in four places, hoist and
+ * bed specs in three, "ask us for a measurement" in six — and its room-by-room
+ * photo walk was a second copy of the /the-property/ tour. The tour and the
+ * feature gallery are gone and their route facts live once in the equipment
+ * register, so their meta is retired here. FAQ 10 -> 4: the generic "what
+ * should I check" questions were near-duplicates of each other and belong in
+ * the planned blog master guide, not on the property's own access page.
+ */
+function restwell_migrate_acc_deduplicate_v54() {
+	if ( get_option( 'restwell_acc_deduplicate_v54', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		// Page may be created later by Theme Setup — retry on a later request.
+		return;
+	}
+	$page_id = (int) $page->ID;
+
+	// Nothing renders these any more and no admin field edits them.
+	$retired = array(
+		'acc_room_label',
+		'acc_room_heading',
+		'acc_room_intro',
+		'acc_gallery_label',
+		'acc_gallery_heading',
+		'acc_gallery_intro',
+		'acc_gallery_image_ids',
+	);
+	foreach ( array( 'arrival', 'inside', 'bedroom', 'bathroom', 'kitchen', 'outdoor' ) as $room ) {
+		$retired[] = 'acc_' . $room . '_heading';
+		$retired[] = 'acc_' . $room . '_body';
+	}
+	foreach ( $retired as $key ) {
+		delete_post_meta( $page_id, $key );
+	}
+
+	$faq = array(
+		1 => array(
+			'q' => 'Do you provide hoist slings?',
+			'a' => 'No. Slings are prescribed items of personal care, fitted to the individual and to the hoist mechanism, so it would not be safe for us to supply one. Both hoists here take loop-style slings on a two-point spreader bar. Please bring the sling the person already uses.',
+		),
+		2 => array(
+			'q' => 'What is a ceiling track hoist in holiday accommodation?',
+			'a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle — unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+		),
+		3 => array(
+			'q' => 'Why does a profiling bed matter in an accessible bedroom?',
+			'a' => 'It helps with positioning, pressure care and safer transfers, and it sets a working height that protects the back of whoever is providing care. A fixed divan gives you none of that, and a mobile hoist often cannot get its legs underneath one. We have two profiling beds and lay the bedrooms out around your party.',
+		),
+		4 => array(
+			'q' => 'What should “wheelchair friendly” actually mean?',
+			'a' => 'It should mean published numbers you can check against your own chair and your own equipment: clear door openings, step-free routes, safe working loads, turning circles. If a listing says “wheelchair friendly” and will not give you a measurement when you ask, that tells you what you need to know. Everything we have is on this page.',
+		),
+	);
+	foreach ( $faq as $n => $pair ) {
+		$q_key = 'acc_faq_' . $n . '_q';
+		$a_key = 'acc_faq_' . $n . '_a';
+		$existing_q = (string) get_post_meta( $page_id, $q_key, true );
+		$existing_a = (string) get_post_meta( $page_id, $a_key, true );
+		// Seed empty slots; replace known pre-dedupe SEO copy; leave editor customisations.
+		if ( '' === trim( $existing_q ) || restwell_migrate_acc_faq_is_legacy_v54( $existing_q ) ) {
+			update_post_meta( $page_id, $q_key, $pair['q'] );
+		}
+		if ( '' === trim( $existing_a ) || restwell_migrate_acc_faq_is_legacy_v54( $existing_a ) ) {
+			update_post_meta( $page_id, $a_key, $pair['a'] );
+		}
+	}
+
+	// The retired questions would otherwise sit in the database as orphans.
+	for ( $n = 5; $n <= 10; $n++ ) {
+		delete_post_meta( $page_id, 'acc_faq_' . $n . '_q' );
+		delete_post_meta( $page_id, 'acc_faq_' . $n . '_a' );
+	}
+
+	update_option( 'restwell_acc_deduplicate_v54', '1', false );
+}
+
+/**
+ * Whether accessibility FAQ meta still holds the pre-v54 SEO-style copy.
+ *
+ * @param string $text Question or answer text.
+ * @return bool
+ */
+function restwell_migrate_acc_faq_is_legacy_v54( string $text ): bool {
+	$text = trim( $text );
+	if ( '' === $text ) {
+		return false;
+	}
+	// Question/answer openings from the old 10-item SEO set only.
+	// Do not list strings that are also the post-v54 FAQ copy (e.g. FAQ 2’s question).
+	$legacy_starts = array(
+		'Can I find a holiday cottage with a ceiling hoist',
+		'What should I check before booking a hoist-equipped',
+		'Can I find a holiday cottage with a profiling bed',
+		'Can I find a holiday cottage with a hospital-style',
+		'Why does an adjustable or profiling bed matter',
+		'What accessible equipment should I expect',
+		'What should “wheelchair friendly holiday cottage” mean?',
+		'What should "wheelchair friendly holiday cottage" mean?',
+		'What do I need to check before booking an accessible holiday',
+		'What makes an accessible bungalow in the UK suitable',
+		'A ceiling track hoist is fixed to the ceiling and moves a person in a sling along a rail. It’s less bulky',
+		'A ceiling track hoist is fixed to the ceiling and moves a person in a sling along a rail. It\'s less bulky',
+		'Yes, they are uncommon. Confirm fixed ceiling track',
+		'Yes, but make sure the bed is actually on site',
+		'People searching for a “hospital bed holiday cottage”',
+		'People searching for a "hospital bed holiday cottage"',
+		'Profiling beds help with positioning, pressure care, safer transfers, and overnight care routines',
+		'Ask for a published equipment list. Restwell includes a profiling bed',
+		'Look for step-free routes, door widths that fit your chair',
+		'Check for clear door openings, a step-free route from parking',
+		'Being single-storey helps, but accessibility varies a lot',
+		'Check the hoist type and safe working load, whether the bed is under the track',
+	);
+	foreach ( $legacy_starts as $start ) {
+		if ( 0 === strpos( $text, $start ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Refresh stored privacy policy HTML so it matches current GDPR wording
+ * (FAQ collection, email-handled rights, no automated full-record wipe).
+ */
+function restwell_migrate_privacy_gdpr_align_v55() {
+	if ( get_option( 'restwell_privacy_gdpr_align_v55', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+	if ( '' !== trim( $html ) && false !== strpos( $html, 'We keep enquiry and booking-related records for up to three years' ) ) {
+		delete_post_meta( $page->ID, 'legal_body_html' );
+	}
+
+	$intro = (string) get_post_meta( $page->ID, 'legal_intro', true );
+	if ( false !== strpos( $intro, 'what we collect on the enquiry form' ) ) {
+		update_post_meta(
+			$page->ID,
+			'legal_intro',
+			'Who is responsible for your data, what we collect on enquiry, FAQ, booking and guest-guide records (including optional care notes), cookie choices, who we share data with, how long we keep records, and your UK GDPR rights (including contacting the ICO).'
+		);
+	}
+
+	update_option( 'restwell_privacy_gdpr_align_v55', '1', false );
+}
+
+/**
+ * Our Story copy: pick the clearer guest-facing beats from the 2026-09-11 draft
+ * without flattening the Welcome Guide voice (hook line, “don’t have to trust us”).
+ */
+function restwell_migrate_our_story_copy_v56() {
+	if ( get_option( 'restwell_our_story_copy_v56', '' ) === '1' ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_our_story_page_defaults' ) ) {
+		update_option( 'restwell_our_story_copy_v56', '1', false );
+		return;
+	}
+
+	$page = get_page_by_path( 'our-story', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$defaults = restwell_get_our_story_page_defaults();
+	if ( ! is_array( $defaults ) ) {
+		update_option( 'restwell_our_story_copy_v56', '1', false );
+		return;
+	}
+
+	$page_id = (int) $page->ID;
+	foreach ( $defaults as $key => $value ) {
+		if ( ! is_string( $value ) || '' === $value ) {
+			continue;
+		}
+		update_post_meta( $page_id, $key, $value );
+	}
+
+	update_option( 'restwell_our_story_copy_v56', '1', false );
+}
+
+/**
+ * Drop stored privacy HTML that predates processor / transfer wording so the
+ * theme fallback (current UK GDPR notice) is used.
+ */
+function restwell_migrate_privacy_gdpr_processors_v57() {
+	if ( get_option( 'restwell_privacy_gdpr_processors_v57', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+	if ( '' !== trim( $html ) && false === strpos( $html, 'Who we share data with' ) ) {
+		delete_post_meta( $page->ID, 'legal_body_html' );
+	}
+
+	$intro = (string) get_post_meta( $page->ID, 'legal_intro', true );
+	if ( '' !== $intro && false === strpos( $intro, 'who we share data with' ) ) {
+		update_post_meta(
+			$page->ID,
+			'legal_intro',
+			'Who is responsible for your data, what we collect on enquiry, FAQ, booking and guest-guide records (including optional care notes), cookie choices, who we share data with, how long we keep records, and your UK GDPR rights (including contacting the ICO).'
+		);
+	}
+
+	$terms = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+	if ( $terms instanceof WP_Post ) {
+		$terms_html = (string) get_post_meta( $terms->ID, 'legal_body_html', true );
+		if ( '' !== trim( $terms_html ) && false !== strpos( $terms_html, '<h2>Your data</h2>' ) && false === strpos( $terms_html, 'Your data and cookies' ) ) {
+			delete_post_meta( $terms->ID, 'legal_body_html' );
+		}
+	}
+
+	update_option( 'restwell_privacy_gdpr_processors_v57', '1', false );
+}
+
+/**
+ * Our Story build lede: OTs viewed the house; profiling bed was one of the changes.
+ */
+function restwell_migrate_our_story_ot_bed_v58() {
+	if ( get_option( 'restwell_our_story_ot_bed_v58', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'our-story', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$lede = '';
+	if ( function_exists( 'restwell_get_our_story_page_defaults' ) ) {
+		$defaults = restwell_get_our_story_page_defaults();
+		if ( is_array( $defaults ) && isset( $defaults['story_month_lede'] ) && is_string( $defaults['story_month_lede'] ) ) {
+			$lede = $defaults['story_month_lede'];
+		}
+	}
+
+	if ( '' === $lede ) {
+		update_option( 'restwell_our_story_ot_bed_v58', '1', false );
+		return;
+	}
+
+	update_post_meta( (int) $page->ID, 'story_month_lede', $lede );
+	update_option( 'restwell_our_story_ot_bed_v58', '1', false );
+}
+
+/**
+ * Our Story companies note: drop the sarcastic “doesn’t pretend / we’re a house” line.
+ */
+function restwell_migrate_our_story_cqc_note_v59() {
+	if ( get_option( 'restwell_our_story_cqc_note_v59', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'our-story', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$note = '';
+	if ( function_exists( 'restwell_get_our_story_page_defaults' ) ) {
+		$defaults = restwell_get_our_story_page_defaults();
+		if ( is_array( $defaults ) && isset( $defaults['story_companies_note'] ) && is_string( $defaults['story_companies_note'] ) ) {
+			$note = $defaults['story_companies_note'];
+		}
+	}
+
+	if ( '' === $note ) {
+		update_option( 'restwell_our_story_cqc_note_v59', '1', false );
+		return;
+	}
+
+	update_post_meta( (int) $page->ID, 'story_companies_note', $note );
+	update_option( 'restwell_our_story_cqc_note_v59', '1', false );
+}
+
+/**
+ * Re-apply the companies note after v59 wrote a stale string.
+ */
+function restwell_migrate_our_story_cqc_note_v60() {
+	if ( get_option( 'restwell_our_story_cqc_note_v60', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'our-story', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	if ( ! function_exists( 'restwell_get_our_story_page_defaults' ) ) {
+		return;
+	}
+
+	$defaults = restwell_get_our_story_page_defaults();
+	$note     = ( is_array( $defaults ) && isset( $defaults['story_companies_note'] ) && is_string( $defaults['story_companies_note'] ) )
+		? $defaults['story_companies_note']
+		: '';
+
+	if ( '' === $note ) {
+		return;
+	}
+
+	update_post_meta( (int) $page->ID, 'story_companies_note', $note );
+	update_option( 'restwell_our_story_cqc_note_v60', '1', false );
+}
+
+/**
+ * Shorten accessibility FAQ sling answer — full explanation lives in #equip-slings.
+ */
+function restwell_migrate_acc_sling_faq_v61() {
+	if ( get_option( 'restwell_acc_sling_faq_v61', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'accessibility', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) ) {
+		return;
+	}
+
+	$old_answers = array(
+		'No. Slings are prescribed items of personal care, fitted to the individual and to the hoist mechanism, so it would not be safe for us to supply one. Both hoists here take loop-style slings on a two-point spreader bar. Please bring the sling the person already uses.',
+	);
+	$new_answer = 'No. Bring the sling the person already uses — both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.';
+
+	$current = (string) get_post_meta( (int) $page->ID, 'acc_faq_1_a', true );
+	if ( '' === $current || in_array( $current, $old_answers, true ) ) {
+		update_post_meta( (int) $page->ID, 'acc_faq_1_a', $new_answer );
+	}
+
+	update_option( 'restwell_acc_sling_faq_v61', '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1175,6 +1524,14 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_hero_midcta_craft_v51',
 		'restwell_hero_seo_h1_v52',
 		'restwell_continuity_wording_v53',
+		'restwell_acc_deduplicate_v54',
+		'restwell_privacy_gdpr_align_v55',
+		'restwell_our_story_copy_v56',
+		'restwell_privacy_gdpr_processors_v57',
+		'restwell_our_story_ot_bed_v58',
+		'restwell_our_story_cqc_note_v59',
+		'restwell_our_story_cqc_note_v60',
+		'restwell_acc_sling_faq_v61',
 	);
 }
 
@@ -1271,6 +1628,22 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_hero_seo_h1_v52', 92 );
 	add_action( 'init', 'restwell_migrate_continuity_wording_v53', 99 );
 	add_action( 'after_switch_theme', 'restwell_migrate_continuity_wording_v53', 93 );
+	add_action( 'init', 'restwell_migrate_acc_deduplicate_v54', 100 );
+	add_action( 'after_switch_theme', 'restwell_migrate_acc_deduplicate_v54', 94 );
+	add_action( 'init', 'restwell_migrate_privacy_gdpr_align_v55', 101 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_gdpr_align_v55', 95 );
+	add_action( 'init', 'restwell_migrate_our_story_copy_v56', 102 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_copy_v56', 96 );
+	add_action( 'init', 'restwell_migrate_privacy_gdpr_processors_v57', 103 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_gdpr_processors_v57', 97 );
+	add_action( 'init', 'restwell_migrate_our_story_ot_bed_v58', 104 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_ot_bed_v58', 98 );
+	add_action( 'init', 'restwell_migrate_our_story_cqc_note_v59', 105 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_cqc_note_v59', 99 );
+	add_action( 'init', 'restwell_migrate_our_story_cqc_note_v60', 90 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_cqc_note_v60', 100 );
+	add_action( 'init', 'restwell_migrate_acc_sling_faq_v61', 106 );
+	add_action( 'after_switch_theme', 'restwell_migrate_acc_sling_faq_v61', 101 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

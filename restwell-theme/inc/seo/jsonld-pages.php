@@ -53,7 +53,9 @@ function restwell_output_jsonld_contact_page() {
 	}
 
 	$phone = restwell_get_public_phone_tel();
-	$email = (string) get_option( 'restwell_enquiry_notify_email', '' );
+	$email = function_exists( 'restwell_get_submission_notify_email' )
+		? restwell_get_submission_notify_email()
+		: 'hello@restwellretreats.co.uk';
 
 	$contact_point = array(
 		'@type'             => 'ContactPoint',

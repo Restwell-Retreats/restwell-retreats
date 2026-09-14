@@ -10,9 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function restwell_get_public_enquiry_email(): string {
-	$e = (string) get_option( 'restwell_enquiry_notify_email', '' );
-	if ( $e && function_exists( 'is_email' ) && is_email( $e ) ) {
-		return $e;
+	if ( function_exists( 'restwell_get_submission_notify_email' ) ) {
+		return restwell_get_submission_notify_email();
 	}
 	return 'hello@restwellretreats.co.uk';
 }
@@ -46,7 +45,7 @@ function restwell_get_public_site_host(): string {
  * @return string
  */
 function restwell_privacy_policy_version(): string {
-	return '2026-09-01';
+	return '2026-09-11';
 }
 
 /**
@@ -73,22 +72,43 @@ function restwell_get_privacy_policy_content(): string {
 	return '<h2>Who we are</h2>
 <p>' . $site . ' ("we", "us", "our") offers accessible holiday accommodation in Whitstable, Kent. This website is published at ' . esc_url( home_url( '/' ) ) . '.</p>
 <p>The data controller for personal information collected through this site is ' . $entity . '.</p>
+<p>Restwell is a private adapted holiday bungalow. We are not a care home, nursing home, NHS service, or registered respite centre. Optional care, if you later arrange it, is provided by Continuity of Care Services (CQC-regulated), not by Restwell.</p>
 
 <h2>What information we collect and why</h2>
-<p>When you use our enquiry form we collect your name, email address, phone number, and the message you send. We also keep any stay dates, guest numbers, funding notes, and contact preferences you choose to add. The legal basis is your consent, recorded when you tick the privacy box on the form. If you later book, we also use the same details to perform the contract for your stay.</p>
-<p>Care requirements and accessibility needs are optional. Those notes can include health information. We only store them if you tick the separate health-data box. The legal basis for that is your explicit consent (UK GDPR Article 9). You can ask us to delete those notes at any time by emailing us.</p>
-<p>We do not sell your personal information. We do not share enquiry details with our sister company, Continuity of Care Services (CQC-regulated), unless a stay with optional care is later agreed in writing. Ticking the enquiry form does not share your data with Continuity.</p>
+<p>When you use our enquiry form (including the date picker on Pricing) we collect your name, email address, phone number, and the message you send. We also keep any stay dates, guest numbers, funding notes, contact preferences, and — if you choose to tell us — how you heard about us. The legal basis is your consent, recorded when you tick the privacy box on the form. If you later book, we also use the same details to perform the contract for your stay (UK GDPR Article 6(1)(b)) and, where needed, our legitimate interests in running the holiday let (Article 6(1)(f)).</p>
+<p>If you send a question from the FAQ page we collect your name, email, phone number, and the question, with the same consent tick. We use that only to reply.</p>
+<p>If you opt in to marketing updates we store your name, email, and phone so we can send Restwell news. That box is unticked unless you choose it. The legal basis is consent (UK GDPR and PECR). You can unsubscribe from any marketing email.</p>
+<p>When a stay is confirmed we keep booking records (guest name, email, dates, payments we need for accounts) and, if we send the arrival guide, a guest-guide record so we can email a one-time access code. That processing is to perform the booking contract.</p>
+
+<h2>Care notes and other health information</h2>
+<p>Care requirements and accessibility needs on the enquiry form are optional. Those notes can include health information (special category data). We only store them if you tick the separate health-data box. The legal basis is your explicit consent (UK GDPR Article 9(2)(a)). We use the notes only to reply, to check the bungalow is likely to fit, and, if you later agree a stay with optional care in writing, to introduce Continuity of Care Services.</p>
+<p>Please put care and accessibility notes in the labelled boxes, not only in the general message. We treat those labelled fields as special category data. If your FAQ question includes health or care details, we use them only to reply, as set out when you tick the privacy box on that form.</p>
+<p>We do not use health notes for marketing. We do not create medical records. Ticking the enquiry privacy box does not share your data with Continuity.</p>
+
+<h2>Who we share data with</h2>
+<p>We do not sell your personal information. We share it only as follows:</p>
+<ul>
+<li>Our website, email, and hosting providers, who process it on our instructions so the site and inbox work.</li>
+<li>Mailchimp (The Rocket Science Group / Intuit), only if you opt in to marketing updates.</li>
+<li>Google Analytics 4 and Metricool, only if you accept analytics cookies.</li>
+<li>Continuity of Care Services, only if a stay with optional care is later agreed in writing.</li>
+<li>Insurers, accountants, or public authorities where the law requires it.</li>
+</ul>
+
+<h2>International transfers</h2>
+<p>Google, Mailchimp, and Metricool may process data outside the UK, including in the United States. We only send analytics data after you accept analytics cookies, and marketing data after you opt in. If we cannot give the same UK-level protection, we will not use that tool for your data.</p>
 
 <h2>Cookies and analytics</h2>
-<p>Essential cookies keep the site working (for example, security checks on forms and remembering the cookie choice you make). We do not use advertising cookies.</p>
+<p>Essential cookies keep the site working: remembering the cookie choice you make, security checks on forms, and a short session on the guest arrival guide (so a booked guest stays signed in after the email code). We do not use advertising cookies.</p>
 <p>Analytics cookies (Google Analytics 4, and Metricool if it is configured) are optional. They are not set until you choose Accept analytics on the cookie banner, or later via Cookie settings in the footer. You can reject analytics and still use the site. Analytics scripts stay off until you consent, even if analytics is turned on later.</p>
 
 <h2>How long we keep your data</h2>
-<p>We keep enquiry and booking-related records for up to three years so we can answer follow-up questions and meet regulatory and insurance expectations. Optional care and accessibility notes are kept for a shorter period: 12 months if the enquiry does not become a booking, or 90 days after the stay if it does. You can ask us to delete your data sooner where the law allows.</p>
+<p>We keep enquiry, FAQ, guest-guide, and booking-related records for up to three years so we can answer follow-up questions and meet insurance and accounting needs. We do not automatically wipe whole records after that time. Optional care and accessibility notes are blanked sooner: 12 months if the enquiry does not become a booking, or 90 days after the stay if it does.</p>
+<p>If you want records removed or corrected sooner, email us. We handle those requests ourselves; there is no self-service delete button on the site.</p>
 
 <h2>Your rights</h2>
-<p>Under UK GDPR you may: ask what data we hold about you; ask us to correct mistakes; ask us to delete or restrict use of your data in certain cases; object to some processing; withdraw consent (including health-data consent) without affecting the lawfulness of processing before you withdraw; and complain to the <a href="https://www.ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner\'s Office (ICO)<span class="sr-only"> (opens in new tab)</span></a>.</p>
-<p>To exercise these rights, email <a href="' . $mailto_href . '">' . esc_html( $email ) . '</a>.</p>
+<p>Under UK GDPR you may: ask what data we hold about you; ask us to correct mistakes; ask us to delete or restrict use of your data where the law allows; object to some processing; withdraw consent (including health-data and marketing consent) without affecting the lawfulness of processing before you withdraw; and complain to the <a href="https://www.ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner\'s Office (ICO)<span class="sr-only"> (opens in new tab)</span></a>.</p>
+<p>To exercise these rights, email <a href="' . $mailto_href . '">' . esc_html( $email ) . '</a>. We will confirm it is you before we change or delete records. We aim to reply within one month.</p>
 
 <h2>Changes to this policy</h2>
 <p>We may update this policy from time to time. The current version is always on this page (policy ' . esc_html( restwell_privacy_policy_version() ) . '). Last updated: ' . esc_html( restwell_privacy_policy_updated_label() ) . '.</p>';
@@ -168,8 +188,8 @@ function restwell_get_terms_conditions_content(): string {
 <h2>Liability</h2>
 <p>To the extent permitted by law, ' . $entity . ' is not liable for loss, injury, or damage to guests or their belongings during a stay, except where caused directly by our negligence. Guests are responsible for holding adequate travel, cancellation, and personal insurance.</p>
 
-<h2>Your data</h2>
-<p>We handle your personal information in line with our <a href="' . $privacy . '">privacy policy</a>.</p>
+<h2>Your data and cookies</h2>
+<p>We handle your personal information, including any care or accessibility notes you choose to share, in line with our <a href="' . $privacy . '">privacy policy</a>. Optional analytics cookies stay off until you accept them. You can change that choice via Cookie settings in the footer.</p>
 
 <h2>Contact</h2>
 <p>Questions about these terms: use <a href="' . $enquire . '">our enquiry page</a> or email <a href="' . $mailto . '">' . esc_html( $email ) . '</a>.</p>
@@ -220,7 +240,7 @@ function restwell_get_privacy_policy_page_defaults() {
 	return array(
 		'legal_label'         => 'Your information',
 		'legal_heading'       => 'Privacy Policy',
-		'legal_intro'         => 'Who is responsible for your data, what we collect on the enquiry form (including optional care notes), cookie choices, retention, and your UK GDPR rights (including contacting the ICO).',
+		'legal_intro'         => 'Who is responsible for your data, what we collect on enquiry, FAQ, booking and guest-guide records (including optional care notes), cookie choices, who we share data with, how long we keep records, and your UK GDPR rights (including contacting the ICO).',
 		'legal_hero_image_id' => 0,
 		'legal_body_html'     => '',
 	);
@@ -235,7 +255,7 @@ function restwell_get_terms_conditions_page_defaults() {
 	return array(
 		'legal_label'         => 'Bookings',
 		'legal_heading'       => 'Terms & Conditions',
-		'legal_intro'         => 'Booking confirmation, payment, cancellation terms, accessibility and exceptional circumstances, house rules, optional care via Continuity of Care Services, and liability.',
+		'legal_intro'         => 'Booking confirmation, payment, cancellation terms, accessibility and exceptional circumstances, house rules, optional care via Continuity of Care Services, liability, and how we handle personal data and cookies.',
 		'legal_hero_image_id' => 0,
 		'legal_body_html'     => '',
 	);

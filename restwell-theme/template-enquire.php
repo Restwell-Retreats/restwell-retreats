@@ -210,6 +210,17 @@ get_template_part(
 							</div>
 						</div>
 						<div class="field"><label for="enq-time"><?php esc_html_e( 'Best time to call', 'restwell-retreats' ); ?></label><input id="enq-time" name="enq_preferred_time" placeholder="e.g. weekday mornings" value="<?php echo esc_attr( $enq_val( 'enq_preferred_time', $enq_fields ) ); ?>" /></div>
+						<?php
+						get_template_part(
+							'template-parts/enquire-heard-about',
+							null,
+							array(
+								'id_prefix' => 'enq',
+								'selected'  => $enq_val( 'enq_heard_about', $enq_fields ),
+								'other'     => $enq_val( 'enq_heard_other', $enq_fields ),
+							)
+						);
+						?>
 					</fieldset>
 					<div class="form-actions form-actions--end">
 						<button class="btn btn-gold" type="button" data-step-next><?php esc_html_e( 'Continue', 'restwell-retreats' ); ?></button>

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/accessibility/",
+  "preferredVersions": { "php": "8.3", "wp": "latest" },
+  "steps": [
+    { "step": "activateTheme", "themeFolderName": "restwell-theme" },
+    {
+      "step": "setSiteOptions",
+      "options": {
+        "blogname": "Restwell Retreats",
+        "permalink_structure": "/%postname%/"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\nrequire '/wordpress/wp-load.php';\n// Loading WordPress fires init, where the theme creates its pages and runs its content migrations.\n$home = get_page_by_path( 'home', OBJECT, 'page' );\nif ( $home ) {\n\tupdate_option( 'show_on_front', 'page' );\n\tupdate_option( 'page_on_front', $home->ID );\n}\nflush_rewrite_rules( false );\n"
+    },
+    { "step": "login" }
+  ]
+}

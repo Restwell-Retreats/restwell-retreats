@@ -15,8 +15,8 @@
  *     ago AND we have not reminded in REMINDER_REPEAT_HOURS, we email the
  *     team submission notify inbox (`restwell_get_submission_notify_email()`),
  *     stamp `last_reminder_at`, and append an audit-log note.
- *   - All thresholds are filterable so they can be tuned in production
- *     without touching code.
+ *   - Thresholds are stored as WordPress options (Dashboard → Settings),
+ *     then filtered so ops can still override in code without a deploy.
  *   - A `restwell_crm_reminder_dry_run` filter (or the `RESTWELL_CRM_REMINDER_DRY_RUN`
  *     constant) lets us preview matches without sending mail or writing
  *     to the database — useful for validating after a content backfill
@@ -31,15 +31,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * How many hours an enquiry must sit in `status = 'new'` before it counts
- * as stale. 18h is intentional: it bridges Friday-evening submits to
+ * as stale. 18h is the default: it bridges Friday-evening submits to
  * Monday-morning triage without spamming for "this morning's" enquiries.
+ * Override from Restwell → Dashboard → Settings (or the
+ * `restwell_crm_reminder_stale_hours` filter).
  */
 const RESTWELL_CRM_REMINDER_STALE_HOURS = 18;
 
 /**
- * Minimum gap between two reminders for the same enquiry. 24h prevents the
- * hourly cron from re-pinging the same row every single hour after the
- * stale threshold is crossed — staff get one nudge per day, no more.
+ * Minimum gap between two reminders for the same enquiry. 24h is the default
+ * so the hourly cron does not re-ping the same row every hour after the
+ * stale threshold is crossed. Override from Dashboard → Settings (or the
+ * `restwell_crm_reminder_repeat_hours` filter).
  */
 const RESTWELL_CRM_REMINDER_REPEAT_HOURS = 24;
 
@@ -48,6 +51,55 @@ const RESTWELL_CRM_REMINDER_REPEAT_HOURS = 24;
  * each subsystem can be toggled or rescheduled independently.
  */
 const RESTWELL_CRM_REMINDER_HOOK = 'restwell_crm_reminder_check';
+
+/**
+ * Clamp a reminder threshold to 1–168 hours (one hour … one week).
+ *
+ * @param int $hours Raw hours.
+ * @return int
+ */
+function restwell_crm_reminder_clamp_hours( int $hours ): int {
+	return max( 1, min( 168, $hours ) );
+}
+
+/**
+ * Whether stale-enquiry reminder mail is switched on.
+ *
+ * @return bool
+ */
+function restwell_crm_reminder_is_enabled(): bool {
+	$stored = get_option( 'restwell_crm_reminder_enabled', '1' );
+	$on     = '0' !== (string) $stored && '' !== (string) $stored && false !== $stored;
+	return (bool) apply_filters( 'restwell_crm_reminder_enabled', $on );
+}
+
+/**
+ * Hours a "new" enquiry must wait before the first reminder.
+ *
+ * @return int
+ */
+function restwell_crm_reminder_stale_hours(): int {
+	$stored = get_option( 'restwell_crm_reminder_stale_hours', false );
+	$hours  = ( false === $stored || '' === $stored )
+		? RESTWELL_CRM_REMINDER_STALE_HOURS
+		: (int) $stored;
+	$hours  = (int) apply_filters( 'restwell_crm_reminder_stale_hours', $hours );
+	return restwell_crm_reminder_clamp_hours( $hours );
+}
+
+/**
+ * Minimum hours between two reminders for the same enquiry.
+ *
+ * @return int
+ */
+function restwell_crm_reminder_repeat_hours(): int {
+	$stored = get_option( 'restwell_crm_reminder_repeat_hours', false );
+	$hours  = ( false === $stored || '' === $stored )
+		? RESTWELL_CRM_REMINDER_REPEAT_HOURS
+		: (int) $stored;
+	$hours  = (int) apply_filters( 'restwell_crm_reminder_repeat_hours', $hours );
+	return restwell_crm_reminder_clamp_hours( $hours );
+}
 
 // =============================================================================
 // Cron registration
@@ -95,13 +147,12 @@ add_action( RESTWELL_CRM_REMINDER_HOOK, 'restwell_crm_reminder_run' );
  * reminded enquiries.
  */
 function restwell_crm_reminder_run(): void {
-	$stale_hours  = (int) apply_filters( 'restwell_crm_reminder_stale_hours', RESTWELL_CRM_REMINDER_STALE_HOURS );
-	$repeat_hours = (int) apply_filters( 'restwell_crm_reminder_repeat_hours', RESTWELL_CRM_REMINDER_REPEAT_HOURS );
+	if ( ! restwell_crm_reminder_is_enabled() ) {
+		return;
+	}
 
-	// Defensive clamping — a misconfigured filter must not turn this cron
-	// into a per-minute spam cannon or wedge the threshold to "never".
-	$stale_hours  = max( 1, min( 168, $stale_hours ) );   // 1h … 7d
-	$repeat_hours = max( 1, min( 168, $repeat_hours ) );  // 1h … 7d
+	$stale_hours  = restwell_crm_reminder_stale_hours();
+	$repeat_hours = restwell_crm_reminder_repeat_hours();
 
 	$dry_run = restwell_crm_reminder_is_dry_run();
 
@@ -117,7 +168,7 @@ function restwell_crm_reminder_run(): void {
 			continue;
 		}
 
-		$mail = restwell_crm_reminder_build_email( $row, $stale_hours );
+		$mail = restwell_crm_reminder_build_email( $row, $stale_hours, $repeat_hours );
 
 		if ( $dry_run ) {
 			restwell_crm_reminder_log_dry_run( (int) $row->id, $recipient, $mail['subject'] );
@@ -219,11 +270,12 @@ function restwell_crm_reminder_mark_reminded( int $enquiry_id ): void {
  * enquire-handler.php so reminders sit comfortably alongside fresh
  * enquiry alerts in the team inbox.
  *
- * @param object $row         Enquiry row from the database.
- * @param int    $stale_hours Threshold the enquiry tripped, used for friendlier copy.
+ * @param object $row          Enquiry row from the database.
+ * @param int    $stale_hours  Threshold the enquiry tripped, used for friendlier copy.
+ * @param int    $repeat_hours Gap until the next reminder, used in the footnote.
  * @return array{subject:string, body:string, headers:string[]}
  */
-function restwell_crm_reminder_build_email( object $row, int $stale_hours ): array {
+function restwell_crm_reminder_build_email( object $row, int $stale_hours, int $repeat_hours = 24 ): array {
 	$age_hours = (int) round( restwell_crm_reminder_age_hours( (string) $row->submitted_at ) );
 	$urgent    = (int) $row->is_urgent === 1;
 
@@ -273,9 +325,10 @@ function restwell_crm_reminder_build_email( object $row, int $stale_hours ): arr
 			'quote'      => (string) $row->message,
 			'button_url' => $crm_url,
 			'note'       => sprintf(
-				/* translators: %d: stale-threshold hours. */
-				__( 'Sent automatically because this enquiry crossed the %dh stale threshold. You will not be reminded about it again for at least 24 hours.', 'restwell-retreats' ),
-				$stale_hours
+				/* translators: 1: stale-threshold hours; 2: hours until another reminder. */
+				__( 'Sent automatically because this enquiry crossed the %1$dh stale threshold. You will not be reminded about it again for at least %2$d hours.', 'restwell-retreats' ),
+				$stale_hours,
+				$repeat_hours
 			),
 			'preview'    => sprintf(
 				/* translators: %d: number of hours since the enquiry was submitted. */

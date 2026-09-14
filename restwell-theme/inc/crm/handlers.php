@@ -266,6 +266,90 @@ function restwell_crm_handle_send_post_stay() {
 add_action( 'admin_post_restwell_crm_send_post_stay', 'restwell_crm_handle_send_post_stay' );
 
 /**
+ * Resend one enquiry’s staff notification to the shared notify inbox.
+ */
+function restwell_crm_handle_resend_enquiry_notification(): void {
+	if ( ! restwell_crm_can_manage() ) {
+		wp_die( esc_html__( 'Insufficient permissions.', 'restwell-retreats' ) );
+	}
+
+	$id = absint( $_POST['rw_enquiry_id'] ?? 0 );
+	check_admin_referer( 'restwell_crm_resend_notification_' . $id );
+
+	$redirect = static function ( int $enquiry_id, string $status ): void {
+		wp_safe_redirect(
+			add_query_arg(
+				array(
+					'page'        => 'restwell-enquiries',
+					'view'        => $enquiry_id,
+					'notify_mail' => $status,
+				),
+				admin_url( 'admin.php' )
+			)
+		);
+		exit;
+	};
+
+	if ( $id < 1 ) {
+		$redirect( 0, 'missing' );
+	}
+
+	$lock_key = 'restwell_crm_resend_lock_' . $id;
+	if ( false !== get_transient( $lock_key ) ) {
+		$redirect( $id, 'rate' );
+	}
+
+	global $wpdb;
+	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$row   = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, $id ) );
+
+	if ( ! $row ) {
+		$redirect( $id, 'missing' );
+	}
+
+	if ( ! empty( $row->anonymised_at ) ) {
+		$redirect( $id, 'anonymised' );
+	}
+
+	$to = restwell_get_submission_notify_email();
+	if ( ! is_email( $to ) ) {
+		$redirect( $id, 'no_recipient' );
+	}
+
+	if ( ! function_exists( 'restwell_send_enquiry_staff_notification' ) ) {
+		$redirect( $id, 'fail' );
+	}
+
+	$data           = restwell_enquiry_notification_data_from_row( $row );
+	$data['resent'] = true;
+	$sent           = restwell_send_enquiry_staff_notification( $data );
+
+	if ( $sent ) {
+		set_transient( $lock_key, 1, 20 );
+		restwell_service_crm_gateway()->add_enquiry_note(
+			$id,
+			sprintf(
+				/* translators: %s: staff notify email address. */
+				__( 'Staff notification resent to %s.', 'restwell-retreats' ),
+				$to
+			)
+		);
+		$redirect( $id, 'ok' );
+	}
+
+	restwell_service_crm_gateway()->add_enquiry_note(
+		$id,
+		sprintf(
+			/* translators: %s: staff notify email address. */
+			__( 'Tried to resend the staff notification to %s but the mailer returned false. Check SMTP and try again.', 'restwell-retreats' ),
+			$to
+		)
+	);
+	$redirect( $id, 'fail' );
+}
+add_action( 'admin_post_restwell_crm_resend_enquiry_notification', 'restwell_crm_handle_resend_enquiry_notification' );
+
+/**
  * Save the notification email setting.
  */
 function restwell_crm_handle_save_settings() {
@@ -280,6 +364,21 @@ function restwell_crm_handle_save_settings() {
 
 	// Phone, schema address, verification, analytics, property line, footer CTA, access PDF:
 	// managed under SEO → Site-wide (restwell_seo_sitewide_handle_save).
+
+	if ( function_exists( 'restwell_crm_reminder_clamp_hours' ) ) {
+		$reminder_enabled = ! empty( $_POST['restwell_crm_reminder_enabled'] ) ? '1' : '0';
+		update_option( 'restwell_crm_reminder_enabled', $reminder_enabled, false );
+
+		$stale_hours = isset( $_POST['restwell_crm_reminder_stale_hours'] )
+			? absint( wp_unslash( $_POST['restwell_crm_reminder_stale_hours'] ) )
+			: 18;
+		update_option( 'restwell_crm_reminder_stale_hours', restwell_crm_reminder_clamp_hours( $stale_hours ), false );
+
+		$repeat_hours = isset( $_POST['restwell_crm_reminder_repeat_hours'] )
+			? absint( wp_unslash( $_POST['restwell_crm_reminder_repeat_hours'] ) )
+			: 24;
+		update_option( 'restwell_crm_reminder_repeat_hours', restwell_crm_reminder_clamp_hours( $repeat_hours ), false );
+	}
 
 	$mailchimp_api_key = isset( $_POST['restwell_mailchimp_api_key'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_api_key'] ) )

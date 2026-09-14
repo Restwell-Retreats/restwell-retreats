@@ -238,6 +238,13 @@
 
 		function validateField(field) {
 			clearFieldError(field);
+			if (field.type === 'checkbox') {
+				if (field.required && !field.checked) {
+					showFieldError(field, 'Please confirm we can use this information to reply.');
+					return false;
+				}
+				return true;
+			}
 			var value = String(field.value || '').trim();
 
 			if (field.required && !value) {

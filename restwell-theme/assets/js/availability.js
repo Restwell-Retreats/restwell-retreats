@@ -71,6 +71,7 @@
 
 	function initDiary(root) {
 		var monthsHost = root.querySelector('.availability__months');
+		var monthLabelEl = root.querySelector('[data-availability-month-label]');
 		var months = Array.prototype.slice.call(root.querySelectorAll('[data-availability-month]'));
 		var prevBtn = root.querySelector('[data-availability-prev]');
 		var nextBtn = root.querySelector('[data-availability-next]');
@@ -104,7 +105,6 @@
 		var startIso = '';
 		var endIso = '';
 		var booked = {};
-		var twoUp = window.matchMedia('(min-width: 768px)');
 		var pricing = { off_mid: 0, off_wknd: 0, peak_mid: 0, peak_wknd: 0, peaks: [] };
 		var weekdayShort = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
@@ -144,8 +144,8 @@
 
 		function isWeekendIso(iso) {
 			var n = parseIso(iso).getDay();
-			/* Match PHP restwell_is_weekend_night: Fri + Sat (ISO N >= 5). */
-			return n === 5 || n === 6;
+			/* Match PHP restwell_is_weekend_night: Fri–Sun (JS getDay 5,6,0). */
+			return n === 0 || n >= 5;
 		}
 
 		function rateFor(iso) {
@@ -187,7 +187,7 @@
 				article.setAttribute('data-availability-month', '');
 				article.setAttribute('aria-labelledby', id);
 				article.hidden = true;
-				var head = '<h3 id="' + id + '" class="availability__month-title">' + name + '</h3>';
+				var head = '<h3 id="' + id + '" class="availability__month-title sr-only">' + name + '</h3>';
 				var thead = '<thead><tr>' + weekdayShort.map(function (w) {
 					return '<th scope="col"><abbr title="">' + w + '</abbr></th>';
 				}).join('') + '</tr></thead>';
@@ -245,7 +245,7 @@
 		}
 
 		function visibleCount() {
-			return twoUp.matches ? 2 : 1;
+			return 1;
 		}
 
 		function showMonth(nextIndex) {
@@ -266,6 +266,10 @@
 			if (prevBtn) prevBtn.disabled = index === 0;
 			/* Keep Next enabled until we have rendered maxMonths (lazy-build on click). */
 			if (nextBtn) nextBtn.disabled = index >= maxMonths - vis;
+			if (monthLabelEl && months[index]) {
+				var label = months[index].querySelector('.availability__month-title');
+				if (label) monthLabelEl.textContent = label.textContent;
+			}
 		}
 
 		function rangeTouchesBooked(from, to) {
@@ -296,20 +300,28 @@
 			if (btn) btn.setAttribute('aria-pressed', 'true');
 		}
 
-		function paintHope(from, to) {
+		function paintHope(from, lastNight) {
 			clearHope();
-			var nights = nightsInclusive(from, to);
+			var nights = nightsInclusive(from, lastNight);
 			nights.forEach(function (iso, i) {
 				var td = dayCell(iso);
 				if (!td) return;
 				td.classList.add('is-hope');
 				if (0 === i) td.classList.add('is-hope-start');
-				if (i === nights.length - 1) td.classList.add('is-hope-end');
 				var btn = td.querySelector('button[data-iso]');
 				if (btn) btn.setAttribute('aria-pressed', 'true');
 			});
-			var checkoutCell = dayCell(addDays(nights[nights.length - 1], 1));
-			if (checkoutCell) checkoutCell.classList.add('is-hope-checkout');
+			/* Leave morning is the end circle (Dribbble / Airbnb), not a dashed extra day. */
+			var leave = addDays(lastNight, 1);
+			var leaveTd = dayCell(leave);
+			if (leaveTd) {
+				leaveTd.classList.add('is-hope', 'is-hope-end');
+				var leaveBtn = leaveTd.querySelector('button[data-iso]');
+				if (leaveBtn) leaveBtn.setAttribute('aria-pressed', 'true');
+			} else if (nights.length) {
+				var lastTd = dayCell(nights[nights.length - 1]);
+				if (lastTd) lastTd.classList.add('is-hope-end');
+			}
 		}
 
 		function isWeekendNight(iso) {
@@ -373,17 +385,12 @@
 				season = bucket.peak ? 'peak ' : 'off-peak ';
 			}
 			var noun = bucket.count === 1 ? 'night' : 'nights';
-			return bucket.count + ' ' + season + kind + ' ' + noun + ' × ' + formatGbp(bucket.rate);
+			return bucket.count + ' ' + season + kind + ' ' + noun;
 		}
 
 		function fillBreakdown(nights, quote) {
 			clearBreakdownRows();
 			if (quote.weekly) {
-				var weeks = nights.length / 7;
-				appendBreakdownRow(
-					weeks === 1 ? 'Published week rate' : weeks + ' × published week rate',
-					formatGbp(quote.total)
-				);
 				return;
 			}
 			var buckets = {};
@@ -401,6 +408,9 @@
 				}
 				buckets[key].count += 1;
 			});
+			if (order.length <= 1) {
+				return;
+			}
 			order.forEach(function (key) {
 				var bucket = buckets[key];
 				appendBreakdownRow(nightLineLabel(bucket, quote.mixedSeason), formatGbp(bucket.count * bucket.rate));
@@ -448,7 +458,7 @@
 			if (prompt) {
 				if (extendHint) {
 					prompt.hidden = false;
-					prompt.textContent = 'Tap another date to start a new stay.';
+					prompt.textContent = 'Tap another night to stay longer.';
 				} else {
 					prompt.hidden = true;
 				}
@@ -527,6 +537,22 @@
 			setLive('Selection cleared.');
 		}
 
+		function previewLeave(iso) {
+			if (!startIso || endIso || booked[iso]) return;
+			if (iso === startIso) {
+				paintArrival(startIso);
+				return;
+			}
+			var arrival = startIso < iso ? startIso : iso;
+			var departure = startIso < iso ? iso : startIso;
+			var lastNight = addDays(departure, -1);
+			if (lastNight < arrival || rangeTouchesBooked(arrival, lastNight)) {
+				paintArrival(startIso);
+				return;
+			}
+			paintHope(arrival, lastNight);
+		}
+
 		function onPick(iso) {
 			if (booked[iso]) return;
 
@@ -573,6 +599,19 @@
 			onPick(iso);
 		});
 
+		if (window.matchMedia('(hover: hover)').matches && monthsHost) {
+			monthsHost.addEventListener('pointerover', function (event) {
+				var btn = event.target.closest('button[data-iso]');
+				if (!btn || !monthsHost.contains(btn)) return;
+				if (btn.closest('.is-booked')) return;
+				var iso = btn.getAttribute('data-iso');
+				if (iso) previewLeave(iso);
+			});
+			monthsHost.addEventListener('pointerleave', function () {
+				if (startIso && !endIso) paintArrival(startIso);
+			});
+		}
+
 		if (clearBtn) {
 			clearBtn.addEventListener('click', clearStay);
 		}
@@ -618,12 +657,6 @@
 				var vis = visibleCount();
 				ensureMonths(Math.min(maxMonths - 1, index + vis));
 				showMonth(index + 1);
-			});
-		}
-
-		if (typeof twoUp.addEventListener === 'function') {
-			twoUp.addEventListener('change', function () {
-				showMonth(index);
 			});
 		}
 

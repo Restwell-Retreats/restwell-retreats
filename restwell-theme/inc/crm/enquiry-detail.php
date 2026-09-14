@@ -133,6 +133,32 @@ function restwell_crm_enquiry_detail( int $id ) {
 				</p>
 			</div>
 		<?php endif; ?>
+		<?php
+		$notify_mail = isset( $_GET['notify_mail'] ) ? sanitize_key( wp_unslash( $_GET['notify_mail'] ) ) : '';
+		if ( '' !== $notify_mail ) :
+			$notify_ok    = 'ok' === $notify_mail;
+			$notify_class = $notify_ok ? 'notice-success' : ( 'rate' === $notify_mail ? 'notice-warning' : 'notice-error' );
+			?>
+			<div class="notice <?php echo esc_attr( $notify_class ); ?> is-dismissible">
+				<p>
+					<?php
+					if ( 'ok' === $notify_mail ) {
+						esc_html_e( 'Enquiry resent to the staff inbox.', 'restwell-retreats' );
+					} elseif ( 'rate' === $notify_mail ) {
+						esc_html_e( 'Wait a few seconds before resending this enquiry again.', 'restwell-retreats' );
+					} elseif ( 'anonymised' === $notify_mail ) {
+						esc_html_e( 'This enquiry has been anonymised, so it cannot be resent.', 'restwell-retreats' );
+					} elseif ( 'no_recipient' === $notify_mail ) {
+						esc_html_e( 'The staff notify address is not valid, so the email was not sent.', 'restwell-retreats' );
+					} elseif ( 'missing' === $notify_mail ) {
+						esc_html_e( 'That enquiry could not be found.', 'restwell-retreats' );
+					} else {
+						esc_html_e( 'The staff notification could not be sent. Check SMTP and try again.', 'restwell-retreats' );
+					}
+					?>
+				</p>
+			</div>
+		<?php endif; ?>
 
 		<div class="rw-detail-layout">
 
@@ -650,14 +676,36 @@ function restwell_crm_render_enquiry_sidebar( $row, array $notes, array $statuse
 					</div>
 				</div><!-- .postbox activity log -->
 
-				<?php if ( 'booked' === $row->status || ( 'closed' === $row->status && function_exists( 'restwell_email_post_stay' ) ) ) : ?>
+				<?php
+				$can_resend    = empty( $row->anonymised_at ) && function_exists( 'restwell_email_enquiry_notification' );
+				$can_promote   = 'booked' === $row->status;
+				$can_post_stay = ( 'closed' === $row->status && function_exists( 'restwell_email_post_stay' ) );
+				if ( $can_resend || $can_promote || $can_post_stay ) :
+					?>
 					<div class="rw-sidebar-workflow">
-						<?php if ( 'booked' === $row->status ) : ?>
+						<?php if ( $can_resend ) : ?>
+							<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-resend-form">
+								<?php wp_nonce_field( 'restwell_crm_resend_notification_' . $row->id ); ?>
+								<input type="hidden" name="action" value="restwell_crm_resend_enquiry_notification" />
+								<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( (string) $row->id ); ?>" />
+								<button
+									type="submit"
+									class="button button-secondary button-large rw-btn-block"
+									onclick="return confirm('<?php echo esc_js( __( 'Send this enquiry to the staff inbox again? The guest will not be emailed.', 'restwell-retreats' ) ); ?>');"
+								>
+									<?php esc_html_e( 'Resend to inbox', 'restwell-retreats' ); ?>
+								</button>
+							</form>
+							<p class="description rw-description-tiny">
+								<?php esc_html_e( 'Sends the staff notification to hello@ again. Does not email the guest.', 'restwell-retreats' ); ?>
+							</p>
+						<?php endif; ?>
+						<?php if ( $can_promote ) : ?>
 							<a href="<?php echo esc_url( $promote_url ); ?>" class="button button-primary button-large rw-btn-block">
 								<?php esc_html_e( 'Add to Guest Guide', 'restwell-retreats' ); ?>
 							</a>
 						<?php endif; ?>
-						<?php if ( 'closed' === $row->status && function_exists( 'restwell_email_post_stay' ) ) : ?>
+						<?php if ( $can_post_stay ) : ?>
 							<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="rw-post-stay-form">
 								<?php wp_nonce_field( 'restwell_crm_send_post_stay_' . $row->id ); ?>
 								<input type="hidden" name="action" value="restwell_crm_send_post_stay" />

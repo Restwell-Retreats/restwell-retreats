@@ -94,6 +94,31 @@ get_template_part(
 				<h2 id="faq-ask-h">Ask us directly</h2>
 				<p>We reply within 48 hours on most questions. Prefer to talk? Call 01622 809881.</p>
 			  </header>
+			  <?php
+				$faq_flash  = function_exists( 'restwell_faq_consume_flash' ) ? restwell_faq_consume_flash() : null;
+				$faq_errors = ( $faq_flash && ! empty( $faq_flash['errors'] ) ) ? $faq_flash['errors'] : array();
+				$faq_fields = ( $faq_flash && ! empty( $faq_flash['fields'] ) ) ? $faq_flash['fields'] : array();
+				$faq_val    = static function ( string $key, array $fields, string $default = '' ): string {
+					if ( ! array_key_exists( $key, $fields ) ) {
+						return $default;
+					}
+					return (string) $fields[ $key ];
+				};
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public PRG success flag.
+				$faq_sent = isset( $_GET['question_sent'] ) && '1' === (string) wp_unslash( $_GET['question_sent'] );
+				?>
+			  <?php if ( $faq_sent ) : ?>
+			  <p class="lede" role="status"><?php esc_html_e( 'We’ve got your question. We’ll reply within 48 hours on most questions.', 'restwell-retreats' ); ?></p>
+			  <?php elseif ( $faq_errors ) : ?>
+			  <div class="form-errors" role="alert" tabindex="-1">
+				<p><strong><?php esc_html_e( 'Please check the form and try again.', 'restwell-retreats' ); ?></strong></p>
+				<ul>
+					<?php foreach ( $faq_errors as $faq_error ) : ?>
+					<li><?php echo esc_html( $faq_error ); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			  </div>
+			  <?php endif; ?>
 			  <form class="form-stack restwell-faq-question-form" id="faq-question-form" action="<?php echo esc_url( get_permalink() ? get_permalink() : home_url( '/faq/' ) ); ?>" method="post">
 				<?php wp_nonce_field( 'restwell_faq_question', 'restwell_faq_question_nonce' ); ?>
 				<input type="hidden" name="restwell_faq_question" value="1" />
@@ -103,11 +128,12 @@ get_template_part(
 				  <label for="faq_q_website">Website</label>
 				  <input type="text" id="faq_q_website" name="faq_q_website" tabindex="-1" autocomplete="off" />
 				</div>
-				<div class="field"><label for="ask-name">Name</label><input id="ask-name" name="faq_q_name" autocomplete="name" /></div>
-				<div class="field"><label for="ask-email">Email</label><input id="ask-email" name="faq_q_email" type="email" autocomplete="email" required /></div>
-				<div class="field"><label for="ask-phone">Phone</label><input id="ask-phone" name="faq_q_phone" type="tel" autocomplete="tel" required /></div>
-				<div class="field"><label for="ask-q">Your question</label><textarea id="ask-q" name="faq_q_message" required rows="4"></textarea></div>
-				<div class="form-actions"><button class="btn btn-gold" type="submit">Send question</button></div>
+				<div class="field"><label for="ask-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?></label><input id="ask-name" name="faq_q_name" autocomplete="name" required aria-describedby="ask-name-error" value="<?php echo esc_attr( $faq_val( 'name', $faq_fields ) ); ?>" /><p class="field-error" id="ask-name-error" role="alert" hidden><?php esc_html_e( 'Enter your name.', 'restwell-retreats' ); ?></p></div>
+				<div class="field"><label for="ask-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></label><input id="ask-email" name="faq_q_email" type="email" autocomplete="email" required aria-describedby="ask-email-error" value="<?php echo esc_attr( $faq_val( 'email', $faq_fields ) ); ?>" /><p class="field-error" id="ask-email-error" role="alert" hidden><?php esc_html_e( 'Enter a valid email address.', 'restwell-retreats' ); ?></p></div>
+				<div class="field"><label for="ask-phone"><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></label><input id="ask-phone" name="faq_q_phone" type="tel" autocomplete="tel" required aria-describedby="ask-phone-error" value="<?php echo esc_attr( $faq_val( 'phone', $faq_fields ) ); ?>" /><p class="field-error" id="ask-phone-error" role="alert" hidden><?php esc_html_e( 'Enter your phone number.', 'restwell-retreats' ); ?></p></div>
+				<div class="field"><label for="ask-q"><?php esc_html_e( 'Your question', 'restwell-retreats' ); ?></label><textarea id="ask-q" name="faq_q_message" required rows="4" aria-describedby="ask-q-error"><?php echo esc_textarea( $faq_val( 'message', $faq_fields ) ); ?></textarea><p class="field-error" id="ask-q-error" role="alert" hidden><?php esc_html_e( 'Type your question.', 'restwell-retreats' ); ?></p></div>
+				<div class="field"><label for="ask-consent"><input id="ask-consent" type="checkbox" name="faq_q_consent" value="1" required aria-describedby="ask-consent-error" <?php checked( $faq_val( 'consent', $faq_fields ), '1' ); ?> /> <span><?php esc_html_e( 'I agree Restwell can use this information to reply, as set out in the', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'privacy-policy' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a> *</span></label><p class="field-error" id="ask-consent-error" role="alert" hidden><?php esc_html_e( 'Please confirm we can use this information to reply.', 'restwell-retreats' ); ?></p></div>
+				<div class="form-actions"><button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send question', 'restwell-retreats' ); ?></button></div>
 			  </form>
 			</div>
 		  </aside>

@@ -2,9 +2,10 @@
 /**
  * House occupancy from a published Outlook ICS feed.
  *
- * The feed URL is a secret (wp-config constant or non-autoloaded option).
- * Event titles, locations, and descriptions are discarded. Only busy/opaque
- * overnight blocks become booked nights on the public calendar.
+ * The feed URL is a secret (wp-config constant or non-autoloaded option via
+ * Restwell → Availability). Event titles, locations, and descriptions are
+ * discarded. Only busy/opaque overnight blocks become booked nights on the
+ * public calendar.
  *
  * @package Restwell_Retreats
  */

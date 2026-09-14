@@ -124,18 +124,5 @@ function restwell_output_structured_data() {
 			);
 		}
 	}
-
-	if ( is_page_template( 'template-accessibility.php' ) && is_singular( 'page' ) ) {
-		$acc_ids = restwell_get_accessibility_gallery_ids( get_queried_object_id() );
-		if ( ! empty( $acc_ids ) ) {
-			restwell_output_gallery_jsonld(
-				$acc_ids,
-				array(
-					'name' => get_the_title( get_queried_object_id() ),
-					'url'  => get_permalink( get_queried_object_id() ),
-				)
-			);
-		}
-	}
 }
 add_action( 'wp_head', 'restwell_output_structured_data', 10 );

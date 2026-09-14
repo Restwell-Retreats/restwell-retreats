@@ -578,6 +578,29 @@
 	box-sizing: border-box;
 }
 
+.restwell-admin .rw-settings-wrap .form-table .rw-reminder-hours {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--rw-space-2) var(--rw-space-3);
+	margin: var(--rw-space-2) 0 0;
+}
+
+.restwell-admin .rw-settings-wrap .form-table .rw-reminder-hours label {
+	min-width: 11.5rem;
+	font-weight: 600;
+	color: var(--rw-text);
+}
+
+.restwell-admin .rw-settings-wrap .form-table input[type="number"].small-text {
+	width: 5.5rem;
+	max-width: 5.5rem;
+	padding: 8px 11px;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
 .restwell-admin .rw-settings-wrap .form-table input:focus {
 	border-color: #2271b1;
 	box-shadow: 0 0 0 1px #2271b1;
@@ -1492,6 +1515,15 @@
 
 .restwell-admin-enquiry-detail .rw-post-stay-form {
 	margin-top: var(--rw-space-2);
+}
+
+.restwell-admin-enquiry-detail .rw-resend-form {
+	margin: 0;
+}
+
+.restwell-admin-enquiry-detail .rw-resend-form + .description {
+	margin-top: 6px;
+	margin-bottom: var(--rw-space-2);
 }
 
 /* ── Guest Guide admin ─────────────────────────────────────────────────── */

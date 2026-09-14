@@ -17,78 +17,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Full HTML email document.
  */
 function restwell_theme_email_wrap_welcome( string $content, string $preview = '' ): string {
-	$font_base = get_template_directory_uri();
-	$site      = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
-	$home      = esc_url( home_url( '/' ) );
-	$year      = gmdate( 'Y' );
-	$phone     = esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) );
-	$logo_url  = esc_url( restwell_theme_image_url( 'long_logo.png' ) );
-	$pre_header = $preview
-		? '<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;color:#F5EDE0;line-height:1px;">' . esc_html( $preview ) . '&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;</div>'
-		: '';
+	if ( function_exists( 'restwell_email_wrap_welcome' ) ) {
+		return restwell_email_wrap_welcome( $content, $preview );
+	}
 
+	$site = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
 	return '<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="x-apple-disable-message-reformatting">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>' . esc_html( $site ) . '</title>
 </head>
-<body style="margin:0;padding:0;background-color:#F5EDE0;font-family:Georgia,\'Times New Roman\',serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
-' . $pre_header . '
-
-<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#F5EDE0;">
-<tr><td style="padding:28px 12px;">
-
-  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" align="center" style="max-width:600px;width:100%;background-color:#FFFFFF;border:1px solid #E8DFD0;border-radius:2px;overflow:hidden;">
-
-    <tr>
-      <td style="padding:0;background-color:#D4A853;height:3px;font-size:0;line-height:0;">&nbsp;</td>
-    </tr>
-
-    <tr>
-      <td style="padding:40px 40px 28px 40px;text-align:center;background-color:#FFFFFF;">
-        <p style="margin:0 0 14px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:15px;font-weight:normal;letter-spacing:0.04em;color:#3A5A63;line-height:1.3;">' . esc_html__( 'Welcome to', 'restwell-retreats' ) . '</p>
-        <a href="' . $home . '" style="text-decoration:none;">
-          <img src="' . $logo_url . '" alt="' . esc_attr( $site ) . '" width="220" style="display:inline-block;max-width:220px;width:100%;height:auto;border:0;outline:none;text-decoration:none;" />
-        </a>
-        <!--[if !mso]><!-- -->
-        <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;" aria-hidden="true">
-          <p style="margin:0;font-family:Georgia,\'Times New Roman\',serif;font-size:26px;color:#1B4D5C;">' . esc_html( $site ) . '</p>
-        </div>
-        <!--<![endif]-->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="80" align="center" style="margin:22px auto 0 auto;">
-          <tr><td height="2" style="background-color:#D4A853;font-size:0;line-height:0;">&nbsp;</td></tr>
-        </table>
-        <p style="margin:18px 0 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;font-style:italic;color:#1B4D5C;line-height:1.4;">Rest Easy, Stay Well.</p>
-      </td>
-    </tr>
-
-    <tr>
-      <td style="padding:8px 40px 40px 40px;background-color:#FFFFFF;">
+<body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;">
 ' . $content . '
-      </td>
-    </tr>
-
-    <tr>
-      <td bgcolor="#F5EDE0" style="background-color:#F5EDE0;padding:24px 40px;text-align:center;border-top:1px solid #E8DFD0;">
-        <p style="margin:0 0 6px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:14px;color:#1B4D5C;font-weight:normal;">' . esc_html( $site ) . '</p>
-        <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#3A5A63;line-height:1.6;">
-          hello@restwellretreats.co.uk &nbsp;&bull;&nbsp; ' . $phone . '
-        </p>
-        <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#9E9589;line-height:1.6;">
-          &copy; ' . $year . ' ' . esc_html( $site ) . '. All rights reserved.
-        </p>
-      </td>
-    </tr>
-
-  </table>
-
-</td></tr>
-</table>
-
 </body>
 </html>';
 }
@@ -100,24 +42,30 @@ function restwell_theme_email_wrap_welcome( string $content, string $preview = '
  * @return string HTML.
  */
 function restwell_theme_email_invite_steps( string $email ): string {
-	return '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:8px 0 8px 0;">
-  <tr>
-    <td style="background-color:#F5EDE0;border-radius:3px;padding:20px 22px;">
-      <p style="margin:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#9E9589;">'
+	$inner = '<p style="margin:0 0 14px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#9E9589;">'
 		. esc_html__( 'How to open your guide', 'restwell-retreats' )
 		. '</p>
       <p style="margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.55;">
-        <span style="color:#D4A853;font-weight:700;">1.</span>&nbsp; '
+        <span style="color:#D4A853;font-weight:bold;">1.</span>&nbsp; '
 		. esc_html__( 'Open the link below (or the button).', 'restwell-retreats' )
 		. '</p>
       <p style="margin:0 0 12px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.55;">
-        <span style="color:#D4A853;font-weight:700;">2.</span>&nbsp; '
+        <span style="color:#D4A853;font-weight:bold;">2.</span>&nbsp; '
 		. esc_html__( 'Enter your email:', 'restwell-retreats' )
 		. ' <strong style="color:#1B4D5C;">' . esc_html( $email ) . '</strong></p>
       <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.55;">
-        <span style="color:#D4A853;font-weight:700;">3.</span>&nbsp; '
+        <span style="color:#D4A853;font-weight:bold;">3.</span>&nbsp; '
 		. esc_html__( 'We will send a one-time code to that address. Enter it to unlock your guide.', 'restwell-retreats' )
-		. '</p>
+		. '</p>';
+
+	if ( function_exists( 'restwell_email_panel' ) ) {
+		return restwell_email_panel( $inner, '#F5EDE0' );
+	}
+
+	return '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:8px 0;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;">
+  <tr>
+    <td bgcolor="#F5EDE0" style="background-color:#F5EDE0;padding:20px 22px;font-family:Arial,Helvetica,sans-serif;">
+      ' . $inner . '
     </td>
   </tr>
 </table>';
@@ -152,8 +100,14 @@ function restwell_theme_email_guest_guide_invite( string $email, string $name, s
 
 	$cta = function_exists( 'restwell_email_button' )
 		? restwell_email_button( $guide_url, __( 'Open your arrival guide', 'restwell-retreats' ) )
-		: '<p style="text-align:center;margin:28px 0 0;"><a href="' . esc_url( $guide_url ) . '" style="display:inline-block;padding:14px 32px;background:#1B4D5C;color:#fff;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;">' . esc_html__( 'Open your arrival guide', 'restwell-retreats' ) . '</a></p>
-<p style="text-align:center;margin:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#9E9589;">' . esc_html__( 'Or copy this link:', 'restwell-retreats' ) . ' <a href="' . esc_url( $guide_url ) . '" style="color:#1B4D5C;word-break:break-all;">' . esc_url( $guide_url ) . '</a></p>';
+		: '<table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:28px auto 0 auto;border-collapse:collapse;">
+  <tr>
+    <td align="center" bgcolor="#1B4D5C" style="background-color:#1B4D5C;padding:14px 32px;">
+      <a href="' . esc_url( $guide_url ) . '" style="color:#ffffff;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;">' . esc_html__( 'Open your arrival guide', 'restwell-retreats' ) . '</a>
+    </td>
+  </tr>
+</table>
+<p style="text-align:center;margin:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9E9589;">' . esc_html__( 'Or copy this link:', 'restwell-retreats' ) . ' <a href="' . esc_url( $guide_url ) . '" style="color:#1B4D5C;word-break:break-all;">' . esc_url( $guide_url ) . '</a></p>';
 
 	$content = '<p style="margin:0 0 20px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:17px;color:#1B4D5C;line-height:1.7;">'
 		. esc_html( $greeting )
