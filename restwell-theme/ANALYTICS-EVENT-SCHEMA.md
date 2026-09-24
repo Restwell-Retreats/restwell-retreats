@@ -1,8 +1,8 @@
 # Restwell Analytics Event Schema (GA4)
 
-Last updated: 2026-09-01
+Last updated: 2026-09-17
 Owner: Restwell marketing + theme maintainer
-Scope: Theme-tracked frontend interaction events (`assets/js/main.js`; enquire/gallery/nav split files do not emit these)
+Scope: Theme-tracked frontend interaction events (`assets/js/main.js`; enquire/gallery/nav split files do not emit these). GA4 remains the event reporting destination. TikTok Pixel receives consent-gated `page` + `ViewContent`, and a `Lead` event on a successful enquiry (`assets/js/enquire.js`). No `identify` / hashed email or phone.
 
 ---
 
@@ -82,7 +82,9 @@ No event naming or parameter changes should be merged without updating this file
    - this file updated
    - one-line GA4 validation note in the PR description
    - confirmation that `consent_gated` still blocks gtag until analytics consent
-6. **Debug verification:** Validate in GA4 DebugView after deploy before announcing complete.
+
+6. **TikTok Pixel:** Consent-gated through the same first-party analytics choice. Events: base `page`, `ViewContent` on load, and `Lead` after a successful enquiry (`?sent=1`, not duplicates). No form contents, names, emails, phones, care notes, `identify` calls, or advanced matching.
+7. **Debug verification:** Validate in GA4 DebugView after deploy before announcing complete.
 
 `accessibility_spec_viewed` fires only when the pathname (trailing slashes stripped) is exactly `/accessibility`. It must not fire on `/accessibility-policy/`.
 

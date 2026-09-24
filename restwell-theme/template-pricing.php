@@ -118,6 +118,7 @@ get_template_part(
 		'heading_id' => 'page-h',
 		'heading'    => $restwell_pricing_heading,
 		'intro'      => $restwell_pricing_intro,
+		'overlay'    => 'heavy',
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -274,49 +275,95 @@ get_template_part(
 		  <?php endif; ?>
 		</header>
 		<div class="care-rates">
-		  <div class="rates-panel">
-			<table class="data-table data-table--rates data-table--care">
-			  <caption class="sr-only">Optional care guide rates by support type for weekday and weekend. Continuity quotes the care cost once hours and tasks are agreed.</caption>
-			  <thead>
-				<tr>
-				  <th scope="col">Support</th>
-				  <th scope="col">From, weekday</th>
-				  <th scope="col">From, weekend</th>
-				</tr>
-			  </thead>
-			  <tbody>
-<?php foreach ( $pricing['care']['rows'] as $_care_row ) : ?>
-				<tr>
-				  <th scope="row"><?php echo esc_html( $_care_row['type_short'] ); ?> <span class="data-table__hint">(per <?php echo esc_html( $_care_row['unit'] ); ?>)</span></th>
-				  <td class="is-price" data-label="Weekday"><?php echo esc_html( restwell_format_gbp( $_care_row['weekday_from'], 2 ) ); ?></td>
-	<?php if ( null === $_care_row['weekend_from'] ) : ?>
-				  <td class="is-price is-price--na" data-label="Weekend"><?php echo esc_html__( 'Not available at weekends', 'restwell-retreats' ); ?></td>
-<?php else : ?>
-				  <td class="is-price" data-label="Weekend"><?php echo esc_html( restwell_format_gbp( $_care_row['weekend_from'], 2 ) ); ?></td>
+<?php
+$care_nights  = array();
+$care_hourly  = array();
+foreach ( $pricing['care']['rows'] as $_care_row ) {
+	if ( isset( $_care_row['unit'] ) && 'night' === $_care_row['unit'] ) {
+		$care_nights[] = $_care_row;
+	} else {
+		$care_hourly[] = $_care_row;
+	}
+}
+?>
+<?php if ( ! empty( $care_nights ) ) : ?>
+		  <div class="care-rates__nights">
+			<h3 class="care-rates__subhead" id="care-nights-h"><?php esc_html_e( 'Overnight', 'restwell-retreats' ); ?></h3>
+			<div class="care-rates__night-grid">
+	<?php foreach ( $care_nights as $_care_row ) : ?>
+			  <article class="care-rate-card" aria-labelledby="care-rate-<?php echo esc_attr( sanitize_html_class( $_care_row['key'] ) ); ?>">
+				<h4 id="care-rate-<?php echo esc_attr( sanitize_html_class( $_care_row['key'] ) ); ?>" class="care-rate-card__title"><?php echo esc_html( $_care_row['type_short'] ); ?></h4>
+				<p class="care-rate-card__lead">
+				  <span class="care-rate-card__price">
+					<span class="care-rate-card__from"><?php esc_html_e( 'From', 'restwell-retreats' ); ?></span>
+					<?php echo esc_html( restwell_format_gbp( $_care_row['weekday_from'], 2 ) ); ?>
+				  </span>
+				  <span class="care-rate-card__unit"><?php esc_html_e( 'per night', 'restwell-retreats' ); ?></span>
+				</p>
+				<dl class="care-rate-card__split">
+				  <div>
+					<dt><?php esc_html_e( 'From, weekday', 'restwell-retreats' ); ?></dt>
+					<dd><?php echo esc_html( $_care_row['weekday_display'] ); ?></dd>
+				  </div>
+				  <div>
+					<dt><?php esc_html_e( 'From, weekend', 'restwell-retreats' ); ?></dt>
+					<dd><?php echo esc_html( $_care_row['weekend_display'] ); ?></dd>
+				  </div>
+				</dl>
+			  </article>
+	<?php endforeach; ?>
+			</div>
+		  </div>
 <?php endif; ?>
-				</tr>
-<?php endforeach; ?>
-			  </tbody>
-			</table>
-			<div class="care-rates__footer">
-			  <div class="care-rates__brands care__brand" aria-label="Sister company and CQC rating">
-				<a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-				  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
-				</a>
-				<a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-				  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
-				</a>
-			  </div>
-			  <div class="care-rates__note">
-				<?php foreach ( $pricing['care']['notes'] as $_care_note ) : ?>
-				  <p><?php echo esc_html( $_care_note ); ?></p>
-				<?php endforeach; ?>
-				<p><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></p>
-			  </div>
-			  <div class="care-rates__ctas">
-				<a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
-				<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
-			  </div>
+<?php if ( ! empty( $care_hourly ) ) : ?>
+		  <div class="care-rates__hourly">
+			<h3 class="care-rates__subhead" id="care-hourly-h"><?php esc_html_e( 'Hourly support', 'restwell-retreats' ); ?></h3>
+			<ul class="care-rate-list">
+	<?php foreach ( $care_hourly as $_care_row ) : ?>
+			  <li class="care-rate-list__item">
+				<div class="care-rate-list__copy">
+				  <h4 class="care-rate-list__name"><?php echo esc_html( $_care_row['type_short'] ); ?></h4>
+				  <p class="care-rate-list__unit"><?php esc_html_e( 'Per hour', 'restwell-retreats' ); ?></p>
+				</div>
+				<dl class="care-rate-list__prices">
+				  <div>
+					<dt><?php esc_html_e( 'From, weekday', 'restwell-retreats' ); ?></dt>
+					<dd><?php echo esc_html( restwell_format_gbp( $_care_row['weekday_from'], 2 ) ); ?></dd>
+				  </div>
+				  <div>
+					<dt><?php esc_html_e( 'From, weekend', 'restwell-retreats' ); ?></dt>
+					<dd<?php echo null === $_care_row['weekend_from'] ? ' class="is-na"' : ''; ?>>
+		<?php if ( null === $_care_row['weekend_from'] ) : ?>
+						<?php echo esc_html__( 'Not available at weekends', 'restwell-retreats' ); ?>
+		<?php else : ?>
+						<?php echo esc_html( restwell_format_gbp( $_care_row['weekend_from'], 2 ) ); ?>
+		<?php endif; ?>
+					</dd>
+				  </div>
+				</dl>
+			  </li>
+	<?php endforeach; ?>
+			</ul>
+		  </div>
+<?php endif; ?>
+		  <div class="care-rates__aside">
+			<div class="care-rates__brands care__brand" aria-label="Sister company and CQC rating">
+			  <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
+				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
+			  </a>
+			  <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
+				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
+			  </a>
+			</div>
+			<ul class="care-rates__notes">
+			  <?php foreach ( $pricing['care']['notes'] as $_care_note ) : ?>
+			  <li><?php echo esc_html( $_care_note ); ?></li>
+			  <?php endforeach; ?>
+			  <li><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></li>
+			</ul>
+			<div class="care-rates__ctas">
+			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
 			</div>
 		  </div>
 		</div>

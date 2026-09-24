@@ -48,11 +48,11 @@ $story_txt = static function ( $key, $fallback ) use ( $restwell_story_id ) {
 $story_origin_label   = $story_txt( 'story_origin_label', 'The gap' );
 $story_origin_heading = $story_txt( 'story_origin_heading', 'How Restwell started' );
 $story_origin_lede    = $story_txt( 'story_origin_lede', 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.' );
-$story_origin_body    = $story_txt( 'story_origin_body', 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check whether the bungalow will work for them before they set off, and discuss optional care through the same office.' );
+$story_origin_body    = $story_txt( 'story_origin_body', 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details — including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.' );
 
 $story_month_label   = $story_txt( 'story_month_label', 'The build' );
 $story_month_heading = $story_txt( 'story_month_heading', 'How the bungalow was built' );
-$story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three specialist teams helped bring the bungalow together. Occupational therapists from Kent Community Health NHS Trust came to the house before anyone stayed. They walked the bedroom and wet room and told us how we could improve it. The profiling bed we had in needed to be a different one, so we changed it.' );
+$story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three specialist teams brought the bungalow together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust walked the bedroom and wet room. We changed what they flagged, down to the profiling bed.' );
 $story_month_1_meta  = $story_txt( 'story_month_1_meta', 'Early March' );
 $story_month_1_title = $story_txt( 'story_month_1_title', 'We got the keys' );
 $story_month_1_body  = $story_txt( 'story_month_1_body', 'The bungalow needed more than a lick of paint.' );
@@ -130,15 +130,30 @@ get_template_part(
 );
 ?>
 
-	<nav class="subnav" aria-label="On this page">
+	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#origin">The gap</a></li>
-		  <li><a href="#month">Four weeks</a></li>
-		  <li><a href="#host">Who runs both</a></li>
-		  <li><a href="#companies">Two companies</a></li>
-		  <li><a href="#shaped">Shaped by guests</a></li>
-		  <li><a href="#next">What's next</a></li>
+		  <?php if ( '' !== $story_origin_label ) : ?>
+		  <li><a href="#origin"><?php echo esc_html( $story_origin_label ); ?></a></li>
+		  <?php endif; ?>
+		  <?php if ( '' !== $story_month_label ) : ?>
+		  <li><a href="#month"><?php echo esc_html( $story_month_label ); ?></a></li>
+		  <?php endif; ?>
+		  <?php if ( '' !== $story_host_label ) : ?>
+		  <li><a href="#host"><?php echo esc_html( $story_host_label ); ?></a></li>
+		  <?php endif; ?>
+		  <?php if ( '' !== $story_companies_label ) : ?>
+		  <li><a href="#companies"><?php echo esc_html( $story_companies_label ); ?></a></li>
+		  <?php endif; ?>
+		  <?php if ( '' !== $story_shaped_label ) : ?>
+		  <li><a href="#shaped"><?php echo esc_html( $story_shaped_label ); ?></a></li>
+		  <?php endif; ?>
+		  <?php if ( '' !== $story_specialists_label ) : ?>
+		  <li><a href="#specialists"><?php echo esc_html( $story_specialists_label ); ?></a></li>
+		  <?php endif; ?>
+		  <?php if ( '' !== $story_next_label ) : ?>
+		  <li><a href="#next"><?php echo esc_html( $story_next_label ); ?></a></li>
+		  <?php endif; ?>
 		</ul>
 	  </div>
 	</nav>
@@ -268,13 +283,13 @@ get_template_part(
 		<dl class="comparison-list">
 		  <?php foreach ( $story_companies_items as $company_i => $company_item ) : ?>
 		  <div class="comparison-list__item">
-			<?php if ( '' !== $company_item['title'] ) : ?>
+				<?php if ( '' !== $company_item['title'] ) : ?>
 			<dt><?php echo esc_html( $company_item['title'] ); ?></dt>
 			<?php endif; ?>
-			<?php if ( '' !== $company_item['body'] ) : ?>
+				<?php if ( '' !== $company_item['body'] ) : ?>
 			<dd>
-			  <?php echo esc_html( $company_item['body'] ); ?>
-			  <?php if ( 2 === $company_i ) : ?>
+					<?php echo esc_html( $company_item['body'] ); ?>
+					<?php if ( 2 === $company_i ) : ?>
 			  <a class="text-link" href="<?php echo esc_url( 'tel:' . $restwell_host_tel ); ?>"><?php echo esc_html( $restwell_host_phone ); ?></a>
 			  <?php endif; ?>
 			</dd>
@@ -322,6 +337,17 @@ get_template_part(
 	  </div>
 	</section>
 
+	<section class="section-y band-subtle" aria-labelledby="guest-words-h">
+	  <div class="container container--sm">
+		<h2 id="guest-words-h" class="sr-only">What a guest said</h2>
+		<figure class="pull-quote">
+		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
+		  <blockquote class="pull-quote__text">It truly amazes me, just how much work has gone into this “home from home”.</blockquote>
+		  <figcaption class="pull-quote__cite"><cite>M.P.</cite><span class="pull-quote__role">Guest review</span></figcaption>
+		</figure>
+	  </div>
+	</section>
+
 	<section class="section-y band-teal" id="specialists" aria-labelledby="specialists-h">
 	  <div class="container">
 		<div class="split">
@@ -354,9 +380,9 @@ get_template_part(
 		<h2 id="quote-h" class="sr-only">What a guest wrote after their stay</h2>
 		<figure class="pull-quote">
 		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-		  <?php /* Guest words: consecutive from M.P. Google review (docs/guest-reviews-bank.md). Capital start so the decorative mark does not sit before a mid-sentence lowercase excerpt. */ ?>
-		  <blockquote class="pull-quote__text">I will most definitely be back.. 10/10 from me, as there was NOTHING i needed to ask for, as Restwell Retreats had catered for it all already</blockquote>
-		  <figcaption class="pull-quote__cite"><cite>M.P.</cite><span class="pull-quote__role">Wheelchair user &middot; Google review</span></figcaption>
+		  <?php /* Guest words: consecutive from M.W. Facebook review (docs/guest-reviews-bank.md). Distinct reviewer from the homepage cards and the M.P. pull-quote above. */ ?>
+		  <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad’s complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.</blockquote>
+		  <figcaption class="pull-quote__cite"><cite>M.W.</cite><span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
 		</figure>
 	  </div>
 	</section>
@@ -372,7 +398,7 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $story_next_lede ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<p class="lede"><?php esc_html_e( 'Rest Easy, Stay Well.', 'restwell-retreats' ); ?></p>
+		<p class="lede restwell-signoff"><?php esc_html_e( 'Rest Easy, Stay Well.', 'restwell-retreats' ); ?></p>
 	  </div>
 	</section>
 

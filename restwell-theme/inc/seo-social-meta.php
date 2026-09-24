@@ -206,7 +206,8 @@ function restwell_output_social_meta() {
 		$mapped = restwell_get_default_og_image_url_for_request( $pid );
 		if ( $mapped !== '' ) {
 			$file       = (string) get_attached_file( $image_attachment_id );
-			$map_stem   = pathinfo( wp_parse_url( $mapped, PHP_URL_PATH ) ?: '', PATHINFO_FILENAME );
+			$mapped_path = (string) wp_parse_url( $mapped, PHP_URL_PATH );
+			$map_stem   = pathinfo( $mapped_path, PATHINFO_FILENAME );
 			$file_stem  = pathinfo( $file, PATHINFO_FILENAME );
 			// Strip common WP / seed suffixes for stem compare.
 			$file_stem = preg_replace( '/-(?:scaled|hero|\d{2,4}x\d{2,4})$/', '', (string) $file_stem );

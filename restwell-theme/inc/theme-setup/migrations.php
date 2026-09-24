@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 61;
+const RESTWELL_SCHEMA_VERSION = 65;
 
 
 /**
@@ -1434,6 +1434,76 @@ function restwell_migrate_acc_sling_faq_v61() {
 }
 
 /**
+ * Give the funding/resources page the same SEO baseline as the other public
+ * templates. Its legacy slug is funding-and-support, while the editor title
+ * is intentionally “Resources”.
+ */
+function restwell_migrate_resources_seo_v63() {
+	if ( get_option( 'restwell_resources_seo_v63', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'funding-and-support', OBJECT, 'page' );
+	if ( $page instanceof WP_Post ) {
+		update_post_meta( $page->ID, 'meta_title', 'Funding an accessible holiday | Restwell Retreats' );
+		update_post_meta( $page->ID, 'meta_description', 'How Restwell handles funding, invoices and care costs for an accessible holiday. Clear information before you commit to dates or a deposit.' );
+		update_post_meta( $page->ID, 'focus_keyphrase', 'funding an accessible holiday' );
+	}
+	update_option( 'restwell_resources_seo_v63', '1', false );
+}
+
+/**
+ * Refresh stored privacy HTML so the TikTok Pixel page-view wording is used.
+ */
+function restwell_migrate_privacy_tiktok_pixel_v64() {
+	if ( get_option( 'restwell_privacy_tiktok_pixel_v64', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( $page instanceof WP_Post ) {
+		$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+		if ( '' !== trim( $html )
+			&& false !== strpos( $html, 'Google Analytics 4' )
+			&& false === strpos( $html, 'TikTok Pixel records that a page' ) ) {
+			delete_post_meta( $page->ID, 'legal_body_html' );
+		}
+	}
+
+	$terms = get_page_by_path( 'terms-and-conditions', OBJECT, 'page' );
+	if ( $terms instanceof WP_Post ) {
+		$terms_html = (string) get_post_meta( $terms->ID, 'legal_body_html', true );
+		if ( '' !== trim( $terms_html )
+			&& false !== strpos( $terms_html, 'Optional analytics cookies stay off' )
+			&& false === strpos( $terms_html, 'advertising measurement cookies' ) ) {
+			delete_post_meta( $terms->ID, 'legal_body_html' );
+		}
+	}
+
+	update_option( 'restwell_privacy_tiktok_pixel_v64', '1', false );
+}
+
+/**
+ * Refresh stored privacy HTML so TikTok SubmitForm wording is used.
+ */
+function restwell_migrate_privacy_tiktok_submitform_v65() {
+	if ( get_option( 'restwell_privacy_tiktok_submitform_v65', '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( $page instanceof WP_Post ) {
+		$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+		if ( '' !== trim( $html )
+			&& false !== strpos( $html, 'Google Analytics 4' )
+			&& false === strpos( $html, 'enquiry was sent' ) ) {
+			delete_post_meta( $page->ID, 'legal_body_html' );
+		}
+	}
+
+	update_option( 'restwell_privacy_tiktok_submitform_v65', '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1532,6 +1602,9 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_our_story_cqc_note_v59',
 		'restwell_our_story_cqc_note_v60',
 		'restwell_acc_sling_faq_v61',
+		'restwell_resources_seo_v63',
+		'restwell_privacy_tiktok_pixel_v64',
+		'restwell_privacy_tiktok_submitform_v65',
 	);
 }
 
@@ -1644,6 +1717,12 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_cqc_note_v60', 100 );
 	add_action( 'init', 'restwell_migrate_acc_sling_faq_v61', 106 );
 	add_action( 'after_switch_theme', 'restwell_migrate_acc_sling_faq_v61', 101 );
+	add_action( 'init', 'restwell_migrate_resources_seo_v63', 107 );
+	add_action( 'after_switch_theme', 'restwell_migrate_resources_seo_v63', 102 );
+	add_action( 'init', 'restwell_migrate_privacy_tiktok_pixel_v64', 108 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_tiktok_pixel_v64', 103 );
+	add_action( 'init', 'restwell_migrate_privacy_tiktok_submitform_v65', 109 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_tiktok_submitform_v65', 104 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

@@ -66,6 +66,18 @@
 		}
 	}
 
+	function syncBannerSpace() {
+		var banner = getBanner();
+		var open = !!(banner && !banner.hidden);
+		var root = document.documentElement;
+		root.classList.toggle('has-cookie-banner', open);
+		if (open) {
+			root.style.setProperty('--cookie-banner-h', banner.offsetHeight + 'px');
+		} else {
+			root.style.removeProperty('--cookie-banner-h');
+		}
+	}
+
 	function hideBanner() {
 		var banner = getBanner();
 		var active = document.activeElement;
@@ -78,6 +90,7 @@
 				settings.focus({ preventScroll: true });
 			}
 		}
+		syncBannerSpace();
 	}
 
 	function showBanner() {
@@ -85,6 +98,7 @@
 		if (banner) {
 			banner.hidden = false;
 		}
+		syncBannerSpace();
 	}
 
 	function focusFirstAction() {
@@ -122,8 +136,12 @@
 	function hideIfChosen() {
 		if (readConsent()) {
 			hideBanner();
+		} else {
+			syncBannerSpace();
 		}
 	}
+
+	window.addEventListener('resize', syncBannerSpace);
 
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', hideIfChosen);

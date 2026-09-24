@@ -145,7 +145,7 @@ class SeoOnpageEeatTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'https://www.cqc.org.uk/location/1-2624556588', $php );
 		$this->assertStringContainsString( 'not a registered care provider', $php );
 		$this->assertStringContainsString( '<cite>M.P.</cite>', $php );
-		$this->assertStringContainsString( 'it truly amazes me, just how much work has gone into this', $php );
+		$this->assertStringContainsString( 'It truly amazes me, just how much work has gone into this', $php );
 		$this->assertStringNotContainsString( 'fully accessible', $php );
 		$this->assertStringNotContainsString( 'fully-accessible', $php );
 	}

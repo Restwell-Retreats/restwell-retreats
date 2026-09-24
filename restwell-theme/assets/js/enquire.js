@@ -333,6 +333,39 @@
 		});
 	}
 	/**
+	 * Consent-gated TikTok conversion. No PII or form contents.
+	 */
+	function trackTikTokEnquirySubmit() {
+		var payload = {
+			contents: [
+				{
+					content_id: 'enquiry',
+					content_type: 'product',
+					content_name: 'Enquiry'
+				}
+			]
+		};
+		var options = {
+			event_id: 'lead_' + Date.now() + '_' + Math.random().toString(16).slice(2, 10)
+		};
+		try {
+			var key = 'rw_tt_lead_' + window.location.pathname + (window.location.search || '');
+			if (window.sessionStorage && window.sessionStorage.getItem(key)) {
+				return;
+			}
+			if (window.sessionStorage) {
+				window.sessionStorage.setItem(key, '1');
+			}
+		} catch (err) {}
+		if (typeof window.restwellTikTokTrack === 'function') {
+			window.restwellTikTokTrack('Lead', payload, options);
+			return;
+		}
+		window.restwellTikTokPendingEvents = window.restwellTikTokPendingEvents || [];
+		window.restwellTikTokPendingEvents.push(['Lead', payload, options]);
+	}
+
+	/**
 	 * After enquiry form redirect (?sent=1), scroll to the thank-you card.
 	 * Fragments on redirect URLs are unreliable across browsers; this runs client-side.
 	 */
@@ -354,6 +387,9 @@
 				user_type: 'guest',
 				page_path: window.location.pathname,
 			});
+		}
+		if (params.get('duplicate') !== '1') {
+			trackTikTokEnquirySubmit();
 		}
 		var el = document.getElementById('enquiry-result');
 		if (!el) {

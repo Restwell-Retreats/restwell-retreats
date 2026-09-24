@@ -22,7 +22,7 @@ We started Restwell because of a gap we kept running into from the other side of
 
 Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.
 
-Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check whether the bungalow will work for them before they set off, and discuss optional care through the same office.
+Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details — including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.
 
 ## How the bungalow was built
 

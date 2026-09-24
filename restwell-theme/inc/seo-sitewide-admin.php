@@ -128,6 +128,12 @@ function restwell_seo_sitewide_handle_save() {
 	$metricool_hash = strtolower( preg_replace( '/[^0-9A-Za-z]/', '', $metricool_hash ) );
 	update_option( 'restwell_metricool_hash', $metricool_hash );
 
+	$tiktok_pixel_id = isset( $_POST['restwell_tiktok_pixel_id'] )
+		? sanitize_text_field( wp_unslash( $_POST['restwell_tiktok_pixel_id'] ) )
+		: '';
+	$tiktok_pixel_id = preg_replace( '/[^0-9A-Za-z]/', '', $tiktok_pixel_id );
+	update_option( 'restwell_tiktok_pixel_id', $tiktok_pixel_id );
+
 	$analytics_mode = isset( $_POST['restwell_analytics_load_mode'] )
 		? sanitize_key( wp_unslash( $_POST['restwell_analytics_load_mode'] ) )
 		: 'consent_gated';

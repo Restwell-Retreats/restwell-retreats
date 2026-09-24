@@ -51,7 +51,7 @@ $pagination_aria = (string) $args['pagination_aria'];
 					list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $entry_id, 'large' );
 					?>
 		<article class="blog-featured">
-		  <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true">
+		  <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true" tabindex="-1">
 			<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="625" loading="lazy" decoding="async" />
 			<span class="blog-featured__scrim" aria-hidden="true"></span>
 					<?php if ( $category !== '' ) : ?>
@@ -83,7 +83,7 @@ $pagination_aria = (string) $args['pagination_aria'];
 				<?php foreach ( $cards as $card ) : ?>
 					<?php list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $card['post_id'], 'medium_large' ); ?>
 		  <li><article class="media-card">
-			<a class="media-card__image" href="<?php echo esc_url( $card['permalink'] ); ?>" aria-hidden="true">
+			<a class="media-card__image" href="<?php echo esc_url( $card['permalink'] ); ?>" aria-hidden="true" tabindex="-1">
 			  <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
 					<?php if ( $card['category'] !== '' ) : ?>
 				<span class="tag media-card__tag"><?php echo esc_html( $card['category'] ); ?></span>
@@ -107,12 +107,14 @@ $pagination_aria = (string) $args['pagination_aria'];
 			);
 			?>
 		<?php else : ?>
-		  <p class="lede">
-			<?php echo esc_html( $empty_message ); ?>
-			<?php if ( $empty_blog_url !== '' ) : ?>
-			  <a href="<?php echo esc_url( $empty_blog_url ); ?>"><?php esc_html_e( 'Browse the blog', 'restwell-retreats' ); ?></a>
-			<?php endif; ?>
-		  </p>
+		  <div class="empty-state blog-empty-state" role="status">
+			<p class="lede">
+			  <?php echo esc_html( $empty_message ); ?>
+			  <?php if ( $empty_blog_url !== '' ) : ?>
+				<a href="<?php echo esc_url( $empty_blog_url ); ?>"><?php esc_html_e( 'Browse the blog', 'restwell-retreats' ); ?></a>
+			  <?php endif; ?>
+			</p>
+		  </div>
 		<?php endif; ?>
 	  </div>
 	</section>

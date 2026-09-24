@@ -10,6 +10,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * WordPress can create a fresh auto-draft with a zero GMT date in the
+ * Playground. The core publish box then emits a strtotime warning. Keep the
+ * draft timestamp valid so a new blog post opens as a quiet, usable editor.
+ *
+ * @param array $data    Sanitised post data.
+ * @param array $postarr Raw post data.
+ * @return array
+ */
+function restwell_normalise_auto_draft_gmt( $data, $postarr ) {
+	if ( isset( $data['post_status'], $data['post_type'] )
+		&& 'auto-draft' === $data['post_status']
+		&& 'post' === $data['post_type']
+		&& ( empty( $data['post_date_gmt'] ) || '0000-00-00 00:00:00' === $data['post_date_gmt'] ) ) {
+		$data['post_date_gmt'] = current_time( 'mysql', true );
+	}
+	return $data;
+}
+add_filter( 'wp_insert_post_data', 'restwell_normalise_auto_draft_gmt', 10, 2 );
+
+/**
  * Whether this page is built from Page Content Fields (not the classic editor).
  *
  * @param int $post_id Page ID.
@@ -128,6 +148,48 @@ function restwell_show_excerpt_meta_box() {
 	);
 }
 add_action( 'add_meta_boxes_post', 'restwell_show_excerpt_meta_box' );
+
+/**
+ * Give editors a short, practical publishing checklist beside every article.
+ * The public templates already provide the visual treatment; this keeps new
+ * posts consistent without asking editors to know the theme internals.
+ *
+ * @param WP_Post $post Current post object.
+ */
+function restwell_post_publishing_checklist_meta_box( $post ) {
+	$seo_url = add_query_arg(
+		array(
+			'page' => 'restwell-seo-posts',
+			'edit' => (int) $post->ID,
+		),
+		admin_url( 'admin.php' )
+	);
+	echo '<p>' . esc_html__( 'Use this quick check before publishing. The blog template supplies the hero, reading column, metadata, related reading, and mobile layout automatically.', 'restwell-retreats' ) . '</p>';
+	echo '<ul class="restwell-editor-checklist">';
+	foreach ( array(
+		__( 'Write a specific title and a useful excerpt for the blog archive.', 'restwell-retreats' ),
+		__( 'Choose one category and add a featured image with descriptive alt text.', 'restwell-retreats' ),
+		__( 'Use headings in order, short paragraphs, lists, and descriptive link text.', 'restwell-retreats' ),
+		__( 'Add or check the SEO title, description, and focus keyphrase.', 'restwell-retreats' ),
+	) as $item ) {
+		echo '<li>' . esc_html( $item ) . '</li>';
+	}
+	echo '</ul>';
+	echo '<p><a class="button" href="' . esc_url( $seo_url ) . '">' . esc_html__( 'Open SEO fields', 'restwell-retreats' ) . '</a></p>';
+}
+add_action(
+	'add_meta_boxes_post',
+	static function () {
+		add_meta_box(
+			'restwell_post_publishing_checklist',
+			__( 'Restwell publishing checklist', 'restwell-retreats' ),
+			'restwell_post_publishing_checklist_meta_box',
+			'post',
+			'side',
+			'high'
+		);
+	}
+);
 
 /**
  * Keep Categories and Tags high in the post sidebar so editors see them above the fold.

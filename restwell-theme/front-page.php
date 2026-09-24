@@ -60,9 +60,9 @@ $property_body    = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'property_body',
-		__( 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address once your stay is confirmed.', 'restwell-retreats' )
+		__( 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, with room for two cars including an adapted vehicle. Park up and the front door is straight ahead. We’ll send you the address once your stay is confirmed.', 'restwell-retreats' )
 	)
-	: __( 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address once your stay is confirmed.', 'restwell-retreats' );
+	: __( 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, with room for two cars including an adapted vehicle. Park up and the front door is straight ahead. We’ll send you the address once your stay is confirmed.', 'restwell-retreats' );
 $property_cta_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_cta_label', __( 'Have a proper look round the rooms', 'restwell-retreats' ) )
 	: __( 'Have a proper look round the rooms', 'restwell-retreats' );
@@ -185,9 +185,9 @@ $home_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_intro',
-		__( 'How you manage your care is entirely up to you. The bungalow rate stays exactly the same whichever you choose:', 'restwell-retreats' )
+		__( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone — not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' )
 	)
-	: __( 'How you manage your care is entirely up to you. The bungalow rate stays exactly the same whichever you choose:', 'restwell-retreats' );
+	: __( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone — not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' );
 $home_care_item1_title = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_item1_title', __( 'Bring your own support', 'restwell-retreats' ) )
 	: __( 'Bring your own support', 'restwell-retreats' );
@@ -235,7 +235,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 
 
 <main id="main-content">
-<section class="hero" aria-labelledby="hero-h">
+<section class="hero hero--overlay-heavy" aria-labelledby="hero-h">
 	  <div class="hero__media">
 		<img
 		  class="hero__media-img"
@@ -251,7 +251,9 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		<div class="hero__content">
 		  <div class="hero__text">
 			<h1 id="hero-h"><?php echo esc_html( $hero_heading ); ?></h1>
-			<p><?php echo esc_html( $hero_intro ); ?></p>
+			<?php if ( '' !== trim( (string) $hero_intro ) ) : ?>
+			<p class="hero__sub"><?php echo esc_html( $hero_intro ); ?></p>
+			<?php endif; ?>
 		  </div>
 		  <div class="hero__ctas">
 			<a class="btn btn-gold" href="<?php echo esc_url( $hero_cta_primary_url ); ?>"><?php echo esc_html( $hero_cta_primary_label ); ?></a>
@@ -280,7 +282,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			</ul>
 			<div class="property__cta-row">
 			  <a class="btn btn-gold" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
-			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths, the wet room and the hoist', 'restwell-retreats' ); ?></a>
+			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
 			</div>
 		  </div>
 		  <div class="property__media-wrap">
@@ -343,7 +345,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  <div class="container">
 		<div class="care__tease">
 		  <h2 id="care-h"><?php echo esc_html( $home_care_heading ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can be added on the same enquiry, quoted separately from the bungalow. Bringing your own carer is fine too.', 'restwell-retreats' ); ?></p>
+		  <p class="lede"><?php echo esc_html( $home_care_intro ); ?></p>
 		  <?php if ( '' !== $home_care_cta_label && '' !== $home_care_cta_url ) : ?>
 		  <a class="text-link" href="<?php echo esc_url( $home_care_cta_url ); ?>"><?php echo esc_html( $home_care_cta_label ); ?></a>
 		  <?php endif; ?>

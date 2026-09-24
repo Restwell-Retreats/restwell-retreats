@@ -88,7 +88,7 @@ function restwell_crm_handle_export_csv() {
 	$where_sql = $where_parts ? ( ' WHERE ' . implode( ' AND ', $where_parts ) ) : '';
 
 	// Explicit column list — avoids pulling unexpected columns added by future migrations.
-	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_sql is only prepare() fragments.
+	// phpcs:disable WordPress.DB.PreparedSQL -- $where_sql is built solely from $wpdb->prepare() fragments; table via %i.
 	$rows = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT id, submitted_at, name, email, phone,
@@ -106,7 +106,7 @@ function restwell_crm_handle_export_csv() {
 		),
 		ARRAY_A
 	);
-	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	// phpcs:enable WordPress.DB.PreparedSQL
 	if ( ! is_array( $rows ) ) {
 		$rows = array();
 	}

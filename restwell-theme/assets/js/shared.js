@@ -273,7 +273,10 @@
         var result = gauge.querySelector('[data-fit-result]');
         var name = gauge.getAttribute('data-fit-name');
 
-        var fillPct = Math.min((chairWidth / doorWidth) * 100, 100);
+        // No upper clamp: the fill is the chair sitting in the opening, so a
+        // chair wider than the door has to overhang the jamb marks. Clamped
+        // to 100% it sat flush inside the aperture and read as a perfect fit.
+        var fillPct = (chairWidth / doorWidth) * 100;
         fill.style.width = fillPct + '%';
         if (spec) spec.textContent = formatLength(doorWidth);
 
@@ -437,7 +440,20 @@
     && !document.body.classList.contains('has-photo-hero');
 
   if (toggle && panel && header) {
+    // The mobile sheet covers the page: keep keyboard focus on visible controls.
+    var menuBackground = [];
+    function setMenuBackground(inert) {
+      if (inert) {
+        menuBackground = Array.from(document.querySelectorAll('main, .site-footer'))
+          .filter(function (el) { return !el.hasAttribute('inert'); });
+        menuBackground.forEach(function (el) { el.setAttribute('inert', ''); });
+      } else {
+        menuBackground.forEach(function (el) { el.removeAttribute('inert'); });
+        menuBackground = [];
+      }
+    }
     function closeMenu() {
+      setMenuBackground(false);
       panel.classList.remove('is-open');
       header.classList.remove('is-menu-open');
       document.body.classList.remove('nav-open');
@@ -446,6 +462,8 @@
     }
 
     function openMenu() {
+      setMenuBackground(true);
+      header.classList.remove('is-scroll-away');
       panel.classList.add('is-open');
       header.classList.add('is-menu-open');
       document.body.classList.add('nav-open');
@@ -485,6 +503,19 @@
     });
 
     document.addEventListener('keydown', function (event) {
+      if (event.key === 'Tab' && panel.classList.contains('is-open')) {
+        var controls = Array.from(header.querySelectorAll('a[href], button:not([disabled])'))
+          .filter(function (el) { return el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden'; });
+        var first = controls[0];
+        var last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
       if (event.key === 'Escape' && panel.classList.contains('is-open')) {
         closeMenu();
         toggle.focus();
@@ -501,10 +532,66 @@
       }
     });
 
-    window.addEventListener('scroll', updateSolidHeader, { passive: true });
-    window.addEventListener('resize', updateSolidHeader);
+    var lastHeaderY = window.scrollY || 0;
+    function updateHeaderScrollAway() {
+      var y = window.scrollY || 0;
+      var delta = y - lastHeaderY;
+      lastHeaderY = y;
+      if (
+        header.classList.contains('is-menu-open') ||
+        y < 16 ||
+        !window.matchMedia('(max-width: 639px)').matches
+      ) {
+        header.classList.remove('is-scroll-away');
+        return;
+      }
+      if (delta > 8) {
+        header.classList.add('is-scroll-away');
+      } else if (delta < -8) {
+        header.classList.remove('is-scroll-away');
+      }
+    }
+
+    window.addEventListener('scroll', function () {
+      updateSolidHeader();
+      updateHeaderScrollAway();
+    }, { passive: true });
+    window.addEventListener('resize', function () {
+      if (window.matchMedia('(min-width: 1024px)').matches && panel.classList.contains('is-open')) closeMenu();
+      updateSolidHeader();
+      updateHeaderScrollAway();
+    });
     updateSolidHeader();
+    updateHeaderScrollAway();
   }
+
+  /*
+   * WP's admin bar is position:absolute below 783px and scrolls away.
+   * A fixed header that always clears 46px then leaves a gap of page copy
+   * above the logo. Shift only while the bar is still in view.
+   */
+  (function syncMobileAdminBarHeader() {
+    var root = document.documentElement;
+    var mq = window.matchMedia('(max-width: 782px)');
+    function updateAdminBarShift() {
+      var bar = document.getElementById('wpadminbar');
+      if (!document.body.classList.contains('admin-bar') || !bar || !mq.matches) {
+        root.style.setProperty('--admin-bar-header-shift', '0px');
+        return;
+      }
+      var barH = bar.offsetHeight || 46;
+      var shift = window.scrollY < barH ? barH : 0;
+      root.style.setProperty('--admin-bar-header-shift', shift + 'px');
+    }
+    window.addEventListener('scroll', updateAdminBarShift, { passive: true });
+    window.addEventListener('resize', updateAdminBarShift);
+    if (mq.addEventListener) {
+      mq.addEventListener('change', updateAdminBarShift);
+    } else if (mq.addListener) {
+      mq.addListener(updateAdminBarShift);
+    }
+    updateAdminBarShift();
+  })();
 
   /* ---------- Soft scroll reveal ---------- */
   var revealNodes = document.querySelectorAll('[data-reveal]');
@@ -639,6 +726,14 @@
         }
       }
 
+      function syncSubnavHeight() {
+        var sticky = window.getComputedStyle(tocRoot).position === 'sticky';
+        var h = sticky ? tocRoot.offsetHeight || 0 : 0;
+        var value = h ? h + 'px' : '0px';
+        document.documentElement.style.setProperty('--subnav-h', value);
+        document.body.style.setProperty('--subnav-h', value);
+      }
+
       function syncSubnavScrollAffordance() {
         var list = tocRoot.querySelector('.subnav__list');
         if (!list) return;
@@ -673,6 +768,7 @@
         if (tocTicking) return;
         tocTicking = true;
         window.requestAnimationFrame(function () {
+          syncSubnavHeight();
           syncActiveToc();
           syncSubnavVisibility();
           syncSubnavScrollAffordance();
@@ -700,6 +796,7 @@
         });
       });
       applyHashToc();
+      syncSubnavHeight();
       syncActiveToc();
       syncSubnavVisibility();
       syncSubnavScrollAffordance();
@@ -895,8 +992,8 @@
       });
       var panel = msPanelFor(step);
       var firstField = panel ? panel.querySelector('input, select, textarea') : null;
-      if (firstField) window.setTimeout(function () { firstField.focus(); }, 10);
-      multistep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (firstField) firstField.focus({ preventScroll: true });
+      multistep.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     }
 
     multistep.addEventListener('click', function (event) {
@@ -905,7 +1002,11 @@
       if (next) {
         var invalid = msValidatePanel(msPanelFor(msCurrent));
         if (invalid) {
-          invalid.focus();
+          invalid.focus({ preventScroll: true });
+          invalid.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'center'
+          });
           return;
         }
         msGoToStep(msCurrent + 1);
@@ -919,7 +1020,11 @@
         var invalid = msValidatePanel(msPanelFor(msCurrent));
         if (invalid) {
           event.preventDefault();
-          invalid.focus();
+          invalid.focus({ preventScroll: true });
+          invalid.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'center'
+          });
           return;
         }
         // Live WordPress enquire form: allow native POST after validation.
@@ -936,7 +1041,10 @@
         msForm.hidden = true;
         if (msSuccess) {
           msSuccess.hidden = false;
-          msSuccess.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          msSuccess.scrollIntoView({
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            block: 'start'
+          });
           msSuccess.focus();
         }
       });

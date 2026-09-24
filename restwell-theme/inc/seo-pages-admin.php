@@ -383,7 +383,7 @@ function restwell_seo_pages_render_list( string $post_type, string $menu_slug ) 
 		<?php if ( empty( $rows ) ) : ?>
 			<p class="rw-seo-dash__empty"><?php esc_html_e( 'No items found.', 'restwell-retreats' ); ?></p>
 		<?php else : ?>
-			<div class="rw-seo-dash__table-wrap">
+			<div class="rw-seo-dash__table-wrap" role="region" aria-label="<?php esc_attr_e( 'SEO page results, scroll horizontally for more columns', 'restwell-retreats' ); ?>" tabindex="0">
 				<table class="widefat striped rw-seo-dash__table">
 					<thead>
 						<tr>

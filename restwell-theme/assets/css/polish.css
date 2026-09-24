@@ -1,0 +1,655 @@
+/**
+ * Refinements to the established Restwell classic theme.
+ * Keep the photo heroes, fonts and coastal palette; improve detail and reflow.
+ */
+
+/* Intrinsic widths of long email links/select options must not expand the grid. */
+.layout-sidebar { grid-template-columns: minmax(0, 1fr); }
+.layout-sidebar > *, .sidebar-card, .field, .form-step, fieldset { min-width: 0; }
+.sidebar-card a, .site-footer a, .prose a { overflow-wrap: anywhere; }
+.field input, .field select, .field textarea { min-width: 0; max-width: 100%; }
+.step-indicator__item { min-width: 0; flex: 0 1 30%; }
+.step-indicator__connector { min-width: var(--space-2); }
+.multistep,
+.field :is(input, select, textarea),
+.faq-item__trigger {
+  scroll-margin-top: calc(var(--header-offset) + var(--space-8));
+}
+.admin-bar .multistep,
+.admin-bar .field :is(input, select, textarea),
+.admin-bar .faq-item__trigger {
+  scroll-margin-top: calc(var(--header-offset) + var(--wp-admin--admin-bar--height, 32px) + var(--space-8));
+}
+
+/* All six question topics remain visible, including to keyboard users. */
+.pill-tabs {
+  flex-wrap: wrap;
+  overflow: visible;
+  mask-image: none;
+  -webkit-mask-image: none;
+  padding: var(--space-1);
+  gap: var(--space-2);
+}
+.pill-tabs button { min-height: 2.75rem; }
+.pill-tabs button:hover { border-color: var(--deep-teal); }
+
+/* A little more separation makes a question's expanded state easier to scan. */
+.faq-item__trigger { gap: var(--space-4); }
+.faq-item__icon { flex-shrink: 0; }
+.faq-item.is-open { border-bottom-color: color-mix(in srgb, var(--deep-teal) 28%, transparent); }
+.faq-item__trigger:hover { color: var(--warm-gold-text); }
+
+/* A calm, consistent contact card and deliberate form footer. */
+.sidebar-card { background: var(--bg-subtle); }
+.form-actions { padding-top: var(--space-3); }
+.field-error { line-height: var(--leading-snug); }
+.field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {
+  outline-width: 3px;
+  outline-offset: 3px;
+}
+.availability-unavailable { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; justify-content: space-between; }
+.availability-unavailable .section-head { flex: 1 1 28rem; margin-bottom: 0; }
+.availability-unavailable > .btn { flex-shrink: 0; }
+
+/* Ensure prose has a reading measure, and retain visible keyboard outlines. */
+.prose { overflow-wrap: break-word; }
+.site-footer__cookie-settings, .site-footer nav a { min-height: 2.75rem; display: inline-flex; align-items: center; }
+.subnav__list { scroll-padding-inline: var(--space-5); }
+.subnav a:focus-visible { outline-offset: -3px; }
+
+/* Inline links must wrap naturally: WCAG's inline-text target exception applies. */
+.prose--wide a,
+.content-prose a,
+.lede .text-link,
+.section-head .text-link {
+  display: inline;
+  padding-block: 0;
+  min-height: 0;
+}
+
+/* Give long articles a deliberate reading column and consistent editorial rhythm. */
+.blog-article__inner { max-width: min(70ch, 52rem); }
+.blog-article .blog-meta {
+  gap: 0.65rem 1rem;
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid #d5e1e2;
+  margin-bottom: var(--space-6);
+}
+.blog-article .prose { max-width: none; }
+.blog-article .prose > blockquote:not(.pull-quote__text):not(.testimonial-card__quote):not(.quote-block__text) {
+  margin-inline: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-left: 3px solid var(--deep-teal);
+  border-radius: 0 0.75rem 0.75rem 0;
+  background: var(--bg-subtle);
+  font-style: normal;
+  font-weight: 400;
+}
+.blog-article .prose :is(h2, h3, h4) { text-wrap: pretty; }
+.prose .wp-block-table { max-width: 100%; overflow-x: auto; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 0.9375em; }
+.prose caption { text-align: left; font-weight: 600; color: var(--deep-teal); padding-block: 0.75rem; }
+.prose :is(th, td) { padding: 0.85rem; text-align: left; vertical-align: top; border-bottom: 1px solid #d5e1e2; overflow-wrap: anywhere; }
+.prose thead { background: var(--deep-teal); color: #fff; }
+.prose tbody tr:nth-child(even) { background: var(--bg-subtle); }
+.blog-article__back { margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid #d5e1e2; }
+@media (max-width: 479px) {
+  .prose :is(th, td) { padding: 0.65rem 0.45rem; }
+}
+
+/* Practical arrival information, quick navigation and readable checklists. */
+.gg-jump-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-block: 0 2rem; }
+.gg-jump-links a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0.5rem 1rem; border: 1px solid #c9d8da; border-radius: 2rem; color: var(--deep-teal); font-weight: 600; text-decoration: none; }
+.gg-jump-links a:hover { background: var(--bg-subtle); border-color: var(--deep-teal); }
+.gg-cards > li, .gg-cards .info-card { min-width: 0; }
+.gg-cards { align-items: start; }
+.gg-cards .info-card { overflow-wrap: anywhere; box-shadow: none; border-top: 3px solid #d5e1e2; }
+.gg-checklist { padding-left: 1.25rem; list-style: disc; }
+.gg-checklist li { padding-left: 0.25rem; margin-block: 0.65rem; }
+.gg-checklist li::marker { color: var(--deep-teal); }
+.gg-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; padding: clamp(1.25rem, 3vw, 2rem); margin-bottom: 2rem; border-radius: 1rem; background: var(--bg-subtle); }
+.gg-contact > div { flex: 1 1 28rem; }
+.gg-contact h3 { margin-bottom: 0.5rem; }
+.gg-contact p { margin-bottom: 0; max-width: 60ch; }
+.gg-contact .btn { flex-shrink: 0; }
+.gg-cards h3[id] { scroll-margin-top: calc(var(--header-offset) + 5rem); }
+.otp-box { gap: clamp(0.25rem, 1.5vw, 0.75rem); }
+.otp-box input { min-width: 0; width: min(2.75rem, 13%); }
+.page-template-page-guest-guide :is(input, button) { scroll-margin-top: calc(var(--header-offset) + 5rem); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+}
+@media (min-width: 960px) {
+  .layout-sidebar { grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem); }
+  .admin-bar .layout-sidebar > .sidebar-card { top: calc(var(--sidebar-sticky-top) + var(--wp-admin--admin-bar--height, 32px)); }
+}
+@media (max-width: 639px) {
+  .layout-sidebar { gap: var(--space-8); }
+  .sidebar-card { padding: var(--space-5); }
+  .form-actions .btn { min-height: 3rem; }
+  .step-indicator__label { line-height: var(--leading-snug); }
+}
+
+.gg-preview-note { padding-block: 1rem; }
+.gg-preview-note .lede { margin: 0; font-size: 0.875rem; }
+
+/* -------------------------------------------------------------------------- */
+/* Finishing pass: titles, reading measure, post-hero air                     */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * Interior photo heroes keep the coastal treatment; long H1s were wrapping
+ * to an uneven last line ("statement") because the display size outgrew the
+ * copy column. A slightly smaller title, using the full column, sits on one
+ * line from tablet up without covering more of the photo.
+ */
+.hero.hero--interior.hero--place .hero__text h1 {
+  max-width: 100%;
+  font-size: clamp(2.25rem, 1.05rem + 2.8vw, 2.7rem);
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 1024px) {
+  .hero.hero--interior.hero--place .hero__content {
+    width: clamp(42rem, 52vw, 48rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero.hero--interior.hero--place .hero__text {
+    max-width: 100%;
+  }
+  .hero.hero--interior.hero--place .hero__text p {
+    max-width: min(38rem, 100%);
+  }
+}
+
+/* Body copy: about 65–75 characters. 36rem was ~52ch; 44rem wide prose ~64ch. */
+.prose,
+.prose--wide {
+  max-width: min(70ch, 100%);
+}
+.section-head .lede {
+  max-width: min(72ch, 100%);
+}
+
+/* First editorial heading was stacking h2 margin-top on section padding. */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .hero + .section-y {
+    padding-top: var(--space-8);
+  }
+}
+
+/* Quiet hover on linked cards only — static cards stay still. */
+a.info-card,
+a.path-card {
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+a.info-card:hover,
+a.path-card:hover {
+  border-color: color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 0.07);
+  transform: translateY(-1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  a.info-card,
+  a.path-card {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Keep dropdown copy readable over light hero photos (WCAG 1.4.3). */
+.nav__dropdown {
+  background: rgb(12, 35, 42);
+}
+
+/* Skip link must appear for :focus as well as :focus-visible (WCAG 2.4.1). */
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid var(--deep-teal);
+  outline-offset: 2px;
+  box-shadow: 0 10px 28px rgba(9, 26, 32, 0.14);
+}
+
+/* Header enquire chip matches the 2.75rem tap target used elsewhere. */
+.site-header .btn {
+  min-height: 2.75rem;
+}
+.nav__dropdown a {
+  min-height: 2.75rem;
+}
+
+/*
+ * Phones: keep on-this-page chips in one scrolling row. Wrapping them into
+ * three sticky rows covered headings while you read.
+ * WP's admin bar is not sticky below 783px — it scrolls away. A fixed header
+ * that still clears 46px leaves a gap of page copy above the logo.
+ */
+@media screen and (max-width: 782px) {
+  .admin-bar .site-header {
+    top: calc(var(--banner-h) + var(--admin-bar-header-shift, var(--wp-admin--admin-bar--height, 46px)));
+  }
+  .admin-bar .subnav {
+    top: calc(var(--banner-h) + var(--header-offset) + var(--admin-bar-header-shift, var(--wp-admin--admin-bar--height, 46px)));
+  }
+  .admin-bar .mobile-nav {
+    top: calc(var(--header-offset) + var(--admin-bar-header-shift, var(--wp-admin--admin-bar--height, 46px)));
+  }
+  html.admin-bar {
+    scroll-padding-top: calc(var(--banner-h) + var(--header-offset) + var(--subnav-h) + var(--admin-bar-header-shift, 0px) + var(--space-3));
+  }
+}
+
+@media (max-width: 639px) {
+  .site-header {
+    transition: transform var(--duration-fast) ease, background-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  .site-header.is-scroll-away:not(.is-menu-open) {
+    transform: translateY(-100%);
+  }
+  .subnav {
+    position: static;
+  }
+  html:has(.subnav),
+  body:has(.subnav),
+  .subnav {
+    --subnav-h: 0px;
+  }
+  .subnav__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-inline-end: 2.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--deep-teal) 40%, transparent) transparent;
+  }
+  .subnav__list::-webkit-scrollbar {
+    display: block;
+    height: 4px;
+  }
+  .subnav__list::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--deep-teal) 40%, transparent);
+    border-radius: 999px;
+  }
+  .subnav li:last-child a {
+    scroll-snap-align: end;
+  }
+  .subnav .container::after {
+    opacity: 1;
+  }
+  .subnav.is-at-end .container::after {
+    opacity: 0;
+  }
+}
+
+/* The fixed back-to-top FAB (.scroll-top) is transient: it only appears after
+ * one viewport of scrolling and fades out at the top, so copy never needs a
+ * permanent gutter reserved for it — an 80px right inset left a ~265px column
+ * that ragged every band-teal paragraph on phones. Long full-width CTAs that
+ * must clear the FAB get breathing room from their own --band-teal-actions-mt.
+ */
+
+/*
+ * Phones: short paragraphs ragged into 4-word lines inside the band. Let the
+ * browser favour a cleaner break over exact filling (progressive: ignored
+ * where unsupported).
+ */
+@media (max-width: 767px) {
+  .band-teal__stack .lede,
+  .band-teal__stack h2 {
+    text-wrap: pretty;
+  }
+}
+
+@media (max-width: 599px) {
+  .property__cta-row .btn {
+    white-space: nowrap;
+    font-size: var(--text-sm);
+    padding-inline: var(--space-4);
+  }
+}
+
+/*
+ * Photo heroes on phones: one copy column. shared.css used a narrower CTA
+ * strip and an underline secondary, so the stack looked like a leftover.
+ */
+@media (max-width: 767px) {
+  .hero:not(.hero--interior) h1 {
+    font-size: clamp(1.9rem, 1.15rem + 3.6vw, 2.45rem);
+    text-wrap: balance;
+  }
+  .hero:not(.hero--interior) .hero__sub,
+  .hero:not(.hero--interior) .hero__text p {
+    max-width: 100%;
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    color: rgba(255, 255, 255, 0.88);
+    text-wrap: pretty;
+  }
+  .hero__ctas {
+    max-width: 100%;
+  }
+  .hero__note {
+    display: block;
+    margin-top: var(--space-2);
+    max-width: 100%;
+    font-size: var(--text-xs);
+    line-height: var(--leading-snug);
+  }
+  .hero__ctas .btn-outline-light {
+    display: inline-flex;
+    align-self: stretch;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-3) var(--space-5);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--white);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+  .hero__ctas .btn-outline-light:hover,
+  .hero__ctas .btn-outline-light:focus-visible {
+    border-color: var(--white);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+}
+
+/* Mosaic lead photo was cropped to ceiling; bias toward the room. */
+.gallery__item:first-child img {
+  object-position: center 70%;
+}
+
+/* Cookie bar must not cover focused footer links (WCAG 2.4.11). */
+html.has-cookie-banner {
+  scroll-padding-bottom: calc(var(--cookie-banner-h, 8rem) + var(--space-3));
+}
+html.has-cookie-banner body {
+  padding-bottom: var(--cookie-banner-h, 8rem);
+}
+.cookie-banner__actions .btn {
+  min-height: 2.75rem;
+}
+@media (max-width: 379px) {
+  .cookie-banner__actions {
+    flex-wrap: wrap;
+  }
+}
+
+/*
+ * Interior photo heroes on pale rooms (pricing living room): type was sitting
+ * on cream walls. Heavy scrim already exists — use it. Balance the H1 so
+ * “What a stay here costs” does not leave “here costs” as an orphan.
+ */
+.hero.hero--interior.hero--place .hero__text h1 {
+  text-wrap: balance;
+}
+@media (max-width: 767px) {
+  .hero.hero--interior.hero--place .hero__text h1 {
+    font-size: clamp(1.85rem, 1.15rem + 3.2vw, 2.35rem);
+  }
+  .hero.hero--interior.hero--place .hero__text p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+    max-width: 100%;
+  }
+}
+
+/* Pricing: crop to the furniture, not the floor; hold crumbs over the window. */
+.page-template-template-pricing .hero.hero--place {
+  --hero-place-min-h: min(48svh, 24.5rem);
+}
+@media (max-width: 767px) {
+  .page-template-template-pricing .hero__media-img {
+    object-position: 40% 16%;
+  }
+}
+
+/*
+ * Diary marks harmony layer. Shared.css owns the marks (house diary:
+ * plain open numerals, calm grey booked days, teal stayed-band, ringed
+ * check-out coin). Rules here keep phone rendering in the same language.
+ */
+.availability__day.is-booked .availability__date,
+.availability__day.is-past .availability__date {
+  background: transparent;
+  box-shadow: none;
+  color: color-mix(in srgb, var(--muted-grey) 30%, var(--white));
+  font-weight: var(--weight-regular);
+  text-decoration: none;
+}
+.availability__day.is-today:not(.is-pick):not(.is-hope-start):not(.is-hope-end) .availability__date {
+  box-shadow: 0 0 0 1.5px var(--deep-teal);
+}
+.availability__key-mark {
+  border-radius: 50%;
+}
+.availability__key.is-open .availability__key-mark {
+  display: none;
+}
+.availability__key.is-hope-end .availability__key-mark {
+  border: 2px solid var(--deep-teal);
+  background: var(--white);
+  box-sizing: border-box;
+}
+.availability__key.is-booked .availability__key-mark {
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--muted-grey) 30%, var(--white));
+  font-size: 0.7rem;
+  font-weight: var(--weight-regular);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+.availability__key.is-booked .availability__key-mark::before {
+  content: "12";
+}
+.availability__key.is-booked .availability__key-mark::after {
+  content: none;
+}
+
+@media (max-width: 639px) {
+  .availability__toolbar,
+  .availability__months {
+    width: 100%;
+  }
+  .availability {
+    --availability-coin: 2.25rem;
+    --availability-cell-h: 3.25rem; /* 48px+ touch rows, Airbnb-sheet rhythm */
+    --availability-col: 2.75rem;
+    --availability-grid-max: 100%;
+    --availability-num-size: var(--text-base);
+    --availability-card-pad: var(--space-4);
+    --availability-picker-gap: var(--space-5);
+  }
+  /* Receipt band in flow under the calendar — tint carries the split. */
+  .availability__stay {
+    padding-block-start: 0;
+    border-block-start: 0;
+  }
+  .availability__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .availability__summary .availability__field {
+    flex: none;
+  }
+  .availability__stay-arrow {
+    display: none;
+  }
+  .availability__stay-foot {
+    display: none;
+  }
+  /* Mobile quote row: nights + total left, Enquire right — receipt footer. */
+  .availability__quote {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "count cta"
+      "total cta";
+    align-items: center;
+    column-gap: var(--space-4);
+  }
+  .availability__stay-count {
+    grid-area: count;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--deep-teal);
+  }
+  .availability__total {
+    grid-area: total;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0;
+    border: 0;
+  }
+  .availability__total dt {
+    font-size: var(--type-meta-size);
+  }
+  .availability__total dd {
+    font-size: var(--text-xl);
+  }
+  .availability__cta {
+    grid-area: cta;
+    min-width: 9rem;
+  }
+  .availability__cta .btn {
+    min-height: 2.75rem;
+  }
+}
+@media (min-width: 640px) {
+  .availability {
+    --availability-col: 3rem;
+    --availability-coin: 2.6rem;
+    --availability-cell-h: 3.5rem;
+    --availability-grid-max: calc(3rem * 7);
+  }
+}
+
+/*
+ * Accessibility register: each room as a package card (photo, headline
+ * numbers, then the spec list) instead of a long document of rules.
+ */
+.acc-register-doc .equip-group + .equip-group {
+  margin-top: var(--space-6);
+}
+.acc-register-doc .equip-group-panel {
+  padding: 0;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
+  overflow: hidden;
+}
+.acc-register-doc .equip-group--close .equip-group-panel {
+  padding: var(--space-5);
+}
+.acc-package .equip-group__title::before {
+  display: none;
+}
+.acc-package__media {
+  margin: 0;
+}
+.acc-package__media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--driftwood);
+}
+.acc-package__body {
+  padding: var(--space-5);
+}
+.acc-package__body .equip-group__title {
+  margin-top: 0;
+}
+.acc-package__body .equip-group__lede {
+  margin-bottom: var(--space-4);
+}
+.acc-package__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+.acc-package__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--bg-subtle);
+}
+.acc-package__fact-value {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: var(--type-display-weight);
+  color: var(--deep-teal);
+  font-variant-numeric: tabular-nums;
+}
+.acc-package__fact-label {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  color: var(--muted-grey);
+  line-height: var(--leading-snug);
+}
+/* Fact chips are two equal tracks of a 336px card, ~135px each. A label like
+   "Safe working load" cannot fit that at its weight and clips mid-word — the
+   only clipped copy in the register. Chips are a summary of the spec list
+   below, so the 480px third column earns nothing: stack full-width until the
+   768px side-by-side panel, where chips sit beside the photo at a readable
+   width. The `.acc-package__body` guard keeps the property-page variant,
+   which has no chips, unaffected. */
+@media (max-width: 767px) {
+  .acc-package .acc-package__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.acc-package__body .equip-item--lead .equip-item__figure {
+  display: none;
+}
+@media (min-width: 480px) {
+  .acc-package__facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 768px) {
+  .acc-package__body {
+    padding: var(--space-6);
+  }
+  .acc-package__panel:has(.acc-package__media) {
+    display: grid;
+    grid-template-columns: minmax(16rem, 40%) minmax(0, 1fr);
+    align-items: stretch;
+  }
+  /* 16/10 of a ~275px column is ~172px of photo; `height:100%` + a 3481px
+     body stretched the same image to that full height, so a 16:10 crop
+     showed as a featureless vertical blur beside the copy. Cap the crop to
+     a sensible card photo and let the shorter side letterbox with the panel. */
+  .acc-package__media,
+  .acc-package__media img {
+    height: 100%;
+    max-height: 22rem;
+  }
+  .acc-package__media img {
+    aspect-ratio: 16 / 10;
+  }
+}

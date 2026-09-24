@@ -238,7 +238,7 @@ function restwell_seo_sitewide_render_verification_card( $issues ) {
 }
 
 /**
- * GA4 / Metricool / load-mode card.
+ * GA4 / Metricool / TikTok / load-mode card.
  *
  * @param array  $issues                 Checklist issues.
  * @param string $ga4_current            Measurement ID.
@@ -247,6 +247,9 @@ function restwell_seo_sitewide_render_verification_card( $issues ) {
  * @param string $metricool_current      Hash.
  * @param string $metricool_badge_class  Badge class.
  * @param string $metricool_badge_text   Badge label.
+ * @param string $tiktok_current         Pixel ID.
+ * @param string $tiktok_badge_class     Badge class.
+ * @param string $tiktok_badge_text      Badge label.
  * @param string $analytics_mode_current Load mode.
  */
 function restwell_seo_sitewide_render_analytics_card(
@@ -257,6 +260,9 @@ function restwell_seo_sitewide_render_analytics_card(
 	$metricool_current,
 	$metricool_badge_class,
 	$metricool_badge_text,
+	$tiktok_current,
+	$tiktok_badge_class,
+	$tiktok_badge_text,
 	$analytics_mode_current
 ) {
 	?>
@@ -278,13 +284,21 @@ function restwell_seo_sitewide_render_analytics_card(
 						</div>
 					<?php restwell_seo_sitewide_field_close(); ?>
 
+					<?php restwell_seo_sitewide_field_open( 'restwell_tiktok_pixel_id', __( 'TikTok Pixel ID', 'restwell-retreats' ), $issues ); ?>
+						<div class="rw-seo-sitewide__inline">
+							<input type="text" class="rw-seo-field__input" id="restwell_tiktok_pixel_id" name="restwell_tiktok_pixel_id" value="<?php echo esc_attr( $tiktok_current ); ?>" placeholder="DALR65BC77UCJD1NQGH0" />
+							<span class="<?php echo esc_attr( $tiktok_badge_class ); ?>" aria-live="polite"><?php echo esc_html( $tiktok_badge_text ); ?></span>
+						</div>
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Optional. Loads the TikTok Pixel after analytics consent. Sends ViewContent on each page, plus Lead when an enquiry is sent. Leave Automatic Advanced Matching off in TikTok Events Manager.', 'restwell-retreats' ); ?></p>
+					<?php restwell_seo_sitewide_field_close(); ?>
+
 					<?php restwell_seo_sitewide_field_open( 'restwell_analytics_load_mode', __( 'When to load analytics', 'restwell-retreats' ), $issues ); ?>
 						<select class="rw-seo-field__input rw-seo-field__input--select" name="restwell_analytics_load_mode" id="restwell_analytics_load_mode">
 							<option value="head" <?php selected( $analytics_mode_current, 'head' ); ?>><?php esc_html_e( 'Head — load immediately', 'restwell-retreats' ); ?></option>
 							<option value="footer_deferred" <?php selected( $analytics_mode_current, 'footer_deferred' ); ?>><?php esc_html_e( 'Footer — deferred (better for page speed)', 'restwell-retreats' ); ?></option>
 							<option value="consent_gated" <?php selected( $analytics_mode_current, 'consent_gated' ); ?>><?php esc_html_e( 'Consent-gated — only after cookie consent', 'restwell-retreats' ); ?></option>
 						</select>
-						<p class="rw-seo-field__hint"><?php esc_html_e( 'Consent-gated is the PECR-safe default: the theme cookie banner stores the choice, and GA4/Metricool stay off until the visitor accepts analytics. Head and Footer deferred load tracking without that consent.', 'restwell-retreats' ); ?></p>
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Consent-gated is the PECR-safe default: the theme cookie banner stores the choice, and GA4, Metricool, and TikTok stay off until the visitor accepts analytics. Head and Footer deferred load tracking without that consent.', 'restwell-retreats' ); ?></p>
 					<?php restwell_seo_sitewide_field_close(); ?>
 				</section>
 
@@ -468,6 +482,18 @@ function restwell_seo_sitewide_render_page() {
 		$metricool_badge_text  = __( 'Wrong format — should be a 32-character hash', 'restwell-retreats' );
 	}
 
+	$tiktok_current = (string) get_option( 'restwell_tiktok_pixel_id', 'DALR65BC77UCJD1NQGH0' );
+	if ( $tiktok_current === '' ) {
+		$tiktok_badge_class = 'rw-seo-flag rw-seo-flag--warn';
+		$tiktok_badge_text  = __( 'Not set — tracking inactive', 'restwell-retreats' );
+	} elseif ( preg_match( '/^[0-9A-Za-z]{10,30}$/', $tiktok_current ) ) {
+		$tiktok_badge_class = 'rw-seo-flag rw-seo-flag--ok';
+		$tiktok_badge_text  = __( 'Active', 'restwell-retreats' );
+	} else {
+		$tiktok_badge_class = 'rw-seo-flag rw-seo-flag--bad';
+		$tiktok_badge_text  = __( 'Wrong format — check the Pixel ID', 'restwell-retreats' );
+	}
+
 	$analytics_mode_current = (string) get_option( 'restwell_analytics_load_mode', 'consent_gated' );
 	if ( ! in_array( $analytics_mode_current, array( 'head', 'footer_deferred', 'consent_gated' ), true ) ) {
 		$analytics_mode_current = 'consent_gated';
@@ -513,6 +539,9 @@ function restwell_seo_sitewide_render_page() {
 					$metricool_current,
 					$metricool_badge_class,
 					$metricool_badge_text,
+					$tiktok_current,
+					$tiktok_badge_class,
+					$tiktok_badge_text,
 					$analytics_mode_current
 				);
 				restwell_seo_sitewide_render_social_card( $social_urls );

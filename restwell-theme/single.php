@@ -26,10 +26,20 @@ while ( have_posts() ) :
 	$category  = function_exists( 'restwell_get_primary_category' ) ? restwell_get_primary_category( $entry_id ) : '';
 	$read_mins = function_exists( 'restwell_estimate_read_time' ) ? restwell_estimate_read_time( get_post_field( 'post_content', $entry_id ) ) : 1;
 	$author    = get_the_author();
+	if ( in_array( strtolower( trim( $author ) ), array( 'admin', 'administrator' ), true ) ) {
+		$author = '';
+	}
 	$crumb     = wp_html_excerpt( $entry_title, 42, '…' );
+	list( $hero_image, $hero_image_alt ) = function_exists( 'restwell_get_post_card_thumb' )
+		? restwell_get_post_card_thumb( $entry_id, 'full' )
+		: array( '', '' );
 	?>
-<section class="hero hero--interior hero--place" aria-labelledby="page-h">
-	<div class="hero__media" aria-hidden="true"></div>
+<section class="hero hero--interior hero--place hero--overlay-heavy" aria-labelledby="page-h">
+	<div class="hero__media" aria-hidden="true">
+		<?php if ( $hero_image !== '' ) : ?>
+			<img class="hero__media-img" src="<?php echo esc_url( $hero_image ); ?>" alt="" width="1600" height="900" decoding="async" fetchpriority="high" />
+		<?php endif; ?>
+	</div>
 	<div class="container">
 		<div class="hero__content">
 			<ol class="breadcrumb">
@@ -47,13 +57,14 @@ while ( have_posts() ) :
 	</div>
 </section>
 
-<article class="section-y band-white">
-	<div class="container">
+<article class="section-y band-white blog-article" aria-labelledby="page-h">
+	<div class="container blog-article__inner">
 		<p class="blog-meta">
 			<?php if ( $category !== '' ) : ?>
 				<span class="tag"><?php echo esc_html( $category ); ?></span>
 			<?php endif; ?>
 			<span><?php echo esc_html( sprintf( /* translators: %d: minutes */ _n( '%d min read', '%d min read', $read_mins, 'restwell-retreats' ), $read_mins ) ); ?></span>
+			<time datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
 			<?php if ( $author !== '' ) : ?>
 				<span><?php echo esc_html( $author ); ?></span>
 			<?php endif; ?>
@@ -61,6 +72,9 @@ while ( have_posts() ) :
 		<div class="prose prose--wide">
 			<?php the_content(); ?>
 		</div>
+		<nav class="blog-article__back" aria-label="<?php esc_attr_e( 'Article navigation', 'restwell-retreats' ); ?>">
+			<a class="btn btn-outline-teal" href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'Back to all articles', 'restwell-retreats' ); ?></a>
+		</nav>
 	</div>
 </article>
 	<?php
@@ -105,7 +119,9 @@ $related = new WP_Query( $related_args );
 			wp_reset_postdata();
 		else :
 			?>
-			<p class="lede"><?php esc_html_e( 'More articles will appear here as the blog grows.', 'restwell-retreats' ); ?></p>
+			<div class="empty-state blog-empty-state" role="status">
+				<p class="lede"><?php esc_html_e( 'More articles will appear here as the blog grows.', 'restwell-retreats' ); ?></p>
+			</div>
 		<?php endif; ?>
 	</div>
 </section>

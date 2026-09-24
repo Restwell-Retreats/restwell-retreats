@@ -384,62 +384,44 @@ function restwell_get_blog_post_fatigue_friendly_coastal_day_html() {
 	$backup = esc_url( home_url( '/holiday-backup-plan-care-worker-change/' ) );
 	$enq    = esc_url( home_url( '/enquire/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Fatigue-friendly days chunk activity into 90-minute blocks with seated rests, warm layers, and hydration timers. On the Kent coast wind and glare tax nervous systems faster than step counts suggest, so plan fewer stops but richer seating.</p></blockquote>
+	return "<blockquote><p>A day by the sea can be as simple as one place you want to visit, somewhere to sit, and an easy way back. Leave room to change your plans.</p></blockquote>
 
-<h2>What is a fatigue-friendly coastal plan?</h2>
-<p>A fatigue-friendly coastal plan balances stimulation and recovery for people with MS, long COVID, chronic pain, or post-stroke endurance limits.</p>
+<h2>Choose what matters to you</h2>
+<p>You do not have to fit the harbour, town centre and promenade into the same outing. Pick the part you most want to see and plan around it. A view of the water over a cup of tea may be enough for the day.</p>
+	<p>If you already have advice from your care team about managing fatigue, use that when planning your break. There is no single timetable that suits everyone. For further reading, see <a href=\"https://www.uclh.nhs.uk/patients-and-visitors/patient-information-pages/energy-and-pacing\">UCLH’s information about energy and pacing</a>.</p>
 
-<h2>Why the coast deceives energy budgets</h2>
-<p>Wind resistance doubles wheelchair effort. Shingle vibrations jar joints. Social interaction spikes masking costs for neurodivergent travellers.</p>
+<h2>Make the return trip part of the plan</h2>
+<p>Before you leave, check where you will park or be dropped off, the distance to your destination, and how you will get back. Include the journey from the car to the seafront, rather than counting only the time spent beside the water.</p>
+<ul>
+<li>Choose a turning-back point before setting off.</li>
+<li>Check seating and toilet access near the place you want to visit.</li>
+<li>If you plan to stop at a café, ask about step-free entry and space for your chair.</li>
+<li>Keep a shorter option available if the weather or your plans change.</li>
+</ul>
 
-<h2>Pacing pattern</h2>
+<h2>Questions to check before heading out</h2>
 <table>
-<caption>Example skeleton day — adapt to your baseline</caption>
-<thead><tr><th scope=\"col\">Block</th><th scope=\"col\">Activity</th><th scope=\"col\">Recovery tool</th></tr></thead>
+<caption>A short checklist for a coastal outing</caption>
+<thead><tr><th scope=\"col\">Check</th><th scope=\"col\">Why it helps</th></tr></thead>
 <tbody>
-<tr><th scope=\"row\">09:30</th><td>Short prom roll</td><td>Heated café corner</td></tr>
-<tr><th scope=\"row\">11:30</th><td>Harbour browse</td><td>Bench facing sun off face</td></tr>
-<tr><th scope=\"row\">14:00</th><td>Quiet indoor craft or nap</td><td>Darkened room</td></tr>
-<tr><th scope=\"row\">17:00</th><td>Optional golden-hour roll</td><td>Wraps + electrolytes</td></tr>
+<tr><th scope=\"row\">Route and surface</th><td>Confirm that the route suits your chair or walking aid, including any slopes and changes in surface.</td></tr>
+<tr><th scope=\"row\">Weather</th><td>Look at the forecast, including wind, and decide whether a sheltered or indoor stop would suit you better.</td></tr>
+<tr><th scope=\"row\">Places to pause</th><td>Identify somewhere you can sit or stop without depending on an unreserved café table.</td></tr>
+<tr><th scope=\"row\">Toilets</th><td>Check the facilities, access arrangements and opening hours you need.</td></tr>
+<tr><th scope=\"row\">Getting back</th><td>Agree where to meet anyone collecting you and keep their contact details handy.</td></tr>
 </tbody>
 </table>
 
-<h2>Sensory tweaks</h2>
-<h3>Glare</h3>
-<p>Polarised lenses and peaked caps.</p>
-<h3>Noise</h3>
-<p>Loop-ready headphones or ear defenders.</p>
-<h3>Pain</h3>
-<p>Heat pads permitted by clinicians.</p>
+<h2>Keep the rest of the day flexible</h2>
+<p>Let the people travelling with you know which parts of the day you want to keep optional. It is easier to change a plan when nobody is relying on a full afternoon out or a fixed restaurant booking.</p>
+<p>For a quieter day at the bungalow, <a href=\"{$enq}\">ask us about the rooms and layout</a> before booking. We can help you check whether the house will work for your group.</p>
 
-<h2>Practical steps</h2>
+<h2>More help with planning</h2>
 <ul>
-<li>Align outings with <a href=\"{$quiet}\">quieter timing</a>.</li>
-<li>Read <a href=\"{$beach}\">beach realities</a> before committing distance.</li>
-<li>Pack meds per <a href=\"{$pack}\">packing article</a>.</li>
-<li>Share <a href=\"{$backup}\">backup care</a> notes.</li>
+<li><a href=\"{$quiet}\">Choosing quieter times to visit Whitstable</a></li>
+<li><a href=\"{$beach}\">Accessible beaches and coastal walks in Kent</a></li>
+<li><a href=\"{$pack}\">What to pack for an accessible self-catering stay</a></li>
+<li><a href=\"{$backup}\">Making a backup plan for care arrangements</a></li>
 </ul>
-
-<h2>Common mistakes</h2>
-<ul>
-<li>Copying influencer itineraries beat-for-beat.</li>
-<li>Skipping midday protein.</li>
-<li>Ignoring bladder schedules because queues look long.</li>
-<li>Shaming rest as laziness.</li>
-</ul>
-
-<h2>Frequently asked questions</h2>
-<h3>Can electric chairs handle wind?</h3>
-<p>Sometimes risk tipping; assess gust forecasts.</p>
-<h3>Are mobility scooters allowed on all paths?</h3>
-<p>Check bylaws; some prom sections restrict speed.</p>
-<h3>Should we nap after lunch?</h3>
-<p>If clinicians approve, yes.</p>
-<h3>What about teenagers pushing pace?</h3>
-<p>Negotiate solo explore windows while primary carer rests.</p>
-<h3>Does Restwell suit low-energy days?</h3>
-<p>Self-catering lets you retreat; <a href=\"{$enq}\">ask us</a> about layout.</p>
-
-<h2>Closing</h2>
-<p>Rest is part of the itinerary. Continue reading the <a href=\"{$blog}\">blog</a>.</p>";
+<p><a href=\"{$blog}\">Back to all planning articles</a></p>";
 }

@@ -419,7 +419,7 @@ function restwell_crm_render_enquiries_pagination( array $list ): void {
 			printf(
 				/* translators: %d: number of items */
 				esc_html__( '%d items', 'restwell-retreats' ),
-				$total
+				(int) $total
 			);
 			?>
 		</span>
@@ -441,8 +441,8 @@ function restwell_crm_render_enquiries_pagination( array $list ): void {
 				printf(
 					/* translators: 1: current page, 2: total pages */
 					esc_html__( 'Page %1$d of %2$d', 'restwell-retreats' ),
-					$current_page,
-					$total_pages
+					(int) $current_page,
+					(int) $total_pages
 				);
 				?>
 			</span>

@@ -155,6 +155,20 @@ function restwell_guest_guide_meta_box_callback( $post ) {
 
 	$sections = restwell_guest_guide_field_definitions();
 
+	$essential = array( 'gg_address', 'gg_checkin_time', 'gg_checkout_time', 'gg_door_instructions', 'gg_wifi_name', 'gg_wifi_password', 'gg_host_contact' );
+	$missing = array();
+	foreach ( $sections as $fields ) {
+		foreach ( $fields as $key => $field ) {
+			if ( in_array( $key, $essential, true ) && '' === trim( (string) get_post_meta( $post->ID, $key, true ) ) ) {
+				$missing[] = '<a href="#restwell_' . esc_attr( $key ) . '">' . esc_html( $field['label'] ) . '</a>';
+			}
+		}
+	}
+	if ( $missing ) {
+		echo '<div class="notice notice-warning inline"><p><strong>' . esc_html__( 'Arrival information still needed', 'restwell-retreats' ) . '</strong></p><p>' . esc_html__( 'Complete these details before sharing the guide with guests:', 'restwell-retreats' ) . '</p><ul><li>' . wp_kses_post( implode( '</li><li>', $missing ) ) . '</li></ul></div>';
+	}
+	echo '<p>' . esc_html__( 'Use current, confirmed house details. Include where to find the key safe, how to open the door, and who guests should call if they cannot get in. Put each house rule and departure task on a separate line.', 'restwell-retreats' ) . '</p>';
+
 	echo '<table class="form-table" role="presentation">';
 
 	foreach ( $sections as $section_label => $fields ) {

@@ -3,9 +3,10 @@
 	<description>WordPress Coding Standards for the Restwell theme (restwell-theme/).</description>
 
 	<file>restwell-theme</file>
-	<!-- Public enquire/mail/CRM side-effects live in the mu-plugin; lint them with the theme. -->
-	<file>wp-content/mu-plugins/restwell-crm</file>
-	<file>wp-content/mu-plugins/restwell-crm.php</file>
+	<!-- CRM itself now lives in restwell-theme/inc/crm/ (consolidated in 627468e); the
+	     mu-plugins dir keeps the loader tombstone and the hardening plugin. Lint the
+	     directory so both public mu-plugins are covered as files come and go. -->
+	<file>wp-content/mu-plugins</file>
 
 	<arg name="extensions" value="php"/>
 	<arg value="psn"/>
@@ -39,6 +40,10 @@
 	<rule ref="Universal.Files.SeparateFunctionsFromOO.Mixed">
 		<exclude-pattern>*/inc/nav.php</exclude-pattern>
 		<exclude-pattern>*/inc/services/bootstrap.php</exclude-pattern>
+	</rule>
+	<!-- nav.php holds both nav walkers (desktop + mobile sheet); same call as the two above. -->
+	<rule ref="Generic.Files.OneObjectStructurePerFile">
+		<exclude-pattern>*/inc/nav.php</exclude-pattern>
 	</rule>
 
 	<!-- Thin wrapper around wp_get_attachment_image(), which WPCS already trusts as pre-escaped. -->

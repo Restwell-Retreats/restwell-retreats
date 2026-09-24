@@ -569,20 +569,30 @@ function restwell_seo_checklist_sitewide(): array {
 		);
 	}
 
+	$tiktok = trim( (string) get_option( 'restwell_tiktok_pixel_id', 'DALR65BC77UCJD1NQGH0' ) );
+	if ( $tiktok !== '' && ! preg_match( '/^[0-9A-Za-z]{10,30}$/', $tiktok ) ) {
+		$issues[] = array(
+			'id'       => 'tiktok_invalid',
+			'severity' => 'error',
+			'message'  => __( 'TikTok Pixel ID looks wrong — check the ID copied from TikTok Events Manager.', 'restwell-retreats' ),
+			'field'    => 'restwell_tiktok_pixel_id',
+		);
+	}
+
 	$mode = (string) get_option( 'restwell_analytics_load_mode', 'consent_gated' );
-	$has_tracker = ( $ga4 !== '' || $metricool !== '' );
+	$has_tracker = ( $ga4 !== '' || $metricool !== '' || $tiktok !== '' );
 	if ( $has_tracker && 'head' === $mode ) {
 		$issues[] = array(
 			'id'       => 'analytics_mode',
 			'severity' => 'error',
-			'message'  => __( 'Analytics loads in the head without cookie consent (PECR). Switch to Consent-gated so GA4/Metricool wait for the cookie banner.', 'restwell-retreats' ),
+			'message'  => __( 'Analytics loads in the head without cookie consent (PECR). Switch to Consent-gated so GA4, Metricool, and TikTok wait for the cookie banner.', 'restwell-retreats' ),
 			'field'    => 'restwell_analytics_load_mode',
 		);
 	} elseif ( $has_tracker && 'footer_deferred' === $mode ) {
 		$issues[] = array(
 			'id'       => 'analytics_mode_deferred',
 			'severity' => 'warn',
-			'message'  => __( 'Analytics loads in the footer without cookie consent. Use Consent-gated so tracking waits for Accept analytics.', 'restwell-retreats' ),
+			'message'  => __( 'Analytics loads in the footer without cookie consent. Use Consent-gated so GA4, Metricool, and TikTok wait for Accept analytics.', 'restwell-retreats' ),
 			'field'    => 'restwell_analytics_load_mode',
 		);
 	}

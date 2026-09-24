@@ -38,11 +38,11 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 <footer class="site-footer">
 	<div class="container">
 		<div class="site-footer__brand">
-			<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"<?php echo $logo_url ? ' aria-label="' . esc_attr( $brand ) . '"' : ''; ?>>
 				<?php if ( $logo_url ) : ?>
 					<img
 						src="<?php echo esc_url( $logo_url ); ?>"
-						alt="<?php echo esc_attr( $brand ); ?>"
+						alt=""
 						class="site-logo__img"
 						width="282"
 						height="44"

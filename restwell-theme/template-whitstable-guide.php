@@ -147,13 +147,15 @@ get_template_part(
 );
 ?>
 
-	<nav class="subnav" aria-label="On this page">
+	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
 		  <li><a href="#promenade">Promenade</a></li>
 		  <li><a href="#parking">Parking</a></li>
+		  <li><a href="#stops">Along the route</a></li>
 		  <li><a href="#eat">Eat</a></li>
 		  <li><a href="#toilets">Toilets</a></li>
+		  <li><a href="#travel">Getting around</a></li>
 		  <li><a href="#days-out">Days out</a></li>
 		  <li><a href="#faq">FAQ</a></li>
 		</ul>
@@ -388,15 +390,7 @@ get_template_part(
 			  </button>
 			  <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
 				<p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route. Places along Tankerton promenade take longer because you then walk west along the prom. JoJo’s is roughly twenty minutes all in. Stay on the paved path; grassy slopes above are steep.</p>
-			  </div>
-			</div>
-			<div class="faq-item">
-			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="whit-q3" aria-controls="whit-q3-a">
-				<span>Is Whitstable suitable for wheelchair users?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="whit-q3-a" role="region" aria-labelledby="whit-q3" hidden>
-				<p>Yes if you plan parking, toilets and seafront routes first. Tankerton promenade is the main long level coastal stretch. Restwell’s step-free bungalow with driveway parking removes the hardest accommodation barrier.</p>
+				<p>Plan parking, toilets and seafront routes first: Tankerton promenade is the main long level coastal stretch, and the shingle beach itself is not a wheelchair surface. Restwell’s step-free bungalow with driveway parking removes the hardest barrier before the day starts.</p>
 			  </div>
 			</div>
 			<div class="faq-item">

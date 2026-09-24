@@ -35,7 +35,7 @@ function restwell_render_media_importer_page() {
 		<h1><?php esc_html_e( 'Restwell Media Import', 'restwell-retreats' ); ?></h1>
 		<p><?php esc_html_e( 'Choose media-metadata.csv from the media ZIP. Existing attachment metadata will be replaced.', 'restwell-retreats' ); ?></p>
 		<?php if ( is_array( $result ) ) : ?>
-			<div class="notice notice-success is-dismissible"><p><?php echo esc_html( sprintf( __( 'Imported %1$d media items. %2$d rows could not be matched.', 'restwell-retreats' ), $result['matched'], $result['skipped'] ) ); ?></p></div>
+			<div class="notice notice-success is-dismissible"><p><?php echo esc_html( sprintf( /* translators: 1: number of media items imported, 2: number of rows that could not be matched. */ __( 'Imported %1$d media items. %2$d rows could not be matched.', 'restwell-retreats' ), $result['matched'], $result['skipped'] ) ); ?></p></div>
 			<?php if ( ! empty( $result['missing'] ) ) : ?>
 				<p><strong><?php esc_html_e( 'Unmatched filenames:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( implode( ', ', $result['missing'] ) ); ?></p>
 			<?php endif; ?>
@@ -50,7 +50,14 @@ function restwell_render_media_importer_page() {
 }
 
 function restwell_import_media_metadata() {
-	$result = array( 'matched' => 0, 'skipped' => 0, 'missing' => array() );
+	// Re-verified here, not just in the caller: this function reads $_FILES directly.
+	check_admin_referer( 'restwell_import_media', 'restwell_media_nonce' );
+
+	$result = array(
+		'matched' => 0,
+		'skipped' => 0,
+		'missing' => array(),
+	);
 	if ( empty( $_FILES['restwell_media_csv']['tmp_name'] ) || ! is_uploaded_file( $_FILES['restwell_media_csv']['tmp_name'] ) ) {
 		return $result;
 	}
@@ -65,7 +72,15 @@ function restwell_import_media_metadata() {
 			$columns[ sanitize_key( preg_replace( '/^\xEF\xBB\xBF/', '', $column ) ) ] = $index;
 		}
 	}
-	$attachments = get_posts( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'posts_per_page' => -1, 'fields' => 'ids', 'no_found_rows' => true ) );
+	$attachments = get_posts(
+		array(
+			'post_type' => 'attachment',
+			'post_status' => 'inherit',
+			'posts_per_page' => -1,
+			'fields' => 'ids',
+			'no_found_rows' => true,
+		)
+	);
 	$attachment_map = array();
 	foreach ( $attachments as $attachment_id ) {
 		$file = get_post_meta( $attachment_id, '_wp_attached_file', true );
@@ -84,7 +99,14 @@ function restwell_import_media_metadata() {
 			continue;
 		}
 		$attachment_id = $attachment_map[ $key ];
-		wp_update_post( array( 'ID' => $attachment_id, 'post_title' => restwell_csv_value( $row, $columns, 'title' ), 'post_excerpt' => restwell_csv_value( $row, $columns, 'caption' ), 'post_content' => restwell_csv_value( $row, $columns, 'description' ) ) );
+		wp_update_post(
+			array(
+				'ID' => $attachment_id,
+				'post_title' => restwell_csv_value( $row, $columns, 'title' ),
+				'post_excerpt' => restwell_csv_value( $row, $columns, 'caption' ),
+				'post_content' => restwell_csv_value( $row, $columns, 'description' ),
+			)
+		);
 		$alt_text = restwell_csv_value( $row, $columns, 'alt_text' );
 		if ( '' !== $alt_text && strpos( get_post_mime_type( $attachment_id ), 'image/' ) === 0 ) {
 			update_post_meta( $attachment_id, '_wp_attachment_image_alt', $alt_text );

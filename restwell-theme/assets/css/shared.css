@@ -570,16 +570,26 @@ html.admin-bar .subnav ~ section[id] {
   margin-bottom: var(--section-after-head-tight);
   gap: var(--section-head-gap-tight);
 }
+/* The tight gap still applies to the eyebrow→h2 pair (a label hugs its
+   heading), but the note on .section-head > .lede — "one step further from
+   the title" — holds here too. Zeroing the lede's step collapsed the
+   h2→lede ink gap to 11px, *below* the lede's own 29px line pitch, so
+   heading and paragraph read as one clump. Restores the default box
+   distance (8px gap + 8px = the default 12px gap + 4px margin). */
 .section-head--tight > .lede {
-  margin-top: 0;
+  margin-top: var(--space-2);
 }
 /* Follow-on body after a tight section head (property room segments) */
 .section-head--tight + .lede {
   margin-top: calc(-1 * var(--section-after-head-tight) + var(--space-3));
 }
+/* Paragraph step (20px) must clear the lede line gap (~12px) or consecutive
+   paragraphs read as one wall. Follow-on ledes share the header lede's
+   measure so the column edge doesn't jump inward mid-section. */
 .section-head--tight + .lede + .lede,
 .section-head--tight + .lede + p {
-  margin-top: var(--space-3);
+  margin-top: var(--space-5);
+  max-width: var(--rw-measure-care);
 }
 
 /*
@@ -620,6 +630,16 @@ html.admin-bar .subnav ~ section[id] {
 }
 .eyebrow--on-dark { color: var(--warm-gold-hero); }
 
+/* Brand sign-off (Our story): reads as a quiet farewell, not body copy.
+   Serif italic echoes the display face; margin-top consumes one body-gap step
+   so it sits apart from the section lede above. */
+.restwell-signoff {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--muted-grey);
+  margin-top: var(--space-6);
+}
+
 h1, h2, h3 {
   font-family: var(--font-serif);
   font-weight: var(--type-display-weight);
@@ -657,6 +677,12 @@ blockquote:not(.pull-quote__text):not(.testimonial-card__quote):not(.quote-block
 }
 /* Section intros sit above full-width content — allow a wider measure than body copy */
 .section-head .lede {
+  max-width: var(--rw-measure-care);
+}
+/* Property room segments: follow-on paragraphs after the head keep the same
+   wider measure as the header lede, so the column edge doesn't jump inward
+   mid-section (see .section-head--tight sibling rules above). */
+.section-head--tight ~ .lede {
   max-width: var(--rw-measure-care);
 }
 
@@ -1083,18 +1109,21 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  /* Left column for copy + light top tint for the header. Photo stays open
-     on the right — no muddy full-frame wash. */
+  /* Hospitality hybrid: Almaris bottom-heavy wash for the copy zone + Bobbin
+     left column for left-aligned type. Photo stays visible above. */
   background:
-    linear-gradient(105deg, rgba(12, 35, 42, 0.82) 0%, rgba(12, 35, 42, 0.58) 32%, rgba(12, 35, 42, 0.22) 58%, rgba(12, 35, 42, 0.06) 100%),
-    linear-gradient(180deg, rgba(12, 35, 42, 0.35) 0%, rgba(12, 35, 42, 0.08) 28%, rgba(12, 35, 42, 0.12) 62%, rgba(12, 35, 42, 0.45) 100%);
+    linear-gradient(180deg, rgba(12, 35, 42, 0.32) 0%, rgba(12, 35, 42, 0.22) 38%, rgba(12, 35, 42, 0.78) 100%),
+    linear-gradient(90deg, rgba(12, 35, 42, 0.55) 0%, rgba(12, 35, 42, 0.22) 52%, rgba(12, 35, 42, 0.06) 100%);
 }
-/* Pale / busy photo heroes: heavier left + bottom scrim. No copy card —
-   the rounded panel fought the full-bleed photo and looked like a modal. */
 .hero--overlay-heavy .hero__media::after {
   background:
-    linear-gradient(105deg, rgba(12, 35, 42, 0.8) 0%, rgba(12, 35, 42, 0.55) 34%, rgba(12, 35, 42, 0.22) 58%, rgba(12, 35, 42, 0.08) 100%),
-    linear-gradient(180deg, rgba(12, 35, 42, 0.32) 0%, rgba(12, 35, 42, 0.1) 30%, rgba(12, 35, 42, 0.42) 100%);
+    linear-gradient(180deg, rgba(12, 35, 42, 0.38) 0%, rgba(12, 35, 42, 0.28) 36%, rgba(12, 35, 42, 0.88) 100%),
+    linear-gradient(90deg, rgba(12, 35, 42, 0.62) 0%, rgba(12, 35, 42, 0.28) 52%, rgba(12, 35, 42, 0.08) 100%);
+}
+/* Teal underpaint reads through so pale rooms can't blow out type — keep
+   the photo a touch more vivid than Bobbin's ~0.55 (beach-resort feel). */
+.hero--overlay-heavy .hero__media-img {
+  opacity: 0.68;
 }
 .restwell-carousel__btn svg,
 .restwell-lightbox__btn svg {
@@ -1202,25 +1231,19 @@ body.nav-open { overflow: hidden; }
   .hero {
     align-items: flex-end;
   }
-  .hero__media::after {
-    /* Bottom-weighted only — upper ~half of photo stays visible. */
+  .hero__media::after,
+  .hero--overlay-heavy .hero__media::after {
+    /* Almaris-style: almost solid at the bottom where copy sits; sky/photo
+       still readable in the upper half. */
     background: linear-gradient(
       180deg,
-      rgba(12, 35, 42, 0.12) 0%,
-      rgba(12, 35, 42, 0.2) 42%,
-      rgba(12, 35, 42, 0.72) 78%,
-      rgba(12, 35, 42, 0.86) 100%
+      rgba(12, 35, 42, 0.28) 0%,
+      rgba(12, 35, 42, 0.4) 40%,
+      rgba(12, 35, 42, 0.92) 100%
     );
   }
-  .hero--overlay-heavy .hero__media::after {
-    /* Mobile: bottom-weighted like the default hero — copy sits low. */
-    background: linear-gradient(
-      180deg,
-      rgba(12, 35, 42, 0.18) 0%,
-      rgba(12, 35, 42, 0.32) 42%,
-      rgba(12, 35, 42, 0.78) 78%,
-      rgba(12, 35, 42, 0.9) 100%
-    );
+  .hero--overlay-heavy .hero__media-img {
+    opacity: 0.62;
   }
   .hero__media:not(:has(.hero__media-img)) {
     background:
@@ -1808,13 +1831,13 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   padding: 0;
   list-style: none;
   font-size: var(--text-xs);
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.88);
 }
 .breadcrumb a {
   display: inline-flex;
   align-items: center;
   min-height: 1.5rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.92);
   text-decoration: none;
 }
 .breadcrumb a:hover,
@@ -1975,6 +1998,15 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
       color-mix(in srgb, var(--driftwood) 22%, var(--white)) 100%
     );
 }
+/* Two subtle bands in a row each restart the 165° wash, so the dark end of
+   one meets the light start of the next and draws a hard line across the
+   page. A pair reads as one continuous field instead. Matching the join with
+   a flat fill on only the second band cannot work: the gradient is tilted, so
+   its colour along the seam varies by ~16% of the ramp across the width. */
+.band-subtle:has(+ .band-subtle),
+.band-subtle + .band-subtle {
+  background: var(--bg-subtle);
+}
 .band-white { background: var(--white); }
 .band-teal {
   /* Soft depth — flat teal reads as a slab on mobile */
@@ -2062,18 +2094,12 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   padding-top: var(--band-teal-actions-pt);
 }
 .band-teal__actions > * { margin: 0; }
-@media (min-width: 900px) {
+/* Buttons go side-by-side from small tablet up; the split photo still
+   waits for 900px so 768–899 keeps the tight editorial band. */
+@media (min-width: 768px) {
   .band-teal {
-    --band-teal-stack-gap: var(--space-5);
-    --band-teal-checklist-gap: var(--space-4);
     --band-teal-actions-gap: var(--space-3);
     --band-teal-actions-mt: var(--space-2);
-  }
-  .band-teal .split {
-    align-items: center;
-  }
-  .band-teal .split--cover {
-    align-items: stretch;
   }
   .band-teal__actions {
     flex-direction: row;
@@ -2084,19 +2110,32 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     width: auto;
   }
 }
+@media (min-width: 900px) {
+  .band-teal {
+    --band-teal-stack-gap: var(--space-5);
+    --band-teal-checklist-gap: var(--space-4);
+  }
+  .band-teal .split {
+    align-items: center;
+  }
+  .band-teal .split--cover {
+    align-items: stretch;
+  }
+}
 
 /*
- * Narrow viewports: drop the split photo. On phones the band already sits
- * after another bungalow image, and a second photo turns the teal block into
- * a tall sandwich. Keep a tight editorial band — copy, proof points, CTA.
+ * Narrow viewports (below the 900px split): drop the photo. The band already
+ * sits after another bungalow image, and a second photo turns the teal block
+ * into a tall sandwich. Keep a tight editorial band — copy, proof, CTA.
  * Spacing via token remaps only.
+ * Buttons: stacked full-width on phones (≤767px, where a row of two pills
+ * would wrap and a 700px-wide pill reads oversized); a comfortable row from
+ * 768px per the min-width block above.
  */
 @media (max-width: 899px) {
   .band-teal {
     --band-teal-stack-gap: var(--space-4);
     --band-teal-checklist-gap: var(--space-3);
-    --band-teal-actions-mt: var(--space-5);
-    --band-teal-actions-pt: var(--space-5);
   }
   .band-teal .split {
     display: block;
@@ -2111,6 +2150,12 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     font-size: var(--text-base);
     line-height: 1.65;
     max-width: 36rem;
+  }
+}
+@media (max-width: 767px) {
+  .band-teal {
+    --band-teal-actions-mt: var(--space-5);
+    --band-teal-actions-pt: var(--space-5);
   }
   .band-teal__actions {
     width: 100%;
@@ -2414,6 +2459,10 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   .split {
     display: flex;
     flex-direction: column;
+    /* Column mode: inherited center alignment would center children against
+       each other vertically — a 184px void opened between #origin's short text
+       and its photo. Children must stretch and stack flush. */
+    align-items: stretch;
   }
   .split > *:not(.split__media) { order: 1; }
   .split > .split__media { order: 2; }
@@ -2960,21 +3009,51 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+/* The track is the doorway, not a progress bar.
+   Anchored left and clipped at 100%, the fill made the wider door look like
+   the smaller one: the same chair fills less of a 965mm opening than of a
+   926mm one, so the front door drew the shorter bar. Centred in the
+   aperture, what the reader sees is the gap at each jamb — which is the
+   thing they are actually trying to judge — and a chair too wide for the
+   opening overhangs the marks instead of sitting flush and reading as a
+   perfect fit. */
 .fit-bar__track {
   position: relative;
-  height: 1.25rem;
-  overflow: hidden;
+  height: 1.75rem;
   background: var(--bg-subtle);
   border: 1px solid var(--driftwood);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
 }
 .fit-bar__fill {
   position: absolute;
-  inset: 0 auto 0 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
   width: 0;
+  transform: translateX(-50%);
   background: var(--deep-teal);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   transition: width 0.15s ease, background-color var(--duration-fast) ease;
+}
+/* White, and above the fill: against the pale track it is redundant — the
+   track's own border already draws the opening — but where the chair
+   overhangs it cuts a visible notch through the block, so you can see
+   exactly where the doorway stops. */
+.fit-bar__door-mark {
+  position: absolute;
+  /* Overhangs the track so the jamb reads as the edge of the opening. */
+  top: -0.25rem;
+  bottom: -0.25rem;
+  z-index: 1;
+  width: 3px;
+  background: var(--white);
+  border-radius: 3px;
+}
+.fit-bar__door-mark--start {
+  left: 0;
+}
+.fit-bar__door-mark--end {
+  right: 0;
 }
 .fit-bar--tight .fit-bar__fill { background: var(--warm-gold-text); }
 .fit-bar--tight .fit-bar__label { color: var(--warm-gold-text); }
@@ -3066,10 +3145,21 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   color: var(--muted-grey);
   font-variant-numeric: tabular-nums;
 }
+/* Labelled and set on one line. Unlabelled and stacked, two bare links at the
+   foot of the tool read as leftovers rather than the standards you can check
+   these numbers against. */
+.fit-check__refs-label {
+  margin: 0 0 var(--space-2);
+  font-size: var(--type-eyebrow-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--body-secondary);
+}
 .fit-check__refs {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -3244,48 +3334,229 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 
 /*
- * Optional care guide rates — reuses .rates-panel + .data-table--rates.
- * Footer = logos + short caveat + CTA (one band, no nested strips).
+ * Optional care guide rates — overnight as two packages, hourly as a
+ * labeled list, then Continuity + caveats as one stacked band.
  */
 .care-rates {
+  --care-rates-gap: var(--space-8);
+  --care-night-gap: var(--space-4);
+  --care-card-pad: var(--panel-pad);
+  --care-card-gap: var(--space-4);
+  --care-list-pad-y: var(--space-4);
+  --care-list-gap: var(--space-4);
+  --care-aside-pad: var(--panel-pad);
+  --care-aside-gap: var(--space-5);
+  --care-subhead-mb: var(--space-4);
+  --care-price-size: var(--text-3xl);
+  --care-hourly-price-size: var(--text-xl);
+  --care-brand-h: 1.65rem; /* Continuity / CQC lockup height, not the spacing scale */
+  --care-ccs-max: 10rem; /* lockup intrinsic width cap */
+  --care-cqc-max: 5.5rem;
+  display: grid;
+  gap: var(--care-rates-gap);
   width: 100%;
   min-width: 0;
 }
-.care-rates__footer {
-  --care-footer-pad: var(--space-5);
-  --care-footer-gap: var(--space-4);
+.care-rates__subhead {
+  margin: 0 0 var(--care-subhead-mb);
+  font-family: var(--font-sans);
+  font-size: var(--type-eyebrow-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--muted-grey);
+}
+.care-rates__night-grid {
   display: grid;
-  gap: var(--care-footer-gap);
-  justify-items: start;
-  padding: var(--care-footer-pad);
+  gap: var(--care-night-gap);
+  grid-template-columns: minmax(0, 1fr);
+}
+.care-rates__hourly {
+  min-width: 0;
+  padding: var(--care-card-pad);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
+}
+.care-rate-card {
+  display: grid;
+  gap: var(--care-card-gap);
+  min-width: 0;
+  padding: var(--care-card-pad);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
+}
+.care-rate-card__title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--type-display-weight);
+  color: var(--deep-teal);
+  line-height: var(--leading-tight);
+}
+.care-rate-card__lead {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+}
+.care-rate-card__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3em; /* em: keep “From” glued to the figure */
+  font-family: var(--font-serif);
+  font-size: var(--care-price-size);
+  font-weight: var(--type-display-weight);
+  color: var(--deep-teal);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+}
+.care-rate-card__from {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0;
+  color: var(--muted-grey);
+}
+.care-rate-card__unit {
+  font-size: var(--type-meta-size);
+  color: var(--muted-grey);
+}
+.care-rate-card__split {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding-top: var(--space-4);
   border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  background: color-mix(in srgb, var(--deep-teal) 2.5%, var(--white));
+}
+.care-rate-card__split > div {
+  min-width: 0;
+}
+.care-rate-card__split dt,
+.care-rate-list__prices dt {
+  margin: 0 0 0.15em; /* em: keep label glued to its figure */
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-grey);
+}
+.care-rate-card__split dd {
+  margin: 0;
+  color: var(--deep-teal);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  overflow-wrap: break-word;
+}
+.care-rate-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.care-rate-list__item {
+  display: grid;
+  gap: var(--care-list-gap);
+  padding-block: var(--care-list-pad-y);
+  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.care-rate-list__item:first-child {
+  padding-top: 0;
+}
+.care-rate-list__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.care-rate-list__copy {
+  min-width: 0;
+}
+.care-rate-list__name {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+  line-height: var(--leading-snug);
+  overflow-wrap: break-word;
+}
+.care-rate-list__unit {
+  margin: 0.15em 0 0; /* em: unit sits under the name */
+  font-size: var(--type-meta-size);
+  color: var(--muted-grey);
+}
+.care-rate-list__prices {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  min-width: 0;
+}
+.care-rate-list__prices dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--care-hourly-price-size);
+  font-weight: var(--type-display-weight);
+  color: var(--deep-teal);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--leading-tight);
+}
+.care-rate-list__prices dd.is-na {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--muted-grey);
+}
+.care-rates__aside {
+  display: grid;
+  gap: var(--care-aside-gap);
+  justify-items: start;
+  padding: var(--care-aside-pad);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--deep-teal) 3%, var(--white));
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
 }
 .care-rates__brands.care__brand {
   gap: var(--space-3) var(--space-4);
   justify-content: flex-start;
   align-items: center;
+  max-width: 100%;
 }
 .care-rates__brands .care__brand-link--ccs img {
-  height: 1.5rem;
-  max-width: min(100%, 9rem);
+  height: var(--care-brand-h);
+  max-width: min(100%, var(--care-ccs-max));
 }
 .care-rates__brands .care__brand-link--cqc img {
-  height: 1.5rem;
-  max-width: min(100%, 5rem);
+  height: var(--care-brand-h);
+  max-width: min(100%, var(--care-cqc-max));
 }
-.care-rates__note {
+.care-rates__notes {
   margin: 0;
-  max-width: 36rem;
+  padding: 0;
+  list-style: none;
+  max-width: 42rem;
   color: var(--muted-grey);
   font-size: var(--type-meta-size);
   line-height: var(--leading-snug);
+  overflow-wrap: break-word;
 }
-.care-rates__note p {
-  margin: 0 0 0.35em;
+.care-rates__notes li {
+  position: relative;
+  margin: 0;
+  padding: 0 0 var(--space-3) 1.1em; /* em: hanging tick aligned to type */
 }
-.care-rates__note p:last-child {
-  margin-bottom: 0;
+.care-rates__notes li:last-child {
+  padding-bottom: 0;
+}
+.care-rates__notes li::before {
+  content: "";
+  position: absolute;
+  top: 0.55em; /* em: optically centre on first line */
+  left: 0;
+  width: 0.4em;
+  height: 1px;
+  background: color-mix(in srgb, var(--deep-teal) 45%, transparent);
 }
 .care-rates__ctas {
   display: flex;
@@ -3294,58 +3565,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   gap: var(--space-3) var(--space-5);
   width: 100%;
 }
-@media (min-width: 768px) {
-  .care-rates__footer {
-    --care-footer-pad: var(--space-5) var(--space-6);
-    --care-footer-gap: var(--space-4);
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    column-gap: var(--space-6);
-  }
-  .care-rates__brands {
-    grid-column: 1;
-  }
-  .care-rates__note {
-    grid-column: 2;
-  }
-  .care-rates__ctas {
-    grid-column: 1 / -1;
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-  .care-rates__brands .care__brand-link--ccs img {
-    height: 1.65rem;
-    max-width: min(100%, 10rem);
-  }
-  .care-rates__brands .care__brand-link--cqc img {
-    height: 1.65rem;
-    max-width: min(100%, 5.5rem);
-  }
-}
-@media (min-width: 1024px) {
-  .care-rates__footer {
-    --care-footer-gap: var(--space-5);
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-  .care-rates__ctas {
-    grid-column: 3;
-    width: auto;
-    justify-content: flex-end;
-  }
-}
-/* Mobile: airier rows + compact footer stack */
-@media (max-width: 699px) {
-  .care-rates .data-table--rates {
-    --rates-price-size: var(--text-xl);
-    --rates-card-row-gap: var(--space-3);
-    --rates-row-title-pb: var(--space-3);
-  }
-  .care-rates .rates-panel .data-table--rates tr {
-    padding: var(--space-5);
-    column-gap: var(--space-5);
-  }
+@media (max-width: 639px) {
   .care-rates__ctas {
     flex-direction: column;
     align-items: stretch;
@@ -3356,6 +3576,29 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   }
   .care-rates__ctas .text-link {
     text-align: center;
+  }
+}
+@media (min-width: 768px) {
+  .care-rates {
+    --care-rates-gap: var(--space-10);
+    --care-night-gap: var(--space-5);
+    --care-list-pad-y: var(--space-5);
+    --care-aside-gap: var(--space-6);
+  }
+  .care-rates__night-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .care-rate-list__item {
+    grid-template-columns: minmax(0, 1.2fr) minmax(12rem, 1fr);
+    align-items: center;
+  }
+}
+@media (min-width: 1024px) {
+  .care-rates {
+    --care-hourly-price-size: var(--text-2xl);
+    --care-brand-h: 1.85rem; /* Continuity / CQC lockup height, not the spacing scale */
+    --care-ccs-max: 11rem;
+    --care-cqc-max: 6rem;
   }
 }
 /*
@@ -4086,9 +4329,6 @@ body:has(.subnav) {
 .data-table--rates tbody tr:last-child td {
   border-bottom: 0;
 }
-.data-table--care th[scope="row"] {
-  max-width: none;
-}
 /* Unavailable weekend care: same scale as the row label, not a price. */
 .data-table .is-price--na {
   font-family: var(--font-sans);
@@ -4204,30 +4444,6 @@ body:has(.subnav) {
   .rates-panel .data-table--rates {
     --rates-price-size: var(--text-xl);
     --rates-cell-pad-x: var(--space-4);
-  }
-  /* After .data-table--rates { table-layout: fixed } so care columns
-     can shrink to the figures instead of a 42/29/29 split. */
-  .data-table--rates.data-table--care {
-    table-layout: auto;
-    --rates-cell-pad-y: var(--space-3);
-  }
-  .data-table--rates.data-table--care thead th:first-child {
-    width: auto;
-  }
-  .data-table--rates.data-table--care thead th:not(:first-child),
-  .data-table--rates.data-table--care tbody td {
-    width: 1%;
-  }
-  .data-table--rates.data-table--care thead th:not(:first-child) {
-    white-space: nowrap;
-  }
-  .data-table--rates.data-table--care tbody td.is-price--na {
-    white-space: nowrap;
-  }
-}
-@media (min-width: 768px) {
-  .data-table--rates.data-table--care {
-    --rates-cell-pad-y: var(--space-4);
   }
 }
 /*
@@ -4666,37 +4882,35 @@ body:has(.subnav) {
 }
 
 /*
- * Dates — compact range picker (SquareUI): one board, one month,
- * circular endpoints + connecting track, stay details in the same card.
- * The 7-day grid keeps a fixed column measure (--availability-grid-max)
- * and shrinks when the card is narrower; it never stretches to fill.
- * Arrive / Leave sit beside the grid once the card can hold both.
+ * Dates — house diary (2026-09 redesign): serif month headline, ghost
+ * chevrons, hairline Arrive→Leave strip, calm grey booked numerals (no
+ * strikethrough), and a stay band that covers only slept nights. The
+ * check-out day the user clicks is never painted as a slept night — it
+ * gets a white coin with a solid teal ring, matching the "leaving …"
+ * summary and the Leave-morning legend key. Uniform row height
+ * (--availability-cell-h) keeps five- and six-week months even. Per-night
+ * prices are never drawn on cells — they are read to screen readers and
+ * summarised in the receipt band, so a six-week November stays calm.
  */
 .availability {
   --availability-gap: var(--section-stack-gap);
   --availability-board-gap: var(--space-6);
   --availability-split-gap: 0;
-  --availability-split-inline: var(--space-6);
+  --availability-split-inline: var(--space-8);
   --availability-legend-gap: var(--space-2) var(--space-4);
-  --availability-nav: 2.25rem; /* SquareUI chevron tile */
+  --availability-nav: 2.25rem; /* ghost chevron tile (fixed chrome) */
   --availability-coin: 2.25rem;
   --availability-col: 2.5rem; /* 7 tight columns inside the card */
   --availability-grid-max: calc(var(--availability-col) * 7);
-  --availability-cell-min: calc(var(--availability-coin) + 0.85rem); /* coin + price */
-  --availability-cell-pad-y: 0;
-  --availability-cell-pad: var(--availability-cell-pad-y) 0;
+  --availability-cell-h: 2.75rem; /* uniform rows: 5- and 6-week months align */
   --availability-card-pad: var(--space-5);
   --availability-picker-gap: var(--space-4);
-  --availability-stay-gap: var(--space-5);
-  --availability-stay-pad-block: var(--space-6);
-  --availability-stay-pad-inline: 0;
-  --availability-field-cols: minmax(0, 1fr);
   --availability-range: color-mix(in srgb, var(--deep-teal) 12%, var(--white));
   --availability-wd-size: var(--type-meta-size);
   --availability-num-size: var(--text-sm);
-  --availability-price-size: var(--text-2xs);
   --availability-key-mark: var(--space-4);
   --availability-peak-dot: 0.4rem; /* was 0.28em — unreadable as the peak cue */
+  --availability-head-gap: var(--space-1); /* toolbar ↔ grid breathing; not page rhythm */
   display: grid;
   gap: var(--availability-gap);
   container-type: inline-size;
@@ -4712,7 +4926,6 @@ body:has(.subnav) {
     --availability-col: 2.75rem;
     --availability-coin: 2.375rem;
     --availability-split-inline: var(--space-10);
-    --availability-stay-gap: var(--space-6);
   }
 }
 .availability__layout {
@@ -4725,15 +4938,22 @@ body:has(.subnav) {
   background: var(--white);
   box-sizing: border-box;
 }
-/* Layout break: 7-col grid + stay column. Not a spacing-ladder step. */
+/* Layout break: summary+grid+footer stack, footer beside grid on wide cards. */
 @container (min-width: 32rem) {
   .availability__layout {
     --availability-board-gap: 0;
     --availability-split-gap: var(--availability-split-inline);
-    --availability-stay-pad-block: 0;
-    --availability-stay-pad-inline: var(--availability-split-inline);
     grid-template-columns: var(--availability-grid-max) minmax(0, 1fr);
+    grid-template-areas:
+      "picker stay"
+      "picker stay";
     align-items: start;
+  }
+  .availability__picker {
+    grid-area: picker;
+  }
+  .availability__stay {
+    grid-area: stay;
   }
 }
 .availability__picker {
@@ -4741,6 +4961,34 @@ body:has(.subnav) {
   gap: var(--availability-picker-gap);
   width: 100%;
   min-width: 0;
+}
+/* Summary strip: Arrive → Leave (+ Clear) pinned above the month.
+   One hairline strip — borderless slots, not boxed pseudo-inputs. */
+.availability__summary {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: min(100%, var(--availability-grid-max));
+  max-width: 100%;
+  padding-block: var(--space-2);
+  border-block: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.availability__summary .availability__field {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.availability__summary .availability__field[aria-invalid="true"] {
+  box-shadow: inset 0 -2px 0 0 var(--error-red); /* underline, not a box */
+}
+.availability__summary .availability__stay-times {
+  white-space: nowrap;
+}
+.availability__stay-arrow {
+  align-self: center;
+  flex: 0 0 auto;
+  color: var(--muted-grey);
+  font-size: var(--text-lg);
 }
 .availability__toolbar,
 .availability__months {
@@ -4752,13 +5000,15 @@ body:has(.subnav) {
   grid-template-columns: var(--availability-nav) minmax(0, 1fr) var(--availability-nav);
   align-items: center;
   column-gap: var(--space-2);
+  margin-bottom: var(--availability-head-gap);
 }
 .availability__month-label {
   margin: 0;
   text-align: center;
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.01em;
   color: var(--deep-teal);
 }
 .availability__nav {
@@ -4767,12 +5017,16 @@ body:has(.subnav) {
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
-  color: var(--deep-teal);
+  border-radius: 50%; /* full-round ghost chevron */
+  background: transparent;
+  color: var(--muted-grey);
   font-size: var(--text-lg);
   line-height: 1;
   cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, transform 120ms ease;
+}
+.availability__nav:active:not(:disabled) {
+  transform: scale(0.94);
 }
 .availability__nav:disabled {
   opacity: 0.35;
@@ -4784,7 +5038,8 @@ body:has(.subnav) {
 }
 @media (hover: hover) {
   .availability__nav:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--deep-teal) 12%, var(--white));
+    background: color-mix(in srgb, var(--deep-teal) 8%, var(--white));
+    color: var(--deep-teal);
   }
 }
 .availability__months {
@@ -4827,21 +5082,19 @@ body:has(.subnav) {
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.05em; /* optical: price tucked under the date */
   width: 100%;
-  min-height: var(--availability-cell-min);
+  height: var(--availability-cell-h); /* uniform rows: 5- and 6-week months align */
   margin: 0;
-  padding: var(--availability-cell-pad);
+  padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
   color: inherit;
   font: inherit;
   font-variant-numeric: tabular-nums;
-  line-height: 1.1;
+  line-height: 1;
 }
 .availability__date {
   display: inline-flex;
@@ -4858,13 +5111,19 @@ body:has(.subnav) {
   box-sizing: border-box;
 }
 .availability__price {
-  font-size: var(--availability-price-size);
-  font-weight: var(--weight-regular);
-  color: var(--muted-grey);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 button.availability__num {
   cursor: pointer;
+  transition: background-color 160ms ease;
+}
+.availability__day.is-pick button.availability__num:active .availability__date {
+  background: color-mix(in srgb, var(--deep-teal) 18%, var(--white));
 }
 button.availability__num:focus-visible {
   outline: none;
@@ -4879,81 +5138,122 @@ button.availability__num:focus-visible .availability__date {
   }
 }
 
-/* Connecting track at coin height — circles sit on the ends (SquareUI). */
+/* Range bar, per week-row (house diary): the band covers SLEPT NIGHTS only.
+   Flat cuts at row wraps, round caps only where a run truly ends. The
+   check-out morning the user clicks never joins the band — it is a white
+   coin with a solid teal ring (the Leave-morning mark). */
 .availability__day.is-hope .availability__num::before {
   content: "";
   position: absolute;
   z-index: 0;
   left: 0;
   right: 0;
-  top: var(--availability-cell-pad-y);
+  top: calc((100% - var(--availability-coin)) / 2); /* coin-centred */
   height: var(--availability-coin);
   background: var(--availability-range);
   pointer-events: none;
 }
+/* Middle nights bleed square so wrapped weeks read as one continuous run. */
+.availability__day.is-hope:not(.is-hope-start):not(.is-hope-end) .availability__num::before {
+  border-radius: 0;
+}
+/* Arrival: bar runs from behind the coin to the row edge (square cut —
+   the run continues right or wraps); round left half hides under the coin. */
 .availability__day.is-hope-start .availability__num::before {
   left: 50%;
+  border-radius: calc(var(--availability-coin) / 2) 0 0 calc(var(--availability-coin) / 2);
 }
+/* Check-out morning (the clicked Leave day): NO band behind it — the run
+   ended the night before. Cap the previous night's bar with a rounded
+   right edge so the stay reads as finished. */
 .availability__day.is-hope-end .availability__num::before {
-  right: 50%;
-}
-.availability__day.is-hope-start.is-hope-end .availability__num::before {
   content: none;
 }
-.availability__day.is-hope-start .availability__date,
+.availability__day.is-hope-end .availability__num::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  width: 0.25rem; /* optical cap: rounds off the prior night's band stub */
+  top: calc((100% - var(--availability-coin)) / 2);
+  height: var(--availability-coin);
+  border-radius: 0 calc(var(--availability-coin) / 2) calc(var(--availability-coin) / 2) 0;
+  background: var(--availability-range);
+  pointer-events: none;
+}
+/* Check-out coin: white fill + solid teal ring — unmistakably not a slept
+   night, and nothing to its right is highlighted. */
 .availability__day.is-hope-end .availability__date {
+  background: var(--white);
+  color: var(--deep-teal);
+  border: 2px solid var(--deep-teal);
+  box-shadow: 0 0 0 2px var(--white);
+}
+.availability__day.is-hope-start .availability__date {
   background: var(--deep-teal);
   color: var(--white);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3px color-mix(in srgb, var(--deep-teal) 22%, transparent);
 }
-.availability__day.is-hope .availability__price {
-  color: var(--muted-grey);
+.availability__day.is-hope-start.is-hope-end .availability__num::before,
+.availability__day.is-hope-start.is-hope-end .availability__num::after {
+  content: none;
+}
+.availability__day.is-hope-start.is-hope-end .availability__date {
+  background: var(--deep-teal);
+  color: var(--white);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3px color-mix(in srgb, var(--deep-teal) 22%, transparent);
 }
 @media (hover: hover) {
-  .availability__day.is-hope-start.is-pick:hover .availability__date,
-  .availability__day.is-hope-end.is-pick:hover .availability__date {
+  /* Only the arrival coin fills solid on hover — the check-out ring must
+     never flip to the slept-night look. */
+  .availability__day.is-hope-start.is-pick:hover .availability__date {
     background: var(--deep-teal);
+    color: var(--white);
+  }
+  .availability__day.is-hope-end.is-pick:hover .availability__date {
+    background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
   }
 }
 .availability__day.is-hope-start button.availability__num:focus-visible .availability__date,
 .availability__day.is-hope-end button.availability__num:focus-visible .availability__date {
   outline-color: var(--warm-gold-hero);
 }
+/* Unavailable: quiet pale numerals, no strikethrough — the grid is a diary,
+   not a ledger of rejections. Screen readers still announce "Booked". */
 .availability__day.is-booked .availability__date,
-.availability__day.is-booked .availability__price {
-  color: var(--muted-grey);
-  text-decoration: line-through;
-  text-decoration-thickness: 1px;
+.availability__day.is-past .availability__date {
+  color: color-mix(in srgb, var(--muted-grey) 30%, var(--white));
+  font-weight: var(--weight-regular);
+  text-decoration: none;
 }
-.availability__day.is-peak::before {
+.availability__day.is-booked .availability__num {
+  cursor: not-allowed;
+}
+.availability__day.is-peak:not(.is-booked):not(.is-past):not(.is-hope) .availability__date::after {
   content: "";
   position: absolute;
-  top: 0.08em; /* optical: gold peak mark above the date */
+  top: calc(var(--availability-peak-dot) / -2 - 0.0625rem); /* optical: dot sits in the pad band */
   left: 50%;
   width: var(--availability-peak-dot);
   height: var(--availability-peak-dot);
   margin-left: calc(var(--availability-peak-dot) / -2);
   border-radius: 50%;
   background: var(--warm-gold);
-  box-shadow: 0 0 0 2px var(--white);
-  z-index: 2;
-  pointer-events: none;
 }
-.availability__day.is-peak:not(.is-booked):not(.is-past) .availability__price {
-  color: var(--warm-gold-text);
-  font-weight: var(--weight-semibold);
-}
-.availability__day.is-past:not(.is-booked) .availability__num {
-  color: color-mix(in srgb, var(--muted-grey) 55%, var(--white));
-}
-.availability__day.is-past:not(.is-booked) .availability__price {
-  color: color-mix(in srgb, var(--muted-grey) 45%, var(--white));
+.availability__day.is-peak:not(.is-booked):not(.is-past):not(.is-hope) .availability__num {
+  padding-top: calc(var(--availability-peak-dot) / 2); /* coin nudged half a dot; stays near-centred */
 }
 .availability__day.is-today .availability__date {
-  box-shadow: inset 0 0 0 2px var(--deep-teal);
+  box-shadow: 0 0 0 1.5px var(--deep-teal);
 }
-.availability__day.is-today.is-hope-start .availability__date,
+.availability__day.is-today.is-hope-start .availability__date {
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3px color-mix(in srgb, var(--deep-teal) 22%, transparent);
+}
+/* Today on the check-out morning: keep the ring, add a halo so the two
+   marks stay distinguishable. */
 .availability__day.is-today.is-hope-end .availability__date {
-  box-shadow: inset 0 0 0 2px var(--white);
+  border-color: var(--deep-teal);
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 3.5px color-mix(in srgb, var(--deep-teal) 30%, transparent);
 }
 .availability__legend {
   display: flex;
@@ -4979,28 +5279,39 @@ button.availability__num:focus-visible .availability__date {
   flex: 0 0 auto;
   width: var(--availability-key-mark);
   height: var(--availability-key-mark);
-  border-radius: 0.2em; /* optical: mini diary cell */
+  border-radius: 50%; /* round mini coin */
   box-sizing: border-box;
 }
 .availability__key.is-open .availability__key-mark {
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 28%, transparent);
-  background: var(--white);
+  display: none; /* plain numerals are obviously available — no key needed */
 }
 .availability__key.is-hope .availability__key-mark {
-  border-radius: 50%;
   background: var(--deep-teal);
 }
+/* Leave-morning key: white fill, solid teal ring — mirrors the grid mark. */
+.availability__key.is-hope-end .availability__key-mark {
+  border: 2px solid var(--deep-teal);
+  background: var(--white);
+  box-sizing: border-box;
+}
+/* Booked key: grey numeral on white, mirrors the calm grid numerals. */
 .availability__key.is-booked .availability__key-mark {
-  border: 1px solid color-mix(in srgb, var(--muted-grey) 35%, transparent);
-  background: color-mix(in srgb, var(--muted-grey) 8%, var(--white));
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--muted-grey) 30%, var(--white));
+  font-size: 0.7rem;
+  font-weight: var(--weight-regular);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+}
+.availability__key.is-booked .availability__key-mark::before {
+  content: "12";
 }
 .availability__key.is-booked .availability__key-mark::after {
-  content: "";
-  position: absolute;
-  left: 0.12em; /* optical: strike inset */
-  right: 0.12em;
-  top: 50%;
-  border-top: 1px solid var(--muted-grey);
+  content: none;
 }
 .availability__key.is-peak .availability__key-mark {
   border: 0;
@@ -5016,103 +5327,20 @@ button.availability__num:focus-visible .availability__date {
 .availability__live:empty {
   display: none;
 }
-.availability__stay {
-  display: flex;
-  flex-direction: column;
-  gap: var(--availability-stay-gap);
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  padding-block-start: var(--availability-stay-pad-block);
-  padding-inline-start: var(--availability-stay-pad-inline);
-  border-block-start: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  container-type: inline-size;
-}
-@container (min-width: 32rem) {
-  .availability__stay {
-    border-block-start: 0;
-    border-inline-start: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  }
-}
-/* Side-by-side Arrive / Leave once the stay column is wide enough. */
-@container (min-width: 22rem) {
-  .availability__fields {
-    --availability-field-cols: minmax(0, 1fr) minmax(0, 1fr);
-  }
-  .availability__total {
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-  }
-  .availability__total dt {
-    width: auto;
-    font-size: var(--text-base);
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0;
-    text-transform: none;
-    color: var(--deep-teal);
-  }
-  .availability__total dd {
-    font-size: var(--text-base);
-  }
-}
-.availability__stay-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-.availability__stay-title {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--text-lg);
-  font-weight: var(--weight-semibold);
-  color: var(--deep-teal);
-}
-.availability__stay-clear {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--muted-grey);
-  text-decoration: underline;
-  cursor: pointer;
-}
-.availability__stay-clear:hover {
-  color: var(--deep-teal);
-}
-.availability__stay-clear[hidden] {
-  display: none;
-}
-.availability__stay-times {
-  display: block;
-  margin-top: var(--space-1);
-  font-size: var(--type-meta-size);
-  line-height: var(--leading-snug);
-  color: var(--muted-grey);
-}
-.availability__fields {
-  display: grid;
-  grid-template-columns: var(--availability-field-cols);
-  align-items: stretch;
-  gap: var(--space-3);
-}
-.availability__stay-arrow {
-  display: none;
-}
+/* Arrive / Leave summary slots + Clear — borderless on the hairline strip;
+   the active slot earns a teal underline, like a focused input. */
 .availability__field {
   margin: 0;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
-  border-radius: var(--radius-sm);
-  background: var(--white);
+  padding: var(--space-2) 0;
+  border: 0;
+  background: transparent;
 }
 .availability__field.is-active {
-  border-color: var(--deep-teal);
-  box-shadow: inset 0 0 0 1px var(--deep-teal);
-  background: var(--white);
+  box-shadow: inset 0 -2px 0 0 var(--deep-teal); /* focused-input underline */
+  background: transparent;
+}
+.availability__field.is-active .availability__field-label {
+  color: var(--deep-teal);
 }
 .availability__field-label {
   display: block;
@@ -5125,9 +5353,70 @@ button.availability__num:focus-visible .availability__date {
 .availability__field-value {
   display: block;
   margin-top: var(--space-1);
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   color: var(--deep-teal);
+}
+.availability__stay-times {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--type-meta-size);
+  line-height: var(--leading-snug);
+  color: var(--muted-grey);
+}
+.availability__stay-clear {
+  align-self: center;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: var(--space-2);
+  border: 0;
+  background: none;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--muted-grey);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.availability__stay-clear:hover {
+  color: var(--deep-teal);
+}
+.availability__stay-clear:focus-visible {
+  outline: 2px solid var(--deep-teal);
+  outline-offset: 2px;
+}
+.availability__stay-clear[hidden] {
+  display: none;
+}
+.availability__stay {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  container-type: inline-size;
+}
+/* Receipt band: the stay foot sits on soft sand, like a till roll. The
+   data-attribute selector outruns the bare class so phone overrides below
+   cannot strip the band's padding. */
+.availability__stay[data-availability-stay] {
+  margin-block-start: 0;
+  padding: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--soft-sand);
+  box-sizing: border-box;
+}
+/* CTA readiness: outline-teal while browsing, gold once dates are picked.
+   Driven by the JS-managed is-empty state on the receipt band. */
+.availability__stay.is-empty .availability__cta .btn {
+  background: transparent;
+  color: var(--deep-teal);
+  border-color: color-mix(in srgb, var(--deep-teal) 35%, transparent);
+}
+.availability__stay.is-empty .availability__cta .btn:hover {
+  border-color: var(--deep-teal);
+  background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
 }
 .availability__stay-prompt,
 .availability__stay-foot {
@@ -5136,19 +5425,20 @@ button.availability__num:focus-visible .availability__date {
   line-height: var(--leading-snug);
   color: var(--muted-grey);
 }
+.availability__stay-prompt[hidden],
+.availability__quote[hidden] {
+  display: none;
+}
 .availability__quote {
   display: grid;
   gap: var(--space-3);
 }
 .availability__stay-count {
   margin: 0;
-  font-size: var(--text-sm);
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
   font-weight: var(--weight-semibold);
   color: var(--deep-teal);
-}
-.availability__stay-prompt[hidden],
-.availability__quote[hidden] {
-  display: none;
 }
 .availability__breakdown {
   display: grid;
@@ -5193,8 +5483,9 @@ button.availability__num:focus-visible .availability__date {
   color: var(--muted-grey);
 }
 .availability__total dd {
+  font-family: var(--font-serif); /* editorial: the number is the headline */
   font-size: var(--text-2xl);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   color: var(--deep-teal);
   line-height: var(--leading-tight);
 }
@@ -5202,11 +5493,6 @@ button.availability__num:focus-visible .availability__date {
   display: grid;
   gap: var(--space-3);
   margin: 0;
-}
-@container (max-width: 21.99rem) {
-  .availability__cta {
-    padding-inline-end: calc(var(--space-12) + var(--space-3)); /* clears .scroll-top chip */
-  }
 }
 .availability__cta .btn {
   width: 100%;
@@ -5218,7 +5504,7 @@ button.availability__num:focus-visible .availability__date {
   margin: auto;
   padding: var(--space-6);
   border: 0;
-  border-radius: 4px;
+  border-radius: var(--radius-lg);
   border-top: 4px solid var(--warm-gold);
   color: var(--ink);
   background: var(--white);
@@ -5371,6 +5657,15 @@ button.availability__num:focus-visible .availability__date {
   margin-inline: auto;
   margin-bottom: var(--process-after-head);
 }
+/* Phones: a multi-sentence lede centred reads ragged on both walls (owner:
+   "looks weird on mobile"). Keep the head as a centred column; below 700px
+   the text itself hugs the left wall. */
+@media (max-width: 699px) {
+  .process__head {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
 .process__layout {
   display: flex;
   flex-direction: column;
@@ -5385,7 +5680,7 @@ button.availability__num:focus-visible .availability__date {
 }
 .process__media img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center 40%;
   border-radius: 0;
@@ -5517,6 +5812,55 @@ button.availability__num:focus-visible .availability__date {
   }
   .process-list__index {
     font-size: var(--process-figure-size);
+  }
+}
+
+/*
+ * How-it-works arrival: compact facts, not a second process list.
+ * Same left edge as the heading — a fixed label column left a hole after
+ * short names (“Check-in”) and wrapped the facts in a skinny gutter.
+ */
+.hiw-facts {
+  --hiw-fact-pad-y: var(--space-3);
+  --hiw-fact-gap: var(--space-1);
+  display: grid;
+  margin: 0;
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.hiw-facts > div {
+  display: grid;
+  gap: var(--hiw-fact-gap);
+  padding-block: var(--hiw-fact-pad-y);
+  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.hiw-facts dt {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+  line-height: var(--leading-snug);
+}
+.hiw-facts dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+  line-height: var(--leading-snug);
+  overflow-wrap: break-word;
+}
+.hiw-arrival__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  margin: var(--space-5) 0 0;
+}
+.hiw-arrival__links .text-link {
+  min-height: 2.75rem;
+}
+@media (min-width: 768px) {
+  .hiw-facts {
+    --hiw-fact-pad-y: var(--space-4);
   }
 }
 
@@ -6120,6 +6464,19 @@ fieldset.form-stack {
 .care--tease .care__tease .lede {
   margin: 0;
   color: color-mix(in srgb, var(--deep-teal) 78%, transparent);
+}
+/* How-it-works interrupt: teal band so this tease isn’t another beige head. */
+.care.band-teal {
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--deep-teal) 86%, #0e2a32) 0%,
+      var(--deep-teal) 42%,
+      color-mix(in srgb, var(--deep-teal) 92%, #12343c) 100%
+    );
+}
+.band-teal.care--tease .care__tease .lede {
+  color: rgba(255, 255, 255, 0.86);
 }
 .care__panel {
   --care-panel-gap: var(--space-8);
@@ -6907,6 +7264,28 @@ body.page-template-template-accessibility-php .scroll-top {
   font-size: var(--text-md);
   color: color-mix(in srgb, var(--muted-grey) 78%, transparent);
 }
+/* Story #companies: the 42rem centred measure put the list on a different
+   left edge than the section head above and the trust block below — three
+   ragged edges in one section. Share the container edge so the hairlines
+   line up with the content column. */
+#companies .comparison-list {
+  max-width: none;
+  margin-inline: 0;
+}
+/* 768–899 the list is still stacked; space-6 pad read as hairlines floating
+   in air (owner: "spacing fucked"). Phone keeps space-5; 900+ goes 3-up with
+   zero pad (rule below) and is untouched. */
+@media (max-width: 899px) {
+  #companies .comparison-list {
+    --comparison-item-pad-y: var(--space-5);
+  }
+}
+/* Trust block after the list: margin + border + double pad = two stacked
+   voids. One divider step instead. */
+#companies .care-page__trust {
+  --care-trust-mt: var(--space-5);
+  --care-trust-pt: var(--space-6);
+}
 /* From 900px there's room for the three questions side by side instead of one
    narrow stacked column lost in the middle of a wide white section. Vertical
    hairlines replace the horizontal ones — same quiet-list language, just laid
@@ -7128,8 +7507,8 @@ body.page-template-template-accessibility-php .scroll-top {
 .pull-quote {
   --pull-quote-gap: var(--space-4);
   --pull-quote-measure: 38rem;
-  --pull-quote-pad-y: var(--space-6);
-  --pull-quote-pad-x: var(--space-5);
+  --pull-quote-pad-y: var(--space-7);
+  --pull-quote-pad-x: var(--space-6);
   width: min(var(--pull-quote-measure), 100%);
   margin-inline: auto;
   display: flex;
@@ -7139,7 +7518,10 @@ body.page-template-template-accessibility-php .scroll-top {
   padding-block: var(--pull-quote-pad-y);
   padding-inline: var(--pull-quote-pad-x);
   border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--soft-sand) 45%, transparent);
+  /* Solid warm card — the 45% mix over a cool band read as a mismatched
+     blue-grey (owner: "colour combo ain't it"). Self-contained on any band:
+     .pull-quote also renders on who-it's-for and care. */
+  background: var(--soft-sand);
   text-align: center;
 }
 .pull-quote__mark {
@@ -7548,32 +7930,52 @@ body.page-template-template-accessibility-php .scroll-top {
   padding: 0;
   border: 0;
 }
-.acc-limits-split {
-  align-items: start;
-}
-.acc-statement-split .section-head,
-.acc-limits-split .section-head {
+.acc-statement-split > .section-head {
   margin-bottom: 0;
 }
 /* H2 → figures → body at every width. A 900px split put 52px stats in a
    ~0.95fr column (they overflowed) and left a cream void beside the essay. */
 .acc-statement-split {
-  --split-gap: var(--space-6);
+  /* `display: contents` on the head dissolves its own eyebrow-to-h2 gap, so
+     the column gap has to be that tight step or the eyebrow floats away from
+     its heading — 24px here against 8px in every other band on the page.
+     The wider steps around the figures are set on the panel itself. */
+  --split-gap: var(--section-head-gap-tight);
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
-.acc-statement-split .section-head {
+.acc-statement-split > .section-head {
   display: contents;
 }
-.acc-statement-split .eyebrow { order: 1; }
+.acc-statement-split > .section-head > .eyebrow { order: 1; }
 .acc-statement-split #statement-h { order: 2; }
-.acc-statement-split .acc-panel--stats { order: 3; }
+.acc-statement-split > .acc-panel--stats {
+  order: 3;
+  margin-block: var(--space-4);
+}
 .acc-statement-split .acc-statement-split__lede { order: 4; }
-@media (max-width: 899px) {
-  .acc-statement-split {
-    --split-gap: var(--space-5);
-  }
+/* Chair fit is a subsection of the numbers, not a peer band. A rule across
+   the band marks the change of subject where a band edge used to.
+   Selector has to out-weigh `.split > *:not(.split__media) { order: 1 }` from
+   the <900px stack, which otherwise floated the tool above the H2 and the
+   headline figures it exists to explain. */
+.acc-statement-split > .acc-fit {
+  order: 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
+}
+.acc-fit > .section-head {
+  margin-bottom: 0;
+}
+/* Own step between the band's h2 and body: at plain h3 size it sat a hair
+   above the lede under it and the two read as one grey block. */
+.acc-fit > .section-head h3 {
+  font-size: var(--text-2xl);
 }
 @media (min-width: 640px) and (max-width: 899px) {
   .acc-panel--stats .stat-row--hero dl {
@@ -7599,60 +8001,82 @@ body.page-template-template-accessibility-php .scroll-top {
     border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
   }
 }
-.acc-limits__card {
-  margin-top: 0;
-  max-width: none;
-}
-@media (max-width: 899px) {
-  /* Same flatten as #statement .download-panel — a nested card on a white
-     band reads as a box in a box. Hairline rule instead. */
-  .acc-limits-split {
-    --split-gap: var(--space-5);
-  }
-  .acc-limits__card {
-    --download-pad: var(--space-5) 0 0;
-    max-width: none;
-    width: 100%;
-    border-radius: 0;
-    background: transparent;
-    border: 0;
-    border-top: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
-  }
-}
+/* Closing chapter of the register. Same hairline-topped block as the notices
+   in the chapters above it, so "how to ask" reads as part of the document. */
 .acc-limits__contact {
-  margin: 0;
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-5);
+  border-top: var(--acc-doc-rule);
   color: var(--body-secondary);
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
 }
-/* White band: a lifted card is a ghost box. Heading stays on the band;
-   the tool is a hairline continuation, same flatten as .acc-limits__card. */
-#fit-check .fit-check {
-  --fit-panel-chrome-pad: var(--space-6) 0 0;
+/* ---------------------------------------------------------------------------
+ * Whitstable verdict.
+ *
+ * The good and the challenges are set as a pair above; this is what they add
+ * up to. Given its own weight and a rule, so the honest summary lands as a
+ * conclusion rather than a third helping of the same list.
+ * ------------------------------------------------------------------------- */
+.acc-dest__verdict {
+  /* Clearly wider than the hairline between the pair above. Stacked below
+     900px the two-column split is gone, and at the pair's own spacing the
+     verdict just read as a third helping of the list. */
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
 }
-#fit-check .fit-check__panel {
-  padding: var(--fit-panel-chrome-pad);
-  border-radius: 0;
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+@media (min-width: 900px) {
+  .acc-dest__verdict {
+    display: grid;
+    /* The same two tracks, gap and inset as the pair above, so the verdict's
+       body starts on the column line "The challenges" sits on. On a 14rem
+       label track it began at an indent that matched nothing on the page. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0;
+    align-items: baseline;
+  }
+  .acc-dest__verdict-body {
+    /* Transparent stand-in for the pair's column divider: without it the
+       body lands 1px inside the rail "The challenges" sits on, which at a
+       hairline's width is exactly the kind of near-miss that reads as sloppy
+       rather than as a deliberate offset. */
+    padding-inline-start: var(--space-7);
+    border-inline-start: 1px solid transparent;
+  }
+}
+.acc-dest__verdict-label {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-serif);
+  font-size: var(--type-h3);
+  font-weight: var(--type-display-weight);
+  line-height: var(--leading-tight);
+  color: var(--deep-teal);
+}
+@media (min-width: 900px) {
+  .acc-dest__verdict-label {
+    margin-bottom: 0;
+  }
+}
+.acc-dest__verdict-body {
+  margin: 0;
+  max-width: 44rem;
+  color: var(--body-secondary);
+  font-size: var(--type-lede-size);
+  line-height: var(--type-lede-leading);
 }
 /* One document surface — notes + chapters share a card, hairlines inside. */
 .acc-register-doc {
   --acc-doc-rule: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  /* One pad, all four sides, on every block in the document — the intro,
+     each chapter, the closing chapter. It is the same --panel-pad the stat
+     row and the fit-check panel use, so every panel on the page squares up. */
   --acc-chapter-pad: var(--panel-pad);
-  --acc-chapter-y: var(--space-6);
   border-radius: var(--radius-lg);
   background: var(--white);
   border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
   box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
   overflow: hidden;
-}
-@media (min-width: 768px) {
-  .acc-register-doc {
-    --acc-chapter-y: var(--space-7);
-  }
 }
 .acc-register-doc__intro {
   --acc-intro-note-pad: var(--space-5);
@@ -7660,7 +8084,6 @@ body.page-template-template-accessibility-php .scroll-top {
   flex-direction: column;
   gap: 0;
   padding: var(--acc-chapter-pad);
-  padding-bottom: var(--acc-chapter-y);
 }
 .acc-register-doc .download-panel,
 .acc-register-doc .equip-notice {
@@ -7699,7 +8122,7 @@ body.page-template-template-accessibility-php .scroll-top {
   margin-top: 0;
 }
 .acc-register-doc .equip-group-panel {
-  padding: var(--acc-chapter-y) var(--acc-chapter-pad);
+  padding: var(--acc-chapter-pad);
   border-radius: 0;
   background: transparent;
   border: 0;
@@ -7782,6 +8205,48 @@ body.page-template-template-accessibility-php .scroll-top {
   margin-top: var(--space-6);
   margin-bottom: 0;
 }
+/* ---------------------------------------------------------------------------
+ * Register contents row.
+ *
+ * The register is the longest thing on the site — several screens of specs.
+ * An index of numbered chapters at the head of the document is what makes it
+ * usable for the person it is written for: an OT checking one room should not
+ * have to scroll the beds to find out whether the wet room is listed.
+ * Set as a running contents line, not a card grid — it wraps at any width
+ * without leaving a ragged last row, and it adds a line of chrome, not a
+ * screen of it.
+ * ------------------------------------------------------------------------- */
+/* Numerals are generated, not marked up: inside the element they serialised
+   into its own text ("01Getting in") and broke heading extraction. The `/ ""`
+   alt-text keeps them out of the accessibility tree too, where the numbering
+   is noise — the chapter is already named. */
+.equip-group__title::before {
+  content: attr(data-chapter) / "";
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--warm-gold-text);
+}
+/* Chapter numeral, set as a superior figure against the serif title. Its own
+   line-height collapses to the glyph so `vertical-align: top` lands it on the
+   title's cap line instead of its baseline. */
+/* Stacked on a phone. Inline, a long chapter title broke as
+   "05 What we / can't promise" and stranded the figure on its own line. */
+.equip-group__title::before {
+  display: block;
+  margin-bottom: var(--space-2);
+  line-height: 1;
+}
+@media (min-width: 640px) {
+  .equip-group__title::before {
+    display: inline-block;
+    margin-right: var(--space-3);
+    margin-bottom: 0;
+    vertical-align: top;
+  }
+}
 @media (min-width: 640px) {
   .equip-item--lead .equip-item__ident {
     display: grid;
@@ -7828,34 +8293,19 @@ body.page-template-template-accessibility-php .scroll-top {
   padding-bottom: 0;
   border-bottom: 0;
 }
-.equip-item--lead {
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-6);
-}
+/* One step between entries, whatever the variant. A compact entry is short
+   because it has one spec, not because it deserves less air than the hoist
+   above it; the tighter pad made the register's rhythm look accidental. */
 .equip-item:first-child.equip-item--lead,
-.equip-item:first-child.equip-item--fold,
 .equip-item:first-child.equip-item--compact {
   padding-top: 0;
 }
-.equip-item--fold,
-.equip-item--compact {
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-4);
-}
-.equip-item--fold .equip-item__name,
 .equip-item--compact .equip-item__name {
   font-size: var(--text-base);
   font-weight: var(--weight-semibold);
 }
-.equip-item--fold .equip-item__figure-value,
 .equip-item--compact .equip-item__figure-value {
   font-size: var(--text-base);
-}
-.equip-item__more > summary {
-  transition: color 0.15s ease;
-}
-.equip-item__more > summary:hover {
-  color: var(--warm-gold-text);
 }
 .equip-item__mast {
   --equip-mast-gap: var(--space-4);
@@ -7940,7 +8390,6 @@ body.page-template-template-accessibility-php .scroll-top {
   font-weight: var(--type-display-weight);
   color: var(--deep-teal);
 }
-.equip-item--fold .equip-item__name,
 .equip-item--compact .equip-item__name {
   flex: 1 1 auto;
   min-width: 0;
@@ -7976,65 +8425,47 @@ body.page-template-template-accessibility-php .scroll-top {
   line-height: var(--leading-tight);
   white-space: normal;
 }
-.equip-item--fold .equip-item__figure,
 .equip-item--compact .equip-item__figure {
   flex: none;
   text-align: right;
 }
-.equip-item__more {
-  margin: 0;
-}
-.equip-item__more > summary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: 2.75rem;
-  padding: 0;
-  color: var(--deep-teal);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  cursor: pointer;
-  list-style: none;
-}
-.equip-item__more > summary::-webkit-details-marker {
-  display: none;
-}
-.equip-item__more > summary::after {
-  content: "+";
-  font-size: var(--text-lg);
-  line-height: 1;
-  color: var(--warm-gold-text);
-}
-.equip-item__more[open] > summary::after {
-  content: "\2212";
-}
-.equip-item__more > summary:focus-visible {
-  outline: 3px solid var(--deep-teal);
-  outline-offset: 2px;
-}
+/* Long spec lists run in two balanced columns from 900px.
+   Most values here are a word or a measurement — "Fitted", "Manual",
+   "226mm" — so one pair per line spent about 60% of the measure on nothing
+   and stretched the register past six screens. Multicol rather than a
+   two-track grid because a grid has to decide, per pair, whether a long
+   value spans one column or both, and that decision alternates full-width
+   and half-width rows down the list until the table looks broken. Columns
+   keep every row the same shape and let the browser balance the height.
+   Every list splits, not just the long ones: a five-pair item left in one
+   column next to an eight-pair item in two made neighbouring entries in the
+   same chapter look like different tables. */
 .equip-item__specs {
   margin: var(--space-2) 0 0;
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  column-gap: var(--space-5);
-  row-gap: 0;
 }
 .equip-spec {
   display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 10.5rem) minmax(0, 1fr);
   gap: var(--space-2) var(--space-5);
   padding: var(--space-1) 0;
   border-top: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
   align-items: start;
+  break-inside: avoid;
 }
-@supports not (grid-template-columns: subgrid) {
+@media (min-width: 900px) {
   .equip-item__specs {
-    display: block;
+    /* Width-driven, not a second breakpoint guess: column-width is the
+       minimum a column may be, so the browser drops back to one column
+       whenever two would squeeze the value side. At a 900-1100px viewport a
+       flat `columns: 2` left about 270px for the value and wrapped
+       "Private, resin-bound: two off-road spaces" onto three lines, which
+       cost more height than the second column saved. */
+    column-width: 29rem;
+    column-count: 2;
+    column-gap: var(--space-10);
   }
-  .equip-spec {
-    grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-    grid-column: auto;
+  .equip-item__specs .equip-spec {
+    grid-template-columns: minmax(0, 9.75rem) minmax(0, 1fr);
   }
 }
 @media (max-width: 639px) {
@@ -8043,7 +8474,6 @@ body.page-template-template-accessibility-php .scroll-top {
     align-items: flex-start;
     gap: var(--space-2);
   }
-  .equip-item--fold .equip-item__figure,
   .equip-item--compact .equip-item__figure {
     text-align: left;
   }
@@ -8056,10 +8486,13 @@ body.page-template-template-accessibility-php .scroll-top {
     gap: var(--space-1);
   }
 }
+/* One step up from the site's meta size. These labels are the key you read
+   the register by — you find the row by its label, then take the number —
+   and at 13px they were the smallest type on an access statement. */
 .equip-spec dt {
   margin: 0;
   color: var(--muted-grey);
-  font-size: var(--type-meta-size);
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-snug);
 }
@@ -8082,7 +8515,15 @@ body.page-template-template-accessibility-php .scroll-top {
   margin-top: var(--space-2);
 }
 @media print {
+  /*
+   * .acc-fit is the whole chair-fit subsection, not just the widget: hiding
+   * only .fit-check left its heading and "enter the overall width of the
+   * chair you travel with" on the page above nothing at all. The figures it
+   * checks against are printed anyway — in the stat row and in register
+   * chapter 01 — so the subsection goes, and the paper loses nothing.
+   */
   .subnav,
+  .acc-fit,
   .hero__media,
   .fit-check,
   .mid-cta,
@@ -8134,12 +8575,6 @@ body.page-template-template-accessibility-php .scroll-top {
   }
   .equip-item__mast:has(.equip-item__photo) {
     grid-template-columns: 14rem minmax(0, 1fr) !important;
-  }
-  .equip-item__more > *:not(summary) {
-    display: block !important;
-  }
-  .equip-item__more > summary {
-    display: none;
   }
   .faq-item__panel,
   .faq-item__panel[hidden] {

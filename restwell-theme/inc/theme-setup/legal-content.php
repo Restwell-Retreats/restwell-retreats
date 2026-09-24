@@ -45,7 +45,7 @@ function restwell_get_public_site_host(): string {
  * @return string
  */
 function restwell_privacy_policy_version(): string {
-	return '2026-09-11';
+	return '2026-09-17';
 }
 
 /**
@@ -83,24 +83,25 @@ function restwell_get_privacy_policy_content(): string {
 <h2>Care notes and other health information</h2>
 <p>Care requirements and accessibility needs on the enquiry form are optional. Those notes can include health information (special category data). We only store them if you tick the separate health-data box. The legal basis is your explicit consent (UK GDPR Article 9(2)(a)). We use the notes only to reply, to check the bungalow is likely to fit, and, if you later agree a stay with optional care in writing, to introduce Continuity of Care Services.</p>
 <p>Please put care and accessibility notes in the labelled boxes, not only in the general message. We treat those labelled fields as special category data. If your FAQ question includes health or care details, we use them only to reply, as set out when you tick the privacy box on that form.</p>
-<p>We do not use health notes for marketing. We do not create medical records. Ticking the enquiry privacy box does not share your data with Continuity.</p>
+<p>We do not use health notes for marketing. We do not send them to Google, Metricool, TikTok, or Mailchimp. We do not create medical records. Ticking the enquiry privacy box does not share your data with Continuity.</p>
 
 <h2>Who we share data with</h2>
 <p>We do not sell your personal information. We share it only as follows:</p>
 <ul>
 <li>Our website, email, and hosting providers, who process it on our instructions so the site and inbox work.</li>
 <li>Mailchimp (The Rocket Science Group / Intuit), only if you opt in to marketing updates.</li>
-<li>Google Analytics 4 and Metricool, only if you accept analytics cookies.</li>
+<li>Google Analytics 4, Metricool, and TikTok Pixel, only if you accept analytics cookies. TikTok receives page views and that an enquiry was sent, not enquiry or FAQ form details.</li>
 <li>Continuity of Care Services, only if a stay with optional care is later agreed in writing.</li>
 <li>Insurers, accountants, or public authorities where the law requires it.</li>
 </ul>
 
 <h2>International transfers</h2>
-<p>Google, Mailchimp, and Metricool may process data outside the UK, including in the United States. We only send analytics data after you accept analytics cookies, and marketing data after you opt in. If we cannot give the same UK-level protection, we will not use that tool for your data.</p>
+<p>Google, Mailchimp, Metricool, and TikTok may process data outside the UK, including in the United States. We only send analytics data after you accept analytics cookies, and marketing data after you opt in. If we cannot give the same UK-level protection, we will not use that tool for your data.</p>
 
 <h2>Cookies and analytics</h2>
-<p>Essential cookies keep the site working: remembering the cookie choice you make, security checks on forms, and a short session on the guest arrival guide (so a booked guest stays signed in after the email code). We do not use advertising cookies.</p>
-<p>Analytics cookies (Google Analytics 4, and Metricool if it is configured) are optional. They are not set until you choose Accept analytics on the cookie banner, or later via Cookie settings in the footer. You can reject analytics and still use the site. Analytics scripts stay off until you consent, even if analytics is turned on later.</p>
+<p>Essential cookies keep the site working: remembering the cookie choice you make, security checks on forms, and a short session on the guest arrival guide (so a booked guest stays signed in after the email code).</p>
+<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool, and TikTok Pixel if configured) are optional. They are not set until you choose Accept analytics on the cookie banner, or later via Cookie settings in the footer. You can reject analytics and still use the site. Tracking scripts stay off until you consent, even if a service is configured later.</p>
+<p>If you accept analytics, TikTok Pixel records that a page on this site was viewed, and that an enquiry form was sent. We do not send names, email addresses, phone numbers, addresses, care notes, accessibility notes, or other form fields to TikTok.</p>
 
 <h2>How long we keep your data</h2>
 <p>We keep enquiry, FAQ, guest-guide, and booking-related records for up to three years so we can answer follow-up questions and meet insurance and accounting needs. We do not automatically wipe whole records after that time. Optional care and accessibility notes are blanked sooner: 12 months if the enquiry does not become a booking, or 90 days after the stay if it does.</p>
@@ -189,7 +190,7 @@ function restwell_get_terms_conditions_content(): string {
 <p>To the extent permitted by law, ' . $entity . ' is not liable for loss, injury, or damage to guests or their belongings during a stay, except where caused directly by our negligence. Guests are responsible for holding adequate travel, cancellation, and personal insurance.</p>
 
 <h2>Your data and cookies</h2>
-<p>We handle your personal information, including any care or accessibility notes you choose to share, in line with our <a href="' . $privacy . '">privacy policy</a>. Optional analytics cookies stay off until you accept them. You can change that choice via Cookie settings in the footer.</p>
+<p>We handle your personal information, including any care or accessibility notes you choose to share, in line with our <a href="' . $privacy . '">privacy policy</a>. Optional analytics and advertising measurement cookies stay off until you accept them. You can change that choice via Cookie settings in the footer.</p>
 
 <h2>Contact</h2>
 <p>Questions about these terms: use <a href="' . $enquire . '">our enquiry page</a> or email <a href="' . $mailto . '">' . esc_html( $email ) . '</a>.</p>
@@ -203,18 +204,16 @@ function restwell_get_terms_conditions_content(): string {
  * @return string HTML string.
  */
 function restwell_get_accessibility_policy_content(): string {
-	$site   = esc_html( get_bloginfo( 'name' ) );
-	$host   = esc_html( restwell_get_public_site_host() );
 	$acc    = esc_url( home_url( '/accessibility/' ) );
 	$enq    = esc_url( home_url( '/enquire/' ) );
 	$email  = restwell_get_public_enquiry_email();
 	$mailto = esc_url( 'mailto:' . $email );
 
 	return '<h2>Our aim</h2>
-<p>' . $site . ' aims to make ' . $host . ' as easy to use and understand as we can for guests, families, carers, and professionals. We aim to meet Web Content Accessibility Guidelines (WCAG) 2.2 Level AA where it is reasonably practicable for our pages, forms, and theme.</p>
+<p>We aim to make this website easy to use and understand for guests, families, carers, and professionals. Our accessibility target is the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA.</p>
 
 <h2>How we test</h2>
-<p>We combine automated checks with manual testing: keyboard-only navigation, text zoom to at least 200%, and common browser and screen reader pairings. We fix issues we can control when we update the site.</p>
+<p>We review page structure, keyboard navigation, form labels, and layouts at different screen widths. These checks do not establish full WCAG conformance. Further testing with screen readers, browser zoom, and disabled users is needed. We fix issues we can control when we update the site.</p>
 
 <h2>Property access information</h2>
 <p>Door widths, equipment, and room layout for the bungalow are on our <a href="' . $acc . '">accessibility specification</a> page. This statement is about the website, not the bricks-and-mortar property.</p>

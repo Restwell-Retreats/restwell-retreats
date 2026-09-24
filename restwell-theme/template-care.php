@@ -178,8 +178,8 @@ $care_faq_live    = array(
 		'a' => 'No. Many guests book the house as a self-catering holiday and need no additional support. Continuity care is optional.',
 	),
 	2 => array(
-		'q' => 'Is Restwell a care home?',
-		'a' => 'No. Restwell is a private holiday bungalow. Continuity of Care Services (our sister company) is the CQC-regulated provider if you want professional care during your stay.',
+		'q' => 'Who regulates the care team?',
+		'a' => 'The Care Quality Commission. Continuity of Care Services is rated Good, and Victoria Walker, who owns Restwell, is their registered manager. Read the published report yourself rather than take our word for it.',
 	),
 	3 => array(
 		'q' => 'Do I book care separately?',
@@ -258,7 +258,7 @@ get_template_part(
 	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#sister-company">About</a></li>
+		  <li><a href="#sister-company">Sister company</a></li>
 		  <li><a href="#what-we-arrange">Support</a></li>
 		  <li><a href="#bring-your-own-carer">Own carer</a></li>
 		  <li><a href="#how-care-works">Steps</a></li>
@@ -283,10 +283,10 @@ get_template_part(
 		<dl class="comparison-list">
 		  <?php foreach ( $care_sister_items as $item ) : ?>
 		  <div class="comparison-list__item">
-			<?php if ( '' !== $item['title'] ) : ?>
+				<?php if ( '' !== $item['title'] ) : ?>
 			<dt><?php echo esc_html( $item['title'] ); ?></dt>
 			<?php endif; ?>
-			<?php if ( '' !== $item['body'] ) : ?>
+				<?php if ( '' !== $item['body'] ) : ?>
 			<dd><?php echo esc_html( $item['body'] ); ?></dd>
 			<?php endif; ?>
 		  </div>
@@ -326,10 +326,10 @@ get_template_part(
 		  <li class="persona-list__item">
 			<span class="icon-circle" aria-hidden="true"><?php echo $care_support_icons[ $support_i ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?></span>
 			<div>
-			  <?php if ( '' !== $support_item['title'] ) : ?>
+				<?php if ( '' !== $support_item['title'] ) : ?>
 			  <h3><?php echo esc_html( $support_item['title'] ); ?></h3>
 			  <?php endif; ?>
-			  <?php if ( '' !== $support_item['body'] ) : ?>
+				<?php if ( '' !== $support_item['body'] ) : ?>
 			  <p><?php echo esc_html( $support_item['body'] ); ?></p>
 			  <?php endif; ?>
 			</div>
@@ -350,10 +350,10 @@ get_template_part(
 		<dl class="comparison-list">
 		  <?php foreach ( $care_own_items as $item ) : ?>
 		  <div class="comparison-list__item">
-			<?php if ( '' !== $item['title'] ) : ?>
+				<?php if ( '' !== $item['title'] ) : ?>
 			<dt><?php echo esc_html( $item['title'] ); ?></dt>
 			<?php endif; ?>
-			<?php if ( '' !== $item['body'] ) : ?>
+				<?php if ( '' !== $item['body'] ) : ?>
 			<dd><?php echo esc_html( $item['body'] ); ?></dd>
 			<?php endif; ?>
 		  </div>
@@ -379,7 +379,8 @@ get_template_part(
 			<span class="payment-steps__index" aria-hidden="true"><?php echo esc_html( sprintf( '%02d', $care_how_index + 1 ) ); ?></span>
 			<div class="payment-steps__body">
 			  <h3><?php echo esc_html( $care_how_step['title'] ); ?></h3>
-			  <p><?php
+			  <p>
+				<?php
 				$care_how_body_html = esc_html( $care_how_step['body'] );
 				if ( ! empty( $care_how_step['link']['phrase'] ) && ! empty( $care_how_step['link']['url'] ) ) {
 					$care_how_body_html = $care_link_phrase(
@@ -389,7 +390,8 @@ get_template_part(
 					);
 				}
 				echo wp_kses_post( $care_how_body_html );
-				?></p>
+				?>
+				</p>
 			</div>
 		  </li>
 		  <?php endforeach; ?>
@@ -444,14 +446,14 @@ get_template_part(
 		<dl class="comparison-list comparison-list--2">
 		  <?php foreach ( $care_pro_items as $item ) : ?>
 		  <div class="comparison-list__item">
-			<?php if ( '' !== $item['title'] ) : ?>
+				<?php if ( '' !== $item['title'] ) : ?>
 			<dt><?php echo esc_html( $item['title'] ); ?></dt>
 			<?php endif; ?>
-			<?php if ( '' !== $item['body'] ) : ?>
+				<?php if ( '' !== $item['body'] ) : ?>
 			<dd>
-			  <?php echo esc_html( $item['body'] ); ?>
-			  <?php if ( ! empty( $item['link'] ) ) : ?>
-			  <?php echo ' '; ?>See <a class="text-link" href="<?php echo esc_url( $item['link']['url'] ); ?>"><?php echo esc_html( $item['link']['label'] ); ?></a>.
+					<?php echo esc_html( $item['body'] ); ?>
+					<?php if ( ! empty( $item['link'] ) ) : ?>
+						<?php echo ' '; ?>See <a class="text-link" href="<?php echo esc_url( $item['link']['url'] ); ?>"><?php echo esc_html( $item['link']['label'] ); ?></a>.
 			  <?php endif; ?>
 			</dd>
 			<?php endif; ?>

@@ -184,9 +184,21 @@ function restwell_crm_render_enquiries_panel( array $list ) {
 						<span class="count">(<?php echo esc_html( $counts['all'] ); ?>)</span>
 					</a>
 				</li>
-				<?php foreach ( $statuses as $slug => $info ) : ?>
+				<?php
+				foreach ( $statuses as $slug => $info ) :
+					$status_url = add_query_arg(
+						restwell_crm_list_preserve_args(
+							$list,
+							array(
+								'status_filter' => $slug,
+								'urgent_filter' => false,
+							)
+						),
+						$base_url
+					);
+					?>
 					<li>
-						<a href="<?php echo esc_url( add_query_arg( restwell_crm_list_preserve_args( $list, array( 'status_filter' => $slug, 'urgent_filter' => false ) ), $base_url ) ); ?>"<?php echo $status_filter === $slug ? ' class="current"' : ''; ?>>
+						<a href="<?php echo esc_url( $status_url ); ?>"<?php echo $status_filter === $slug ? ' class="current"' : ''; ?>>
 							<?php echo esc_html( $info['label'] ); ?>
 							<span class="count">(<?php echo esc_html( $counts[ $slug ] ); ?>)</span>
 						</a>

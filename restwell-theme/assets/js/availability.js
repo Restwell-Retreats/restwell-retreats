@@ -458,7 +458,7 @@
 			if (prompt) {
 				if (extendHint) {
 					prompt.hidden = false;
-					prompt.textContent = 'Tap another night to stay longer.';
+				prompt.textContent = 'Choose your leave date.';
 				} else {
 					prompt.hidden = true;
 				}
@@ -587,13 +587,22 @@
 				return;
 			}
 
-			applyStay(arrival, lastNight, true);
+			applyStay(arrival, lastNight, false); /* stay complete: hide the helper prompt */
 		}
 
 		root.addEventListener('click', function (event) {
+			var bookedTd = event.target.closest('.availability__day.is-booked');
+			if (bookedTd && root.contains(bookedTd)) {
+				var held = 'That night is already held. Pick an open date.';
+				if (prompt) {
+					prompt.hidden = false;
+					prompt.textContent = held;
+				}
+				setLive(held);
+				return;
+			}
 			var btn = event.target.closest('button[data-iso]');
 			if (!btn || !root.contains(btn)) return;
-			if (btn.closest('.is-booked')) return;
 			var iso = btn.getAttribute('data-iso');
 			if (!iso) return;
 			onPick(iso);
@@ -657,6 +666,23 @@
 				var vis = visibleCount();
 				ensureMonths(Math.min(maxMonths - 1, index + vis));
 				showMonth(index + 1);
+			});
+		}
+
+		/* Left / Right step months when the toolbar has focus. */
+		if (monthLabelEl && prevBtn && nextBtn) {
+			monthLabelEl.setAttribute('tabindex', '0');
+			monthLabelEl.setAttribute('role', 'group');
+			monthLabelEl.setAttribute(
+				'aria-label',
+				(prevBtn.getAttribute('aria-label') || 'Previous month') + ' and ' + (nextBtn.getAttribute('aria-label') || 'next month') + ' with left and right arrow keys'
+			);
+			monthLabelEl.addEventListener('keydown', function (event) {
+				var key = event.key;
+				if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
+				event.preventDefault();
+				showMonth(key === 'ArrowLeft' ? index - 1 : index + 1);
+				setLive(monthLabelEl.textContent);
 			});
 		}
 

@@ -897,11 +897,11 @@ function restwell_get_our_story_page_defaults() {
 		'story_origin_label'   => 'The gap',
 		'story_origin_heading' => 'How Restwell started',
 		'story_origin_lede'    => 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.',
-		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check whether the bungalow will work for them before they set off, and discuss optional care through the same office.',
+		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details — including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.',
 
 		'story_month_label'   => 'The build',
 		'story_month_heading' => 'How the bungalow was built',
-		'story_month_lede'    => 'Family, friends and three specialist teams helped bring the bungalow together. Occupational therapists from Kent Community Health NHS Trust came to the house before anyone stayed. They walked the bedroom and wet room and told us how we could improve it. The profiling bed we had in needed to be a different one, so we changed it.',
+		'story_month_lede'    => 'Family, friends and three specialist teams brought the bungalow together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust walked the bedroom and wet room. We changed what they flagged, down to the profiling bed.',
 		'story_month_1_meta'  => 'Early March',
 		'story_month_1_title' => 'We got the keys',
 		'story_month_1_body'  => 'The bungalow needed more than a lick of paint.',

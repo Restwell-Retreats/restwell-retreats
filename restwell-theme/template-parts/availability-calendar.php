@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! function_exists( 'restwell_occupancy_is_configured' ) || ! restwell_occupancy_is_configured() ) {
+	get_template_part( 'template-parts/availability-unavailable' );
 	return;
 }
 
@@ -26,6 +27,7 @@ $availability_args = wp_parse_args(
 
 $occupancy = restwell_get_occupancy_booked();
 if ( empty( $occupancy['ok'] ) ) {
+	get_template_part( 'template-parts/availability-unavailable' );
 	return;
 }
 
@@ -127,6 +129,40 @@ $weekday_short = wp_json_encode(
 		>
 			<div class="availability__layout">
 			<div class="availability__picker">
+			<div class="availability__summary">
+				<div class="availability__field" data-availability-from-field>
+					<span class="availability__field-label"><?php esc_html_e( 'Arrive', 'restwell-retreats' ); ?></span>
+					<span class="availability__field-value" data-availability-from><?php esc_html_e( '—', 'restwell-retreats' ); ?></span>
+					<span class="availability__stay-times">
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: check-in time */
+								__( 'from %s', 'restwell-retreats' ),
+								$check_in
+							)
+						);
+						?>
+					</span>
+				</div>
+				<span class="availability__stay-arrow" aria-hidden="true">→</span>
+				<div class="availability__field" data-availability-to-field>
+					<span class="availability__field-label"><?php esc_html_e( 'Leave', 'restwell-retreats' ); ?></span>
+					<span class="availability__field-value" data-availability-to><?php esc_html_e( '—', 'restwell-retreats' ); ?></span>
+					<span class="availability__stay-times">
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: check-out time */
+								__( 'by %s', 'restwell-retreats' ),
+								$check_out
+							)
+						);
+						?>
+					</span>
+				</div>
+				<button type="button" class="availability__stay-clear" data-availability-clear hidden><?php esc_html_e( 'Clear', 'restwell-retreats' ); ?></button>
+			</div>
 			<div class="availability__toolbar">
 				<button type="button" class="availability__nav" data-availability-prev aria-label="<?php esc_attr_e( 'Previous month', 'restwell-retreats' ); ?>" disabled>
 					<span aria-hidden="true">&lsaquo;</span>
@@ -256,15 +292,15 @@ $weekday_short = wp_json_encode(
 			</div>
 			<ul class="availability__legend" role="list">
 				<li>
-					<span class="availability__key is-open">
-						<span class="availability__key-mark" aria-hidden="true"></span>
-						<?php esc_html_e( 'Available', 'restwell-retreats' ); ?>
-					</span>
-				</li>
-				<li>
 					<span class="availability__key is-hope">
 						<span class="availability__key-mark" aria-hidden="true"></span>
 						<?php esc_html_e( 'Your nights', 'restwell-retreats' ); ?>
+					</span>
+				</li>
+				<li>
+					<span class="availability__key is-hope-end">
+						<span class="availability__key-mark" aria-hidden="true"></span>
+						<?php esc_html_e( 'Leave morning', 'restwell-retreats' ); ?>
 					</span>
 				</li>
 				<li>
@@ -282,45 +318,8 @@ $weekday_short = wp_json_encode(
 			</ul>
 			<p class="availability__live sr-only" data-availability-live aria-live="polite"></p>
 			</div>
-			<aside class="availability__stay is-empty" data-availability-stay>
-				<header class="availability__stay-head">
-					<h3 class="availability__stay-title"><?php esc_html_e( 'Your stay', 'restwell-retreats' ); ?></h3>
-					<button type="button" class="availability__stay-clear" data-availability-clear hidden><?php esc_html_e( 'Clear', 'restwell-retreats' ); ?></button>
-				</header>
-				<div class="availability__fields">
-					<div class="availability__field" data-availability-from-field>
-						<span class="availability__field-label"><?php esc_html_e( 'Arrive', 'restwell-retreats' ); ?></span>
-						<span class="availability__field-value" data-availability-from><?php esc_html_e( '—', 'restwell-retreats' ); ?></span>
-						<span class="availability__stay-times">
-							<?php
-							echo esc_html(
-								sprintf(
-									/* translators: %s: check-in time */
-									__( 'from %s', 'restwell-retreats' ),
-									$check_in
-								)
-							);
-							?>
-						</span>
-					</div>
-					<span class="availability__stay-arrow" aria-hidden="true">→</span>
-					<div class="availability__field" data-availability-to-field>
-						<span class="availability__field-label"><?php esc_html_e( 'Leave', 'restwell-retreats' ); ?></span>
-						<span class="availability__field-value" data-availability-to><?php esc_html_e( '—', 'restwell-retreats' ); ?></span>
-						<span class="availability__stay-times">
-							<?php
-							echo esc_html(
-								sprintf(
-									/* translators: %s: check-out time */
-									__( 'by %s', 'restwell-retreats' ),
-									$check_out
-								)
-							);
-							?>
-						</span>
-					</div>
-				</div>
-				<p class="availability__stay-prompt" data-availability-prompt><?php esc_html_e( 'Tap your arrival date.', 'restwell-retreats' ); ?></p>
+			<footer class="availability__stay is-empty" data-availability-stay>
+				<p class="availability__stay-prompt" data-availability-prompt><?php esc_html_e( 'Choose your arrival date to see a guide price.', 'restwell-retreats' ); ?></p>
 				<div class="availability__quote" data-availability-quote hidden>
 					<p class="availability__stay-count" data-availability-count></p>
 					<dl class="availability__breakdown" data-availability-breakdown>
@@ -329,7 +328,7 @@ $weekday_short = wp_json_encode(
 							<dd data-availability-total></dd>
 						</div>
 					</dl>
-					<p class="availability__stay-foot" data-availability-foot><?php esc_html_e( 'Bungalow rates. Nothing is reserved until we reply.', 'restwell-retreats' ); ?></p>
+					<p class="availability__stay-foot" data-availability-foot><?php esc_html_e( 'Guide prices only. Nothing is reserved until we confirm by email.', 'restwell-retreats' ); ?></p>
 				</div>
 				<div class="availability__cta">
 					<a class="btn btn-gold" data-availability-enquire href="#availability-enquiry"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
@@ -391,7 +390,7 @@ $weekday_short = wp_json_encode(
 						</div>
 					</form>
 				</dialog>
-			</aside>
+			</footer>
 			</div>
 		</div>
 	</div>

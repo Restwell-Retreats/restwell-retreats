@@ -51,21 +51,21 @@ $wif_default_carers_bullets = function_exists( 'restwell_get_property_facts_pers
 	? restwell_get_property_facts_persona_bullets( 'carers' )
 	: array(
 		'Separate sleeping area for the support worker or carer.',
-		'Wet room designed for assisted personal care on the same level.',
+		'A wet room set up for assisted personal care on the same level.',
 		'You have a legal right to a Carer\'s Assessment under the Care Act 2014.',
 	);
 $wif_default_ot_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
 	? restwell_get_property_facts_persona_bullets( 'ot' )
 	: array(
 		'Doorway widths, turning circles, hoist specs, and wet room measurements on request.',
-		'Transfer clearances and equipment positioning confirmed if not already published.',
-		'Referral conversations welcomed before any booking commitment.',
+		'We confirm transfer clearances and equipment positioning if they are not already published.',
+		'We welcome referral conversations before any booking commitment.',
 	);
 $wif_default_commissioners_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
 	? restwell_get_property_facts_persona_bullets( 'commissioners' )
 	: array(
 		'Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.',
-		'Documentation provided: property spec, access measurements, and CQC-registered care provider confirmation.',
+		'We provide the paperwork: property spec, access measurements, and CQC-registered care provider confirmation.',
 		'Direct payments, personal health budgets, and CHC pathways all supported.',
 	);
 
@@ -334,7 +334,7 @@ get_template_part(
 );
 ?>
 
-	<nav class="subnav" aria-label="On this page">
+	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
 		  <li><a href="#situations">Situations</a></li>
@@ -399,40 +399,40 @@ get_template_part(
 		</header>
 		<ul class="card-grid card-grid--3" role="list">
 		  <?php foreach ( $wif_kit_cards as $kit_card ) : ?>
-			<?php
-			$slot       = $wif_gallery_slots[ $kit_card['slot_index'] ] ?? array();
-			$slot_id    = (int) ( $slot['id'] ?? 0 );
-			$slot_alt   = trim( (string) ( $slot['caption'] ?? '' ) );
-			$img_alt    = '' !== $slot_alt ? $slot_alt : $kit_card['fallback_alt'];
-			$kit_body   = $kit_card['body'];
-			?>
+				<?php
+				$slot       = $wif_gallery_slots[ $kit_card['slot_index'] ] ?? array();
+				$slot_id    = (int) ( $slot['id'] ?? 0 );
+				$slot_alt   = trim( (string) ( $slot['caption'] ?? '' ) );
+				$img_alt    = '' !== $slot_alt ? $slot_alt : $kit_card['fallback_alt'];
+				$kit_body   = $kit_card['body'];
+				?>
 		  <li>
 			<article class="media-card">
-			  <?php if ( $slot_id > 0 && function_exists( 'restwell_get_property_attachment_image' ) ) : ?>
-				<?php
-				echo restwell_get_property_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper returns escaped HTML.
-					$slot_id,
-					'grid',
-					array(
-						'alt' => $img_alt,
-					)
-				);
-				?>
+				<?php if ( $slot_id > 0 && function_exists( 'restwell_get_property_attachment_image' ) ) : ?>
+					<?php
+					echo restwell_get_property_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper returns escaped HTML.
+						$slot_id,
+						'grid',
+						array(
+							'alt' => $img_alt,
+						)
+					);
+					?>
 			  <?php elseif ( $slot_id > 0 ) : ?>
-				<?php
-				echo wp_get_attachment_image(
-					$slot_id,
-					'large',
-					false,
-					array(
-						'alt'      => $img_alt,
-						'loading'  => 'lazy',
-						'decoding' => 'async',
-						'width'    => 640,
-						'height'   => 480,
-					)
-				);
-				?>
+				  <?php
+					echo wp_get_attachment_image(
+						$slot_id,
+						'large',
+						false,
+						array(
+							'alt'      => $img_alt,
+							'loading'  => 'lazy',
+							'decoding' => 'async',
+							'width'    => 640,
+							'height'   => 480,
+						)
+					);
+					?>
 			  <?php else : ?>
 			  <img src="<?php echo esc_url( restwell_theme_image_url( $kit_card['fallback_src'] ) ); ?>" alt="<?php echo esc_attr( $kit_card['fallback_alt'] ); ?>" width="640" height="480" loading="lazy" />
 			  <?php endif; ?>
@@ -480,14 +480,14 @@ get_template_part(
 		  <li>
 			<article class="media-card">
 			  <h3><?php echo esc_html( $route['title'] ); ?></h3>
-			  <?php if ( ! empty( $route['bullets'] ) ) : ?>
+				<?php if ( ! empty( $route['bullets'] ) ) : ?>
 			  <ul class="checklist">
-				<?php foreach ( $route['bullets'] as $bullet ) : ?>
+					<?php foreach ( $route['bullets'] as $bullet ) : ?>
 				<li><?php echo esc_html( $bullet ); ?></li>
 				<?php endforeach; ?>
 			  </ul>
 			  <?php endif; ?>
-			  <?php if ( '' !== trim( (string) $route['cta_label'] ) ) : ?>
+				<?php if ( '' !== trim( (string) $route['cta_label'] ) ) : ?>
 			  <p><a class="text-link" href="<?php echo esc_url( $route['cta_url'] ); ?>"><?php echo esc_html( $route['cta_label'] ); ?></a></p>
 			  <?php endif; ?>
 			</article>
@@ -601,25 +601,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
-				<p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break.</p>
-			  </div>
-			</div>
-			<div class="faq-item">
-			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q7" aria-controls="wif-q7-a">
-				<span>Can we take a disabled holiday instead of care-home respite?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="wif-q7-a" role="region" aria-labelledby="wif-q7" hidden>
-				<p>Yes when risk, staffing and equipment fit a private bungalow: Restwell with optional Continuity care is one such option. It is not a substitute for registered residential care when that is clinically required.</p>
-			  </div>
-			</div>
-			<div class="faq-item">
-			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="wif-q8" aria-controls="wif-q8-a">
-				<span>How does an accessible holiday let compare with respite care?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="wif-q8-a" role="region" aria-labelledby="wif-q8" hidden>
-				<p>Compare environment (private home vs care setting), independence, how care is delivered, cost lines, family involvement and clinical suitability. Restwell is a private adapted bungalow with optional Continuity care, not a care home.</p>
+				<p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break. Restwell with optional Continuity care fits the first case; it is not a substitute for registered residential care when that is clinically required.</p>
 			  </div>
 			</div>
 			<div class="faq-item">

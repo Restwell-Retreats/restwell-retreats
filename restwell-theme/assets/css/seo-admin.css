@@ -1003,3 +1003,5 @@ table.widefat.rw-seo-dash__table {
     grid-template-columns: 1fr;
   }
 }
+
+.rw-seo-dash__table-wrap:focus-visible { outline: 3px solid #1b5361; outline-offset: 3px; }

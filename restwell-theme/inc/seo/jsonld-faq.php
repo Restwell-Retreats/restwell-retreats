@@ -122,8 +122,8 @@ function restwell_get_faq_page_default_pairs() {
 	// Broader set -- kept distinct from per-page FAQs (homepage, how-it-works) to prevent duplicate-content cannibalisation.
 	return array(
 		array(
-			'q'   => 'Is Restwell a care home?',
-			'a'   => 'No. It’s a private adapted bungalow that you rent as a holiday, and the whole house is yours for the stay. There’s no staff on site and nobody has a key but you. If you’d like professional care while you’re here, that comes separately from our sister company. See <a href="/optional-care/">Optional care</a>.',
+			'q'   => 'What is Restwell, exactly — bungalow, care home, or respite centre?',
+			'a'   => 'Both, in the way that helps you plan: it’s a private adapted bungalow that you rent as a holiday, with no staff on site, and optional care from Continuity if you want it. It’s not a registered respite centre, though your funder may use the word respite on paperwork, and that’s fine.',
 			'cat' => 'about',
 		),
 		array(
@@ -132,7 +132,7 @@ function restwell_get_faq_page_default_pairs() {
 			'cat' => 'about',
 		),
 		array(
-			'q'   => 'Will a wheelchair actually fit?',
+			'q'   => 'What are the doorway widths, and will my wheelchair fit?',
 			'a'   => 'The house is single-storey and step-free throughout. The front door has a 965mm clear opening, the internal doorways are 926mm, the wet room is level-access, and there’s a ceiling track hoist over the profiling bed. If you need a measurement we haven’t published, ask and we’ll go and take it. See the <a href="/accessibility/">access statement</a>.',
 			'cat' => 'about',
 		),
@@ -152,7 +152,7 @@ function restwell_get_faq_page_default_pairs() {
 			'cat' => 'about',
 		),
 		array(
-			'q'   => 'Can we add home care?',
+			'q'   => 'Can we add care to our booking?',
 			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Care is quoted separately from the bungalow. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
 			'cat' => 'care',
 		),
@@ -351,12 +351,12 @@ function restwell_get_care_faq_pairs() {
 		: home_url( '/pricing/' );
 	return array(
 		array(
-			'q' => 'Do I have to book care?',
-			'a' => 'No. Many guests book the house as a self-catering holiday and need no additional support. Continuity care is optional.',
+			'q' => 'How does care work during a stay at the bungalow?',
+			'a' => 'Restwell is the house; Continuity of Care Services is the care team. They come to the bungalow, on the same enquiry as your dates. Many guests book the house alone and need nobody at all; care is there if you want it.',
 		),
 		array(
-			'q' => 'Is Restwell a care home?',
-			'a' => 'No. Restwell is a private holiday bungalow. Continuity of Care Services (our sister company) is the CQC-regulated provider if you want professional care during your stay.',
+			'q' => 'Who regulates the care team?',
+			'a' => 'The Care Quality Commission. Continuity of Care Services is rated Good, and Victoria Walker, who owns Restwell, is their registered manager. Read the published report yourself rather than take our word for it.',
 		),
 		array(
 			'q' => 'Do I book care separately?',

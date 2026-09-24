@@ -13,7 +13,8 @@
  *     @type int    $media_id   Optional attachment ID (0 = resolve from page / stock).
  *     @type string $image_url  Optional absolute image URL override.
  *     @type string $image_alt  Optional alt text override.
- *     @type string $overlay    Optional 'heavy' for a darker bottom-up scrim (enquire photo hero).
+ *     @type string $overlay    Optional 'none' to skip the dark scrim. Default
+ *                              'heavy' so white type meets contrast on pale photos.
  *     @type string $variant    Optional hero height: 'place' (default mid-height interior), 'full' (homepage-tall).
  *     @type int    $post_id    Page ID for Featured/stock resolution (default queried object).
  * }
@@ -35,7 +36,7 @@ $args = wp_parse_args(
 		'media_id'   => 0,
 		'image_url'  => '',
 		'image_alt'  => '',
-		'overlay'    => '',
+		'overlay'    => 'heavy',
 		'variant'    => 'place',
 		'post_id'    => 0,
 	)
@@ -101,7 +102,7 @@ if ( 'place' === $variant ) {
 	// Mid-height coastal/property plane — avoids homepage-tall empty voids on interior pages.
 	$hero_class .= ' hero--interior hero--place';
 }
-if ( 'heavy' === $overlay ) {
+if ( 'none' !== $overlay ) {
 	$hero_class .= ' hero--overlay-heavy';
 }
 ?>

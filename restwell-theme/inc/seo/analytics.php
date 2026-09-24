@@ -1,6 +1,6 @@
 <?php
 /**
- * SEO: GA4, Metricool, Bing verification, and analytics loader enqueue.
+ * SEO: GA4, Metricool, TikTok Pixel, Bing verification, and analytics loader enqueue.
  *
  * @package Restwell_Retreats
  */
@@ -41,6 +41,17 @@ function restwell_analytics_metricool_hash_sanitized() {
 }
 
 /**
+ * Sanitized TikTok Pixel ID or empty.
+ *
+ * @return string
+ */
+function restwell_analytics_tiktok_pixel_id_sanitized() {
+	$pixel_id = (string) get_option( 'restwell_tiktok_pixel_id', 'DALR65BC77UCJD1NQGH0' );
+	$pixel_id = preg_replace( '/[^0-9A-Za-z]/', '', $pixel_id );
+	return preg_match( '/^[0-9A-Za-z]{10,30}$/', $pixel_id ) ? $pixel_id : '';
+}
+
+/**
  * Whether analytics scripts are routed through the footer loader (defer / CMP).
  *
  * @return bool
@@ -49,7 +60,9 @@ function restwell_analytics_use_footer_loader() {
 	if ( 'head' === restwell_get_analytics_load_mode() ) {
 		return false;
 	}
-	return restwell_analytics_ga4_measurement_id_sanitized() !== '' || restwell_analytics_metricool_hash_sanitized() !== '';
+	return restwell_analytics_ga4_measurement_id_sanitized() !== ''
+		|| restwell_analytics_metricool_hash_sanitized() !== ''
+		|| restwell_analytics_tiktok_pixel_id_sanitized() !== '';
 }
 
 /**
@@ -61,7 +74,7 @@ function restwell_output_ga4_consent_default() {
 add_action( 'wp_head', 'restwell_output_ga4_consent_default', 1 );
 
 /**
- * Enqueue deferred / consent-gated analytics loader (GA4 + Metricool).
+ * Enqueue deferred / consent-gated analytics loader (GA4 + Metricool + TikTok).
  */
 function restwell_enqueue_analytics_loader() {
 	if ( is_admin() || ! restwell_analytics_use_footer_loader() ) {
@@ -90,8 +103,9 @@ function restwell_enqueue_analytics_loader() {
 		array(
 			'loadMode'      => 'footer_deferred' === $mode ? 'footer_deferred' : 'consent_gated',
 			'consentGated'  => ( 'consent_gated' === $mode ),
-			'gaId'          => restwell_analytics_ga4_measurement_id_sanitized(),
-			'metricoolHash' => restwell_analytics_metricool_hash_sanitized(),
+			'gaId'           => restwell_analytics_ga4_measurement_id_sanitized(),
+			'metricoolHash'  => restwell_analytics_metricool_hash_sanitized(),
+			'tiktokPixelId' => restwell_analytics_tiktok_pixel_id_sanitized(),
 		)
 	);
 }
@@ -103,8 +117,9 @@ function restwell_enqueue_head_analytics() {
 	}
 
 	$ga_id          = restwell_analytics_ga4_measurement_id_sanitized();
-	$metricool_hash = restwell_analytics_metricool_hash_sanitized();
-	if ( $ga_id === '' && $metricool_hash === '' ) {
+	$metricool_hash  = restwell_analytics_metricool_hash_sanitized();
+	$tiktok_pixel_id = restwell_analytics_tiktok_pixel_id_sanitized();
+	if ( $ga_id === '' && $metricool_hash === '' && $tiktok_pixel_id === '' ) {
 		return;
 	}
 
@@ -117,8 +132,9 @@ function restwell_enqueue_head_analytics() {
 		'restwell-analytics-head',
 		'restwellAnalytics',
 		array(
-			'gaId'          => $ga_id,
-			'metricoolHash' => $metricool_hash,
+			'gaId'           => $ga_id,
+			'metricoolHash'  => $metricool_hash,
+			'tiktokPixelId' => $tiktok_pixel_id,
 		)
 	);
 }

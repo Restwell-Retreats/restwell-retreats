@@ -380,24 +380,24 @@ get_template_part(
 			<p class="lede"><?php echo esc_html( $hiw_arrival_lede ); ?></p>
 			<?php endif; ?>
 		  </header>
-		  <dl class="comparison-list">
+		  <dl class="hiw-facts">
 			<?php foreach ( $hiw_arrival_items as $arrival_item ) : ?>
-			<div class="comparison-list__item">
-			  <?php if ( '' !== $arrival_item['dt'] ) : ?>
+			<div>
+				<?php if ( '' !== $arrival_item['dt'] ) : ?>
 			  <dt><?php echo esc_html( $arrival_item['dt'] ); ?></dt>
 			  <?php endif; ?>
-			  <?php if ( '' !== $arrival_item['dd'] ) : ?>
+				<?php if ( '' !== $arrival_item['dd'] ) : ?>
 			  <dd><?php echo esc_html( $arrival_item['dd'] ); ?></dd>
 			  <?php endif; ?>
 			</div>
 			<?php endforeach; ?>
 		  </dl>
 		  <?php if ( '' !== $hiw_arrival_link1_label || '' !== $hiw_arrival_link2_label ) : ?>
-		  <p class="link-stack">
-			<?php if ( '' !== $hiw_arrival_link1_label ) : ?>
+		  <p class="hiw-arrival__links">
+				<?php if ( '' !== $hiw_arrival_link1_label ) : ?>
 			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $hiw_arrival_link1_label ); ?></a>
 			<?php endif; ?>
-			<?php if ( '' !== $hiw_arrival_link2_label ) : ?>
+				<?php if ( '' !== $hiw_arrival_link2_label ) : ?>
 			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php echo esc_html( $hiw_arrival_link2_label ); ?></a>
 			<?php endif; ?>
 		  </p>
@@ -406,7 +406,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="care care--tease section-y section-y--compact" id="care" aria-labelledby="care-h">
+	<section class="care care--tease section-y section-y--compact band-teal" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care__tease">
 		  <?php if ( '' !== $hiw_care_label ) : ?>

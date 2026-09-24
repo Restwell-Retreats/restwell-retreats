@@ -134,7 +134,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'commissioner-checklist-accessible-respite-stay',
 			'title'            => 'Commissioner checklist: evidencing an accessible respite stay',
-			'excerpt'          => 'Hoist paperwork, sleep-in safeguarding, insurance certificates, and the measurement rows audit teams expect before approving nights away.',
+			'excerpt'          => 'The evidence a funding panel expects before approving nights away: hoist paperwork, sleep-in safeguarding, and insurance certificates.',
 			'meta_title'       => 'Commissioner Checklist Accessible Respite Stay | ' . $site_name,
 			'meta_description' => 'Commissioner checklist for accessible respite stays: hoist paperwork, safeguarding sleep-ins, insurance certificates, and audit-ready evidence before approving nights.',
 			'content'          => restwell_get_blog_post_commissioner_accessible_respite_html(),
@@ -143,7 +143,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'personal-budget-short-break-care-act',
 			'title'            => 'Personal budgets and short breaks under the Care Act',
-			'excerpt'          => 'Splitting PA hours, transport, and accommodation receipts so retrospective audits survive — without pretending social care money buys flights by default.',
+			'excerpt'          => "What a direct payment will and won't pay for on a short break - PA hours, transport, accommodation - and how to keep the paperwork clean for your council.",
 			'meta_title'       => 'Personal Budget Short Break Care Act | ' . $site_name,
 			'meta_description' => 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.',
 			'content'          => restwell_get_blog_post_personal_budget_short_break_html(),
@@ -179,7 +179,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'holiday-backup-plan-care-worker-change',
 			'title'            => 'Backup plans when care arrangements change on holiday',
-			'excerpt'          => 'Contingency cards, agency overflow, consent paperwork, and when cutting a trip short beats unsafe nights.',
+			'excerpt'          => 'What to arrange in case a carer falls ill mid-break: backup carers, contingency notes, and when cutting a trip short beats unsafe nights.',
 			'meta_title'       => 'Holiday Backup Plan Care Worker Change | ' . $site_name,
 			'meta_description' => 'Holiday backup plans when care workers change or cancel: contingency cards, agency tiers, budgets for emergency cover, and safe escalation.',
 			'content'          => restwell_get_blog_post_holiday_backup_care_plan_html(),
@@ -188,7 +188,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'how-to-read-holiday-cottage-access-statement',
 			'title'            => 'How to read a holiday cottage access statement before you book',
-			'excerpt'          => 'Measurements that matter, hoist proof, red-flag phrases, and how commissioners score PDFs differently from families.',
+			'excerpt'          => 'Measurements that matter, hoist proof, and the red-flag phrases that should stop you booking.',
 			'meta_title'       => 'How to Read Holiday Cottage Access Statement | ' . $site_name,
 			'meta_description' => 'How to read a holiday cottage access statement: measurements that matter, hoist proof, red-flag phrases, and questions OTs and families should ask.',
 			'content'          => restwell_get_blog_post_read_access_statement_html(),
@@ -197,9 +197,9 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'fatigue-friendly-whitstable-coastal-day',
 			'title'            => 'Fatigue-friendly coastal days around Whitstable',
-			'excerpt'          => 'Pacing blocks, wind and glare, hydration, and realistic promenade targets for MS, long COVID, and post-stroke endurance limits.',
+			'excerpt'          => 'Plan a manageable outing with places to pause, a route that suits you, and an easy way back.',
 			'meta_title'       => 'Fatigue Friendly Whitstable Coastal Day | ' . $site_name,
-			'meta_description' => 'Fatigue-friendly coastal days around Whitstable: pacing blocks, sensory load, wind and glare, hydration, and realistic promenade targets.',
+			'meta_description' => 'Plan a fatigue-friendly day around Whitstable, with practical checks for routes, seating, toilets, weather and the journey back.',
 			'content'          => restwell_get_blog_post_fatigue_friendly_coastal_day_html(),
 			'category_slug'    => 'kent-coast',
 		),

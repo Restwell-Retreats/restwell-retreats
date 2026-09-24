@@ -189,6 +189,21 @@
 	margin-bottom: var(--rw-space-4);
 }
 
+/* Small, scannable guidance for the classic post editor. */
+.restwell-editor-checklist {
+	margin: 0 0 12px 18px;
+	list-style: disc;
+}
+.restwell-editor-checklist li {
+	margin: 0 0 8px;
+	line-height: 1.45;
+}
+#restwell_post_publishing_checklist .button {
+	min-height: 36px;
+	display: inline-flex;
+	align-items: center;
+}
+
 .restwell-admin .search-box {
 	margin-top: var(--rw-space-3);
 	margin-bottom: var(--rw-space-5);
@@ -1880,8 +1895,9 @@
 		width: 600px;
 		max-width: none;
 		transform-origin: top left;
-		/* Scale ~phone content width into viewport so email isn’t a sideways slog */
-		zoom: 0.58;
+		/* Preserve legible text and let the email respond to the preview width. */
+		width: 100%;
+		max-width: 100%;
 	}
 }
 
@@ -3539,4 +3555,10 @@
 		min-width: 220px;
 		max-width: 360px;
 	}
+}
+
+/* Keep every enquiry status visible at narrow widths. */
+@media (max-width: 782px) {
+	.restwell-admin-enquiries .rw-filter-pills { flex-wrap: wrap; overflow: visible; }
+	.restwell-admin-enquiries .rw-filter-pills a { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; box-sizing: border-box; }
 }

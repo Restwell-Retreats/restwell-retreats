@@ -1,5 +1,5 @@
 /**
- * Deferred / consent-gated loading for GA4 and Metricool (front-end only).
+ * Deferred / consent-gated loading for GA4, Metricool, and TikTok Pixel (front-end only).
  *
  * Theme first-party cookie `restwell_cookie_consent` = JSON `{ "v": 1, "analytics": true|false }`
  * is the only consent source when loadMode is consent_gated.
@@ -13,6 +13,7 @@
 	var granted = false;
 	var gaLoaded = false;
 	var metricoolLoaded = false;
+	var tiktokLoaded = false;
 
 	/**
 	 * @return {boolean|null} true/false when set, null when absent or unreadable.
@@ -66,6 +67,10 @@
 		if (cfg.metricoolHash) {
 			loadMetricool(cfg.metricoolHash);
 		}
+		if (cfg.tiktokPixelId) {
+			loadTiktok(cfg.tiktokPixelId);
+		}
+		flushTikTokQueue();
 	};
 
 	window.restwellRevokeAnalyticsConsent = function () {
@@ -77,6 +82,60 @@
 			ad_user_data: 'denied',
 			ad_personalization: 'denied'
 		});
+	};
+
+	var pendingTikTokEvents = window.restwellTikTokPendingEvents;
+	if (!Array.isArray(pendingTikTokEvents)) {
+		pendingTikTokEvents = [];
+		window.restwellTikTokPendingEvents = pendingTikTokEvents;
+	}
+
+	var allowedTikTokEvents = {
+		ViewContent: true,
+		Lead: true
+	};
+
+	function tiktokEventId(prefix) {
+		return prefix + '_' + Date.now() + '_' + Math.random().toString(16).slice(2, 10);
+	}
+
+	function sendTikTokEvent(eventName, params, options) {
+		if (!granted || !cfg.tiktokPixelId || !allowedTikTokEvents[eventName]) {
+			return false;
+		}
+		if (!window.ttq || typeof window.ttq.track !== 'function') {
+			return false;
+		}
+		if (options) {
+			window.ttq.track(eventName, params || {}, options);
+		} else {
+			window.ttq.track(eventName, params || {});
+		}
+		return true;
+	}
+
+	function flushTikTokQueue() {
+		if (!pendingTikTokEvents.length) {
+			return;
+		}
+		var queued = pendingTikTokEvents.slice();
+		pendingTikTokEvents.length = 0;
+		var i;
+		for (i = 0; i < queued.length; i++) {
+			if (!sendTikTokEvent(queued[i][0], queued[i][1], queued[i][2])) {
+				pendingTikTokEvents.push(queued[i]);
+			}
+		}
+	}
+
+	window.restwellTikTokTrack = function (eventName, params, options) {
+		if (sendTikTokEvent(eventName, params, options)) {
+			return;
+		}
+		if (!allowedTikTokEvents[eventName]) {
+			return;
+		}
+		pendingTikTokEvents.push([eventName, params || {}, options || null]);
 	};
 
 	function loadGa(mid, useConsentUpdate) {
@@ -131,6 +190,66 @@
 		} else {
 			inject();
 		}
+	}
+
+	function loadTiktok(pixelId) {
+		if (tiktokLoaded) {
+			return;
+		}
+		tiktokLoaded = true;
+
+		var methods = [
+			'page', 'track', 'identify', 'instances', 'debug', 'on', 'off', 'once',
+			'ready', 'alias', 'group', 'enableCookie', 'disableCookie', 'holdConsent',
+			'revokeConsent', 'grantConsent'
+		];
+		var ttq = window.ttq = window.ttq || [];
+		window.TiktokAnalyticsObject = 'ttq';
+		ttq.methods = ttq.methods || methods;
+		ttq.setAndDefer = ttq.setAndDefer || function (queue, method) {
+			queue[method] = function () {
+				queue.push([method].concat(Array.prototype.slice.call(arguments, 0)));
+			};
+		};
+		for (var i = 0; i < ttq.methods.length; i++) {
+			ttq.setAndDefer(ttq, ttq.methods[i]);
+		}
+		ttq.instance = ttq.instance || function (instanceId) {
+			var instance = ttq._i[instanceId] || [];
+			for (var j = 0; j < ttq.methods.length; j++) {
+				ttq.setAndDefer(instance, ttq.methods[j]);
+			}
+			return instance;
+		};
+		ttq.load = ttq.load || function (id, options) {
+			var src = 'https://analytics.tiktok.com/i18n/pixel/events.js';
+			var script = document.createElement('script');
+			ttq._i = ttq._i || {};
+			ttq._i[id] = [];
+			ttq._i[id]._u = src;
+			ttq._t = ttq._t || {};
+			ttq._t[id] = +new Date();
+			ttq._o = ttq._o || {};
+			ttq._o[id] = options || {};
+			script.type = 'text/javascript';
+			script.async = true;
+			script.src = src + '?sdkid=' + encodeURIComponent(id) + '&lib=ttq';
+			var firstScript = document.getElementsByTagName('script')[0];
+			firstScript.parentNode.insertBefore(script, firstScript);
+		};
+		ttq.load(pixelId);
+		// Do not call identify(); enquiry forms can include health notes.
+		ttq.page();
+		sendTikTokEvent('ViewContent', {
+			contents: [
+				{
+					content_type: 'product'
+				}
+			]
+		}, {
+			event_id: tiktokEventId('view')
+		});
+		flushTikTokQueue();
 	}
 
 	var mode = cfg.loadMode || '';

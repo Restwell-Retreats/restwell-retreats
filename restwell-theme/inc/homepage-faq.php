@@ -25,13 +25,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function restwell_get_homepage_faq_defaults(): array {
 	$q1_text = __(
-		'No. It’s a private bungalow holiday: one house, by the sea, for your party alone. Optional home care comes from our sister company, Continuity, and is arranged separately if you want it.',
+		'No. It’s a private bungalow you rent as a holiday — the whole house is yours, with no staff on site. Optional home care comes from our sister company, Continuity, and is arranged separately if you want it.',
 		'restwell-retreats'
 	);
 	$q1_html = '<p>' . esc_html( $q1_text ) . '</p>';
 
 	$q2_text = __(
-		'The house is single-storey and step-free throughout. The front door is 965mm, internal doorways are 926mm, the wet room is level-access, and there’s a ceiling hoist over the profiling bed. If you need a measurement we haven’t published, just ask and we’ll go and measure it.',
+		'Single-storey and step-free throughout: a 965mm front door, 926mm internal doors, a level-access wet room, and a ceiling track hoist over the profiling bed. Every measurement is published on the Accessibility page — including the ones that aren’t flattering.',
 		'restwell-retreats'
 	);
 	$q2_html = '<p>' . esc_html( $q2_text ) . '</p>';

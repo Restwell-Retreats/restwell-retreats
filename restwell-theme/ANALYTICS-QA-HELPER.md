@@ -12,7 +12,7 @@ Use this helper when validating frontend events in `assets/js/main.js`.
 
 - Open an enquiry form and start typing -> `enquiry_form_started`
 - Move between enquiry steps -> `enquiry_step_changed`
-- Submit enquiry successfully (`?sent=1`) -> `enquiry_form_submitted`
+- Submit enquiry successfully (`?sent=1`) -> `enquiry_form_submitted` (GA4) and TikTok `Lead` if analytics cookies were accepted. Duplicate thank-you (`duplicate=1`) does not send TikTok `Lead`.
 - Expand any FAQ item -> `faq_expanded`
 - Scroll page to 25/50/75/90% -> `scroll_depth`
 - Click any element with `data-cta` -> `restwell_cta_click`

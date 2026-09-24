@@ -33,11 +33,11 @@ $brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_bran
 </nav>
 <header class="<?php echo esc_attr( $header_class ); ?>">
 	<div class="container site-header__inner">
-		<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+		<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"<?php echo $logo_url ? ' aria-label="' . esc_attr( $brand ) . '"' : ''; ?>>
 			<?php if ( $logo_url ) : ?>
 				<img
 					src="<?php echo esc_url( $logo_url ); ?>"
-					alt="<?php echo esc_attr( $brand ); ?>"
+					alt=""
 					class="site-logo__img"
 					width="282"
 					height="44"

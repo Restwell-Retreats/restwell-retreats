@@ -122,7 +122,8 @@ $acc_faq_live    = array(
 	),
 );
 $acc_faq_items = array();
-for ( $i = 1; $i <= count( $acc_faq_live ); $i++ ) {
+$acc_faq_count = count( $acc_faq_live );
+for ( $i = 1; $i <= $acc_faq_count; $i++ ) {
 	$q = $acc_txt( "acc_faq_{$i}_q", $acc_faq_live[ $i ]['q'] );
 	$a = $acc_txt( "acc_faq_{$i}_a", $acc_faq_live[ $i ]['a'] );
 	if ( '' === trim( $q ) || '' === trim( $a ) ) {
@@ -261,16 +262,21 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			</dl>
 		  </div>
 		</div>
-	  </div>
-	</section>
 
-	<section class="section-y band-white" id="fit-check" aria-labelledby="fit-check-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
+		<?php
+		/*
+		 * The fit check belongs to the numbers, not beside them. Split across
+		 * two bands a reader met 965mm as a fact, scrolled past a band edge,
+		 * and met it again as a tool — the same question answered twice. Here
+		 * the essay hands straight over to the thing that answers it.
+		 */
+		?>
+		<section class="acc-fit" id="fit-check" aria-labelledby="fit-check-h">
+		  <header class="section-head section-head--tight">
 		  <?php if ( '' !== $acc_fit_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $acc_fit_label ); ?></p>
 		  <?php endif; ?>
-		  <h2 id="fit-check-h"><?php echo esc_html( $acc_fit_heading ); ?></h2>
+		  <h3 id="fit-check-h"><?php echo esc_html( $acc_fit_heading ); ?></h3>
 		  <?php if ( '' !== $acc_fit_intro ) : ?>
 		  <p class="lede"><?php echo esc_html( $acc_fit_intro ); ?></p>
 		  <?php endif; ?>
@@ -299,7 +305,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			  <p class="fit-check__summary" id="fit-check-summary" data-fit-summary role="status" aria-live="polite"></p>
 			</div>
 			<div class="fit-check__presets">
-			  <h3 class="fit-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
+			  <h4 class="fit-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h4>
 			  <?php if ( '' !== $acc_fit_guide_intro ) : ?>
 			  <p class="fit-check__presets-intro"><?php echo esc_html( $acc_fit_guide_intro ); ?></p>
 			  <?php endif; ?>
@@ -331,7 +337,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				  <span class="fit-bar__spec" data-fit-spec>965mm</span>
 				</div>
 				<div class="fit-bar__track" data-fit-track aria-hidden="true">
+				  <span class="fit-bar__door-mark fit-bar__door-mark--start"></span>
 				  <span class="fit-bar__fill" data-fit-fill></span>
+				  <span class="fit-bar__door-mark fit-bar__door-mark--end"></span>
 				</div>
 				<p class="fit-bar__result" data-fit-result></p>
 			  </div>
@@ -342,7 +350,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				  <span class="fit-bar__spec" data-fit-spec>926mm</span>
 				</div>
 				<div class="fit-bar__track" data-fit-track aria-hidden="true">
+				  <span class="fit-bar__door-mark fit-bar__door-mark--start"></span>
 				  <span class="fit-bar__fill" data-fit-fill></span>
+				  <span class="fit-bar__door-mark fit-bar__door-mark--end"></span>
 				</div>
 				<p class="fit-bar__result" data-fit-result></p>
 			  </div>
@@ -350,7 +360,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<?php if ( '' !== $acc_fit_note ) : ?>
 			<p class="fit-check__note"><?php echo esc_html( $acc_fit_note ); ?></p>
 			<?php endif; ?>
-			<ul class="fit-check__refs">
+			<p class="fit-check__refs-label" id="fit-check-refs-h"><?php esc_html_e( 'Reference standards', 'restwell-retreats' ); ?></p>
+			<ul class="fit-check__refs" aria-labelledby="fit-check-refs-h">
 			  <li>
 				<a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'UK Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
 			  </li>
@@ -361,6 +372,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			</div>
 		  </div>
 		</div>
+		</section>
 	  </div>
 	</section>
 
@@ -373,8 +385,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	 * the property page is the tour, this is the risk-assessment document an OT,
 	 * case manager or deputy needs before they can sign off a stay. Named makes
 	 * and models, safe working loads and clearances — no marketing adjectives.
-	 * Figures come from the manufacturers' own spec sheets. Room photos live on
-	 * the property page — this register is specs only.
+	 * Figures come from the manufacturers' own spec sheets. Each room is a
+	 * package card (photo + headline numbers + spec list) so an OT can scan
+	 * one space at a time. The property page remains the full room tour.
 	 */
 	$acc_equipment = array(
 		array(
@@ -382,6 +395,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			'name'          => __( 'Parking and getting around', 'restwell-retreats' ),
 			'where'         => __( 'Single storey, no internal steps', 'restwell-retreats' ),
 			'lead'          => true,
+			'image'         => 'bungalow/entrance.png',
+			'image_alt'     => __( 'Level driveway and front door of the bungalow', 'restwell-retreats' ),
 			'specs'         => array(
 				__( 'Driveway', 'restwell-retreats' )          => __( 'Private, resin-bound: two off-road spaces, adapted vehicles welcome', 'restwell-retreats' ),
 				__( 'Street parking', 'restwell-retreats' )    => __( 'Outside the house if you need extra room. No residents permit on this road; check signs on arrival in case street rules change', 'restwell-retreats' ),
@@ -413,6 +428,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			'name'          => __( 'Amico GoLift 400 — ceiling track hoist', 'restwell-retreats' ),
 			'where'         => __( 'Main bedroom, over the profiling bed', 'restwell-retreats' ),
 			'lead'          => true,
+			'image'         => 'bungalow/BD2-3-LS.jpg',
+			'image_alt'     => __( 'Accessible bedroom with ceiling track hoist over the profiling bed', 'restwell-retreats' ),
 			'figure'        => '180 kg',
 			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
 			'specs'         => array(
@@ -422,6 +439,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				__( 'Trolley', 'restwell-retreats' )             => __( 'Fixed', 'restwell-retreats' ),
 				__( 'Attachment', 'restwell-retreats' )          => __( 'Lifting strap with loop', 'restwell-retreats' ),
 				__( 'Coverage', 'restwell-retreats' )            => __( 'Full-room', 'restwell-retreats' ),
+				__( 'Thorough examination', 'restwell-retreats' ) => __( 'LOLER, every six months', 'restwell-retreats' ),
 			),
 		),
 		array(
@@ -461,6 +479,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				__( 'Ground clearance', 'restwell-retreats' )        => __( '25 mm', 'restwell-retreats' ),
 				__( 'Spreader bar height', 'restwell-retreats' )     => __( '525–1660 mm', 'restwell-retreats' ),
 				__( 'Emergency descent', 'restwell-retreats' )       => __( 'Manual', 'restwell-retreats' ),
+				__( 'Thorough examination', 'restwell-retreats' )    => __( 'LOLER, every six months', 'restwell-retreats' ),
 			),
 		),
 		array(
@@ -479,6 +498,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			'name'          => __( 'Level-access wet room', 'restwell-retreats' ),
 			'where'         => __( 'Specified by Care Spaces', 'restwell-retreats' ),
 			'lead'          => true,
+			'image'         => 'bungalow/WR-1-LS.jpg',
+			'image_alt'     => __( 'Level-access wet room with grab rails and a shower commode chair', 'restwell-retreats' ),
 			'specs'         => array(
 				__( 'Floor', 'restwell-retreats' )               => __( 'Level access with no lip, floor-level drain', 'restwell-retreats' ),
 				__( 'Toilet support rail', 'restwell-retreats' ) => __( 'NYMAS hinged lift-and-lock, with drop-down leg', 'restwell-retreats' ),
@@ -552,6 +573,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			'name'          => __( 'NEFF Slide & Hide — oven', 'restwell-retreats' ),
 			'where'         => __( 'Open-plan, wheelchair access to worktops', 'restwell-retreats' ),
 			'lead'          => true,
+			'image'         => 'bungalow/KT-1-LS.jpg',
+			'image_alt'     => __( 'Kitchen with seated-height worktops and a NEFF Slide and Hide oven', 'restwell-retreats' ),
 			'specs'         => array(
 				__( 'Oven', 'restwell-retreats' )   => __( 'NEFF Slide & Hide — the door folds away underneath, so you are not reaching across a hot open door from a seated position', 'restwell-retreats' ),
 				__( 'Hob', 'restwell-retreats' )    => __( 'Gas, not induction — no electromagnetic field from the cooktop, which many guests with pacemakers prefer', 'restwell-retreats' ),
@@ -586,6 +609,29 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		}
 		$acc_grouped[ $acc_gid ][] = $acc_equip_item;
 	}
+
+	/*
+	 * Chapter numbers for the register.
+	 *
+	 * The numerals give the register the shape of a document, so a reader can
+	 * say which chapter they are in and where they are up to. The sticky
+	 * subnav is the only index on the page — this section used to publish a
+	 * second one of its own, which was the same job twice. The limits chapter
+	 * is numbered last because the honest caveats belong inside the spec
+	 * document, not stranded in a band of their own after it.
+	 */
+	$acc_chapter_ids = array();
+	foreach ( $acc_equip_groups as $acc_gid => $acc_gmeta ) {
+		if ( empty( $acc_grouped[ $acc_gid ] ) ) {
+			continue;
+		}
+		$acc_chapter_ids[] = 'equip-' . $acc_gid;
+	}
+	$acc_chapter_ids[] = 'acc-limits';
+	$acc_chapter_no = array();
+	foreach ( $acc_chapter_ids as $acc_ci => $acc_chapter_id ) {
+		$acc_chapter_no[ $acc_chapter_id ] = str_pad( (string) ( $acc_ci + 1 ), 2, '0', STR_PAD_LEFT );
+	}
 	?>
 
 	<section class="section-y band-subtle" id="equipment" aria-labelledby="equipment-h">
@@ -616,20 +662,59 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			$acc_gtitle      = isset( $acc_gmeta['title'] ) ? (string) $acc_gmeta['title'] : '';
 			$acc_glede       = isset( $acc_gmeta['lede'] ) ? (string) $acc_gmeta['lede'] : '';
 			$acc_heading_id  = 'equip-' . $acc_gid . '-h';
+			$acc_pack_image  = '';
+			$acc_pack_alt    = '';
+			$acc_pack_facts  = array();
+			foreach ( $acc_group_items as $acc_pack_item ) {
+				if ( '' === $acc_pack_image && ! empty( $acc_pack_item['image'] ) ) {
+					$acc_pack_image = (string) $acc_pack_item['image'];
+					$acc_pack_alt   = isset( $acc_pack_item['image_alt'] ) ? (string) $acc_pack_item['image_alt'] : '';
+					if ( '' === $acc_pack_alt && function_exists( 'restwell_theme_image_alt' ) ) {
+						$acc_pack_alt = restwell_theme_image_alt( $acc_pack_image );
+					}
+				}
+				$acc_pack_figure = isset( $acc_pack_item['figure'] ) ? (string) $acc_pack_item['figure'] : '';
+				if ( '' !== $acc_pack_figure && preg_match( '/\d/', $acc_pack_figure ) && count( $acc_pack_facts ) < 3 ) {
+					$acc_pack_facts[] = array(
+						'value' => $acc_pack_figure,
+						'label' => isset( $acc_pack_item['figure_label'] ) ? (string) $acc_pack_item['figure_label'] : '',
+					);
+				}
+			}
 			?>
-		<section class="equip-group" id="equip-<?php echo esc_attr( $acc_gid ); ?>" aria-labelledby="<?php echo esc_attr( $acc_heading_id ); ?>">
-		  <div class="equip-group-panel">
-		  <h3 id="<?php echo esc_attr( $acc_heading_id ); ?>" class="equip-group__title"><?php echo esc_html( $acc_gtitle ); ?></h3>
-		  <?php if ( '' !== $acc_glede ) : ?>
+		<section class="equip-group acc-package" id="equip-<?php echo esc_attr( $acc_gid ); ?>" aria-labelledby="<?php echo esc_attr( $acc_heading_id ); ?>">
+		  <div class="equip-group-panel acc-package__panel">
+			<?php if ( '' !== $acc_pack_image ) : ?>
+			<figure class="acc-package__media">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( $acc_pack_image ) ); ?>" alt="<?php echo esc_attr( $acc_pack_alt ); ?>" width="1200" height="750" loading="lazy" decoding="async" />
+			</figure>
+			<?php endif; ?>
+			<div class="acc-package__body">
+		  <h3 id="<?php echo esc_attr( $acc_heading_id ); ?>" class="equip-group__title" data-chapter="<?php echo esc_attr( $acc_chapter_no[ 'equip-' . $acc_gid ] ); ?>"><?php echo esc_html( $acc_gtitle ); ?></h3>
+			<?php if ( '' !== $acc_glede ) : ?>
 		  <p class="equip-group__lede"><?php echo esc_html( $acc_glede ); ?></p>
+		  <?php endif; ?>
+			<?php if ( ! empty( $acc_pack_facts ) ) : ?>
+		  <ul class="acc-package__facts" role="list">
+				<?php foreach ( $acc_pack_facts as $acc_pack_fact ) : ?>
+			<li class="acc-package__fact">
+			  <span class="acc-package__fact-value"><?php echo esc_html( $acc_pack_fact['value'] ); ?></span>
+				<?php if ( '' !== $acc_pack_fact['label'] ) : ?>
+			  <span class="acc-package__fact-label"><?php echo esc_html( $acc_pack_fact['label'] ); ?></span>
+			  <?php endif; ?>
+			</li>
+			<?php endforeach; ?>
+		  </ul>
 		  <?php endif; ?>
 		  <ul class="equip-list" role="list">
 			<?php foreach ( $acc_group_items as $acc_equip_item ) : ?>
 				<?php
 				$acc_item_lead    = ! empty( $acc_equip_item['lead'] );
 				$acc_item_compact = ! empty( $acc_equip_item['compact'] );
-				$acc_item_fold    = ! empty( $acc_equip_item['fold'] );
 				$acc_item_image   = isset( $acc_equip_item['image'] ) ? (string) $acc_equip_item['image'] : '';
+				if ( '' !== $acc_pack_image && $acc_item_image === $acc_pack_image ) {
+					$acc_item_image = '';
+				}
 				$acc_item_figure  = isset( $acc_equip_item['figure'] ) ? (string) $acc_equip_item['figure'] : '';
 				$acc_item_flabel  = isset( $acc_equip_item['figure_label'] ) ? (string) $acc_equip_item['figure_label'] : '';
 				$acc_item_where   = isset( $acc_equip_item['where'] ) ? (string) $acc_equip_item['where'] : '';
@@ -642,8 +727,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					$acc_item_class .= ' equip-item--lead';
 				} elseif ( $acc_item_compact ) {
 					$acc_item_class .= ' equip-item--compact';
-				} elseif ( $acc_item_fold ) {
-					$acc_item_class .= ' equip-item--fold';
 				}
 				$acc_item_alt = '';
 				if ( '' !== $acc_item_image ) {
@@ -654,32 +737,32 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				}
 				?>
 		  <li class="<?php echo esc_attr( $acc_item_class ); ?>">
-			<?php if ( $acc_item_lead ) : ?>
+				<?php if ( $acc_item_lead ) : ?>
 			<div class="equip-item__mast">
-			  <?php if ( '' !== $acc_item_image ) : ?>
+					<?php if ( '' !== $acc_item_image ) : ?>
 			  <figure class="equip-item__photo">
 				<img src="<?php echo esc_url( restwell_theme_image_url( $acc_item_image ) ); ?>" alt="<?php echo esc_attr( $acc_item_alt ); ?>" width="900" height="675" loading="lazy" decoding="async" />
 			  </figure>
 			  <?php endif; ?>
 			  <div class="equip-item__ident">
-				<?php if ( $acc_show_name ) : ?>
+					<?php if ( $acc_show_name ) : ?>
 				<h4 class="equip-item__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
 				<?php endif; ?>
-				<?php if ( '' !== $acc_item_where ) : ?>
+					<?php if ( '' !== $acc_item_where ) : ?>
 				<p class="equip-item__where"><?php echo esc_html( $acc_item_where ); ?></p>
 				<?php endif; ?>
-				<?php if ( $acc_figure_metric ) : ?>
+					<?php if ( $acc_figure_metric ) : ?>
 				<p class="equip-item__figure">
 				  <span class="equip-item__figure-value"><?php echo esc_html( $acc_item_figure ); ?></span>
-				  <?php if ( '' !== $acc_item_flabel ) : ?>
+						<?php if ( '' !== $acc_item_flabel ) : ?>
 				  <span class="equip-item__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
 				  <?php endif; ?>
 				</p>
 				<?php endif; ?>
 			  </div>
-			  <?php if ( ! empty( $acc_item_specs ) ) : ?>
+					<?php if ( ! empty( $acc_item_specs ) ) : ?>
 			  <dl class="equip-item__specs">
-				<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
+						<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
 				<div class="equip-spec">
 				  <dt><?php echo esc_html( $acc_equip_label ); ?></dt>
 				  <dd><?php echo esc_html( $acc_equip_value ); ?></dd>
@@ -687,35 +770,28 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				<?php endforeach; ?>
 			  </dl>
 			  <?php endif; ?>
-			  <?php if ( '' !== $acc_item_note ) : ?>
+					<?php if ( '' !== $acc_item_note ) : ?>
 			  <p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
 			  <?php endif; ?>
 			</div>
 			<?php else : ?>
 			<div class="equip-item__head">
-			  <?php if ( $acc_show_name ) : ?>
+				<?php if ( $acc_show_name ) : ?>
 			  <h4 class="equip-item__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
 			  <?php endif; ?>
-			  <?php if ( $acc_figure_metric ) : ?>
+				<?php if ( $acc_figure_metric ) : ?>
 			  <p class="equip-item__figure">
 				<span class="equip-item__figure-value"><?php echo esc_html( $acc_item_figure ); ?></span>
-				<?php if ( '' !== $acc_item_flabel ) : ?>
+					<?php if ( '' !== $acc_item_flabel ) : ?>
 				<span class="equip-item__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
 				<?php endif; ?>
 			  </p>
 			  <?php endif; ?>
 			</div>
 			<?php endif; ?>
-			<?php if ( $acc_item_fold ) : ?>
-			<details class="equip-item__more">
-			  <summary><?php esc_html_e( 'Specification', 'restwell-retreats' ); ?></summary>
-			<?php endif; ?>
-			<?php if ( $acc_item_fold && '' !== $acc_item_where ) : ?>
-			<p class="equip-item__where"><?php echo esc_html( $acc_item_where ); ?></p>
-			<?php endif; ?>
-			<?php if ( ! $acc_item_lead && ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
+				<?php if ( ! $acc_item_lead && ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
 			<dl class="equip-item__specs">
-			  <?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
+					<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
 			  <div class="equip-spec">
 				<dt><?php echo esc_html( $acc_equip_label ); ?></dt>
 				<dd><?php echo esc_html( $acc_equip_value ); ?></dd>
@@ -723,13 +799,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			  <?php endforeach; ?>
 			</dl>
 			<?php endif; ?>
-			<?php if ( '' !== $acc_item_note && $acc_item_fold ) : ?>
-			<p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
-			<?php endif; ?>
-			<?php if ( $acc_item_fold ) : ?>
-			</details>
-			<?php endif; ?>
-			<?php if ( '' !== $acc_item_note && ! $acc_item_fold && ! $acc_item_lead ) : ?>
+				<?php if ( '' !== $acc_item_note && ! $acc_item_lead ) : ?>
 			<p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
 			<?php endif; ?>
 		  </li>
@@ -741,23 +811,25 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
 		  </div>
 			<?php endif; ?>
+			</div>
 		  </div>
 		</section>
 		<?php endforeach; ?>
-		</div>
-	  </div>
-	</section>
 
-	<section class="section-y section-y--compact band-white" id="acc-limits" aria-labelledby="acc-limits-h">
-	  <div class="container split acc-limits-split">
-		<header class="section-head section-head--tight">
-		  <p class="eyebrow"><?php esc_html_e( 'Limits', 'restwell-retreats' ); ?></p>
-		  <h2 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
-		</header>
-		<div class="download-panel acc-limits__card">
-		  <p class="acc-limits__contact">
-			<?php
+		<?php
+		/*
+		 * Closing chapter. The caveats are part of the register: every line
+		 * above is kit we own and can point a tape measure at, and this says
+		 * where that stops. Read after the specs it qualifies, not in a band
+		 * of its own where it was easy to scroll past.
+		 */
+		?>
+		<section class="equip-group equip-group--close" id="acc-limits" aria-labelledby="acc-limits-h">
+		  <div class="equip-group-panel">
+			<h3 id="acc-limits-h" class="equip-group__title" data-chapter="<?php echo esc_attr( $acc_chapter_no['acc-limits'] ); ?>"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h3>
+			<p class="equip-group__lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
+			<p class="acc-limits__contact">
+			  <?php
 				echo wp_kses(
 					sprintf(
 						/* translators: 1: tel href, 2: visible phone, 3: mailto href, 4: visible email */
@@ -775,12 +847,14 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					)
 				);
 				?>
-		  </p>
+			</p>
+		  </div>
+		</section>
 		</div>
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="destination" aria-labelledby="destination-h">
+	<section class="section-y band-white" id="destination" aria-labelledby="destination-h">
 	  <div class="container">
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $acc_dest_label ) : ?>
@@ -791,17 +865,33 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<p class="lede"><?php echo esc_html( $acc_dest_intro ); ?></p>
 			<?php endif; ?>
 		  </header>
-		  <dl class="comparison-list">
-			<?php foreach ( $acc_dest_items as $acc_dest_item ) : ?>
+		  <?php
+			/*
+			 * The good and the challenges are a pair — set them as one so the
+			 * balance is the point. The reality is the conclusion drawn from
+			 * them, not a third column of equal weight; as three matching
+			 * columns the verdict read like another category.
+			 */
+			$acc_dest_pair    = array_slice( $acc_dest_items, 0, 2 );
+			$acc_dest_reality = isset( $acc_dest_items[2] ) ? $acc_dest_items[2] : null;
+			?>
+		  <dl class="comparison-list comparison-list--2 acc-dest__pair">
+			<?php foreach ( $acc_dest_pair as $acc_dest_item ) : ?>
 			<div class="comparison-list__item">
 			  <dt><?php echo esc_html( $acc_dest_item['dt'] ); ?></dt>
 			  <dd><?php echo esc_html( $acc_dest_item['dd'] ); ?></dd>
 			</div>
 			<?php endforeach; ?>
 		  </dl>
+			<?php if ( null !== $acc_dest_reality ) : ?>
+		  <div class="acc-dest__verdict">
+			<p class="acc-dest__verdict-label"><?php echo esc_html( $acc_dest_reality['dt'] ); ?></p>
+			<p class="acc-dest__verdict-body"><?php echo esc_html( $acc_dest_reality['dd'] ); ?></p>
+		  </div>
+			<?php endif; ?>
 	  </div>
 	</section>
-	<section class="section-y band-white" id="faq" aria-labelledby="faq-h">
+	<section class="section-y band-subtle" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 			<?php if ( '' !== $acc_faq_label ) : ?>
@@ -843,12 +933,12 @@ if ( $restwell_access_guide instanceof WP_Post ) :
 	$restwell_access_guide_url = get_permalink( $restwell_access_guide );
 	if ( $restwell_access_guide_url ) :
 		?>
-	<section class="section-y section-y--compact band-subtle" aria-labelledby="access-guide-h">
+	<section class="section-y section-y--compact band-white" aria-labelledby="access-guide-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow">Comparing other cottages?</p>
 		  <h2 id="access-guide-h">How to read any access statement</h2>
-		  <p class="lede">This page is Restwell’s property-specific statement. For a general checklist of measurements, red flags and OT questions, see <a class="text-link" href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php echo esc_html( get_the_title( $restwell_access_guide ) ); ?></a>.</p>
+		  <p class="lede">This page is Restwell’s property-specific statement. For a general checklist of measurements, red flags and OT questions, see <a class="text-link" href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php echo esc_html( rtrim( get_the_title( $restwell_access_guide ), '.' ) ); ?>.</a></p>
 		</header>
 	  </div>
 	</section>

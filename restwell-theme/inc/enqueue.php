@@ -57,6 +57,14 @@ function restwell_enqueue_scripts() {
 		restwell_theme_asset_version( '/assets/css/shared-wp.css' )
 	);
 
+	// Small refinements layered after the established classic-theme design system.
+	wp_enqueue_style(
+		'restwell-polish',
+		$theme_uri . '/assets/css/polish.css',
+		array( 'restwell-shared-wp' ),
+		restwell_theme_asset_version( '/assets/css/polish.css' )
+	);
+
 	$shared_rel = '/assets/js/shared.js';
 	if ( $use_min && is_readable( get_template_directory() . '/assets/js/shared.min.js' ) ) {
 		$shared_rel = '/assets/js/shared.min.js';
