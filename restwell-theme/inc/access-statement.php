@@ -180,7 +180,7 @@ function restwell_render_access_statement() {
 
 <main>
 	<h1><?php esc_html_e( 'Access statement: equipment and measurements', 'restwell-retreats' ); ?></h1>
-	<p class="as-lede"><?php esc_html_e( 'A single-storey adapted bungalow in Whitstable, Kent, for disabled adults, families and carers. This is the spec sheet for occupational therapists, case managers and funding panels: makes, models, safe working loads and clearances, taken from the manufacturers’ own spec sheets and our own tape measure.', 'restwell-retreats' ); ?></p>
+	<p class="as-lede"><?php esc_html_e( 'A single-storey adapted bungalow in Whitstable, Kent, for disabled adults, families and carers. This is the spec sheet for occupational therapists, case managers and funding panels: makes, models, safe working loads and clearances, taken from the manufacturers’ own spec sheets and the door measurements we have published.', 'restwell-retreats' ); ?></p>
 
 	<section class="as-key" aria-labelledby="as-key-h">
 		<h2 id="as-key-h"><?php esc_html_e( 'Key figures', 'restwell-retreats' ); ?></h2>

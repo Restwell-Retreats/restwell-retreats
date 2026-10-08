@@ -37,7 +37,7 @@ function restwell_accessibility_equipment() {
 		array(
 			'group'         => 'getting-in',
 			'name'          => __( 'Doorways and thresholds', 'restwell-retreats' ),
-			'where'         => __( 'Clear openings, measured door-stop to door-stop', 'restwell-retreats' ),
+			'where'         => __( 'Clear openings, as published on our doorway graphic', 'restwell-retreats' ),
 			'lead'          => true,
 			'figure'        => '965 mm',
 			'figure_label'  => __( 'Front door clear opening', 'restwell-retreats' ),
@@ -116,7 +116,7 @@ function restwell_accessibility_equipment() {
 			'compact'       => true,
 			'figure'        => '185 kg',
 			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
-			'note'          => __( 'The RS4 is an Able Assist device. It is not an Arjo Sara Stedy, and the two are not interchangeable in a handling plan. Please check your care plan names the right one.', 'restwell-retreats' ),
+			'note'          => __( 'The RS4 is an AAL stand assist. It is not an Arjo Sara Stedy, and the two are not interchangeable in a handling plan. Please check your care plan names the right one.', 'restwell-retreats' ),
 			'specs'         => array(
 				__( 'Safe working load', 'restwell-retreats' ) => __( '185 kg', 'restwell-retreats' ),
 			),
@@ -192,6 +192,7 @@ function restwell_accessibility_equipment() {
 			'figure_label'  => __( 'Basin height range', 'restwell-retreats' ),
 			'specs'         => array(
 				__( 'Height range', 'restwell-retreats' )   => __( '750–950 mm, manual adjustment', 'restwell-retreats' ),
+				__( 'Maximum user weight', 'restwell-retreats' ) => __( '245 kg with the basin locked in the dock-in unit; 80 kg when it is swung out', 'restwell-retreats' ),
 				__( 'Mounting', 'restwell-retreats' )       => __( 'Swing basin with dock-in unit', 'restwell-retreats' ),
 				__( 'Tap', 'restwell-retreats' )            => __( 'Thermostatic mixer, lever operation, safe-touch body, TMV3 approved', 'restwell-retreats' ),
 			),
