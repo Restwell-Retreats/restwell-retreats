@@ -220,9 +220,12 @@ a.path-card:hover {
   box-shadow: 0 10px 28px rgba(9, 26, 32, 0.14);
 }
 
-/* Header enquire chip matches the 2.75rem tap target used elsewhere. */
+/* Header enquire chip matches the 2.75rem tap target used elsewhere. Drop
+   the base .btn block padding so it sits at exactly the menu toggle's
+   height instead of 51px beside a 44px circle. */
 .site-header .btn {
   min-height: 2.75rem;
+  padding-block: 0;
 }
 .nav__dropdown a {
   min-height: 2.75rem;

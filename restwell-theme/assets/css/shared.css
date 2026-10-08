@@ -994,8 +994,8 @@ button.text-link {
 .nav-toggle__icon::before { top: 0; }
 .nav-toggle__icon span { top: 50%; margin-top: -1px; }
 .nav-toggle__icon::after { bottom: 0; }
-.nav-toggle[aria-expanded="true"] .nav-toggle__icon::before { transform: translateY(6.5px) rotate(45deg); }
-.nav-toggle[aria-expanded="true"] .nav-toggle__icon::after { transform: translateY(-6.5px) rotate(-45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__icon::before { transform: translateY(calc((0.85rem - 2px) / 2)) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__icon::after { transform: translateY(calc((0.85rem - 2px) / -2)) rotate(-45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle__icon span { opacity: 0; }
 @media (min-width: 1024px) {
   .nav-toggle { display: none; }
