@@ -60,7 +60,9 @@ function restwell_theme_image_srcset( $url ) {
 		$candidates[ $opt_width ] = $base_uri . dirname( $rel ) . '/' . $stem . '.webp';
 	}
 	foreach ( (array) glob( $dir . '/' . $stem . '-*w.webp' ) as $variant ) {
-		if ( preg_match( '/-(\d+)w\.webp$/', $variant, $vm ) ) {
+		// The glob's * also matches sibling crops (victoria-walker-full-480w),
+		// which have a different aspect ratio; keep only this image's own widths.
+		if ( preg_match( '/^' . preg_quote( $stem, '/' ) . '-(\d+)w\.webp$/', basename( $variant ), $vm ) ) {
 			$w = restwell_image_file_width( $variant );
 			if ( $w > 0 ) {
 				$candidates[ $w ] = $base_uri . dirname( $rel ) . '/' . basename( $variant );
