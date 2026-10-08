@@ -110,10 +110,10 @@ $wg_towns_body    = $wg_txt(
 
 $wg_stop_1_src = $wg_spot_src( 1, 'stock/restwell-whitstable-beach-huts.webp' );
 $wg_stop_1_alt = $wg_txt( 'wg_spotlight_image_1_caption', 'Colourful beach huts along the Whitstable seafront' );
-$wg_stop_2_src = $wg_spot_src( 2, 'stock/restwell-whitstable-sunset-pier.webp' );
-$wg_stop_2_alt = $wg_txt( 'wg_spotlight_image_2_caption', 'Whitstable harbour area at sunset' );
-$wg_stop_3_src = $wg_spot_src( 3, 'stock/restwell-whitstable-coastal-walk.webp' );
-$wg_stop_3_alt = $wg_txt( 'wg_spotlight_image_3_caption', 'Coastal walk near the Whitstable beach pubs' );
+$wg_stop_2_src = $wg_spot_src( 2, 'stock/restwell-whitstable-beach-sailboats-sunset.jpg' );
+$wg_stop_2_alt = $wg_txt( 'wg_spotlight_image_2_caption', 'Sailing dinghies drawn up on the shingle at Whitstable at sunset' );
+$wg_stop_3_src = $wg_spot_src( 3, 'stock/restwell-whitstable-pebble-beach-groynes.jpg' );
+$wg_stop_3_alt = $wg_txt( 'wg_spotlight_image_3_caption', 'Shingle beach and timber groynes on the Whitstable shore' );
 
 $wg_related_heading = $wg_txt( 'wg_related_heading', 'Local Whitstable guides' );
 $wg_related_intro   = $wg_txt(
@@ -195,9 +195,9 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="parking" aria-labelledby="parking-h">
-	  <div class="container split split--flip split--media-first">
+	  <div class="container split split--flip split--media-first split--fill">
 		<div class="split__media">
-				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/russell-drive-whitstable.webp' ) ); ?>" alt="Quiet residential street near Tankerton" width="900" height="675" loading="lazy" />
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/tankerton-residential-street.webp' ) ); ?>" alt="Quiet residential street near Tankerton" width="900" height="675" loading="lazy" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">
@@ -215,7 +215,7 @@ get_template_part(
 			  <dd>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</dd>
 			</div>
 		  </dl>
-		  <aside class="download-panel">
+		  <aside class="callout">
 			<h3>Harbour ANPR</h3>
 			<p>Gorrell Tank and Keam’s Yard need your vehicle and Blue Badge pre-registered online. Parking at Tankerton Road and rolling the promenade is usually easier.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register Blue Badge for ANPR<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span></a></p>
@@ -265,23 +265,20 @@ get_template_part(
 			<h2 id="eat-h"><?php echo esc_html( $wg_eating_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wg_eating_intro ); ?></p>
 		  </header>
-		  <div class="place-list place-list--stack">
+		  <div class="place-list place-list--stack place-list--venues">
 		  <article class="place-list__item">
-			
 			<h3 class="place-list__title"><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" target="_blank" rel="noopener noreferrer">The Plough Inn, Swalecliffe<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Nearest pub · CT5 2RN</p>
 			<p>Around the corner via a footpath at the end of the road. We’ll point it out in your welcome pack. Step-free entry; no accessible toilet, confirm on the day if that matters.</p>
 			<p class="place-list__actions"><a class="text-link" href="tel:01227794636">Call 01227 794636</a><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
-			
 			<h3 class="place-list__title"><a href="https://jojosrestaurant.co.uk/" target="_blank" rel="noopener noreferrer">JoJo’s, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">2 Herne Bay Road · CT5 2LQ</p>
 			<p>About twenty minutes on foot from the bungalow: ten to the seafront, then west along the promenade. Wheelchair access and an accessible toilet. Book ahead: it fills quickly.</p>
 			<p class="place-list__actions"><a href="https://jojosrestaurant.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227274591">Call 01227 274591</a></p>
 		  </article>
 		  <article class="place-list__item">
-			
 			<h3 class="place-list__title"><a href="https://www.marinewhitstable.co.uk/" target="_blank" rel="noopener noreferrer">Marine Hotel, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">32–33 Marine Parade · CT5 2BE</p>
 			<p>Ground-floor lounge and restaurant, step-free, accessible loo by reception. Sea views from Marine Parade.</p>
@@ -295,19 +292,29 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-subtle" id="toilets" aria-labelledby="toilets-h">
-	  <div class="container">
+	<section class="section-y band-subtle" id="toilets" aria-labelledby="toilets-h">
+	  <div class="container route-split">
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow"><?php echo esc_html( $wg_planning_label ); ?></p>
 		  <h2 id="toilets-h"><?php echo esc_html( $wg_planning_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_planning_intro ); ?></p>
+		  <p><a href="https://www.changing-places.org/find" class="text-link" target="_blank" rel="noopener noreferrer">Changing Places map<span class="sr-only"> (opens in new tab)</span></a></p>
 		</header>
-		<ul class="checklist checklist--2">
-		  <?php foreach ( $wg_toilet_bullets as $wg_toilet_line ) : ?>
-		  <li><?php echo esc_html( $wg_toilet_line ); ?></li>
+		<ol class="route-list" aria-label="<?php esc_attr_e( 'Accessible toilets along the promenade route', 'restwell-retreats' ); ?>">
+		  <?php
+			foreach ( $wg_toilet_bullets as $wg_toilet_line ) :
+				$wg_is_cp = 0 === stripos( $wg_toilet_line, 'Changing Places' );
+				?>
+		  <li class="route-list__stop<?php echo $wg_is_cp ? ' route-list__stop--key' : ''; ?>">
+				<?php if ( $wg_is_cp ) : ?>
+			<span class="route-list__tag"><?php esc_html_e( 'Changing Places', 'restwell-retreats' ); ?></span>
+					<?php echo esc_html( trim( preg_replace( '/^Changing Places:\s*/i', '', $wg_toilet_line ) ) ); ?>
+				<?php else : ?>
+					<?php echo esc_html( $wg_toilet_line ); ?>
+				<?php endif; ?>
+		  </li>
 		  <?php endforeach; ?>
-		</ul>
-		<p><a href="https://www.changing-places.org/find" class="text-link" target="_blank" rel="noopener noreferrer">Changing Places map<span class="sr-only"> (opens in new tab)</span></a></p>
+		</ol>
 	  </div>
 	</section>
 
@@ -318,20 +325,29 @@ get_template_part(
 		  <h2 id="travel-h"><?php echo esc_html( $wg_travel_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_travel_body ); ?></p>
 		</header>
-		<dl class="fact-dl">
-		  <div>
-			<dt>Station</dt>
-			<dd>Whitstable station access varies by platform, check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</dd>
-		  </div>
-		  <div>
-			<dt>Buses</dt>
-			<dd><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</dd>
-		  </div>
-		  <div>
-			<dt>Accessible taxis</dt>
-			<dd>Pre-book on busy days. Abacus Cars: <a class="text-link" href="tel:01227277745">01227 277745</a>.</dd>
-		  </div>
-		</dl>
+		<ul class="persona-list persona-list--rows" role="list">
+		  <li class="persona-list__item">
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 11h14M8.5 21l2-4M15.5 21l-2-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/></svg></span>
+			<div>
+			  <h3>Station</h3>
+			  <p>Whitstable station access varies by platform, check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</p>
+			</div>
+		  </li>
+		  <li class="persona-list__item">
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="16" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 10h16M7 20v-3M17 20v-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="13.5" r="1" fill="currentColor"/><circle cx="16" cy="13.5" r="1" fill="currentColor"/></svg></span>
+			<div>
+			  <h3>Buses</h3>
+			  <p><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</p>
+			</div>
+		  </li>
+		  <li class="persona-list__item">
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 16V12l2-5h10l2 5v4M3.5 16h17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="16.5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="16.5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+			<div>
+			  <h3>Accessible taxis</h3>
+			  <p>Pre-book on busy days. Abacus Cars: <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
+			</div>
+		  </li>
+		</ul>
 	  </div>
 	</section>
 
@@ -344,7 +360,7 @@ get_template_part(
 		</header>
 		<ul class="card-grid card-grid--3" role="list">
 		  <li><article class="media-card">
-					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/whitstable-days-out.webp' ) ); ?>" alt="Woodland day out near the Kent coast" width="640" height="480" loading="lazy" />
+					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-kent-woodland-paved-path.jpg' ) ); ?>" alt="Paved woodland path near the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p>~30 minutes. Mostly accessible woodland paths; scooters bookable ahead on 01227 209621.</p>
 			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>

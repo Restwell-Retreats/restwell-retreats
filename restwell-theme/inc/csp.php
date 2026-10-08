@@ -68,6 +68,8 @@ function restwell_build_csp_directives() {
 		"'self'",
 		'https://www.googletagmanager.com',
 		'https://tracker.metricool.com',
+		// TikTok Pixel, loaded after consent only when an ID is set (audit I14).
+		'https://analytics.tiktok.com',
 	);
 	if ( '' !== $nonce ) {
 		$script_src[] = "'nonce-" . $nonce . "'";
@@ -80,6 +82,8 @@ function restwell_build_csp_directives() {
 		'https://region1.google-analytics.com',
 		'https://www.googletagmanager.com',
 		'https://tracker.metricool.com',
+		'https://analytics.tiktok.com',
+		'https://analytics-ipv6.tiktokw.us',
 	);
 
 	$directives = array(

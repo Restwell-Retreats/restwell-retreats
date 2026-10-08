@@ -19,12 +19,12 @@ function restwell_get_who_its_for_page_html() {
 	$acc     = esc_url( home_url( '/accessibility/' ) );
 	$prop    = esc_url( home_url( '/the-property/' ) );
 	$faq     = esc_url( home_url( '/faq/' ) );
-	$res     = esc_url( home_url( '/resources/' ) );
+	$res     = esc_url( home_url( '/funding-and-support/' ) );
 	return '<h2>For guests and families</h2>
-<p>This is a real holiday - a comfortable self-catering bungalow on the Kent coast, not a clinical placement. We have designed the space so you can focus on the break: the sea air, Whitstable, and time together.</p>
+<p>This is a real holiday: a comfortable self-catering bungalow on the Kent coast, not a clinical placement. We have designed the space so you can focus on the break: the sea air, Whitstable, and time together.</p>
 <p><a href="' . $prop . '">View the property</a> or <a href="' . $enquire . '">check availability and enquire</a>.</p>
 <h2>For carers and support workers</h2>
-<p>Bring your client or family member knowing the property has level access, a ceiling track hoist in the accessible bedroom, profiling bed, and a full wet room on the same level with a height-adjustable washbasin. There is room for you to stay - tell us your party size when you book so we can confirm sleeping arrangements.</p>
+<p>Bring your client or family member knowing the property has level access, a ceiling track hoist in the accessible bedroom, profiling bed, and a full wet room on the same level with a height-adjustable washbasin. There is room for you to stay; tell us your party size when you book so we can confirm sleeping arrangements.</p>
 <p>Read our <a href="' . $acc . '">accessibility specification</a> and <a href="' . $faq . '">funding and booking FAQs</a>.</p>
 <h2>For occupational therapists and case managers</h2>
 <p>We provide detailed accessibility information so you can assess suitability. If you need room dimensions, equipment specifications, or a site visit, <a href="' . $enquire . '">contact us</a> - we are used to working with professionals.</p>
@@ -44,11 +44,11 @@ function restwell_get_who_its_for_page_html() {
 function restwell_get_whitstable_guide_page_html() {
 	$prop = esc_url( home_url( '/the-property/' ) );
 	$enq  = esc_url( home_url( '/enquire/' ) );
-	return '<p>Restwell sits in a quiet residential street in Whitstable, about five minutes’ drive from the town centre and seafront. Below is a practical guide to the area - with accessibility notes where we can help.</p>
+	return '<p>Restwell sits in a quiet residential street in Whitstable, about five minutes’ drive from the town centre and seafront. Below is a practical guide to the area, with accessibility notes where we can help.</p>
 <h2>About Whitstable</h2>
-<p>The harbour, independent shops, and seafood are the heart of the town. The beach is shingle; the Tankerton Slopes promenade offers a long, level walk with sea views - one of the more accessible coastal routes in Kent.</p>
+<p>The harbour, independent shops, and seafood are the heart of the town. The beach is shingle; the Tankerton Slopes promenade offers a long, level walk with sea views, one of the more accessible coastal routes in Kent.</p>
 <h2>Nearby towns</h2>
-<p><strong>Canterbury</strong> (about eight miles) - cathedral, museums, and flat pedestrianised areas in the centre. <strong>Faversham</strong> and <strong>Herne Bay</strong> are short drives for market-town days out and traditional seafront.</p>
+<p><strong>Canterbury</strong> (about eight miles): cathedral, museums, and flat pedestrianised areas in the centre. <strong>Faversham</strong> and <strong>Herne Bay</strong> are short drives for market-town days out and traditional seafront.</p>
 <h2>Getting here</h2>
 <p>Whitstable station has trains to London St Pancras and Victoria. By car, use the M2 / Thanet Way. The property has two off-road spaces on a private drive, with on-street parking outside if you need extra room (no residents permit on this road).</p>
 <p><a href="' . $prop . '">Back to the property</a> · <a href="' . $enq . '">Book your stay</a></p>';

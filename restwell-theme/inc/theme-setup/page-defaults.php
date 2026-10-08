@@ -163,7 +163,7 @@ function restwell_get_theme_setup_defaults() {
 		'home_comparison_row4_restwell'  => 'Full self-catering',
 		'home_comparison_row4_other'     => 'None or limited',
 
-		'home_care_label'       => '',
+		'home_care_label'       => 'Home care on holiday',
 		'home_care_heading'     => 'Optional home care',
 		'home_care_intro'       => 'How you manage your care is entirely up to you. The bungalow rate stays exactly the same whichever you choose:',
 		'home_care_item1_title' => 'Bring your own support',
@@ -496,9 +496,9 @@ function restwell_get_accessibility_page_defaults() {
 		'acc_faq_intro'   => 'Questions about ceiling hoist safe working loads, profiling beds, and the details that make a place truly “wheelchair friendly.”',
 
 		'acc_faq_1_q' => 'Do you provide hoist slings?',
-		'acc_faq_1_a' => 'No. Bring the sling the person already uses — both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.',
+		'acc_faq_1_a' => 'No. Bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.',
 		'acc_faq_2_q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'acc_faq_2_a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle — unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+		'acc_faq_2_a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
 		'acc_faq_3_q' => 'Why does a profiling bed matter in an accessible bedroom?',
 		'acc_faq_3_a' => 'It helps with positioning, pressure care and safer transfers, and it sets a working height that protects the back of whoever is providing care. A fixed divan gives you none of that, and a mobile hoist often cannot get its legs underneath one. We have two profiling beds; the accessible bedroom takes one or two.',
 		'acc_faq_4_q' => 'What should “wheelchair friendly” actually mean?',
@@ -616,9 +616,6 @@ function restwell_get_resources_page_defaults() {
 		'res_heading' => 'Paying for a break, without the guesswork',
 		'res_intro'   => 'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.',
 
-		'res_fund_heading' => 'The house and the care can sit on different invoices',
-		'res_fund_body'    => 'A council or CHC team will often pay for care hours, and not the bungalow, or the other way round. Continuity is our sister company, so you still ring us once.',
-
 		'res_grants_heading' => 'Grants and key contacts',
 		'res_grants_body'    => 'These are the organisations people actually use. We can’t say yes on their behalf, but we can send whatever paperwork they ask for.',
 
@@ -719,7 +716,7 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_fund_phb_title'     => 'Personal health budget',
 		'wif_fund_phb_bullets'   => "Available for people with continuing healthcare needs, subject to eligibility assessment.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted setting can be written into a care and support plan where clinically appropriate.",
 		'wif_fund_phb_cta_label' => 'PHB and funding overview',
-		'wif_fund_phb_cta_url'   => '/resources/',
+		'wif_fund_phb_cta_url'   => '/funding-and-support/',
 
 		'wif_fund_private_title'     => 'Private / self-funded',
 		'wif_fund_private_bullets'   => "The same clear accessibility information and direct answers as for funded guests.\nDocumentation for insurers or employers if you need it.\nNo pressure: we tell you plainly whether the property is a good fit.",
@@ -755,9 +752,9 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_spotlight_image_1_id' => 0,
 		'wg_spotlight_image_1_caption' => 'Colourful beach huts along the Whitstable seafront',
 		'wg_spotlight_image_2_id' => 0,
-		'wg_spotlight_image_2_caption' => 'Whitstable harbour area at sunset',
+		'wg_spotlight_image_2_caption' => 'Sailing dinghies drawn up on the shingle at Whitstable at sunset',
 		'wg_spotlight_image_3_id' => 0,
-		'wg_spotlight_image_3_caption' => 'Coastal walk near the Whitstable beach pubs',
+		'wg_spotlight_image_3_caption' => 'Shingle beach and timber groynes on the Whitstable shore',
 		'wg_access_label'            => 'Along the route',
 		'wg_access_heading'          => 'Castle, harbour and beach pub',
 		'wg_access_intro'            => 'Level stops on the promenade route, with access notes and links so you can check opening times before you set out.',
@@ -897,7 +894,7 @@ function restwell_get_our_story_page_defaults() {
 		'story_origin_label'   => 'The gap',
 		'story_origin_heading' => 'How Restwell started',
 		'story_origin_lede'    => 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.',
-		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details — including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.',
+		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.',
 
 		'story_month_label'   => 'The build',
 		'story_month_heading' => 'How the bungalow was built',

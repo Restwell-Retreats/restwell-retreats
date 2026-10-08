@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 65;
+const RESTWELL_SCHEMA_VERSION = 73;
 
 
 /**
@@ -1504,6 +1504,340 @@ function restwell_migrate_privacy_tiktok_submitform_v65() {
 }
 
 /**
+ * Trash empty duplicate Theme Setup pages left by the old init race
+ * (a second /accessibility/, terms-and-conditions-2). Only a page that shares
+ * the template, carries the same slug or a "-N" suffix of it, has no body
+ * content, and is not the page get_page_by_path() resolves is trashed, so
+ * nothing with real content is touched. Trash, not delete: it can be restored.
+ */
+function restwell_migrate_dedupe_theme_pages_v66() {
+	if ( get_option( 'restwell_dedupe_theme_pages_v66', '' ) === '1' ) {
+		return;
+	}
+	if ( ! function_exists( 'restwell_get_theme_setup_pages' ) || ! function_exists( 'restwell_get_theme_setup_page_templates' ) ) {
+		return;
+	}
+	$templates = restwell_get_theme_setup_page_templates();
+	$protected = array_map(
+		'intval',
+		array( get_option( 'page_on_front' ), get_option( 'page_for_posts' ), get_option( 'wp_page_for_privacy_policy' ) )
+	);
+	foreach ( restwell_get_theme_setup_pages() as $title => $slug ) {
+		if ( empty( $templates[ $title ] ) ) {
+			continue;
+		}
+		$keep = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $keep instanceof WP_Post ) {
+			continue;
+		}
+		$dupes = get_posts(
+			array(
+				'post_type'        => 'page',
+				'post_status'      => 'publish',
+				'posts_per_page'   => 20,
+				'post__not_in'     => array( (int) $keep->ID ),
+				'meta_key'         => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'       => $templates[ $title ], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+				'suppress_filters' => true,
+			)
+		);
+		foreach ( $dupes as $dupe ) {
+			if ( in_array( (int) $dupe->ID, $protected, true )
+				|| '' !== trim( (string) $dupe->post_content )
+				|| ! preg_match( '/^' . preg_quote( $slug, '/' ) . '(-\d+)?$/', (string) $dupe->post_name ) ) {
+				continue;
+			}
+			wp_trash_post( (int) $dupe->ID );
+		}
+	}
+	update_option( 'restwell_dedupe_theme_pages_v66', '1', false );
+}
+
+/**
+ * Replace stored page descriptions longer than 160 characters with the
+ * shortened copy-overwrites text, so the head tag is never trimmed mid-sentence
+ * (audit I10). Shorter stored values are left alone.
+ */
+function restwell_migrate_meta_description_length_v67() {
+	if ( get_option( 'restwell_meta_description_length_v67', '' ) === '1' ) {
+		return;
+	}
+	if ( function_exists( 'restwell_copy_overwrite_slug_map' ) && function_exists( 'restwell_parse_copy_overwrite_file' ) ) {
+		$dir = get_template_directory() . '/copy-overwrites';
+		foreach ( restwell_copy_overwrite_slug_map() as $stem => $slug ) {
+			$page = get_page_by_path( $slug, OBJECT, 'page' );
+			if ( ! $page instanceof WP_Post ) {
+				continue;
+			}
+			$stored = (string) get_post_meta( $page->ID, 'meta_description', true );
+			$parsed = restwell_parse_copy_overwrite_file( $dir . '/' . $stem . '.md' );
+			$fresh  = $parsed['meta_description'];
+			if ( '' !== $fresh && mb_strlen( $fresh, 'UTF-8' ) <= 160 && mb_strlen( $stored, 'UTF-8' ) > 160 ) {
+				update_post_meta( $page->ID, 'meta_description', $fresh );
+			}
+		}
+	}
+	update_option( 'restwell_meta_description_length_v67', '1', false );
+}
+
+/**
+ * Stored legal HTML: drop the street address from the Terms (audit I02) and
+ * replace generated "Last updated: <Month Year>" stamps with the fixed dates
+ * (audit I40). Edits in place, so any other wording an editor changed survives.
+ */
+function restwell_migrate_legal_address_dates_v68() {
+	if ( get_option( 'restwell_legal_address_dates_v68', '' ) === '1' ) {
+		return;
+	}
+	$targets = array(
+		'terms-and-conditions' => function_exists( 'restwell_terms_updated_label' ) ? restwell_terms_updated_label() : '17 September 2026',
+		'accessibility-policy' => function_exists( 'restwell_accessibility_statement_updated_label' ) ? restwell_accessibility_statement_updated_label() : '17 September 2026',
+	);
+	foreach ( $targets as $slug => $date ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $page instanceof WP_Post ) {
+			continue;
+		}
+		$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+		if ( '' === trim( $html ) ) {
+			continue;
+		}
+		$new = preg_replace(
+			'/the adapted self-catering bungalow at [^,<]*Russell Drive, Whitstable, Kent,?\s*(?:CT5\s*2RQ\s*)?with ([^.<]+)\./',
+			'the adapted self-catering bungalow in Whitstable, Kent, with $1. We send the full address with your booking confirmation.',
+			$html
+		);
+		$new = preg_replace( '/Last updated: (?:January|February|March|April|May|June|July|August|September|October|November|December) \d{4}\./', 'Last updated: ' . $date . '.', (string) $new );
+		if ( $new !== $html ) {
+			update_post_meta( $page->ID, 'legal_body_html', $new );
+		}
+	}
+	update_option( 'restwell_legal_address_dates_v68', '1', false );
+}
+
+/**
+ * House-style punctuation (decided 1 Oct 2026, audit I38): sentence dashes in
+ * Restwell copy become colons, commas or full stops; wording otherwise
+ * unchanged. Source files carry the same pairs; this updates stored copies.
+ *
+ * @return array<string, string>
+ */
+function restwell_house_style_dash_pairs(): array {
+	return array(
+		'you rent as a holiday — the whole house is yours' => 'you rent as a holiday: the whole house is yours',
+		'published on the Accessibility page — including the ones that aren’t flattering' => 'published on the Accessibility page, including the ones that aren’t flattering',
+		'published the details — including the ones that aren’t flattering' => 'published the details, including the ones that aren’t flattering',
+		'for your party alone — not a care home.' => 'for your party alone, not a care home.',
+		'Bring the sling the person already uses — both hoists take' => 'Bring the sling the person already uses. Both hoists take',
+		'needs no turning circle — unlike a mobile hoist' => 'needs no turning circle, unlike a mobile hoist',
+		'Amico GoLift 400 — ceiling track hoist' => 'Amico GoLift 400: ceiling track hoist',
+		'or Roma Medical MATT 1 — both pressure-relieving' => 'or Roma Medical MATT 1, both pressure-relieving',
+		'Joerns Oxford Midi 180 — mobile hoist' => 'Joerns Oxford Midi 180: mobile hoist',
+		'AAL RS4 — transfer and standing aid' => 'AAL RS4: transfer and standing aid',
+		'in a handling plan — please check your care plan' => 'in a handling plan. Please check your care plan',
+		'Drive DeVilbiss — shower stool' => 'Drive DeVilbiss: shower stool',
+		'Geberit AquaClean Mera Care — wash-dry WC' => 'Geberit AquaClean Mera Care: wash-dry WC',
+		'Ropox Swing — height-adjustable washbasin' => 'Ropox Swing: height-adjustable washbasin',
+		'NEFF Slide & Hide — oven' => 'NEFF Slide & Hide: oven',
+		'NEFF Slide & Hide — the door folds away' => 'NEFF Slide & Hide: the door folds away',
+		'Gas, not induction — no electromagnetic field' => 'Gas, not induction: no electromagnetic field',
+		'This register is the spec sheet — makes, models' => 'This register is the spec sheet: makes, models',
+		'What is Restwell, exactly — bungalow, care home, or respite centre?' => 'What is Restwell, exactly: bungalow, care home, or respite centre?',
+		'contact preferences, and — if you choose to tell us — how you heard about us' => 'contact preferences, and, if you choose to tell us, how you heard about us',
+		'and kitchen access — plus what to verify' => 'and kitchen access, plus what to verify',
+		'level promenade walks — without pretending' => 'level promenade walks, without pretending',
+		'broker questions — practical guidance, not legal advice.' => 'broker questions. Practical guidance, not legal advice.',
+		'mobility equipment - covering Whitstable' => 'mobility equipment, covering Whitstable',
+		'not accommodation - but that distinction matters.' => 'not accommodation, but that distinction matters.',
+		'What happened to Revitalise - and where to find accessible holidays now' => 'What happened to Revitalise, and where to find accessible holidays now',
+		'before booking - from door widths' => 'before booking, from door widths',
+		'on a short break - PA hours, transport, accommodation - and' => 'on a short break (PA hours, transport, accommodation) and',
+		'involves a slope - some sections' => 'involves a slope; some sections',
+		'congested at weekends - weekday mornings' => 'congested at weekends; weekday mornings',
+		'at lower tide - more navigable' => 'at lower tide, more navigable',
+		'has a sandy beach - a significant practical advantage' => 'has a sandy beach, a significant practical advantage',
+		'An access statement is available - worth requesting' => 'An access statement is available: worth requesting',
+		'rather than shingle - a difference' => 'rather than shingle, a difference',
+		'Bay Inspectors office - contact 07432' => 'Bay Inspectors office: contact 07432',
+		'are less consistent - check specific sections' => 'are less consistent; check specific sections',
+		'40 minutes by car - practical for day trips' => '40 minutes by car: practical for day trips',
+		'width of the front door - the actual measurement' => 'width of the front door: the actual measurement',
+		'in the main bedroom - ideally 1500mm' => 'in the main bedroom, ideally 1500mm',
+		'in the shower - on both sides' => 'in the shower, on both sides',
+		'the floor surface - wet room drainage' => 'the floor surface: wet room drainage',
+		'bags cannot fix it — verify specs' => 'bags cannot fix it. Verify specs',
+		'Rough guide only — verify event calendars yearly' => 'Rough guide only: verify event calendars yearly',
+		'This is a real holiday - a comfortable' => 'This is a real holiday: a comfortable',
+		'room for you to stay - tell us' => 'room for you to stay; tell us',
+		'practical guide to the area - with accessibility' => 'practical guide to the area, with accessibility',
+		'level walk with sea views - one of the more' => 'level walk with sea views, one of the more',
+		'(about eight miles) - cathedral' => '(about eight miles): cathedral',
+		'the wider Kent coast — written with wheelchair users' => 'the wider Kent coast, written with wheelchair users',
+		'RAZ-AT — tilt-in-space shower commode chair' => 'RAZ-AT: tilt-in-space shower commode chair',
+		'Mira Select Flex EV — shower valve' => 'Mira Select Flex EV: shower valve',
+		'ramped access" - is the route completely level' => 'ramped access": is the route completely level',
+		'</a> — door widths, hoist, wet room, and parking' => '</a>: door widths, hoist, wet room, and parking',
+	);
+}
+
+/**
+ * Apply restwell_house_style_dash_pairs() to stored page/post meta, post
+ * titles, excerpts and content, and category descriptions. Exact phrases
+ * only, and serialised meta is skipped so lengths never break.
+ */
+function restwell_migrate_house_style_dashes_v70() {
+	if ( get_option( 'restwell_house_style_dashes_v70', '' ) === '1' ) {
+		return;
+	}
+	global $wpdb;
+	$pairs = restwell_house_style_dash_pairs();
+	$from  = array_keys( $pairs );
+	$to    = array_values( $pairs );
+
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+	$meta = $wpdb->get_results( "SELECT meta_id, post_id, meta_key, meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%—%' OR meta_value LIKE '% - %'" );
+	foreach ( (array) $meta as $row ) {
+		if ( is_serialized( $row->meta_value ) ) {
+			continue;
+		}
+		$new = str_replace( $from, $to, (string) $row->meta_value );
+		if ( $new !== $row->meta_value ) {
+			update_metadata_by_mid( 'post', (int) $row->meta_id, $new );
+		}
+	}
+
+	$posts = $wpdb->get_results( "SELECT ID, post_title, post_excerpt, post_content FROM {$wpdb->posts} WHERE post_type IN ('post','page') AND ( post_content LIKE '%—%' OR post_content LIKE '% - %' OR post_excerpt LIKE '%—%' OR post_excerpt LIKE '% - %' OR post_title LIKE '% - %' )" );
+	// phpcs:enable
+	foreach ( (array) $posts as $row ) {
+		$update = array( 'ID' => (int) $row->ID );
+		foreach ( array( 'post_title', 'post_excerpt', 'post_content' ) as $field ) {
+			$new = str_replace( $from, $to, (string) $row->$field );
+			if ( $new !== $row->$field ) {
+				$update[ $field ] = $new;
+			}
+		}
+		if ( count( $update ) > 1 ) {
+			wp_update_post( wp_slash( $update ) );
+		}
+	}
+
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'category',
+			'hide_empty' => false,
+		)
+	);
+	foreach ( is_wp_error( $terms ) ? array() : $terms as $term ) {
+		$new = str_replace( $from, $to, (string) $term->description );
+		if ( $new !== $term->description ) {
+			wp_update_term( $term->term_id, 'category', array( 'description' => $new ) );
+		}
+	}
+	update_option( 'restwell_house_style_dashes_v70', '1', false );
+}
+
+/**
+ * Human post title tags (drafted 2 Oct 2026 for approval, audit I18; record in
+ * copy-overwrites/post-titles.md). Replaces a stored meta_title only while it
+ * still holds the old keyword string, with or without a brand suffix.
+ */
+function restwell_migrate_post_title_tags_v71() {
+	if ( get_option( 'restwell_post_title_tags_v71', '' ) === '1' ) {
+		return;
+	}
+	$titles = array(
+		'accessible-beaches-coastal-walks-kent' => array( 'Accessible Beaches Kent | Coast Walks', 'Accessible beaches and coastal walks in Kent' ),
+		'direct-payment-holiday-accommodation' => array( 'Direct Payment for Holiday | Funding', 'Using direct payments for a holiday: what they cover' ),
+		'revitalise-alternatives-accessible-holidays' => array( 'Revitalise Centres Closed | What Next', 'What happened to Revitalise, and where to go now' ),
+		'how-to-choose-accessible-self-catering-holiday' => array( 'Accessible Self-Catering Holiday Guide', 'How to choose an accessible self-catering holiday' ),
+		'carers-respite-holiday-guide' => array( 'Carer Assessment & Respite Rights Guide', 'Carer’s assessments and your right to a respite break' ),
+		'what-to-pack-accessible-self-catering-uk' => array( 'Accessible Holiday Packing List UK | Self-Catering', 'What to pack for an accessible self-catering break' ),
+		'accessible-parking-whitstable-tankerton' => array( 'Accessible Parking Whitstable | Tankerton', 'Accessible parking in Whitstable and Tankerton' ),
+		'chc-respite-holiday-accommodation-uk' => array( 'CHC Respite Holiday Accommodation UK', 'CHC funding and respite holiday accommodation' ),
+		'hire-mobility-scooter-equipment-uk-holiday' => array( 'Hire Mobility Equipment UK Holiday | Self-Catering', 'Hiring mobility equipment for a UK holiday' ),
+		'accessible-train-travel-whitstable-kent' => array( 'Accessible Train Travel Whitstable Kent', 'Accessible train travel to Whitstable and Kent' ),
+		'travel-insurance-disability-uk-self-catering' => array( 'Travel Insurance Disability UK Self-Catering', 'Travel insurance for disabled travellers in the UK' ),
+		'commissioner-checklist-accessible-respite-stay' => array( 'Commissioner Checklist Accessible Respite Stay', 'A commissioner’s checklist for an accessible respite stay' ),
+		'personal-budget-short-break-care-act' => array( 'Personal Budget Short Break Care Act', 'Using a personal budget for a short break' ),
+		'accessible-eating-out-whitstable-kent' => array( 'Accessible Eating Out Whitstable Kent', 'Accessible places to eat in Whitstable and Kent' ),
+		'changing-places-toilets-kent-coast-days-out' => array( 'Changing Places Toilets Kent Coast | Days Out', 'Changing Places toilets for Kent coast days out' ),
+		'quieter-times-whitstable-low-crowd-access' => array( 'Quieter Times Whitstable Visit | Low Crowd Access', 'When Whitstable is quieter: a guide to low-crowd days' ),
+		'holiday-backup-plan-care-worker-change' => array( 'Holiday Backup Plan Care Worker Change', 'A holiday backup plan if your care worker changes' ),
+		'how-to-read-holiday-cottage-access-statement' => array( 'How to Read Holiday Cottage Access Statement', 'How to read a holiday cottage access statement' ),
+		'fatigue-friendly-whitstable-coastal-day' => array( 'Fatigue Friendly Whitstable Coastal Day', 'A fatigue-friendly day out on the Whitstable coast' ),
+	);
+	$norm = static function ( $t ) {
+		$t = html_entity_decode( (string) $t, ENT_QUOTES, 'UTF-8' );
+		$t = (string) preg_replace( '/\s*\|\s*Restwell( Retreats)?\s*$/i', '', $t );
+		return strtolower( trim( $t, " \t|" ) );
+	};
+	foreach ( $titles as $slug => $pair ) {
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( ! $post instanceof WP_Post ) {
+			continue;
+		}
+		$stored = (string) get_post_meta( $post->ID, 'meta_title', true );
+		if ( '' === $stored || $norm( $stored ) === $norm( $pair[0] ) ) {
+			update_post_meta( $post->ID, 'meta_title', $pair[1] );
+		}
+	}
+	update_option( 'restwell_post_title_tags_v71', '1', false );
+}
+
+/**
+ * Approved meta descriptions (owner sign-off 3 Oct 2026, audit I10). Swaps a
+ * stored description only while it still holds the old seeded wording, so a
+ * hand-edited value is left alone. Source: copy-overwrites/<page>.md.
+ */
+function restwell_migrate_approved_meta_descriptions_v72() {
+	if ( get_option( 'restwell_approved_meta_descriptions_v72', '' ) === '1' ) {
+		return;
+	}
+	$old_by_slug = array(
+		'home' => array(
+			'One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and you can add home care if you’d like it.',
+		),
+	);
+	if ( function_exists( 'restwell_copy_overwrite_slug_map' ) && function_exists( 'restwell_parse_copy_overwrite_file' ) ) {
+		$dir = get_template_directory() . '/copy-overwrites';
+		foreach ( restwell_copy_overwrite_slug_map() as $stem => $slug ) {
+			if ( ! isset( $old_by_slug[ $stem ] ) ) {
+				continue;
+			}
+			$page = get_page_by_path( $slug, OBJECT, 'page' );
+			if ( 'home' === $stem && ! $page instanceof WP_Post ) {
+				$front = (int) get_option( 'page_on_front', 0 );
+				$page  = $front ? get_post( $front ) : null;
+			}
+			if ( ! $page instanceof WP_Post ) {
+				continue;
+			}
+			$stored = (string) get_post_meta( $page->ID, 'meta_description', true );
+			$parsed = restwell_parse_copy_overwrite_file( $dir . '/' . $stem . '.md' );
+			$fresh  = (string) $parsed['meta_description'];
+			if ( '' !== $fresh && in_array( $stored, $old_by_slug[ $stem ], true ) ) {
+				update_post_meta( $page->ID, 'meta_description', $fresh );
+			}
+		}
+	}
+	update_option( 'restwell_approved_meta_descriptions_v72', '1', false );
+}
+
+/**
+ * Post title tags approved 3 Oct 2026 (audit I18). The blog seeder wrote the
+ * old keyword titles back after v71 had run, so run the v71 swap again now
+ * that the seed carries the approved titles. Hand-edited tags are still kept.
+ */
+function restwell_migrate_post_title_tags_v73() {
+	if ( get_option( 'restwell_post_title_tags_v73', '' ) === '1' ) {
+		return;
+	}
+	delete_option( 'restwell_post_title_tags_v71' );
+	restwell_migrate_post_title_tags_v71();
+	update_option( 'restwell_post_title_tags_v73', '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1605,6 +1939,13 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_resources_seo_v63',
 		'restwell_privacy_tiktok_pixel_v64',
 		'restwell_privacy_tiktok_submitform_v65',
+		'restwell_dedupe_theme_pages_v66',
+		'restwell_meta_description_length_v67',
+		'restwell_legal_address_dates_v68',
+		'restwell_house_style_dashes_v70',
+		'restwell_post_title_tags_v71',
+		'restwell_approved_meta_descriptions_v72',
+		'restwell_post_title_tags_v73',
 	);
 }
 
@@ -1723,6 +2064,20 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_privacy_tiktok_pixel_v64', 103 );
 	add_action( 'init', 'restwell_migrate_privacy_tiktok_submitform_v65', 109 );
 	add_action( 'after_switch_theme', 'restwell_migrate_privacy_tiktok_submitform_v65', 104 );
+	add_action( 'init', 'restwell_migrate_dedupe_theme_pages_v66', 110 );
+	add_action( 'after_switch_theme', 'restwell_migrate_dedupe_theme_pages_v66', 105 );
+	add_action( 'init', 'restwell_migrate_meta_description_length_v67', 111 );
+	add_action( 'after_switch_theme', 'restwell_migrate_meta_description_length_v67', 106 );
+	add_action( 'init', 'restwell_migrate_legal_address_dates_v68', 112 );
+	add_action( 'after_switch_theme', 'restwell_migrate_legal_address_dates_v68', 107 );
+	add_action( 'init', 'restwell_migrate_house_style_dashes_v70', 113 );
+	add_action( 'after_switch_theme', 'restwell_migrate_house_style_dashes_v70', 108 );
+	add_action( 'init', 'restwell_migrate_post_title_tags_v71', 114 );
+	add_action( 'after_switch_theme', 'restwell_migrate_post_title_tags_v71', 109 );
+	add_action( 'init', 'restwell_migrate_approved_meta_descriptions_v72', 115 );
+	add_action( 'after_switch_theme', 'restwell_migrate_approved_meta_descriptions_v72', 110 );
+	add_action( 'init', 'restwell_migrate_post_title_tags_v73', 116 );
+	add_action( 'after_switch_theme', 'restwell_migrate_post_title_tags_v73', 111 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

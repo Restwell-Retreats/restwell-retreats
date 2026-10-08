@@ -266,16 +266,26 @@ get_header();
 ?>
 <main id="main-content">
 <?php
-get_template_part( 'template-parts/concept/photo-hero', null, array(
-	'heading_id' => 'page-h',
-	'heading' => $is_verified ? __( 'Welcome to Restwell', 'restwell-retreats' ) : __( 'Your guest guide', 'restwell-retreats' ),
-	'intro' => $is_verified ? __( 'Arrival, settling in, and getting out to the coast. Keep this guide handy throughout your stay.', 'restwell-retreats' ) : __( 'Arrival details and house information for confirmed guests. Use the email address on your booking to open your guide.', 'restwell-retreats' ),
-	'post_id' => $pid,
-	'crumbs' => array(
-		array( 'label' => __( 'Home', 'restwell-retreats' ), 'url' => home_url( '/' ) ),
-		array( 'label' => __( 'Guest guide', 'restwell-retreats' ), 'url' => '' ),
-	),
-) );
+get_template_part(
+	'template-parts/concept/photo-hero',
+	null,
+	array(
+		'heading_id' => 'page-h',
+		'heading'    => $is_verified ? __( 'Welcome to Restwell', 'restwell-retreats' ) : __( 'Your guest guide', 'restwell-retreats' ),
+		'intro'      => $is_verified ? __( 'Arrival, settling in, and getting out to the coast. Keep this guide handy throughout your stay.', 'restwell-retreats' ) : __( 'Arrival details and house information for confirmed guests. Use the email address on your booking to open your guide.', 'restwell-retreats' ),
+		'post_id'    => $pid,
+		'crumbs'     => array(
+			array(
+				'label' => __( 'Home', 'restwell-retreats' ),
+				'url'   => home_url( '/' ),
+			),
+			array(
+				'label' => __( 'Guest guide', 'restwell-retreats' ),
+				'url'   => '',
+			),
+		),
+	)
+);
 ?>
 
 <?php if ( $admin_bypass ) : ?>
@@ -304,7 +314,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, array(
 			<input type="hidden" name="restwell_gg_step" value="email" />
 			<div class="field">
 				<label for="gg_email"><?php esc_html_e( 'Booking email', 'restwell-retreats' ); ?> <span aria-hidden="true">*</span></label>
-				<input id="gg_email" name="gg_email" type="email" required aria-required="true" autocomplete="email" <?php if ( '' !== $gg_error ) : ?>aria-invalid="true" aria-describedby="gg-email-error" autofocus<?php endif; ?> />
+				<input id="gg_email" name="gg_email" type="email" required aria-required="true" autocomplete="email" <?php echo '' !== $gg_error ? 'aria-invalid="true" aria-describedby="gg-email-error" autofocus' : ''; ?> />
 			</div>
 			<div class="form-actions">
 				<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send code', 'restwell-retreats' ); ?></button>
@@ -370,7 +380,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, array(
 							inputmode="numeric"
 							autocomplete="<?php echo 1 === $i ? 'one-time-code' : 'off'; ?>"
 							aria-label="<?php echo esc_attr( sprintf( /* translators: %d: digit position */ __( 'Digit %d', 'restwell-retreats' ), $i ) ); ?>"
-							<?php if ( '' !== $gg_error ) : ?>aria-invalid="true" aria-describedby="gg-otp-error" <?php echo 1 === $i ? 'autofocus' : ''; ?><?php endif; ?>
+							<?php echo '' !== $gg_error ? 'aria-invalid="true" aria-describedby="gg-otp-error"' : ''; ?>
+							<?php echo '' !== $gg_error && 1 === $i ? 'autofocus' : ''; ?>
 							<?php echo $otp_expired ? 'disabled aria-disabled="true"' : ''; ?>
 							required
 						/>
@@ -419,12 +430,20 @@ get_template_part( 'template-parts/concept/photo-hero', null, array(
 			<a class="btn btn-outline-teal" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $guide_phone ) ); ?>"><?php echo esc_html( $guide_phone ); ?></a>
 		</aside>
 		<nav class="gg-jump-links no-print" aria-label="<?php esc_attr_e( 'In your guest guide', 'restwell-retreats' ); ?>">
-			<?php if ( $gg_address || $gg_checkin || $gg_checkout ) : ?><a href="#gg-arrival"><?php esc_html_e( 'Arrival', 'restwell-retreats' ); ?></a><?php endif; ?>
+			<?php if ( $gg_address || $gg_checkin || $gg_checkout ) : ?>
+				<a href="#gg-arrival"><?php esc_html_e( 'Arrival', 'restwell-retreats' ); ?></a>
+			<?php endif; ?>
 			<a href="#gg-entry"><?php esc_html_e( 'Getting in', 'restwell-retreats' ); ?></a>
 			<a href="#gg-wifi"><?php esc_html_e( 'Wi-Fi', 'restwell-retreats' ); ?></a>
-			<?php if ( $gg_house_rules ) : ?><a href="#gg-rules"><?php esc_html_e( 'House rules', 'restwell-retreats' ); ?></a><?php endif; ?>
-			<?php if ( $gg_departure_notes ) : ?><a href="#gg-departure"><?php esc_html_e( 'Leaving', 'restwell-retreats' ); ?></a><?php endif; ?>
-			<?php if ( array_filter( $gg_emergency ) ) : ?><a href="#gg-help"><?php esc_html_e( 'Emergency contacts', 'restwell-retreats' ); ?></a><?php endif; ?>
+			<?php if ( $gg_house_rules ) : ?>
+				<a href="#gg-rules"><?php esc_html_e( 'House rules', 'restwell-retreats' ); ?></a>
+			<?php endif; ?>
+			<?php if ( $gg_departure_notes ) : ?>
+				<a href="#gg-departure"><?php esc_html_e( 'Leaving', 'restwell-retreats' ); ?></a>
+			<?php endif; ?>
+			<?php if ( array_filter( $gg_emergency ) ) : ?>
+				<a href="#gg-help"><?php esc_html_e( 'Emergency contacts', 'restwell-retreats' ); ?></a>
+			<?php endif; ?>
 			<a href="#gg-read-confirmation"><?php esc_html_e( 'Print guide', 'restwell-retreats' ); ?></a>
 		</nav>
 		<ul class="card-grid card-grid--2 gg-cards" role="list">
@@ -458,7 +477,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, array(
 
 			<li><article class="info-card">
 				<h3 id="gg-entry"><?php esc_html_e( 'Getting in', 'restwell-retreats' ); ?></h3>
-				<?php if ( ! $gg_keysafe && ! $gg_door ) : ?><p><?php esc_html_e( 'Check your booking confirmation for entry instructions. If you cannot find them, contact your host before travelling using the number on your confirmation.', 'restwell-retreats' ); ?></p><?php endif; ?>
+				<?php if ( ! $gg_keysafe && ! $gg_door ) : ?>
+					<p><?php esc_html_e( 'Check your booking confirmation for entry instructions. If you cannot find them, contact your host before travelling using the number on your confirmation.', 'restwell-retreats' ); ?></p>
+				<?php endif; ?>
 				<p>
 					<?php if ( $gg_keysafe ) : ?>
 						<strong><?php esc_html_e( 'Key safe code:', 'restwell-retreats' ); ?></strong>
@@ -475,7 +496,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, array(
 
 			<li><article class="info-card">
 				<h3 id="gg-wifi"><?php esc_html_e( 'Wi‑Fi', 'restwell-retreats' ); ?></h3>
-				<?php if ( ! $gg_wifi_name || ! $gg_wifi_pass ) : ?><p><?php esc_html_e( 'Ask your host for the Wi-Fi details if they are not included in your arrival information.', 'restwell-retreats' ); ?></p><?php endif; ?>
+				<?php if ( ! $gg_wifi_name || ! $gg_wifi_pass ) : ?>
+					<p><?php esc_html_e( 'Ask your host for the Wi-Fi details if they are not included in your arrival information.', 'restwell-retreats' ); ?></p>
+				<?php endif; ?>
 				<p>
 					<?php if ( $gg_wifi_name ) : ?>
 						<strong><?php esc_html_e( 'Network:', 'restwell-retreats' ); ?></strong> <?php echo esc_html( $gg_wifi_name ); ?><br />

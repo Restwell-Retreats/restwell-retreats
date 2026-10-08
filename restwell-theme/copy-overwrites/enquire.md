@@ -8,7 +8,7 @@ Ask us anything about a stay at Restwell
 
 ## Meta description
 
-Call, email, or fill in the form. Tell us your dates and what you need from the house, and put any care questions on the same note. Nothing to pay until it fits.
+Call, email or fill in the form. Tell us your dates and what you need from the house, with any care questions on the same note. Nothing to pay until it fits.
 
 ## H1 (`enq_heading`)
 

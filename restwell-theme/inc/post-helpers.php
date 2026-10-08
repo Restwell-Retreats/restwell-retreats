@@ -133,6 +133,53 @@ function restwell_get_blog_fallback_pool() {
  * @param string $size    Registered image size.
  * @return array{0:string,1:string} URL and alt text.
  */
+/**
+ * One distinct image per seeded guide (audit I20): every post used to share
+ * the coastline panorama as its social image, and the rotating pool repeated
+ * on the blog grid. Real bungalow photos where the topic is the house.
+ *
+ * @return array<string, string> post slug => theme image path
+ */
+function restwell_get_post_image_map() {
+	return array(
+		'accessible-beaches-coastal-walks-kent'          => 'stock/restwell-whitstable-coastal-walk.webp',
+		'direct-payment-holiday-accommodation'           => 'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg',
+		'revitalise-alternatives-accessible-holidays'    => 'stock/restwell-whitstable-beach-relaxation.webp',
+		'how-to-choose-accessible-self-catering-holiday' => 'bungalow/LR-1-LS.jpg',
+		'how-to-read-holiday-cottage-access-statement'   => 'bungalow/WR-1-LS.jpg',
+		'carers-respite-holiday-guide'                   => 'stock/restwell-whitstable-sunset-pier.webp',
+		'what-to-pack-accessible-self-catering-uk'       => 'bungalow/BD1-1-LS.jpg',
+		'accessible-parking-whitstable-tankerton'        => 'bungalow/EX-1-LS.jpg',
+		'chc-respite-holiday-accommodation-uk'           => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
+		'hire-mobility-scooter-equipment-uk-holiday'     => 'bungalow/EQU-2-LS.jpg',
+		'accessible-train-travel-whitstable-kent'        => 'stock/restwell-whitstable-drone-aerial-view.webp',
+		'travel-insurance-disability-uk-self-catering'   => 'stock/restwell-whitstable-pebble-beach-groynes.jpg',
+		'commissioner-checklist-accessible-respite-stay' => 'bungalow/BD2-6-LS.jpg',
+		'personal-budget-short-break-care-act'           => 'stock/restwell-whitstable-painted-beach-huts.jpg',
+		'accessible-eating-out-whitstable-kent'          => 'stock/restwell-whitstable-marina-sunset.webp',
+		'changing-places-toilets-kent-coast-days-out'    => 'bungalow/WR-3-LS.jpg',
+		'quieter-times-whitstable-low-crowd-access'      => 'stock/restwell-whitstable-shingle-beach-sunset.jpg',
+		'holiday-backup-plan-care-worker-change'         => 'stock/restwell-kent-nursery-hedgerow-path.jpg',
+		'fatigue-friendly-whitstable-coastal-day'        => 'stock/restwell-whitstable-coastal-pathway.webp',
+	);
+}
+
+/**
+ * Theme image path for a post without a featured image, or ''.
+ *
+ * @param int $post_id Post ID.
+ * @return string
+ */
+function restwell_get_post_fallback_image( $post_id ) {
+	$map  = restwell_get_post_image_map();
+	$slug = (string) get_post_field( 'post_name', $post_id );
+	if ( isset( $map[ $slug ] ) ) {
+		return $map[ $slug ];
+	}
+	$pool = restwell_get_blog_fallback_pool();
+	return $pool ? $pool[ absint( $post_id ) % count( $pool ) ] : '';
+}
+
 function restwell_get_post_card_thumb( $post_id, $size ) {
 	$post_id  = absint( $post_id );
 	$thumb_id = (int) get_post_thumbnail_id( $post_id );
@@ -144,8 +191,7 @@ function restwell_get_post_card_thumb( $post_id, $size ) {
 	}
 
 	if ( ! $thumb && function_exists( 'restwell_theme_image_url' ) ) {
-		$pool = restwell_get_blog_fallback_pool();
-		$pick = $pool[ $post_id % count( $pool ) ];
+		$pick  = restwell_get_post_fallback_image( $post_id );
 		$thumb = restwell_theme_image_url( $pick );
 		if ( $alt === '' && function_exists( 'restwell_theme_image_alt' ) ) {
 			$alt = restwell_theme_image_alt( $pick );
@@ -170,3 +216,26 @@ function restwell_first_nonempty_string( $value, $fallback ) {
 	$value = trim( (string) $value );
 	return $value !== '' ? $value : (string) $fallback;
 }
+
+/**
+ * Archive H1s read "Kent & coast", not "Category: Kent & coast" (audit I31).
+ */
+add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+
+/**
+ * Post byline: who wrote the guides (decided 1 Oct 2026, audit I19).
+ * The visible byline and the BlogPosting author Person both read from here.
+ *
+ * @return array{name:string,url:string}
+ */
+function restwell_get_post_byline() {
+	return array(
+		'name' => (string) get_option( 'restwell_post_byline_name', 'Ellie Smith' ),
+		'url'  => (string) get_option( 'restwell_post_byline_url', 'https://www.linkedin.com/in/ellie-smith-me/' ),
+	);
+}
+
+/**
+ * Post dates in UK format ("1 October 2026"), whatever the site date setting.
+ */
+const RESTWELL_POST_DATE_FORMAT = 'j F Y';

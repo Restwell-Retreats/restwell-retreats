@@ -39,11 +39,30 @@ function restwell_validate_enquiry_dates( string $date_from, string $date_to ): 
 			$errors[] = __( 'Please use a valid end date.', 'restwell-retreats' );
 		} elseif ( '' === $date_from && $date_to < $today ) {
 			$errors[] = __( 'Preferred end date cannot be in the past.', 'restwell-retreats' );
-		} elseif ( '' !== $date_from && $valid_ymd( $date_from ) && $date_to < $date_from ) {
-			$errors[] = __( 'End date must be on or after the start date.', 'restwell-retreats' );
+		} elseif ( '' !== $date_from && $valid_ymd( $date_from ) && $date_to <= $date_from ) {
+			// A stay needs at least one night; matches the step-2 check in shared.js.
+			$errors[] = __( 'Please choose a departure date after your arrival.', 'restwell-retreats' );
 		}
 	}
 	return $errors;
+}
+
+/**
+ * Validate the optional guest count: whole number, 1 to 5 (the bungalow
+ * sleeps five, and safety checks are based on that). Audit I21.
+ *
+ * @param string $guests Raw value, may be empty.
+ * @return string[] Error messages (empty if OK).
+ */
+function restwell_validate_enquiry_guests( string $guests ): array {
+	$guests = trim( $guests );
+	if ( '' === $guests ) {
+		return array();
+	}
+	if ( ! preg_match( '/^[0-9]+$/', $guests ) || (int) $guests < 1 || (int) $guests > 5 ) {
+		return array( __( 'The bungalow sleeps up to five. Please enter a number of guests from 1 to 5.', 'restwell-retreats' ) );
+	}
+	return array();
 }
 
 /**
@@ -456,7 +475,7 @@ function restwell_handle_enquire_submit(): void {
 	}
 
 	$date_errors = restwell_validate_enquiry_dates( $date_from, $date_to );
-	$errors      = array_merge( $errors, $date_errors );
+	$errors      = array_merge( $errors, $date_errors, restwell_validate_enquiry_guests( $guests ) );
 
 	if ( $errors ) {
 		restwell_enquire_redirect_flash( $redirect, $errors, $fields_flash );
@@ -639,7 +658,13 @@ function restwell_handle_enquire_submit(): void {
 		);
 	}
 
-	$args = array( 'sent' => '1' );
+	// One-time conversion token: the thank-you page fires analytics only when it
+	// consumes this, so a reload, back-navigation or shared link never counts a
+	// second enquiry (audit I03). Bot "successes" above never get one.
+	$args = array(
+		'sent' => '1',
+		'ct'   => restwell_issue_conversion_token(),
+	);
 	if ( $urgent ) {
 		$args['urgent'] = '1';
 	}
@@ -650,3 +675,45 @@ function restwell_handle_enquire_submit(): void {
 	exit;
 }
 add_action( 'template_redirect', 'restwell_handle_enquire_submit', 5 );
+
+/**
+ * Issue a single-use conversion token (30-minute transient).
+ *
+ * @return string
+ */
+function restwell_issue_conversion_token(): string {
+	$token = wp_generate_password( 20, false, false );
+	set_transient( 'restwell_conv_' . $token, 1, 30 * MINUTE_IN_SECONDS );
+	return $token;
+}
+
+/**
+ * Consume the conversion token on this request, once. True only the first
+ * time a valid token is seen.
+ *
+ * @return bool
+ */
+function restwell_consume_conversion_token(): bool {
+	static $result = null;
+	if ( null !== $result ) {
+		return $result;
+	}
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only single-use token, not a form action.
+	$token  = isset( $_GET['ct'] ) ? preg_replace( '/[^A-Za-z0-9]/', '', (string) wp_unslash( $_GET['ct'] ) ) : '';
+	$result = restwell_redeem_conversion_token( (string) $token );
+	return $result;
+}
+
+/**
+ * Redeem a conversion token: true the first time, false ever after.
+ *
+ * @param string $token Token from the redirect.
+ * @return bool
+ */
+function restwell_redeem_conversion_token( string $token ): bool {
+	if ( '' === $token || ! get_transient( 'restwell_conv_' . $token ) ) {
+		return false;
+	}
+	delete_transient( 'restwell_conv_' . $token );
+	return true;
+}

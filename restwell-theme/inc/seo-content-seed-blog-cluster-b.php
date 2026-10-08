@@ -175,7 +175,7 @@ function restwell_get_blog_post_quieter_whitstable_visit_html() {
 
 <h2>Seasonal patterns to respect</h2>
 <table>
-<caption>Rough guide only — verify event calendars yearly</caption>
+<caption>Rough guide only: verify event calendars yearly</caption>
 <thead><tr><th scope=\"col\">Window</th><th scope=\"col\">Usually calmer</th><th scope=\"col\">Often hectic</th></tr></thead>
 <tbody>
 <tr><th scope=\"row\">Spring weekdays</th><td>Morning coffee slots</td><td>Easter school break</td></tr>
@@ -314,7 +314,7 @@ function restwell_get_blog_post_read_access_statement_html() {
 <p>An access statement is a structured document describing how a property meets (or honestly fails) various access needs.</p>
 
 <h2>A worked Restwell example</h2>
-<p>When you want millimetres rather than adjectives, read Restwell's published <a href=\"{$acc}\">access statement</a> — door widths, hoist, wet room, and parking on one page. Use that page as the benchmark when you score other holiday cottages. This guide stays general; Restwell's page is the property-specific example.</p>
+<p>When you want millimetres rather than adjectives, read Restwell's published <a href=\"{$acc}\">access statement</a>: door widths, hoist, wet room, and parking on one page. Use that page as the benchmark when you score other holiday cottages. This guide stays general; Restwell's page is the property-specific example.</p>
 
 <h2>Why PDF puffery wastes everyone's time</h2>
 <p>Words like \"wheelchair friendly\" mean nothing at tribunal. Millimetres mean everything when commissioners audit.</p>

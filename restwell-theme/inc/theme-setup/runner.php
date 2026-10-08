@@ -55,7 +55,7 @@ function restwell_run_theme_setup( $force = false, $skip_image_regen = false, $s
 		: array();
 
 	foreach ( $pages as $title => $slug ) {
-		$existing = restwell_get_page_by_nav_slug( $slug );
+		$existing = restwell_find_theme_page( $slug, $page_templates[ $title ] ?? '' );
 		if ( $existing ) {
 			$result['skipped'][] = $title;
 			$created_ids[ $title ] = $existing->ID;
@@ -274,13 +274,34 @@ function restwell_ensure_registered_theme_pages() {
 	$templates = function_exists( 'restwell_get_theme_setup_page_templates' )
 		? restwell_get_theme_setup_page_templates()
 		: array();
+
+	// Cheap path on every request: nothing to do when every page resolves.
+	$missing = false;
+	foreach ( $pages as $title => $slug ) {
+		if ( ! restwell_find_theme_page( $slug, $templates[ $title ] ?? '' ) ) {
+			$missing = true;
+			break;
+		}
+	}
+	if ( ! $missing ) {
+		return;
+	}
+
+	// Concurrent first requests used to each insert the same page (two
+	// /accessibility/ pages, terms-and-conditions-2). add_option() is atomic on
+	// the unique option_name key, so only one request creates pages.
+	if ( ! add_option( 'restwell_ensure_pages_lock', time(), '', 'no' ) ) {
+		if ( time() - (int) get_option( 'restwell_ensure_pages_lock', 0 ) > 60 ) {
+			delete_option( 'restwell_ensure_pages_lock' );
+		}
+		return;
+	}
+
 	$created_ids = array();
 	$created_any = false;
 
 	foreach ( $pages as $title => $slug ) {
-		$page = function_exists( 'restwell_get_page_by_nav_slug' )
-			? restwell_get_page_by_nav_slug( $slug )
-			: get_page_by_path( $slug, OBJECT, 'page' );
+		$page = restwell_find_theme_page( $slug, $templates[ $title ] ?? '' );
 		if ( $page instanceof WP_Post ) {
 			$created_ids[ $title ] = (int) $page->ID;
 		} else {
@@ -316,6 +337,7 @@ function restwell_ensure_registered_theme_pages() {
 	}
 
 	if ( ! $created_any ) {
+		delete_option( 'restwell_ensure_pages_lock' );
 		return;
 	}
 
@@ -330,5 +352,41 @@ function restwell_ensure_registered_theme_pages() {
 		restwell_apply_seo_meta_to_pages( false );
 	}
 	flush_rewrite_rules( false );
+	delete_option( 'restwell_ensure_pages_lock' );
 }
 add_action( 'init', 'restwell_ensure_registered_theme_pages', 6 );
+
+/**
+ * Find a Theme Setup page by its slug (or retired alias), falling back to any
+ * published page already using its template, so a renamed or suffixed page is
+ * reused instead of duplicated.
+ *
+ * @param string $slug     Nav slug.
+ * @param string $template Page template file, or ''.
+ * @return WP_Post|null
+ */
+function restwell_find_theme_page( $slug, $template = '' ) {
+	$page = function_exists( 'restwell_get_page_by_nav_slug' )
+		? restwell_get_page_by_nav_slug( $slug )
+		: get_page_by_path( $slug, OBJECT, 'page' );
+	if ( $page instanceof WP_Post ) {
+		return $page;
+	}
+	if ( '' === $template ) {
+		return null;
+	}
+	$ids = get_posts(
+		array(
+			'post_type'        => 'page',
+			'post_status'      => array( 'publish', 'draft', 'private' ),
+			'posts_per_page'   => 1,
+			'orderby'          => 'ID',
+			'order'            => 'ASC',
+			'fields'           => 'ids',
+			'meta_key'         => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_value'       => $template, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			'suppress_filters' => true,
+		)
+	);
+	return $ids ? get_post( (int) $ids[0] ) : null;
+}

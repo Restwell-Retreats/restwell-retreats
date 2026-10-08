@@ -30,7 +30,7 @@ function restwell_get_blog_category_definitions() {
 	return array(
 		'kent-coast' => array(
 			'name'        => __( 'Kent & coast', 'restwell-retreats' ),
-			'description' => __( 'Practical guides to Whitstable, Herne Bay, Broadstairs, and the wider Kent coast — written with wheelchair users and carers in mind. Covers accessible beaches and promenades, getting around by car and bus, day trips to Canterbury and Faversham, and what to know about tide times, terrain, and parking before you travel.', 'restwell-retreats' ),
+			'description' => __( 'Practical guides to Whitstable, Herne Bay, Broadstairs, and the wider Kent coast, written with wheelchair users and carers in mind. Covers accessible beaches and promenades, getting around by car and bus, day trips to Canterbury and Faversham, and what to know about tide times, terrain, and parking before you travel.', 'restwell-retreats' ),
 		),
 		'funding-care' => array(
 			'name'        => __( 'Care funding & respite', 'restwell-retreats' ),
@@ -210,3 +210,19 @@ function restwell_assign_seeded_posts_to_categories_once() {
 
 add_action( 'init', 'restwell_ensure_default_blog_categories', 20 );
 add_action( 'admin_init', 'restwell_assign_seeded_posts_to_categories_once', 25 );
+
+/**
+ * Blog index and category archives show one featured post plus a two-column grid.
+ * An odd page size (11) keeps that grid even, so the last row never holds a lone card.
+ *
+ * @param WP_Query $query Main query.
+ */
+function restwell_blog_even_grid_page_size( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+	if ( $query->is_home() || $query->is_category() || $query->is_tag() ) {
+		$query->set( 'posts_per_page', 11 );
+	}
+}
+add_action( 'pre_get_posts', 'restwell_blog_even_grid_page_size' );

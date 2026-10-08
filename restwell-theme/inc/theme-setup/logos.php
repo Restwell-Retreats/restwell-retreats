@@ -34,6 +34,19 @@ function restwell_site_brand_lockup() {
 }
 
 /**
+ * Accessible name for the logo home link (decided 1 Oct 2026, audit I36).
+ *
+ * The artwork's visible word is “Restwell”, so this name still contains the
+ * visible label (WCAG 2.5.3), and it keeps Restwell from reading as a
+ * Continuity listing. The visual lockup is unchanged.
+ *
+ * @return string
+ */
+function restwell_site_logo_accessible_name() {
+	return __( 'Restwell Retreats', 'restwell-retreats' );
+}
+
+/**
  * Sideload the three theme logos into the Media Library and store attachment IDs
  * as theme mods. Idempotent; skips files already uploaded.
  *

@@ -16,7 +16,7 @@ Accessible holiday cottage in Whitstable, sleeps five
 
 ## Meta description
 
-One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and Continuity home care can be arranged separately if you’d like it.
+One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and home care can be arranged if you’d like it.
 
 ## H1 (`hero_heading`)
 

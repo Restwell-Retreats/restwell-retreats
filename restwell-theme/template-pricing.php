@@ -349,21 +349,41 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 		  <div class="care-rates__aside">
 			<div class="care-rates__brands care__brand" aria-label="Sister company and CQC rating">
 			  <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
+				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" sizes="200px" width="405" height="69" loading="lazy" decoding="async" />
 			  </a>
 			  <a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
+				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" sizes="72px" width="710" height="399" loading="lazy" decoding="async" />
 			  </a>
 			</div>
 			<ul class="care-rates__notes">
-			  <?php foreach ( $pricing['care']['notes'] as $_care_note ) : ?>
-			  <li><?php echo esc_html( $_care_note ); ?></li>
+			  <?php
+				foreach ( $pricing['care']['notes'] as $_care_note ) :
+					// A short label above each note so the terms can be scanned; unmatched notes just have none.
+					$_care_label = '';
+					if ( false !== stripos( $_care_note, 'one-off' ) ) {
+						$_care_label = __( 'Set-up fee', 'restwell-retreats' );
+					} elseif ( false !== stripos( $_care_note, 'escort' ) ) {
+						$_care_label = __( 'Escort outings', 'restwell-retreats' );
+					} elseif ( false !== stripos( $_care_note, 'bank holiday' ) ) {
+						$_care_label = __( 'Bank holidays', 'restwell-retreats' );
+					} elseif ( false !== stripos( $_care_note, 'optional' ) ) {
+						$_care_label = __( 'How it is quoted', 'restwell-retreats' );
+					}
+					?>
+			  <li>
+				<?php if ( '' !== $_care_label ) : ?>
+				<span class="care-rates__note-label"><?php echo esc_html( $_care_label ); ?></span>
+				<?php endif; ?>
+				<?php echo esc_html( $_care_note ); ?>
+			  </li>
 			  <?php endforeach; ?>
-			  <li><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></li>
 			</ul>
-			<div class="care-rates__ctas">
-			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
-			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+			<div class="care-rates__foot">
+			  <p class="care-rates__review"><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></p>
+			  <div class="care-rates__ctas">
+				<a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
+				<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+			  </div>
 			</div>
 		  </div>
 		</div>

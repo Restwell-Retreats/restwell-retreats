@@ -110,6 +110,8 @@ function restwell_output_social_meta() {
 			$defaults = restwell_get_seo_default_meta_for_post_id( $pid );
 			$title    = $defaults['meta_title'] !== '' ? $defaults['meta_title'] : get_the_title( $pid );
 		}
+		// Same text as the <title> tag (which strips a trailing brand), so the two never disagree.
+		$title = restwell_sanitize_seo_title_text( $title );
 	} else {
 		$title = restwell_get_request_level_title_fallback();
 	}
@@ -180,6 +182,10 @@ function restwell_output_social_meta() {
 				$image_url           = $pick_social_attachment_url( $thumb_id );
 				$image_attachment_id = $image_url ? $thumb_id : 0;
 			}
+		}
+		// Posts without a featured image: their own mapped photo (audit I20).
+		if ( ! $image_url && is_singular( 'post' ) && function_exists( 'restwell_get_post_fallback_image' ) ) {
+			$image_url = restwell_theme_image_url( restwell_get_post_fallback_image( $pid ) );
 		}
 		if ( ! $image_url ) {
 			// Fallback: template hero image meta keys.

@@ -179,7 +179,7 @@ get_template_part(
 				<?php
 			endforeach;
 			?>
-		  <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and equipment notes</a></p>
+		  <p><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and equipment notes</a></p>
 		</div>
 	  </div>
 	</section>
@@ -227,7 +227,12 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $prop_living_para ); ?></p>
 				<?php
 			endforeach;
-			?>
+			// WiFi is listed in the LodgingBusiness amenities, so it has to be on the
+			// page too (audit I17). Wording is verbatim from copy-overwrites/the-property.md.
+			if ( false === stripos( implode( ' ', $prop_living_paras ), 'wifi' ) ) :
+				?>
+		  <p class="lede"><?php esc_html_e( 'There’s free high-speed WiFi throughout, which matters more than people admit when someone in the party needs to keep an eye on work or a hospital app.', 'restwell-retreats' ); ?></p>
+			<?php endif; ?>
 		</div>
 	  </div>
 	</section>
@@ -362,10 +367,10 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-teal" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--compact band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="band-teal__stack band-teal__stack--tease">
-		  <p class="eyebrow eyebrow--on-dark"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
+		<div class="care-pointer__card">
+		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
 		  <h2 id="care-h"><?php echo esc_html( $prop_care_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $prop_care_body ); ?></p>
 		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>

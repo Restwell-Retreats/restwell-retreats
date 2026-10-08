@@ -79,8 +79,7 @@
 .blog-article .prose > blockquote:not(.pull-quote__text):not(.testimonial-card__quote):not(.quote-block__text) {
   margin-inline: 0;
   padding: clamp(1.25rem, 3vw, 2rem);
-  border-left: 3px solid var(--deep-teal);
-  border-radius: 0 0.75rem 0.75rem 0;
+  border-radius: var(--radius-lg);
   background: var(--bg-subtle);
   font-style: normal;
   font-weight: 400;
@@ -102,8 +101,9 @@
 .gg-jump-links a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0.5rem 1rem; border: 1px solid #c9d8da; border-radius: 2rem; color: var(--deep-teal); font-weight: 600; text-decoration: none; }
 .gg-jump-links a:hover { background: var(--bg-subtle); border-color: var(--deep-teal); }
 .gg-cards > li, .gg-cards .info-card { min-width: 0; }
-.gg-cards { align-items: start; }
-.gg-cards .info-card { overflow-wrap: anywhere; box-shadow: none; border-top: 3px solid #d5e1e2; }
+.gg-cards { align-items: stretch; } /* start left ragged card heights and uneven row gaps */
+.gg-cards > li > .info-card { height: 100%; }
+.gg-cards .info-card { overflow-wrap: anywhere; box-shadow: none; }
 .gg-checklist { padding-left: 1.25rem; list-style: disc; }
 .gg-checklist li { padding-left: 0.25rem; margin-block: 0.65rem; }
 .gg-checklist li::marker { color: var(--deep-teal); }
@@ -167,13 +167,14 @@
   }
 }
 
-/* Body copy: about 65–75 characters. 36rem was ~52ch; 44rem wide prose ~64ch. */
+/* Body copy: about 70–75 characters. Measured in em (--measure-text), not ch:
+   70ch of Inter ran ~88 characters a line on the legal pages (audit I42). */
 .prose,
 .prose--wide {
-  max-width: min(70ch, 100%);
+  max-width: min(var(--measure-text), 100%);
 }
 .section-head .lede {
-  max-width: min(72ch, 100%);
+  max-width: min(var(--measure-text), 100%);
 }
 
 /* First editorial heading was stacking h2 margin-top on section padding. */
@@ -308,13 +309,7 @@ a.path-card:hover {
   }
 }
 
-@media (max-width: 599px) {
-  .property__cta-row .btn {
-    white-space: nowrap;
-    font-size: var(--text-sm);
-    padding-inline: var(--space-4);
-  }
-}
+
 
 /*
  * Photo heroes on phones: one copy column. shared.css used a narrower CTA
@@ -413,243 +408,5 @@ html.has-cookie-banner body {
 @media (max-width: 767px) {
   .page-template-template-pricing .hero__media-img {
     object-position: 40% 16%;
-  }
-}
-
-/*
- * Diary marks harmony layer. Shared.css owns the marks (house diary:
- * plain open numerals, calm grey booked days, teal stayed-band, ringed
- * check-out coin). Rules here keep phone rendering in the same language.
- */
-.availability__day.is-booked .availability__date,
-.availability__day.is-past .availability__date {
-  background: transparent;
-  box-shadow: none;
-  color: color-mix(in srgb, var(--muted-grey) 30%, var(--white));
-  font-weight: var(--weight-regular);
-  text-decoration: none;
-}
-.availability__day.is-today:not(.is-pick):not(.is-hope-start):not(.is-hope-end) .availability__date {
-  box-shadow: 0 0 0 1.5px var(--deep-teal);
-}
-.availability__key-mark {
-  border-radius: 50%;
-}
-.availability__key.is-open .availability__key-mark {
-  display: none;
-}
-.availability__key.is-hope-end .availability__key-mark {
-  border: 2px solid var(--deep-teal);
-  background: var(--white);
-  box-sizing: border-box;
-}
-.availability__key.is-booked .availability__key-mark {
-  border: 0;
-  background: transparent;
-  color: color-mix(in srgb, var(--muted-grey) 30%, var(--white));
-  font-size: 0.7rem;
-  font-weight: var(--weight-regular);
-  font-variant-numeric: tabular-nums;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0;
-}
-.availability__key.is-booked .availability__key-mark::before {
-  content: "12";
-}
-.availability__key.is-booked .availability__key-mark::after {
-  content: none;
-}
-
-@media (max-width: 639px) {
-  .availability__toolbar,
-  .availability__months {
-    width: 100%;
-  }
-  .availability {
-    --availability-coin: 2.25rem;
-    --availability-cell-h: 3.25rem; /* 48px+ touch rows, Airbnb-sheet rhythm */
-    --availability-col: 2.75rem;
-    --availability-grid-max: 100%;
-    --availability-num-size: var(--text-base);
-    --availability-card-pad: var(--space-4);
-    --availability-picker-gap: var(--space-5);
-  }
-  /* Receipt band in flow under the calendar — tint carries the split. */
-  .availability__stay {
-    padding-block-start: 0;
-    border-block-start: 0;
-  }
-  .availability__summary {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-2);
-  }
-  .availability__summary .availability__field {
-    flex: none;
-  }
-  .availability__stay-arrow {
-    display: none;
-  }
-  .availability__stay-foot {
-    display: none;
-  }
-  /* Mobile quote row: nights + total left, Enquire right — receipt footer. */
-  .availability__quote {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "count cta"
-      "total cta";
-    align-items: center;
-    column-gap: var(--space-4);
-  }
-  .availability__stay-count {
-    grid-area: count;
-    font-size: var(--text-sm);
-    font-weight: var(--weight-semibold);
-    color: var(--deep-teal);
-  }
-  .availability__total {
-    grid-area: total;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    padding: 0;
-    border: 0;
-  }
-  .availability__total dt {
-    font-size: var(--type-meta-size);
-  }
-  .availability__total dd {
-    font-size: var(--text-xl);
-  }
-  .availability__cta {
-    grid-area: cta;
-    min-width: 9rem;
-  }
-  .availability__cta .btn {
-    min-height: 2.75rem;
-  }
-}
-@media (min-width: 640px) {
-  .availability {
-    --availability-col: 3rem;
-    --availability-coin: 2.6rem;
-    --availability-cell-h: 3.5rem;
-    --availability-grid-max: calc(3rem * 7);
-  }
-}
-
-/*
- * Accessibility register: each room as a package card (photo, headline
- * numbers, then the spec list) instead of a long document of rules.
- */
-.acc-register-doc .equip-group + .equip-group {
-  margin-top: var(--space-6);
-}
-.acc-register-doc .equip-group-panel {
-  padding: 0;
-  border-radius: var(--radius-lg);
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  box-shadow: 0 8px 30px rgb(0 0 0 / 0.04);
-  overflow: hidden;
-}
-.acc-register-doc .equip-group--close .equip-group-panel {
-  padding: var(--space-5);
-}
-.acc-package .equip-group__title::before {
-  display: none;
-}
-.acc-package__media {
-  margin: 0;
-}
-.acc-package__media img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  background: var(--driftwood);
-}
-.acc-package__body {
-  padding: var(--space-5);
-}
-.acc-package__body .equip-group__title {
-  margin-top: 0;
-}
-.acc-package__body .equip-group__lede {
-  margin-bottom: var(--space-4);
-}
-.acc-package__facts {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin: 0 0 var(--space-5);
-  padding: 0;
-  list-style: none;
-}
-.acc-package__fact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  min-width: 0;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm);
-  background: var(--bg-subtle);
-}
-.acc-package__fact-value {
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  font-weight: var(--type-display-weight);
-  color: var(--deep-teal);
-  font-variant-numeric: tabular-nums;
-}
-.acc-package__fact-label {
-  font-size: var(--text-2xs);
-  font-weight: var(--weight-semibold);
-  color: var(--muted-grey);
-  line-height: var(--leading-snug);
-}
-/* Fact chips are two equal tracks of a 336px card, ~135px each. A label like
-   "Safe working load" cannot fit that at its weight and clips mid-word — the
-   only clipped copy in the register. Chips are a summary of the spec list
-   below, so the 480px third column earns nothing: stack full-width until the
-   768px side-by-side panel, where chips sit beside the photo at a readable
-   width. The `.acc-package__body` guard keeps the property-page variant,
-   which has no chips, unaffected. */
-@media (max-width: 767px) {
-  .acc-package .acc-package__facts {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-.acc-package__body .equip-item--lead .equip-item__figure {
-  display: none;
-}
-@media (min-width: 480px) {
-  .acc-package__facts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-@media (min-width: 768px) {
-  .acc-package__body {
-    padding: var(--space-6);
-  }
-  .acc-package__panel:has(.acc-package__media) {
-    display: grid;
-    grid-template-columns: minmax(16rem, 40%) minmax(0, 1fr);
-    align-items: stretch;
-  }
-  /* 16/10 of a ~275px column is ~172px of photo; `height:100%` + a 3481px
-     body stretched the same image to that full height, so a 16:10 crop
-     showed as a featureless vertical blur beside the copy. Cap the crop to
-     a sensible card photo and let the shorter side letterbox with the panel. */
-  .acc-package__media,
-  .acc-package__media img {
-    height: 100%;
-    max-height: 22rem;
-  }
-  .acc-package__media img {
-    aspect-ratio: 16 / 10;
   }
 }

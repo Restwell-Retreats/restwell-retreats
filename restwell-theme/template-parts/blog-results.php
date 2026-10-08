@@ -31,6 +31,28 @@ $pagination_aria = (string) $args['pagination_aria'];
 ?>
 	<section class="section-y band-white">
 	  <div class="container">
+		<?php
+		// Topic links: every category archive is reachable from the blog (audit I31).
+		$topic_terms = ( is_home() || is_category() ) ? get_categories(
+			array(
+				'hide_empty' => true,
+				'exclude'    => array( (int) get_option( 'default_category' ) ),
+				'orderby'    => 'name',
+			)
+		) : array();
+		$topic_blog  = (int) get_option( 'page_for_posts' ) > 0 ? get_permalink( (int) get_option( 'page_for_posts' ) ) : home_url( '/blog/' );
+		$topic_now   = is_category() ? (int) get_queried_object_id() : 0;
+		?>
+		<?php if ( count( $topic_terms ) > 1 ) : ?>
+			<nav class="blog-topics" aria-label="<?php esc_attr_e( 'Browse by topic', 'restwell-retreats' ); ?>">
+				<ul class="pill-tabs" role="list">
+					<li><a href="<?php echo esc_url( $topic_blog ); ?>"<?php echo 0 === $topic_now ? ' aria-current="page"' : ''; ?>><?php esc_html_e( 'All articles', 'restwell-retreats' ); ?></a></li>
+					<?php foreach ( $topic_terms as $topic_term ) : ?>
+						<li><a href="<?php echo esc_url( get_category_link( $topic_term ) ); ?>"<?php echo $topic_now === (int) $topic_term->term_id ? ' aria-current="page"' : ''; ?>><?php echo esc_html( html_entity_decode( $topic_term->name, ENT_QUOTES, 'UTF-8' ) ); ?></a></li>
+					<?php endforeach; ?>
+				</ul>
+			</nav>
+		<?php endif; ?>
 		<?php if ( have_posts() ) : ?>
 			<?php
 			$card_index = 0;
@@ -52,7 +74,7 @@ $pagination_aria = (string) $args['pagination_aria'];
 					?>
 		<article class="blog-featured">
 		  <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true" tabindex="-1">
-			<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="625" loading="lazy" decoding="async" />
+			<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="625" sizes="(max-width: 767px) calc(100vw - 48px), 1120px" decoding="async" />
 			<span class="blog-featured__scrim" aria-hidden="true"></span>
 					<?php if ( $category !== '' ) : ?>
 			  <span class="tag blog-featured__tag"><?php echo esc_html( $category ); ?></span>

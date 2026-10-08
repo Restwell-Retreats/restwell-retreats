@@ -185,9 +185,9 @@ $home_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_intro',
-		__( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone — not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' )
+		__( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' )
 	)
-	: __( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone — not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' );
+	: __( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' );
 $home_care_item1_title = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_item1_title', __( 'Bring your own support', 'restwell-retreats' ) )
 	: __( 'Bring your own support', 'restwell-retreats' );
@@ -294,7 +294,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 
 	<section class="gallery section-y section-y--compact" aria-labelledby="gallery-h" data-gallery>
 	  <div class="container">
-		<header class="section-head section-head--center section-head--tight">
+		<header class="section-head section-head--tight">
 		  <p class="eyebrow">Inside the property</p>
 		  <h2 id="gallery-h">Living room, bedroom and wet room</h2>
 		  <button type="button" class="text-link" data-gallery-open data-gallery-index="0">View photos</button>
@@ -303,17 +303,17 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		  <li class="gallery__item">
 			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Open-plan living room with wide, step-free walkways between furniture">
 			  <?php /* Mosaic images load eagerly (no loading=lazy): the mosaic sits ~1 screen down and lazy-decode left a beige placeholder flash on scroll. Hero keeps LCP priority (design-audit c9). */ ?>
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="Open-plan living room with wide, step-free walkways between furniture" width="640" height="480" decoding="async" />
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="Open-plan living room with wide, step-free walkways between furniture" width="640" height="480" sizes="(max-width: 767px) 84vw, 660px" decoding="async" />
 			</button>
 		  </li>
 		  <li class="gallery__item">
 			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-3-LS.jpg' ) ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" decoding="async" />
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-3-LS.jpg' ) ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
 			</button>
 		  </li>
 		  <li class="gallery__item">
 			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" decoding="async" />
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
 			</button>
 		  </li>
 		</ul>
@@ -344,8 +344,22 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	<section class="care care--tease section-y--compact" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care__tease">
+		  <?php if ( '' !== $home_care_label ) : ?>
+		  <p class="eyebrow"><?php echo esc_html( $home_care_label ); ?></p>
+		  <?php endif; ?>
 		  <h2 id="care-h"><?php echo esc_html( $home_care_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $home_care_intro ); ?></p>
+		  <?php // The intro ends "whichever you choose:", so the two choices follow it (audit I08). ?>
+		  <ul class="care__types" role="list">
+			<?php foreach ( array( array( $home_care_item1_title, $home_care_item1_body ), array( $home_care_item2_title, $home_care_item2_body ) ) as $home_care_item ) : ?>
+				<?php if ( '' !== trim( $home_care_item[0] ) ) : ?>
+			<li>
+			  <span class="care__type-title"><?php echo esc_html( $home_care_item[0] ); ?></span>
+			  <span class="care__type-text"><?php echo esc_html( $home_care_item[1] ); ?></span>
+			</li>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		  </ul>
 		  <?php if ( '' !== $home_care_cta_label && '' !== $home_care_cta_url ) : ?>
 		  <a class="text-link" href="<?php echo esc_url( $home_care_cta_url ); ?>"><?php echo esc_html( $home_care_cta_label ); ?></a>
 		  <?php endif; ?>

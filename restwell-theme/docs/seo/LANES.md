@@ -20,7 +20,9 @@ Demand we can measure is **cottage**, **wet room**, and **funding**. The USP is 
 
 **Language:** respite allowed. “Fully accessible” only in guest quotes. Wheelchair friendly only with millimetres nearby. CQC on Continuity. Not a care home, nursing home, or respite centre.
 
-**Mill:** five keep-guides stay indexable. The other fourteen stay noindex. No new mill. No HowTo schema. No FAQ rich-result plan. No paid “Kent Accessible Cottages”.
+**Mill:** five keep-guides stay indexable. The other fourteen stay noindex, **enforced in code since 3 Oct 2026** (`restwell_get_noindex_post_slugs()` in `inc/seo/canonical.php`: `noindex, follow`, out of the sitemap). No new mill. No HowTo schema. No paid “Kent Accessible Cottages”.
+
+**FAQ schema (changed 1 Oct 2026, audit I16):** FAQPage JSON-LD is kept, and it is built from the FAQ accordions actually rendered on each page (`restwell_inject_faq_jsonld()`), so schema and visible questions can never differ. `tests/FaqSchemaParityTest.php` guards it. Still no plan that depends on FAQ rich results appearing.
 
 ## 28 Aug amendment (what changed vs 13 Aug)
 
@@ -40,21 +42,22 @@ Cottage, wet room, funding, bungalow, tariff, fit, and Whitstable jobs still hol
 | `/accessibility/` | Access statement after a listing burned them | `disabled holiday cottages with wet room` | Wet room, hoist, profiling bed, millimetres. | Booking story; by-the-sea job |
 | `/pricing/` | Tariff, deposits, same rate whoever is invoiced | `accessible holiday prices` | Numbers from `inc/pricing.php` only. No seasonal “from £” until occupancy known. | Who pays; Continuity process |
 | `/how-it-works/` | Enquire → confirm → arrive | `how a restwell stay is booked` | Same office if they want care. Discuss and work it out. No advertised lead time. | Door widths; Helping Hands SERP |
-| `/who-its-for/` | Fit. Holiday not a placement. Quiet autumn midweek. Sleeps five. | `holidays for disabled adults and carers` | Specs → Accessibility. Money → Resources. | Care-home respite SERP; Home’s cottage job |
-| `/resources/` | How a break might be paid for | `funding an accessible holiday` | Grants, invoices, DP. Flag DFG. CHC is a conversation. Link `/direct-payment-holiday-accommodation/`. No kit lists. No eligibility promises. | Bungalow rates; wet room; `respite holiday by the sea` |
+| `/who-its-for/` | Fit. Holiday not a placement. Quiet autumn midweek. Sleeps five. | `holidays for disabled adults and carers` | Specs → Accessibility. Money → Funding & support. | Care-home respite SERP; Home’s cottage job |
+| `/funding-and-support/` (was `/resources/`, which 301s here) | How a break might be paid for | `funding an accessible holiday` | Grants, invoices, DP. Flag DFG. CHC is a conversation. Link `/direct-payment-holiday-accommodation/`. No kit lists. No eligibility promises. | Bungalow rates; wet room; `respite holiday by the sea` |
 | `/whitstable-area-guide/` | Honest coast after they want this house | `whitstable accessible days out` | Shingle vs Tankerton promenade. Link `/accessible-beaches-coastal-walks-kent/`. | Property kit; national “best seaside town” |
 | `/enquire/` | Conversion | `contact restwell` | Form, phone 01622 809881, email. Ask for dates. Do not imply leftover stock. Care on the same note. | Product keywords |
 | `/optional-care/` | Add Continuity home care to this stay | `adding home care during a self-catering stay` | Warm sister company. Same enquiry. CQC on them. Discuss what you need. Guest quotes may keep “fully accessible”. | Bungalow rates; `paying for care on holiday`; Continuity’s Maidstone homepage job |
 | `/faq/` | Short answers + links | `restwell faq` | Answers, then the owner URL. | Hub primaries |
 | `/blog/` | Editorial index | `accessible travel` | Index only. | Property / booking intent |
+| `/our-story/` | Who is behind the house, and the Continuity relationship | `restwell retreats` (brand) | Trust page: why the bungalow exists, the two companies, Victoria as owner and Continuity’s registered manager. Branded queries only, no non-brand primary. | Optional care process; funding |
 
 ## Guides we keep (indexable)
 
 | URL | Job | Primary | Hub |
 |-----|-----|---------|-----|
 | `/accessible-beaches-coastal-walks-kent/` | Honest coast: shingle vs promenade | `accessible beaches kent` | Whitstable guide |
-| `/direct-payment-holiday-accommodation/` | Can a DP pay for the holiday / the PA | `can I use direct payments for a holiday` | Resources |
-| `/revitalise-alternatives-accessible-holidays/` | Centres closed Nov 2024 | `revitalise alternatives` | Resources / Who |
+| `/direct-payment-holiday-accommodation/` | Can a DP pay for the holiday / the PA | `can I use direct payments for a holiday` | Funding & support |
+| `/revitalise-alternatives-accessible-holidays/` | Centres closed Nov 2024 | `revitalise alternatives` | Funding & support / Who |
 | `/how-to-choose-accessible-self-catering-holiday/` | Burned-listing checklist | `how to choose accessible self catering` | Home / Accessibility |
 | `/how-to-read-holiday-cottage-access-statement/` | How to read a spec | `holiday cottage access statement` | Accessibility |
 

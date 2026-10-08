@@ -120,7 +120,8 @@ function restwell_normalize_meta_text( $text ) {
 	$text = html_entity_decode( $text, ENT_QUOTES, 'UTF-8' );
 	$text = (string) preg_replace( '/\s+/', ' ', $text );
 	$text = trim( $text );
-	return trim( $text, " \t\n\r\0\x0B,;.-" );
+	// Keep a closing full stop: a description that ends mid-sentence without one reads as cut.
+	return trim( $text, " \t\n\r\0\x0B,;-" );
 }
 
 /**
@@ -133,17 +134,36 @@ function restwell_normalize_meta_text( $text ) {
 function restwell_trim_meta_text( $text, $max_length = 160 ) {
 	$text       = restwell_normalize_meta_text( $text );
 	$max_length = absint( $max_length );
-	if ( $max_length < 20 || strlen( $text ) <= $max_length ) {
+	// Count characters, not bytes: curly quotes and £ are multibyte.
+	if ( $max_length < 20 || mb_strlen( $text, 'UTF-8' ) <= $max_length ) {
 		return $text;
 	}
 
-	$trimmed = substr( $text, 0, $max_length );
-	$space   = strrpos( $trimmed, ' ' );
-	if ( false !== $space && $space > (int) ( $max_length * 0.6 ) ) {
-		$trimmed = substr( $trimmed, 0, $space );
+	$window = mb_substr( $text, 0, $max_length, 'UTF-8' );
+	// Multibyte-safe edge trim (trim() works on bytes and would split dashes).
+	$edge = static function ( $s ) {
+		return (string) preg_replace( '/^[\s,;:.|–—-]+|[\s,;:|–—-]+$|(?<!\.)\.$/u', '', $s );
+	};
+
+	// 1. End on the last whole sentence, if one fills at least half the space.
+	$min_sentence = (int) floor( $max_length * 0.5 );
+	if ( preg_match( '/^(.{' . $min_sentence . ',}[.!?])\s/us', $window . ' ', $m ) ) {
+		return $m[1];
 	}
 
-	return trim( $trimmed, " \t\n\r\0\x0B,;.-" );
+	// 2. Otherwise end on a clause or title separator (comma, colon, semicolon, dash, pipe).
+	$min_clause = (int) floor( $max_length * 0.6 );
+	if ( preg_match( '/^(.{' . $min_clause . ',}?)(?:[,;:]|\s[|–—-])\s(?!.*(?:[,;:]|\s[|–—-])\s)/us', $window, $m ) ) {
+		// Descriptions close the clause as a sentence; titles stay unpunctuated.
+		return $edge( $m[1] ) . ( $max_length >= 100 ? '.' : '' );
+	}
+
+	// 3. Last resort: whole words, no dangling connective, and an ellipsis so it reads as cut.
+	$space   = mb_strrpos( $window, ' ', 0, 'UTF-8' );
+	$trimmed = false !== $space ? mb_substr( $window, 0, $space, 'UTF-8' ) : $window;
+	$trimmed = (string) preg_replace( '/(?:\s+(?:and|or|but|the|a|an|with|of|to|for|in|on|at|by|from|as|is|it’s|its|our|your|we|you|that))+$/iu', '', $edge( $trimmed ) );
+
+	return $edge( $trimmed ) . '…';
 }
 
 /**
@@ -164,11 +184,11 @@ function restwell_build_meta_title( $primary ) {
 	}
 
 	$title = $primary . ' | ' . $site;
-	if ( strlen( $title ) <= 60 ) {
+	if ( mb_strlen( $title, 'UTF-8' ) <= 60 ) {
 		return $title;
 	}
 
-	$max_primary = max( 20, 60 - strlen( $site ) - 3 );
+	$max_primary = max( 20, 60 - mb_strlen( $site, 'UTF-8' ) - 3 );
 	return restwell_trim_meta_text( $primary, $max_primary ) . ' | ' . $site;
 }
 

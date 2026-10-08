@@ -992,3 +992,147 @@ function restwell_get_news_updates_posts_for_property() {
 	wp_reset_postdata();
 	return is_array( $posts ) ? $posts : array();
 }
+
+/**
+ * Hub page each seeded guide falls back to while it is unpublished.
+ *
+ * All nineteen guides are linked from pages (FAQ answers, funding links, Who
+ * it's for cards). Production has no posts yet, so those links 404ed (audit
+ * I01). Until a guide is published, links to it point at its hub instead.
+ *
+ * @return array<string, string> guide slug => hub page slug
+ */
+function restwell_get_guide_hub_fallbacks() {
+	$hubs = array(
+		'whitstable-area-guide' => array(
+			'accessible-beaches-coastal-walks-kent',
+			'accessible-parking-whitstable-tankerton',
+			'accessible-train-travel-whitstable-kent',
+			'accessible-eating-out-whitstable-kent',
+			'changing-places-toilets-kent-coast-days-out',
+			'quieter-times-whitstable-low-crowd-access',
+			'fatigue-friendly-whitstable-coastal-day',
+		),
+		'funding-and-support'   => array(
+			'direct-payment-holiday-accommodation',
+			'chc-respite-holiday-accommodation-uk',
+			'personal-budget-short-break-care-act',
+			'commissioner-checklist-accessible-respite-stay',
+			'carers-respite-holiday-guide',
+			'travel-insurance-disability-uk-self-catering',
+		),
+		'accessibility'         => array(
+			'how-to-choose-accessible-self-catering-holiday',
+			'how-to-read-holiday-cottage-access-statement',
+			'what-to-pack-accessible-self-catering-uk',
+			'hire-mobility-scooter-equipment-uk-holiday',
+		),
+		'who-its-for'           => array( 'revitalise-alternatives-accessible-holidays' ),
+		'optional-care'         => array( 'holiday-backup-plan-care-worker-change' ),
+	);
+	$map = array();
+	foreach ( $hubs as $hub => $guides ) {
+		foreach ( $guides as $guide ) {
+			$map[ $guide ] = $hub;
+		}
+	}
+	return $map;
+}
+
+/**
+ * Point links at unpublished guides to their hub page.
+ *
+ * @param string $html Page HTML.
+ * @return string
+ */
+function restwell_reroute_unpublished_guide_links( $html ) {
+	if ( false === stripos( $html, '<a' ) || ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+		return $html;
+	}
+	$fallbacks = restwell_get_guide_hub_fallbacks();
+	$home_path = untrailingslashit( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ) );
+	$home_host = (string) wp_parse_url( home_url( '/' ), PHP_URL_HOST );
+	$live      = array();
+	$p         = new WP_HTML_Tag_Processor( $html );
+	while ( $p->next_tag( 'a' ) ) {
+		$href = $p->get_attribute( 'href' );
+		if ( ! is_string( $href ) || '' === $href ) {
+			continue;
+		}
+		$host = (string) wp_parse_url( $href, PHP_URL_HOST );
+		if ( '' !== $host && 0 !== strcasecmp( $host, $home_host ) ) {
+			continue;
+		}
+		$path = trim( substr( (string) wp_parse_url( $href, PHP_URL_PATH ), strlen( $home_path ) ), '/' );
+		// get_permalink() on an unpublished post returns ?p=ID; resolve it to its slug.
+		if ( '' === $path ) {
+			parse_str( (string) wp_parse_url( $href, PHP_URL_QUERY ), $query );
+			$draft = ! empty( $query['p'] ) ? get_post( absint( $query['p'] ) ) : null;
+			if ( $draft instanceof WP_Post ) {
+				$path = $draft->post_name;
+			}
+		}
+		if ( ! isset( $fallbacks[ $path ] ) ) {
+			continue;
+		}
+		if ( ! isset( $live[ $path ] ) ) {
+			$post          = get_page_by_path( $path, OBJECT, 'post' );
+			$live[ $path ] = $post instanceof WP_Post && 'publish' === $post->post_status;
+		}
+		if ( ! $live[ $path ] ) {
+			$p->set_attribute( 'href', function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( $fallbacks[ $path ] ) : home_url( '/' . $fallbacks[ $path ] . '/' ) );
+		}
+	}
+	return $p->get_updated_html();
+}
+add_filter( 'restwell_front_html', 'restwell_reroute_unpublished_guide_links' );
+
+
+/**
+ * Retired paths that 301 elsewhere. Links in stored content (post bodies seeded
+ * before the rename) are rewritten to the final URL so no internal link goes
+ * through a redirect (audit I12). The 301s themselves stay for old inbound links.
+ *
+ * @return array<string, string> old path => page slug
+ */
+function restwell_get_retired_link_paths() {
+	return array(
+		'resources' => 'funding-and-support',
+		'contact'   => 'enquire',
+		'news'      => 'blog',
+	);
+}
+
+/**
+ * Rewrite internal links to retired paths.
+ *
+ * @param string $html Page HTML.
+ * @return string
+ */
+function restwell_rewrite_retired_internal_links( $html ) {
+	if ( false === stripos( $html, '<a' ) || ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+		return $html;
+	}
+	$retired   = restwell_get_retired_link_paths();
+	$home_path = untrailingslashit( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ) );
+	$home_host = (string) wp_parse_url( home_url( '/' ), PHP_URL_HOST );
+	$p         = new WP_HTML_Tag_Processor( $html );
+	while ( $p->next_tag( 'a' ) ) {
+		$href = $p->get_attribute( 'href' );
+		if ( ! is_string( $href ) || '' === $href ) {
+			continue;
+		}
+		$host = (string) wp_parse_url( $href, PHP_URL_HOST );
+		if ( '' !== $host && 0 !== strcasecmp( $host, $home_host ) ) {
+			continue;
+		}
+		$path = trim( substr( (string) wp_parse_url( $href, PHP_URL_PATH ), strlen( $home_path ) ), '/' );
+		if ( isset( $retired[ $path ] ) ) {
+			$target   = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( $retired[ $path ] ) : home_url( '/' . $retired[ $path ] . '/' );
+			$fragment = (string) wp_parse_url( $href, PHP_URL_FRAGMENT );
+			$p->set_attribute( 'href', $target . ( '' !== $fragment ? '#' . $fragment : '' ) );
+		}
+	}
+	return $p->get_updated_html();
+}
+add_filter( 'restwell_front_html', 'restwell_rewrite_retired_internal_links' );

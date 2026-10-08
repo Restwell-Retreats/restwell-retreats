@@ -1,5 +1,6 @@
 /**
- * House diary: month pager, hoped-for nights, enquire URL, guide total.
+ * Availability board: month pager (two months wide, one on phones), stay
+ * selection drawn as one continuous band, guide total, and the enquiry dialog.
  */
 (function () {
 	'use strict';
@@ -16,13 +17,12 @@
 		return new Date(iso + 'T12:00:00');
 	}
 
+	function pad2(n) {
+		return n < 10 ? '0' + n : String(n);
+	}
+
 	function formatIso(date) {
-		var y = date.getFullYear();
-		var m = String(date.getMonth() + 1);
-		var d = String(date.getDate());
-		if (m.length === 1) m = '0' + m;
-		if (d.length === 1) d = '0' + d;
-		return y + '-' + m + '-' + d;
+		return date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate());
 	}
 
 	function addDays(iso, days) {
@@ -50,11 +50,7 @@
 
 	function prettyDay(iso) {
 		try {
-			return parseIso(iso).toLocaleDateString('en-GB', {
-				weekday: 'short',
-				day: 'numeric',
-				month: 'short'
-			});
+			return parseIso(iso).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 		} catch (e) {
 			return iso;
 		}
@@ -69,37 +65,40 @@
 		}
 	}
 
-	function initDiary(root) {
-		var monthsHost = root.querySelector('.availability__months');
-		var monthLabelEl = root.querySelector('[data-availability-month-label]');
+	function escapeAttr(text) {
+		return String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+	}
+
+	function initBoard(root) {
+		var monthsHost = root.querySelector('[data-availability-months]');
 		var months = Array.prototype.slice.call(root.querySelectorAll('[data-availability-month]'));
 		var prevBtn = root.querySelector('[data-availability-prev]');
 		var nextBtn = root.querySelector('[data-availability-next]');
 		var live = root.querySelector('[data-availability-live]');
 		var enquire = root.querySelector('[data-availability-enquire]');
-			var enquiryPanel = root.querySelector('[data-availability-enquiry]');
-			var enquiryClose = root.querySelector('[data-availability-enquiry-close]');
-			var enquiryReturnFocus = null;
-			var enquiryFrom = root.querySelector('[data-availability-enquiry-from]');
-			var enquiryTo = root.querySelector('[data-availability-enquiry-to]');
+		var enquiryPanel = root.querySelector('[data-availability-enquiry]');
+		var enquiryClose = root.querySelector('[data-availability-enquiry-close]');
+		var enquiryIntro = root.querySelector('[data-availability-enquiry-dates]');
+		var enquiryFrom = root.querySelector('[data-availability-enquiry-from]');
+		var enquiryTo = root.querySelector('[data-availability-enquiry-to]');
 		var enquireUrl = root.getAttribute('data-enquire-url') || '';
 		var fromEl = root.querySelector('[data-availability-from]');
 		var toEl = root.querySelector('[data-availability-to]');
-		var fromField = root.querySelector('[data-availability-from-field]');
-		var toField = root.querySelector('[data-availability-to-field]');
-		var stay = root.querySelector('[data-availability-stay]');
-		var clearBtn = root.querySelector('[data-availability-clear]');
-		var prompt = root.querySelector('[data-availability-prompt]');
-		var defaultPrompt = prompt ? prompt.textContent : '';
-		var quoteBox = root.querySelector('[data-availability-quote]');
+		var arrowEl = root.querySelector('[data-availability-arrow]');
+		var detailEl = root.querySelector('[data-availability-detail]');
 		var breakdown = root.querySelector('[data-availability-breakdown]');
-		var countEl = root.querySelector('[data-availability-count]');
-		var totalEl = root.querySelector('[data-availability-total]');
+		var clearBtn = root.querySelector('[data-availability-clear]');
 		var weekOff = parseInt(root.getAttribute('data-week-offpeak') || '0', 10);
 		var weekPeak = parseInt(root.getAttribute('data-week-peak') || '0', 10);
 		var maxMonths = parseInt(root.getAttribute('data-max-months') || '12', 10);
 		var todayIso = root.getAttribute('data-today') || formatIso(new Date());
 		if (!months.length || !monthsHost) return;
+
+		var defaultFrom = fromEl ? fromEl.textContent : '';
+		var defaultDetail = detailEl ? detailEl.textContent : '';
+		var defaultIntro = enquiryIntro ? enquiryIntro.textContent : '';
+		var enquireLabel = enquire ? enquire.textContent : 'Enquire';
+		var wide = window.matchMedia ? window.matchMedia('(min-width: 1024px)') : null;
 
 		var index = 0;
 		var startIso = '';
@@ -107,6 +106,7 @@
 		var booked = {};
 		var pricing = { off_mid: 0, off_wknd: 0, peak_mid: 0, peak_wknd: 0, peaks: [] };
 		var weekdayShort = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+		var weekdayLong = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 		try {
 			var bookedList = JSON.parse(root.getAttribute('data-booked') || '[]');
@@ -116,9 +116,6 @@
 				});
 			}
 		} catch (e) { /* keep empty */ }
-		root.querySelectorAll('.availability__day.is-booked[data-iso]').forEach(function (td) {
-			booked[td.getAttribute('data-iso')] = true;
-		});
 		try {
 			var p = JSON.parse(root.getAttribute('data-pricing') || '{}');
 			if (p && typeof p === 'object') {
@@ -134,6 +131,8 @@
 		try {
 			var wd = JSON.parse(root.getAttribute('data-weekdays') || '[]');
 			if (Array.isArray(wd) && wd.length === 7) weekdayShort = wd;
+			var wl = JSON.parse(root.getAttribute('data-weekdays-long') || '[]');
+			if (Array.isArray(wl) && wl.length === 7) weekdayLong = wl;
 		} catch (e3) { /* defaults */ }
 
 		function isPeakIso(iso) {
@@ -142,22 +141,18 @@
 			});
 		}
 
-		function isWeekendIso(iso) {
+		function isWeekendNight(iso) {
+			/* Match PHP restwell_is_weekend_night: Fri–Sun (JS getDay 5, 6, 0). */
 			var n = parseIso(iso).getDay();
-			/* Match PHP restwell_is_weekend_night: Fri–Sun (JS getDay 5,6,0). */
 			return n === 0 || n >= 5;
 		}
 
 		function rateFor(iso) {
 			var peak = isPeakIso(iso);
-			if (isWeekendIso(iso)) {
+			if (isWeekendNight(iso)) {
 				return peak ? pricing.peak_wknd : pricing.off_wknd;
 			}
 			return peak ? pricing.peak_mid : pricing.off_mid;
-		}
-
-		function pad2(n) {
-			return n < 10 ? '0' + n : String(n);
 		}
 
 		function monthLabel(y, m0) {
@@ -168,107 +163,175 @@
 			}
 		}
 
-		function ensureMonths(neededIndex) {
-			while (months.length <= neededIndex && months.length < maxMonths) {
-				var base = months[0].querySelector('[data-iso]');
-				var seed = base ? base.getAttribute('data-iso') : todayIso;
-				var dt = parseIso(seed);
-				dt.setDate(1);
-				dt.setMonth(dt.getMonth() + months.length);
-				var y = dt.getFullYear();
-				var m0 = dt.getMonth();
-				var daysIn = new Date(y, m0 + 1, 0).getDate();
-				var lead = (new Date(y, m0, 1).getDay() + 6) % 7; /* Mon=0 */
-				var key = y + '-' + pad2(m0 + 1);
-				var id = 'availability-m-' + key;
-				var name = monthLabel(y, m0);
-				var article = document.createElement('article');
-				article.className = 'availability__month';
-				article.setAttribute('data-availability-month', '');
-				article.setAttribute('aria-labelledby', id);
-				article.hidden = true;
-				var head = '<h3 id="' + id + '" class="availability__month-title sr-only">' + name + '</h3>';
-				var thead = '<thead><tr>' + weekdayShort.map(function (w) {
-					return '<th scope="col"><abbr title="">' + w + '</abbr></th>';
-				}).join('') + '</tr></thead>';
-				var cells = '';
-				var cell = 0;
-				cells += '<tr>';
-				for (var p = 0; p < lead; p++) {
-					cells += '<td class="availability__day is-pad" aria-hidden="true"></td>';
-					cell++;
-				}
-				for (var day = 1; day <= daysIn; day++) {
-					if (cell % 7 === 0 && cell > 0) cells += '</tr><tr>';
-					var iso = y + '-' + pad2(m0 + 1) + '-' + pad2(day);
-					var classes = ['availability__day'];
-					var isBooked = !!booked[iso];
-					var isToday = iso === todayIso;
-					var isPast = iso < todayIso;
-					var isPeak = isPeakIso(iso);
-					var isPick = !isBooked && !isPast;
-					var rate = rateFor(iso);
-					if (isBooked) classes.push('is-booked');
-					if (isToday) classes.push('is-today');
-					if (isPast) classes.push('is-past');
-					if (isPeak) classes.push('is-peak');
-					if (isPick) classes.push('is-pick');
-					var aria = day + ' ' + name;
-					if (rate > 0) aria += ', £' + rate;
-					if (isPeak) aria += ', Peak season';
-					cells += '<td class="' + classes.join(' ') + '" data-iso="' + iso + '"';
-					if (rate > 0) cells += ' data-rate="' + rate + '"';
-					if (isPeak) cells += ' data-peak="1"';
-					if (isToday) cells += ' aria-current="date"';
-					cells += '>';
-					if (isPick) {
-						cells += '<button type="button" class="availability__num" data-iso="' + iso + '" aria-pressed="false" aria-label="' + aria.replace(/"/g, '&quot;') + '">';
-					} else {
-						cells += '<span class="availability__num">';
-					}
+		function spokenDay(iso) {
+			var dt = parseIso(iso);
+			var long = weekdayLong[(dt.getDay() + 6) % 7];
+			return long + ' ' + dt.getDate() + ' ' + monthLabel(dt.getFullYear(), dt.getMonth());
+		}
+
+		/* Build one month in the same markup the template renders. */
+		function buildMonth(y, m0) {
+			var daysIn = new Date(y, m0 + 1, 0).getDate();
+			var lead = (new Date(y, m0, 1).getDay() + 6) % 7; /* Mon = 0 */
+			var id = 'availability-m-' + y + '-' + pad2(m0 + 1);
+			var name = monthLabel(y, m0);
+			var head = '<thead><tr>' + weekdayShort.map(function (w, i) {
+				return '<th scope="col"><abbr title="' + escapeAttr(weekdayLong[i]) + '">' + w + '</abbr></th>';
+			}).join('') + '</tr></thead>';
+			var cells = '<tr>';
+			var cell = 0;
+			for (var p0 = 0; p0 < lead; p0++) {
+				cells += '<td class="availability__day is-pad" aria-hidden="true"></td>';
+				cell++;
+			}
+			for (var day = 1; day <= daysIn; day++) {
+				if (cell % 7 === 0 && cell > 0) cells += '</tr><tr>';
+				var iso = y + '-' + pad2(m0 + 1) + '-' + pad2(day);
+				var isPast = iso < todayIso;
+				var isBooked = !isPast && !!booked[iso];
+				var isToday = iso === todayIso;
+				var isPeak = !isPast && isPeakIso(iso);
+				var isPick = !isBooked && !isPast;
+				var rate = isPick ? rateFor(iso) : 0;
+				var classes = ['availability__day'];
+				if (isBooked) classes.push('is-booked');
+				if (isToday) classes.push('is-today');
+				if (isPast) classes.push('is-past');
+				if (isPeak) classes.push('is-peak');
+				if (isPick) classes.push('is-pick');
+				cells += '<td class="' + classes.join(' ') + '" data-iso="' + iso + '"';
+				if (rate > 0) cells += ' data-rate="' + rate + '"';
+				if (isPeak) cells += ' data-peak="1"';
+				if (isToday) cells += ' aria-current="date"';
+				cells += '>';
+				if (isPick) {
+					var label = spokenDay(iso);
+					if (rate > 0) label += ', ' + formatGbp(rate) + ' a night';
+					if (isPeak) label += ', peak rate';
+					cells += '<button type="button" class="availability__cell" data-iso="' + iso + '" aria-pressed="false" tabindex="-1" aria-label="' + escapeAttr(label) + '">';
 					cells += '<span class="availability__date">' + day + '</span>';
-					if (rate > 0) cells += '<span class="availability__price">£' + rate + '</span>';
-					cells += isPick ? '</button>' : '</span>';
-					if (isBooked) cells += '<span class="sr-only">Booked</span>';
-					cells += '</td>';
-					cell++;
+					if (rate > 0) cells += '<span class="availability__price">' + formatGbp(rate) + '</span>';
+					cells += '</button>';
+				} else if (isBooked) {
+					cells += '<button type="button" class="availability__cell" data-iso="' + iso + '" data-booked="1" aria-pressed="false" tabindex="-1" aria-label="' + escapeAttr(spokenDay(iso) + ', booked') + '">';
+					cells += '<span class="availability__date">' + day + '</span></button>';
+				} else {
+					cells += '<span class="availability__cell"><span class="availability__date">' + day + '</span></span>';
 				}
-				while (cell % 7 !== 0) {
-					cells += '<td class="availability__day is-pad" aria-hidden="true"></td>';
-					cell++;
-				}
-				cells += '</tr>';
-				article.innerHTML = head + '<table class="availability__grid"><caption class="sr-only">' + name + '</caption>' + thead + '<tbody>' + cells + '</tbody></table>';
+				cells += '</td>';
+				cell++;
+			}
+			while (cell % 7 !== 0) {
+				cells += '<td class="availability__day is-pad" aria-hidden="true"></td>';
+				cell++;
+			}
+			cells += '</tr>';
+			var article = document.createElement('article');
+			article.className = 'availability__month';
+			article.setAttribute('data-availability-month', '');
+			article.setAttribute('aria-labelledby', id);
+			article.innerHTML = '<h3 id="' + id + '" class="availability__month-title">' + name + '</h3>' +
+				'<table class="availability__grid" role="grid" aria-labelledby="' + id + '">' + head + '<tbody>' + cells + '</tbody></table>';
+			return article;
+		}
+
+		function ensureMonths(lastIndex) {
+			var target = Math.min(maxMonths - 1, lastIndex);
+			while (months.length <= target) {
+				var base = parseIso(todayIso);
+				base.setDate(1);
+				base.setMonth(base.getMonth() + months.length);
+				var article = buildMonth(base.getFullYear(), base.getMonth());
 				monthsHost.appendChild(article);
 				months.push(article);
+				repaint();
 			}
 		}
 
 		function visibleCount() {
-			return 1;
+			return wide && wide.matches ? 2 : 1;
 		}
 
-		function showMonth(nextIndex) {
+		function showMonth(nextIndex, announce) {
 			var vis = visibleCount();
-			var lastNeeded = Math.min(maxMonths - 1, Math.max(0, nextIndex + vis - 1));
-			ensureMonths(lastNeeded);
-			months = Array.prototype.slice.call(root.querySelectorAll('[data-availability-month]'));
 			var maxStart = Math.max(0, maxMonths - vis);
-			maxStart = Math.min(maxStart, Math.max(0, months.length - vis));
 			if (nextIndex < 0) nextIndex = 0;
 			if (nextIndex > maxStart) nextIndex = maxStart;
+			ensureMonths(nextIndex + vis - 1);
 			index = nextIndex;
 			months.forEach(function (month, i) {
-				var on = i >= index && i < index + vis;
-				month.classList.toggle('is-active', on);
-				month.hidden = !on;
+				month.hidden = !(i >= index && i < index + vis);
 			});
 			if (prevBtn) prevBtn.disabled = index === 0;
-			/* Keep Next enabled until we have rendered maxMonths (lazy-build on click). */
-			if (nextBtn) nextBtn.disabled = index >= maxMonths - vis;
-			if (monthLabelEl && months[index]) {
-				var label = months[index].querySelector('.availability__month-title');
-				if (label) monthLabelEl.textContent = label.textContent;
+			if (nextBtn) nextBtn.disabled = index >= maxStart;
+			if (announce) {
+				var names = months.slice(index, index + vis).map(function (m) {
+					var t = m.querySelector('.availability__month-title');
+					return t ? t.textContent : '';
+				});
+				setLive('Showing ' + names.join(' and ') + '.');
+			}
+			syncTabStop();
+		}
+
+		function monthIndexOf(iso) {
+			var t = parseIso(todayIso);
+			var d = parseIso(iso);
+			return (d.getFullYear() - t.getFullYear()) * 12 + (d.getMonth() - t.getMonth());
+		}
+
+		function dayCell(iso) {
+			return root.querySelector('.availability__day[data-iso="' + iso + '"]');
+		}
+
+		function dayButton(iso) {
+			return root.querySelector('button.availability__cell[data-iso="' + iso + '"]');
+		}
+
+		function visibleButtons() {
+			return Array.prototype.slice.call(root.querySelectorAll('[data-availability-month]:not([hidden]) button.availability__cell:not([data-booked])'));
+		}
+
+		/* A booked morning is reachable only as the leaving day of the stay in progress. */
+		function isValidLeave(iso) {
+			return !!(startIso && !endIso && iso > startIso && !rangeTouchesBooked(startIso, addDays(iso, -1)));
+		}
+
+		/* One tab stop inside the board; arrow keys move between nights. */
+		function syncTabStop(preferIso) {
+			var buttons = visibleButtons();
+			var current = root.querySelector('button.availability__cell[tabindex="0"]');
+			var target = (preferIso && dayButton(preferIso)) ||
+				(current && buttons.indexOf(current) !== -1 ? current : null) ||
+				(startIso && buttons.indexOf(dayButton(startIso)) !== -1 ? dayButton(startIso) : null) ||
+				buttons[0] || null;
+			root.querySelectorAll('button.availability__cell[tabindex="0"]').forEach(function (b) {
+				if (b !== target) b.setAttribute('tabindex', '-1');
+			});
+			if (target) target.setAttribute('tabindex', '0');
+			return target;
+		}
+
+		function moveFocus(fromIso, step) {
+			var iso = fromIso;
+			for (var guard = 0; guard < 400; guard++) {
+				iso = addDays(iso, step);
+				var mi = monthIndexOf(iso);
+				if (iso < todayIso || mi < 0 || mi >= maxMonths) return;
+				if (booked[iso] && !isValidLeave(iso)) {
+					if (startIso && !endIso && iso > startIso) return;
+					continue;
+				}
+				var vis = visibleCount();
+				if (mi < index) showMonth(mi, true);
+				else if (mi >= index + vis) showMonth(mi - vis + 1, true);
+				var btn = dayButton(iso);
+				if (btn) {
+					syncTabStop(iso);
+					btn.focus();
+					if (startIso && !endIso) previewLeave(iso);
+					return;
+				}
 			}
 		}
 
@@ -279,54 +342,59 @@
 		}
 
 		function clearHope() {
-			root.querySelectorAll('.availability__day.is-hope, .availability__day.is-hope-start, .availability__day.is-hope-end, .availability__day.is-hope-checkout').forEach(function (td) {
-				td.classList.remove('is-hope', 'is-hope-start', 'is-hope-end', 'is-hope-checkout');
+			root.querySelectorAll('.availability__day.is-hope').forEach(function (td) {
+				td.classList.remove('is-hope', 'is-hope-start', 'is-hope-end', 'is-hope-cap-start', 'is-hope-cap-end', 'is-hope-solo');
 			});
-			root.querySelectorAll('button[data-iso][aria-pressed]').forEach(function (btn) {
+			root.querySelectorAll('button.availability__cell[aria-pressed="true"]').forEach(function (btn) {
 				btn.setAttribute('aria-pressed', 'false');
 			});
 		}
 
-		function dayCell(iso) {
-			return root.querySelector('.availability__day[data-iso="' + iso + '"]');
+		/* Round the band wherever it starts, ends, or wraps onto a new week row. */
+		function capBand() {
+			root.querySelectorAll('.availability__day.is-hope').forEach(function (td) {
+				var prev = td.previousElementSibling;
+				var next = td.nextElementSibling;
+				td.classList.toggle('is-hope-cap-start', !prev || !prev.classList.contains('is-hope'));
+				td.classList.toggle('is-hope-cap-end', !next || !next.classList.contains('is-hope'));
+			});
+		}
+
+		function markHope(iso, extra) {
+			var td = dayCell(iso);
+			if (!td) return;
+			td.classList.add('is-hope');
+			if (extra) td.classList.add(extra);
+			var btn = td.querySelector('button.availability__cell');
+			if (btn) btn.setAttribute('aria-pressed', 'true');
 		}
 
 		function paintArrival(iso) {
 			clearHope();
+			root.classList.remove('is-previewing');
+			markHope(iso, 'is-hope-start');
+			/* Arrival alone is just the coin: no band until a leaving day exists. */
 			var td = dayCell(iso);
-			if (!td) return;
-			td.classList.add('is-hope', 'is-hope-start');
-			var btn = td.querySelector('button[data-iso]');
-			if (btn) btn.setAttribute('aria-pressed', 'true');
+			if (td) td.classList.add('is-hope-solo');
 		}
 
-		function paintHope(from, lastNight) {
+		function paintStay(from, lastNight, preview) {
 			clearHope();
-			var nights = nightsInclusive(from, lastNight);
-			nights.forEach(function (iso, i) {
-				var td = dayCell(iso);
-				if (!td) return;
-				td.classList.add('is-hope');
-				if (0 === i) td.classList.add('is-hope-start');
-				var btn = td.querySelector('button[data-iso]');
-				if (btn) btn.setAttribute('aria-pressed', 'true');
+			root.classList.toggle('is-previewing', !!preview);
+			nightsInclusive(from, lastNight).forEach(function (iso, i) {
+				markHope(iso, 0 === i ? 'is-hope-start' : '');
 			});
-			/* Leave morning is the end circle (Dribbble / Airbnb), not a dashed extra day. */
-			var leave = addDays(lastNight, 1);
-			var leaveTd = dayCell(leave);
-			if (leaveTd) {
-				leaveTd.classList.add('is-hope', 'is-hope-end');
-				var leaveBtn = leaveTd.querySelector('button[data-iso]');
-				if (leaveBtn) leaveBtn.setAttribute('aria-pressed', 'true');
-			} else if (nights.length) {
-				var lastTd = dayCell(nights[nights.length - 1]);
-				if (lastTd) lastTd.classList.add('is-hope-end');
-			}
+			markHope(addDays(lastNight, 1), 'is-hope-end');
+			capBand();
 		}
 
-		function isWeekendNight(iso) {
-			var day = parseIso(iso).getDay();
-			return day === 0 || day >= 5;
+		/* Repaint after a lazily built month joins the board. */
+		function repaint() {
+			if (startIso && endIso) {
+				paintStay(startIso, endIso, false);
+			} else if (startIso) {
+				paintArrival(startIso);
+			}
 		}
 
 		function guideTotal(nights) {
@@ -334,9 +402,9 @@
 			var peakCount = 0;
 			nights.forEach(function (iso) {
 				var td = dayCell(iso);
-				if (!td) return;
-				sum += parseInt(td.getAttribute('data-rate') || '0', 10);
-				if (td.getAttribute('data-peak') === '1') peakCount += 1;
+				var rate = td ? parseInt(td.getAttribute('data-rate') || '0', 10) : 0;
+				sum += rate || rateFor(iso);
+				if (isPeakIso(iso)) peakCount += 1;
 			});
 			var n = nights.length;
 			var mixedSeason = peakCount > 0 && peakCount < n;
@@ -352,54 +420,24 @@
 			return { total: sum, weekly: false, peakCount: peakCount, mixedSeason: mixedSeason };
 		}
 
-		function appendBreakdownRow(label, amount) {
-			if (!breakdown) return;
-			var totalRow = breakdown.querySelector('.availability__total');
-			var row = document.createElement('div');
-			var dt = document.createElement('dt');
-			var dd = document.createElement('dd');
-			dt.textContent = label;
-			dd.textContent = amount;
-			row.appendChild(dt);
-			row.appendChild(dd);
-			if (totalRow) {
-				breakdown.insertBefore(row, totalRow);
-			} else {
-				breakdown.appendChild(row);
-			}
-		}
-
-		function clearBreakdownRows() {
-			if (!breakdown) return;
-			Array.prototype.slice.call(breakdown.children).forEach(function (row) {
-				if (!row.classList.contains('availability__total')) {
-					row.remove();
-				}
-			});
-		}
-
 		function nightLineLabel(bucket, mixedSeason) {
 			var kind = bucket.weekend ? 'weekend' : 'midweek';
-			var season = '';
-			if (mixedSeason) {
-				season = bucket.peak ? 'peak ' : 'off-peak ';
-			}
-			var noun = bucket.count === 1 ? 'night' : 'nights';
-			return bucket.count + ' ' + season + kind + ' ' + noun;
+			var season = mixedSeason ? (bucket.peak ? 'peak ' : 'off-peak ') : '';
+			return bucket.count + ' ' + season + kind + ' ' + (bucket.count === 1 ? 'night' : 'nights');
 		}
 
+		/* Breakdown rows only when the stay mixes rates (data-rate per night). */
 		function fillBreakdown(nights, quote) {
-			clearBreakdownRows();
-			if (quote.weekly) {
-				return;
-			}
+			if (!breakdown) return;
+			breakdown.textContent = '';
+			breakdown.hidden = true;
+			if (quote.weekly) return;
 			var buckets = {};
 			var order = [];
 			nights.forEach(function (iso) {
 				var td = dayCell(iso);
-				if (!td) return;
-				var rate = parseInt(td.getAttribute('data-rate') || '0', 10);
-				var peak = td.getAttribute('data-peak') === '1';
+				var rate = td ? parseInt(td.getAttribute('data-rate') || '0', 10) : rateFor(iso);
+				var peak = isPeakIso(iso);
 				var weekend = isWeekendNight(iso);
 				var key = (peak ? 'p' : 'o') + (weekend ? 'w' : 'm') + String(rate);
 				if (!buckets[key]) {
@@ -408,106 +446,79 @@
 				}
 				buckets[key].count += 1;
 			});
-			if (order.length <= 1) {
-				return;
-			}
+			if (order.length <= 1) return;
 			order.forEach(function (key) {
 				var bucket = buckets[key];
-				appendBreakdownRow(nightLineLabel(bucket, quote.mixedSeason), formatGbp(bucket.count * bucket.rate));
+				var dt = document.createElement('dt');
+				var dd = document.createElement('dd');
+				dt.textContent = nightLineLabel(bucket, quote.mixedSeason) + ' × ' + formatGbp(bucket.rate);
+				dd.textContent = formatGbp(bucket.count * bucket.rate);
+				breakdown.appendChild(dt);
+				breakdown.appendChild(dd);
 			});
+			breakdown.hidden = false;
 		}
 
-		function setStay(from, to, extendHint) {
-			var awaitingLeave = !!(from && !to);
-			var complete = !!(from && to);
-			if (stay) stay.classList.toggle('is-empty', !from);
-			if (clearBtn) clearBtn.hidden = !from;
-			if (fromField) fromField.classList.toggle('is-active', !from);
-			if (toField) toField.classList.toggle('is-active', awaitingLeave);
-			if (fromEl) fromEl.textContent = from ? prettyDay(from) : '—';
-			if (toEl) {
-				if (!complete) {
-					toEl.textContent = '—';
-				} else {
-					toEl.textContent = prettyDay(addDays(to, 1));
-				}
+		function setDetail(text, html, alert) {
+			if (!detailEl) return;
+			detailEl.classList.toggle('is-alert', !!alert);
+			if (html) {
+				detailEl.innerHTML = html;
+			} else {
+				detailEl.textContent = text;
 			}
-			if (!complete) {
-				if (quoteBox) quoteBox.hidden = true;
-				if (countEl) countEl.textContent = '';
-				clearBreakdownRows();
-				if (prompt) {
-					prompt.hidden = false;
-					prompt.textContent = awaitingLeave ? 'Tap your leave date.' : defaultPrompt;
-				}
+		}
+
+		function setSummary(from, lastNight) {
+			var complete = !!(from && lastNight);
+			if (clearBtn) clearBtn.hidden = !from;
+			if (arrowEl) arrowEl.hidden = !from;
+			if (toEl) toEl.classList.toggle('is-pending', !!from && !complete);
+			if (!from) {
+				if (fromEl) fromEl.textContent = defaultFrom;
+				if (toEl) toEl.textContent = '';
+				setDetail(defaultDetail);
+				fillBreakdown([], { weekly: true });
 				return;
 			}
-			var nights = nightsInclusive(from, to);
+			if (fromEl) fromEl.textContent = prettyDay(from);
+			if (!complete) {
+				if (toEl) toEl.textContent = 'pick your leaving day';
+				setDetail('Tap ' + prettyDay(from) + ' again to clear it.');
+				fillBreakdown([], { weekly: true });
+				return;
+			}
+			if (toEl) toEl.textContent = prettyDay(addDays(lastNight, 1));
+			var nights = nightsInclusive(from, lastNight);
 			var quote = guideTotal(nights);
 			var count = nights.length;
-			if (countEl) {
-				var countText = count === 1 ? '1 night' : count + ' nights';
-				if (!quote.weekly && quote.peakCount === count && count > 0) {
-					countText += ', peak season';
-				}
-				countEl.textContent = countText;
-			}
+			var countText = count === 1 ? '1 night' : count + ' nights';
+			if (!quote.weekly && quote.peakCount === count) countText += ', peak season';
+			setDetail('', countText + ' · guide total <strong>' + formatGbp(quote.total) + '</strong>');
 			fillBreakdown(nights, quote);
-			if (totalEl) totalEl.textContent = formatGbp(quote.total);
-			if (quoteBox) quoteBox.hidden = false;
-			if (prompt) {
-				if (extendHint) {
-					prompt.hidden = false;
-				prompt.textContent = 'Choose your leave date.';
-				} else {
-					prompt.hidden = true;
-				}
-			}
 		}
 
-		function setEnquire(fromNight, toNight) {
+		function setEnquire(fromNight, lastNight) {
 			if (!enquire) return;
-			if (!fromNight || !toNight) {
+			if (!fromNight || !lastNight) {
 				enquire.setAttribute('href', '#availability-enquiry');
-				enquire.setAttribute('aria-label', 'Enquire without dates');
-				enquire.classList.remove('is-disabled');
-				enquire.removeAttribute('aria-disabled');
-				enquire.removeAttribute('tabindex');
-				if (enquiryPanel && enquiryPanel.open) enquiryPanel.close();
+				enquire.textContent = enquireLabel;
+				if (enquiryFrom) enquiryFrom.value = '';
+				if (enquiryTo) enquiryTo.value = '';
+				if (enquiryIntro) enquiryIntro.textContent = 'Add your details and we will reply within 48 hours.';
 				return;
 			}
-			enquire.classList.remove('is-disabled');
-			enquire.removeAttribute('aria-disabled');
-			enquire.removeAttribute('tabindex');
-			var arrival = fromNight < toNight ? fromNight : toNight;
-			var lastNight = fromNight < toNight ? toNight : fromNight;
 			var departure = addDays(lastNight, 1);
 			var join = enquireUrl.indexOf('?') === -1 ? '?' : '&';
-			enquire.setAttribute(
-				'href',
-				enquireUrl + join + 'enq_date_from=' + encodeURIComponent(arrival) + '&enq_date_to=' + encodeURIComponent(departure)
-			);
-			if (enquiryFrom) enquiryFrom.value = arrival;
+			enquire.setAttribute('href', enquireUrl + join + 'enq_date_from=' + encodeURIComponent(fromNight) + '&enq_date_to=' + encodeURIComponent(departure));
+			enquire.textContent = 'Enquire about these dates';
+			if (enquiryFrom) enquiryFrom.value = fromNight;
 			if (enquiryTo) enquiryTo.value = departure;
-			var count = nightsInclusive(arrival, lastNight).length;
-			enquire.setAttribute(
-				'aria-label',
-				count === 1 ? 'Enquire about this night' : 'Enquire about these nights'
-			);
+			if (enquiryIntro) enquiryIntro.textContent = defaultIntro;
 		}
 
 		function setLive(text) {
 			if (live) live.textContent = text || '';
-		}
-
-		function announceStay(arrival, lastNight) {
-			var nights = nightsInclusive(arrival, lastNight);
-			var leave = prettyDay(addDays(lastNight, 1));
-			if (nights.length === 1) {
-				setLive('One night, leaving ' + leave + '.');
-			} else {
-				setLive(nights.length + ' nights, leaving ' + leave + '.');
-			}
 		}
 
 		function setArrivalOnly(iso) {
@@ -515,105 +526,128 @@
 			endIso = '';
 			paintArrival(iso);
 			setEnquire('', '');
-			setStay(iso, '', false);
-			setLive('Arrive ' + prettyDay(iso) + '. Tap your leave date.');
+			setSummary(iso, '');
+			setLive('Arrive ' + prettyDay(iso) + '. Now pick your leaving day.');
 		}
 
-		function applyStay(arrival, lastNight, extendHint) {
+		function applyStay(arrival, lastNight) {
 			startIso = arrival;
 			endIso = lastNight;
-			paintHope(arrival, lastNight);
+			paintStay(arrival, lastNight, false);
 			setEnquire(arrival, lastNight);
-			setStay(arrival, lastNight, extendHint);
-			announceStay(arrival, lastNight);
+			setSummary(arrival, lastNight);
+			var count = nightsInclusive(arrival, lastNight).length;
+			var quote = guideTotal(nightsInclusive(arrival, lastNight));
+			setLive((count === 1 ? 'One night' : count + ' nights') + ', leaving ' + prettyDay(addDays(lastNight, 1)) + '. Guide total ' + formatGbp(quote.total) + '.');
 		}
 
 		function clearStay() {
 			startIso = '';
 			endIso = '';
 			clearHope();
+			root.classList.remove('is-previewing');
 			setEnquire('', '');
-			setStay('', '');
-			setLive('Selection cleared.');
+			setSummary('', '');
+			setLive('Dates cleared.');
+			syncTabStop();
+		}
+
+		function warn(text) {
+			setDetail(text, '', true);
+			setLive(text);
 		}
 
 		function previewLeave(iso) {
-			if (!startIso || endIso || booked[iso]) return;
-			if (iso === startIso) {
+			if (!startIso || endIso) return;
+			if (iso <= startIso) {
 				paintArrival(startIso);
 				return;
 			}
-			var arrival = startIso < iso ? startIso : iso;
-			var departure = startIso < iso ? iso : startIso;
-			var lastNight = addDays(departure, -1);
-			if (lastNight < arrival || rangeTouchesBooked(arrival, lastNight)) {
+			var lastNight = addDays(iso, -1);
+			if (rangeTouchesBooked(startIso, lastNight)) {
 				paintArrival(startIso);
 				return;
 			}
-			paintHope(arrival, lastNight);
+			paintStay(startIso, lastNight, true);
+		}
+
+		/* Tapping a chosen day again undoes it: the leaving day drops back to
+		   "pick your leaving day"; the arrival day clears the whole stay. */
+		function undoPick(iso) {
+			if (startIso && iso === startIso) {
+				clearStay();
+				return true;
+			}
+			if (startIso && endIso && iso === addDays(endIso, 1)) {
+				setArrivalOnly(startIso);
+				setLive('Leaving day removed. Pick a new leaving day.');
+				return true;
+			}
+			return false;
 		}
 
 		function onPick(iso) {
-			if (booked[iso]) return;
-
-			/* Fresh pick, or restart after a completed stay. */
-			if (!startIso || endIso) {
+			if (undoPick(iso)) return;
+			if (!startIso || endIso || iso < startIso) {
 				setArrivalOnly(iso);
 				return;
 			}
-
-			/* Arrival set; this click is the leave (departure) date. */
-			if (iso === startIso) {
-				var sameDay = 'Choose a later leave date — stays are overnight.';
-				if (prompt) {
-					prompt.hidden = false;
-					prompt.textContent = sameDay;
-				}
-				setLive(sameDay);
+			var lastNight = addDays(iso, -1);
+			if (rangeTouchesBooked(startIso, lastNight)) {
+				warn('Those nights cross a booking. Pick a shorter stay or new arrival night.');
 				return;
 			}
+			applyStay(startIso, lastNight);
+		}
 
-			var arrival = startIso < iso ? startIso : iso;
-			var departure = startIso < iso ? iso : startIso;
-			var lastNight = addDays(departure, -1);
-
-			if (rangeTouchesBooked(arrival, lastNight)) {
-				var blocked = 'Those nights are already held. Try a stretch that doesn’t cross a booking.';
-				if (prompt) {
-					prompt.hidden = false;
-					prompt.textContent = blocked;
-				}
-				setLive(blocked);
+		/* A booked morning can still be a leaving day: guests are out by check-out. */
+		function onPickLeaveOnBooked(iso) {
+			if (undoPick(iso)) return;
+			if (!startIso || endIso || iso <= startIso) {
+				warn('That night is booked. Pick an open night to arrive.');
 				return;
 			}
-
-			applyStay(arrival, lastNight, false); /* stay complete: hide the helper prompt */
+			var lastNight = addDays(iso, -1);
+			if (rangeTouchesBooked(startIso, lastNight)) {
+				warn('Those nights cross a booking. Pick a shorter stay or new arrival night.');
+				return;
+			}
+			applyStay(startIso, lastNight);
 		}
 
 		root.addEventListener('click', function (event) {
-			var bookedTd = event.target.closest('.availability__day.is-booked');
-			if (bookedTd && root.contains(bookedTd)) {
-				var held = 'That night is already held. Pick an open date.';
-				if (prompt) {
-					prompt.hidden = false;
-					prompt.textContent = held;
-				}
-				setLive(held);
-				return;
-			}
-			var btn = event.target.closest('button[data-iso]');
+			var btn = event.target.closest('button.availability__cell');
 			if (!btn || !root.contains(btn)) return;
 			var iso = btn.getAttribute('data-iso');
-			if (!iso) return;
-			onPick(iso);
+			syncTabStop(iso);
+			if (btn.hasAttribute('data-booked')) {
+				onPickLeaveOnBooked(iso);
+			} else {
+				onPick(iso);
+			}
 		});
 
-		if (window.matchMedia('(hover: hover)').matches && monthsHost) {
+		monthsHost.addEventListener('keydown', function (event) {
+			var btn = event.target.closest('button.availability__cell');
+			if (!btn) return;
+			var iso = btn.getAttribute('data-iso');
+			var steps = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+			if (steps[event.key]) {
+				event.preventDefault();
+				moveFocus(iso, steps[event.key]);
+			} else if (event.key === 'PageDown' || event.key === 'PageUp') {
+				event.preventDefault();
+				showMonth(index + (event.key === 'PageDown' ? 1 : -1), true);
+				var first = syncTabStop();
+				if (first) first.focus();
+			}
+		});
+
+		if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
 			monthsHost.addEventListener('pointerover', function (event) {
-				var btn = event.target.closest('button[data-iso]');
-				if (!btn || !monthsHost.contains(btn)) return;
-				if (btn.closest('.is-booked')) return;
-				var iso = btn.getAttribute('data-iso');
+				var target = event.target.closest('button.availability__cell');
+				if (!target || !monthsHost.contains(target)) return;
+				var iso = target.getAttribute('data-iso');
 				if (iso) previewLeave(iso);
 			});
 			monthsHost.addEventListener('pointerleave', function () {
@@ -621,77 +655,45 @@
 			});
 		}
 
-		if (clearBtn) {
-			clearBtn.addEventListener('click', clearStay);
+		if (clearBtn) clearBtn.addEventListener('click', clearStay);
+		if (prevBtn) prevBtn.addEventListener('click', function () { showMonth(index - 1, true); });
+		if (nextBtn) nextBtn.addEventListener('click', function () { showMonth(index + 1, true); });
+		if (wide && typeof wide.addEventListener === 'function') {
+			wide.addEventListener('change', function () { showMonth(index, false); });
 		}
 
-		if (enquire) {
+		if (enquire && enquiryPanel) {
 			enquire.addEventListener('click', function (event) {
-				if (enquire.classList.contains('is-disabled')) {
-					event.preventDefault();
-					return;
-				}
-				if (enquiryPanel) {
-					event.preventDefault();
-					enquiryReturnFocus = document.activeElement;
-					if (typeof enquiryPanel.showModal === 'function') enquiryPanel.showModal();
-					var firstField = enquiryPanel.querySelector('input:not([type="hidden"])');
-					if (firstField) firstField.focus({ preventScroll: true });
-				}
+				if (typeof enquiryPanel.showModal !== 'function') return;
+				event.preventDefault();
+				enquiryPanel.showModal();
+				var firstField = enquiryPanel.querySelector('input:not([type="hidden"])');
+				if (firstField) firstField.focus({ preventScroll: true });
 			});
-
-			if (enquiryClose && enquiryPanel) {
+			if (enquiryClose) {
 				enquiryClose.addEventListener('click', function () { enquiryPanel.close(); });
 			}
-			if (enquiryPanel) {
-				enquiryPanel.addEventListener('click', function (event) {
-					if (event.target === enquiryPanel) enquiryPanel.close();
-				});
-				enquiryPanel.addEventListener('close', function () {
-					if (enquiryReturnFocus && typeof enquiryReturnFocus.focus === 'function') {
-						enquiryReturnFocus.focus({ preventScroll: true });
-					}
-					enquiryReturnFocus = null;
-				});
-			}
-		}
-
-		if (prevBtn) {
-			prevBtn.addEventListener('click', function () {
-				showMonth(index - 1);
+			enquiryPanel.addEventListener('click', function (event) {
+				if (event.target === enquiryPanel) enquiryPanel.close();
 			});
-		}
-		if (nextBtn) {
-			nextBtn.addEventListener('click', function () {
-				var vis = visibleCount();
-				ensureMonths(Math.min(maxMonths - 1, index + vis));
-				showMonth(index + 1);
+			enquiryPanel.addEventListener('close', function () {
+				enquire.focus({ preventScroll: true });
 			});
 		}
 
-		/* Left / Right step months when the toolbar has focus. */
-		if (monthLabelEl && prevBtn && nextBtn) {
-			monthLabelEl.setAttribute('tabindex', '0');
-			monthLabelEl.setAttribute('role', 'group');
-			monthLabelEl.setAttribute(
-				'aria-label',
-				(prevBtn.getAttribute('aria-label') || 'Previous month') + ' and ' + (nextBtn.getAttribute('aria-label') || 'next month') + ' with left and right arrow keys'
-			);
-			monthLabelEl.addEventListener('keydown', function (event) {
-				var key = event.key;
-				if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
-				event.preventDefault();
-				showMonth(key === 'ArrowLeft' ? index - 1 : index + 1);
-				setLive(monthLabelEl.textContent);
-			});
+		/* Lets CSS park the back-to-top button while the booking bar is on screen. */
+		if ('IntersectionObserver' in window) {
+			new IntersectionObserver(function (entries) {
+				document.body.classList.toggle('availability-in-view', entries[0].isIntersecting);
+			}).observe(root);
 		}
 
-		showMonth(0);
+		showMonth(0, false);
 		setEnquire('', '');
-		setStay('', '');
+		setSummary('', '');
 	}
 
 	ready(function () {
-		document.querySelectorAll('[data-availability]').forEach(initDiary);
+		document.querySelectorAll('[data-availability]').forEach(initBoard);
 	});
 })();

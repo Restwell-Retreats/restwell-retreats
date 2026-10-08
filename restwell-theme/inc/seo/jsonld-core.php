@@ -149,9 +149,37 @@ function restwell_print_jsonld( $schema ) {
 			return $v !== null && $v !== '' && $v !== array();
 		}
 	);
-	echo '<script type="application/ld+json">' . "\n";
-	echo wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
-	echo "\n" . '</script>' . "\n";
+	echo restwell_jsonld_script_tag( $schema ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON, with "</" neutralised.
+}
+
+/**
+ * JSON-LD <script> tag as a string (usable inside an output-buffer callback,
+ * where echo-and-capture is not allowed).
+ *
+ * @param array $schema Schema array.
+ * @return string
+ */
+function restwell_jsonld_script_tag( $schema ) {
+	// Term names and titles arrive HTML-encoded ("Kent &amp; coast"); JSON-LD
+	// wants plain text (audit I15).
+	$schema = restwell_jsonld_decode_entities( $schema );
+	$json   = (string) wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT );
+	// Decoded text could now contain "</script>"; never let a string close the tag.
+	$json = str_replace( '</', '<\/', $json );
+	return '<script type="application/ld+json">' . "\n" . $json . "\n" . '</script>' . "\n";
+}
+
+/**
+ * Decode HTML entities in every string of a schema array.
+ *
+ * @param mixed $value Schema value.
+ * @return mixed
+ */
+function restwell_jsonld_decode_entities( $value ) {
+	if ( is_array( $value ) ) {
+		return array_map( 'restwell_jsonld_decode_entities', $value );
+	}
+	return is_string( $value ) ? html_entity_decode( $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) : $value;
 }
 
 /**
@@ -381,7 +409,7 @@ function restwell_output_jsonld_article() {
 	$excerpt     = wp_strip_all_tags( get_the_excerpt( $pid ) );
 	$date_pub    = get_the_date( 'c', $pid );
 	$date_mod    = get_the_modified_date( 'c', $pid );
-	$author_name = restwell_get_schema_brand_name(); // site name as author for brand articles
+	$byline      = function_exists( 'restwell_get_post_byline' ) ? restwell_get_post_byline() : array();
 
 	$image_url = '';
 	$thumb_id  = get_post_thumbnail_id( $pid );
@@ -411,11 +439,26 @@ function restwell_output_jsonld_article() {
 		'datePublished'    => $date_pub,
 		'dateModified'     => $date_mod,
 		'description'      => $excerpt,
-		'author'           => array(
-			'@type' => 'Organization',
-			'name'  => $author_name,
-			'url'   => home_url( '/' ),
-		),
+		// Named author, matching the visible byline (decided 1 Oct 2026, audit I19).
+		'author'           => ! empty( $byline['name'] )
+			? array_filter(
+				array(
+					'@type'    => 'Person',
+					'name'     => $byline['name'],
+					'url'      => $byline['url'] ?? '',
+					'sameAs'   => ! empty( $byline['url'] ) ? array( $byline['url'] ) : array(),
+					'worksFor' => array(
+						'@type' => 'Organization',
+						'name'  => restwell_get_schema_brand_name(),
+						'url'   => home_url( '/' ),
+					),
+				)
+			)
+			: array(
+				'@type' => 'Organization',
+				'name'  => restwell_get_schema_brand_name(),
+				'url'   => home_url( '/' ),
+			),
 		'publisher'        => $publisher_org,
 		'mainEntityOfPage' => array(
 			'@type' => 'WebPage',

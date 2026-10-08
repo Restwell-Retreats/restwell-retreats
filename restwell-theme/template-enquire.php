@@ -123,7 +123,7 @@ get_template_part(
 );
 ?>
 
-<section class="section-y band-white" id="enquiry-result">
+<section class="section-y band-white" id="enquiry-result"<?php echo ( $enq_success && function_exists( 'restwell_consume_conversion_token' ) && restwell_consume_conversion_token() ) ? ' data-conversion="1"' : ''; ?>>
 	<div class="container layout-sidebar">
 		<div class="multistep" data-multistep>
 			<?php if ( $enq_success ) : ?>
@@ -200,14 +200,6 @@ get_template_part(
 							<div class="field"><label for="enq-name"><?php esc_html_e( 'Full name *', 'restwell-retreats' ); ?></label><input id="enq-name" name="enq_name" required autocomplete="name" aria-describedby="enq-name-error" value="<?php echo esc_attr( $enq_val( 'enq_name', $enq_fields ) ); ?>" /><p class="field-error" id="enq-name-error" role="alert" hidden><?php esc_html_e( 'Enter your full name.', 'restwell-retreats' ); ?></p></div>
 							<div class="field"><label for="enq-email"><?php esc_html_e( 'Email *', 'restwell-retreats' ); ?></label><input id="enq-email" name="enq_email" type="email" required autocomplete="email" aria-describedby="enq-email-error" value="<?php echo esc_attr( $enq_val( 'enq_email', $enq_fields ) ); ?>" /><p class="field-error" id="enq-email-error" role="alert" hidden><?php esc_html_e( 'Enter a valid email address.', 'restwell-retreats' ); ?></p></div>
 							<div class="field"><label for="enq-phone"><?php esc_html_e( 'Phone *', 'restwell-retreats' ); ?></label><input id="enq-phone" name="enq_phone" type="tel" required autocomplete="tel" aria-describedby="enq-phone-error" value="<?php echo esc_attr( $enq_val( 'enq_phone', $enq_fields ) ); ?>" /><p class="field-error" id="enq-phone-error" role="alert" hidden><?php esc_html_e( 'Enter your phone number.', 'restwell-retreats' ); ?></p></div>
-							<div class="field"><label for="enq-pref"><?php esc_html_e( 'Contact preference', 'restwell-retreats' ); ?></label>
-								<?php $pref = $enq_val( 'enq_contact_preference', $enq_fields, 'email' ); ?>
-								<select id="enq-pref" name="enq_contact_preference">
-									<option value="email" <?php selected( $pref, 'email' ); ?>><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></option>
-									<option value="phone" <?php selected( $pref, 'phone' ); ?>><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></option>
-									<option value="either" <?php selected( $pref, 'either' ); ?>><?php esc_html_e( 'Either', 'restwell-retreats' ); ?></option>
-								</select>
-							</div>
 						</div>
 						<div class="field"><label for="enq-time"><?php esc_html_e( 'Best time to call', 'restwell-retreats' ); ?></label><input id="enq-time" name="enq_preferred_time" placeholder="e.g. weekday mornings" value="<?php echo esc_attr( $enq_val( 'enq_preferred_time', $enq_fields ) ); ?>" /></div>
 						<?php
@@ -231,8 +223,8 @@ get_template_part(
 						<legend class="form-legend"><?php esc_html_e( 'Your stay', 'restwell-retreats' ); ?></legend>
 						<div class="form-grid form-grid--2">
 							<div class="field"><label for="enq-from"><?php esc_html_e( 'Arrival (optional)', 'restwell-retreats' ); ?></label><input id="enq-from" name="enq_date_from" type="date" value="<?php echo esc_attr( $enq_val( 'enq_date_from', $enq_fields, $enq_get_from ) ); ?>" /></div>
-							<div class="field"><label for="enq-to"><?php esc_html_e( 'Departure (optional)', 'restwell-retreats' ); ?></label><input id="enq-to" name="enq_date_to" type="date" value="<?php echo esc_attr( $enq_val( 'enq_date_to', $enq_fields, $enq_get_to ) ); ?>" /></div>
-							<div class="field"><label for="enq-guests"><?php esc_html_e( 'Guests', 'restwell-retreats' ); ?></label><input id="enq-guests" name="enq_guests" type="number" min="1" max="5" value="<?php echo esc_attr( $enq_val( 'enq_guests', $enq_fields, '2' ) ); ?>" /></div>
+							<div class="field"><label for="enq-to"><?php esc_html_e( 'Departure (optional)', 'restwell-retreats' ); ?></label><input id="enq-to" name="enq_date_to" type="date" aria-describedby="enq-to-error" data-after-field="enq_date_from" value="<?php echo esc_attr( $enq_val( 'enq_date_to', $enq_fields, $enq_get_to ) ); ?>" /><p class="field-error" id="enq-to-error" role="alert" hidden><?php esc_html_e( 'Choose a departure date after your arrival.', 'restwell-retreats' ); ?></p></div>
+							<div class="field"><label for="enq-guests"><?php esc_html_e( 'Guests', 'restwell-retreats' ); ?></label><input id="enq-guests" name="enq_guests" type="number" min="1" max="5" step="1" inputmode="numeric" aria-describedby="enq-guests-error" value="<?php echo esc_attr( $enq_val( 'enq_guests', $enq_fields, '2' ) ); ?>" /><p class="field-error" id="enq-guests-error" role="alert" hidden><?php esc_html_e( 'The bungalow sleeps up to five. Enter a number from 1 to 5.', 'restwell-retreats' ); ?></p></div>
 							<div class="field"><label for="enq-fund"><?php esc_html_e( 'Funding type', 'restwell-retreats' ); ?></label>
 								<select id="enq-fund" name="enq_funding">
 									<option value="self" <?php selected( $funding_selected, 'self' ); ?>><?php esc_html_e( 'Self-funded', 'restwell-retreats' ); ?></option>

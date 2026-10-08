@@ -333,7 +333,7 @@ get_template_part(
 
 	<section class="section-y band-white process" id="process" aria-labelledby="process-h">
 	  <div class="container">
-		<header class="section-head section-head--center process__head">
+		<header class="section-head process__head">
 		  <?php if ( '' !== $hiw_steps_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $hiw_steps_label ); ?></p>
 		  <?php endif; ?>
@@ -406,9 +406,9 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="care care--tease section-y section-y--compact band-teal" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--compact band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="care__tease">
+		<div class="care-pointer__card">
 		  <?php if ( '' !== $hiw_care_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $hiw_care_label ); ?></p>
 		  <?php endif; ?>

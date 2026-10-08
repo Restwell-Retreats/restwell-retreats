@@ -8,7 +8,7 @@ Booking a stay, from first email to front door
 
 ## Meta description
 
-Tell us your dates and who’s coming, we confirm the bungalow, you pay a deposit, and then you arrive to a house already set up for you. Care can go on the same note.
+Tell us your dates and who’s coming. We confirm the bungalow, you pay a deposit, and you arrive to a house set up for you. Care can go on the same note.
 
 ## H1 (`hiw_heading`)
 

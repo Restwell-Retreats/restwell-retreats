@@ -8,7 +8,7 @@ Look inside the accessible holiday bungalow
 
 ## Meta description
 
-A room-by-room look round the bungalow: two bedrooms, a level-access wet room, an open kitchen, and French doors onto the garden. Sleeps five, and it’s all yours.
+A room-by-room look round the bungalow: two bedrooms, a level-access wet room, an open kitchen and French doors to the garden. Sleeps five, and it’s all yours.
 
 ## H1 (`prop_hero_heading`)
 

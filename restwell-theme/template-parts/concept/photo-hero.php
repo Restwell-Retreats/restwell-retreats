@@ -52,7 +52,7 @@ $image_url  = trim( (string) $args['image_url'] );
 $image_alt  = trim( (string) $args['image_alt'] );
 $overlay = sanitize_key( (string) $args['overlay'] );
 $variant = sanitize_key( (string) $args['variant'] );
-if ( ! in_array( $variant, array( 'place', 'full' ), true ) ) {
+if ( ! in_array( $variant, array( 'place', 'full', 'plain' ), true ) ) {
 	$variant = 'place';
 }
 $hero_post_id    = absint( $args['post_id'] );
@@ -63,6 +63,11 @@ if ( $heading === '' ) {
 
 if ( $hero_post_id < 1 ) {
 	$hero_post_id = (int) get_queried_object_id();
+}
+
+// Every interior hero carries an eyebrow (audit I25).
+if ( $eyebrow === '' && function_exists( 'restwell_page_hero_default_eyebrow' ) ) {
+	$eyebrow = restwell_page_hero_default_eyebrow( is_singular() ? $hero_post_id : 0 );
 }
 
 if ( $media_id < 1 && $hero_post_id > 0 && function_exists( 'restwell_page_hero_attachment_id' ) ) {
@@ -98,15 +103,21 @@ if ( $image_alt === '' ) {
 	$image_alt = $heading;
 }
 $hero_class = 'hero';
+if ( 'plain' === $variant ) {
+	// Light sand band, dark text, under a solid header: pages where no photo fits (FAQ).
+	$hero_class .= ' hero--interior hero--plain';
+	$image_url   = '';
+}
 if ( 'place' === $variant ) {
 	// Mid-height coastal/property plane — avoids homepage-tall empty voids on interior pages.
 	$hero_class .= ' hero--interior hero--place';
 }
-if ( 'none' !== $overlay ) {
+if ( 'none' !== $overlay && 'plain' !== $variant ) {
 	$hero_class .= ' hero--overlay-heavy';
 }
 ?>
 <section class="<?php echo esc_attr( $hero_class ); ?>" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+	<?php if ( 'plain' !== $variant ) : ?>
 	<div class="hero__media">
 		<?php if ( $image_url !== '' ) : ?>
 			<img
@@ -120,6 +131,7 @@ if ( 'none' !== $overlay ) {
 			/>
 		<?php endif; ?>
 	</div>
+	<?php endif; ?>
 	<div class="container">
 		<div class="hero__content">
 			<?php if ( ! empty( $crumbs ) ) : ?>
@@ -144,7 +156,7 @@ if ( 'none' !== $overlay ) {
 			<?php endif; ?>
 			<div class="hero__text">
 				<?php if ( $eyebrow !== '' ) : ?>
-					<p class="eyebrow eyebrow--on-dark"><?php echo esc_html( $eyebrow ); ?></p>
+					<p class="<?php echo esc_attr( 'plain' === $variant ? 'eyebrow' : 'eyebrow eyebrow--on-dark' ); ?>"><?php echo esc_html( $eyebrow ); ?></p>
 				<?php endif; ?>
 				<h1 id="<?php echo esc_attr( $heading_id ); ?>"><?php echo esc_html( $heading ); ?></h1>
 				<?php if ( $intro !== '' ) : ?>

@@ -1,146 +1,94 @@
 # Restwell Theme - Design System Notes
 
-Short reference for typography, spacing, and contrast. See also `VISUAL-FRONTEND-AUDIT.md` for audit details.
+Short reference for typography, spacing, line length and contrast. The source of truth is the `:root` block and the governance comments at the top of `assets/css/shared.css`; this page summarises it. Rewritten 2 October 2026 (audit I41): the earlier version described `input.css` and `rw-section-y*` utilities, neither of which exists any more.
 
-## Typography and line length
+## Stylesheets
 
-- **Body / intro text:** Use `max-w-prose` (or `max-w-2xl`) on paragraph or wrapper so line length stays ~50-75ch. Applied on intro and long-form body blocks across templates.
-- **Minimum body size on mobile:** 16px (theme base `font-size: 18px` in `input.css`).
-- **Section labels:** Use the `section-label` template part: `get_template_part( 'template-parts/section-label', null, array( 'label' => $var ) );`. Styling and contrast are handled in CSS via `--warm-gold-text`.
+| File | Role |
+|------|------|
+| `assets/css/fonts.css` | Self-hosted Inter and Lora variable fonts (`font-display: swap`). |
+| `assets/css/shared.css` | The design system: tokens, base elements, components, page sections. |
+| `assets/css/shared-wp.css` | WordPress-specific glue (admin bar, core block output). |
+| `assets/css/polish.css` | Small refinements layered after `shared.css`. |
+| `assets/css/site.min.css` | **Built file.** The four above, concatenated in that order and minified by `tools/build-css.sh`. Production enqueues only this; `SCRIPT_DEBUG` loads the four sources. `tests/CssBundleTest.php` fails when it is stale, so run the build after any CSS edit. |
+
+Tailwind is **not** loaded. Utility class names such as `pt-8`, `border-t` or `text-gray-600` in markup do nothing; use the components and tokens below.
+
+## Typography
+
+- **Families:** Inter for body and UI, Lora (semibold, never bold) for headings and display.
+- **Size primitives:** `--text-2xs` (0.75rem) to `--text-3xl`. Body is `--text-base` (1.0625rem, 17px). Never render text below 0.75rem (12px).
+- **Roles:** prefer `--type-body-*`, `--type-lede-*`, `--type-eyebrow-*`, `--type-ui-*`, `--type-meta-size` over raw primitives.
+- **Headings:** `--type-h1`, `--type-h2`, `--type-h3` are rem + vw clamps (pure vw can fail WCAG 1.4.4). One H1 per page; no skipped levels.
+- **Eyebrows:** `.eyebrow` (gold text, uppercase, `--type-eyebrow-tracking`); `.eyebrow--on-dark` on teal bands. Interior heroes all print one (`hero_eyebrow` meta, falling back to the page's section name).
+
+### Line length
+
+`--measure-text: 38rem` keeps running text at about 70–75 characters of Inter. It is in **rem**, not `ch` or `em`: `ch` is the width of "0" (wider than an average letter, so `70ch` ran ~88 characters), and `em` resolved differently in every element, which is how the site ended up with 34, 35, 36, 40 and 48rem measures side by side. `--rw-readable` and `--rw-measure-care` use the same 38rem. Do not introduce another prose width.
+
+It is applied to `.prose` and `.prose--wide` text children, `.section-head .lede`, and the long component notes listed at the end of `shared.css`. Tables and figures inside `.prose--wide` may still use the full 44rem column.
+
+Body copy is left-aligned. Centre only short CTA bands and `.section-head--center` titles, never a multi-line paragraph.
 
 ## Spacing system
 
-All spacing is **token-first** in `input.css` (`:root`), exposed through **named utilities** below. **Breakpoints match Tailwind:** default (&lt;640px), `sm` 640px, `md` 768px, `lg` 1024px. Use the same four steps anywhere section-level padding or major gaps ramp with viewport.
+Token-first and mobile-first. The layers are documented at the top of `shared.css`, and `tools/_check_spacing.py` enforces the governance (every `--rhythm-*` token justified, components consume tokens not literals, media queries remap tokens not properties).
 
-### Base scale (`--space-*`)
+1. **Primitives** `--space-1` (0.25rem) … `--space-20` (5rem): a fixed 4px grid for gaps, control padding and icons. Never remapped in media queries.
+2. **Rhythm ladder** `--rhythm-*-0…3`: page-structure steps for default (<640), `sm` ≥640, `md` ≥768 and `lg` ≥1024. Edit values here only.
+3. **Semantic roles**, which alias the active ladder step: `--section-y`, `--section-y-compact`, `--section-y-cta`, `--section-y-lead`, `--section-after-head`, `--section-head-gap`, `--section-stack-gap`, `--grid-gap`, `--panel-pad`, `--rw-gutter-x`, `--hero-*`.
+4. **Component tokens**, defined on a component root (e.g. `--split-gap`, `--link-list-gap`).
+5. **Density contexts:** `body.page--interior` points roles at denser steps on phones, then rejoins the ladder at `md`.
 
-Aligned with the Tailwind spacing scale (0.25rem = 4px step). Use for component padding, small gaps, and token definitions.
+### Section classes
 
-| Token | rem | Tailwind analogue |
-|-------|-----|-------------------|
-| `--space-1` | 0.25 | `1` |
-| `--space-2` | 0.5 | `2` |
-| `--space-3` | 0.75 | `3` |
-| `--space-4` | 1 | `4` |
-| `--space-5` | 1.25 | `5` |
-| `--space-6` | 1.5 | `6` |
-| `--space-7` | 1.75 | `7` |
-| `--space-8` | 2 | `8` |
-| `--space-10` | 2.5 | `10` |
-| `--space-12` | 3 | `12` |
-| `--space-14` | 3.5 | `14` |
-| `--space-16` | 4 | `16` |
-| `--space-20` | 5 | `20` |
+| Class | Use |
+|-------|-----|
+| `.section-y` | Default content band (`padding-block: var(--section-y)`). |
+| `.section-y--compact` | Shorter bands: related links, further reading, FAQ footers. |
+| `.section-y--cta` | Conversion bands, which take a little more air than body sections. |
+| `.band-white`, `.band-subtle`, `.band-teal` | Band backgrounds; pair with one `.section-y*` class. |
+| `.container`, `.container--sm`, `.container--md` | Page rail: max `--rw-max-page` (1200px), side padding `--rw-gutter-x` (24px on phones, fluid to 40px). |
+| `.section-head`, `.section-head--tight`, `.section-head--center` | Eyebrow + heading + lede cluster, with gaps from `--section-head-gap` and `--section-after-head`. |
+| `.section-follow` | A block that follows a section head, picking up the after-head step. |
 
-**Inline Tailwind** (`gap-3`, `p-6`, `mb-4`, etc.) is fine for **micro-layout** inside cards, buttons, and one-off UI. For **section shells**, **title-to-content distance**, **multi-column editorial grids**, and **vertical stacks of blocks**, prefer the tokens/utilities in this section so changes propagate sitewide.
+Sibling rules already manage the top padding after a hero or a sticky subnav (`.hero + .section-y`, `.subnav + .section-y`), so don't add margin to compensate.
 
-### Section vertical padding (main rhythm)
+### Links and lists
 
-| Tier | Viewport | Standard | Hero | Compact strip | CTA band |
-|------|----------|----------|------|-----------------|----------|
-| Base | &lt; 640px | `--section-padding-y` (3.5rem) | `--section-padding-y-hero` (4.5rem) | `--section-padding-y-compact` (3rem) | `--section-padding-y-cta` (4rem) |
-| `sm` | 640px+ | `--section-padding-y-sm` (4rem) | `--section-padding-y-hero-sm` (5rem) | `--section-padding-y-compact-sm` (3.25rem) | `--section-padding-y-cta-sm` (4rem) |
-| `md` | 768px+ | `--section-padding-y-tablet` (5rem) | `--section-padding-y-hero-tablet` (6rem) | `--section-padding-y-compact-tablet` (4rem) | `--section-padding-y-cta-tablet` (5rem) |
-| `lg` | 1024px+ | `--section-padding-y-desktop` (6rem) | `--section-padding-y-hero-desktop` (7rem) | `--section-padding-y-compact-desktop` (4rem) | `--section-padding-y-cta-desktop` (5rem) |
+- `.text-link` for inline calls to action, and `.link-list` for stacked related links (serif, hairline separators). `template-parts/related-guides.php`, `post-cluster-links.php` and `pricing-cross-links.php` all use `.link-list`.
+- Inline links inside `.prose--wide` get a 44px minimum tap height (WCAG 2.5.8).
 
-**Utilities (add one per section; combine with bg / seams as needed):**
+## Cards and panels
 
-| Utility | Role |
-|---------|------|
-| `rw-section-y` | Default main content sections — **do not** use raw `py-16 md:py-24` on shells. |
-| `rw-section-y--hero` | Above-the-fold / large heroes (homepage, interior hero). |
-| `rw-section-y--compact` | Shorter bands: related links, “more reading”, FAQ/resources footers, compact `page-hero` (teal/sand). |
-| `rw-section-y--cta` | Conversion strips (often white or `--deep-teal`) where legacy rhythm was slightly tighter than full `rw-section-y`. |
-| `rw-section-y--eyebrow-split` | **With** `rw-section-y`: balances flex `gap` between eyebrow and cards (e.g. Area & funding). |
-| `rw-section-y--head-grid-split` | **With** `rw-section-y`: balances `.rw-mb-section` / `.rw-section-head` before a card grid (e.g. Why Restwell). |
+- A card is a white (or soft sand) surface, a `1px` hairline border in `--deep-teal` at ~10%, `--radius-lg`, and at most the faint shadow `0 8px 30px rgb(0 0 0 / 0.04)`.
+- **No single-edge accent borders.** No `border-top`, `border-left` or `border-bottom` in a thick colour on one side of a card, callout or panel. With a radius they draw a crescent that curls round the corners, and they read as generated UI. Say what a card is with a marker (icon tile, tick, tinted circle), a heading or a tint, not a coloured edge. (Hairline dividers between rows, chevron arrows and the blog table-of-contents rail are fine.)
 
-Sections inside `#main-content` with **no** `py-*` and **no** class containing `rw-section-y` still receive **`rw-section-y`-equivalent padding** via `#main-content > section` in `input.css`. If you add any `rw-section-y*` class, padding comes **only** from that utility (no double stack from the ID rule — the selector matches `[class*="rw-section-y"]`).
+## Images
 
-**Section hairlines:** Prefer `rw-seam-t`, `rw-seam-y-soft`, or `rw-seam-y-muted` instead of heavy `border-t` / `border-y` on full-width bands.
-
-### Home hero copy rhythm (`.hero.home-hero`)
-
-Use **flex `gap` on wrappers**, not mixed `space-y-*` + `mt-*` on siblings in the same stack.
-
-| Token | Default | Role |
-|-------|---------|------|
-| `--hero-text-stack-gap` | `var(--space-5)` | Eyebrow → H1 → lede inside `.home-hero__text-stack`. |
-| `--hero-copy-gap` | `var(--space-6)` | Desktop: lede block → CTA stack on `.home-hero__copy`. |
-| `--hero-cta-gap` | `var(--space-3)` | Primary + secondary button pair (must stay smaller than `--hero-copy-gap`). |
-| `--hero-main-cluster-gap-mobile` | `var(--space-6)` | ≤768px poster layout: story / CTAs / scroll cluster. |
-| `--hero-text-stack-gap-mobile` | `var(--space-6)` | ≤768px poster layout text stack (≤639px tightens to `--hero-text-stack-gap`). |
-| `--hero-cta-gap-mobile` | `var(--space-2)` | ≤768px centred CTA column. |
-| `--hero-min-height-mobile` | `min(82svh, 44rem)` | ≤768px hero shell. |
-| `--hero-min-height-mobile-short` | `min(76svh, 38rem)` | ≤768px and short viewport height. |
-
-Horizontal inset on mobile: `.container` and `.hero .relative.container` both use `max(var(--space-6), env(safe-area-inset-*))` at ≤768px so header and hero share one rail.
-
-### After headings and stacks
-
-| Token / utility | Use |
-|-----------------|-----|
-| `--rw-section-after-head` (+ `-md` / `-lg`) | Space **below** eyebrow + heading cluster before body/grid. |
-| `.rw-section-head` | Wrapper for label + `h2`/`h3` (+ optional dek); applies gap + margin-bottom from tokens. |
-| `.rw-mb-section` / `.rw-mb-section-tight` | When you cannot use `.rw-section-head` but need the same margin below a title line. |
-| `.rw-stack`, `.rw-stack--tight`, `.rw-stack--loose`, `.rw-stack--dense`, `.rw-stack--regions` | Vertical stacks; gaps from `--rw-stack-gap*` / `--rw-card-region-gap`. Prefer over mixing `space-y-*` with `gap-*` on the same axis. |
-| `.rw-prose-stack` | Prose blocks; same gap as `.rw-stack`. |
-
-### Grids and gutters
-
-| Token / utility | Use |
-|-----------------|-----|
-| `--rw-gutter-x`, `--rw-gutter-x-sm`, `--rw-gutter-x-lg` | Horizontal inset for full-bleed bands that must line up with `.container`. |
-| `--rw-grid-gap`, `--rw-grid-gap-md`, `--rw-grid-gap-lg` | Default editorial grids — use **class** `rw-gap-grid` (and `rw-gap-grid-lg` where a larger jump at `lg` is intended). |
-| `--rw-split-grid-gap-mobile` → tablet → desktop | `grid md:grid-cols-2` — applied globally in `input.css` for `#main-content .grid.md:grid-cols-2`. |
-
-**Card grids (equal row height):** Use grid with `items-stretch`; inside each cell use column flex / `rw-stack`, `h-full min-h-0` on the cell, and `flex: 1 1 auto` on the trailing text block so row heights align (see homepage `features-section`).
+- Theme images go through `restwell_theme_image_url()`, which serves `assets/images/**/opt/<name>.webp`.
+- `tools/generate-opt-webp.sh` builds those Opt files plus width variants (`<name>-480w`, `-800w`, `-1200w`, `-1920w`, and 160/320 for partner badges; never upscaled).
+- `inc/responsive-images.php` adds `srcset` and `sizes` to every `<img>` printed by URL. Give an `<img>` an explicit `sizes` attribute when the layout is known (the logo, mosaics, small badges); otherwise heroes get `100vw` and lazy images get `sizes="auto, …"`.
+- Every content image needs `alt` (empty for decorative), `width` and `height`.
 
 ## Interactive states
 
-- **Focus:** Global `:focus-visible` uses `var(--deep-teal)` outline (≥3:1 on white). Do not use `outline: none` without a visible replacement.
-- **Active nav:** Non-colour indicator (e.g. `border-bottom`) in addition to background so state is clear without colour alone.
-- **Touch targets:** Interactive elements (buttons, links, hamburger, FAQ summary, footer links) have at least 44×44px tap area; `touch-action: manipulation` used where appropriate.
-- **Motion:** Respect `prefers-reduced-motion` for any non-essential animation (see `input.css`).
-
-## Design tokens (`:root` in `input.css`)
-
-- **Colour:** `--deep-teal`, `--warm-gold`, `--warm-gold-text` (section labels), `--body-secondary`, `--muted-grey`, `--sea-glass`, `--soft-sand`, `--driftwood`.
-- **Spacing — base:** `--space-1` … `--space-20` (see **Base scale** above).
-- **Spacing — sections:** `--section-padding-y*`, `--section-padding-y-hero*`, `--section-padding-y-compact*`, `--section-padding-y-cta*`.
-- **Spacing — layout:** `--rw-gutter-x*`, `--rw-split-grid-gap-*`, `--rw-grid-gap*`, `--rw-stack-gap*`, `--rw-card-region-gap`, `--rw-section-after-head*`, `--rw-balance-eyebrow-split*`, `--rw-panel-pad-*`, `--hero-text-stack-gap`, `--hero-copy-gap`, `--hero-cta-gap`, `--hero-*-mobile`, `--hero-min-height-mobile*`.
-
-## Minimum text size
-
-Never render text below `0.75rem` (12px). Footer micro-copy, legal names, and labels must be at minimum `0.75rem`. The current `.footer-legal-name` uses `0.6875rem` intentionally for the legal entity line — do not go smaller than this.
+- **Focus:** a visible `:focus-visible` ring in `--deep-teal` (≥3:1 on white and sand). Never `outline: none` without a replacement.
+- **Targets:** buttons, nav, FAQ summaries and footer links are ≥44px (`--tap-target`, 2.75rem; 2.25rem in the dense desktop footer).
+- **Motion:** respect `prefers-reduced-motion` for anything non-essential.
 
 ## Copy standards
 
-All default fallback strings in PHP templates must follow the Beautiful Prose rules:
+All default fallback strings in PHP templates follow the house rules:
 
-- No em dashes (`—` or `--`); use colons, commas, or line breaks instead.
-- No "not X, it's Y" constructions; state what the thing is, not what it is not.
-- No filler phrases ("in order to", "it's important to note", "whether you … or …").
-- Headings must carry the section's keyword or audience signal — never clever at the expense of clarity.
-- No redundant sentences that restate the preceding one.
+- No em dashes (`—`) and no spaced hyphens used as dashes; use colons, commas or full stops.
+- No "not X, it's Y" constructions; say what the thing is.
+- No filler phrases ("in order to", "it's important to note").
+- Headings carry the section's keyword or audience signal; never clever at the expense of clarity.
+- Never "fully accessible" in Restwell's own voice (see `copy-overwrites/` and the voice notes).
 
-These rules apply to `$hero_heading`, `$hero_subheading`, all `$what_*`, `$who_*`, `$why_*`, `$cta_*`, and any other fallback strings seeded in template files.
+Canonical page copy lives in `copy-overwrites/*.md`; SEO lane ownership lives in `docs/seo/LANES.md`.
 
 ## Customer journey (content alignment)
 
-Content and placement should align with the respite-care customer journey. Reference: project root `respite_care_guide.md` (personas, stages, touchpoints).
-
-- **Stages:** Awareness → Consideration → Enquiry → Assessment/Decision → Booking/Stay → Post-Stay.
-- **Placement:** Empathy/headline on homepage (Awareness); benefits, CQC, testimonials on service/property (Consideration); enquiry form (Enquiry); prep pack / what-to-bring in confirmation (post-Decision).
-- **Emotion:** Hero, Why Restwell, and Enquire copy should speak to “overwhelmed” and “reassurance” (guide’s emotion map).
-- **“Your journey” block:** Optional 4-6 step section on How it works (template part `template-parts/your-journey.php`), editable via How it works meta (journey label, heading, step 1-6 title/body). Default steps: Enquire → We confirm availability → Chat through dates & needs → Confirm & prepare → Your stay → Feedback.
-
-## Hero follow-up (open)
-
-Shipped 2026-04 (batch 1): mobile `.container` gutters aligned with safe-area; `home-hero__copy` gap `space-5` at ≤639px. Full log: [`docs/archive/seo-legacy/homepage/hero-audit-follow-up.md`](../../docs/archive/seo-legacy/homepage/hero-audit-follow-up.md).
-
-| Open item | Action |
-|-----------|--------|
-| Secondary CTA cross-breakpoint | Document link-on-mobile vs ghost-on-desktop **or** unify variant in `input.css` |
-| Secondary CTA contrast on hero photo | Overlay, text-shadow, or narrow-only ghost chip — verify on lightest sky patch |
-| Mobile menu a11y | `aria-label` / `aria-expanded`, `focus-visible`, ≥44px targets |
-| Logged-out verification | 375 / 390 / 414 + desktop; safe-area on notched devices |
+Content and placement follow the respite-care customer journey in the project root `respite_care_guide.md`: Awareness → Consideration → Enquiry → Decision → Booking/Stay → Post-stay. The homepage carries empathy and the headline promise, the property and accessibility pages carry evidence, and Enquire carries reassurance.

@@ -34,36 +34,49 @@ function restwell_enqueue_scripts() {
 	// Serve minified assets in production; fall back to unminified when SCRIPT_DEBUG is on.
 	$use_min = ! ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
 
-	wp_enqueue_style(
-		'restwell-fonts',
-		$theme_uri . '/assets/css/fonts.css',
-		array(),
-		restwell_theme_asset_version( '/assets/css/fonts.css' )
-	);
+	// Production: one minified bundle (tools/build-css.sh) instead of four
+	// render-blocking stylesheets. The old handles stay registered as empty
+	// aliases so anything depending on them still resolves.
+	if ( $use_min && is_readable( get_template_directory() . '/assets/css/site.min.css' ) ) {
+		wp_enqueue_style(
+			'restwell-shared',
+			$theme_uri . '/assets/css/site.min.css',
+			array(),
+			restwell_theme_asset_version( '/assets/css/site.min.css' )
+		);
+		foreach ( array( 'restwell-fonts', 'restwell-shared-wp', 'restwell-polish' ) as $alias ) {
+			wp_register_style( $alias, false, array( 'restwell-shared' ), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
+	} else {
+		wp_enqueue_style(
+			'restwell-fonts',
+			$theme_uri . '/assets/css/fonts.css',
+			array(),
+			restwell_theme_asset_version( '/assets/css/fonts.css' )
+		);
 
-	// shared.css is the live design system. Tailwind / Phosphor are not enqueued.
+		// shared.css is the live design system. Tailwind / Phosphor are not enqueued.
+		wp_enqueue_style(
+			'restwell-shared',
+			$theme_uri . '/assets/css/shared.css',
+			array( 'restwell-fonts' ),
+			restwell_theme_asset_version( '/assets/css/shared.css' )
+		);
+		wp_enqueue_style(
+			'restwell-shared-wp',
+			$theme_uri . '/assets/css/shared-wp.css',
+			array( 'restwell-shared' ),
+			restwell_theme_asset_version( '/assets/css/shared-wp.css' )
+		);
 
-	// Mockup design system — global chrome. Default stylesheet for public pages.
-	wp_enqueue_style(
-		'restwell-shared',
-		$theme_uri . '/assets/css/shared.css',
-		array( 'restwell-fonts' ),
-		restwell_theme_asset_version( '/assets/css/shared.css' )
-	);
-	wp_enqueue_style(
-		'restwell-shared-wp',
-		$theme_uri . '/assets/css/shared-wp.css',
-		array( 'restwell-shared' ),
-		restwell_theme_asset_version( '/assets/css/shared-wp.css' )
-	);
-
-	// Small refinements layered after the established classic-theme design system.
-	wp_enqueue_style(
-		'restwell-polish',
-		$theme_uri . '/assets/css/polish.css',
-		array( 'restwell-shared-wp' ),
-		restwell_theme_asset_version( '/assets/css/polish.css' )
-	);
+		// Small refinements layered after the established classic-theme design system.
+		wp_enqueue_style(
+			'restwell-polish',
+			$theme_uri . '/assets/css/polish.css',
+			array( 'restwell-shared-wp' ),
+			restwell_theme_asset_version( '/assets/css/polish.css' )
+		);
+	}
 
 	$shared_rel = '/assets/js/shared.js';
 	if ( $use_min && is_readable( get_template_directory() . '/assets/js/shared.min.js' ) ) {
@@ -175,6 +188,104 @@ function restwell_defer_front_script( $tag, $handle, $src ) {
 	return str_replace( '<script ', '<script defer ', $tag );
 }
 add_filter( 'script_loader_tag', 'restwell_defer_front_script', 10, 3 );
+
+/**
+ * Template family for critical CSS. Mirrors the key the build tool reads from
+ * body classes in tools/build-critical-css.mjs; keep the two in step.
+ *
+ * @return string
+ */
+function restwell_critical_css_key() {
+	if ( is_front_page() ) {
+		return 'front';
+	}
+	if ( is_singular( 'post' ) ) {
+		return 'post';
+	}
+	if ( is_page() ) {
+		$slug = (string) get_page_template_slug( get_queried_object_id() );
+		return '' === $slug ? 'page' : (string) preg_replace( '/-php$/', '', sanitize_html_class( str_replace( '.', '-', $slug ) ) );
+	}
+	if ( is_home() || is_archive() ) {
+		return 'blog';
+	}
+	return 'utility';
+}
+
+/**
+ * Critical CSS for this request, or '' to keep the normal blocking bundle.
+ * Only used when the file was built from the current site.min.css (matching
+ * source hash), so a stale extract can never style a page.
+ *
+ * @return string
+ */
+function restwell_critical_css() {
+	static $css = null;
+	if ( null !== $css ) {
+		return $css;
+	}
+	$css = '';
+	if ( is_admin() || is_customize_preview() || ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ) {
+		return $css;
+	}
+	$dir    = get_template_directory() . '/assets/css';
+	$file   = $dir . '/critical/' . restwell_critical_css_key() . '.min.css';
+	$bundle = $dir . '/site.min.css';
+	if ( ! is_readable( $file ) || ! is_readable( $bundle ) ) {
+		return $css;
+	}
+	$raw = (string) file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+	$fh  = fopen( $bundle, 'rb' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- read the bundle's first line only.
+	$top = $fh ? (string) fgets( $fh ) : '';
+	if ( $fh ) {
+		fclose( $fh ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+	}
+	if ( ! preg_match( '/source ([0-9a-f]{40})/', $raw, $want ) || false === strpos( $top, $want[1] ) ) {
+		return $css;
+	}
+	$body = trim( (string) substr( $raw, (int) strpos( $raw, "\n" ) ) );
+	// Inlined, so ../ no longer resolves from assets/css/.
+	$css = str_replace( 'url("../', 'url("' . get_template_directory_uri() . '/assets/', $body );
+	return $css;
+}
+
+/**
+ * Print the critical CSS before the stylesheet links (wp_print_styles runs at 8).
+ */
+function restwell_print_critical_css() {
+	$css = restwell_critical_css();
+	if ( '' === $css ) {
+		return;
+	}
+	echo '<style id="restwell-critical-css">' . str_replace( '</', '<\/', $css ) . "</style>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme-built CSS file, closing tags neutralised.
+}
+add_action( 'wp_head', 'restwell_print_critical_css', 7 );
+
+/**
+ * With critical CSS inlined, fetch the full bundle at high priority without
+ * blocking first paint: preload it, link it as print, switch to all once it
+ * has loaded (nonce'd script; the CSP blocks inline onload handlers), and
+ * keep a plain link for no-JS visitors.
+ *
+ * @param string $tag    The link HTML.
+ * @param string $handle Style handle.
+ * @param string $href   Stylesheet URL.
+ * @return string
+ */
+function restwell_async_site_bundle( $tag, $handle, $href ) {
+	if ( 'restwell-shared' !== $handle || '' === restwell_critical_css() || false === strpos( $href, 'site.min.css' ) ) {
+		return $tag;
+	}
+	$async = (string) preg_replace( '/\smedia=([\'"])all\1/', ' media="print"', $tag, 1 );
+	if ( $async === $tag ) {
+		return $tag;
+	}
+	$nonce = function_exists( 'restwell_csp_script_nonce_attr' ) ? restwell_csp_script_nonce_attr() : '';
+	return $async
+		. '<script' . $nonce . '>(function(l){if(!l)return;function a(){l.media="all"}if(l.sheet){a()}else{l.addEventListener("load",a)}})(document.getElementById("restwell-shared-css"));</script>' . "\n"
+		. '<noscript>' . trim( $tag ) . "</noscript>\n";
+}
+add_filter( 'style_loader_tag', 'restwell_async_site_bundle', 10, 3 );
 
 /**
  * Enqueue polished admin styles for Restwell CRM screens.

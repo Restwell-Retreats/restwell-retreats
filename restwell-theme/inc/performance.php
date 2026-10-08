@@ -124,8 +124,17 @@ function restwell_preload_front_page_hero_image() {
 	$home_id = (int) get_option( 'page_on_front', 0 );
 	if ( $home_id > 0 && function_exists( 'restwell_page_hero_image_url' ) ) {
 		$url = restwell_page_hero_image_url( $home_id );
+		if ( $url !== '' && function_exists( 'restwell_theme_twin_url' ) && '' !== restwell_theme_twin_url( $url ) ) {
+			$url = restwell_theme_twin_url( $url );
+		}
 		if ( $url !== '' ) {
-			echo '<link rel="preload" as="image" href="' . esc_url( $url ) . '" fetchpriority="high" />' . "\n";
+			// Match the hero <img> srcset so the browser preloads the file it will use.
+			$srcset = function_exists( 'restwell_image_srcset' ) ? restwell_image_srcset( $url ) : '';
+			echo '<link rel="preload" as="image" href="' . esc_url( $url ) . '"';
+			if ( '' !== $srcset ) {
+				echo ' imagesrcset="' . esc_attr( $srcset ) . '" imagesizes="100vw"';
+			}
+			echo ' fetchpriority="high" />' . "\n";
 			return;
 		}
 	}
@@ -164,9 +173,14 @@ function restwell_preload_front_page_hero_image() {
 }
 add_action( 'wp_head', 'restwell_preload_front_page_hero_image', 1 );
 
+/**
+ * Small tab icon plus a touch icon; the 512px original cost 63 KB on every
+ * first visit when it was the only icon offered.
+ */
 function restwell_output_media_site_icon() {
-	$icon_url = get_template_directory_uri() . '/assets/favicon.png';
-	echo '<link rel="icon" href="' . esc_url( $icon_url ) . '" type="image/png" />' . "\n";
+	$base = get_template_directory_uri() . '/assets/';
+	echo '<link rel="icon" href="' . esc_url( $base . 'favicon-48.png' ) . '" sizes="48x48" type="image/png" />' . "\n";
+	echo '<link rel="apple-touch-icon" href="' . esc_url( $base . 'favicon-180.png' ) . '" />' . "\n";
 }
 add_action( 'wp_head', 'restwell_output_media_site_icon', 1 );
 
@@ -175,7 +189,7 @@ function restwell_redirect_favicon_request() {
 	if ( '/favicon.ico' !== $request_path ) {
 		return;
 	}
-	wp_safe_redirect( get_template_directory_uri() . '/assets/favicon.png', 301 );
+	wp_safe_redirect( get_template_directory_uri() . '/assets/favicon-48.png', 301 );
 	exit;
 }
 add_action( 'template_redirect', 'restwell_redirect_favicon_request', 1 );

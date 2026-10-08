@@ -8,7 +8,7 @@ Accessible travel notes from one bungalow
 
 ## Meta description
 
-Guides written from a single adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.
+Guides written from one adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.
 
 ## H1
 

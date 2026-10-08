@@ -48,7 +48,7 @@ $story_txt = static function ( $key, $fallback ) use ( $restwell_story_id ) {
 $story_origin_label   = $story_txt( 'story_origin_label', 'The gap' );
 $story_origin_heading = $story_txt( 'story_origin_heading', 'How Restwell started' );
 $story_origin_lede    = $story_txt( 'story_origin_lede', 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.' );
-$story_origin_body    = $story_txt( 'story_origin_body', 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details — including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.' );
+$story_origin_body    = $story_txt( 'story_origin_body', 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.' );
 
 $story_month_label   = $story_txt( 'story_month_label', 'The build' );
 $story_month_heading = $story_txt( 'story_month_heading', 'How the bungalow was built' );
@@ -175,14 +175,14 @@ get_template_part(
 		  <?php endif; ?>
 		</div>
 		<div class="split__media" data-reveal>
-				 <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/101-russel-drive-archive.webp' ) ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/bungalow-before-renovation.webp' ) ); ?>" alt="The bungalow before renovation, with peeling render and an overgrown front garden" width="900" height="675" loading="lazy" />
 		</div>
 	  </div>
 	</section>
 
 	<section class="section-y band-subtle process" id="month" aria-labelledby="month-h">
 	  <div class="container">
-		<header class="section-head section-head--center process__head">
+		<header class="section-head process__head">
 		  <?php if ( '' !== $story_month_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $story_month_label ); ?></p>
 		  <?php endif; ?>
@@ -269,54 +269,29 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="companies" aria-labelledby="companies-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <?php if ( '' !== $story_companies_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $story_companies_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="companies-h"><?php echo esc_html( $story_companies_heading ); ?></h2>
-		  <?php if ( '' !== $story_companies_lede ) : ?>
-		  <p class="lede"><?php echo esc_html( $story_companies_lede ); ?></p>
-		  <?php endif; ?>
-		</header>
-		<dl class="comparison-list">
-		  <?php foreach ( $story_companies_items as $company_i => $company_item ) : ?>
-		  <div class="comparison-list__item">
-				<?php if ( '' !== $company_item['title'] ) : ?>
-			<dt><?php echo esc_html( $company_item['title'] ); ?></dt>
-			<?php endif; ?>
-				<?php if ( '' !== $company_item['body'] ) : ?>
-			<dd>
-					<?php echo esc_html( $company_item['body'] ); ?>
-					<?php if ( 2 === $company_i ) : ?>
-			  <a class="text-link" href="<?php echo esc_url( 'tel:' . $restwell_host_tel ); ?>"><?php echo esc_html( $restwell_host_phone ); ?></a>
-			  <?php endif; ?>
-			</dd>
-			<?php endif; ?>
-		  </div>
-		  <?php endforeach; ?>
-		</dl>
-		<div class="care-page__trust">
-		  <div class="care__foot-copy">
-			<?php if ( '' !== $story_companies_note ) : ?>
-			<p class="care__note"><?php echo esc_html( $story_companies_note ); ?></p>
-			<?php endif; ?>
-			<?php if ( '' !== $story_companies_cqc_label ) : ?>
-			<a class="text-link" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $story_companies_cqc_label ); ?><span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a>
-			<?php endif; ?>
-		  </div>
-		  <div class="care__brand" aria-label="<?php echo esc_attr__( 'Sister company and CQC rating', 'restwell-retreats' ); ?>">
-			<a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr__( 'Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
-			</a>
-			<a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr__( 'CQC rating Good, Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
-			</a>
-		  </div>
-		</div>
-	  </div>
-	</section>
+	<?php
+	$story_companies_band_items = $story_companies_items;
+	if ( isset( $story_companies_band_items[2] ) ) {
+		$story_companies_band_items[2]['html'] = '<a class="text-link" href="' . esc_url( 'tel:' . $restwell_host_tel ) . '">' . esc_html( $restwell_host_phone ) . '</a>';
+	}
+	get_template_part(
+		'template-parts/sister-company',
+		null,
+		array(
+			'id'      => 'companies',
+			'label'   => $story_companies_label,
+			'heading' => $story_companies_heading,
+			'lede'    => $story_companies_lede,
+			'items'   => $story_companies_band_items,
+			'note'    => $story_companies_note,
+			'link'    => array(
+				'label'    => $story_companies_cqc_label,
+				'url'      => 'https://www.cqc.org.uk/location/1-2624556588',
+				'external' => true,
+			),
+		)
+	);
+	?>
 
 	<section class="section-y band-white" id="shaped" aria-labelledby="shaped-h">
 	  <div class="container split split--flip">
@@ -348,23 +323,23 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-teal" id="specialists" aria-labelledby="specialists-h">
+	<section class="section-y band-subtle" id="specialists" aria-labelledby="specialists-h">
 	  <div class="container">
 		<div class="split">
-		  <div class="band-teal__stack">
+		  <div class="specialists__copy">
 			<?php if ( '' !== $story_specialists_label ) : ?>
-			<p class="eyebrow eyebrow--on-dark"><?php echo esc_html( $story_specialists_label ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( $story_specialists_label ); ?></p>
 			<?php endif; ?>
 			<h2 id="specialists-h"><?php echo esc_html( $story_specialists_heading ); ?></h2>
 			<?php if ( '' !== $story_specialists_lede ) : ?>
 			<p class="lede"><?php echo esc_html( $story_specialists_lede ); ?></p>
 			<?php endif; ?>
-			<div class="band-teal__actions">
+			<div class="specialists__actions">
 			  <?php if ( '' !== $story_specialists_btn1_label ) : ?>
 			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php echo esc_html( $story_specialists_btn1_label ); ?></a>
 			  <?php endif; ?>
 			  <?php if ( '' !== $story_specialists_btn2_label ) : ?>
-			  <a class="btn btn-outline-light" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $story_specialists_btn2_label ); ?></a>
+			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $story_specialists_btn2_label ); ?></a>
 			  <?php endif; ?>
 			</div>
 		  </div>

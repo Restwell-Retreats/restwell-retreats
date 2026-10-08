@@ -106,11 +106,11 @@ $acc_faq_intro   = $acc_txt(
 $acc_faq_live    = array(
 	1 => array(
 		'q' => 'Do you provide hoist slings?',
-		'a' => 'No. Bring the sling the person already uses — both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.',
+		'a' => 'No. Bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.',
 	),
 	2 => array(
 		'q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle — unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+		'a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
 	),
 	3 => array(
 		'q' => 'Why does a profiling bed matter in an accessible bedroom?',
@@ -231,11 +231,11 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	</nav>
 
 	<section class="section-y band-subtle" id="statement" aria-labelledby="statement-h">
-	  <div class="container split acc-statement-split">
-		<header class="section-head section-head--tight">
+	  <div class="container acc-intro">
+		<header class="section-head section-head--tight acc-intro__head">
 		  <p class="eyebrow"><?php echo esc_html( $acc_statement_label ); ?></p>
 		  <h2 id="statement-h"><?php echo esc_html( $acc_statement_heading ); ?></h2>
-		  <p class="lede acc-statement-split__lede"><?php echo esc_html( $acc_statement_body ); ?></p>
+		  <p class="lede"><?php echo esc_html( $acc_statement_body ); ?></p>
 		</header>
 		<?php
 		$acc_figure_kses = array(
@@ -243,40 +243,30 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				'class' => true,
 			),
 		);
+		$acc_figures     = array(
+			array( $acc_stat_1_value, $acc_stat_1_label ),
+			array( $acc_stat_2_value, $acc_stat_2_label ),
+			array( $acc_stat_3_value, $acc_stat_3_label ),
+		);
 		?>
-		<div class="acc-panel acc-panel--stats">
-		  <div class="stat-row stat-row--hero">
-			<dl>
-			  <div class="stat">
-				<dt class="stat__label"><?php echo esc_html( $acc_stat_1_label ); ?></dt>
-				<dd class="stat__value"><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_stat_1_value ), $acc_figure_kses ); ?></dd>
-			  </div>
-			  <div class="stat">
-				<dt class="stat__label"><?php echo esc_html( $acc_stat_2_label ); ?></dt>
-				<dd class="stat__value"><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_stat_2_value ), $acc_figure_kses ); ?></dd>
-			  </div>
-			  <div class="stat">
-				<dt class="stat__label"><?php echo esc_html( $acc_stat_3_label ); ?></dt>
-				<dd class="stat__value"><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_stat_3_value ), $acc_figure_kses ); ?></dd>
-			  </div>
-			</dl>
+		<dl class="acc-figures">
+		  <?php foreach ( $acc_figures as $acc_figure ) : ?>
+		  <div class="acc-figures__row">
+			<dt><?php echo esc_html( $acc_figure[1] ); ?></dt>
+			<dd><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_figure[0] ), $acc_figure_kses ); ?></dd>
 		  </div>
-		</div>
+		  <?php endforeach; ?>
+		</dl>
+	  </div>
+	</section>
 
-		<?php
-		/*
-		 * The fit check belongs to the numbers, not beside them. Split across
-		 * two bands a reader met 965mm as a fact, scrolled past a band edge,
-		 * and met it again as a tool — the same question answered twice. Here
-		 * the essay hands straight over to the thing that answers it.
-		 */
-		?>
-		<section class="acc-fit" id="fit-check" aria-labelledby="fit-check-h">
-		  <header class="section-head section-head--tight">
+	<section class="section-y band-white acc-fit" id="fit-check" aria-labelledby="fit-check-h">
+	  <div class="container">
+		<header class="section-head section-head--tight">
 		  <?php if ( '' !== $acc_fit_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $acc_fit_label ); ?></p>
 		  <?php endif; ?>
-		  <h3 id="fit-check-h"><?php echo esc_html( $acc_fit_heading ); ?></h3>
+		  <h2 id="fit-check-h"><?php echo esc_html( $acc_fit_heading ); ?></h2>
 		  <?php if ( '' !== $acc_fit_intro ) : ?>
 		  <p class="lede"><?php echo esc_html( $acc_fit_intro ); ?></p>
 		  <?php endif; ?>
@@ -305,7 +295,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			  <p class="fit-check__summary" id="fit-check-summary" data-fit-summary role="status" aria-live="polite"></p>
 			</div>
 			<div class="fit-check__presets">
-			  <h4 class="fit-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h4>
+			  <h3 class="fit-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
 			  <?php if ( '' !== $acc_fit_guide_intro ) : ?>
 			  <p class="fit-check__presets-intro"><?php echo esc_html( $acc_fit_guide_intro ); ?></p>
 			  <?php endif; ?>
@@ -372,10 +362,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			</div>
 		  </div>
 		</div>
-		</section>
 	  </div>
 	</section>
-
 
 	<?php
 	/*
@@ -386,221 +374,12 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	 * case manager or deputy needs before they can sign off a stay. Named makes
 	 * and models, safe working loads and clearances — no marketing adjectives.
 	 * Figures come from the manufacturers' own spec sheets. Each room is a
-	 * package card (photo + headline numbers + spec list) so an OT can scan
-	 * one space at a time. The property page remains the full room tour.
+	 * chapter (photo, headline numbers), then one spec card per piece of kit
+	 * with its figures in a two-column key grid (5 Oct 2026 redesign). The
+	 * property page remains the full room tour.
 	 */
-	$acc_equipment = array(
-		array(
-			'group'         => 'getting-in',
-			'name'          => __( 'Parking and getting around', 'restwell-retreats' ),
-			'where'         => __( 'Single storey, no internal steps', 'restwell-retreats' ),
-			'lead'          => true,
-			'image'         => 'bungalow/entrance.png',
-			'image_alt'     => __( 'Level driveway and front door of the bungalow', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Driveway', 'restwell-retreats' )          => __( 'Private, resin-bound: two off-road spaces, adapted vehicles welcome', 'restwell-retreats' ),
-				__( 'Street parking', 'restwell-retreats' )    => __( 'Outside the house if you need extra room. No residents permit on this road; check signs on arrival in case street rules change', 'restwell-retreats' ),
-				__( 'Car to front door', 'restwell-retreats' ) => __( 'Step-free path', 'restwell-retreats' ),
-				__( 'Floors', 'restwell-retreats' )            => __( 'Level flooring throughout, no carpet lips', 'restwell-retreats' ),
-				__( 'Patio', 'restwell-retreats' )             => __( 'Level hard-standing suitable for wheelchairs, with the enclosed garden and BBQ area beyond', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'getting-in',
-			'name'          => __( 'Doorways and thresholds', 'restwell-retreats' ),
-			'where'         => __( 'Clear openings, measured door-stop to door-stop', 'restwell-retreats' ),
-			'lead'          => true,
-			'figure'        => '965 mm',
-			'figure_label'  => __( 'Front door clear opening', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Front door', 'restwell-retreats' )            => __( '965 mm clear, level threshold, no step', 'restwell-retreats' ),
-				__( 'Porch outer doors', 'restwell-retreats' )     => __( '1720 mm opening, with a full-width ribbed entrance mat', 'restwell-retreats' ),
-				__( 'All internal doors', 'restwell-retreats' )    => __( '926 mm clear', 'restwell-retreats' ),
-				__( 'Conservatory French doors', 'restwell-retreats' ) => __( '1720 mm opening', 'restwell-retreats' ),
-				__( 'Rear French doors', 'restwell-retreats' )     => __( '1720 mm opening, onto the patio', 'restwell-retreats' ),
-				__( 'Patio threshold ramp', 'restwell-retreats' )  => __( '20 mm high × 80 mm wide, non-slip', 'restwell-retreats' ),
-				__( 'Door furniture', 'restwell-retreats' )        => __( 'White doors with black lever handles, for contrast', 'restwell-retreats' ),
-				__( 'Portable ramps', 'restwell-retreats' )        => __( 'Fold-up ramps kept for the front door, yours for the stay and for days out', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'transfers',
-			'name'          => __( 'Amico GoLift 400 — ceiling track hoist', 'restwell-retreats' ),
-			'where'         => __( 'Main bedroom, over the profiling bed', 'restwell-retreats' ),
-			'lead'          => true,
-			'image'         => 'bungalow/BD2-3-LS.jpg',
-			'image_alt'     => __( 'Accessible bedroom with ceiling track hoist over the profiling bed', 'restwell-retreats' ),
-			'figure'        => '180 kg',
-			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Safe working load', 'restwell-retreats' )   => __( '180 kg / 28 st', 'restwell-retreats' ),
-				__( 'Lift and lower', 'restwell-retreats' )      => __( 'Powered', 'restwell-retreats' ),
-				__( 'Traverse', 'restwell-retreats' )            => __( 'Manual', 'restwell-retreats' ),
-				__( 'Trolley', 'restwell-retreats' )             => __( 'Fixed', 'restwell-retreats' ),
-				__( 'Attachment', 'restwell-retreats' )          => __( 'Lifting strap with loop', 'restwell-retreats' ),
-				__( 'Coverage', 'restwell-retreats' )            => __( 'Full-room', 'restwell-retreats' ),
-				__( 'Thorough examination', 'restwell-retreats' ) => __( 'LOLER, every six months', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'transfers',
-			'name'          => __( 'Accora CommunityBed', 'restwell-retreats' ),
-			'where'         => __( 'Accessible bedroom, under the ceiling track', 'restwell-retreats' ),
-			'lead'          => true,
-			'figure'        => '180 kg',
-			'figure_label'  => __( 'Maximum user weight', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Safe working load', 'restwell-retreats' )      => __( '215 kg / 34 st', 'restwell-retreats' ),
-				__( 'Maximum user weight', 'restwell-retreats' )    => __( '180 kg / 28 st', 'restwell-retreats' ),
-				__( 'Mattress platform', 'restwell-retreats' )      => __( '900 × 2000 mm', 'restwell-retreats' ),
-				__( 'Overall frame', 'restwell-retreats' )          => __( '930 × 2250 mm', 'restwell-retreats' ),
-				__( 'Platform height', 'restwell-retreats' )        => __( '220–800 mm', 'restwell-retreats' ),
-				__( 'Profiling', 'restwell-retreats' )              => __( 'Four-section: backrest with auto-regression, kneebreak, Trendelenburg and anti-Trendelenburg', 'restwell-retreats' ),
-				__( 'Mattress', 'restwell-retreats' )               => __( 'Accora Allevia Comfort FirmEdge 90 cm, or Roma Medical MATT 1 — both pressure-relieving', 'restwell-retreats' ),
-				__( 'Side rails', 'restwell-retreats' )             => __( 'Fabric siderail set, 200 cm', 'restwell-retreats' ),
-				__( 'Minimum user height', 'restwell-retreats' )    => __( '1460 mm', 'restwell-retreats' ),
-				__( 'Carer access', 'restwell-retreats' )           => __( 'Space for a carer on both sides of the bed', 'restwell-retreats' ),
-			),
-			'note'  => __( 'We have two of these. The accessible bedroom can be set up with one or two, depending on what you need. Tell us when you enquire and the room will be laid out that way before you arrive.', 'restwell-retreats' ),
-		),
-		array(
-			'group'         => 'transfers',
-			'name'          => __( 'Joerns Oxford Midi 180 — mobile hoist', 'restwell-retreats' ),
-			'where'         => __( 'Kept in the bungalow, usable in any room', 'restwell-retreats' ),
-			'lead'          => true,
-			'figure'        => '180 kg',
-			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Safe working load', 'restwell-retreats' )       => __( '180 kg / 28 st', 'restwell-retreats' ),
-				__( 'Turning radius', 'restwell-retreats' )          => __( '1235 mm', 'restwell-retreats' ),
-				__( 'Legs open, external', 'restwell-retreats' )     => __( '1170 mm', 'restwell-retreats' ),
-				__( 'Legs closed, external', 'restwell-retreats' )   => __( '600 mm', 'restwell-retreats' ),
-				__( 'Leg height', 'restwell-retreats' )              => __( '100 mm', 'restwell-retreats' ),
-				__( 'Ground clearance', 'restwell-retreats' )        => __( '25 mm', 'restwell-retreats' ),
-				__( 'Spreader bar height', 'restwell-retreats' )     => __( '525–1660 mm', 'restwell-retreats' ),
-				__( 'Emergency descent', 'restwell-retreats' )       => __( 'Manual', 'restwell-retreats' ),
-				__( 'Thorough examination', 'restwell-retreats' )    => __( 'LOLER, every six months', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'transfers',
-			'name'          => __( 'AAL RS4 — transfer and standing aid', 'restwell-retreats' ),
-			'compact'       => true,
-			'figure'        => '185 kg',
-			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
-			'note'          => __( 'The RS4 is an Able Assist device. It is not an Arjo Sara Stedy, and the two are not interchangeable in a handling plan — please check your care plan names the right one.', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Safe working load', 'restwell-retreats' ) => __( '185 kg', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'wet-room',
-			'name'          => __( 'Level-access wet room', 'restwell-retreats' ),
-			'where'         => __( 'Specified by Care Spaces', 'restwell-retreats' ),
-			'lead'          => true,
-			'image'         => 'bungalow/WR-1-LS.jpg',
-			'image_alt'     => __( 'Level-access wet room with grab rails and a shower commode chair', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Floor', 'restwell-retreats' )               => __( 'Level access with no lip, floor-level drain', 'restwell-retreats' ),
-				__( 'Toilet support rail', 'restwell-retreats' ) => __( 'NYMAS hinged lift-and-lock, with drop-down leg', 'restwell-retreats' ),
-				__( 'Assistance alarm', 'restwell-retreats' )    => __( 'Pull-cord with reset plate and over-door light', 'restwell-retreats' ),
-				__( 'Extractor fan', 'restwell-retreats' )       => __( 'Fitted', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'wet-room',
-			'name'          => __( 'RAZ-AT — tilt-in-space shower commode chair', 'restwell-retreats' ),
-			'where'         => __( 'Kept in the wet room', 'restwell-retreats' ),
-			'lead'          => true,
-			'figure'        => '40°',
-			'figure_label'  => __( 'Tilt-in-space', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Tilt-in-space', 'restwell-retreats' )    => __( '40°, with tilt-assist pedal', 'restwell-retreats' ),
-				__( 'Seat height', 'restwell-retreats' )      => __( '560 mm', 'restwell-retreats' ),
-				__( 'Backrest', 'restwell-retreats' )         => __( 'AdjustaBack, 50 cm, with flip-up armrests', 'restwell-retreats' ),
-				__( 'Seat module', 'restwell-retreats' )      => __( 'Moulded, front opening', 'restwell-retreats' ),
-				__( 'Footplates', 'restwell-retreats' )       => __( 'Adjustable 410–520 mm, folding plate', 'restwell-retreats' ),
-				__( 'Castors', 'restwell-retreats' )          => __( 'Four dual-locking, 5 inch', 'restwell-retreats' ),
-				__( 'Headrest', 'restwell-retreats' )         => __( 'Moulded', 'restwell-retreats' ),
-				__( 'Commode pan', 'restwell-retreats' )      => __( 'Autoclavable', 'restwell-retreats' ),
-				__( 'Hip belt', 'restwell-retreats' )         => __( 'Adjustable', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'wet-room',
-			'name'          => __( 'Mira Select Flex EV — shower valve', 'restwell-retreats' ),
-			'figure'        => 'TMV3',
-			'figure_label'  => __( 'Thermostatic valve', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Type', 'restwell-retreats' )    => __( 'Thermostatic, TMV3', 'restwell-retreats' ),
-				__( 'Fittings', 'restwell-retreats' ) => __( 'Long riser rail, 2 m hose and handset', 'restwell-retreats' ),
-				__( 'Accreditation', 'restwell-retreats' ) => __( 'RNIB Tried & Tested', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'wet-room',
-			'name'          => __( 'Drive DeVilbiss — shower stool', 'restwell-retreats' ),
-			'compact'       => true,
-			'figure'        => '136 kg',
-			'figure_label'  => __( 'Safe working load', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Safe working load', 'restwell-retreats' ) => __( '136 kg / 21 st', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'wet-room',
-			'name'          => __( 'Geberit AquaClean Mera Care — wash-dry WC', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Wash', 'restwell-retreats' )       => __( 'WhirlSpray shower, plus lady shower', 'restwell-retreats' ),
-				__( 'Dry', 'restwell-retreats' )        => __( 'Warm air dryer', 'restwell-retreats' ),
-				__( 'Controls', 'restwell-retreats' )   => __( 'Remote control and touchless wall panel', 'restwell-retreats' ),
-				__( 'Odour extraction', 'restwell-retreats' ) => __( 'Fitted, with a soft-closing seat', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'wet-room',
-			'name'          => __( 'Ropox Swing — height-adjustable washbasin', 'restwell-retreats' ),
-			'figure'        => '750–950 mm',
-			'figure_label'  => __( 'Basin height range', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Height range', 'restwell-retreats' )   => __( '750–950 mm, manual adjustment', 'restwell-retreats' ),
-				__( 'Mounting', 'restwell-retreats' )       => __( 'Swing basin with dock-in unit', 'restwell-retreats' ),
-				__( 'Tap', 'restwell-retreats' )            => __( 'Thermostatic mixer, lever operation, safe-touch body, TMV3 approved', 'restwell-retreats' ),
-			),
-		),
-		array(
-			'group'         => 'kitchen',
-			'name'          => __( 'NEFF Slide & Hide — oven', 'restwell-retreats' ),
-			'where'         => __( 'Open-plan, wheelchair access to worktops', 'restwell-retreats' ),
-			'lead'          => true,
-			'image'         => 'bungalow/KT-1-LS.jpg',
-			'image_alt'     => __( 'Kitchen with seated-height worktops and a NEFF Slide and Hide oven', 'restwell-retreats' ),
-			'specs'         => array(
-				__( 'Oven', 'restwell-retreats' )   => __( 'NEFF Slide & Hide — the door folds away underneath, so you are not reaching across a hot open door from a seated position', 'restwell-retreats' ),
-				__( 'Hob', 'restwell-retreats' )    => __( 'Gas, not induction — no electromagnetic field from the cooktop, which many guests with pacemakers prefer', 'restwell-retreats' ),
-				__( 'Storage', 'restwell-retreats' ) => __( 'Microwave and accessible storage at lower levels', 'restwell-retreats' ),
-			),
-		),
-	);
-
-	$acc_equip_groups = array(
-		'getting-in' => array(
-			'title' => __( 'Getting in', 'restwell-retreats' ),
-			'lede'  => __( 'The driveway is resin-bound, level, and takes two cars including an adapted vehicle. There is no step up into the house from where you park.', 'restwell-retreats' ),
-		),
-		'transfers'  => array(
-			'title' => __( 'Beds and hoists', 'restwell-retreats' ),
-			'lede'  => __( 'The accessible bedroom can be set up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
-		),
-		'wet-room'   => array(
-			'title' => __( 'Wet room', 'restwell-retreats' ),
-			'lede'  => __( 'Level-access throughout, with no lip at the entrance. Specified by Care Spaces.', 'restwell-retreats' ),
-		),
-		'kitchen'    => array(
-			'title' => __( 'Kitchen', 'restwell-retreats' ),
-			'lede'  => __( 'Worktops you can reach from a seated position. The living room has a rise-and-recline chair; rear French doors onto the patio give a 1720mm opening.', 'restwell-retreats' ),
-		),
-	);
+	$acc_equipment    = restwell_accessibility_equipment();
+	$acc_equip_groups = restwell_accessibility_equipment_groups();
 	$acc_grouped = array();
 	foreach ( $acc_equipment as $acc_equip_item ) {
 		$acc_gid = isset( $acc_equip_item['group'] ) ? (string) $acc_equip_item['group'] : '';
@@ -613,11 +392,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	/*
 	 * Chapter numbers for the register.
 	 *
-	 * The numerals give the register the shape of a document, so a reader can
-	 * say which chapter they are in and where they are up to. The sticky
-	 * subnav is the only index on the page — this section used to publish a
-	 * second one of its own, which was the same job twice. The limits chapter
-	 * is numbered last because the honest caveats belong inside the spec
+	 * The numerals give the register the shape of a document, and the chapter
+	 * index beside it (desktop) uses the same numbers. The limits chapter is
+	 * numbered last because the honest caveats belong inside the spec
 	 * document, not stranded in a band of their own after it.
 	 */
 	$acc_chapter_ids = array();
@@ -627,7 +404,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		}
 		$acc_chapter_ids[] = 'equip-' . $acc_gid;
 	}
-	$acc_chapter_ids[] = 'acc-limits';
 	$acc_chapter_no = array();
 	foreach ( $acc_chapter_ids as $acc_ci => $acc_chapter_id ) {
 		$acc_chapter_no[ $acc_chapter_id ] = str_pad( (string) ( $acc_ci + 1 ), 2, '0', STR_PAD_LEFT );
@@ -637,220 +413,248 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	<section class="section-y band-subtle" id="equipment" aria-labelledby="equipment-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
-		  <p class="eyebrow"><?php esc_html_e( 'Equipment register', 'restwell-retreats' ); ?></p>
-		  <h2 id="equipment-h"><?php esc_html_e( 'Named kit, with the numbers a risk assessment needs', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Every piece of equipment fitted in the bungalow, by make and model, with safe working loads and clearances taken from the manufacturers’ own spec sheets. If you need a measurement that isn’t here, ask and we will go and measure it.', 'restwell-retreats' ); ?></p>
+		  <p class="eyebrow"><?php esc_html_e( 'Equipment', 'restwell-retreats' ); ?></p>
+		  <h2 id="equipment-h"><?php esc_html_e( 'The kit, room by room', 'restwell-retreats' ); ?></h2>
+		  <p class="lede"><?php esc_html_e( 'Every piece of equipment is named by make and model, with safe working loads and clearances taken from the manufacturers’ own spec sheets. The headlines are below; the full specifications are one tap away, or download them as a PDF to file with a risk assessment.', 'restwell-retreats' ); ?></p>
 		</header>
-		<div class="acc-register-doc">
-		  <div class="acc-register-doc__intro">
-			<aside class="download-panel equip-register__aside">
-			  <p><?php esc_html_e( 'Room-by-room photos and the property tour live on the property page. This register is the spec sheet — makes, models, and safe working loads.', 'restwell-retreats' ); ?></p>
-			  <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'Tour the property', 'restwell-retreats' ); ?></a></p>
-			</aside>
-			<div class="equip-notice equip-notice--quiet" id="equip-slings">
-			  <p class="equip-notice__title"><?php esc_html_e( 'Please bring your own slings', 'restwell-retreats' ); ?></p>
-			  <p><?php esc_html_e( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ); ?></p>
-			</div>
-		  </div>
 
-		<?php foreach ( $acc_equip_groups as $acc_gid => $acc_gmeta ) : ?>
-			<?php
-			if ( empty( $acc_grouped[ $acc_gid ] ) ) {
-				continue;
-			}
-			$acc_group_items = $acc_grouped[ $acc_gid ];
-			$acc_gtitle      = isset( $acc_gmeta['title'] ) ? (string) $acc_gmeta['title'] : '';
-			$acc_glede       = isset( $acc_gmeta['lede'] ) ? (string) $acc_gmeta['lede'] : '';
-			$acc_heading_id  = 'equip-' . $acc_gid . '-h';
-			$acc_pack_image  = '';
-			$acc_pack_alt    = '';
-			$acc_pack_facts  = array();
-			foreach ( $acc_group_items as $acc_pack_item ) {
-				if ( '' === $acc_pack_image && ! empty( $acc_pack_item['image'] ) ) {
-					$acc_pack_image = (string) $acc_pack_item['image'];
-					$acc_pack_alt   = isset( $acc_pack_item['image_alt'] ) ? (string) $acc_pack_item['image_alt'] : '';
-					if ( '' === $acc_pack_alt && function_exists( 'restwell_theme_image_alt' ) ) {
-						$acc_pack_alt = restwell_theme_image_alt( $acc_pack_image );
-					}
-				}
-				$acc_pack_figure = isset( $acc_pack_item['figure'] ) ? (string) $acc_pack_item['figure'] : '';
-				if ( '' !== $acc_pack_figure && preg_match( '/\d/', $acc_pack_figure ) && count( $acc_pack_facts ) < 3 ) {
-					$acc_pack_facts[] = array(
-						'value' => $acc_pack_figure,
-						'label' => isset( $acc_pack_item['figure_label'] ) ? (string) $acc_pack_item['figure_label'] : '',
-					);
-				}
-			}
+		<?php
+		$acc_pdf_url  = function_exists( 'restwell_access_statement_pdf_url' ) ? restwell_access_statement_pdf_url() : '';
+		$acc_pdf_size = function_exists( 'restwell_access_statement_pdf_size' ) ? restwell_access_statement_pdf_size() : '';
+		if ( '' !== $acc_pdf_url ) :
 			?>
-		<section class="equip-group acc-package" id="equip-<?php echo esc_attr( $acc_gid ); ?>" aria-labelledby="<?php echo esc_attr( $acc_heading_id ); ?>">
-		  <div class="equip-group-panel acc-package__panel">
-			<?php if ( '' !== $acc_pack_image ) : ?>
-			<figure class="acc-package__media">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( $acc_pack_image ) ); ?>" alt="<?php echo esc_attr( $acc_pack_alt ); ?>" width="1200" height="750" loading="lazy" decoding="async" />
-			</figure>
-			<?php endif; ?>
-			<div class="acc-package__body">
-		  <h3 id="<?php echo esc_attr( $acc_heading_id ); ?>" class="equip-group__title" data-chapter="<?php echo esc_attr( $acc_chapter_no[ 'equip-' . $acc_gid ] ); ?>"><?php echo esc_html( $acc_gtitle ); ?></h3>
-			<?php if ( '' !== $acc_glede ) : ?>
-		  <p class="equip-group__lede"><?php echo esc_html( $acc_glede ); ?></p>
-		  <?php endif; ?>
-			<?php if ( ! empty( $acc_pack_facts ) ) : ?>
-		  <ul class="acc-package__facts" role="list">
-				<?php foreach ( $acc_pack_facts as $acc_pack_fact ) : ?>
-			<li class="acc-package__fact">
-			  <span class="acc-package__fact-value"><?php echo esc_html( $acc_pack_fact['value'] ); ?></span>
-				<?php if ( '' !== $acc_pack_fact['label'] ) : ?>
-			  <span class="acc-package__fact-label"><?php echo esc_html( $acc_pack_fact['label'] ); ?></span>
-			  <?php endif; ?>
-			</li>
-			<?php endforeach; ?>
-		  </ul>
-		  <?php endif; ?>
-		  <ul class="equip-list" role="list">
-			<?php foreach ( $acc_group_items as $acc_equip_item ) : ?>
+		<aside class="acc-download" aria-labelledby="acc-download-h">
+		  <span class="acc-download__icon" aria-hidden="true">PDF</span>
+		  <div class="acc-download__text">
+			<p class="acc-download__title" id="acc-download-h"><?php esc_html_e( 'Download the full access statement', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'Every measurement and piece of kit on one printable, screen-reader-friendly sheet, for occupational therapists, case managers and funding panels.', 'restwell-retreats' ); ?></p>
+		  </div>
+		  <a class="btn btn-gold acc-download__btn" href="<?php echo esc_url( $acc_pdf_url ); ?>" download data-analytics-event="access_statement_download">
+			<?php esc_html_e( 'Download PDF', 'restwell-retreats' ); ?>
+			<span class="acc-download__meta"><?php echo esc_html( trim( 'PDF' . ( '' !== $acc_pdf_size ? ', ' . $acc_pdf_size : '' ) ) ); ?></span>
+		  </a>
+		</aside>
+		<?php endif; ?>
+
+		<?php
+		/*
+		 * Rooms at a glance: a photo and three headline figures per room. The
+		 * full spec tables sit in the collapsed register below (and in the PDF).
+		 */
+		?>
+		<ul class="acc-glance" role="list">
+		  <?php foreach ( $acc_equip_groups as $acc_gid => $acc_gmeta ) : ?>
 				<?php
-				$acc_item_lead    = ! empty( $acc_equip_item['lead'] );
-				$acc_item_compact = ! empty( $acc_equip_item['compact'] );
-				$acc_item_image   = isset( $acc_equip_item['image'] ) ? (string) $acc_equip_item['image'] : '';
-				if ( '' !== $acc_pack_image && $acc_item_image === $acc_pack_image ) {
-					$acc_item_image = '';
+				if ( empty( $acc_grouped[ $acc_gid ] ) ) {
+					continue;
 				}
-				$acc_item_figure  = isset( $acc_equip_item['figure'] ) ? (string) $acc_equip_item['figure'] : '';
-				$acc_item_flabel  = isset( $acc_equip_item['figure_label'] ) ? (string) $acc_equip_item['figure_label'] : '';
-				$acc_item_where   = isset( $acc_equip_item['where'] ) ? (string) $acc_equip_item['where'] : '';
-				$acc_item_note    = isset( $acc_equip_item['note'] ) ? (string) $acc_equip_item['note'] : '';
-				$acc_item_specs   = isset( $acc_equip_item['specs'] ) && is_array( $acc_equip_item['specs'] ) ? $acc_equip_item['specs'] : array();
-				$acc_figure_metric = '' !== $acc_item_figure && (bool) preg_match( '/\d/', $acc_item_figure );
-				$acc_show_name    = $acc_item_lead || ( $acc_equip_item['name'] !== $acc_gtitle );
-				$acc_item_class   = 'equip-item';
-				if ( $acc_item_lead ) {
-					$acc_item_class .= ' equip-item--lead';
-				} elseif ( $acc_item_compact ) {
-					$acc_item_class .= ' equip-item--compact';
-				}
-				$acc_item_alt = '';
-				if ( '' !== $acc_item_image ) {
-					$acc_item_alt = isset( $acc_equip_item['image_alt'] ) ? (string) $acc_equip_item['image_alt'] : '';
-					if ( '' === $acc_item_alt && function_exists( 'restwell_theme_image_alt' ) ) {
-						$acc_item_alt = restwell_theme_image_alt( $acc_item_image );
+				$acc_gl_image = '';
+				$acc_gl_alt   = '';
+				$acc_gl_facts = array();
+				foreach ( $acc_grouped[ $acc_gid ] as $acc_gl_item ) {
+					if ( '' === $acc_gl_image && ! empty( $acc_gl_item['image'] ) ) {
+						$acc_gl_image = (string) $acc_gl_item['image'];
+						$acc_gl_alt   = isset( $acc_gl_item['image_alt'] ) ? (string) $acc_gl_item['image_alt'] : '';
+					}
+					$acc_gl_figure = isset( $acc_gl_item['figure'] ) ? (string) $acc_gl_item['figure'] : '';
+					if ( '' !== $acc_gl_figure && preg_match( '/\d/', $acc_gl_figure ) && count( $acc_gl_facts ) < 3 && ! in_array( $acc_gl_figure, array_column( $acc_gl_facts, 'value' ), true ) ) {
+						$acc_gl_facts[] = array(
+							'value' => $acc_gl_figure,
+							'label' => isset( $acc_gl_item['figure_label'] ) ? (string) $acc_gl_item['figure_label'] : '',
+						);
 					}
 				}
 				?>
-		  <li class="<?php echo esc_attr( $acc_item_class ); ?>">
-				<?php if ( $acc_item_lead ) : ?>
-			<div class="equip-item__mast">
-					<?php if ( '' !== $acc_item_image ) : ?>
-			  <figure class="equip-item__photo">
-				<img src="<?php echo esc_url( restwell_theme_image_url( $acc_item_image ) ); ?>" alt="<?php echo esc_attr( $acc_item_alt ); ?>" width="900" height="675" loading="lazy" decoding="async" />
-			  </figure>
-			  <?php endif; ?>
-			  <div class="equip-item__ident">
-					<?php if ( $acc_show_name ) : ?>
-				<h4 class="equip-item__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
-				<?php endif; ?>
-					<?php if ( '' !== $acc_item_where ) : ?>
-				<p class="equip-item__where"><?php echo esc_html( $acc_item_where ); ?></p>
-				<?php endif; ?>
-					<?php if ( $acc_figure_metric ) : ?>
-				<p class="equip-item__figure">
-				  <span class="equip-item__figure-value"><?php echo esc_html( $acc_item_figure ); ?></span>
-						<?php if ( '' !== $acc_item_flabel ) : ?>
-				  <span class="equip-item__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
-				  <?php endif; ?>
-				</p>
-				<?php endif; ?>
-			  </div>
-					<?php if ( ! empty( $acc_item_specs ) ) : ?>
-			  <dl class="equip-item__specs">
-						<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
-				<div class="equip-spec">
-				  <dt><?php echo esc_html( $acc_equip_label ); ?></dt>
-				  <dd><?php echo esc_html( $acc_equip_value ); ?></dd>
+		  <li class="acc-glance__card">
+				<?php if ( '' !== $acc_gl_image ) : ?>
+			<img class="acc-glance__photo" src="<?php echo esc_url( restwell_theme_image_url( $acc_gl_image ) ); ?>" alt="<?php echo esc_attr( $acc_gl_alt ); ?>" width="800" height="600" sizes="(max-width: 639px) 100vw, 24rem" loading="lazy" decoding="async" />
+			<?php endif; ?>
+			<div class="acc-glance__body">
+			  <h3><?php echo esc_html( $acc_gmeta['title'] ); ?></h3>
+			  <p><?php echo esc_html( $acc_gmeta['lede'] ); ?></p>
+				  <?php if ( ! empty( $acc_gl_facts ) ) : ?>
+			  <dl class="acc-glance__facts">
+						<?php foreach ( $acc_gl_facts as $acc_gl_fact ) : ?>
+				<div>
+				  <dt><?php echo esc_html( $acc_gl_fact['label'] ); ?></dt>
+				  <dd><?php echo esc_html( preg_replace( '/(\d)\s+(?=[a-z°])/u', "$1\u{202F}", $acc_gl_fact['value'] ) ); ?></dd>
 				</div>
 				<?php endforeach; ?>
 			  </dl>
 			  <?php endif; ?>
-					<?php if ( '' !== $acc_item_note ) : ?>
-			  <p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
-			  <?php endif; ?>
 			</div>
-			<?php else : ?>
-			<div class="equip-item__head">
-				<?php if ( $acc_show_name ) : ?>
-			  <h4 class="equip-item__name"><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
-			  <?php endif; ?>
-				<?php if ( $acc_figure_metric ) : ?>
-			  <p class="equip-item__figure">
-				<span class="equip-item__figure-value"><?php echo esc_html( $acc_item_figure ); ?></span>
-					<?php if ( '' !== $acc_item_flabel ) : ?>
-				<span class="equip-item__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
-				<?php endif; ?>
-			  </p>
-			  <?php endif; ?>
-			</div>
-			<?php endif; ?>
-				<?php if ( ! $acc_item_lead && ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
-			<dl class="equip-item__specs">
-					<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
-			  <div class="equip-spec">
-				<dt><?php echo esc_html( $acc_equip_label ); ?></dt>
-				<dd><?php echo esc_html( $acc_equip_value ); ?></dd>
-			  </div>
-			  <?php endforeach; ?>
-			</dl>
-			<?php endif; ?>
-				<?php if ( '' !== $acc_item_note && ! $acc_item_lead ) : ?>
-			<p class="equip-item__note"><?php echo esc_html( $acc_item_note ); ?></p>
-			<?php endif; ?>
 		  </li>
+		  <?php endforeach; ?>
+		</ul>
+
+		<aside class="acc-callout" id="equip-slings">
+			  <span class="acc-callout__icon" aria-hidden="true">!</span>
+			  <div>
+				<p class="acc-callout__title"><?php esc_html_e( 'Please bring your own slings', 'restwell-retreats' ); ?></p>
+				<p><?php esc_html_e( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ); ?></p>
+			  </div>
+			</aside>
+
+		<details class="acc-register" id="register">
+			  <summary class="acc-register__summary">
+				<span class="acc-register__title"><?php esc_html_e( 'Full equipment specifications', 'restwell-retreats' ); ?></span>
+				<span class="acc-register__count"><?php echo esc_html( sprintf( /* translators: %d: number of items */ _n( '%d item', '%d items', count( $acc_equipment ), 'restwell-retreats' ), count( $acc_equipment ) ) ); ?></span>
+				<span class="acc-room__chevron" aria-hidden="true"></span>
+			  </summary>
+			<div class="acc-reg">
+				<p class="acc-reg__tour"><?php esc_html_e( 'Room-by-room photos and the property tour live on the property page. This register is the spec sheet: makes, models, and safe working loads.', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'Tour the property', 'restwell-retreats' ); ?></a></p>
+
+				<?php $acc_room_first = false; ?>
+				<?php foreach ( $acc_equip_groups as $acc_gid => $acc_gmeta ) : ?>
+					<?php
+					if ( empty( $acc_grouped[ $acc_gid ] ) ) {
+						continue;
+					}
+					$acc_group_items = $acc_grouped[ $acc_gid ];
+					$acc_gtitle      = isset( $acc_gmeta['title'] ) ? (string) $acc_gmeta['title'] : '';
+					$acc_glede       = isset( $acc_gmeta['lede'] ) ? (string) $acc_gmeta['lede'] : '';
+					$acc_heading_id  = 'equip-' . $acc_gid . '-h';
+					$acc_pack_image  = '';
+					$acc_pack_alt    = '';
+					$acc_pack_facts  = array();
+					foreach ( $acc_group_items as $acc_pack_item ) {
+						if ( '' === $acc_pack_image && ! empty( $acc_pack_item['image'] ) ) {
+							$acc_pack_image = (string) $acc_pack_item['image'];
+							$acc_pack_alt   = isset( $acc_pack_item['image_alt'] ) ? (string) $acc_pack_item['image_alt'] : '';
+							if ( '' === $acc_pack_alt && function_exists( 'restwell_theme_image_alt' ) ) {
+								$acc_pack_alt = restwell_theme_image_alt( $acc_pack_image );
+							}
+						}
+						$acc_pack_figure = isset( $acc_pack_item['figure'] ) ? (string) $acc_pack_item['figure'] : '';
+						// One chip per figure: the hoist, bed and mobile hoist all read "180 kg".
+						if ( in_array( $acc_pack_figure, array_column( $acc_pack_facts, 'value' ), true ) ) {
+							continue;
+						}
+						if ( '' !== $acc_pack_figure && preg_match( '/\d/', $acc_pack_figure ) && count( $acc_pack_facts ) < 3 ) {
+							$acc_pack_facts[] = array(
+								'value' => $acc_pack_figure,
+								'label' => isset( $acc_pack_item['figure_label'] ) ? (string) $acc_pack_item['figure_label'] : '',
+							);
+						}
+					}
+					?>
+				<details class="acc-room" id="equip-<?php echo esc_attr( $acc_gid ); ?>"<?php echo $acc_room_first ? ' open' : ''; ?>>
+				  <summary class="acc-room__summary">
+					<span class="acc-room__no" aria-hidden="true"><?php echo esc_html( $acc_chapter_no[ 'equip-' . $acc_gid ] ); ?></span>
+					<h3 id="<?php echo esc_attr( $acc_heading_id ); ?>"><?php echo esc_html( $acc_gtitle ); ?></h3>
+					<?php if ( ! empty( $acc_pack_facts ) ) : ?>
+					<span class="acc-room__facts">
+						<?php foreach ( $acc_pack_facts as $acc_pack_fact ) : ?>
+					  <span class="acc-room__fact"><strong><?php echo esc_html( preg_replace( '/(\d)\s+(?=[a-z°])/u', "$1\u{202F}", $acc_pack_fact['value'] ) ); ?></strong> <?php echo esc_html( $acc_pack_fact['label'] ); ?></span>
+					  <?php endforeach; ?>
+					</span>
+					<?php endif; ?>
+					<span class="acc-room__chevron" aria-hidden="true"></span>
+				  </summary>
+				  <div class="acc-room__body">
+					<div class="acc-room__intro">
+					  <?php if ( '' !== $acc_glede ) : ?>
+					  <p class="acc-chapter__lede"><?php echo esc_html( $acc_glede ); ?></p>
+					  <?php endif; ?>
+					  <?php if ( '' !== $acc_pack_image ) : ?>
+					  <figure class="acc-chapter__photo">
+						<img src="<?php echo esc_url( restwell_theme_image_url( $acc_pack_image ) ); ?>" alt="<?php echo esc_attr( $acc_pack_alt ); ?>" width="800" height="600" sizes="(max-width: 767px) 100vw, 16rem" loading="lazy" decoding="async" />
+					  </figure>
+					  <?php endif; ?>
+					</div>
+					<div class="acc-kit">
+					<?php foreach ( $acc_group_items as $acc_equip_item ) : ?>
+						<?php
+						$acc_item_compact  = ! empty( $acc_equip_item['compact'] );
+						$acc_item_figure   = isset( $acc_equip_item['figure'] ) ? (string) $acc_equip_item['figure'] : '';
+						$acc_item_flabel   = isset( $acc_equip_item['figure_label'] ) ? (string) $acc_equip_item['figure_label'] : '';
+						$acc_item_where    = isset( $acc_equip_item['where'] ) ? (string) $acc_equip_item['where'] : '';
+						$acc_item_note     = isset( $acc_equip_item['note'] ) ? (string) $acc_equip_item['note'] : '';
+						$acc_item_specs    = isset( $acc_equip_item['specs'] ) && is_array( $acc_equip_item['specs'] ) ? $acc_equip_item['specs'] : array();
+						$acc_figure_metric = '' !== $acc_item_figure && (bool) preg_match( '/\d/', $acc_item_figure );
+						?>
+					<article class="acc-kit__item<?php echo $acc_item_compact ? ' acc-kit__item--compact' : ''; ?>">
+					  <header class="acc-kit__head">
+						<div>
+						  <h4><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
+						  <?php if ( '' !== $acc_item_where ) : ?>
+						  <p class="acc-kit__where"><?php echo esc_html( $acc_item_where ); ?></p>
+						  <?php endif; ?>
+						</div>
+						<?php if ( $acc_figure_metric ) : ?>
+						<p class="acc-kit__figure">
+						  <span class="acc-kit__figure-value"><?php echo esc_html( preg_replace( '/(\d)\s+(?=[a-z°])/u', "$1\u{202F}", $acc_item_figure ) ); ?></span>
+							<?php if ( '' !== $acc_item_flabel ) : ?>
+						  <span class="acc-kit__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
+						  <?php endif; ?>
+						</p>
+						<?php endif; ?>
+					  </header>
+						<?php if ( ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
+					  <dl class="acc-kit__specs">
+							<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
+						<div>
+						  <dt><?php echo esc_html( $acc_equip_label ); ?></dt>
+						  <dd><?php echo esc_html( $acc_equip_value ); ?></dd>
+						</div>
+						<?php endforeach; ?>
+					  </dl>
+					  <?php endif; ?>
+						<?php if ( '' !== $acc_item_note ) : ?>
+					  <p class="acc-kit__note"><?php echo esc_html( $acc_item_note ); ?></p>
+					  <?php endif; ?>
+					</article>
+					<?php endforeach; ?>
+					</div>
+
+					<?php if ( 'transfers' === $acc_gid ) : ?>
+					<aside class="acc-callout acc-callout--quiet">
+					<span class="acc-callout__icon" aria-hidden="true">i</span>
+					<div>
+					  <p class="acc-callout__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></p>
+					  <p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
+					</div>
+					</aside>
+					<?php endif; ?>
+				  </div>
+			</details>
+					<?php $acc_room_first = false; ?>
 			<?php endforeach; ?>
-		  </ul>
-			<?php if ( 'transfers' === $acc_gid ) : ?>
-		  <div class="equip-notice equip-notice--quiet">
-			<p class="equip-notice__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></p>
-			<p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
-		  </div>
-			<?php endif; ?>
-			</div>
-		  </div>
-		</section>
-		<?php endforeach; ?>
+
+		</div>
+		</details>
 
 		<?php
 		/*
 		 * Closing chapter. The caveats are part of the register: every line
 		 * above is kit we own and can point a tape measure at, and this says
-		 * where that stops. Read after the specs it qualifies, not in a band
-		 * of its own where it was easy to scroll past.
+		 * where that stops.
 		 */
 		?>
-		<section class="equip-group equip-group--close" id="acc-limits" aria-labelledby="acc-limits-h">
-		  <div class="equip-group-panel">
-			<h3 id="acc-limits-h" class="equip-group__title" data-chapter="<?php echo esc_attr( $acc_chapter_no['acc-limits'] ); ?>"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h3>
-			<p class="equip-group__lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
-			<p class="acc-limits__contact">
-			  <?php
-				echo wp_kses(
-					sprintf(
-						/* translators: 1: tel href, 2: visible phone, 3: mailto href, 4: visible email */
-						__( 'Ring <a class="text-link" href="%1$s">%2$s</a> or email <a class="text-link" href="%3$s">%4$s</a> and tell us what would make the stay work. Five guests is the limit our safety checks are based on.', 'restwell-retreats' ),
-						esc_url( 'tel:' . $acc_host_tel ),
-						esc_html( $acc_host_phone ),
-						esc_url( 'mailto:' . $acc_host_email ),
-						esc_html( $acc_host_email )
+		<section class="acc-chapter acc-chapter--limits" id="acc-limits" aria-labelledby="acc-limits-h">
+		  <h3 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h3>
+		  <p class="acc-chapter__lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
+		  <p class="acc-limits__contact">
+			<?php
+			echo wp_kses(
+				sprintf(
+					/* translators: 1: tel href, 2: visible phone, 3: mailto href, 4: visible email */
+					__( 'Ring <a class="text-link" href="%1$s">%2$s</a> or email <a class="text-link" href="%3$s">%4$s</a> and tell us what would make the stay work. Five guests is the limit our safety checks are based on.', 'restwell-retreats' ),
+					esc_url( 'tel:' . $acc_host_tel ),
+					esc_html( $acc_host_phone ),
+					esc_url( 'mailto:' . $acc_host_email ),
+					esc_html( $acc_host_email )
+				),
+				array(
+					'a' => array(
+						'class' => true,
+						'href'  => true,
 					),
-					array(
-						'a' => array(
-							'class' => true,
-							'href'  => true,
-						),
-					)
-				);
-				?>
-			</p>
-		  </div>
+				)
+			);
+			?>
+		  </p>
 		</section>
-		</div>
 	  </div>
 	</section>
 
@@ -875,14 +679,22 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			$acc_dest_pair    = array_slice( $acc_dest_items, 0, 2 );
 			$acc_dest_reality = isset( $acc_dest_items[2] ) ? $acc_dest_items[2] : null;
 			?>
-		  <dl class="comparison-list comparison-list--2 acc-dest__pair">
-			<?php foreach ( $acc_dest_pair as $acc_dest_item ) : ?>
-			<div class="comparison-list__item">
-			  <dt><?php echo esc_html( $acc_dest_item['dt'] ); ?></dt>
-			  <dd><?php echo esc_html( $acc_dest_item['dd'] ); ?></dd>
-			</div>
+		  <div class="acc-dest__pair">
+			<?php foreach ( $acc_dest_pair as $acc_dest_i => $acc_dest_item ) : ?>
+				<?php
+				// Short lines read faster than a paragraph; the copy is unchanged, just split at sentence ends.
+				$acc_dest_lines = preg_split( '/(?<=[.!?])\s+/', trim( (string) $acc_dest_item['dd'] ), -1, PREG_SPLIT_NO_EMPTY );
+				?>
+			<article class="acc-dest__panel <?php echo 0 === $acc_dest_i ? 'acc-dest__panel--good' : 'acc-dest__panel--watch'; ?>">
+			  <h3 class="acc-dest__panel-title"><span class="acc-dest__mark" aria-hidden="true"></span><?php echo esc_html( $acc_dest_item['dt'] ); ?></h3>
+			  <ul class="acc-dest__lines" role="list">
+				<?php foreach ( $acc_dest_lines as $acc_dest_line ) : ?>
+				<li><?php echo esc_html( $acc_dest_line ); ?></li>
+				<?php endforeach; ?>
+			  </ul>
+			</article>
 			<?php endforeach; ?>
-		  </dl>
+		  </div>
 			<?php if ( null !== $acc_dest_reality ) : ?>
 		  <div class="acc-dest__verdict">
 			<p class="acc-dest__verdict-label"><?php echo esc_html( $acc_dest_reality['dt'] ); ?></p>
@@ -891,9 +703,14 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<?php endif; ?>
 	  </div>
 	</section>
+	<?php
+	$restwell_access_guide     = get_page_by_path( 'how-to-read-holiday-cottage-access-statement', OBJECT, 'post' );
+	$restwell_access_guide_url = $restwell_access_guide instanceof WP_Post ? get_permalink( $restwell_access_guide ) : '';
+	?>
 	<section class="section-y band-subtle" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
-		<header class="section-head section-head--tight">
+		<div class="faq__layout">
+		  <header class="faq__intro">
 			<?php if ( '' !== $acc_faq_label ) : ?>
 			<p class="eyebrow"><?php echo esc_html( $acc_faq_label ); ?></p>
 			<?php endif; ?>
@@ -901,7 +718,15 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<?php if ( '' !== $acc_faq_intro ) : ?>
 			<p class="lede"><?php echo esc_html( $acc_faq_intro ); ?></p>
 			<?php endif; ?>
-		</header>
+			<?php if ( $restwell_access_guide_url ) : ?>
+			<aside class="acc-guide" aria-labelledby="access-guide-h">
+			  <p class="eyebrow">Comparing other cottages?</p>
+			  <h3 id="access-guide-h">How to read any access statement</h3>
+			  <p>This page is Restwell’s property-specific statement. For a general checklist of measurements, red flags and OT questions, read our guide.</p>
+			  <a class="acc-guide__link" href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php echo esc_html( rtrim( get_the_title( $restwell_access_guide ), '.' ) ); ?><span aria-hidden="true"> &rarr;</span></a>
+			</aside>
+			<?php endif; ?>
+		  </header>
 		  <?php
 			$acc_faq_accordion = array();
 			foreach ( $acc_faq_items as $faq_i => $faq_row ) {
@@ -924,28 +749,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				)
 			);
 			?>
+		</div>
 	  </div>
 	</section>
-
-<?php
-$restwell_access_guide = get_page_by_path( 'how-to-read-holiday-cottage-access-statement', OBJECT, 'post' );
-if ( $restwell_access_guide instanceof WP_Post ) :
-	$restwell_access_guide_url = get_permalink( $restwell_access_guide );
-	if ( $restwell_access_guide_url ) :
-		?>
-	<section class="section-y section-y--compact band-white" aria-labelledby="access-guide-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <p class="eyebrow">Comparing other cottages?</p>
-		  <h2 id="access-guide-h">How to read any access statement</h2>
-		  <p class="lede">This page is Restwell’s property-specific statement. For a general checklist of measurements, red flags and OT questions, see <a class="text-link" href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php echo esc_html( rtrim( get_the_title( $restwell_access_guide ), '.' ) ); ?>.</a></p>
-		</header>
-	  </div>
-	</section>
-		<?php
-	endif;
-endif;
-?>
 
 	<?php
 	$mid_cta_heading = function_exists( 'restwell_page_content_text' )

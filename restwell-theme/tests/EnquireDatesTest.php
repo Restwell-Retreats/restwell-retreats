@@ -48,4 +48,30 @@ class EnquireDatesTest extends PHPUnit\Framework\TestCase {
 	public function test_format_range_empty() {
 		$this->assertSame( '', restwell_format_enquiry_date_range( '', '' ) );
 	}
+
+	public function test_rejects_same_day_departure() {
+		$this->assertNotEmpty( restwell_validate_enquiry_dates( '2026-09-10', '2026-09-10' ) );
+	}
+
+	public function test_accepts_one_night_stay() {
+		$this->assertSame( array(), restwell_validate_enquiry_dates( '2026-09-10', '2026-09-11' ) );
+	}
+
+	public function test_guest_count_bounds() {
+		$this->assertSame( array(), restwell_validate_enquiry_guests( '' ) );
+		$this->assertSame( array(), restwell_validate_enquiry_guests( '1' ) );
+		$this->assertSame( array(), restwell_validate_enquiry_guests( '5' ) );
+		$this->assertNotEmpty( restwell_validate_enquiry_guests( '0' ) );
+		$this->assertNotEmpty( restwell_validate_enquiry_guests( '6' ) );
+		$this->assertNotEmpty( restwell_validate_enquiry_guests( '9' ) );
+		$this->assertNotEmpty( restwell_validate_enquiry_guests( '2.5' ) );
+	}
+
+	public function test_conversion_token_redeems_once() {
+		set_transient( 'restwell_conv_abc123', 1, 1800 );
+		$this->assertTrue( restwell_redeem_conversion_token( 'abc123' ) );
+		$this->assertFalse( restwell_redeem_conversion_token( 'abc123' ), 'a reload must not count again' );
+		$this->assertFalse( restwell_redeem_conversion_token( '' ) );
+		$this->assertFalse( restwell_redeem_conversion_token( 'never-issued' ) );
+	}
 }

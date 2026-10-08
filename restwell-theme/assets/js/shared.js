@@ -278,6 +278,8 @@
         // to 100% it sat flush inside the aperture and read as a perfect fit.
         var fillPct = (chairWidth / doorWidth) * 100;
         fill.style.width = fillPct + '%';
+        // The block is the chair, so it carries the chair's width.
+        fill.textContent = formatLength(chairWidth);
         if (spec) spec.textContent = formatLength(doorWidth);
 
         var clearance = doorWidth - chairWidth;
@@ -942,10 +944,28 @@
       if (errorEl) errorEl.hidden = true;
     }
 
+    /*
+     * A departure must come after the arrival: [data-after-field] names the
+     * field it has to follow. Set as a custom validity so checkValidity() and
+     * the inline error treat it like any other constraint (audit I21).
+     */
+    function msSyncDateOrder() {
+      Array.prototype.slice.call((msForm || multistep).querySelectorAll('[data-after-field]')).forEach(function (input) {
+        var start = msNamed(input.getAttribute('data-after-field'));
+        var bad = start && start.value && input.value && input.value <= start.value;
+        input.setCustomValidity(bad ? 'after' : '');
+      });
+    }
+
     function msValidatePanel(panel) {
       if (!panel) return null;
       msSyncHealthConsentRequired();
-      var fields = Array.prototype.slice.call(panel.querySelectorAll('[required]'));
+      msSyncDateOrder();
+      // Every constrained field, not only [required]: min/max on guests and the
+      // date order used to pass step 2 unchecked (audit I21).
+      var fields = Array.prototype.slice.call(panel.querySelectorAll('input, select, textarea')).filter(function (input) {
+        return input.willValidate && input.type !== 'hidden';
+      });
       var firstInvalid = null;
       fields.forEach(function (input) {
         var wrapper = input.closest('.field');
@@ -965,6 +985,17 @@
       var input = event.target;
       if (input && (input.name === 'enq_care' || input.name === 'enq_accessibility')) {
         msSyncHealthConsentRequired();
+      }
+      if (input && input.type === 'date') {
+        msSyncDateOrder();
+        // Changing the arrival can fix or break the departure; re-check it.
+        var dependant = (msForm || multistep).querySelector('[data-after-field="' + input.name + '"]');
+        if (dependant && dependant.closest('.field') && dependant.closest('.field').classList.contains('is-invalid') && dependant.checkValidity()) {
+          dependant.closest('.field').classList.remove('is-invalid');
+          dependant.setAttribute('aria-invalid', 'false');
+          var depError = msFieldError(dependant);
+          if (depError) depError.hidden = true;
+        }
       }
       var wrapper = input.closest ? input.closest('.field') : null;
       if (!wrapper || !wrapper.classList.contains('is-invalid') || !input.checkValidity()) return;
@@ -1062,6 +1093,54 @@
         msGoToStep(1);
       });
     }
+  }
+
+  /* Access statement rooms are collapsible; print every one so the paper copy
+     is the whole register, then restore what the reader had open. */
+  var accRooms = document.querySelectorAll('details.acc-register, details.acc-room');
+  if (accRooms.length) {
+    var accRoomsWereOpen = [];
+    window.addEventListener('beforeprint', function () {
+      accRoomsWereOpen = [];
+      accRooms.forEach(function (room) {
+        accRoomsWereOpen.push(room.open);
+        room.open = true;
+      });
+    });
+    window.addEventListener('afterprint', function () {
+      accRooms.forEach(function (room, i) {
+        if (accRoomsWereOpen.length) {
+          room.open = accRoomsWereOpen[i];
+        }
+      });
+    });
+  }
+
+  /* A link to a room or item inside the collapsed access register (#equip-wet-room)
+     should land on it, so open the closed <details> around the target. */
+  function openDetailsAround(hash) {
+    if (!hash || hash.length < 2) {
+      return;
+    }
+    var target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    var node = target;
+    var opened = false;
+    while (node) {
+      if (node.tagName === 'DETAILS' && !node.open) {
+        node.open = true;
+        opened = true;
+      }
+      node = node.parentElement;
+    }
+    if (opened && target) {
+      target.scrollIntoView();
+    }
+  }
+  if (document.querySelector('details.acc-register')) {
+    openDetailsAround(window.location.hash);
+    window.addEventListener('hashchange', function () {
+      openDetailsAround(window.location.hash);
+    });
   }
 
   /* Keep focused chips in view inside horizontally scrolling subnav / FAQ filters. */

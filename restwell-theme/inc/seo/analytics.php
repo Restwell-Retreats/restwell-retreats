@@ -46,7 +46,7 @@ function restwell_analytics_metricool_hash_sanitized() {
  * @return string
  */
 function restwell_analytics_tiktok_pixel_id_sanitized() {
-	$pixel_id = (string) get_option( 'restwell_tiktok_pixel_id', 'DALR65BC77UCJD1NQGH0' );
+	$pixel_id = (string) get_option( 'restwell_tiktok_pixel_id', '' );
 	$pixel_id = preg_replace( '/[^0-9A-Za-z]/', '', $pixel_id );
 	return preg_match( '/^[0-9A-Za-z]{10,30}$/', $pixel_id ) ? $pixel_id : '';
 }

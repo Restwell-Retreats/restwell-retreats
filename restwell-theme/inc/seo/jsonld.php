@@ -31,10 +31,6 @@ function restwell_output_structured_data() {
 		}
 	}
 
-	if ( is_front_page() ) {
-		restwell_output_jsonld_homepage_faq();
-	}
-
 	if ( ! is_front_page() && ( is_singular() || is_home() || is_category() || is_tag() || is_date() || is_author() ) ) {
 		restwell_output_jsonld_breadcrumb();
 	}
@@ -43,12 +39,10 @@ function restwell_output_structured_data() {
 		restwell_output_jsonld_article();
 	}
 
-	if ( is_page_template( 'template-faq.php' ) || is_page( 'faq' ) ) {
-		restwell_output_jsonld_faq_page();
-	}
+	// FAQPage schema is built from the rendered accordions (inc/seo/jsonld-faq.php,
+	// restwell_inject_faq_jsonld), so it can never drift from the visible FAQs.
 
 	if ( is_page_template( 'template-pricing.php' ) ) {
-		restwell_output_jsonld_pricing_faq();
 		if ( is_singular( 'page' ) && ! is_front_page() ) {
 			restwell_output_jsonld_local_business( get_queried_object_id() );
 		}
@@ -75,12 +69,10 @@ function restwell_output_structured_data() {
 
 	if ( is_page_template( 'template-resources.php' ) ) {
 		restwell_output_jsonld_collection_page();
-		restwell_output_jsonld_resources_faq();
 	}
 
 	if ( is_page_template( 'template-care.php' ) ) {
 		restwell_output_jsonld_care_service();
-		restwell_output_jsonld_care_faq();
 	}
 
 	if ( is_page_template( 'template-accessibility.php' ) ) {

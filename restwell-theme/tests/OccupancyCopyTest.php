@@ -45,32 +45,46 @@ class OccupancyCopyTest extends PHPUnit\Framework\TestCase {
 		$this->assertSame( array(), $hits );
 	}
 
-	public function test_diary_is_not_a_dark_tile_widget() {
+	/**
+	 * Availability board (2026-10 overhaul): light board on a subtle band,
+	 * nightly prices on free tiles, booked marked without colour alone, past
+	 * occupancy never published, and a named enquiry dialog.
+	 */
+	public function test_availability_board_design_contract() {
 		$theme = dirname( __DIR__ );
 		$cal   = (string) file_get_contents( $theme . '/template-parts/availability-calendar.php' );
 		$css   = (string) file_get_contents( $theme . '/assets/css/shared.css' );
 		$js    = (string) file_get_contents( $theme . '/assets/js/availability.js' );
+
+		// Light board, not a dark tile widget.
 		$this->assertStringNotContainsString( 'band-teal', $cal );
-		$this->assertStringNotContainsString( 'availability-tile', $css );
 		$this->assertStringNotContainsString( '.band-teal .availability', $css );
-		$this->assertStringNotContainsString( 'availability__swatch', $cal );
-		$this->assertStringNotContainsString( 'availability__peaks', $cal );
-		$this->assertStringContainsString( 'availability__stay', $cal );
+
+		// Free nights carry their rate; totals come from the same per-night data.
 		$this->assertStringContainsString( 'availability__price', $cal );
-		$this->assertStringContainsString( 'availability__key-mark', $cal );
-		$this->assertStringContainsString( 'availability__stay-times', $cal );
-		$this->assertStringContainsString( 'availability__stay-count', $cal );
-		$this->assertStringContainsString( 'availability__quote', $cal );
-		$this->assertStringNotContainsString( 'House diary', $cal );
-		$this->assertStringContainsString( 'btn-outline-teal', $cal );
-		$this->assertStringNotContainsString( 'availability__cta-skip', $cal );
-		$this->assertStringContainsString( 'availability__layout', $css );
+		$this->assertStringContainsString( 'data-rate', $js );
 		$this->assertStringContainsString( 'guideTotal', $js );
 		$this->assertStringContainsString( 'fillBreakdown', $js );
-		$this->assertStringContainsString( 'data-rate', $js );
+
+		// Booked is struck through and hatched, not just a paler colour.
+		$this->assertStringContainsString( 'text-decoration: line-through', $css );
+		$this->assertStringContainsString( 'repeating-linear-gradient', $css );
+
+		// Stay band rounds wherever it starts, ends or wraps a week row.
+		$this->assertStringContainsString( 'is-hope-cap-start', $css );
+		$this->assertStringContainsString( 'is-hope-cap-end', $js );
+
+		// Only today onward is published.
+		$this->assertStringContainsString( '$iso >= $today_iso', $cal );
+
+		// Enquiry dialog has an accessible name; summary and Enquire are present.
+		$this->assertStringContainsString( 'aria-labelledby="availability-enquiry-h"', $cal );
+		$this->assertStringContainsString( 'data-availability-stay', $cal );
+		$this->assertStringContainsString( 'data-availability-enquire', $cal );
+
+		$this->assertStringNotContainsString( 'House diary', $cal );
 		$this->assertStringNotContainsString( 'Tap another night to stay longer.', $js );
 		$this->assertStringNotContainsString( 'click it again', $js );
-		$this->assertStringNotContainsString( 'Click a last night', $js );
 	}
 
 	public function test_pricing_page_is_named_pricing_and_dates() {

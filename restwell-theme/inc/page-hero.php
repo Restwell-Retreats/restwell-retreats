@@ -40,10 +40,10 @@ function restwell_page_has_photo_hero() {
 		return true;
 	}
 
+	// The FAQ uses the light plain hero (5 Oct 2026), so its header stays solid.
 	$photo = array(
 		'template-accessibility.php',
 		'template-who-its-for.php',
-		'template-faq.php',
 		'template-pricing.php',
 		'template-property.php',
 		'template-how-it-works.php',
@@ -238,6 +238,41 @@ function restwell_page_hero_image_url( $post_id = 0 ) {
 }
 
 /**
+ * Default hero eyebrow for interior pages that don't set their own label.
+ *
+ * Decided 2 Oct 2026 (audit I25): every interior hero carries an eyebrow, the
+ * page's short name, matching the pages that already had one (“Accessibility”,
+ * “How it works”, “Our story”). A page's own *_label meta still wins.
+ *
+ * @param int $post_id Page ID (0 for archives, search and 404).
+ * @return string
+ */
+function restwell_page_hero_default_eyebrow( $post_id = 0 ) {
+	if ( is_search() ) {
+		return __( 'Search', 'restwell-retreats' );
+	}
+	if ( is_404() ) {
+		return __( 'Error 404', 'restwell-retreats' );
+	}
+	if ( is_home() || is_category() || is_tag() || is_archive() ) {
+		return __( 'Blog', 'restwell-retreats' );
+	}
+	$map  = array(
+		'the-property'          => __( 'The property', 'restwell-retreats' ),
+		'who-its-for'           => __( 'Who it’s for', 'restwell-retreats' ),
+		'faq'                   => __( 'FAQ', 'restwell-retreats' ),
+		'enquire'               => __( 'Enquire', 'restwell-retreats' ),
+		'pricing'               => __( 'Pricing', 'restwell-retreats' ),
+		'funding-and-support'   => __( 'Funding and support', 'restwell-retreats' ),
+		'whitstable-area-guide' => __( 'Area guide', 'restwell-retreats' ),
+		'guest-guide'           => __( 'Guest guide', 'restwell-retreats' ),
+		'blog'                  => __( 'Blog', 'restwell-retreats' ),
+	);
+	$slug = $post_id > 0 ? (string) get_post_field( 'post_name', $post_id ) : '';
+	return isset( $map[ $slug ] ) ? $map[ $slug ] : '';
+}
+
+/**
  * Theme-bundled image path → visitor-facing alt text.
  *
  * Keys are paths relative to assets/images/. Lookup also matches basename.
@@ -267,7 +302,7 @@ function restwell_theme_image_alt_map() {
 		'stock/restwell-whitstable-beach-huts.webp'                => __( 'Colourful beach huts along the Whitstable seafront', 'restwell-retreats' ),
 		'stock/restwell-whitstable-sunset-pier.webp'               => __( 'Whitstable harbour area at sunset', 'restwell-retreats' ),
 		'stock/restwell-whitstable-coastal-walk.webp'              => __( 'Coastal walk near the Whitstable seafront', 'restwell-retreats' ),
-		'stock/russell-drive-whitstable.webp'                      => __( 'Quiet residential street near Tankerton', 'restwell-retreats' ),
+		'stock/tankerton-residential-street.webp'                      => __( 'Quiet residential street near Tankerton', 'restwell-retreats' ),
 		'stock/whitstable-days-out.webp'                           => __( 'Woodland day out near the Kent coast', 'restwell-retreats' ),
 		'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' => __( 'Colourful seaside buildings on the Kent coast', 'restwell-retreats' ),
 		'stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' => __( 'Historic stone ruins in Canterbury', 'restwell-retreats' ),
@@ -297,8 +332,8 @@ function restwell_theme_image_alt_map() {
 		'partners/continuity-training-academy.png'                 => __( 'Continuity Training Academy', 'restwell-retreats' ),
 		'partners/continuity-of-care-services-long.png'            => __( 'Continuity of Care Services', 'restwell-retreats' ),
 		'partners/cqc-rating-good.jpg'                             => __( 'CQC rating Good for Continuity of Care Services', 'restwell-retreats' ),
-		'long_logo.png'                                            => __( 'Restwell by Continuity of Care Services', 'restwell-retreats' ),
-		'logo.png'                                                 => __( 'Restwell by Continuity of Care Services', 'restwell-retreats' ),
+		'long_logo.png'                                            => __( 'Restwell Retreats', 'restwell-retreats' ),
+		'logo.png'                                                 => __( 'Restwell Retreats', 'restwell-retreats' ),
 	);
 }
 

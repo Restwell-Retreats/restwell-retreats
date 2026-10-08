@@ -242,3 +242,48 @@ function restwell_redirect_author_archives() {
 	}
 }
 add_action( 'template_redirect', 'restwell_redirect_author_archives', 22 );
+
+/**
+ * Missing static files get a real 404, not a 301 to the homepage (audit I32).
+ *
+ * redirect_canonical() "guesses" a destination for any 404 three or more path
+ * segments deep, which sent a missing stylesheet or image to the homepage with
+ * a 301: a soft 404 that hides broken asset references. Only file extensions
+ * are excluded; .txt and .xml stay with WordPress (robots.txt, llms.txt,
+ * sitemaps are real routes).
+ *
+ * @param string|false $redirect_url  Proposed redirect.
+ * @param string       $requested_url Requested URL.
+ * @return string|false
+ */
+function restwell_no_canonical_redirect_for_missing_assets( $redirect_url, $requested_url ) {
+	return restwell_is_static_asset_path( (string) wp_parse_url( (string) $requested_url, PHP_URL_PATH ) ) ? false : $redirect_url;
+}
+add_filter( 'redirect_canonical', 'restwell_no_canonical_redirect_for_missing_assets', 10, 2 );
+
+/**
+ * Whether a request path names a static file. The web server serves files that
+ * exist, so one reaching WordPress is missing.
+ *
+ * @param string $path URL path.
+ * @return bool
+ */
+function restwell_is_static_asset_path( $path ) {
+	return (bool) preg_match( '/\.(?:css|js|mjs|map|png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|otf|eot|mp4|webm|pdf|zip)$/i', $path );
+}
+
+/**
+ * WordPress can parse a missing deep asset path as the front page and serve it
+ * with a 200; force the 404 so it is neither a redirect nor a soft 404.
+ */
+function restwell_404_missing_static_assets() {
+	$path = (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '', PHP_URL_PATH );
+	if ( '' === $path || ! restwell_is_static_asset_path( $path ) ) {
+		return;
+	}
+	global $wp_query;
+	$wp_query->set_404();
+	status_header( 404 );
+	nocache_headers();
+}
+add_action( 'template_redirect', 'restwell_404_missing_static_assets', 0 );

@@ -21,7 +21,7 @@ if ( $footer_cqc_profile_url === '' ) {
 }
 
 $logo_url = function_exists( 'restwell_get_logo_url' ) ? restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) : '';
-$brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_brand_lockup() : get_bloginfo( 'name' );
+$brand    = function_exists( 'restwell_site_logo_accessible_name' ) ? restwell_site_logo_accessible_name() : get_bloginfo( 'name' );
 
 $footer_phone = (string) get_option( 'restwell_phone_number', '01622 809881' );
 $footer_phone_tel = preg_replace( '/[^0-9+]/', '', $footer_phone );
@@ -30,7 +30,22 @@ if ( '' === $footer_email || ! is_email( $footer_email ) ) {
 	$footer_email = 'hello@restwellretreats.co.uk';
 }
 
-$faq_url      = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'faq' ) : home_url( '/faq/' );
+// Main pages, so phones have a route onward without scrolling back to the menu (audit I34).
+$footer_explore = array();
+foreach (
+	array(
+		'the-property'  => __( 'The property', 'restwell-retreats' ),
+		'accessibility' => __( 'Accessibility', 'restwell-retreats' ),
+		'pricing'       => __( 'Pricing', 'restwell-retreats' ),
+		'how-it-works'  => __( 'How it works', 'restwell-retreats' ),
+		'optional-care' => __( 'Optional care', 'restwell-retreats' ),
+		'faq'           => __( 'FAQ', 'restwell-retreats' ),
+		'blog'          => __( 'Blog', 'restwell-retreats' ),
+		'enquire'       => __( 'Enquire', 'restwell-retreats' ),
+	) as $footer_slug => $footer_label
+) {
+	$footer_explore[ $footer_label ] = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( $footer_slug ) : home_url( '/' . $footer_slug . '/' );
+}
 $privacy_url  = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'privacy-policy' ) : home_url( '/privacy-policy/' );
 $terms_url    = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'terms-and-conditions' ) : home_url( '/terms-and-conditions/' );
 $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'accessibility-policy' ) : home_url( '/accessibility-policy/' );
@@ -46,6 +61,7 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 						class="site-logo__img"
 						width="282"
 						height="44"
+						sizes="176px"
 					>
 				<?php else : ?>
 					<?php echo esc_html( $brand ); ?>
@@ -69,9 +85,15 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 				<a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a>
 			</p>
 		</div>
+		<nav class="site-footer__nav" aria-label="<?php esc_attr_e( 'Explore', 'restwell-retreats' ); ?>">
+			<ul>
+				<?php foreach ( $footer_explore as $footer_label => $footer_url ) : ?>
+					<li><a href="<?php echo esc_url( $footer_url ); ?>"><?php echo esc_html( $footer_label ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		</nav>
 		<div class="site-footer__bottom">
 			<nav class="site-footer__legal" aria-label="<?php esc_attr_e( 'Legal', 'restwell-retreats' ); ?>">
-				<a href="<?php echo esc_url( $faq_url ); ?>"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a>
 				<a href="<?php echo esc_url( $privacy_url ); ?>"><?php esc_html_e( 'Privacy Policy', 'restwell-retreats' ); ?></a>
 				<a href="<?php echo esc_url( $terms_url ); ?>"><?php esc_html_e( 'Terms &amp; Conditions', 'restwell-retreats' ); ?></a>
 				<a href="<?php echo esc_url( $a11y_pol_url ); ?>"><?php esc_html_e( 'Website accessibility', 'restwell-retreats' ); ?></a>
@@ -79,7 +101,11 @@ $a11y_pol_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_na
 					<button type="button" class="site-footer__cookie-settings" data-cookie-settings><?php esc_html_e( 'Cookie settings', 'restwell-retreats' ); ?></button>
 				<?php endif; ?>
 			</nav>
-			<p class="site-footer__copyright">&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( $legal_entity_name ); ?>. <?php esc_html_e( 'All rights reserved.', 'restwell-retreats' ); ?></p>
+			<p class="site-footer__copyright">
+				<?php esc_html_e( 'Website Design by', 'restwell-retreats' ); ?>
+				<a href="https://www.linkedin.com/in/ellie-smith-me/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Ellie Smith', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+				&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( $legal_entity_name ); ?>. <?php esc_html_e( 'All rights reserved.', 'restwell-retreats' ); ?>
+			</p>
 		</div>
 	</div>
 </footer>

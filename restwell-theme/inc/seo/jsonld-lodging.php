@@ -147,26 +147,20 @@ function restwell_output_jsonld_local_business( $page_id = 0 ) {
 		? restwell_get_submission_notify_email()
 		: 'hello@restwellretreats.co.uk';
 
-	// Full street + postcode, house number never included (owner decision).
-	// Site-wide SEO fields override these defaults when set.
+	// Locality only (owner decision, 1 Oct 2026, audit I02): the bungalow's
+	// street is sent with the booking confirmation, never published. The
+	// postcode is cut to its outward code (CT5), whatever the site-wide field holds.
 	$address = array(
 		'@type'           => 'PostalAddress',
-		'streetAddress'   => 'Russell Drive',
 		'addressLocality' => 'Whitstable',
 		'addressRegion'   => 'Kent',
-		'postalCode'      => 'CT5 2RQ',
+		'postalCode'      => 'CT5',
 		'addressCountry'  => 'GB',
 	);
 
-	$street = trim( (string) get_option( 'restwell_property_address', '' ) );
-	if ( '' !== $street ) {
-		// Editors sometimes paste the full address; house number never goes to schema.
-		$address['streetAddress'] = trim( (string) preg_replace( '/^\s*[0-9]+[A-Za-z]?\s*,?\s*/', '', $street ) );
-	}
-
-	$postcode = trim( (string) get_option( 'restwell_property_postcode', '' ) );
-	if ( '' !== $postcode ) {
-		$address['postalCode'] = $postcode;
+	$postcode = strtoupper( trim( (string) get_option( 'restwell_property_postcode', '' ) ) );
+	if ( preg_match( '/^([A-Z]{1,2}[0-9][A-Z0-9]?)/', $postcode, $outward ) ) {
+		$address['postalCode'] = $outward[1];
 	}
 
 	$desc = __(

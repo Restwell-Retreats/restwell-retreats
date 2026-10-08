@@ -4,6 +4,8 @@
 
 Five keep-guides stay indexable. The other fourteen stay noindex. No new mill.
 
+**Enforced in code (2 Oct 2026, audit I01):** the fourteen slugs below are listed in `restwell_get_noindex_post_slugs()` (`inc/seo/canonical.php`). They print `noindex, follow` and are excluded from the sitemap whatever the post meta says, so a re-seed cannot make them indexable. Change that list and this file together. Until a guide is published, links to it point at its hub page (`restwell_get_guide_hub_fallbacks()` in `inc/internal-links.php`), so no page links to a 404.
+
 ## Keep indexable
 
 - `/accessible-beaches-coastal-walks-kent/`

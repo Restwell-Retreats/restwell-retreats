@@ -51,6 +51,12 @@ get_template_part(
 );
 ?>
 
+<section class="section-y section-y--compact band-subtle" aria-label="<?php esc_attr_e( 'Search again', 'restwell-retreats' ); ?>">
+	<div class="container">
+		<?php get_search_form(); ?>
+	</div>
+</section>
+
 <?php
 get_template_part(
 	'template-parts/blog-results',

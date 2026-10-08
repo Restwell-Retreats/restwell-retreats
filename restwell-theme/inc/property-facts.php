@@ -32,7 +32,7 @@ function restwell_get_property_facts(): array {
 			'Step-free throughout',
 			'Front doorway 965mm clear',
 			'Internal doorways 926mm clear',
-			'Level-access wet room with shower chair and grab rails',
+			'Level-access wet room with shower seat and grab rails',
 			'Ceiling track hoist over the profiling bed',
 			'Threshold ramp to a level patio and garden',
 		),
@@ -44,7 +44,7 @@ function restwell_get_property_facts(): array {
 		'practical' => array(
 			'Driveway parking for two cars',
 			'Fully equipped kitchen with reachable worktops',
-			'High-speed broadband throughout',
+			'Free high-speed WiFi throughout',
 		),
 	);
 

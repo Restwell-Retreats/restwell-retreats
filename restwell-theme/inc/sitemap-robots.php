@@ -51,8 +51,10 @@ function restwell_robots_txt_allow_ai_crawlers( $output, $public ) {
 		'PerplexityBot',
 		'Google-Extended',
 	);
+	// A named group replaces the * group for that crawler, so repeat the
+	// admin rules here or these bots would be allowed into /wp-admin/.
 	foreach ( $agents as $agent ) {
-		$output .= "User-agent: {$agent}\nAllow: /\n\n";
+		$output .= "User-agent: {$agent}\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\nAllow: /\n\n";
 	}
 	return $output;
 }
@@ -100,6 +102,13 @@ function restwell_sitemap_exclude_demo_and_noindex_pages( $args, $post_type ) {
 		if ( $old_beaches instanceof WP_Post ) {
 			$exclude_ids[] = (int) $old_beaches->ID;
 		}
+		// The fourteen noindex mill posts (inc/seo/canonical.php).
+		foreach ( restwell_get_noindex_post_slugs() as $slug ) {
+			$mill = get_page_by_path( $slug, OBJECT, 'post' );
+			if ( $mill instanceof WP_Post ) {
+				$exclude_ids[] = (int) $mill->ID;
+			}
+		}
 	}
 
 	$exclude_ids = array_values( array_unique( array_filter( $exclude_ids ) ) );
@@ -137,3 +146,53 @@ function restwell_sitemap_exclude_demo_and_noindex_pages( $args, $post_type ) {
 	return $args;
 }
 add_filter( 'wp_sitemaps_posts_query_args', 'restwell_sitemap_exclude_demo_and_noindex_pages', 10, 2 );
+
+/**
+ * Keep thin and empty category archives out of the sitemap: an archive needs
+ * RESTWELL_MIN_INDEXABLE_TERM_POSTS indexable posts to be listed (audit I31).
+ *
+ * @param array<string, mixed> $args     get_terms() args.
+ * @param string               $taxonomy Taxonomy.
+ * @return array<string, mixed>
+ */
+function restwell_sitemap_exclude_thin_terms( $args, $taxonomy ) {
+	$terms = get_terms(
+		array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+			'fields'     => 'all',
+		)
+	);
+	if ( is_wp_error( $terms ) ) {
+		return $args;
+	}
+	$exclude = isset( $args['exclude'] ) ? array_map( 'intval', (array) $args['exclude'] ) : array();
+	foreach ( $terms as $term ) {
+		if ( restwell_count_indexable_posts_in_term( $term ) < RESTWELL_MIN_INDEXABLE_TERM_POSTS ) {
+			$exclude[] = (int) $term->term_id;
+		}
+	}
+	if ( $exclude ) {
+		$args['exclude'] = array_values( array_unique( $exclude ) );
+	}
+	return $args;
+}
+add_filter( 'wp_sitemaps_taxonomies_query_args', 'restwell_sitemap_exclude_thin_terms', 10, 2 );
+
+/**
+ * Empty category archives (e.g. Uncategorized with no posts) return a real 404
+ * rather than a 200 page with nothing on it (audit I31).
+ */
+function restwell_404_empty_term_archives() {
+	if ( ! ( is_category() || is_tag() ) || is_paged() ) {
+		return;
+	}
+	$term = get_queried_object();
+	if ( $term instanceof WP_Term && 0 === (int) $term->count ) {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
+		nocache_headers();
+	}
+}
+add_action( 'template_redirect', 'restwell_404_empty_term_archives', 1 );

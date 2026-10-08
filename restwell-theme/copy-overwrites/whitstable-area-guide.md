@@ -8,7 +8,7 @@ Accessible days out in Whitstable and Tankerton
 
 ## Meta description
 
-Which bits of Whitstable work in a wheelchair and which don’t. Tankerton promenade is level, the harbour beach is shingle, and we’ve named the venues with an accessible loo.
+Which bits of Whitstable work in a wheelchair: Tankerton promenade is level, the harbour beach is shingle, and we name the venues with an accessible loo.
 
 ## H1 (`wg_heading`)
 

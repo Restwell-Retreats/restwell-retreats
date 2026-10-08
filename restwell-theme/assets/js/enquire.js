@@ -116,7 +116,7 @@
 
 		var PERSIST_FIELDS = [
 			'enq_name', 'enq_email', 'enq_phone',
-			'enq_contact_preference', 'enq_preferred_time',
+			'enq_preferred_time',
 			'enq_heard_about', 'enq_heard_other',
 			'enq_date_from', 'enq_date_to',
 			'enq_guests', 'enq_funding', 'enq_urgent',
@@ -160,9 +160,9 @@
 		}
 
 		// Fields that render empty in the plain PHP template and only gain a
-		// value via $enq_val() echoing back a failed submission. enq_guests,
-		// enq_funding, and enq_contact_preference are deliberately excluded:
-		// they always render with a non-empty default (2 / self / email) even
+		// value via $enq_val() echoing back a failed submission. enq_guests
+		// and enq_funding are deliberately excluded:
+		// they always render with a non-empty default (2 / self) even
 		// on a first-ever visit, so including them made this check always
 		// true and permanently disabled draft restoration.
 		var SERVER_PREFILL_SIGNAL_FIELDS = [
@@ -374,8 +374,17 @@
 		if (params.get('sent') !== '1') {
 			return;
 		}
+		// Count a conversion only when the server consumed a fresh one-time token
+		// for this page view (audit I03): reloads and shared links never re-fire.
+		var result = document.getElementById('enquiry-result');
+		var isConversion = !!(result && result.getAttribute('data-conversion') === '1');
+		if (params.has('ct') && window.history && window.history.replaceState) {
+			params.delete('ct');
+			var clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+			window.history.replaceState(null, '', clean);
+		}
 		// Primary conversion: successful enquiry (GA4; requires measurement ID in theme SEO settings).
-		if (typeof window.gtag === 'function') {
+		if (isConversion && typeof window.gtag === 'function') {
 			var refPath = '';
 			try {
 				refPath = document.referrer ? new URL(document.referrer).pathname : '';
@@ -388,7 +397,7 @@
 				page_path: window.location.pathname,
 			});
 		}
-		if (params.get('duplicate') !== '1') {
+		if (isConversion && params.get('duplicate') !== '1') {
 			trackTikTokEnquirySubmit();
 		}
 		var el = document.getElementById('enquiry-result');

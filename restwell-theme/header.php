@@ -17,7 +17,7 @@ if ( ! is_front_page() && ! $photo_hero ) {
 	$header_class .= ' is-solid';
 }
 $logo_url = function_exists( 'restwell_get_logo_url' ) ? restwell_get_logo_url( 'restwell_logo_long_id', 'long_logo.png' ) : '';
-$brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_brand_lockup() : get_bloginfo( 'name' );
+$brand    = function_exists( 'restwell_site_logo_accessible_name' ) ? restwell_site_logo_accessible_name() : get_bloginfo( 'name' );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
@@ -41,6 +41,7 @@ $brand    = function_exists( 'restwell_site_brand_lockup' ) ? restwell_site_bran
 					class="site-logo__img"
 					width="282"
 					height="44"
+					sizes="(max-width: 767px) 192px, 224px"
 				>
 			<?php else : ?>
 				<?php echo esc_html( $brand ); ?>

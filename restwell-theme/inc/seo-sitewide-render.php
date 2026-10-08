@@ -286,7 +286,7 @@ function restwell_seo_sitewide_render_analytics_card(
 
 					<?php restwell_seo_sitewide_field_open( 'restwell_tiktok_pixel_id', __( 'TikTok Pixel ID', 'restwell-retreats' ), $issues ); ?>
 						<div class="rw-seo-sitewide__inline">
-							<input type="text" class="rw-seo-field__input" id="restwell_tiktok_pixel_id" name="restwell_tiktok_pixel_id" value="<?php echo esc_attr( $tiktok_current ); ?>" placeholder="DALR65BC77UCJD1NQGH0" />
+							<input type="text" class="rw-seo-field__input" id="restwell_tiktok_pixel_id" name="restwell_tiktok_pixel_id" value="<?php echo esc_attr( $tiktok_current ); ?>" placeholder="<?php esc_attr_e( 'From TikTok Ads Manager, e.g. C1A2B3C4D5E6F7G8H9', 'restwell-retreats' ); ?>" />
 							<span class="<?php echo esc_attr( $tiktok_badge_class ); ?>" aria-live="polite"><?php echo esc_html( $tiktok_badge_text ); ?></span>
 						</div>
 						<p class="rw-seo-field__hint"><?php esc_html_e( 'Optional. Loads the TikTok Pixel after analytics consent. Sends ViewContent on each page, plus Lead when an enquiry is sent. Leave Automatic Advanced Matching off in TikTok Events Manager.', 'restwell-retreats' ); ?></p>
@@ -345,12 +345,13 @@ function restwell_seo_sitewide_render_copy_card( $issues ) {
 
 					<div class="rw-seo-sitewide__grid">
 						<?php restwell_seo_sitewide_field_open( 'restwell_property_address', __( 'Property street address', 'restwell-retreats' ), $issues ); ?>
-							<input type="text" class="rw-seo-field__input" id="restwell_property_address" name="restwell_property_address" value="<?php echo esc_attr( (string) get_option( 'restwell_property_address', '101 Russell Drive' ) ); ?>" />
-							<p class="rw-seo-field__hint"><?php esc_html_e( 'Published in Google schema without the house number.', 'restwell-retreats' ); ?></p>
+							<input type="text" class="rw-seo-field__input" id="restwell_property_address" name="restwell_property_address" value="<?php echo esc_attr( (string) get_option( 'restwell_property_address', '' ) ); ?>" />
+							<p class="rw-seo-field__hint"><?php esc_html_e( 'Internal reference only. Never published: schema shows Whitstable and the outward postcode, and guests get the street in their booking confirmation.', 'restwell-retreats' ); ?></p>
 						<?php restwell_seo_sitewide_field_close(); ?>
 
 						<?php restwell_seo_sitewide_field_open( 'restwell_property_postcode', __( 'Property postcode', 'restwell-retreats' ), $issues ); ?>
-							<input type="text" class="rw-seo-field__input" id="restwell_property_postcode" name="restwell_property_postcode" value="<?php echo esc_attr( (string) get_option( 'restwell_property_postcode', 'CT5 2RQ' ) ); ?>" />
+							<input type="text" class="rw-seo-field__input" id="restwell_property_postcode" name="restwell_property_postcode" value="<?php echo esc_attr( (string) get_option( 'restwell_property_postcode', '' ) ); ?>" />
+							<p class="rw-seo-field__hint"><?php esc_html_e( 'Only the first half (e.g. CT5) appears in Google schema.', 'restwell-retreats' ); ?></p>
 						<?php restwell_seo_sitewide_field_close(); ?>
 					</div>
 
@@ -482,7 +483,7 @@ function restwell_seo_sitewide_render_page() {
 		$metricool_badge_text  = __( 'Wrong format — should be a 32-character hash', 'restwell-retreats' );
 	}
 
-	$tiktok_current = (string) get_option( 'restwell_tiktok_pixel_id', 'DALR65BC77UCJD1NQGH0' );
+	$tiktok_current = (string) get_option( 'restwell_tiktok_pixel_id', '' );
 	if ( $tiktok_current === '' ) {
 		$tiktok_badge_class = 'rw-seo-flag rw-seo-flag--warn';
 		$tiktok_badge_text  = __( 'Not set — tracking inactive', 'restwell-retreats' );

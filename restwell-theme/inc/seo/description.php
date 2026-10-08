@@ -45,7 +45,7 @@ function restwell_get_meta_description_for_request() {
 		if ( is_singular( 'post' ) ) {
 			$excerpt = wp_strip_all_tags( get_the_excerpt( $pid ) );
 			if ( $excerpt !== '' ) {
-				return restwell_trim_meta_text( $excerpt, 150 ) . '. ' . __( 'Read practical guidance and next steps.', 'restwell-retreats' );
+				return restwell_trim_meta_text( $excerpt, 160 );
 			}
 		}
 
@@ -53,7 +53,7 @@ function restwell_get_meta_description_for_request() {
 		$content     = $content_raw ? wp_strip_all_tags( (string) $content_raw ) : '';
 		$content     = trim( (string) preg_replace( '/\s+/', ' ', $content ) );
 		if ( $content !== '' ) {
-			return restwell_trim_meta_text( $content, 155 ) . '…';
+			return restwell_trim_meta_text( $content, 160 );
 		}
 
 		$title = get_the_title( $pid );
@@ -106,7 +106,9 @@ function restwell_get_meta_description_for_request() {
 		if ( $term && ! is_wp_error( $term ) ) {
 			$td = term_description( $term );
 			if ( $td ) {
-				return restwell_trim_meta_text( $td, 150 ) . '. ' . __( 'Browse the latest posts in this topic.', 'restwell-retreats' );
+				// Term descriptions are written as full sentences; end on one rather than
+				// appending boilerplate to a cut clause.
+				return restwell_trim_meta_text( $td, 160 );
 			}
 			if ( ! empty( $term->name ) ) {
 				return restwell_trim_meta_text(

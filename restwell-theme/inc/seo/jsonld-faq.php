@@ -64,56 +64,6 @@ function restwell_get_homepage_faq_meta_seed_map() {
 }
 
 /**
- * Output FAQPage JSON-LD on the front page (pairs must match visible content).
- */
-function restwell_output_jsonld_homepage_faq() {
-	$front_id = (int) get_option( 'page_on_front', 0 );
-	if ( $front_id <= 0 ) {
-		return;
-	}
-
-	$pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'homepage' ) : array();
-	if ( empty( $pairs ) ) {
-		return;
-	}
-
-	$main_entity = array();
-	foreach ( $pairs as $pair ) {
-		if ( empty( $pair['q'] ) || empty( $pair['a'] ) ) {
-			continue;
-		}
-
-		$answer_text = '';
-		if ( ! empty( $pair['answer_text'] ) ) {
-			$answer_text = $pair['answer_text'];
-		} else {
-			$answer_text = wp_strip_all_tags( $pair['a'] );
-		}
-
-		$main_entity[] = array(
-			'@type'          => 'Question',
-			'name'           => wp_strip_all_tags( $pair['q'] ),
-			'acceptedAnswer' => array(
-				'@type' => 'Answer',
-				'text'  => $answer_text,
-			),
-		);
-	}
-
-	if ( empty( $main_entity ) ) {
-		return;
-	}
-
-	$schema = array(
-		'@context'   => 'https://schema.org',
-		'@type'      => 'FAQPage',
-		'mainEntity' => $main_entity,
-	);
-
-	restwell_print_jsonld( $schema );
-}
-
-/**
  * Default FAQ Q/A for the FAQ page template and matching FAQPage JSON-LD (single source of truth).
  *
  * @return array<int, array{q: string, a: string, cat: string}>
@@ -122,7 +72,7 @@ function restwell_get_faq_page_default_pairs() {
 	// Broader set -- kept distinct from per-page FAQs (homepage, how-it-works) to prevent duplicate-content cannibalisation.
 	return array(
 		array(
-			'q'   => 'What is Restwell, exactly — bungalow, care home, or respite centre?',
+			'q'   => 'What is Restwell, exactly: bungalow, care home, or respite centre?',
 			'a'   => 'Both, in the way that helps you plan: it’s a private adapted bungalow that you rent as a holiday, with no staff on site, and optional care from Continuity if you want it. It’s not a registered respite centre, though your funder may use the word respite on paperwork, and that’s fine.',
 			'cat' => 'about',
 		),
@@ -200,126 +150,60 @@ function restwell_get_faq_page_default_pairs() {
 }
 
 /**
- * FAQPage - output on the FAQ template.
- */
-function restwell_output_jsonld_faq_page() {
-	$pid = get_queried_object_id();
-	if ( ! $pid ) {
-		return;
-	}
-
-	// Use centralised helper so JSON-LD mirrors the same data as the template.
-	$faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'faq-page' ) : array();
-
-	$main_entity = array();
-	foreach ( $faq_pairs as $pair ) {
-		$main_entity[] = array(
-			'@type'          => 'Question',
-			'name'           => wp_strip_all_tags( $pair['q'] ),
-			'acceptedAnswer' => array(
-				'@type' => 'Answer',
-				'text'  => wp_strip_all_tags( isset( $pair['answer_text'] ) ? $pair['answer_text'] : $pair['a'] ),
-			),
-		);
-	}
-
-	$schema = array(
-		'@context'   => 'https://schema.org',
-		'@type'      => 'FAQPage',
-		'mainEntity' => $main_entity,
-	);
-
-	restwell_print_jsonld( $schema );
-}
-
-/**
- * FAQPage for the Pricing template (same Q&A as the visible accordion).
- */
-function restwell_output_jsonld_pricing_faq() {
-	$pid = get_queried_object_id();
-	if ( ! $pid ) {
-		return;
-	}
-
-	$faq_pairs = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'pricing' ) : array();
-	if ( empty( $faq_pairs ) ) {
-		return;
-	}
-
-	$main_entity = array();
-	foreach ( $faq_pairs as $pair ) {
-		$main_entity[] = array(
-			'@type'          => 'Question',
-			'name'           => wp_strip_all_tags( $pair['q'] ),
-			'acceptedAnswer' => array(
-				'@type' => 'Answer',
-				'text'  => wp_strip_all_tags( isset( $pair['answer_text'] ) ? $pair['answer_text'] : $pair['a'] ),
-			),
-		);
-	}
-
-	$schema = array(
-		'@context'   => 'https://schema.org',
-		'@type'      => 'FAQPage',
-		'mainEntity' => $main_entity,
-	);
-
-	restwell_print_jsonld( $schema );
-}
-
-/**
- * FAQ pairs for the Funding & Support page (must match visible accordion copy).
+ * Question/answer pairs from the FAQ accordions actually rendered on a page.
  *
- * @return array<int, array{q: string, a: string}>
+ * FAQPage schema is built from the finished HTML, so it always matches the
+ * visible questions and answers: parity by construction, whichever template
+ * printed the accordion (decided 1 Oct 2026, audit I16). Duplicate questions
+ * are listed once. Pure PHP, so tests/FaqSchemaParityTest.php can exercise it.
+ *
+ * @param string $html Page HTML.
+ * @return array<int, array{q:string, a:string}>
  */
-function restwell_get_resources_faq_pairs() {
-	$page_id = 0;
-	$page    = get_page_by_path( 'funding-and-support', OBJECT, 'page' );
-	if ( $page instanceof WP_Post ) {
-		$page_id = (int) $page->ID;
+function restwell_extract_faq_pairs_from_html( $html ) {
+	if ( false === strpos( (string) $html, 'faq-item__trigger' ) || ! class_exists( 'DOMDocument' ) ) {
+		return array();
 	}
-
-	$complaints_a = 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.';
-	if ( $page_id > 0 && function_exists( 'restwell_page_content_text' ) ) {
-		$complaints_a = restwell_page_content_text( $page_id, 'res_complaints_body', $complaints_a );
+	$doc  = new DOMDocument();
+	$prev = libxml_use_internal_errors( true );
+	$doc->loadHTML( '<?xml encoding="utf-8"?>' . $html, LIBXML_NOERROR | LIBXML_NOWARNING );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $prev );
+	$xpath = new DOMXPath( $doc );
+	$pairs = array();
+	$seen  = array();
+	$clean = static function ( $text ) {
+		return trim( (string) preg_replace( '/\s+/u', ' ', (string) $text ) );
+	};
+	// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- DOM API names.
+	foreach ( $xpath->query( '//*[contains(concat(" ", normalize-space(@class), " "), " faq-item ")]' ) as $item ) {
+		$trigger = $xpath->query( './/*[contains(concat(" ", normalize-space(@class), " "), " faq-item__trigger ")]', $item )->item( 0 );
+		$panel   = $xpath->query( './/*[contains(concat(" ", normalize-space(@class), " "), " faq-item__panel ")]', $item )->item( 0 );
+		if ( ! $trigger || ! $panel ) {
+			continue;
+		}
+		$q = $clean( $trigger->textContent );
+		$a = $clean( $panel->textContent );
+		if ( '' === $q || '' === $a || isset( $seen[ $q ] ) ) {
+			continue;
+		}
+		$seen[ $q ] = true;
+		$pairs[]    = array(
+			'q' => $q,
+			'a' => $a,
+		);
 	}
-
-	return array(
-		array(
-			'q' => 'Can NHS Continuing Healthcare funding be used for a holiday?',
-			'a' => 'It can cover the care hours you’re already assessed for, if your CHC team agrees in writing. It doesn’t pay for the holiday itself, so the bungalow, travel and food are usually yours unless a panel says otherwise. Ask them which costs they’ll take, then tell us who to invoice.',
-		),
-		array(
-			'q' => 'Can I get an NHS-funded holiday in the UK?',
-			'a' => 'There isn’t a general scheme where the NHS pays for holidays. Your assessed care can sometimes continue while you’re away. Treat the house, travel and care as separate costs, and get each one clear in writing.',
-		),
-		array(
-			'q' => 'Can I use direct payments for a short break or holiday in England?',
-			'a' => 'Yes, if it fits your support plan. Councils can’t ban short breaks as a blanket rule. The bungalow rent is only in if the plan names it, and food and souvenirs usually aren’t. Check with your social worker before you pay a deposit.',
-		),
-		array(
-			'q' => 'Can a personal budget support a holiday or short break?',
-			'a' => 'A Care Act personal budget can support a short break if that’s an assessed need. Keep general holiday spending off that line, and talk the wording through with your social worker. We can send the access statement to go on the file.',
-		),
-		array(
-			'q' => 'How do I use NHS CHC funding for a short break?',
-			'a' => 'Speak to your CHC coordinator and ask which hours continue away from home. Enquire with Restwell, and Continuity can quote the care on the same call. We’ll send the access statement; you agree who receives which invoice.',
-		),
-		array(
-			'q' => 'What if my funding application is refused?',
-			'a' => $complaints_a,
-		),
-	);
+	// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+	return $pairs;
 }
 
 /**
- * FAQPage JSON-LD for Funding & Support.
+ * FAQPage schema array for a list of pairs.
+ *
+ * @param array<int, array{q:string, a:string}> $pairs Pairs.
+ * @return array<string, mixed>
  */
-function restwell_output_jsonld_resources_faq() {
-	$pairs = restwell_get_resources_faq_pairs();
-	if ( empty( $pairs ) ) {
-		return;
-	}
+function restwell_build_faq_schema( array $pairs ) {
 	$entities = array();
 	foreach ( $pairs as $pair ) {
 		$entities[] = array(
@@ -331,72 +215,30 @@ function restwell_output_jsonld_resources_faq() {
 			),
 		);
 	}
-	restwell_print_jsonld(
-		array(
-			'@context'   => 'https://schema.org',
-			'@type'      => 'FAQPage',
-			'mainEntity' => $entities,
-		)
-	);
-}
-
-/**
- * FAQ pairs for the Optional care page (must match visible accordion copy).
- *
- * @return array<int, array{q: string, a: string}>
- */
-function restwell_get_care_faq_pairs() {
-	$pricing_url = function_exists( 'restwell_nav_resolve_page_url' )
-		? restwell_nav_resolve_page_url( 'pricing' )
-		: home_url( '/pricing/' );
 	return array(
-		array(
-			'q' => 'How does care work during a stay at the bungalow?',
-			'a' => 'Restwell is the house; Continuity of Care Services is the care team. They come to the bungalow, on the same enquiry as your dates. Many guests book the house alone and need nobody at all; care is there if you want it.',
-		),
-		array(
-			'q' => 'Who regulates the care team?',
-			'a' => 'The Care Quality Commission. Continuity of Care Services is rated Good, and Victoria Walker, who owns Restwell, is their registered manager. Read the published report yourself rather than take our word for it.',
-		),
-		array(
-			'q' => 'Do I book care separately?',
-			'a' => 'No. Ask when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so house and care can start in one conversation when you want both.',
-		),
-		array(
-			'q' => 'Can I bring my own carers?',
-			'a' => 'Yes. The layout supports familiar routines, with separate sleeping and space to assist. Tell us your party layout when you enquire.',
-		),
-		array(
-			'q' => 'Where do I see guide rates?',
-			'a' => 'On Pricing & dates (' . $pricing_url . '#care-rates). They are Continuity guide rates only. Continuity quotes your care cost once hours and tasks are agreed.',
-		),
+		'@context'   => 'https://schema.org',
+		'@type'      => 'FAQPage',
+		'mainEntity' => $entities,
 	);
 }
 
 /**
- * FAQPage JSON-LD for Optional care.
+ * Append FAQPage JSON-LD built from the rendered page, before </body>.
+ *
+ * @param string $html Page HTML.
+ * @return string
  */
-function restwell_output_jsonld_care_faq() {
-	$pairs = restwell_get_care_faq_pairs();
+function restwell_inject_faq_jsonld( $html ) {
+	if ( is_404() || is_search() || false === stripos( $html, '</body>' ) ) {
+		return $html;
+	}
+	$pairs = restwell_extract_faq_pairs_from_html( $html );
 	if ( empty( $pairs ) ) {
-		return;
+		return $html;
 	}
-	$entities = array();
-	foreach ( $pairs as $pair ) {
-		$entities[] = array(
-			'@type'          => 'Question',
-			'name'           => $pair['q'],
-			'acceptedAnswer' => array(
-				'@type' => 'Answer',
-				'text'  => $pair['a'],
-			),
-		);
-	}
-	restwell_print_jsonld(
-		array(
-			'@context'   => 'https://schema.org',
-			'@type'      => 'FAQPage',
-			'mainEntity' => $entities,
-		)
-	);
+	// No ob_start() here: this runs inside an output-buffer callback.
+	$script = restwell_jsonld_script_tag( restwell_build_faq_schema( $pairs ) );
+	$pos    = strripos( $html, '</body>' );
+	return substr( $html, 0, $pos ) . $script . substr( $html, $pos );
 }
+add_filter( 'restwell_front_html', 'restwell_inject_faq_jsonld', 20 );

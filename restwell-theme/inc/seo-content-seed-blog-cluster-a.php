@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function restwell_get_blog_post_chc_respite_holiday_accommodation_html() {
 	$blog   = esc_url( home_url( '/blog/' ) );
-	$res    = esc_url( home_url( '/resources/' ) );
+	$res    = esc_url( home_url( '/funding-and-support/' ) );
 	$dp     = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
 	$carers = esc_url( home_url( '/carers-respite-holiday-guide/' ) );
 	$enq    = esc_url( home_url( '/enquire/' ) );
@@ -233,7 +233,7 @@ function restwell_get_blog_post_accessible_train_whitstable_kent_html() {
  */
 function restwell_get_blog_post_travel_insurance_disability_uk_html() {
 	$blog = esc_url( home_url( '/blog/' ) );
-	$res  = esc_url( home_url( '/resources/' ) );
+	$res  = esc_url( home_url( '/funding-and-support/' ) );
 	$hire = esc_url( home_url( '/hire-mobility-scooter-equipment-uk-holiday/' ) );
 	$enq  = esc_url( home_url( '/enquire/' ) );
 
@@ -376,7 +376,7 @@ function restwell_get_blog_post_commissioner_accessible_respite_html() {
  */
 function restwell_get_blog_post_personal_budget_short_break_html() {
 	$blog   = esc_url( home_url( '/blog/' ) );
-	$res    = esc_url( home_url( '/resources/' ) );
+	$res    = esc_url( home_url( '/funding-and-support/' ) );
 	$dp     = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
 	$carers = esc_url( home_url( '/carers-respite-holiday-guide/' ) );
 	$chc    = esc_url( home_url( '/chc-respite-holiday-accommodation-uk/' ) );

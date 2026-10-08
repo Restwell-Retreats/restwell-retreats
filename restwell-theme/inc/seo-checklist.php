@@ -569,7 +569,7 @@ function restwell_seo_checklist_sitewide(): array {
 		);
 	}
 
-	$tiktok = trim( (string) get_option( 'restwell_tiktok_pixel_id', 'DALR65BC77UCJD1NQGH0' ) );
+	$tiktok = trim( (string) get_option( 'restwell_tiktok_pixel_id', '' ) );
 	if ( $tiktok !== '' && ! preg_match( '/^[0-9A-Za-z]{10,30}$/', $tiktok ) ) {
 		$issues[] = array(
 			'id'       => 'tiktok_invalid',

@@ -282,10 +282,6 @@ function restwell_get_resources_field_definitions() {
 			'res_heading'       => restwell_field( __( 'Page heading (h1)', 'restwell-retreats' ) ),
 			'res_intro'         => restwell_field( __( 'Intro paragraph', 'restwell-retreats' ), 'textarea' ),
 		),
-		'How to fund' => array(
-			'res_fund_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
-			'res_fund_body'    => restwell_field( __( 'Body (HTML allowed: links, lists)', 'restwell-retreats' ), 'textarea' ),
-		),
 		'Grants and charities' => array(
 			'res_grants_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
 			'res_grants_body'    => restwell_field( __( 'Body (HTML allowed)', 'restwell-retreats' ), 'textarea' ),

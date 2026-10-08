@@ -47,6 +47,7 @@ Do not introduce near-duplicates (for example `form_start`, `faq_opened`, `ctaCl
 - `scroll_depth`
   - `scroll_percent` (number: one of `25`, `50`, `75`, `90`)
 - `enquiry_form_submitted`
+  - **Fires once per real enquiry (3 Oct 2026, audit I03).** The enquiry handler redirects to `?sent=1&ct=<token>` with a single-use token stored for 30 minutes (`restwell_issue_conversion_token()`). The thank-you page redeems it on first render and marks `#enquiry-result` with `data-conversion="1"`; `assets/js/enquire.js` sends GA4 `enquiry_form_submitted` and the TikTok `Lead` only when that attribute is present, then strips `ct` from the address bar. A reload, back-navigation, bookmark or shared link has no valid token, so nothing fires. Honeypot and timing-trap "successes" never get a token. Verify on staging in GA4 DebugView: one event per submit, none on reload.
   - `source_page` (string pathname or `(direct)`)
 - `restwell_cta_click`
   - `cta_id` (string)

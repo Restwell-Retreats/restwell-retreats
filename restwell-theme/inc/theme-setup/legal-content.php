@@ -49,6 +49,25 @@ function restwell_privacy_policy_version(): string {
 }
 
 /**
+ * Last-updated date for the Terms. A fixed date, changed only when the wording
+ * changes: it used to print the current month on every re-seed (audit I40).
+ *
+ * @return string
+ */
+function restwell_terms_updated_label(): string {
+	return '17 September 2026';
+}
+
+/**
+ * Last-updated date for the website accessibility statement (see above).
+ *
+ * @return string
+ */
+function restwell_accessibility_statement_updated_label(): string {
+	return '17 September 2026';
+}
+
+/**
  * Human-readable last-updated date for the privacy policy body.
  *
  * @return string
@@ -75,7 +94,7 @@ function restwell_get_privacy_policy_content(): string {
 <p>Restwell is a private adapted holiday bungalow. We are not a care home, nursing home, NHS service, or registered respite centre. Optional care, if you later arrange it, is provided by Continuity of Care Services (CQC-regulated), not by Restwell.</p>
 
 <h2>What information we collect and why</h2>
-<p>When you use our enquiry form (including the date picker on Pricing) we collect your name, email address, phone number, and the message you send. We also keep any stay dates, guest numbers, funding notes, contact preferences, and — if you choose to tell us — how you heard about us. The legal basis is your consent, recorded when you tick the privacy box on the form. If you later book, we also use the same details to perform the contract for your stay (UK GDPR Article 6(1)(b)) and, where needed, our legitimate interests in running the holiday let (Article 6(1)(f)).</p>
+<p>When you use our enquiry form (including the date picker on Pricing) we collect your name, email address, phone number, and the message you send. We also keep any stay dates, guest numbers, funding notes, contact preferences, and, if you choose to tell us, how you heard about us. The legal basis is your consent, recorded when you tick the privacy box on the form. If you later book, we also use the same details to perform the contract for your stay (UK GDPR Article 6(1)(b)) and, where needed, our legitimate interests in running the holiday let (Article 6(1)(f)).</p>
 <p>If you send a question from the FAQ page we collect your name, email, phone number, and the question, with the same consent tick. We use that only to reply.</p>
 <p>If you opt in to marketing updates we store your name, email, and phone so we can send Restwell news. That box is unticked unless you choose it. The legal basis is consent (UK GDPR and PECR). You can unsubscribe from any marketing email.</p>
 <p>When a stay is confirmed we keep booking records (guest name, email, dates, payments we need for accounts) and, if we send the arrival guide, a guest-guide record so we can email a one-time access code. That processing is to perform the booking contract.</p>
@@ -136,7 +155,7 @@ function restwell_get_terms_conditions_content(): string {
 	$check_out = isset( $timeline['check_out'] ) ? esc_html( $timeline['check_out'] ) : '11:00';
 
 	return '<h2>The booking</h2>
-<p>These terms apply when you book the adapted self-catering bungalow at 101 Russell Drive, Whitstable, Kent, CT5 2RQ with ' . $entity . '. Your booking is confirmed when you receive written confirmation from us. Until that point, no contract exists and the dates are not reserved. All bookings are subject to availability.</p>
+<p>These terms apply when you book the adapted self-catering bungalow in Whitstable, Kent, with ' . $entity . '. We send the full address with your booking confirmation. Your booking is confirmed when you receive written confirmation from us. Until that point, no contract exists and the dates are not reserved. All bookings are subject to availability.</p>
 
 <h2>Accessibility requirements</h2>
 <p>We ask you to share your accessibility and equipment requirements at the time of booking so we can confirm the property is suitable for your needs. Requirements disclosed after written confirmation has been issued may not be possible to meet; we cannot guarantee changes to setup or equipment at short notice.</p>
@@ -195,7 +214,7 @@ function restwell_get_terms_conditions_content(): string {
 <h2>Contact</h2>
 <p>Questions about these terms: use <a href="' . $enquire . '">our enquiry page</a> or email <a href="' . $mailto . '">' . esc_html( $email ) . '</a>.</p>
 
-<p><em>Last updated: ' . esc_html( gmdate( 'F Y' ) ) . '.</em></p>';
+<p><em>Last updated: ' . esc_html( restwell_terms_updated_label() ) . '.</em></p>';
 }
 
 /**
@@ -227,7 +246,7 @@ function restwell_get_accessibility_policy_content(): string {
 <h2>Formal complaints</h2>
 <p>If you are not satisfied with our response, the <a href="https://www.equalityhumanrights.com/en" target="_blank" rel="noopener noreferrer">Equality and Human Rights Commission (EHRC)<span class="sr-only"> (opens in new tab)</span></a> publishes guidance on accessibility rights in England, Scotland, and Wales.</p>
 
-<p><em>Last updated: ' . esc_html( gmdate( 'F Y' ) ) . '.</em></p>';
+<p><em>Last updated: ' . esc_html( restwell_accessibility_statement_updated_label() ) . '.</em></p>';
 }
 
 /**

@@ -52,12 +52,53 @@ get_template_part(
 		'post_id'    => absint( $args['post_id'] ),
 	)
 );
+
+// Contents list for long documents (Terms has 18 sections, audit I46): give
+// each H2 an id and list them above the body. Wording is untouched.
+$legal_body = wp_kses_post( (string) $args['body_html'] );
+$legal_toc  = array();
+if ( preg_match_all( '/<h2(\s[^>]*)?>(.*?)<\/h2>/is', $legal_body, $legal_heads ) >= 6 ) {
+	$legal_used = array();
+	$legal_body = preg_replace_callback(
+		'/<h2(\s[^>]*)?>(.*?)<\/h2>/is',
+		static function ( $m ) use ( &$legal_toc, &$legal_used ) {
+			$attrs = (string) $m[1];
+			$label = trim( wp_strip_all_tags( $m[2] ) );
+			if ( preg_match( '/\sid=["\']([^"\']+)["\']/', $attrs, $idm ) ) {
+				$id = $idm[1];
+			} else {
+				$base = sanitize_title( $label );
+				$id   = $base;
+				$n    = 2;
+				while ( isset( $legal_used[ $id ] ) ) {
+					$id = $base . '-' . $n;
+					++$n;
+				}
+				$attrs .= ' id="' . esc_attr( $id ) . '"';
+			}
+			$legal_used[ $id ] = true;
+			$legal_toc[]       = array( $id, $label );
+			return '<h2' . $attrs . '>' . $m[2] . '</h2>';
+		},
+		$legal_body
+	);
+}
 ?>
 
 	<section class="section-y band-white">
 	  <div class="container">
+		<?php if ( $legal_toc ) : ?>
+		<nav class="legal-toc" aria-labelledby="legal-toc-h">
+		  <h2 id="legal-toc-h" class="legal-toc__title"><?php esc_html_e( 'On this page', 'restwell-retreats' ); ?></h2>
+		  <ol class="legal-toc__list">
+			<?php foreach ( $legal_toc as $legal_item ) : ?>
+			<li><a href="#<?php echo esc_attr( $legal_item[0] ); ?>"><?php echo esc_html( $legal_item[1] ); ?></a></li>
+			<?php endforeach; ?>
+		  </ol>
+		</nav>
+		<?php endif; ?>
 		<div class="prose prose--wide">
-		  <?php echo wp_kses_post( (string) $args['body_html'] ); ?>
+		  <?php echo $legal_body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kses'd above; only id attributes added. ?>
 		</div>
 	  </div>
 	</section>

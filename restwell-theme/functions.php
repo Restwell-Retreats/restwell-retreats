@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once get_template_directory() . '/inc/admin-meta-boxes.php';
 require_once get_template_directory() . '/inc/blog-categories.php';
+require_once get_template_directory() . '/inc/accessibility-equipment.php';
+require_once get_template_directory() . '/inc/access-statement.php';
 require_once get_template_directory() . '/inc/internal-links.php';
 require_once get_template_directory() . '/inc/csp.php';
 require_once get_template_directory() . '/inc/enqueue.php';
@@ -34,12 +36,14 @@ require_once get_template_directory() . '/inc/page-content-checklist.php';
 require_once get_template_directory() . '/inc/nav.php';
 require_once get_template_directory() . '/inc/performance.php';
 require_once get_template_directory() . '/inc/page-hero.php';
+require_once get_template_directory() . '/inc/responsive-images.php';
 if ( ! function_exists( 'restwell_register_media_importer_page' ) ) {
 	require_once get_template_directory() . '/inc/media-importer.php';
 }
 require_once get_template_directory() . '/inc/places-reviews.php';
 require_once get_template_directory() . '/inc/occupancy.php';
 require_once get_template_directory() . '/inc/post-helpers.php';
+require_once get_template_directory() . '/inc/post-content.php';
 require_once get_template_directory() . '/inc/privacy-page-bootstrap.php';
 require_once get_template_directory() . '/inc/redirects.php';
 require_once get_template_directory() . '/inc/security-rest.php';

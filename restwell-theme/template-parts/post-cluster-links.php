@@ -25,24 +25,21 @@ if ( '' === $pillar_url && empty( $siblings ) && empty( $conversion ) ) {
 	return;
 }
 
-$link_class = 'text-[var(--deep-teal)] text-sm font-semibold hover:underline no-underline';
 ?>
-<section class="blog-single__cluster-links border-t border-gray-100 pt-8 mt-2" aria-labelledby="restwell-cluster-links-heading">
+<section class="blog-cluster-links" aria-labelledby="restwell-cluster-links-heading">
 	<h2 id="restwell-cluster-links-heading" class="sr-only"><?php esc_html_e( 'Related Restwell guides', 'restwell-retreats' ); ?></h2>
 
 	<?php if ( $pillar_url !== '' && $pillar_title !== '' ) : ?>
-		<p class="m-0 mb-4 text-sm text-gray-700 leading-relaxed">
+		<p class="blog-cluster-links__part">
 			<?php esc_html_e( 'Part of:', 'restwell-retreats' ); ?>
-			<a href="<?php echo esc_url( $pillar_url ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
-				<?php echo esc_html( $pillar_title ); ?>
-			</a>
+			<a class="text-link" href="<?php echo esc_url( $pillar_url ); ?>"><?php echo esc_html( $pillar_title ); ?></a>
 		</p>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $siblings ) ) : ?>
-		<div class="mb-4">
-			<p class="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted-grey)] m-0 mb-2"><?php esc_html_e( 'More in this topic', 'restwell-retreats' ); ?></p>
-			<ul class="space-y-2 m-0 list-none p-0">
+		<div class="blog-cluster-links__group">
+			<p class="eyebrow"><?php esc_html_e( 'More in this topic', 'restwell-retreats' ); ?></p>
+			<ul class="link-list">
 				<?php foreach ( $siblings as $sib_post ) : ?>
 					<?php
 					if ( ! $sib_post instanceof WP_Post ) {
@@ -54,31 +51,23 @@ $link_class = 'text-[var(--deep-teal)] text-sm font-semibold hover:underline no-
 						continue;
 					}
 					?>
-					<li>
-						<a href="<?php echo esc_url( $sib_url ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
-							<?php echo esc_html( $sib_title ); ?>
-						</a>
-					</li>
+					<li><a href="<?php echo esc_url( $sib_url ); ?>"><?php echo esc_html( $sib_title ); ?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
 	<?php endif; ?>
 
 	<?php if ( ! empty( $conversion ) ) : ?>
-		<div>
-			<p class="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--muted-grey)] m-0 mb-2"><?php esc_html_e( 'Next steps', 'restwell-retreats' ); ?></p>
-			<ul class="space-y-2 m-0 list-none p-0">
+		<div class="blog-cluster-links__group">
+			<p class="eyebrow"><?php esc_html_e( 'Next steps', 'restwell-retreats' ); ?></p>
+			<ul class="link-list">
 				<?php foreach ( $conversion as $item ) : ?>
 					<?php
 					if ( empty( $item['url'] ) || empty( $item['label'] ) ) {
 						continue;
 					}
 					?>
-					<li>
-						<a href="<?php echo esc_url( $item['url'] ); ?>" class="<?php echo esc_attr( $link_class ); ?>">
-							<?php echo esc_html( $item['label'] ); ?>
-						</a>
-					</li>
+					<li><a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>

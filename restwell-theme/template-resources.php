@@ -47,12 +47,6 @@ $restwell_res_intro   = $res_txt(
 	'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.'
 );
 
-$res_fund_heading = $res_txt( 'res_fund_heading', 'The house and the care can sit on different invoices' );
-$res_fund_body    = $res_txt(
-	'res_fund_body',
-	'A council or CHC team will often pay for care hours, and not the bungalow, or the other way round. Continuity is our sister company, so you still ring us once.'
-);
-
 $res_chc_heading = $res_txt( 'res_chc_heading', 'Continuing Healthcare and personal health budgets' );
 $res_chc_body    = $res_txt(
 	'res_chc_body',
@@ -110,7 +104,6 @@ get_template_part(
 	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#basics">How it works</a></li>
 		  <li><a href="#routes">Routes</a></li>
 		  <li><a href="#directory">Grants</a></li>
 		  <li><a href="#help">What we send</a></li>
@@ -118,36 +111,6 @@ get_template_part(
 		</ul>
 	  </div>
 	</nav>
-
-	<section class="section-y band-subtle" id="basics" aria-labelledby="basics-h">
-	  <div class="container">
-		<div class="stat-row stat-row--prose">
-		  <dl>
-			<div class="stat"><dt class="stat__label">The published bungalow price, whoever is paying</dt><dd class="stat__value">Same rate</dd></div>
-			<div class="stat"><dt class="stat__label">We’ll invoice your council, the NHS, a grant body, or you</dt><dd class="stat__value">Your funder</dd></div>
-			<div class="stat"><dt class="stat__label">House from Restwell. Care from Continuity. Same phone number.</dt><dd class="stat__value">Two invoices</dd></div>
-		  </dl>
-		</div>
-		<header class="section-head">
-		  <p class="eyebrow">How the bills work</p>
-		  <h2 id="basics-h"><?php echo esc_html( $res_fund_heading ); ?></h2>
-		  <p class="lede"><?php echo esc_html( $res_fund_body ); ?></p>
-		</header>
-		<div class="invoice-pair">
-		  <article class="invoice-card">
-			<p class="eyebrow">Restwell</p>
-			<h3>The bungalow</h3>
-			<p>We’ll invoice whoever you ask us to, at the published rate.</p>
-		  </article>
-		  <article class="invoice-card">
-			<p class="eyebrow">Continuity</p>
-			<h3>Optional care</h3>
-			<p>If you want care, Continuity quotes the hours. Same number as Restwell.</p>
-		  </article>
-		</div>
-		<p class="invoice-pair__note">Give us a ring on 01622 809881. Dates, access needs, and who should receive which invoice is plenty to start.</p>
-	  </div>
-	</section>
 
 	<section class="section-y band-white" id="routes" aria-labelledby="routes-h">
 	  <div class="container">
@@ -337,32 +300,34 @@ get_template_part(
 			</li>
 		  </ul>
 		  <?php endif; ?>
-		  <p class="fund-directory__follow"><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#payment' ); ?>">How invoicing works on pricing</a></p>
+		  <p class="fund-directory__follow"><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#payment' ); ?>">How invoicing works on pricing</a></p>
 		</div>
 		</div>
 	  </div>
 	</section>
 
 	<section class="section-y section-y--compact band-white" id="help" aria-labelledby="help-h">
-	  <div class="container split">
-		<div>
-		  <header class="section-head">
-			<p class="eyebrow">What we send</p>
-			<h2 id="help-h">We’ll send what they usually ask for</h2>
-			<p class="lede">Tell us the dates, the funding route, and who should receive which invoice. Continuity can quote care on the same call if you want it.</p>
-		  </header>
-		  <ul class="checklist">
-			<li>Written quote at published rates</li>
-			<li>Access statement and equipment list</li>
-			<li>Invoices set up for the house, and for Continuity if you want care</li>
-		  </ul>
-		</div>
-		<aside class="download-panel">
-		  <h3>We’ll send a quote and the access statement</h3>
-		  <p>Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire</a>
-		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>">Published rates</a>
-		</aside>
+	  <div class="container">
+		<header class="section-head">
+		  <p class="eyebrow">What we send</p>
+		  <h2 id="help-h">We’ll send what they usually ask for</h2>
+		  <p class="lede">Tell us the dates, the funding route, and who should receive which invoice. Continuity can quote care on the same call if you want it.</p>
+		</header>
+		<ul class="persona-list persona-list--docs" role="list">
+		  <li class="persona-list__item">
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3h7l4 4v14H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M11.5 17.5h3M10 17.5c1-.8 1.2-2 .9-3.4-.3-1.4.4-2.6 1.8-2.6 1 0 1.6.5 1.8 1.3M9.8 14.8h3.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+			<h3>Written quote at published rates</h3>
+		  </li>
+		  <li class="persona-list__item">
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4V3h6v1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 9.5h7M8.5 13h7M8.5 16.5h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+			<h3>Access statement and equipment list</h3>
+		  </li>
+		  <li class="persona-list__item">
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h10v14H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 3h12v14h-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.5 10h5M6.5 13h5M6.5 16h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+			<h3>Invoices set up for the house, and for Continuity if you want care</h3>
+		  </li>
+		</ul>
+		<p class="docs-note">Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
 	  </div>
 	</section>
 

@@ -269,49 +269,25 @@ get_template_part(
 	  </div>
 	</nav>
 
-	<section class="section-y band-white" id="sister-company" aria-labelledby="sister-company-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <?php if ( '' !== $care_sister_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $care_sister_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="sister-company-h"><?php echo esc_html( $care_sister_heading ); ?></h2>
-		  <?php if ( '' !== $care_sister_lede ) : ?>
-		  <p class="lede"><?php echo esc_html( $care_sister_lede ); ?></p>
-		  <?php endif; ?>
-		</header>
-		<dl class="comparison-list">
-		  <?php foreach ( $care_sister_items as $item ) : ?>
-		  <div class="comparison-list__item">
-				<?php if ( '' !== $item['title'] ) : ?>
-			<dt><?php echo esc_html( $item['title'] ); ?></dt>
-			<?php endif; ?>
-				<?php if ( '' !== $item['body'] ) : ?>
-			<dd><?php echo esc_html( $item['body'] ); ?></dd>
-			<?php endif; ?>
-		  </div>
-		  <?php endforeach; ?>
-		</dl>
-		<div class="care-page__trust">
-		  <div class="care__foot-copy">
-			<?php if ( '' !== $care_sister_note ) : ?>
-			<p class="care__note"><?php echo esc_html( $care_sister_note ); ?></p>
-			<?php endif; ?>
-			<?php if ( '' !== $care_sister_rates_label ) : ?>
-			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>"><?php echo esc_html( $care_sister_rates_label ); ?></a>
-			<?php endif; ?>
-		  </div>
-		  <div class="care__brand" aria-label="Sister company and CQC rating">
-			<a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" width="405" height="69" loading="lazy" decoding="async" />
-			</a>
-			<a class="care__brand-link care__brand-link--cqc" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="CQC rating Good, Continuity of Care Services (opens in a new tab)">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" width="710" height="399" loading="lazy" decoding="async" />
-			</a>
-		  </div>
-		</div>
-	  </div>
-	</section>
+	<?php
+	get_template_part(
+		'template-parts/sister-company',
+		null,
+		array(
+			'id'          => 'sister-company',
+			'label'       => $care_sister_label,
+			'heading'     => $care_sister_heading,
+			'lede'        => $care_sister_lede,
+			'items'       => $care_sister_items,
+			'note'        => $care_sister_note,
+			'link'        => array(
+				'label' => $care_sister_rates_label,
+				'url'   => restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates',
+			),
+			'show_person' => true,
+		)
+	);
+	?>
 
 	<section class="section-y band-subtle" id="what-we-arrange" aria-labelledby="what-we-arrange-h">
 	  <div class="container">
@@ -347,7 +323,7 @@ get_template_part(
 		  <?php endif; ?>
 		  <h2 id="bring-your-own-carer-h"><?php echo esc_html( $care_own_heading ); ?></h2>
 		</header>
-		<dl class="comparison-list">
+		<dl class="comparison-list comparison-list--features">
 		  <?php foreach ( $care_own_items as $item ) : ?>
 		  <div class="comparison-list__item">
 				<?php if ( '' !== $item['title'] ) : ?>
@@ -400,24 +376,36 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="cqc-regulated" aria-labelledby="cqc-regulated-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <?php if ( '' !== $care_cqc_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $care_cqc_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="cqc-regulated-h"><?php echo esc_html( $care_cqc_heading ); ?></h2>
-		</header>
-		<div class="prose">
-		  <?php if ( '' !== $care_cqc_body_1 ) : ?>
-		  <p><?php echo esc_html( $care_cqc_body_1 ); ?></p>
-		  <?php endif; ?>
-		  <?php if ( '' !== $care_cqc_body_2 ) : ?>
-		  <p><?php echo esc_html( $care_cqc_body_2 ); ?></p>
-		  <?php endif; ?>
-		  <?php if ( '' !== $care_cqc_link_label ) : ?>
-		  <p><a href="https://www.cqc.org.uk/location/1-2624556588" class="text-link" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $care_cqc_link_label ); ?><span class="sr-only"> (opens in new tab)</span></a></p>
-		  <?php endif; ?>
+	  <div class="container cqc-split">
+		<div>
+		  <header class="section-head section-head--tight">
+			<?php if ( '' !== $care_cqc_label ) : ?>
+			<p class="eyebrow"><?php echo esc_html( $care_cqc_label ); ?></p>
+			<?php endif; ?>
+			<h2 id="cqc-regulated-h"><?php echo esc_html( $care_cqc_heading ); ?></h2>
+		  </header>
+		  <div class="prose">
+			<?php if ( '' !== $care_cqc_body_1 ) : ?>
+			<p><?php echo esc_html( $care_cqc_body_1 ); ?></p>
+			<?php endif; ?>
+			<?php if ( '' !== $care_cqc_body_2 ) : ?>
+			<p><?php echo esc_html( $care_cqc_body_2 ); ?></p>
+			<?php endif; ?>
+		  </div>
 		</div>
+		<aside class="rating-card" aria-label="<?php esc_attr_e( 'Continuity of Care Services CQC rating', 'restwell-retreats' ); ?>">
+		  <p class="rating-card__label"><?php esc_html_e( 'CQC overall rating', 'restwell-retreats' ); ?></p>
+		  <p class="rating-card__value"><?php esc_html_e( 'Good', 'restwell-retreats' ); ?></p>
+		  <dl class="rating-card__facts">
+			<div><dt><?php esc_html_e( 'Provider', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?></dd></div>
+			<div><dt><?php esc_html_e( 'Registered manager', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'Victoria Walker', 'restwell-retreats' ); ?></dd></div>
+			<div><dt><?php esc_html_e( 'CQC location', 'restwell-retreats' ); ?></dt><dd>1-2624556588</dd></div>
+		  </dl>
+		  <?php if ( '' !== $care_cqc_link_label ) : ?>
+		  <a href="https://www.cqc.org.uk/location/1-2624556588" class="btn btn-outline-teal" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $care_cqc_link_label ); ?><span class="sr-only"> (opens in new tab)</span></a>
+		  <?php endif; ?>
+		  <p class="rating-card__note"><?php esc_html_e( 'The rating belongs to Continuity, the care provider. Restwell is the accommodation and is not CQC-registered.', 'restwell-retreats' ); ?></p>
+		</aside>
 	  </div>
 	</section>
 

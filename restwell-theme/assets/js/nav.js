@@ -27,6 +27,10 @@
 	 * viewport height and returns them to the top on click or Enter/Space.
 	 * Long pages (Accessibility, Pricing) benefit most on mobile, where
 	 * re-scrolling to the nav or enquiry link is slow and error-prone.
+	 *
+	 * It only appears while the visitor is scrolling back up, and never while
+	 * the footer is on screen: floating over the page as they read down, it
+	 * covered testimonial text and the copyright line on phones (audit I27).
 	 */
 	function initScrollToTop() {
 		var btn = document.querySelector('[data-scroll-top]');
@@ -38,9 +42,28 @@
 		btn.tabIndex = -1;
 		var visible = false;
 		var ticking = false;
+		var lastY = window.pageYOffset || 0;
+		var scrollingUp = false;
+		var footerInView = false;
+		var footer = document.querySelector('.site-footer');
+		if (footer && 'IntersectionObserver' in window) {
+			new IntersectionObserver(function (entries) {
+				footerInView = entries[0].isIntersecting;
+				update();
+			}).observe(footer);
+		}
 		function update() {
 			ticking = false;
-			var shouldShow = (window.pageYOffset || document.documentElement.scrollTop || 0) > window.innerHeight;
+			var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+			if (Math.abs(y - lastY) > 4) {
+				scrollingUp = y < lastY;
+				lastY = y;
+			}
+			var shouldShow = y > window.innerHeight && scrollingUp && !footerInView;
+			// Keep it while it has keyboard focus, so a Tab press never strands focus.
+			if (!shouldShow && document.activeElement === btn) {
+				shouldShow = true;
+			}
 			if (shouldShow === visible) {
 				return;
 			}

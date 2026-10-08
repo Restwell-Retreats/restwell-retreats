@@ -15,8 +15,14 @@ $blog_page_id = (int) get_option( 'page_for_posts', 0 );
 $blog_heading = restwell_get_blog_index_heading();
 $blog_intro   = restwell_get_blog_index_lede();
 $blog_crumbs  = array(
-	array( 'label' => __( 'Home', 'restwell-retreats' ), 'url' => home_url( '/' ) ),
-	array( 'label' => __( 'Blog', 'restwell-retreats' ), 'url' => '' ),
+	array(
+		'label' => __( 'Home', 'restwell-retreats' ),
+		'url' => home_url( '/' ),
+	),
+	array(
+		'label' => __( 'Blog', 'restwell-retreats' ),
+		'url' => '',
+	),
 );
 if ( is_archive() ) {
 	$blog_heading = wp_strip_all_tags( get_the_archive_title() );
@@ -25,7 +31,10 @@ if ( is_archive() ) {
 		$blog_intro = __( 'Browse our guides on this topic, or return to the blog for all articles.', 'restwell-retreats' );
 	}
 	$blog_crumbs[1]['url'] = home_url( '/blog/' );
-	$blog_crumbs[] = array( 'label' => $blog_heading, 'url' => '' );
+	$blog_crumbs[] = array(
+		'label' => $blog_heading,
+		'url' => '',
+	);
 }
 ?>
 

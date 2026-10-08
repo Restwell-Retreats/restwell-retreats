@@ -294,7 +294,7 @@ $wif_funding_routes = array(
 		'cta_label' => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_phb_cta_label', 'PHB and funding overview' )
 			: 'PHB and funding overview',
-		'cta_url'   => $wif_resolve_url( 'wif_fund_phb_cta_url', '/resources/' ),
+		'cta_url'   => $wif_resolve_url( 'wif_fund_phb_cta_url', '/funding-and-support/' ),
 	),
 	array(
 		'title'     => function_exists( 'restwell_page_content_text' )
@@ -348,14 +348,14 @@ get_template_part(
 	</nav>
 
 	<section class="section-y band-white" id="situations" aria-labelledby="situations-h">
-	  <div class="container split split--media-top">
+	  <div class="container">
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Your situation</p>
 			<h2 id="situations-h"><?php echo esc_html( $wif_audience_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wif_audience_intro ); ?></p>
 		  </header>
-		  <ul class="persona-list" role="list">
+		  <ul class="persona-list persona-list--rows" role="list">
 			<?php foreach ( $wif_personas as $persona ) : ?>
 			<li class="persona-list__item">
 			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><?php echo $persona['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG paths. ?></svg></span>
@@ -377,15 +377,12 @@ get_template_part(
 				</ul>
 				<?php endif; ?>
 				<?php if ( '' !== trim( (string) $persona['inline_cta_label'] ) ) : ?>
-				<p><a class="text-link" href="<?php echo esc_url( $persona['inline_cta_url'] ); ?>"><?php echo esc_html( $persona['inline_cta_label'] ); ?></a></p>
+				<p class="persona-list__cta"><a class="text-link" href="<?php echo esc_url( $persona['inline_cta_url'] ); ?>"><?php echo esc_html( $persona['inline_cta_label'] ); ?></a></p>
 				<?php endif; ?>
 			  </div>
 			</li>
 			<?php endforeach; ?>
 		  </ul>
-		</div>
-		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living space in the accessible bungalow" width="900" height="675" loading="lazy" />
 		</div>
 	  </div>
 	</section>
@@ -442,7 +439,7 @@ get_template_part(
 		  </li>
 		  <?php endforeach; ?>
 		</ul>
-		<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
+		<p><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Full accessibility details</a></p>
 	  </div>
 	</section>
 
@@ -457,10 +454,10 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-teal" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--compact band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="band-teal__stack band-teal__stack--tease">
-		  <p class="eyebrow eyebrow--on-dark"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
+		<div class="care-pointer__card">
+		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
 		  <h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
 		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if that works better.', 'restwell-retreats' ); ?></p>
 		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
@@ -475,10 +472,10 @@ get_template_part(
 		  <h2 id="funding-h"><?php echo esc_html( $wif_funding_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wif_funding_body ); ?></p>
 		</header>
-		<ul class="card-grid card-grid--3" role="list">
+		<ul class="persona-list persona-list--rows" role="list">
 		  <?php foreach ( $wif_funding_routes as $route ) : ?>
-		  <li>
-			<article class="media-card">
+		  <li class="persona-list__item">
+			<div>
 			  <h3><?php echo esc_html( $route['title'] ); ?></h3>
 				<?php if ( ! empty( $route['bullets'] ) ) : ?>
 			  <ul class="checklist">
@@ -488,27 +485,24 @@ get_template_part(
 			  </ul>
 			  <?php endif; ?>
 				<?php if ( '' !== trim( (string) $route['cta_label'] ) ) : ?>
-			  <p><a class="text-link" href="<?php echo esc_url( $route['cta_url'] ); ?>"><?php echo esc_html( $route['cta_label'] ); ?></a></p>
+			  <p class="persona-list__cta"><a class="text-link" href="<?php echo esc_url( $route['cta_url'] ); ?>"><?php echo esc_html( $route['cta_label'] ); ?></a></p>
 			  <?php endif; ?>
-			</article>
+			</div>
 		  </li>
 		  <?php endforeach; ?>
 		</ul>
-		<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; support hub</a></p>
+		<p><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; support hub</a></p>
 	  </div>
 	</section>
 
 	<section class="section-y band-subtle process" id="next" aria-labelledby="next-h">
 	  <div class="container">
-		<header class="section-head section-head--center process__head">
+		<header class="section-head process__head">
 		  <p class="eyebrow">Next steps</p>
 		  <h2 id="next-h">Enquire, match the house, then deposit</h2>
 		  <p class="lede">No online checkout maze. You get a straight yes/no on kit fit before any money changes hands.</p>
 		</header>
 		<div class="process__layout">
-		  <div class="process__media" data-reveal>
-			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
-		  </div>
 		  <ol class="process-list">
 			<li>
 			  <span class="process-list__index" aria-hidden="true">01</span>

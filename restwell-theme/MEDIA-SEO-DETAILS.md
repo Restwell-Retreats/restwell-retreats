@@ -323,14 +323,14 @@ Once those fields point to uploaded Media Library attachments, the theme does no
 - Usage: Homepage, property page, about/overview sections
 - SEO/Performance Notes: Good size. Strong property overview image.
 
-### `russell-drive-whitstable.webp`
+### `tankerton-residential-street.webp`
 
 - Type: Content image
 - Size: `69KB`
 - Dimensions: `1200x900`
-- Title: `Restwell exterior on Russell Drive`
-- Alt Text: `White accessible bungalow exterior on Russell Drive in Whitstable`
-- Caption: `The Restwell bungalow exterior on Russell Drive, Whitstable.`
+- Title: `Restwell exterior`
+- Alt Text: `White accessible bungalow exterior in Whitstable`
+- Caption: `The Restwell bungalow exterior, Whitstable.`
 - Description: `Exterior image of the white bungalow and driveway at Restwell in Whitstable.`
 - Usage: Property page, arrival information, local trust content
 - SEO/Performance Notes: Good size.
