@@ -14,14 +14,14 @@
   --gold-ink: #6b4a0f;
 }
 
-@page { size: A4; margin: 16mm 15mm 18mm; }
+@page { size: A4; margin: 12mm 15mm 15mm; }
 
 * { box-sizing: border-box; }
 html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 body {
   margin: 0;
   font-family: "Inter", system-ui, sans-serif;
-  font-size: 9.2pt;
+  font-size: 10.2pt;
   line-height: 1.42;
   color: var(--ink);
   background: #fff;
@@ -42,65 +42,70 @@ p { margin: 0; }
   border-bottom: 1.2mm solid var(--teal);
 }
 .as-masthead__logo { display: block; width: 56mm; height: auto; }
-.as-masthead__issued { font-size: 8.2pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.as-masthead__measured { display: inline-block; margin-top: 0.8mm; }
+.as-masthead__issued { text-align: right; font-size: 9pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 
 h1 { font-size: 21pt; line-height: 1.15; margin-bottom: 3.5mm; }
-.as-lede { font-size: 10pt; line-height: 1.45; color: var(--muted); max-width: 165mm; margin-bottom: 5mm; }
+.as-lede { font-size: 11pt; line-height: 1.45; color: var(--muted); max-width: 165mm; margin-bottom: 5mm; }
 
 /* Key figures: three big numbers across the top. */
 .as-key { margin-bottom: 4.5mm; }
 .as-key h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .as-key__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 0; padding: 0; list-style: none; border: 1px solid var(--rule); border-radius: 2mm; }
-.as-key__list li { padding: 3.2mm 5mm; font-size: 8.4pt; color: var(--muted); }
+.as-key__list li { padding: 3.2mm 5mm; font-size: 9.4pt; color: var(--muted); }
 .as-key__list li + li { border-left: 1px solid var(--rule); }
 .as-key__list strong { display: block; font-family: "Lora", Georgia, serif; font-size: 20pt; line-height: 1.1; font-weight: 600; color: var(--teal-deep); margin-bottom: 1mm; }
 
 /* Quick-find: jump links to each section (the PDF is tagged, so they work). */
-.as-find { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1.5mm 4mm; margin: 0 0 3mm; font-size: 8.6pt; color: var(--muted); }
-.as-find__label { font-size: 7.6pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); }
+.as-find { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1.5mm 4mm; margin: 0 0 3mm; font-size: 9.6pt; color: var(--muted); }
+.as-find__label { font-size: 8.4pt; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); }
 .as-find__list { display: flex; flex-wrap: wrap; gap: 1mm 4mm; margin: 0; padding: 0; list-style: none; }
 
 /* Callouts */
 .as-note { margin: 0 0 5mm; padding: 3.5mm 5mm; background: var(--sand); border: 1px solid #e6d8bf; border-radius: 2mm; break-inside: avoid; }
-.as-note h2, .as-note h3 { font-size: 10.4pt; margin-bottom: 1mm; }
+.as-note h2, .as-note h3 { font-size: 11.4pt; margin-bottom: 1mm; }
 .as-note p { color: var(--ink); }
 
 /* Rooms */
-.as-room { margin-top: 6mm; }
-.as-room > h2 { font-size: 15pt; padding-bottom: 1.6mm; border-bottom: 0.5mm solid var(--teal); margin-bottom: 2.4mm; }
-.as-room__lede { color: var(--muted); margin-bottom: 4mm; max-width: 165mm; break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+.as-room { margin-top: 5mm; }
+.as-room > h2 { font-size: 15pt; padding-bottom: 1.4mm; border-bottom: 0.5mm solid var(--teal); margin-bottom: 2mm; }
+.as-room__lede { color: var(--muted); margin-bottom: 3mm; max-width: 165mm; break-inside: avoid; break-after: avoid; page-break-after: avoid; }
 .as-room > h2 { break-after: avoid; page-break-after: avoid; }
 .as-room__lede + .as-item { break-before: avoid; page-break-before: avoid; }
 
-.as-item { margin: 0 0 4.5mm; }
+.as-item { margin: 0 0 3.2mm; }
 /* Cards may break across pages (no dead space), but never strand a header or split a row. */
 .as-item__head { break-after: avoid; }
+.as-specs thead { display: table-header-group; }
+.as-specs td.as-specs__headcell { padding: 0; border: 0; }
+.as-specs td.as-specs__headcell .as-item__head { border-radius: 1.5mm 1.5mm 0 0; }
 .as-specs tr { break-inside: avoid; }
-.as-specs tr:first-child, .as-specs tr:nth-child(2) { break-after: avoid; }
+.as-specs tbody tr:nth-child(-n+2) { break-after: avoid; }
+.as-specs tbody tr:last-child { break-before: avoid; }
 .as-item--short { break-inside: avoid; }
 .as-item--compact .as-item__head { border-radius: 1.5mm; background: #fff; border: 1px solid var(--rule); }
 .as-item--compact .as-item__note { margin-top: 1.4mm; }
 .as-note + .as-item, .as-item + .as-note { break-before: avoid; }
 .as-item__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 6mm; padding: 2.2mm 3mm; background: var(--tint); border-radius: 1.5mm 1.5mm 0 0; }
-.as-item h3 { font-size: 10.8pt; line-height: 1.25; }
-.as-item__where { margin-top: 0.4mm; font-size: 8.2pt; color: var(--muted); }
-.as-item__figure { flex: 0 0 auto; text-align: right; font-size: 7.8pt; color: var(--muted); line-height: 1.25; }
-.as-item__figure strong { display: block; font-family: "Lora", Georgia, serif; font-size: 13pt; color: var(--teal-deep); }
-.as-item__note { margin-top: 1.6mm; padding: 0 3mm; font-size: 8.4pt; color: var(--muted); }
+.as-item h3 { font-size: 11.8pt; line-height: 1.25; }
+.as-item__where { margin-top: 0.4mm; font-size: 9.2pt; color: var(--muted); }
+.as-item__figure { flex: 0 0 auto; text-align: right; font-size: 8.8pt; color: var(--muted); line-height: 1.25; }
+.as-item__figure strong { display: block; font-family: "Lora", Georgia, serif; font-size: 14pt; color: var(--teal-deep); }
+.as-item__note { margin-top: 1.6mm; padding: 0 3mm; font-size: 9.4pt; color: var(--muted); }
 
 .as-specs { width: 100%; border-collapse: collapse; border: 1px solid var(--rule); border-top: 0; }
-.as-specs th, .as-specs td { padding: 1.15mm 3mm; vertical-align: top; text-align: left; border-top: 1px solid var(--rule); }
+.as-specs th, .as-specs td { padding: 0.8mm 3mm; vertical-align: top; text-align: left; border-top: 1px solid var(--rule); }
 .as-specs tr:first-child th, .as-specs tr:first-child td { border-top: 0; }
-.as-specs th { width: 46mm; font-size: 7.6pt; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--teal); }
-.as-specs td { font-size: 9pt; }
+.as-specs th { width: 50mm; font-size: 8.4pt; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--teal); }
+.as-specs td { font-size: 10pt; }
 
-.as-limits { margin-top: 8mm; padding-top: 4mm; border-top: 0.5mm solid var(--teal); break-inside: avoid; }
+.as-limits { margin-top: 4mm; padding-top: 2.5mm; border-top: 0.5mm solid var(--teal); break-inside: avoid; }
 .as-limits h2 { font-size: 13pt; margin-bottom: 1.6mm; }
 .as-limits p + p { margin-top: 1.6mm; }
 
-.as-footer { margin-top: 8mm; padding-top: 3.5mm; border-top: 1px solid var(--rule); font-size: 8.4pt; color: var(--muted); break-inside: avoid; }
+.as-footer { margin-top: 3mm; padding-top: 2.5mm; border-top: 1px solid var(--rule); font-size: 9.4pt; color: var(--muted); break-inside: avoid; }
 .as-footer p + p { margin-top: 1mm; }
-.as-footer__small { font-size: 8.2pt; }
+.as-footer__small { display: block; margin-top: 1mm; font-size: 9pt; }
 
 /* On screen (previewing the print view) keep it readable. */
 @media screen {

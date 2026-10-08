@@ -72,6 +72,28 @@ function restwell_access_statement_notes() {
 }
 
 /**
+ * Issue date printed on the statement. Deliberately fixed, not "today": a
+ * statement funding panels file as evidence must not re-date itself when the PDF
+ * is rebuilt for an unrelated reason. Change it when the figures are re-issued.
+ *
+ * @return string
+ */
+function restwell_access_statement_issued() {
+	return (string) apply_filters( 'restwell_access_statement_issued', 'October 2026' );
+}
+
+/**
+ * Date the measurements were last checked on site. Empty until someone sets it
+ * (option `restwell_access_statement_measured`, e.g. "6 October 2026"); the
+ * statement only prints the line when it has a real date.
+ *
+ * @return string
+ */
+function restwell_access_statement_measured() {
+	return (string) apply_filters( 'restwell_access_statement_measured', get_option( 'restwell_access_statement_measured', '' ) );
+}
+
+/**
  * Serve the print document and stop. Hooked to template_redirect.
  */
 function restwell_maybe_render_access_statement() {
@@ -109,7 +131,8 @@ function restwell_render_access_statement() {
 	$notes   = restwell_access_statement_notes();
 	$phone   = function_exists( 'restwell_get_public_phone_number' ) ? restwell_get_public_phone_number() : '01622 809881';
 	$email   = function_exists( 'restwell_get_public_enquiry_email' ) ? restwell_get_public_enquiry_email() : 'hello@restwellretreats.co.uk';
-	$issued  = wp_date( 'F Y' );
+	$issued   = restwell_access_statement_issued();
+	$measured = restwell_access_statement_measured();
 	$css_url = get_template_directory_uri() . '/assets/css/access-statement.css?ver=' . (int) filemtime( get_template_directory() . '/assets/css/access-statement.css' );
 	$logo    = get_template_directory_uri() . '/assets/images/long_logo.png';
 	$nbsp    = static function ( $value ) {
@@ -131,7 +154,14 @@ function restwell_render_access_statement() {
 <body>
 <header class="as-masthead">
 	<img class="as-masthead__logo" src="<?php echo esc_url( $logo ); ?>" alt="Restwell Retreats" width="180" height="28">
-	<p class="as-masthead__issued"><?php echo esc_html( sprintf( /* translators: %s: month and year */ __( 'Issued %s', 'restwell-retreats' ), $issued ) ); ?></p>
+	<p class="as-masthead__issued">
+		<?php echo esc_html( sprintf( /* translators: %s: month and year */ __( 'Issued %s', 'restwell-retreats' ), $issued ) ); ?>
+		<?php
+		if ( '' !== $measured ) :
+			?>
+		<br><span class="as-masthead__measured"><?php echo esc_html( sprintf( /* translators: %s: date */ __( 'Last measured %s', 'restwell-retreats' ), $measured ) ); ?></span>
+		<?php endif; ?>
+	</p>
 </header>
 
 <main>
@@ -188,8 +218,12 @@ function restwell_render_access_statement() {
 			$note   = isset( $item['note'] ) ? (string) $item['note'] : '';
 			$metric = '' !== $figure && (bool) preg_match( '/\d/', $figure );
 			?>
-		<article class="<?php echo esc_attr( 'as-item' . ( ! empty( $item['compact'] ) ? ' as-item--compact' : '' ) . ( count( $specs ) <= 9 ? ' as-item--short' : '' ) ); ?>">
-			<header class="as-item__head">
+		<article class="<?php echo esc_attr( 'as-item' . ( ! empty( $item['compact'] ) ? ' as-item--compact' : '' ) . ( count( $specs ) <= 5 ? ' as-item--short' : '' ) ); ?>">
+			<?php
+			$has_table = ! empty( $specs ) && empty( $item['compact'] );
+			ob_start();
+			?>
+			<div class="as-item__head">
 				<div>
 					<h3><?php echo esc_html( $item['name'] ); ?></h3>
 					<?php if ( '' !== $where ) : ?>
@@ -199,10 +233,17 @@ function restwell_render_access_statement() {
 				<?php if ( $metric ) : ?>
 				<p class="as-item__figure"><strong><?php echo esc_html( $nbsp( $figure ) ); ?></strong> <?php echo esc_html( $flabel ); ?></p>
 				<?php endif; ?>
-			</header>
-			<?php if ( ! empty( $specs ) && empty( $item['compact'] ) ) : ?>
+			</div>
+			<?php
+			$head_html = ob_get_clean();
+			?>
+			<?php if ( $has_table ) : ?>
+				<?php // The card header lives in the table's thead so it repeats on the next page when a long table breaks. ?>
 			<table class="as-specs">
 				<caption class="as-visually-hidden"><?php echo esc_html( sprintf( /* translators: %s: equipment name */ __( 'Specifications: %s', 'restwell-retreats' ), $item['name'] ) ); ?></caption>
+				<thead>
+					<tr><td colspan="2" class="as-specs__headcell"><?php echo $head_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts above. ?></td></tr>
+				</thead>
 				<tbody>
 					<?php foreach ( $specs as $label => $value ) : ?>
 					<tr>
@@ -212,6 +253,8 @@ function restwell_render_access_statement() {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
+			<?php else : ?>
+				<?php echo $head_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts above. ?>
 			<?php endif; ?>
 			<?php if ( '' !== $note ) : ?>
 			<p class="as-item__note"><?php echo esc_html( $note ); ?></p>
@@ -235,13 +278,13 @@ function restwell_render_access_statement() {
 </main>
 
 <footer class="as-footer">
-	<p><strong><?php esc_html_e( 'Restwell Retreats', 'restwell-retreats' ); ?></strong>, <?php esc_html_e( 'Whitstable, Kent. Optional home care is arranged with our sister company, Continuity of Care Services (CQC rated Good).', 'restwell-retreats' ); ?></p>
+	<p><strong><?php esc_html_e( 'Restwell Retreats', 'restwell-retreats' ); ?></strong>, <?php esc_html_e( 'Whitstable, Kent. Optional home care comes from our sister company, Continuity of Care Services (CQC rated Good).', 'restwell-retreats' ); ?></p>
 	<p>
 		<?php esc_html_e( 'Phone', 'restwell-retreats' ); ?> <a href="<?php echo esc_url( 'tel:' . ( function_exists( 'restwell_get_public_phone_tel' ) ? restwell_get_public_phone_tel() : '01622809881' ) ); ?>"><?php echo esc_html( $phone ); ?></a>
 		· <?php esc_html_e( 'Email', 'restwell-retreats' ); ?> <a href="<?php echo esc_url( 'mailto:' . $email ); ?>"><?php echo esc_html( $email ); ?></a>
 		· <a href="https://restwellretreats.co.uk/accessibility/">restwellretreats.co.uk/accessibility</a>
+		<span class="as-footer__small"><?php esc_html_e( 'This statement is a snapshot; the live accessibility page is always the current version.', 'restwell-retreats' ); ?></span>
 	</p>
-	<p class="as-footer__small"><?php esc_html_e( 'This statement is a snapshot. The live accessibility page is always the current version.', 'restwell-retreats' ); ?></p>
 </footer>
 </body>
 </html>

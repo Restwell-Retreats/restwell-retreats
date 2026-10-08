@@ -90,7 +90,6 @@ function restwell_accessibility_equipment() {
 				__( 'Minimum user height', 'restwell-retreats' )    => __( '1460 mm', 'restwell-retreats' ),
 				__( 'Carer access', 'restwell-retreats' )           => __( 'Space for a carer on both sides of the bed', 'restwell-retreats' ),
 			),
-			'note'  => __( 'The accessible bedroom can be set up with one or two profiling beds, depending on what you need. Tell us when you enquire and the room will be laid out that way before you arrive.', 'restwell-retreats' ),
 		),
 		array(
 			'group'         => 'transfers',
@@ -108,7 +107,7 @@ function restwell_accessibility_equipment() {
 				__( 'Ground clearance', 'restwell-retreats' )        => __( '25 mm', 'restwell-retreats' ),
 				__( 'Spreader bar height', 'restwell-retreats' )     => __( '525–1660 mm', 'restwell-retreats' ),
 				__( 'Emergency descent', 'restwell-retreats' )       => __( 'Manual', 'restwell-retreats' ),
-				__( 'Thorough examination', 'restwell-retreats' )    => __( 'LOLER, every six months', 'restwell-retreats' ),
+				__( 'Thorough examination', 'restwell-retreats' )    => __( 'LOLER, every six months. Last examined 14 May 2026', 'restwell-retreats' ),
 			),
 		),
 		array(
