@@ -232,7 +232,7 @@ function restwell_render_access_statement() {
 			$note   = isset( $item['note'] ) ? (string) $item['note'] : '';
 			$metric = '' !== $figure && (bool) preg_match( '/\d/', $figure );
 			?>
-		<article class="<?php echo esc_attr( 'as-item' . ( ! empty( $item['compact'] ) ? ' as-item--compact' : '' ) . ( count( $specs ) <= 5 ? ' as-item--short' : '' ) ); ?>">
+		<article class="<?php echo esc_attr( 'as-item' . ( ! empty( $item['compact'] ) ? ' as-item--compact' : '' ) . ( count( $specs ) <= 4 ? ' as-item--short' : '' ) ); ?>">
 			<?php
 			$has_table = ! empty( $specs ) && empty( $item['compact'] );
 			ob_start();

@@ -46,7 +46,7 @@ try {
 	const seen = JSON.parse(probe.result.result.value);
 	if (seen.h1 !== 1 || seen.items < 5) throw new Error(`print view looks wrong: ${JSON.stringify(seen)}`);
 
-	const footer = `<div style="width:100%;font-family:Inter,Arial,sans-serif;font-size:8.5pt;color:#3f545c;padding:0 15mm;display:flex;justify-content:space-between">`
+	const footer = `<div style="width:100%;font-family:Inter,Arial,sans-serif;font-size:9.5pt;color:#3f545c;padding:0 15mm;display:flex;justify-content:space-between">`
 		+ `<span>Restwell Retreats access statement · 01622 809881 · hello@restwellretreats.co.uk</span><span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>`;
 	const pdf = await send('Page.printToPDF', {
 		printBackground: true,
