@@ -7802,10 +7802,9 @@ body.page-template-template-accessibility-php .scroll-top {
 
 /* Sister company: a light, site-standard section (5 Oct 2026; the dark teal
    band stood apart from every other section). Intro, Victoria and the badges
-   on the left; the three points as one ledger card on the right. Colours come
+   on the left; the three points as one card on the right. Colours come
    from the page tokens, so the Optional care theme turns it purple. */
 .sister-band {
-  --sb-accent: var(--warm-gold-text);
   background: var(--white);
 }
 .sister-band__grid {
@@ -7869,14 +7868,16 @@ body.page-template-template-accessibility-php .scroll-top {
 .sister-band__badges {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   gap: var(--space-3);
   margin-top: var(--space-2);
 }
 .sister-band__badge {
   display: inline-flex;
   align-items: center;
-  min-height: var(--tap-target, 2.75rem);
+  /* Both pills share one height: the CQC card is taller than the wordmark and
+     used to make its neighbour look shorter. */
+  min-height: 3.5rem;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius);
   background: var(--white);
@@ -7894,14 +7895,10 @@ body.page-template-template-accessibility-php .scroll-top {
 }
 .sister-band__list {
   display: block;
-  counter-reset: sb-point;
   margin: 0;
 }
 .sister-band .comparison-list__item {
-  counter-increment: sb-point;
-  display: grid;
-  grid-template-columns: var(--space-10) minmax(0, 1fr);
-  column-gap: var(--space-3);
+  display: block;
   padding: var(--space-5) 0;
   border: 0;
   border-radius: 0;
@@ -7911,18 +7908,10 @@ body.page-template-template-accessibility-php .scroll-top {
 .sister-band .comparison-list__item + .comparison-list__item {
   border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
 }
-.sister-band .comparison-list__item::before {
-  content: counter(sb-point, decimal-leading-zero);
-  position: static;
-  grid-row: 1 / span 2;
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  line-height: 1.3;
-  color: var(--sb-accent);
-}
+.sister-band .comparison-list__item::before,
 .sister-band .comparison-list__item::after { display: none; }
 .sister-band .comparison-list__item dt,
-.sister-band .comparison-list__item dd { grid-column: 2; margin: 0; padding: 0; }
+.sister-band .comparison-list__item dd { margin: 0; padding: 0; }
 .sister-band .comparison-list__item dt { font-size: var(--text-lg); }
 .sister-band .comparison-list__item dd { margin-top: var(--space-1); color: var(--body-secondary); }
 .sister-band__foot {

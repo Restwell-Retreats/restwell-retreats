@@ -68,24 +68,24 @@ $story_host_label   = $story_txt( 'story_host_label', 'Who runs both' );
 $story_host_heading = $story_txt( 'story_host_heading', 'Victoria Walker' );
 $story_host_lede    = $story_txt( 'story_host_lede', 'Victoria owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.' );
 
-$story_companies_label   = $story_txt( 'story_companies_label', 'Two companies' );
+$story_companies_label   = $story_txt( 'story_companies_label', 'Who does what' );
 $story_companies_heading = $story_txt( 'story_companies_heading', 'Two companies, one conversation' );
 $story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They invoice separately, and that is deliberate: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.' );
 $story_companies_items   = array(
 	array(
 		'title' => $story_txt( 'story_companies_1_title', 'Restwell' ),
-		'body'  => $story_txt( 'story_companies_1_body', 'A private adapted bungalow in Whitstable, not a care home or respite centre. Invoiced separately from any care you arrange.' ),
+		'body'  => $story_txt( 'story_companies_1_body', 'The bungalow: a private adapted house in Whitstable. Not a care home, and not a respite centre.' ),
 	),
 	array(
 		'title' => $story_txt( 'story_companies_2_title', 'Continuity of Care Services' ),
-		'body'  => $story_txt( 'story_companies_2_body', 'Optional home care during your stay, invoiced separately. Victoria is Continuity’s registered manager.' ),
+		'body'  => $story_txt( 'story_companies_2_body', 'Optional home care during your stay, always from Continuity’s own team.' ),
 	),
 	array(
 		'title' => $story_txt( 'story_companies_3_title', 'One place to start' ),
-		'body'  => $story_txt( 'story_companies_3_body', 'You can discuss the bungalow and any care you may need through the same office and number.' ),
+		'body'  => $story_txt( 'story_companies_3_body', 'Ask about the bungalow and any care in the same call, to the same office.' ),
 	),
 );
-$story_companies_note      = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider. Continuity of Care Services is, and their CQC inspection report is linked below.' );
+$story_companies_note      = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider. Continuity of Care Services is.' );
 $story_companies_cqc_label = $story_txt( 'story_companies_cqc_label', 'Read Continuity’s CQC profile' );
 
 $story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped by guests' );

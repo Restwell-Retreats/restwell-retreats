@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 73;
+const RESTWELL_SCHEMA_VERSION = 74;
 
 
 /**
@@ -1838,6 +1838,40 @@ function restwell_migrate_post_title_tags_v73() {
 }
 
 /**
+ * Our Story "Who does what" section: stop saying the same three things twice.
+ * Invoicing, Victoria's role and the CQC link were each repeated across the
+ * lede, the points and the note. Swaps a stored value only while it still holds
+ * the old seeded wording, so a hand-edited value is left alone.
+ */
+function restwell_migrate_our_story_companies_dedupe_v74() {
+	if ( get_option( 'restwell_our_story_companies_dedupe_v74', '' ) === '1' ) {
+		return;
+	}
+	$page = get_page_by_path( 'our-story', OBJECT, 'page' );
+	if ( ! ( $page instanceof WP_Post ) || ! function_exists( 'restwell_get_our_story_page_defaults' ) ) {
+		return;
+	}
+	$defaults = restwell_get_our_story_page_defaults();
+	$old      = array(
+		'story_companies_label'  => 'Two companies',
+		'story_companies_1_body' => 'A private adapted bungalow in Whitstable, not a care home or respite centre. Invoiced separately from any care you arrange.',
+		'story_companies_2_body' => 'Optional home care during your stay, invoiced separately. Victoria is Continuity’s registered manager.',
+		'story_companies_3_body' => 'You can discuss the bungalow and any care you may need through the same office and number.',
+		'story_companies_note'   => 'Restwell is not a registered care provider. Continuity of Care Services is, and their CQC inspection report is linked below.',
+	);
+	foreach ( $old as $key => $old_value ) {
+		$fresh = isset( $defaults[ $key ] ) && is_string( $defaults[ $key ] ) ? $defaults[ $key ] : '';
+		if ( '' === $fresh || ! metadata_exists( 'post', (int) $page->ID, $key ) ) {
+			continue;
+		}
+		if ( (string) get_post_meta( (int) $page->ID, $key, true ) === $old_value ) {
+			update_post_meta( (int) $page->ID, $key, $fresh );
+		}
+	}
+	update_option( 'restwell_our_story_companies_dedupe_v74', '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1946,6 +1980,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_post_title_tags_v71',
 		'restwell_approved_meta_descriptions_v72',
 		'restwell_post_title_tags_v73',
+		'restwell_our_story_companies_dedupe_v74',
 	);
 }
 
@@ -2078,6 +2113,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_approved_meta_descriptions_v72', 110 );
 	add_action( 'init', 'restwell_migrate_post_title_tags_v73', 116 );
 	add_action( 'after_switch_theme', 'restwell_migrate_post_title_tags_v73', 111 );
+	add_action( 'init', 'restwell_migrate_our_story_companies_dedupe_v74', 117 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_companies_dedupe_v74', 112 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
