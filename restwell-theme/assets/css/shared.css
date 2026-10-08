@@ -9937,3 +9937,27 @@ body.page-template-template-care #main-content .prose a {
   .care-rates__foot .care-rates__ctas { width: auto; flex-wrap: wrap; }
   .care-rates__foot .btn { white-space: nowrap; }
 }
+
+/* Bigger tap targets for text links that sit in tight rows (breadcrumb, related
+   links, place names, partner logos). The link keeps its look and spacing; an
+   invisible box centred on it reaches the 44px target. */
+.breadcrumb a,
+.link-list a,
+.place-list__title a,
+.media-card__title-link,
+.care__brand-link {
+  position: relative;
+}
+.breadcrumb a::after,
+.link-list a::after,
+.place-list__title a::after,
+.media-card__title-link::after,
+.care__brand-link::after {
+  content: "";
+  position: absolute;
+  left: -0.4rem;
+  right: -0.4rem;
+  top: 50%;
+  height: max(100%, 2.75rem);
+  transform: translateY(-50%);
+}
