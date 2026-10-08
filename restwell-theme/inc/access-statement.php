@@ -83,6 +83,18 @@ function restwell_access_statement_issued() {
 }
 
 /**
+ * Month the figures were last reviewed against the equipment register. Fixed
+ * like the issue date: change it when the figures are re-checked, not on rebuild.
+ * It makes no claim about an on-site survey; that is the separate "measured"
+ * date below.
+ *
+ * @return string
+ */
+function restwell_access_statement_checked() {
+	return (string) apply_filters( 'restwell_access_statement_checked', 'October 2026' );
+}
+
+/**
  * Date the measurements were last checked on site. Empty until someone sets it
  * (option `restwell_access_statement_measured`, e.g. "6 October 2026"); the
  * statement only prints the line when it has a real date.
@@ -133,6 +145,7 @@ function restwell_render_access_statement() {
 	$email   = function_exists( 'restwell_get_public_enquiry_email' ) ? restwell_get_public_enquiry_email() : 'hello@restwellretreats.co.uk';
 	$issued   = restwell_access_statement_issued();
 	$measured = restwell_access_statement_measured();
+	$checked  = restwell_access_statement_checked();
 	$css_url = get_template_directory_uri() . '/assets/css/access-statement.css?ver=' . (int) filemtime( get_template_directory() . '/assets/css/access-statement.css' );
 	$logo    = get_template_directory_uri() . '/assets/images/long_logo.png';
 	$nbsp    = static function ( $value ) {
@@ -156,10 +169,11 @@ function restwell_render_access_statement() {
 	<img class="as-masthead__logo" src="<?php echo esc_url( $logo ); ?>" alt="Restwell Retreats" width="180" height="28">
 	<p class="as-masthead__issued">
 		<?php echo esc_html( sprintf( /* translators: %s: month and year */ __( 'Issued %s', 'restwell-retreats' ), $issued ) ); ?>
+		<br><span class="as-masthead__measured"><?php echo esc_html( sprintf( /* translators: %s: month and year */ __( 'Figures checked %s', 'restwell-retreats' ), $checked ) ); ?></span>
 		<?php
 		if ( '' !== $measured ) :
 			?>
-		<br><span class="as-masthead__measured"><?php echo esc_html( sprintf( /* translators: %s: date */ __( 'Last measured %s', 'restwell-retreats' ), $measured ) ); ?></span>
+		<br><span class="as-masthead__measured"><?php echo esc_html( sprintf( /* translators: %s: date */ __( 'Last measured on site %s', 'restwell-retreats' ), $measured ) ); ?></span>
 		<?php endif; ?>
 	</p>
 </header>
