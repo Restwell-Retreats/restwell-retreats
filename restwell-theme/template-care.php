@@ -409,7 +409,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white" aria-labelledby="pro-quote-h">
+	<section class="section-y band-subtle" aria-labelledby="pro-quote-h">
 	  <div class="container">
 		<h2 id="pro-quote-h" class="sr-only">What a support team wrote after staying</h2>
 		<figure class="pull-quote">
@@ -420,7 +420,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="for-professionals" aria-labelledby="for-professionals-h">
+	<section class="section-y band-white" id="for-professionals" aria-labelledby="for-professionals-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <?php if ( '' !== $care_pro_label ) : ?>
@@ -451,7 +451,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+	<section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">

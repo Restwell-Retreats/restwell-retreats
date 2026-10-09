@@ -22,7 +22,7 @@ if ( ! is_array( $items ) || empty( $items ) ) {
 			<h2 id="restwell-pricing-links-heading"><?php esc_html_e( 'Related Restwell pages', 'restwell-retreats' ); ?></h2>
 			<p class="lede"><?php esc_html_e( 'Before you enquire, these pages cover the property, access detail, funding routes, and how to get in touch.', 'restwell-retreats' ); ?></p>
 		</header>
-		<ul class="link-list">
+		<ul class="link-list link-list--cards">
 			<?php foreach ( $items as $item ) : ?>
 				<?php
 				if ( empty( $item['url'] ) || empty( $item['label'] ) ) {

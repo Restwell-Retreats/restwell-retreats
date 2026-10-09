@@ -106,8 +106,12 @@ $prop_gallery_heading = $prop_heading( 'prop_gallery_heading', 'See more of the 
 $prop_care_heading = $prop_heading( 'prop_care_heading', 'Optional home care' );
 $prop_care_body    = $prop_txt(
 	'prop_care_body',
-	'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own carer if you prefer.'
+	'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.'
 );
+// Pages seeded before the 9 Oct 2026 wording pass still hold the old line in meta.
+if ( 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own carer if you prefer.' === $prop_care_body ) {
+	$prop_care_body = 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.';
+}
 
 $prop_location_heading = $prop_heading( 'prop_location_heading', 'A quiet street in Whitstable, close to the coast path' );
 $prop_location_paras   = $prop_paras(
@@ -153,14 +157,14 @@ get_template_part(
 		  <li><a href="#conservatory">Conservatory</a></li>
 		  <li><a href="#garden">Outside</a></li>
 		  <li><a href="#photos">Photos</a></li>
-		  <li><a href="#care">Care</a></li>
 		  <li><a href="#location">Location</a></li>
+		  <li><a href="#care">Care</a></li>
 		</ul>
 	  </div>
 	</nav>
 
 	<section class="section-y band-white" id="rooms" aria-labelledby="rooms-h">
-	  <div class="container split">
+	  <div class="container split split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="Accessible bedroom with two profiling beds and coastal bedding" width="900" height="675" loading="lazy" decoding="async" />
 		</div>
@@ -185,7 +189,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="wetroom" aria-labelledby="wetroom-h">
-	  <div class="container split split--flip">
+	  <div class="container split split--flip split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
 		</div>
@@ -209,7 +213,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="living" aria-labelledby="living-h">
-	  <div class="container split">
+	  <div class="container split split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living room with rise-and-recline chair and wide walkways" width="900" height="675" loading="lazy" />
 		</div>
@@ -238,7 +242,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="kitchen" aria-labelledby="kitchen-h">
-	  <div class="container split split--flip">
+	  <div class="container split split--flip split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with lowered wheel-under worksurface" width="900" height="675" loading="lazy" />
 		</div>
@@ -262,7 +266,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
-	  <div class="container split">
+	  <div class="container split split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-2-LS.jpg' ) ); ?>" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
 		</div>
@@ -286,7 +290,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="garden" aria-labelledby="garden-h">
-	  <div class="container split split--flip">
+	  <div class="container split split--flip split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-1-LS.jpg' ) ); ?>" alt="Level patio and enclosed dog-friendly garden" width="900" height="675" loading="lazy" />
 		</div>
@@ -367,19 +371,9 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-white care-pointer" id="care" aria-labelledby="care-h">
-	  <div class="container">
-		<div class="care-pointer__card">
-		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
-		  <h2 id="care-h"><?php echo esc_html( $prop_care_heading ); ?></h2>
-		  <p class="lede"><?php echo esc_html( $prop_care_body ); ?></p>
-		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
-		</div>
-	  </div>
-	</section>
 
-	<section class="section-y band-white" id="location" aria-labelledby="location-h">
-	  <div class="container split">
+	<section class="section-y band-subtle" id="location" aria-labelledby="location-h">
+	  <div class="container split split--fill">
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Location</p>
@@ -399,6 +393,17 @@ get_template_part(
 		</div>
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-1-LS.jpg' ) ); ?>" alt="Tankerton promenade and Whitstable seafront" width="900" height="675" loading="lazy" />
+		</div>
+	  </div>
+	</section>
+
+	<section class="section-y band-white care-pointer" id="care" aria-labelledby="care-h">
+	  <div class="container">
+		<div class="care-pointer__card">
+		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
+		  <h2 id="care-h"><?php echo esc_html( $prop_care_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $prop_care_body ); ?></p>
+		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
 		</div>
 	  </div>
 	</section>

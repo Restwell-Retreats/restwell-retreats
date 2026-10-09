@@ -240,7 +240,7 @@ function restwell_get_property_page_defaults() {
 		'prop_throughout_body'    => 'The bungalow is on one level with wide doorways (926 mm and 965 mm clear widths) and step-free routes from the porch through to the patio. Full door and transfer measurements are on the accessibility page if you need them before booking.',
 
 		'prop_care_heading' => 'Optional home care',
-		'prop_care_body'    => 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own carer if you prefer.',
+		'prop_care_body'    => 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
 
 		'prop_location_heading' => 'A quiet street in Whitstable, close to the coast path',
 		'prop_location_body'    => "The bungalow sits on a quiet residential street, a short walk from The Plough pub and about ten minutes on foot from the seafront.\n\nThe beach is shingle, but the wide, paved promenade offers a step-free route along the coast and forms part of the King Charles III England Coast Path.\n\nJoJo’s is about twenty minutes on foot: ten minutes down to the sea, then west along Tankerton promenade. The Marine Hotel sits on that same stretch. A short drive if you’d rather save your energy for lunch.",
@@ -422,8 +422,8 @@ function restwell_get_how_it_works_page_defaults() {
 		'hiw_arrival_link2_label' => 'Door widths and kit notes',
 
 		'hiw_care_cta_label'   => 'Optional care',
-		'hiw_care_cta_heading' => 'Add care only if you need it',
-		'hiw_care_cta_body'    => 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
+		'hiw_care_cta_heading' => 'If you’d like care while you’re here',
+		'hiw_care_cta_body'    => 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
 		'hiw_care_type1_title' => 'Personal care',
 		'hiw_care_type1_text'  => 'Washing, dressing and daily routines on agreed times.',
 		'hiw_care_type2_title' => 'Visiting care',
@@ -709,7 +709,7 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_funding_body'    => 'If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.',
 
 		'wif_fund_la_title'     => 'Local authority & direct payments',
-		'wif_fund_la_bullets'   => "Begins with a Care and Support Assessment. Unpaid carers can request a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits 2024/25: above £23,250 you pay in full; below £14,250 is usually ignored.",
+		'wif_fund_la_bullets'   => "Begins with a Care and Support Assessment. Unpaid carers can request a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
 		'wif_fund_la_cta_label' => 'Direct payments guide',
 		'wif_fund_la_cta_url'   => '/direct-payment-holiday-accommodation/',
 
@@ -738,7 +738,7 @@ function restwell_get_who_its_for_page_defaults() {
 function restwell_get_whitstable_guide_page_defaults() {
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
-		'wg_heading'       => 'What a day out from the bungalow is actually like',
+		'wg_heading'       => 'Days out from the bungalow, and what to expect underfoot',
 		'wg_intro'         => 'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.',
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'Tankerton promenade',

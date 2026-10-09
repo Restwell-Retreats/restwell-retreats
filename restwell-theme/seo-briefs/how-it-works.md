@@ -87,7 +87,7 @@ Links: Tour the property · Door widths and kit notes
 
 ### Section 4 — Optional care
 Eyebrow: Optional care
-H2: Add care only if you need it
+H2: If you’d like care while you’re here
 Lede: Ask about Continuity of Care Services when you enquire — or bring your own team. Care is never bundled into the bungalow rate.
 Types: Personal care (washing, dressing and daily routines on agreed times) · Visiting care (short daytime visits, or support for a promenade or town trip) · Mobility and hoisting (transfers with the on-site ceiling track and wet-room kit)
 Note: We add nothing until you agree the support package.

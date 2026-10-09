@@ -24,12 +24,14 @@ $siblings       = isset( $data['siblings'] ) && is_array( $data['siblings'] ) ? 
 $conversion     = isset( $data['conversion'] ) && is_array( $data['conversion'] ) ? $data['conversion'] : array();
 $category_url   = isset( $data['category_url'] ) ? (string) $data['category_url'] : '';
 $category_name  = isset( $data['category_name'] ) ? (string) $data['category_name'] : '';
+// The caller picks the band so the section alternates with its neighbours.
+$band = ( isset( $data['band'] ) && in_array( $data['band'], array( 'band-white', 'band-subtle' ), true ) ) ? $data['band'] : 'band-white';
 
 if ( empty( $guide_posts ) && empty( $siblings ) && empty( $conversion ) ) {
 	return;
 }
 ?>
-<section class="section-y section-y--compact band-white" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
+<section class="section-y <?php echo esc_attr( $band ); ?>" aria-labelledby="<?php echo esc_attr( $heading_id ); ?>">
 	<div class="container">
 		<header class="section-head section-head--tight">
 			<p class="eyebrow"><?php esc_html_e( 'Further reading', 'restwell-retreats' ); ?></p>
@@ -40,7 +42,7 @@ if ( empty( $guide_posts ) && empty( $siblings ) && empty( $conversion ) ) {
 		</header>
 
 		<?php if ( ! empty( $guide_posts ) ) : ?>
-			<ul class="link-list">
+			<ul class="link-list link-list--cards">
 				<?php foreach ( $guide_posts as $guide_post ) : ?>
 					<?php
 					if ( ! $guide_post instanceof WP_Post ) {
@@ -78,7 +80,7 @@ if ( empty( $guide_posts ) && empty( $siblings ) && empty( $conversion ) ) {
 		<?php if ( ! empty( $siblings ) ) : ?>
 			<div class="section-follow">
 				<h3><?php esc_html_e( 'Also on Restwell', 'restwell-retreats' ); ?></h3>
-				<ul class="link-list">
+				<ul class="link-list link-list--cards">
 					<?php foreach ( $siblings as $sib ) : ?>
 						<?php
 						if ( empty( $sib['url'] ) || empty( $sib['label'] ) ) {
@@ -96,7 +98,7 @@ if ( empty( $guide_posts ) && empty( $siblings ) && empty( $conversion ) ) {
 		<?php if ( ! empty( $conversion ) ) : ?>
 			<div class="section-follow">
 				<h3><?php esc_html_e( 'Plan your stay', 'restwell-retreats' ); ?></h3>
-				<ul class="link-list">
+				<ul class="link-list link-list--cards">
 					<?php foreach ( $conversion as $item ) : ?>
 						<?php
 						if ( empty( $item['url'] ) || empty( $item['label'] ) ) {

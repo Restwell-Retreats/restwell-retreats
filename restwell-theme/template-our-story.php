@@ -159,7 +159,7 @@ get_template_part(
 	</nav>
 
 	<section class="section-y band-white" id="origin" aria-labelledby="origin-h">
-	  <div class="container split">
+	  <div class="container split split--fill">
 		<div>
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $story_origin_label ) : ?>
@@ -182,7 +182,8 @@ get_template_part(
 
 	<section class="section-y band-subtle process" id="month" aria-labelledby="month-h">
 	  <div class="container">
-		<header class="section-head process__head">
+		<div class="split split--fill process__intro">
+		  <header class="section-head process__head">
 		  <?php if ( '' !== $story_month_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $story_month_label ); ?></p>
 		  <?php endif; ?>
@@ -191,10 +192,11 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $story_month_lede ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<div class="process__layout">
-		  <div class="process__media" data-reveal>
+		  <div class="split__media" data-reveal>
 			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="The adapted bungalow as it is now, with a level driveway and front garden" width="1600" height="1000" loading="lazy" />
 		  </div>
+		</div>
+		<div class="process__layout">
 		  <ol class="process-list">
 			<li>
 			  <span class="process-list__index" aria-hidden="true">01</span>
@@ -251,7 +253,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="host" aria-labelledby="host-h">
-	  <div class="container split">
+	  <div class="container split split--fill">
 		<div>
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $story_host_label ) : ?>
@@ -272,6 +274,10 @@ get_template_part(
 	<?php
 	$story_companies_band_items = $story_companies_items;
 	if ( isset( $story_companies_band_items[2] ) ) {
+		$story_companies_band_items[0]['link'] = array(
+			'label' => __( 'Tour the property', 'restwell-retreats' ),
+			'url'   => restwell_nav_resolve_page_url( 'the-property' ),
+		);
 		$story_companies_band_items[2]['html'] = '<a class="text-link" href="' . esc_url( 'tel:' . $restwell_host_tel ) . '">' . esc_html( $restwell_host_phone ) . '</a>';
 	}
 	get_template_part(
@@ -279,6 +285,8 @@ get_template_part(
 		null,
 		array(
 			'id'      => 'companies',
+			'band'    => 'band-subtle',
+			'badges_in'  => 1,
 			'label'   => $story_companies_label,
 			'heading' => $story_companies_heading,
 			'lede'    => $story_companies_lede,
@@ -294,7 +302,7 @@ get_template_part(
 	?>
 
 	<section class="section-y band-white" id="shaped" aria-labelledby="shaped-h">
-	  <div class="container split split--flip">
+	  <div class="container split split--flip split--fill">
 		<div>
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $story_shaped_label ) : ?>
@@ -312,20 +320,11 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" aria-labelledby="guest-words-h">
-	  <div class="container container--sm">
-		<h2 id="guest-words-h" class="sr-only">What a guest said</h2>
-		<figure class="pull-quote">
-		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-		  <blockquote class="pull-quote__text">It truly amazes me, just how much work has gone into this “home from home”.</blockquote>
-		  <figcaption class="pull-quote__cite"><cite>M.P.</cite><span class="pull-quote__role">Guest review</span></figcaption>
-		</figure>
-	  </div>
-	</section>
+
 
 	<section class="section-y band-subtle" id="specialists" aria-labelledby="specialists-h">
 	  <div class="container">
-		<div class="split">
+		<div class="split split--fill">
 		  <div class="specialists__copy">
 			<?php if ( '' !== $story_specialists_label ) : ?>
 			<p class="eyebrow"><?php echo esc_html( $story_specialists_label ); ?></p>
@@ -350,30 +349,47 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white" aria-labelledby="quote-h">
+	<section class="section-y band-white story-quotes" aria-labelledby="quote-h">
 	  <div class="container">
-		<h2 id="quote-h" class="sr-only">What a guest wrote after their stay</h2>
-		<figure class="pull-quote">
+		<h2 id="quote-h" class="sr-only">What guests say</h2>
+		<div class="story-quotes__grid">
+		  <figure class="pull-quote">
+		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
+		  <blockquote class="pull-quote__text">It truly amazes me, just how much work has gone into this “home from home”.</blockquote>
+		  <figcaption class="pull-quote__cite"><cite>M.P.</cite><span class="pull-quote__role">Guest review</span></figcaption>
+		</figure>
+		  <figure class="pull-quote">
 		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
 		  <?php /* Guest words: consecutive from M.W. Facebook review (docs/guest-reviews-bank.md). Distinct reviewer from the homepage cards and the M.P. pull-quote above. */ ?>
 		  <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad’s complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.</blockquote>
 		  <figcaption class="pull-quote__cite"><cite>M.W.</cite><span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
 		</figure>
+		</div>
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="next" aria-labelledby="next-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
+	<?php
+	// The closing lines are three short commitments; each gets its own row.
+	$story_next_points = array_values( array_filter( array_map( 'trim', (array) preg_split( '/(?<=[.!?])\s+/u', $story_next_lede ) ) ) );
+	?>
+	<section class="section-y band-subtle story-close" id="next" aria-labelledby="next-h">
+	  <div class="container story-close__grid">
+		<div class="story-close__head">
 		  <?php if ( '' !== $story_next_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $story_next_label ); ?></p>
 		  <?php endif; ?>
 		  <h2 id="next-h"><?php echo esc_html( $story_next_heading ); ?></h2>
-		  <?php if ( '' !== $story_next_lede ) : ?>
-		  <p class="lede"><?php echo esc_html( $story_next_lede ); ?></p>
-		  <?php endif; ?>
-		</header>
-		<p class="lede restwell-signoff"><?php esc_html_e( 'Rest Easy, Stay Well.', 'restwell-retreats' ); ?></p>
+		  <p class="restwell-signoff"><?php esc_html_e( 'Rest Easy, Stay Well.', 'restwell-retreats' ); ?></p>
+		</div>
+		<?php if ( count( $story_next_points ) >= 2 ) : ?>
+		<ul class="story-close__list" role="list">
+			<?php foreach ( $story_next_points as $story_next_point ) : ?>
+			<li><?php echo esc_html( $story_next_point ); ?></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php elseif ( '' !== $story_next_lede ) : ?>
+		<p class="lede"><?php echo esc_html( $story_next_lede ); ?></p>
+		<?php endif; ?>
 	  </div>
 	</section>
 

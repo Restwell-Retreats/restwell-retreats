@@ -101,7 +101,7 @@ $pagination_aria = (string) $args['pagination_aria'];
 		  endwhile;
 			?>
 			<?php if ( ! empty( $cards ) ) : ?>
-		<ul class="card-grid card-grid--2" role="list" data-reveal>
+		<ul class="card-grid card-grid--2 card-grid--blog" role="list" data-reveal>
 				<?php foreach ( $cards as $card ) : ?>
 					<?php list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $card['post_id'], 'medium_large' ); ?>
 		  <li><article class="media-card">

@@ -442,6 +442,7 @@ function restwell_render_pillar_related_guides( $pillar_slug, $args = array() ) 
 			'conversion'  => $conversion,
 			'category_url' => ( ! is_wp_error( $cat_url ) ) ? (string) $cat_url : '',
 			'category_name' => ( $cat_term && ! is_wp_error( $cat_term ) ) ? $cat_term->name : '',
+			'band'          => isset( $args['band'] ) ? (string) $args['band'] : 'band-white',
 		)
 	);
 	get_template_part( 'template-parts/related-guides' );

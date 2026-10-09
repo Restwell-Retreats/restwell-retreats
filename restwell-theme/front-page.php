@@ -266,6 +266,29 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  </div>
 	</section>
 
+	<section class="facts-strip band-subtle" aria-label="<?php esc_attr_e( 'The bungalow at a glance', 'restwell-retreats' ); ?>">
+	  <div class="container">
+		<ul class="facts-strip__list" role="list">
+		  <li>
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M5 23 24 7l19 16M10 20v21h28V20M20 41V29h8v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+			<span><?php esc_html_e( 'Private, single-storey house', 'restwell-retreats' ); ?></span>
+		  </li>
+		  <li>
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false" fill="currentColor"><path d="M47,46H46V40.21c1.23-1.12,1-1.89,1-6.21a3.51,3.51,0,0,0-1.06-2.34l-3-8.37A5,5,0,0,0,38.2,20H23.8a5,5,0,0,0-4.7,3.29l-3,8.37A3.53,3.53,0,0,0,15,34c0,3.85-.31,5,1,6.21V46H12V22h3a3,3,0,0,0,3-3V3a3,3,0,0,0-3-3H3A3,3,0,0,0,0,3V19a3,3,0,0,0,3,3H6V46H1a1,1,0,0,0,0,2H47A1,1,0,0,0,47,46Zm-9-3v3H24V43ZM20.67,41c-.46,0-.39,0-3.27-2.2-.57-.43-.4-.76-.4-4.8a1,1,0,0,1,1-1H44a1,1,0,0,1,1,1v4c0,.66-.25.68-3.07,2.8a1,1,0,0,1-.6.2ZM21,24a3,3,0,0,1,2.82-2H38.2A3,3,0,0,1,41,24l2.55,7H35.41l2.3-2.29a1,1,0,0,0-1.42-1.42L32.59,31H27.41l2.3-2.29a1,1,0,0,0-1.42-1.42L24.59,31H18.43ZM2,19V3A1,1,0,0,1,3,2H15a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H3A1,1,0,0,1,2,19ZM8,46V22h2V46Zm10,0V41.75C19.68,43,19.5,43,22,43v3Zm22,0V43c2.27,0,2.16.13,4-1.25V46Z"/><path d="M7,12H9.5a3.5,3.5,0,0,0,0-7H6A1,1,0,0,0,5,6V16a1,1,0,0,0,2,0ZM7,7H9.5a1.5,1.5,0,0,1,0,3H7Z"/><path d="M24,35H22a2,2,0,0,0,0,4h2a2,2,0,0,0,0-4Z"/><path d="M42,37a2,2,0,0,0-2-2H38a2,2,0,0,0,0,4h2A2,2,0,0,0,42,37Z"/><path d="M33,35H29a1,1,0,0,0,0,2h4A1,1,0,0,0,33,35Z"/><path d="M33,38H29a1,1,0,0,0,0,2h4A1,1,0,0,0,33,38Z"/></svg></span>
+			<span><?php esc_html_e( 'Driveway parking for two', 'restwell-retreats' ); ?></span>
+		  </li>
+		  <li>
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false" fill="currentColor"><path d="M2,16H16a1,1,0,0,0,1-1V1a1,1,0,0,0-1-1H2A1,1,0,0,0,1,1V15A1,1,0,0,0,2,16ZM3,2H15V14H3Z"/><path d="M7.71,7.71l2-2A1,1,0,0,0,8.29,4.29l-2,2A1,1,0,0,0,7.71,7.71Z"/><path d="M9.29,8.29l-2,2a1,1,0,0,0,1.42,1.42l2-2A1,1,0,0,0,9.29,8.29Z"/><path d="M46,28h1a1,1,0,0,0,0-2H46V20h1a1,1,0,0,0,0-2H46V7a5,5,0,0,0-5-5H37a5,5,0,0,0-5,5V9H29.06A3.06,3.06,0,0,0,26,12.06V14a1,1,0,0,0,1,1H39a1,1,0,0,0,1-1V12.06A3.06,3.06,0,0,0,36.94,9H34V7a3,3,0,0,1,3-3h4a3,3,0,0,1,3,3V33H42V32a1,1,0,0,0-2,0v4a1,1,0,0,0,2,0V35h2V46H12V34h1a3,3,0,0,0,3-3V30h1a1,1,0,0,0,1-1V25a1,1,0,0,0-1-1H10V20.5a2.5,2.5,0,0,0-5,0V21a1,1,0,0,0,2,0v-.5a.5.5,0,0,1,1,0V24H1a1,1,0,0,0-1,1v4a1,1,0,0,0,1,1H2v1a3,3,0,0,0,3,3H6V46H1a1,1,0,0,0,0,2H47a1,1,0,0,0,0-2H46ZM38,12.06V13H28v-.94A1.07,1.07,0,0,1,29.06,11h7.88A1.07,1.07,0,0,1,38,12.06ZM2,26H16v2H2Zm2,5V30H14v1a1,1,0,0,1-1,1H5A1,1,0,0,1,4,31ZM8,46V34h2V46Z"/><path d="M29,19a1,1,0,0,0,0-2A1,1,0,0,0,29,19Z"/><path d="M33,19a1,1,0,0,0,0-2A1,1,0,0,0,33,19Z"/><path d="M29,23a1,1,0,0,0,0-2A1,1,0,0,0,29,23Z"/><path d="M33,23a1,1,0,0,0,0-2A1,1,0,0,0,33,23Z"/><path d="M29,27a1,1,0,0,0,0-2A1,1,0,0,0,29,27Z"/><path d="M33,27a1,1,0,0,0,0-2A1,1,0,0,0,33,27Z"/><path d="M29,31a1,1,0,0,0,0-2A1,1,0,0,0,29,31Z"/><path d="M33,31a1,1,0,0,0,0-2A1,1,0,0,0,33,31Z"/><path d="M37,19a1,1,0,0,0,0-2A1,1,0,0,0,37,19Z"/><path d="M37,23a1,1,0,0,0,0-2A1,1,0,0,0,37,23Z"/><path d="M37,27a1,1,0,0,0,0-2A1,1,0,0,0,37,27Z"/><path d="M37,31a1,1,0,0,0,0-2A1,1,0,0,0,37,31Z"/></svg></span>
+			<span><?php esc_html_e( 'Level-access wet room', 'restwell-retreats' ); ?></span>
+		  </li>
+		  <li>
+			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M5 7h38M24 7v4M17 11h14v7H17zM24 18v5M14 23h20M15 23l2.6 14c.2 1.1 1.2 1.9 2.3 1.9h8.2c1.1 0 2.1-.8 2.3-1.9L33 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="29.5" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+			<span><?php esc_html_e( 'Ceiling track hoist', 'restwell-retreats' ); ?></span>
+		  </li>
+		</ul>
+	  </div>
+	</section>
+
 	<section class="property section-y" id="property" aria-labelledby="property-h">
 	  <div class="container">
 		<div class="property__layout">
@@ -275,11 +298,6 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			<?php endif; ?>
 			<h2 id="property-h"><?php echo esc_html( $property_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $property_body ); ?></p>
-			<ul class="property__facts">
-			  <li><?php esc_html_e( 'Private, single-storey house', 'restwell-retreats' ); ?></li>
-			  <li><?php esc_html_e( 'Driveway parking for two', 'restwell-retreats' ); ?></li>
-			  <li><?php esc_html_e( 'Level-access wet room', 'restwell-retreats' ); ?></li>
-			</ul>
 			<div class="property__cta-row">
 			  <a class="btn btn-gold" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
 			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
@@ -292,7 +310,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  </div>
 	</section>
 
-	<section class="gallery section-y section-y--compact" aria-labelledby="gallery-h" data-gallery>
+	<section class="gallery section-y band-subtle" aria-labelledby="gallery-h" data-gallery>
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow">Inside the property</p>
@@ -341,7 +359,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	);
 	?>
 
-	<section class="care care--tease section-y--compact" id="care" aria-labelledby="care-h">
+	<section class="care care--tease section-y band-white" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care__tease">
 		  <?php if ( '' !== $home_care_label ) : ?>
@@ -375,7 +393,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		$home_faq_col[]       = $home_faq_item;
 	}
 	?>
-	<section class="faq section-y--compact" id="faq" aria-labelledby="faq-h">
+	<section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">

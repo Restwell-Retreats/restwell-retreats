@@ -248,10 +248,19 @@ $wif_fund_la_bullets = function_exists( 'restwell_wif_bullet_list' )
 		array(
 			'Begins with a Care and Support Assessment. Unpaid carers can request a Carer\'s Assessment too (Care Act 2014).',
 			'Direct payments: you receive the funding and choose your provider.',
-			'Capital limits 2024/25: above £23,250 you pay in full; below £14,250 is usually ignored.',
+			'Capital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.',
 		)
 	)
 	: array();
+// Pages seeded before the 9 Oct 2026 pass still hold last year's figure line in meta.
+$wif_fund_la_bullets = array_map(
+	static function ( $bullet ) {
+		return 0 === strpos( (string) $bullet, 'Capital limits 2024/25' )
+			? 'Capital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.'
+			: $bullet;
+	},
+	$wif_fund_la_bullets
+);
 $wif_fund_phb_bullets = function_exists( 'restwell_wif_bullet_list' )
 	? restwell_wif_bullet_list(
 		$restwell_wif_id,
@@ -349,13 +358,12 @@ get_template_part(
 
 	<section class="section-y band-white" id="situations" aria-labelledby="situations-h">
 	  <div class="container">
-		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Your situation</p>
 			<h2 id="situations-h"><?php echo esc_html( $wif_audience_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wif_audience_intro ); ?></p>
 		  </header>
-		  <ul class="persona-list persona-list--rows" role="list">
+		  <ul class="persona-list persona-list--cards" role="list">
 			<?php foreach ( $wif_personas as $persona ) : ?>
 			<li class="persona-list__item">
 			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><?php echo $persona['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG paths. ?></svg></span>
@@ -383,7 +391,6 @@ get_template_part(
 			</li>
 			<?php endforeach; ?>
 		  </ul>
-		</div>
 	  </div>
 	</section>
 
@@ -454,12 +461,12 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-white care-pointer" id="care" aria-labelledby="care-h">
+	<section class="section-y band-subtle care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
 		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
 		  <h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if that works better.', 'restwell-retreats' ); ?></p>
+		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.', 'restwell-retreats' ); ?></p>
 		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
 		</div>
 	  </div>
@@ -472,7 +479,7 @@ get_template_part(
 		  <h2 id="funding-h"><?php echo esc_html( $wif_funding_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wif_funding_body ); ?></p>
 		</header>
-		<ul class="persona-list persona-list--rows" role="list">
+		<ul class="persona-list persona-list--cards" role="list">
 		  <?php foreach ( $wif_funding_routes as $route ) : ?>
 		  <li class="persona-list__item">
 			<div>
@@ -499,33 +506,33 @@ get_template_part(
 	  <div class="container">
 		<header class="section-head process__head">
 		  <p class="eyebrow">Next steps</p>
-		  <h2 id="next-h">Enquire, match the house, then deposit</h2>
-		  <p class="lede">No online checkout maze. You get a straight yes/no on kit fit before any money changes hands.</p>
+		  <h2 id="next-h">What happens when you get in touch?</h2>
+		  <p class="lede">Tell us as much or as little as you like, and we’ll do the working out at our end.</p>
 		</header>
 		<div class="process__layout">
 		  <ol class="process-list">
 			<li>
 			  <span class="process-list__index" aria-hidden="true">01</span>
 			  <div class="process-list__body">
-				<h3>Share requirements</h3>
+				<h3>Tell us what you need</h3>
 				<p class="process-list__meta">Start here</p>
-				<p>Dates, chair/hoist needs, funding contact, and whether you want Continuity care.</p>
+				<p>Your dates, who’s coming, the chair or hoist you use, who’s funding the stay, and whether you’d like care from Continuity. No deposit, no obligation, no sales call.</p>
 			  </div>
 			</li>
 			<li>
 			  <span class="process-list__index" aria-hidden="true">02</span>
 			  <div class="process-list__body">
-				<h3>Confirm suitability</h3>
+				<h3>We check it fits</h3>
 				<p class="process-list__meta">We reply</p>
-				<p>We check doorway widths and on-site kit against your party, and say if Restwell is the wrong house.</p>
+				<p>We compare what you’ve told us with our door widths and kit, and say plainly if Restwell isn’t the right house.</p>
 			  </div>
 			</li>
 			<li>
 			  <span class="process-list__index" aria-hidden="true">03</span>
 			  <div class="process-list__body">
-				<h3>Book and prepare</h3>
+				<h3>Reserve your dates</h3>
 				<p class="process-list__meta">When you’re ready</p>
-				<p>50% deposit, welcome pack, and a Continuity intro only if you asked for care.</p>
+				<p>Once we’ve both agreed the bungalow fits, a 50% deposit reserves your dates and we send your welcome pack. If you’ve asked about care from Continuity, it carries on in the same conversation.</p>
 			  </div>
 			</li>
 		  </ol>

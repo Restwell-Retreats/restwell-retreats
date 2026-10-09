@@ -221,7 +221,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-subtle" id="directory" aria-labelledby="directory-h">
+	<section class="section-y band-subtle" id="directory" aria-labelledby="directory-h">
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">Quick reference</p>
@@ -306,7 +306,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-white" id="help" aria-labelledby="help-h">
+	<section class="section-y band-white" id="help" aria-labelledby="help-h">
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">What we send</p>

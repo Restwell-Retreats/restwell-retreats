@@ -20,7 +20,16 @@ Tailwind is **not** loaded. Utility class names such as `pt-8`, `border-t` or `t
 - **Size primitives:** `--text-2xs` (0.75rem) to `--text-3xl`. Body is `--text-base` (1.0625rem, 17px). Never render text below 0.75rem (12px).
 - **Roles:** prefer `--type-body-*`, `--type-lede-*`, `--type-eyebrow-*`, `--type-ui-*`, `--type-meta-size` over raw primitives.
 - **Headings:** `--type-h1`, `--type-h2`, `--type-h3` are rem + vw clamps (pure vw can fail WCAG 1.4.4). One H1 per page; no skipped levels.
-- **Eyebrows:** `.eyebrow` (gold text, uppercase, `--type-eyebrow-tracking`); `.eyebrow--on-dark` on teal bands. Interior heroes all print one (`hero_eyebrow` meta, falling back to the page's section name).
+- **One H1 size per page type.** The homepage photo hero has its own display size; every other hero (photo, plain FAQ, legal, blog post) uses `--type-h1-interior` (about 30px on a phone, 43px at desktop). Nothing below the hero may be larger than the page's H1.
+- **Title roles under h2.** Pick a role, not a raw `--text-*` step:
+  - `--type-h3` (18px phone to 20.8px desktop): every card, step and panel title.
+  - `--type-title-lg` (24px): a heading that leads a group inside a section (a funding route, an access chapter, the "good / challenges" panels).
+  - `--type-title-sm` (18px): asides, callouts, compact cards, the legal contents title.
+  Lora headings are always semibold (`--type-display-weight`); medium-weight Lora titles were removed on 9 Oct 2026.
+- **Eyebrows:** `.eyebrow` (gold text, uppercase, `--type-eyebrow-tracking`, 12px); `.eyebrow--on-dark` on teal bands. Over a hero photo it is one step up, `--type-eyebrow-hero-size` (13px). Interior heroes all print one (`hero_eyebrow` meta, falling back to the page's section name).
+- **An eyebrow is a `<p>`, so container rules must not restyle it.** A rule like `.hero__text p` or `.funding-route__copy > p` outranks `.eyebrow` and turns the label into 17px body text. Write such rules as `p:not(.eyebrow)`.
+- **Other small caps labels** (table heads, meta lines, `dt`) use `--type-label-tracking` (0.08em).
+- **Buttons:** every `.btn`, `<a>` or `<button>`, is `--type-ui-size` (15px) semibold Inter with centred lines. The header chip and cookie bar stay at 14px.
 
 ### Line length
 
@@ -29,6 +38,8 @@ Tailwind is **not** loaded. Utility class names such as `pt-8`, `border-t` or `t
 It is applied to `.prose` and `.prose--wide` text children, `.section-head .lede`, and the long component notes listed at the end of `shared.css`. Tables and figures inside `.prose--wide` may still use the full 44rem column.
 
 Body copy is left-aligned. Centre only short CTA bands and `.section-head--center` titles, never a multi-line paragraph.
+
+Long reading pages share one layout: from 1100px a blog post (`.blog-article--has-toc`) and a legal page with a contents list (`.legal-doc--has-toc`) put "On this page" in a 13rem sticky rail beside the 38rem text, centred as one 66rem block. Below 1100px the legal contents is a box the same width as the text.
 
 ## Spacing system
 
@@ -52,7 +63,11 @@ Token-first and mobile-first. The layers are documented at the top of `shared.cs
 | `.section-head`, `.section-head--tight`, `.section-head--center` | Eyebrow + heading + lede cluster, with gaps from `--section-head-gap` and `--section-after-head`. |
 | `.section-follow` | A block that follows a section head, picking up the after-head step. |
 
-Sibling rules already manage the top padding after a hero or a sticky subnav (`.hero + .section-y`, `.subnav + .section-y`), so don't add margin to compensate.
+Sibling rules already manage the top padding after a hero or a sticky subnav (`.hero + .section-y`, `.subnav + .section-y`): both use `--section-y-lead` (32px phone, 40px tablet, 56px desktop), so a page's first band starts at the same distance with or without an on-this-page bar. Don't add margin to compensate.
+
+**Which section class:** a section with its own heading is `.section-y`. `.section-y--compact` is only for strips without a heading (the Whitstable travel-times strip). The homepage, the funding page's directory and the optional-care pointer cards were compact until 9 Oct 2026, which made the homepage tighter than every interior page.
+
+**Ordering at the foot of a page:** content, then "Further reading" (`restwell_render_pillar_related_guides()`, which takes a `band` argument so it can alternate with the section above), then the teal mid-CTA, which runs into the teal footer.
 
 ### Links and lists
 
@@ -61,7 +76,15 @@ Sibling rules already manage the top padding after a hero or a sticky subnav (`.
 
 ## Cards and panels
 
-- A card is a white (or soft sand) surface, a `1px` hairline border in `--deep-teal` at ~10%, `--radius-lg`, and at most the faint shadow `0 8px 30px rgb(0 0 0 / 0.04)`.
+- **Cards are flat: no shadow, ever.** A card stands off its band by colour. On a `band-white` section it is the cool tint `var(--tint-cool)` (a 5% deep-teal wash) with no border; on a `band-subtle` section it is white with a `1px` hairline. Both come from the tokens `--card-bg`, `--card-line` and `--card-inset`, which flip with the band, so write `background: var(--card-bg)` and `border: 1px solid var(--card-line)` and the card is right on either. A tile *inside* a card uses `var(--card-inset)` (the opposite surface) or it vanishes into its parent. `--card-shadow` is `none`; keep using it so the look can change in one place. Never a sand or beige fill, and never a drop shadow (Ellie, 9 Oct 2026: white-with-shadow "looks kinda weird").
+- **A conclusion is not a third card.** When two panels lead to a verdict (the Accessibility destination section), the verdict is the one dark `--deep-teal` block, centred, in the display face.
+- **Neighbouring sections alternate `band-white` and `band-subtle`**, or the theme fuses them into one field. `tests/BandAlternationTest.php` enforces it.
+- **Section intros at 1024px and up sit beside the heading**, not in a narrow column above full-width content. This applies to `.section-head` straight inside `.container` (including a steps head) and to a sister-company band with nothing beside its intro. Don't wrap a head in a bare `<div>`: it drops out of the rule.
+- **Photo and copy splits are equal halves** at 900px and up, whichever side the photo is on.
+- **Numbered steps look the same everywhere.** `.process-list` and `.payment-steps` both draw large faded serif numerals (`--step-figure-size`, `--step-figure-size-lg`) over a hairline, never circles joined by a dashed line.
+- **Guest quotes in a grid** (homepage testimonials, Our Story) are body size with the trimmed gold mark; only a single featured `.pull-quote` takes the larger display size.
+- **Icon tiles are cool**: the 10% teal tile, never pale gold.
+- **`.band-subtle` is a flat `--bg-subtle`.** The old sand-to-driftwood gradient stretched with the band, so tall and short bands came out different colours.
 - **No single-edge accent borders.** No `border-top`, `border-left` or `border-bottom` in a thick colour on one side of a card, callout or panel. With a radius they draw a crescent that curls round the corners, and they read as generated UI. Say what a card is with a marker (icon tile, tick, tinted circle), a heading or a tint, not a coloured edge. (Hairline dividers between rows, chevron arrows and the blog table-of-contents rail are fine.)
 
 ## Images

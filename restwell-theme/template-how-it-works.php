@@ -138,21 +138,22 @@ $hiw_care_label   = $restwell_hiw_prefer_live(
 );
 $hiw_care_heading = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_hiw_id, 'hiw_care_cta_heading', 'Add care only if you need it' )
-		: 'Add care only if you need it',
-	'Add care only if you need it',
-	array( 'Care fits around your routine' )
+		? restwell_page_content_text( $restwell_hiw_id, 'hiw_care_cta_heading', 'If you’d like care while you’re here' )
+		: 'If you’d like care while you’re here',
+	'If you’d like care while you’re here',
+	array( 'Care fits around your routine', 'Add care only if you need it' )
 );
 $hiw_care_body    = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text(
 			$restwell_hiw_id,
 			'hiw_care_cta_body',
-			'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if you prefer.'
+			'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.'
 		)
-		: 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
-	'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
+		: 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
+	'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
 	array(
+		'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
 		'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.',
 		'Ask about Continuity of Care Services when you enquire, or bring your own team. Care can be arranged in the same conversation as your booking.',
 		'Continuity home care can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
@@ -333,7 +334,8 @@ get_template_part(
 
 	<section class="section-y band-white process" id="process" aria-labelledby="process-h">
 	  <div class="container">
-		<header class="section-head process__head">
+		<div class="split split--fill process__intro">
+		  <header class="section-head process__head">
 		  <?php if ( '' !== $hiw_steps_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $hiw_steps_label ); ?></p>
 		  <?php endif; ?>
@@ -342,10 +344,11 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $hiw_steps_intro ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<div class="process__layout">
-		  <div class="process__media" data-reveal>
+		  <div class="split__media" data-reveal>
 					<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/patio-1.png' ) ); ?>" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
 		  </div>
+		</div>
+		<div class="process__layout">
 		  <ol class="process-list">
 			<?php foreach ( $hiw_steps as $step_i => $step ) : ?>
 			<li>
@@ -366,7 +369,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="arrival" aria-labelledby="arrival-h">
-	  <div class="container split split--flip split--cover">
+	  <div class="container split split--flip split--fill">
 		<div class="split__media" data-reveal>
 			 <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/entrance.png' ) ); ?>" alt="Step-free entrance to the Restwell bungalow" width="900" height="675" loading="lazy" />
 		</div>
@@ -395,7 +398,7 @@ get_template_part(
 		  <?php if ( '' !== $hiw_arrival_link1_label || '' !== $hiw_arrival_link2_label ) : ?>
 		  <p class="hiw-arrival__links">
 				<?php if ( '' !== $hiw_arrival_link1_label ) : ?>
-			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $hiw_arrival_link1_label ); ?></a>
+			<a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $hiw_arrival_link1_label ); ?></a>
 			<?php endif; ?>
 				<?php if ( '' !== $hiw_arrival_link2_label ) : ?>
 			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php echo esc_html( $hiw_arrival_link2_label ); ?></a>
@@ -406,7 +409,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--compact band-white care-pointer" id="care" aria-labelledby="care-h">
+	<section class="section-y band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
 		  <?php if ( '' !== $hiw_care_label ) : ?>

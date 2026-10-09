@@ -86,7 +86,7 @@ if ( preg_match_all( '/<h2(\s[^>]*)?>(.*?)<\/h2>/is', $legal_body, $legal_heads 
 ?>
 
 	<section class="section-y band-white">
-	  <div class="container">
+	  <div class="container legal-doc<?php echo $legal_toc ? ' legal-doc--has-toc' : ''; ?>">
 		<?php if ( $legal_toc ) : ?>
 		<nav class="legal-toc" aria-labelledby="legal-toc-h">
 		  <h2 id="legal-toc-h" class="legal-toc__title"><?php esc_html_e( 'On this page', 'restwell-retreats' ); ?></h2>

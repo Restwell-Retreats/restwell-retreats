@@ -12,7 +12,7 @@ Which bits of Whitstable work in a wheelchair: Tankerton promenade is level, the
 
 ## H1 (`wg_heading`)
 
-What a day out from the bungalow is actually like
+Days out from the bungalow, and what to expect underfoot
 
 ## Opening paragraph (print directly under the H1)
 

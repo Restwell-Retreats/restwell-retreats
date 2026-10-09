@@ -47,7 +47,11 @@ $wg_spot_src = static function ( $n, $fallback_path ) use ( $restwell_wg_id ) {
 		: '';
 };
 
-$restwell_wg_heading = $wg_txt( 'wg_heading', 'What a day out from the bungalow is actually like' );
+$restwell_wg_heading = $wg_txt( 'wg_heading', 'Days out from the bungalow, and what to expect underfoot' );
+// Pages seeded before the 9 Oct 2026 rewrite still hold the old H1 in meta.
+if ( 'What a day out from the bungalow is actually like' === $restwell_wg_heading ) {
+	$restwell_wg_heading = 'Days out from the bungalow, and what to expect underfoot';
+}
 $restwell_wg_intro   = $wg_txt(
 	'wg_intro',
 	'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.'
@@ -195,17 +199,13 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="parking" aria-labelledby="parking-h">
-	  <div class="container split split--flip split--media-first split--fill">
-		<div class="split__media">
-				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/tankerton-residential-street.webp' ) ); ?>" alt="Quiet residential street near Tankerton" width="900" height="675" loading="lazy" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
+	  <div class="container">
+		<header class="section-head">
 			<p class="eyebrow">Parking, plainly</p>
 			<h2 id="parking-h"><?php echo esc_html( $wg_parking_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wg_parking_body ); ?></p>
 		  </header>
-		  <dl class="comparison-list">
+		<dl class="comparison-list parking-pair">
 			<div class="comparison-list__item">
 			  <dt>At Restwell</dt>
 			  <dd>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</dd>
@@ -215,12 +215,11 @@ get_template_part(
 			  <dd>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</dd>
 			</div>
 		  </dl>
-		  <aside class="callout">
+		<aside class="callout parking-notice">
 			<h3>Harbour ANPR</h3>
 			<p>Gorrell Tank and Keam’s Yard need your vehicle and Blue Badge pre-registered online. Parking at Tankerton Road and rolling the promenade is usually easier.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register Blue Badge for ANPR<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </aside>
-		</div>
 	  </div>
 	</section>
 
@@ -258,14 +257,16 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="eat" aria-labelledby="eat-h">
-	  <div class="container split split--media-first split--media-top">
-		<div>
-		  <header class="section-head section-head--tight">
+	  <div class="container">
+		<header class="section-head">
 			<p class="eyebrow"><?php echo esc_html( $wg_eating_label ); ?></p>
 			<h2 id="eat-h"><?php echo esc_html( $wg_eating_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wg_eating_intro ); ?></p>
 		  </header>
-		  <div class="place-list place-list--stack place-list--venues">
+		<div class="eat-banner">
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-marina-sunset.webp' ) ); ?>" alt="Whitstable seafront near Tankerton, where several step-free dining options sit" width="900" height="675" loading="lazy" />
+		</div>
+		<div class="place-list place-list--3 place-list--venues">
 		  <article class="place-list__item">
 			<h3 class="place-list__title"><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" target="_blank" rel="noopener noreferrer">The Plough Inn, Swalecliffe<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Nearest pub · CT5 2RN</p>
@@ -285,10 +286,6 @@ get_template_part(
 			<p class="place-list__actions"><a href="https://www.marinewhitstable.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227272672">Call 01227 272672</a></p>
 		  </article>
 		  </div>
-		</div>
-		<div class="split__media">
-				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-marina-sunset.webp' ) ); ?>" alt="Whitstable seafront near Tankerton, where several step-free dining options sit" width="900" height="675" loading="lazy" />
-		</div>
 	  </div>
 	</section>
 
@@ -325,7 +322,7 @@ get_template_part(
 		  <h2 id="travel-h"><?php echo esc_html( $wg_travel_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_travel_body ); ?></p>
 		</header>
-		<ul class="persona-list persona-list--rows" role="list">
+		<ul class="persona-list persona-list--cards" role="list">
 		  <li class="persona-list__item">
 			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 11h14M8.5 21l2-4M15.5 21l-2-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/></svg></span>
 			<div>
@@ -465,6 +462,19 @@ get_template_part(
 	$mid_cta_secondary_label = $wg_txt( 'wg_cta_secondary_label', __( 'See the bungalow', 'restwell-retreats' ) );
 	$mid_cta_secondary_url   = $wg_txt( 'wg_cta_secondary_url', restwell_nav_resolve_page_url( 'the-property' ) );
 
+	// Further reading sits above the closing CTA, as on Funding & Support, so the
+	// teal CTA runs straight into the teal footer. The FAQ above is band-white.
+	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
+		restwell_render_pillar_related_guides(
+			'whitstable-area-guide',
+			array(
+				'heading' => $wg_related_heading,
+				'intro'   => $wg_related_intro,
+				'band'    => 'band-subtle',
+			)
+		);
+	}
+
 	get_template_part(
 		'template-parts/mid-cta',
 		null,
@@ -480,17 +490,6 @@ get_template_part(
 	?>
 
 
-<?php
-if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
-	restwell_render_pillar_related_guides(
-		'whitstable-area-guide',
-		array(
-			'heading' => $wg_related_heading,
-			'intro'   => $wg_related_intro,
-		)
-	);
-}
-?>
 
 </main>
 

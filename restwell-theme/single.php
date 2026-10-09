@@ -136,7 +136,8 @@ $related = new WP_Query( $related_args );
 					?>
 					<li>
 						<article class="media-card">
-							<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
+							<?php // Decorative: the heading link beside it already names the article. ?>
+							<img src="<?php echo esc_url( $thumb ); ?>" alt="" width="640" height="480" loading="lazy" decoding="async" />
 							<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
 						</article>
 					</li>

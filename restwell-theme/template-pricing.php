@@ -225,7 +225,7 @@ get_template_part(
 	get_template_part( 'template-parts/availability-calendar' );
 	?>
 
-	<section class="section-y band-subtle" id="payment" aria-labelledby="payment-h">
+	<section class="section-y band-white" id="payment" aria-labelledby="payment-h">
 	  <div class="container">
 		<header class="section-head">
 		  <?php if ( '' !== $pricing_payment_label ) : ?>
@@ -263,7 +263,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white" id="care-rates" aria-labelledby="care-rates-h">
+	<section class="section-y band-subtle" id="care-rates" aria-labelledby="care-rates-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <?php if ( '' !== $pricing_care_rates_label ) : ?>
@@ -371,10 +371,10 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 					}
 					?>
 			  <li>
-				<?php if ( '' !== $_care_label ) : ?>
+					<?php if ( '' !== $_care_label ) : ?>
 				<span class="care-rates__note-label"><?php echo esc_html( $_care_label ); ?></span>
 				<?php endif; ?>
-				<?php echo esc_html( $_care_note ); ?>
+					<?php echo esc_html( $_care_note ); ?>
 			  </li>
 			  <?php endforeach; ?>
 			</ul>
@@ -390,7 +390,7 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 	  </div>
 	</section>
 
-	<section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
+	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">

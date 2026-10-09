@@ -111,11 +111,11 @@ CTA: Funding & support hub → Resources page
 
 ### Section 7 — Next steps
 Eyebrow: Next steps
-H2: Enquire, match the house, then deposit
-Lede: No online checkout maze. You get a straight yes/no on kit fit before any money changes hands.
-Step 01 — Share requirements (Start here): Dates, chair/hoist needs, funding contact, and whether you want Continuity care.
-Step 02 — Confirm suitability (We reply): We check doorway widths and on-site kit against your party — and say if Restwell is the wrong house.
-Step 03 — Book and prepare (When you're ready): 50% deposit, welcome pack, and a Continuity intro only if you asked for care.
+H2: What happens when you get in touch?
+Lede: Tell us as much or as little as you like, and we’ll do the working out at our end.
+Step 01 — Tell us what you need (Start here): Your dates, who’s coming, the chair or hoist you use, who’s funding the stay, and whether you’d like care from Continuity. No deposit, no obligation, no sales call.
+Step 02 — We check it fits (We reply): We compare what you’ve told us with our door widths and kit, and say plainly if Restwell isn’t the right house.
+Step 03 — Reserve your dates (When you’re ready): Once we’ve both agreed the bungalow fits, a 50% deposit reserves your dates and we send your welcome pack. If you’ve asked about care from Continuity, it carries on in the same conversation.
 
 ### Section 8 — Planning & respite FAQ (9 questions, two columns)
 1. How do I plan a holiday when someone has complex care needs?

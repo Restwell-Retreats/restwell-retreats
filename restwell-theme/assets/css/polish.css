@@ -145,9 +145,9 @@
  * copy column. A slightly smaller title, using the full column, sits on one
  * line from tablet up without covering more of the photo.
  */
-.hero.hero--interior.hero--place .hero__text h1 {
+.hero.hero--interior .hero__text h1 {
   max-width: 100%;
-  font-size: clamp(2.25rem, 1.05rem + 2.8vw, 2.7rem);
+  font-size: var(--type-h1-interior);
   text-wrap: pretty;
   overflow-wrap: break-word;
 }
@@ -162,7 +162,7 @@
   .hero.hero--interior.hero--place .hero__text {
     max-width: 100%;
   }
-  .hero.hero--interior.hero--place .hero__text p {
+  .hero.hero--interior.hero--place .hero__text p:not(.eyebrow) {
     max-width: min(38rem, 100%);
   }
 }
@@ -180,12 +180,6 @@
 /* First editorial heading was stacking h2 margin-top on section padding. */
 .prose > :first-child {
   margin-top: 0;
-}
-
-@media (min-width: 768px) {
-  .hero + .section-y {
-    padding-top: var(--space-8);
-  }
 }
 
 /* Quiet hover on linked cards only — static cards stay still. */
@@ -324,7 +318,7 @@ a.path-card:hover {
     text-wrap: balance;
   }
   .hero:not(.hero--interior) .hero__sub,
-  .hero:not(.hero--interior) .hero__text p {
+  .hero:not(.hero--interior) .hero__text p:not(.eyebrow) {
     max-width: 100%;
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
@@ -390,24 +384,20 @@ html.has-cookie-banner body {
  * on cream walls. Heavy scrim already exists — use it. Balance the H1 so
  * “What a stay here costs” does not leave “here costs” as an orphan.
  */
-.hero.hero--interior.hero--place .hero__text h1 {
+.hero.hero--interior .hero__text h1 {
   text-wrap: balance;
 }
 @media (max-width: 767px) {
-  .hero.hero--interior.hero--place .hero__text h1 {
-    font-size: clamp(1.85rem, 1.15rem + 3.2vw, 2.35rem);
-  }
-  .hero.hero--interior.hero--place .hero__text p {
+  .hero.hero--interior.hero--place .hero__text p:not(.eyebrow) {
     font-size: var(--text-sm);
     line-height: var(--leading-snug);
     max-width: 100%;
   }
 }
 
-/* Pricing: crop to the furniture, not the floor; hold crumbs over the window. */
-.page-template-template-pricing .hero.hero--place {
-  --hero-place-min-h: min(48svh, 24.5rem);
-}
+/* Pricing: crop to the furniture, not the floor; hold crumbs over the window.
+   The hero keeps the shared place height: a shorter one here made Pricing the
+   only interior page whose title sat higher than the rest. */
 @media (max-width: 767px) {
   .page-template-template-pricing .hero__media-img {
     object-position: 40% 16%;
