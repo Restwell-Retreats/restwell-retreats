@@ -8217,7 +8217,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   list-style: none;
   border: 1px solid var(--card-line);
   border-radius: var(--radius-lg);
-  background: var(--white);
+  background: var(--card-bg);
 }
 .route-list__stop {
   position: relative;
@@ -8271,6 +8271,38 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   text-transform: uppercase;
   color: var(--warm-gold-text);
 }
+
+/* Parking (13 Oct 2026, owner's pick): the four places to park as stops,
+   easiest first, the name and its tag on one line and a note under it. The
+   harbour stop, where you must register first, is the gold one. */
+.route-list--parking .route-list__stop { color: var(--deep-teal); }
+.route-list__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+}
+.route-list__name { font-weight: var(--type-title-weight); }
+.route-list--parking .route-list__tag { margin: 0; color: var(--deep-teal); }
+.route-list__note,
+.route-list__links {
+  margin: var(--space-2) 0 0;
+  max-width: var(--measure-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--body-secondary);
+}
+.route-list__links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); }
+.route-list__links .text-link { display: inline-flex; min-height: var(--tap-target, 2.75rem); align-items: center; gap: var(--space-1); }
+.route-list__links .text-link .icon { width: 1em; height: 1em; }
+.route-list__stop--warn::before {
+  background: var(--warm-gold);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--warm-gold) 24%, transparent);
+}
+.route-list__stop--warn .route-list__tag { color: var(--warm-gold-text); }
 
 /* Plain hero (FAQ), 5 Oct 2026: a light band under the solid header,
    dark text, a faint gold wave motif on the right. The dark teal version read
@@ -9752,8 +9784,7 @@ p.blog-cluster-links__part > .text-link,
 
 /* =========================================================================
    Open columns (11 Oct 2026). Parallel points (who it's for, what support
-   looks like, the parking pair, the places to eat) are columns under a fine
-   rule, not grey or white boxes. A page of boxed card rows read as a
+   looks like, the places to eat) are open columns, not grey or white boxes. A page of boxed card rows read as a
    template; the reference sites Ellie benchmarked against separate items
    with rules and space, and the step lists here already did. Boxes stay
    where they do a job: interactive link cards, warnings (.callout,
@@ -9778,15 +9809,17 @@ p.blog-cluster-links__part > .text-link,
 .care--tease .care__types li:first-child,
 .care--tease .care__types li:last-child,
 .info-card:not(a):not(#directory *) {
-  padding: var(--space-6) 0 0;
+  padding: 0;
   border: 0;
-  border-top: 1px solid var(--rule);
   border-radius: 0;
   background: none;
   box-shadow: none;
 }
+/* 13 Oct 2026: no rule over each column. A short hairline per column broke
+   into dashes across the row; the owner's rule is one long hairline or none,
+   and space alone separates these. */
 
-.comparison-list__item:not(.funding-route *)::before { top: var(--space-6); left: 0; }
+.comparison-list__item:not(.funding-route *)::before { top: 0; left: 0; }
 .place-list__item:hover,
 .place-list--venues .place-list__item:hover {
   border-color: var(--rule);
@@ -10248,6 +10281,23 @@ p.blog-cluster-links__part > .text-link,
 .container > .section-head { max-width: none; }
 .container > .section-head > h2,
 .container > .process__head > h2 { max-width: 20em; }
+/* The intro runs as wide as its heading (owner, 13 Oct 2026): a heading that
+   ran 1,070px over a 608px intro read as two different columns, and the
+   heading is not to be shortened. The head shrinks to fit its heading (the
+   intro is given no width of its own, then fills the head), never narrower
+   than 40rem so a short heading still gets a readable intro. */
+.container > .section-head:not(.section-head--center),
+.container > .process__head {
+  width: fit-content;
+  min-width: min(100%, 40rem);
+  max-width: 100%;
+}
+.container > .section-head:not(.section-head--center) > .lede,
+.container > .process__head > .lede {
+  width: 0;
+  min-width: 100%;
+  max-width: none;
+}
 
 /* =========================================================================
    Door checker (Accessibility, rebuilt 13 Oct 2026). One surface: the chair
@@ -10818,63 +10868,6 @@ p.blog-cluster-links__part > .text-link,
 .acc-guide:has(h3 a:focus-visible) { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
 .acc-guide h3 a:focus-visible { outline: none; }
 
-/* Whitstable parking (13 Oct 2026): the two places to park as photo cards,
-   the driveway and the Tankerton Slopes, each led by its headline figure;
-   then the harbour car parks as a note in the same style as the
-   Accessibility notes. */
-.parking-options {
-  display: grid;
-  gap: var(--space-6);
-  margin: var(--space-2) 0 0;
-  padding: 0;
-  list-style: none;
-}
-@media (min-width: 768px) {
-  .parking-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-.parking-option {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: var(--tint-cool);
-}
-.parking-option__photo {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  background: var(--driftwood);
-}
-.parking-option__body { padding: var(--space-6) var(--panel-pad) var(--panel-pad); }
-.parking-option__figure {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
-  margin: 0 0 var(--space-4);
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 2rem + 1.6vw, 3.25rem);
-  font-weight: var(--type-display-weight);
-  line-height: 1;
-  color: var(--deep-teal);
-}
-.parking-option__unit {
-  font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--type-label-tracking);
-  text-transform: uppercase;
-  color: var(--warm-gold-text);
-}
-.parking-option__title { margin: 0 0 var(--space-2); font-size: var(--text-xl); }
-.parking-option__body > p:not(.parking-option__figure) {
-  margin: 0;
-  max-width: var(--measure-text);
-  color: var(--body-secondary);
-}
-
 /* Notices (Harbour ANPR): icon in a gold-tint disc, title over the copy, the
    links in a row underneath. */
 .notice {
@@ -10920,41 +10913,92 @@ p.blog-cluster-links__part > .text-link,
 }
 
 /* =========================================================================
-   Funding & Support (13 Oct 2026). The three routes side by side as
-   comparison cards from 1100px (stacked below): number and name, what the
-   route is, then what it usually covers and doesn't in one white panel, the
-   source, and the contacts on the card's foot. Replaces ten layers of ruled
-   rows and nested columns.
+   Funding & Support (13 Oct 2026, second pass). The three routes as tabs: a
+   segmented control, then one compact panel, what the route is on the left
+   and what it usually covers and doesn't side by side on the right. Without
+   script the tab list stays hidden and the three panels stack. (Three
+   side-by-side cards were too long and chunky.)
    ========================================================================= */
+.funding-tabs { scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4)); }
+.funding-tabs__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  padding: var(--space-1);
+  border-radius: 999px;
+  background: var(--tint-cool);
+}
+.funding-tabs__list[hidden] { display: none; }
+.funding-tabs__list [role="tab"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 3rem;
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--deep-teal);
+  font: inherit;
+  font-size: var(--text-md);
+  font-weight: var(--type-ui-weight);
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+.funding-tabs__list [role="tab"]:hover { background: rgb(255 255 255 / 0.6); }
+.funding-tabs__list [role="tab"][aria-selected="true"] {
+  background: var(--white);
+  box-shadow: 0 1px 2px rgb(15 35 42 / 0.08), 0 4px 12px -4px rgb(15 35 42 / 0.12);
+}
+.funding-tabs__list [role="tab"]:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
+.funding-tabs__no {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--warm-gold-text);
+}
+@media (max-width: 599px) {
+  .funding-tabs__list { border-radius: var(--radius-lg); }
+  .funding-tabs__list [role="tab"] { flex-direction: column; gap: 0; min-height: 3.5rem; padding-inline: var(--space-2); border-radius: var(--radius); font-size: var(--text-sm); }
+}
 .funding-routes {
   display: grid;
   gap: var(--space-6);
   counter-reset: funding-route;
 }
-@media (min-width: 1100px) {
-  .funding-routes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
 .funding-route {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
+  display: grid;
+  gap: var(--space-8);
   min-width: 0;
-  padding: var(--space-8) var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
+  padding: var(--space-6) 0 0;
   counter-increment: funding-route;
   scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
 }
-@media (min-width: 1100px) {
-  /* The cards share row tracks, so the covered panels, sources and contacts
-     line up across all three whatever each description's length. */
+.funding-route[hidden] { display: none; }
+.funding-route:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
+/* Inside a tab: the title with what the route is under it, then the two
+   lists side by side, then the source and the contacts on one line. Open on
+   the white band: no panel and no boxes inside it (owner, 13 Oct 2026: the
+   description beside the title and the white cards in a grey panel were
+   rejected). */
+@media (min-width: 900px) {
   .funding-route {
-    display: grid;
-    grid-row: span 4;
-    grid-template-rows: subgrid;
-    align-content: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "copy copy"
+      "split split"
+      "source foot";
+    column-gap: var(--space-12);
+    row-gap: var(--space-10);
   }
-  .funding-route__foot { align-self: end; }
+  .funding-route__copy { grid-area: copy; }
+  .funding-route .cover-split { grid-area: split; }
+  .funding-route .cover-split__source { grid-area: source; align-self: center; }
+  .funding-route__foot { grid-area: foot; align-self: center; justify-content: flex-end; }
 }
 .funding-route__copy > * { margin: 0; }
 .funding-route__copy .eyebrow::before {
@@ -10962,26 +11006,31 @@ p.blog-cluster-links__part > .text-link,
   margin-right: var(--space-3);
   color: var(--deep-teal);
 }
+/* The tab names the route, so the panel's own eyebrow goes once tabbed. */
+.is-tabbed .funding-route__copy .eyebrow { display: none; }
 .funding-route__copy h3 {
-  margin-top: var(--space-3);
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   line-height: var(--leading-tight);
   text-wrap: balance;
 }
+.funding-route__copy .eyebrow + h3 { margin-top: var(--space-3); }
 .funding-route__copy p:not(.eyebrow) {
-  margin-top: var(--space-3);
-  max-width: var(--measure-text);
+  margin-top: var(--space-4);
+  max-width: 46rem;
+  font-size: var(--text-lg);
+  line-height: var(--leading-lede);
   color: var(--body-secondary);
 }
 .cover-split {
   display: grid;
-  gap: var(--space-6);
-  padding: var(--space-6);
-  border-radius: var(--radius);
-  background: var(--white);
+  gap: var(--space-4);
 }
-@media (min-width: 700px) and (max-width: 1099px) {
-  .cover-split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 600px) {
+  .cover-split { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+}
+.cover-split__col { min-width: 0; }
+@media (min-width: 600px) {
+  .cover-split { column-gap: var(--space-12); }
 }
 .cover-split__col h4 {
   margin: 0 0 var(--space-4);
@@ -11038,7 +11087,6 @@ p.blog-cluster-links__part > .text-link,
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-1) var(--space-5);
-  margin-top: auto;
 }
 .funding-route__foot p { margin: 0; color: var(--deep-teal); font-weight: var(--weight-semibold); }
 .funding-route__foot a { color: var(--deep-teal); }

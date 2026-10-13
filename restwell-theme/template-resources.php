@@ -122,6 +122,12 @@ get_template_part(
 		  <p class="lede">We’ve gone through the Care Act, NHS CHC guidance, and the main grant bodies, so you can see the pattern. Your own coordinator still has the last word. Ask us for the paperwork they need, and we’ll send it.</p>
 		</header>
 
+		<div class="funding-tabs" data-tabs>
+		<div class="funding-tabs__list" role="tablist" aria-label="<?php esc_attr_e( 'Funding routes', 'restwell-retreats' ); ?>" hidden>
+		  <button type="button" role="tab" id="route-tab-1" aria-controls="local-authority" aria-selected="true"><span class="funding-tabs__no" aria-hidden="true">01</span><?php esc_html_e( 'Care Act', 'restwell-retreats' ); ?></button>
+		  <button type="button" role="tab" id="route-tab-2" aria-controls="nhs" aria-selected="false" tabindex="-1"><span class="funding-tabs__no" aria-hidden="true">02</span><?php esc_html_e( 'NHS', 'restwell-retreats' ); ?></button>
+		  <button type="button" role="tab" id="route-tab-3" aria-controls="private" aria-selected="false" tabindex="-1"><span class="funding-tabs__no" aria-hidden="true">03</span><?php esc_html_e( 'Grants and self-pay', 'restwell-retreats' ); ?></button>
+		</div>
 		<div class="funding-routes">
 		  <article class="funding-route" id="local-authority">
 			<div class="funding-route__copy">
@@ -218,6 +224,7 @@ get_template_part(
 			  <?php endif; ?>
 			</div>
 		  </article>
+		</div>
 		</div>
 	  </div>
 	</section>

@@ -199,41 +199,34 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="parking" aria-labelledby="parking-h">
-	  <div class="container">
-		<header class="section-head">
-			<p class="eyebrow">Parking, plainly</p>
-			<h2 id="parking-h"><?php echo esc_html( $wg_parking_heading ); ?></h2>
-			<p class="lede"><?php echo esc_html( $wg_parking_body ); ?></p>
-		  </header>
-		<ul class="parking-options" role="list">
-			<li class="parking-option">
-			  <img class="parking-option__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/accessible-holiday-whitstable.png' ) ); ?>" alt="The front of the bungalow and its level resin driveway" width="1800" height="1350" loading="lazy" decoding="async" />
-			  <div class="parking-option__body">
-				<p class="parking-option__figure" aria-hidden="true">2 <span class="parking-option__unit">spaces</span></p>
-				<h3 class="parking-option__title">At Restwell</h3>
-				<p>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</p>
-			  </div>
-			</li>
-			<li class="parking-option">
-			  <img class="parking-option__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-4-LS.jpg' ) ); ?>" alt="The grassy Tankerton Slopes and beach huts below Marine Parade" width="2400" height="1500" loading="lazy" decoding="async" />
-			  <div class="parking-option__body">
-				<p class="parking-option__figure" aria-hidden="true">Free <span class="parking-option__unit">Blue Badge bays</span></p>
-				<h3 class="parking-option__title">Marine Parade &amp; Tankerton</h3>
-				<p>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</p>
-			  </div>
-			</li>
-		</ul>
-		<aside class="notice parking-notice" aria-labelledby="parking-anpr-h">
-			<span class="notice__icon"><?php restwell_the_icon( 'triangle-alert' ); ?></span>
-			<div class="notice__body">
-			  <h3 id="parking-anpr-h" class="notice__title">Harbour ANPR</h3>
-			  <p>Gorrell Tank and Keam’s Yard need your vehicle and Blue Badge pre-registered online. Parking at Tankerton Road and rolling the promenade is usually easier.</p>
-			</div>
-			<ul class="notice__links" role="list">
-			  <li><a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register Blue Badge for ANPR<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a></li>
-			  <li><a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a></li>
-			</ul>
-		  </aside>
+	  <div class="container route-split">
+		<header class="section-head section-head--tight">
+		  <p class="eyebrow">Parking, plainly</p>
+		  <h2 id="parking-h"><?php echo esc_html( $wg_parking_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wg_parking_body ); ?></p>
+		</header>
+		<ol class="route-list route-list--parking" aria-label="<?php esc_attr_e( 'Where to park, easiest first', 'restwell-retreats' ); ?>">
+		  <li class="route-list__stop">
+			<p class="route-list__head"><span class="route-list__name">At Restwell</span><span class="route-list__tag">Easiest</span></p>
+			<p class="route-list__note">Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow.</p>
+		  </li>
+		  <li class="route-list__stop">
+			<p class="route-list__head"><span class="route-list__name">Marine Parade</span><span class="route-list__tag">Free</span></p>
+			<p class="route-list__note">Free Blue Badge bays along the seafront. Display your badge; no app needed.</p>
+		  </li>
+		  <li class="route-list__stop">
+			<p class="route-list__head"><span class="route-list__name">Tankerton Road Car Park</span><span class="route-list__tag">3 hours free</span></p>
+			<p class="route-list__note">Three hours free with a physical Blue Badge, then roll along the promenade.</p>
+		  </li>
+		  <li class="route-list__stop route-list__stop--warn">
+			<p class="route-list__head"><span class="route-list__name">Harbour car parks</span><span class="route-list__tag">Register first</span></p>
+			<p class="route-list__note">Gorrell Tank and Keam’s Yard use ANPR: register your vehicle and Blue Badge online before you park.</p>
+			<p class="route-list__links">
+			  <a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register your Blue Badge<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a>
+			  <a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a>
+			</p>
+		  </li>
+		</ol>
 	  </div>
 	</section>
 
@@ -355,7 +348,7 @@ get_template_part(
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-taxi-front' ); ?></span>
 			<div>
 			  <h3>Accessible taxis</h3>
-			  <p>Ask for a wheelchair-accessible vehicle when you book, and say whether the passenger will stay in their chair, so the right car comes. Pre-book on busy days: Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
+			  <p>Ask for a wheelchair-accessible car and say if the passenger stays in their chair. Pre-book on busy days: Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
 			</div>
 		  </li>
 		</ul>

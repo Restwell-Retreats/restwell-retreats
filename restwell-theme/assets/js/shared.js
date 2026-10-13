@@ -1199,4 +1199,58 @@
     if (img && img.tagName === 'IMG' && img.srcset) fitCoverSize(img);
   }, true);
 
+  /* Tabs ([data-tabs], Funding routes): the panels are stacked in the markup
+     and the tab list ships hidden, so without script every route shows. With
+     it, one panel at a time; arrow keys, Home and End move between tabs, and
+     a link to a panel's id (#nhs) opens that tab. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tabs]'), function (root) {
+    var list = root.querySelector('[role="tablist"]');
+    if (!list) return;
+    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
+    var panels = tabs.map(function (tab) { return document.getElementById(tab.getAttribute('aria-controls')); });
+    if (!tabs.length || panels.indexOf(null) !== -1) return;
+    function select(index, focus) {
+      tabs.forEach(function (tab, i) {
+        var on = i === index;
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+        panels[i].hidden = !on;
+      });
+      if (focus) tabs[index].focus();
+    }
+    panels.forEach(function (panel, i) {
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', tabs[i].id);
+      panel.tabIndex = 0;
+    });
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(i, false); });
+      tab.addEventListener('keydown', function (event) {
+        var to = null;
+        if (event.key === 'ArrowRight') to = (i + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') to = (i - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') to = 0;
+        else if (event.key === 'End') to = tabs.length - 1;
+        if (to === null) return;
+        event.preventDefault();
+        select(to, true);
+      });
+    });
+    function fromHash(scroll) {
+      var id = window.location.hash.slice(1);
+      for (var i = 0; i < panels.length; i++) {
+        if (panels[i].id === id) {
+          select(i, false);
+          if (scroll) root.scrollIntoView({ block: 'start' });
+          return true;
+        }
+      }
+      return false;
+    }
+    list.hidden = false;
+    root.classList.add('is-tabbed');
+    if (!fromHash(true)) select(0, false);
+    window.addEventListener('hashchange', function () { fromHash(true); });
+  });
+
 })();
