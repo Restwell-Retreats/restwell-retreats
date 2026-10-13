@@ -329,7 +329,7 @@ get_template_part(
 		  <h2 id="travel-h"><?php echo esc_html( $wg_travel_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_travel_body ); ?></p>
 		</header>
-		<ul class="persona-list persona-list--cards" role="list">
+		<ul class="persona-list persona-list--cards persona-list--index" role="list">
 		  <li class="persona-list__item">
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'train-front' ); ?></span>
 			<div>

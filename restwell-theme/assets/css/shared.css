@@ -3955,7 +3955,6 @@ body:has(.subnav) {
   line-height: 1.6;
 }
 @media (hover: hover) and (pointer: fine) {
-  .blog-card:hover .media-card__image img { transform: scale(1.04); }
   .card-grid--blog .blog-card:hover h3 a {
     color: var(--deep-teal);
     text-decoration: underline;
@@ -5732,25 +5731,10 @@ button.availability__cell:focus-visible .availability__date {
   padding-block: 0;
 }
 
-/* Soft entrance for media / section beats */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(0.7rem);
-  transition:
-    opacity 520ms ease,
-    transform 520ms ease;
-}
-[data-reveal].is-inview {
-  opacity: 1;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
+/* No entrance animation (13 Oct 2026). Every block fading up as it scrolled
+   in is one of the owner's "AI tells"; content is simply there. The
+   attribute stays as a harmless hook for shared.js. */
+[data-reveal] { opacity: 1; transform: none; transition: none; }
 
 .form-stack {
   display: flex;
@@ -6132,7 +6116,6 @@ fieldset.form-stack {
 }
 .blog-featured__more .icon { width: 1.125rem; height: 1.125rem; transition: transform var(--duration-base) ease; }
 @media (hover: hover) and (pointer: fine) {
-  .blog-featured:hover .blog-featured__media img { transform: scale(1.03); }
   .blog-featured:hover .blog-featured__more .icon { transform: translateX(0.2rem); }
 }
 .blog-featured:has(h2 a:focus-visible) .blog-featured__media { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
@@ -10862,7 +10845,6 @@ p.blog-cluster-links__part > .text-link,
 }
 .acc-guide__more .icon { width: 1.125rem; height: 1.125rem; transition: transform var(--duration-base) ease; }
 @media (hover: hover) and (pointer: fine) {
-  .acc-guide:hover .acc-guide__media img { transform: scale(1.04); }
   .acc-guide:hover .acc-guide__more .icon { transform: translateX(0.2rem); }
 }
 .acc-guide:has(h3 a:focus-visible) { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
@@ -11091,48 +11073,92 @@ p.blog-cluster-links__part > .text-link,
 .funding-route__foot p { margin: 0; color: var(--deep-teal); font-weight: var(--weight-semibold); }
 .funding-route__foot a { color: var(--deep-teal); }
 
-/* What we send: three documents as cards, each with a line on what's in it,
-   then the next step beside the note. */
+/* What we send: the three documents as index rows (13 Oct 2026), the name on
+   the left and what's in it on the right, one hairline between rows; a row
+   of three icon cards was one of the "AI tells". */
 .send-docs {
   display: grid;
-  gap: var(--space-5);
-  margin: var(--space-2) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
-@media (min-width: 800px) {
-  .send-docs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
 .send-docs__item {
   display: grid;
-  align-content: start;
-  gap: var(--space-3);
-  padding: var(--space-8) var(--panel-pad) var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
+  gap: var(--space-2);
+  padding: var(--space-6) 0;
 }
-.send-docs__icon {
-  display: grid;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  margin-bottom: var(--space-3);
-  border-radius: 50%;
-  background: var(--white);
-  color: var(--deep-teal);
+.send-docs__item + .send-docs__item { border-top: 1px solid var(--rule); }
+.send-docs__item:first-child { padding-top: 0; }
+.send-docs__item:last-child { padding-bottom: 0; }
+.send-docs__icon { display: none; }
+.send-docs__item h3 { margin: 0; font-size: var(--text-2xl); line-height: var(--leading-snug); }
+.send-docs__item p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
+@media (min-width: 900px) {
+  .send-docs__item {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-16);
+    align-items: baseline;
+    padding-block: var(--space-8);
+  }
 }
-.send-docs__icon .icon { width: 1.375rem; height: 1.375rem; }
-.send-docs__item h3 { margin: 0; font-size: var(--text-xl); line-height: var(--leading-snug); text-wrap: balance; }
-.send-docs__item p { margin: 0; color: var(--body-secondary); }
 .send-docs__next {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4) var(--space-8);
-  margin-top: var(--space-8);
+  margin-top: var(--space-12);
 }
 .send-docs__next p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
 @media (max-width: 599px) {
   .send-docs__next .btn { width: 100%; }
 }
+
+/* =========================================================================
+   No icon tiles (13 Oct 2026). A line icon sitting in a tinted disc or
+   rounded square is one of the marks of a template-built site (owner's list
+   of "AI tells"). Icons are plain line drawings at text size, in the ink
+   colour, beside or above their text.
+   ========================================================================= */
+.icon-circle,
+.persona-list__item .icon-circle,
+.facts-strip .icon-circle,
+body.page-template-template-care #main-content .persona-list__item .icon-circle,
+.hiw-facts__icon,
+.acc-callout__icon,
+.acc-callout--quiet .acc-callout__icon,
+.acc-register__icon,
+.notice__icon,
+.acc-download__icon {
+  --icon-circle-size: auto;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.icon-circle svg,
+.facts-strip .icon-circle svg,
+.persona-list__item .icon-circle svg { width: 1.75rem; height: 1.75rem; }
+.step-success .icon-circle svg { width: 2.5rem; height: 2.5rem; }
+.hiw-facts > div { padding-left: calc(1.5rem + var(--space-4)); } /* waiver: the icon's width plus its gap */
+.hiw-facts__icon { top: 0.1rem; }
+.hiw-facts__icon .icon { width: 1.5rem; height: 1.5rem; }
+.acc-callout { column-gap: var(--space-4); }
+.acc-callout > div { padding-top: 0; }
+.acc-callout__icon { margin-top: 0.15rem; }
+.acc-register__icon .icon { width: 1.5rem; height: 1.5rem; }
+.notice { column-gap: var(--space-4); }
+.notice__body { padding-top: 0; }
+.notice__icon { margin-top: 0.15rem; }
+.acc-download__icon .icon { width: 2rem; height: 2rem; }
+
+/* Eyebrows used selectively (13 Oct 2026). A small tracked uppercase label
+   over every heading is the most recognisable "AI tell" on the owner's list,
+   and most of ours repeated the heading or the breadcrumb ("Accessibility"
+   over the Accessibility page, "Getting around" over "Station, buses and
+   taxis"). They stay only where they do a job: the room names on the
+   property tour, which read as a floor plan's legend. */
+.eyebrow { display: none; }
+.page-template-template-property .split .section-head > .eyebrow { display: block; }
