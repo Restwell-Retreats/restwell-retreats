@@ -133,17 +133,17 @@ get_template_part(
 			  <div class="cover-split__col cover-split__col--yes">
 				<h4>Usually covered</h4>
 				<ul>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> Assessed care hours during the break</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> Replacement care so an unpaid carer can rest</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> The bungalow, if it’s written into the plan</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> Assessed care hours during the break</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> Replacement care so an unpaid carer can rest</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> The bungalow, if it’s written into the plan</li>
 				</ul>
 			  </div>
 			  <div class="cover-split__col cover-split__col--no">
 				<h4>Usually not</h4>
 				<ul>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> Travel, food, souvenirs, holiday extras</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> The rent, unless the support plan names it</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> A long stay in a care home (different rules)</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> Travel, food, souvenirs, holiday extras</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> The rent, unless the support plan names it</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> A long stay in a care home (different rules)</li>
 				</ul>
 			  </div>
 			</div>
@@ -166,17 +166,17 @@ get_template_part(
 			  <div class="cover-split__col cover-split__col--yes">
 				<h4>Usually covered</h4>
 				<ul>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> Your usual care hours, if the team says they continue</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> A personal health budget, if you’re CHC-eligible and take one</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> Care away from hospital, in a place that works for you</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> Your usual care hours, if the team says they continue</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> A personal health budget, if you’re CHC-eligible and take one</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> Care away from hospital, in a place that works for you</li>
 				</ul>
 			  </div>
 			  <div class="cover-split__col cover-split__col--no">
 				<h4>Usually not</h4>
 				<ul>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> The holiday itself: travel, food, Restwell rent</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> Extra hours just because you’re away from home</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> A scheme where the NHS pays for the holiday (there isn’t one)</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> The holiday itself: travel, food, Restwell rent</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> Extra hours just because you’re away from home</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> A scheme where the NHS pays for the holiday (there isn’t one)</li>
 				</ul>
 			  </div>
 			</div>
@@ -197,16 +197,16 @@ get_template_part(
 			  <div class="cover-split__col cover-split__col--yes">
 				<h4>Usually covered</h4>
 				<ul>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> A contribution toward the holiday itself from Revitalise (typically £500)</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> A cover carer from Respite Association (average around £450)</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> A contribution toward the holiday itself from Revitalise (typically £500)</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span> A cover carer from Respite Association (average around £450)</li>
 				</ul>
 			  </div>
 			  <div class="cover-split__col cover-split__col--no">
 				<h4>Usually not</h4>
 				<ul>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> The whole stay, unless the letter is clear</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> The holiday itself from Respite Association (they pay the cover carer, not the house)</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">×</span> Food, entertainment, or travel, unless the letter names them</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> The whole stay, unless the letter is clear</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> The holiday itself from Respite Association (they pay the cover carer, not the house)</li>
+				  <li><span class="cover-split__mark" aria-hidden="true"><?php restwell_the_icon( 'x' ); ?></span> Food, entertainment, or travel, unless the letter names them</li>
 				</ul>
 			  </div>
 			</div>
@@ -314,21 +314,38 @@ get_template_part(
 		  <h2 id="help-h">We’ll send what they usually ask for</h2>
 		  <p class="lede">Tell us the dates and who’s funding the stay. Continuity can quote care on the same call if you want it.</p>
 		</header>
-		<ul class="persona-list persona-list--docs" role="list">
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'receipt-text' ); ?></span>
-			<h3>Written quote at published rates</h3>
+		<?php
+		$res_send_docs = array(
+			array(
+				'icon'  => 'receipt-text',
+				'title' => __( 'Written quote at published rates', 'restwell-retreats' ),
+				'body'  => __( 'Your nights and the guide total, at the rates on our pricing page.', 'restwell-retreats' ),
+			),
+			array(
+				'icon'  => 'clipboard-list',
+				'title' => __( 'Access statement and equipment list', 'restwell-retreats' ),
+				'body'  => __( 'Every measurement and piece of kit, as a PDF for an OT or a funding panel.', 'restwell-retreats' ),
+			),
+			array(
+				'icon'  => 'files',
+				'title' => __( 'A care quote from Continuity, if you want care', 'restwell-retreats' ),
+				'body'  => __( 'Hours and rates from Continuity, the CQC-registered care provider.', 'restwell-retreats' ),
+			),
+		);
+		?>
+		<ol class="send-docs" role="list">
+			<?php foreach ( $res_send_docs as $res_send_doc ) : ?>
+		  <li class="send-docs__item">
+			<span class="send-docs__icon" aria-hidden="true"><?php restwell_the_icon( $res_send_doc['icon'] ); ?></span>
+			<h3><?php echo esc_html( $res_send_doc['title'] ); ?></h3>
+			<p><?php echo esc_html( $res_send_doc['body'] ); ?></p>
 		  </li>
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'clipboard-list' ); ?></span>
-			<h3>Access statement and equipment list</h3>
-		  </li>
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'files' ); ?></span>
-			<h3>A care quote from Continuity, if you want care</h3>
-		  </li>
-		</ul>
-		<p class="docs-note">Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
+			<?php endforeach; ?>
+		</ol>
+		<div class="send-docs__next">
+		  <p>Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
+		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Ask for the paperwork', 'restwell-retreats' ); ?></a>
+		</div>
 	  </div>
 	</section>
 

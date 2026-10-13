@@ -74,7 +74,7 @@ Guests bring their own slings.
 
 ## The kitchen, living space and garden
 
-The kitchen is fully equipped with worktops you can reach. The oven is a NEFF Slide & Hide with a door that folds away underneath, so you’re not reaching across a hot open door from a seated position. There’s a microwave as well.
+The kitchen is fully equipped with worktops you can reach. The oven is a NEFF Slide & Hide with a door that tucks away underneath, so you’re not reaching across a hot open door from a seated position. There’s a microwave as well.
 
 The living room has a rise-and-recline chair. There’s free high-speed WiFi throughout, and the heating controls are within reach from a seated position. Turn it up or down yourself, and ask if you’d like extra blankets or a fan.
 

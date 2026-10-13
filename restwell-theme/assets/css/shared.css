@@ -540,7 +540,6 @@ div[id],
 /* Sticky .subnav sits under the header — give jump targets extra room. */
 .subnav ~ section[id],
 .subnav ~ section .info-card[id],
-.subnav ~ section .funding-route[id],
 .subnav ~ #main-content h2[id],
 body:has(.subnav) #main-content h2[id],
 body:has(.subnav) #main-content [id] {
@@ -681,7 +680,6 @@ html.admin-bar .subnav ~ section[id] {
 .card-grid + .card-grid,
 .card-grid + .checklist,
 .card-grid + .comparison-list,
-.card-grid + .funding-routes,
 .card-grid + p,
 .checklist + p,
 .comparison-list + p,
@@ -689,7 +687,6 @@ html.admin-bar .subnav ~ section[id] {
 .comparison-list + .download-panel,
 .testimonials__grid + .testimonials__more,
 .stat-row + .section-head,
-.section-head + .cover-split,
 .blog-featured + .card-grid,
 .blog-meta + .prose,
 .prose + .blog-meta,
@@ -3739,204 +3736,6 @@ body:has(.subnav) {
  */
 .info-card--flat {
   box-shadow: none;
-}
-
-/*
- * Cover split — usually covered / usually not. Colour is a hint; the heading
- * and the mark are the actual signal (WCAG 1.4.1).
- */
-.cover-split {
-  --cover-gap: var(--space-4);
-  --cover-pad: var(--space-5);
-  --cover-item-gap: var(--space-3);
-  --cover-yes: #1b6b48;
-  --cover-no: var(--error-red);
-  --cover-yes-bg: color-mix(in srgb, var(--cover-yes) 8%, var(--white));
-  --cover-no-bg: color-mix(in srgb, var(--cover-no) 8%, var(--white));
-  display: grid;
-  gap: var(--cover-gap);
-  width: 100%;
-}
-@media (min-width: 640px) {
-  .cover-split {
-    --cover-gap: var(--space-5);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-.cover-split__col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cover-item-gap);
-  padding: var(--cover-pad);
-  border-radius: var(--radius);
-  border: 1px solid transparent;
-}
-.cover-split__col--yes {
-  background: var(--cover-yes-bg);
-  border-color: color-mix(in srgb, var(--cover-yes) 22%, transparent);
-}
-.cover-split__col--no {
-  background: var(--cover-no-bg);
-  border-color: color-mix(in srgb, var(--cover-no) 22%, transparent);
-}
-.cover-split__col h4 {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: var(--type-label-tracking);
-  text-transform: uppercase;
-}
-.cover-split__col--yes h4 { color: var(--cover-yes); }
-.cover-split__col--no h4 { color: var(--cover-no); }
-/* Inside funding-route panels the tinted fills double up (box-in-box on sand).
-   White cells with the brand's soft shadow read calmer; the ✓/× marks and
-   hairlines still carry the covered/not-covered distinction (WCAG 1.4.1). */
-.funding-route .cover-split__col {
-  --cover-yes-bg: var(--card-inset);
-  --cover-no-bg: var(--card-inset);
-  box-shadow: var(--card-shadow);
-  border-radius: var(--radius-lg);
-}
-.cover-split__col ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-.cover-split__col li {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin: 0;
-  color: var(--deep-teal);
-  font-size: var(--text-base);
-  font-weight: var(--weight-medium);
-  line-height: 1.45;
-}
-.cover-split__mark {
-  flex-shrink: 0;
-  width: var(--space-5);
-  height: var(--space-5);
-  margin-top: 0.1em; /* em nudge: step number sits on cap-height */
-  border-radius: 999px;
-  color: var(--white);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--text-sm);
-  font-weight: 700;
-  line-height: 1;
-}
-.cover-split__col--yes .cover-split__mark {
-  background: var(--cover-yes);
-}
-.cover-split__col--no .cover-split__mark {
-  background: var(--cover-no);
-}
-.cover-split__source {
-  margin: var(--space-3) 0 0;
-  font-size: var(--text-sm);
-  color: var(--muted-grey);
-  line-height: 1.5;
-}
-.cover-split__source a {
-  color: var(--deep-teal);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--warm-gold) 70%, transparent);
-  text-underline-offset: 0.15em;
-  /* Small-print source links still need usable touch targets. */
-  display: inline-block;
-  min-height: calc(var(--tap-target, 2.75rem) / 2);
-}
-
-/*
- * Funding routes — one visual card per route. Cover-split does the compare;
- * a short footer holds the contact. Tokens live on the article.
- */
-.funding-routes {
-  --funding-routes-gap: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--funding-routes-gap);
-}
-@media (min-width: 900px) {
-  .funding-routes {
-    --funding-routes-gap: var(--space-8);
-  }
-}
-.funding-route {
-  --funding-route-gap: var(--space-5);
-  --funding-route-pad: var(--panel-pad);
-  display: grid;
-  gap: var(--funding-route-gap);
-  padding: var(--funding-route-pad);
-  border-radius: var(--radius-lg);
-  /* White panel + soft border — match hospitality cards, not sand “form pack” look */
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
-  align-items: start;
-}
-.funding-route__copy {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-}
-.funding-route__copy > h3 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: var(--type-h3);
-  font-weight: var(--type-title-weight);
-  line-height: var(--leading-tight);
-  color: var(--deep-teal);
-}
-.funding-route__copy > p:not(.eyebrow) {
-  margin: 0;
-  max-width: var(--rw-readable);
-  color: var(--muted-grey);
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-leading);
-}
-.funding-route__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-3) var(--space-5);
-  padding-top: var(--space-2);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  width: 100%;
-}
-.funding-route__foot p {
-  margin: 0;
-  font-size: var(--text-base);
-  font-weight: var(--weight-medium);
-  color: var(--deep-teal);
-}
-.funding-route__foot a {
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--tap-target, 2.75rem);
-}
-.funding-route .sidebar-card h3 {
-  font-family: var(--font-sans);
-  font-size: var(--type-eyebrow-size);
-  font-weight: var(--type-eyebrow-weight);
-  letter-spacing: var(--type-eyebrow-tracking);
-  text-transform: uppercase;
-  color: var(--warm-gold-text);
-}
-.funding-route .sidebar-card .checklist {
-  gap: var(--space-3);
-}
-.funding-route .sidebar-card .checklist li {
-  font-size: var(--text-md);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-snug);
 }
 
 /* Grants + contacts side by side on desktop */
@@ -7350,8 +7149,7 @@ body.page-template-template-accessibility-php .scroll-top {
   box-shadow: var(--card-shadow);
   border: 1px solid color-mix(in srgb, var(--warm-gold) 20%, transparent);
 }
-.band-subtle .comparison-list__item,
-.funding-route .comparison-list__item {
+.band-subtle .comparison-list__item {
   background: var(--white);
 }
 /* A tick tile, not "01 ——": these are points, not a sequence, and a numeral
@@ -7392,39 +7190,6 @@ body.page-template-template-accessibility-php .scroll-top {
 #companies .care-page__trust {
   --care-trust-mt: var(--space-6);
   --care-trust-pt: var(--space-6);
-}
-
-/* Funding-route writeups always stack the compare pair. comparison-list--2 at
-   900px treats a 2-item list as both first and last row, which zeros padding
-   and indents the even column — “Often not included” sat on the line above. */
-.funding-route .comparison-list,
-.funding-route .comparison-list--2 {
-  --comparison-item-pad-y: var(--funding-route-compare-pad);
-  --comparison-item-pad-x: 0;
-  display: flex;
-  flex-direction: column;
-  max-width: none;
-  margin-inline: 0;
-}
-.funding-route .comparison-list__item,
-.funding-route .comparison-list--2 .comparison-list__item,
-.funding-route .comparison-list--2 .comparison-list__item:nth-child(odd),
-.funding-route .comparison-list--2 .comparison-list__item:nth-child(even),
-.funding-route .comparison-list--2 .comparison-list__item:nth-child(-n + 2),
-.funding-route .comparison-list--2 .comparison-list__item:nth-last-child(-n + 2) {
-  border-left: 0;
-  padding-inline: 0;
-  padding-block: var(--funding-route-compare-pad);
-  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.funding-route .comparison-list__item:first-child,
-.funding-route .comparison-list--2 .comparison-list__item:first-child {
-  padding-top: 0;
-}
-.funding-route .comparison-list__item:last-child,
-.funding-route .comparison-list--2 .comparison-list__item:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
 }
 
 /* Testimonials — teal band, white cards (same recipe as .info-card).
@@ -8253,120 +8018,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   }
 }
 
-/* -------------------------------------------------------------------------
-   Funding & support (3 Oct 2026 redesign): routes as rows with one
-   covered/not ledger, directory as link rows + teal contacts.
-   ------------------------------------------------------------------------- */
-/* Routes (5 Oct 2026): one card per route. Heading across the top, then
-   explanation | usually covered | usually not as three aligned columns
-   (two at tablet, one on phones), source and links underneath. The copy and
-   split wrappers use display: contents so their children sit on the card grid. */
-#routes .funding-routes {
-  counter-reset: route;
-  display: grid;
-  gap: var(--space-6);
-}
-#routes .funding-route {
-  counter-increment: route;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-4) var(--space-8);
-  align-items: start;
-  padding: var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
-}
-#routes .funding-route__copy,
-#routes .cover-split { display: contents; }
-#routes .funding-route__copy .eyebrow { margin: 0; }
-#routes .funding-route__copy .eyebrow::before {
-  content: counter(route, decimal-leading-zero) "  ";
-  white-space: pre;
-  color: var(--deep-teal);
-}
-#routes .funding-route__copy h3 { margin: 0 0 var(--space-2); font-size: var(--type-title-lg); }
-#routes .funding-route__copy p:not(.eyebrow) { margin: 0; color: var(--body-secondary); }
-#routes .cover-split__col {
-  padding: var(--space-5);
-  border: 0;
-  border-radius: var(--radius);
-  box-shadow: none;
-  background: var(--card-inset);
-}
-#routes .cover-split__col--yes { background: var(--card-inset); }
-#routes .cover-split__col h4 {
-  margin: 0 0 var(--space-4);
-  font-family: var(--font-sans);
-  font-size: var(--text-2xs);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--type-label-tracking);
-  text-transform: uppercase;
-  color: var(--warm-gold-text);
-}
-#routes .cover-split__col--no h4 { color: var(--muted-grey); }
-#routes .cover-split__col ul { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
-#routes .cover-split__col li {
-  display: grid;
-  grid-template-columns: var(--space-6) minmax(0, 1fr);
-  gap: var(--space-3);
-  align-items: start;
-  color: var(--deep-teal);
-  font-size: var(--text-md);
-  line-height: var(--leading-snug);
-}
-#routes .cover-split__col--no li { color: var(--body-secondary); }
-#routes .cover-split__mark {
-  display: inline-grid;
-  place-items: center;
-  width: var(--space-6);
-  height: var(--space-6);
-  border-radius: 999px;
-  background: var(--deep-teal);
-  color: var(--white);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
-  line-height: 1;
-}
-#routes .cover-split__col--no .cover-split__mark {
-  background: color-mix(in srgb, var(--muted-grey) 16%, var(--white));
-  color: var(--muted-grey);
-}
-#routes .cover-split__source {
-  margin: var(--space-2) 0 0;
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
-  line-height: 1.55;
-  max-width: none;
-}
-/* Source links sit mid-sentence, where WCAG 2.2 exempts inline targets. An
-   inline-block with padding here stretched the line it sat on, so the second
-   line of every footnote opened a gap; they stay plain inline links. */
-#routes .cover-split__source a { display: inline; min-height: 0; padding: 0; }
-#routes .funding-route__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-5);
-  padding: 0;
-  border: 0;
-}
-#routes .funding-route__foot p { margin: 0; }
-@media (min-width: 640px) {
-  #routes .funding-route { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  #routes .funding-route__copy > *,
-  #routes .cover-split__source,
-  #routes .funding-route__foot { grid-column: 1 / -1; }
-  #routes .cover-split__col { align-self: stretch; }
-}
-@media (min-width: 1024px) {
-  #routes .funding-route { grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 4fr); }
-  #routes .funding-route__copy > p:not(.eyebrow) { grid-column: 1; }
-  #routes .cover-split__col--yes { grid-column: 2; grid-row: 3; }
-  #routes .cover-split__col--no { grid-column: 3; grid-row: 3; }
-}
-
 #directory .fund-directory { display: grid; gap: var(--space-10); }
 @media (min-width: 960px) {
   #directory .fund-directory { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-14); align-items: start; }
@@ -8420,30 +8071,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
    a double hairline. */
 #directory .card-grid { border-top: 0; }
 #directory .fund-directory > div:first-child .fund-directory__label { margin-bottom: 0; }
-
-/* What we send: the three documents as compact tiles (icon beside the title).
-   Enquire and the rates link live in the closing CTA right below. */
-.persona-list--docs { grid-template-columns: 1fr; gap: var(--space-4); }
-@media (min-width: 960px) {
-  .persona-list--docs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-.persona-list--docs .persona-list__item {
-  flex-direction: row;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-5);
-}
-.persona-list--docs .icon-circle { flex: 0 0 auto; }
-.persona-list--docs .persona-list__item h3 {
-  margin: 0;
-  font-size: var(--type-title-sm);
-  line-height: var(--leading-snug);
-}
-.docs-note {
-  margin: var(--space-6) 0 0;
-  color: var(--body-secondary);
-  font-size: var(--text-md);
-}
 
 /* FAQ bands: intro on the left (sticky), questions on the right, so the band
    uses the full width instead of a narrow column with half the page empty.
@@ -9883,7 +9510,6 @@ body.page-template-template-care #main-content .prose a {
 /* Tables and figures may use the full prose column; running text keeps a
    readable line length (legal pages and posts ran ~88 characters, audit I42). */
 .prose > :where(p, ul, ol, h2, h3, h4, blockquote),
-.cover-split__source,
 .rates-follow,
 .care-rates__notes,
 .persona-list__item p,
@@ -10101,7 +9727,6 @@ body.page-template-template-care #main-content .prose a {
    width. Links inside a sentence are untouched. */
 p > .text-link:only-child,
 .section-follow > .text-link,
-.funding-route__foot > .text-link,
 .persona-list__cta > .text-link {
   display: inline-flex;
   align-items: center;
@@ -10139,7 +9764,6 @@ p.blog-cluster-links__part > .text-link,
 .persona-list__item,
 .band-white .persona-list__item,
 .persona-list--cards .persona-list__item,
-.persona-list--docs .persona-list__item,
 .sister-band__card,
 .band-subtle .sister-band__card,
 .comparison-list__item:not(.funding-route *),
@@ -10190,26 +9814,6 @@ p.blog-cluster-links__part > .text-link,
 /* "What we can't promise" as its own short section: the contact line joins
    the intro column. */
 .acc-limits .acc-limits__contact { margin: var(--space-3) 0 0; max-width: var(--measure-text); color: var(--body-secondary); }
-
-/* Funding routes, open (11 Oct 2026): each route sits under a rule instead of
-   in a tinted box, and its covered / not covered lists are open columns
-   under their own rule, so there are no boxes inside boxes. */
-#routes .funding-routes { gap: var(--space-12); }
-#routes .funding-route {
-  padding: var(--space-8) 0 0;
-  border: 0;
-  border-top: 1px solid var(--rule);
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-}
-#routes .cover-split__col,
-#routes .cover-split__col--yes {
-  padding: var(--space-4) 0 0;
-  border-top: 1px solid var(--rule);
-  border-radius: 0;
-  background: none;
-}
 .acc-dest__pair { column-gap: var(--space-10); }
 .acc-dest__panel {
   padding: var(--space-6) 0 0;
@@ -10276,9 +9880,7 @@ p.blog-cluster-links__part > .text-link,
   background: none;
 }
 
-/* Funding: the source line under each route keeps a reading measure (it ran
-   114 characters across the full rail). */
-#routes .cover-split__source { max-width: var(--measure-text); }
+
 
 /* Articles: the "how others read it" points and the do / avoid lists are open
    under a rule, like the rest of the site. The "In short" summary stays a tint:
@@ -10435,16 +10037,14 @@ p.blog-cluster-links__part > .text-link,
 /* Icons beside list items (Getting around, What we send): the line icon on
    its own, not in a tinted tile. A row of tinted tiles was the most
    template-looking detail on the guide pages. */
-.persona-list__item .icon-circle,
-.persona-list--docs .icon-circle {
+.persona-list__item .icon-circle {
   --icon-circle-size: 2rem;
   justify-content: flex-start;
   background: none;
   border-radius: 0;
   color: var(--warm-gold-text);
 }
-.persona-list__item .icon-circle svg,
-.persona-list--docs .icon-circle svg {
+.persona-list__item .icon-circle svg {
   width: 100%;
   height: 100%;
 }
@@ -11317,4 +10917,174 @@ p.blog-cluster-links__part > .text-link,
   .notice { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); padding: var(--space-5); }
   .notice__body { padding-top: 0; }
   .notice__links { grid-column: 1; flex-direction: column; gap: 0; margin-top: 0; }
+}
+
+/* =========================================================================
+   Funding & Support (13 Oct 2026). The three routes side by side as
+   comparison cards from 1100px (stacked below): number and name, what the
+   route is, then what it usually covers and doesn't in one white panel, the
+   source, and the contacts on the card's foot. Replaces ten layers of ruled
+   rows and nested columns.
+   ========================================================================= */
+.funding-routes {
+  display: grid;
+  gap: var(--space-6);
+  counter-reset: funding-route;
+}
+@media (min-width: 1100px) {
+  .funding-routes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.funding-route {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+  padding: var(--space-8) var(--panel-pad);
+  border-radius: var(--radius-lg);
+  background: var(--card-bg);
+  counter-increment: funding-route;
+  scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
+}
+@media (min-width: 1100px) {
+  /* The cards share row tracks, so the covered panels, sources and contacts
+     line up across all three whatever each description's length. */
+  .funding-route {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    align-content: start;
+  }
+  .funding-route__foot { align-self: end; }
+}
+.funding-route__copy > * { margin: 0; }
+.funding-route__copy .eyebrow::before {
+  content: counter(funding-route, decimal-leading-zero);
+  margin-right: var(--space-3);
+  color: var(--deep-teal);
+}
+.funding-route__copy h3 {
+  margin-top: var(--space-3);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+.funding-route__copy p:not(.eyebrow) {
+  margin-top: var(--space-3);
+  max-width: var(--measure-text);
+  color: var(--body-secondary);
+}
+.cover-split {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+@media (min-width: 700px) and (max-width: 1099px) {
+  .cover-split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.cover-split__col h4 {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-sans);
+  font-size: var(--type-meta-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--deep-teal);
+}
+.cover-split__col--no h4 { color: var(--muted-grey); }
+.cover-split__col ul {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cover-split__col li {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--deep-teal);
+}
+.cover-split__col--no li { color: var(--body-secondary); }
+.cover-split__mark {
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.1em;
+  border-radius: 50%;
+  background: var(--deep-teal);
+  color: var(--white);
+}
+.cover-split__mark .icon { width: 0.75rem; height: 0.75rem; stroke-width: 2.5; }
+.cover-split__col--no .cover-split__mark {
+  background: color-mix(in srgb, var(--deep-teal) 9%, var(--white));
+  color: var(--muted-grey);
+}
+.cover-split__source {
+  margin: 0;
+  max-width: var(--measure-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--muted-grey);
+}
+.cover-split__source a { color: var(--deep-teal); font-weight: var(--weight-semibold); }
+.funding-route__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-5);
+  margin-top: auto;
+}
+.funding-route__foot p { margin: 0; color: var(--deep-teal); font-weight: var(--weight-semibold); }
+.funding-route__foot a { color: var(--deep-teal); }
+
+/* What we send: three documents as cards, each with a line on what's in it,
+   then the next step beside the note. */
+.send-docs {
+  display: grid;
+  gap: var(--space-5);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 800px) {
+  .send-docs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.send-docs__item {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--panel-pad) var(--panel-pad);
+  border-radius: var(--radius-lg);
+  background: var(--card-bg);
+}
+.send-docs__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-3);
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--deep-teal);
+}
+.send-docs__icon .icon { width: 1.375rem; height: 1.375rem; }
+.send-docs__item h3 { margin: 0; font-size: var(--text-xl); line-height: var(--leading-snug); text-wrap: balance; }
+.send-docs__item p { margin: 0; color: var(--body-secondary); }
+.send-docs__next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-8);
+  margin-top: var(--space-8);
+}
+.send-docs__next p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
+@media (max-width: 599px) {
+  .send-docs__next .btn { width: 100%; }
 }

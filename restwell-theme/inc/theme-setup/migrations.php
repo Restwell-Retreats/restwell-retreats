@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 76;
+const RESTWELL_SCHEMA_VERSION = 77;
 
 
 /**
@@ -1972,6 +1972,40 @@ function restwell_migrate_care_quote_wording_v76() {
 }
 
 /**
+ * The NEFF oven door slides in under the oven; it doesn't fold (owner, 13 Oct
+ * 2026). "Tucks away" says so without repeating "Slide & Hide".
+ */
+function restwell_migrate_oven_door_wording_v77() {
+	if ( get_option( 'restwell_oven_door_wording_v77', '' ) === '1' ) {
+		return;
+	}
+	$pairs = array(
+		'with a door that folds away underneath' => 'with a door that tucks away underneath',
+		'the door folds away underneath'         => 'the door tucks away underneath',
+	);
+	$pages = get_posts(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+	foreach ( $pages as $page_id ) {
+		foreach ( (array) get_post_meta( (int) $page_id ) as $key => $values ) {
+			if ( '' === $key || '_' === $key[0] || ! isset( $values[0] ) || ! is_string( $values[0] ) || is_serialized( $values[0] ) ) {
+				continue;
+			}
+			$fresh = strtr( $values[0], $pairs );
+			if ( $fresh !== $values[0] ) {
+				update_post_meta( (int) $page_id, $key, $fresh );
+			}
+		}
+	}
+	update_option( 'restwell_oven_door_wording_v77', '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2083,6 +2117,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_our_story_companies_dedupe_v74',
 		'restwell_daylight_heroes_v75',
 		'restwell_care_quote_wording_v76',
+		'restwell_oven_door_wording_v77',
 	);
 }
 
@@ -2221,6 +2256,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_daylight_heroes_v75', 113 );
 	add_action( 'init', 'restwell_migrate_care_quote_wording_v76', 119 );
 	add_action( 'after_switch_theme', 'restwell_migrate_care_quote_wording_v76', 114 );
+	add_action( 'init', 'restwell_migrate_oven_door_wording_v77', 120 );
+	add_action( 'after_switch_theme', 'restwell_migrate_oven_door_wording_v77', 115 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
