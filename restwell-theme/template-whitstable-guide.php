@@ -207,14 +207,20 @@ get_template_part(
 		  </header>
 		<ul class="parking-options" role="list">
 			<li class="parking-option">
-			  <p class="parking-option__figure" aria-hidden="true">2 <span class="parking-option__unit">spaces</span></p>
-			  <h3 class="parking-option__title">At Restwell</h3>
-			  <p>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</p>
+			  <img class="parking-option__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/accessible-holiday-whitstable.png' ) ); ?>" alt="The front of the bungalow and its level resin driveway" width="1800" height="1350" loading="lazy" decoding="async" />
+			  <div class="parking-option__body">
+				<p class="parking-option__figure" aria-hidden="true">2 <span class="parking-option__unit">spaces</span></p>
+				<h3 class="parking-option__title">At Restwell</h3>
+				<p>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</p>
+			  </div>
 			</li>
 			<li class="parking-option">
-			  <p class="parking-option__figure" aria-hidden="true">Free <span class="parking-option__unit">Blue Badge bays</span></p>
-			  <h3 class="parking-option__title">Marine Parade &amp; Tankerton</h3>
-			  <p>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</p>
+			  <img class="parking-option__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-4-LS.jpg' ) ); ?>" alt="The grassy Tankerton Slopes and beach huts below Marine Parade" width="2400" height="1500" loading="lazy" decoding="async" />
+			  <div class="parking-option__body">
+				<p class="parking-option__figure" aria-hidden="true">Free <span class="parking-option__unit">Blue Badge bays</span></p>
+				<h3 class="parking-option__title">Marine Parade &amp; Tankerton</h3>
+				<p>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</p>
+			  </div>
 			</li>
 		</ul>
 		<aside class="notice parking-notice" aria-labelledby="parking-anpr-h">
@@ -290,7 +296,7 @@ get_template_part(
 		  <article class="place-list__item">
 			<h3 class="place-list__title"><a href="https://www.marinewhitstable.co.uk/" target="_blank" rel="noopener noreferrer">Marine Hotel, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">32–33 Marine Parade · CT5 2BE</p>
-			<p>Ground-floor lounge and restaurant, step-free, accessible loo by reception. Sea views from Marine Parade.</p>
+			<p>Ground-floor lounge and restaurant, step-free, with an accessible loo by reception. It looks out over the Tankerton Slopes to the sea from Marine Parade; ask for a window table when you book.</p>
 			<p class="place-list__actions"><a href="https://www.marinewhitstable.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227272672">Call 01227 272672</a></p>
 		  </article>
 		  </div>
@@ -349,7 +355,7 @@ get_template_part(
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-taxi-front' ); ?></span>
 			<div>
 			  <h3>Accessible taxis</h3>
-			  <p>Pre-book on busy days. Abacus Cars: <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
+			  <p>Ask for a wheelchair-accessible vehicle when you book, and say whether the passenger will stay in their chair, so the right car comes. Pre-book on busy days: Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
 			</div>
 		  </li>
 		</ul>
