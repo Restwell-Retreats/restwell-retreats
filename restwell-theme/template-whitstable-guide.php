@@ -114,8 +114,8 @@ $wg_towns_body    = $wg_txt(
 
 $wg_stop_1_src = $wg_spot_src( 1, 'stock/restwell-whitstable-beach-huts.webp' );
 $wg_stop_1_alt = $wg_txt( 'wg_spotlight_image_1_caption', 'Colourful beach huts along the Whitstable seafront' );
-$wg_stop_2_src = $wg_spot_src( 2, 'stock/restwell-whitstable-beach-sailboats-sunset.jpg' );
-$wg_stop_2_alt = $wg_txt( 'wg_spotlight_image_2_caption', 'Sailing dinghies drawn up on the shingle at Whitstable at sunset' );
+$wg_stop_2_src = $wg_spot_src( 2, 'journey/guest-harbour-beach.jpg' );
+$wg_stop_2_alt = $wg_txt( 'wg_spotlight_image_2_caption', 'A guest in a powered wheelchair and a companion on the firm Harbour Beach by the lifeboat station' );
 $wg_stop_3_src = $wg_spot_src( 3, 'stock/restwell-whitstable-pebble-beach-groynes.jpg' );
 $wg_stop_3_alt = $wg_txt( 'wg_spotlight_image_3_caption', 'Shingle beach and timber groynes on the Whitstable shore' );
 
@@ -264,7 +264,7 @@ get_template_part(
 			<p class="lede"><?php echo esc_html( $wg_eating_intro ); ?></p>
 		  </header>
 		<div class="eat-banner">
-				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-marina-sunset.webp' ) ); ?>" alt="Whitstable seafront near Tankerton, where several step-free dining options sit" width="900" height="675" loading="lazy" />
+				 <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-harbour-boats.jpg' ) ); ?>" alt="Fishing boats moored in Whitstable Harbour" width="2000" height="1500" loading="lazy" decoding="async" />
 		</div>
 		<div class="place-list place-list--3 place-list--venues">
 		  <article class="place-list__item">

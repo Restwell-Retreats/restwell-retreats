@@ -221,7 +221,7 @@ $wif_kit_cards = array(
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_3_caption', 'Reachable kitchen' )
 			: 'Reachable kitchen',
-		'body'         => 'Wheel-under worksurface, stocked basics, gas hob (tell us if you need induction).',
+		'body'         => 'Wheel-under worksurface, stocked basics and a gas hob.',
 		'slot_index'   => 2,
 	),
 );

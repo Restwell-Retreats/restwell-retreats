@@ -268,7 +268,7 @@ get_template_part(
 	<section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
 	  <div class="container split split--media-first split--fill">
 		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-2-LS.jpg' ) ); ?>" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
+		  <img class="media-guest-doors" src="<?php echo esc_url( restwell_theme_image_url( 'journey/guest-conservatory-doors.jpg' ) ); ?>" alt="A guest in a powered wheelchair at the open conservatory doors, looking out over the level garden" width="1500" height="2000" loading="lazy" decoding="async" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">
@@ -292,7 +292,7 @@ get_template_part(
 	<section class="section-y band-subtle" id="garden" aria-labelledby="garden-h">
 	  <div class="container split split--flip split--media-first split--fill">
 		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-1-LS.jpg' ) ); ?>" alt="Level patio and enclosed dog-friendly garden" width="900" height="675" loading="lazy" />
+		  <img class="media-guest-garden" src="<?php echo esc_url( restwell_theme_image_url( 'journey/guest-garden-path.jpg' ) ); ?>" alt="A guest in a powered wheelchair on the level resin path through the enclosed garden" width="1125" height="1500" loading="lazy" decoding="async" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">

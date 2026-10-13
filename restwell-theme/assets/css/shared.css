@@ -11431,3 +11431,8 @@ p.blog-cluster-links__part > .text-link,
 /* Portrait photo in a landscape slot (Our Story, home): keep heads in frame. */
 .split__media img[src*="restwell-first-guests"],
 .property__media[src*="restwell-first-guests"] { object-position: 50% 55%; }
+
+/* Guest photos (portrait phone shots) in landscape slots: keep the guest and
+   the garden beyond in frame rather than the floor. */
+.split__media img.media-guest-doors { object-position: 50% 28%; }
+.split__media img.media-guest-garden { object-position: 50% 40%; }
