@@ -11363,3 +11363,40 @@ p.blog-cluster-links__part > .text-link,
   border-left: 1px solid var(--rule);
 }
 .acc-glance__facts dd { font-size: var(--text-2xl); }
+
+/* Home care tease: the intro and its link on the left half, the two choices
+   stacked on the right under rules. Side by side the choices ran 2 lines
+   against 4 and the link sat stranded under the short one. The trailing 1fr
+   row takes the list's extra height so the intro stays together. */
+@media (min-width: 900px) {
+  .care--tease .care__tease {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto auto 1fr;
+    column-gap: var(--space-16);
+    row-gap: var(--space-3);
+    align-items: start;
+  }
+  .care--tease .care__tease > :not(.care__types) { grid-column: 1; }
+  .care--tease .care__tease > .care__types {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+    margin: 0;
+  }
+  .care--tease .care__types li,
+  .care--tease .care__types li + li,
+  .care--tease .care__types li:first-child,
+  .care--tease .care__types li:last-child {
+    padding: var(--space-6) 0;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .care--tease .care__types li:last-child { border-bottom: 1px solid var(--rule); }
+  .care--tease .care__type-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    font-weight: var(--type-title-weight);
+  }
+}

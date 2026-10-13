@@ -346,7 +346,7 @@ get_template_part(
 		  </header>
 		</div>
 		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="1200" height="750" loading="lazy" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-2-LS.jpg' ) ); ?>" alt="Height-adjustable basin and shower in the level-access wet room" width="1200" height="750" loading="lazy" />
 		</div>
 	  </div>
 	</section>
