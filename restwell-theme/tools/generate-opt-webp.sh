@@ -1,20 +1,47 @@
 #!/usr/bin/env bash
 # Generate Opt WebP siblings for theme image masters (delivery path used by
-# restwell_theme_image_url). Requires cwebp (libwebp).
+# restwell_theme_image_url). Requires cwebp (libwebp); uses ImageMagick for the
+# resize when it is installed.
 #
 # Usage:
 #   ./restwell-theme/tools/generate-opt-webp.sh
 #   ./restwell-theme/tools/generate-opt-webp.sh bungalow stock
+#   RESTWELL_OPT_FORCE=1 ./restwell-theme/tools/generate-opt-webp.sh   # re-encode everything
+#
+# Quality (13 Oct 2026): q88, method 6, sharp YUV, Lanczos resize. Against a
+# lossless resize that is +3 to +5 dB PSNR over the old q78 / libwebp-rescaler
+# output (about half the distortion) for 1.5-1.8x the bytes. Sharp YUV keeps
+# thin coloured edges (beach-hut stripes, grab rails) from bleeding.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)/assets/images"
 MAX_EDGE="${RESTWELL_OPT_MAX_EDGE:-1600}"
-QUALITY="${RESTWELL_OPT_QUALITY:-78}"
+QUALITY="${RESTWELL_OPT_QUALITY:-88}"
+FORCE="${RESTWELL_OPT_FORCE:-0}"
+SRGB="/System/Library/ColorSync/Profiles/sRGB Profile.icc"
 
 if ! command -v cwebp >/dev/null 2>&1; then
 	echo "cwebp not found. Install libwebp (e.g. brew install webp)." >&2
 	exit 1
 fi
+
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+# encode <src> <width> <out>: shrink to <width> (never enlarge), convert any
+# embedded profile (Display P3 phone shots) to sRGB, then encode.
+encode() {
+	local src="$1" width="$2" out="$3"
+	if command -v magick >/dev/null 2>&1; then
+		local tmp="$TMP_DIR/frame.png"
+		local profile=()
+		[ -f "$SRGB" ] && profile=(-profile "$SRGB")
+		magick "$src" -auto-orient "${profile[@]}" -filter Lanczos -resize "${width}x>" -strip "$tmp"
+		cwebp -quiet -q "$QUALITY" -m 6 -sharp_yuv -metadata none "$tmp" -o "$out"
+	else
+		cwebp -quiet -q "$QUALITY" -m 6 -sharp_yuv -resize "$width" 0 "$src" -o "$out"
+	fi
+}
 
 dirs=("$@")
 if [ "${#dirs[@]}" -eq 0 ]; then
@@ -31,11 +58,11 @@ for dir in "${dirs[@]}"; do
 		stem="${base%.*}"
 		out="$src_dir/opt/${stem}.webp"
 		# Skip if opt is newer than source.
-		if [ -f "$out" ] && [ "$out" -nt "$file" ]; then
+		if [ "$FORCE" != "1" ] && [ -f "$out" ] && [ "$out" -nt "$file" ]; then
 			continue
 		fi
 		echo "→ $dir/opt/${stem}.webp"
-		cwebp -quiet -q "$QUALITY" -resize "$MAX_EDGE" 0 "$file" -o "$out"
+		encode "$file" "$MAX_EDGE" "$out"
 		count=$((count + 1))
 	done < <(find "$src_dir" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) -print0)
 done
@@ -46,7 +73,7 @@ echo "Generated/updated $count Opt WebP file(s)."
 # master when it is large enough, else from the opt file; never upscaled.
 # restwell_theme_image_srcset() discovers these by filename.
 # Partner logos and badges render small, so they also get 160/320 variants.
-WIDTHS="${RESTWELL_SRCSET_WIDTHS:-480 800 1200 1920}"
+WIDTHS="${RESTWELL_SRCSET_WIDTHS:-480 800 1200 1920 2400}"
 variants=0
 for dir in "${dirs[@]}" ""; do
 	src_dir="$ROOT${dir:+/$dir}"
@@ -67,7 +94,7 @@ for dir in "${dirs[@]}" ""; do
 		fi
 		for w in $widths; do
 			out="$src_dir/opt/${stem}-${w}w.webp"
-			if [ -f "$out" ] && [ "$out" -nt "$opt" ]; then
+			if [ "$FORCE" != "1" ] && [ -f "$out" ] && [ "$out" -nt "$opt" ]; then
 				continue
 			fi
 			if [ -n "$master" ] && [ "${master_w:-0}" -ge "$w" ]; then
@@ -81,7 +108,7 @@ for dir in "${dirs[@]}" ""; do
 			if [ "$w" -lt 1920 ] && [ $(( opt_w * 9 / 10 )) -le "$w" ]; then
 				continue
 			fi
-			cwebp -quiet -q "$QUALITY" -resize "$w" 0 "$src" -o "$out"
+			encode "$src" "$w" "$out"
 			variants=$((variants + 1))
 		done
 	done < <(find "$src_dir/opt" -maxdepth 1 -type f -name '*.webp' -print0)
