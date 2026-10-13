@@ -74,13 +74,6 @@ $care_support_items   = array(
 		'body'  => $care_txt( 'care_support_4_body', 'Transfers with trained carers, using the ceiling track and wet-room kit already in the house.' ),
 	),
 );
-$care_support_icons = array(
-	restwell_icon( 'hand-heart' ),
-	restwell_icon( 'clock' ),
-	restwell_icon( 'moon' ),
-	restwell_icon( 'move-vertical' ),
-);
-
 $care_own_label   = $care_txt( 'care_own_label', 'Your own team' );
 $care_own_heading = $care_txt( 'care_own_heading', 'Bringing your own carer' );
 $care_own_items   = array(
@@ -270,71 +263,102 @@ get_template_part(
 	</nav>
 
 	<?php
-	get_template_part(
-		'template-parts/sister-company',
-		null,
-		array(
-			'id'          => 'sister-company',
-			'label'       => $care_sister_label,
-			'heading'     => $care_sister_heading,
-			'lede'        => $care_sister_lede,
-			'items'       => $care_sister_items,
-			'note'        => $care_sister_note,
-			'link'        => array(
-				'label' => $care_sister_rates_label,
-				'url'   => restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates',
-			),
-			'show_person' => true,
-		)
-	);
+	// Who arranges the care, told with Victoria's photo rather than a row of
+	// three principle cards (13 Oct 2026).
 	?>
-
-	<section class="section-y band-subtle" id="what-we-arrange" aria-labelledby="what-we-arrange-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <?php if ( '' !== $care_support_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $care_support_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="what-we-arrange-h"><?php echo esc_html( $care_support_heading ); ?></h2>
-		</header>
-		<ul class="persona-list" role="list">
-		  <?php foreach ( $care_support_items as $support_i => $support_item ) : ?>
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php echo $care_support_icons[ $support_i ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG markup. ?></span>
+	<section class="section-y band-white care-intro" id="sister-company" aria-labelledby="sister-company-h">
+	  <div class="container care-intro__grid">
+		<figure class="care-intro__photo">
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker-full.webp' ) ); ?>" alt="Victoria Walker at the bungalow’s front door" width="1620" height="1859" loading="lazy" decoding="async" />
+		  <figcaption><strong><?php esc_html_e( 'Victoria Walker', 'restwell-retreats' ); ?></strong> <?php esc_html_e( 'owns Restwell and is Continuity’s CQC registered manager.', 'restwell-retreats' ); ?></figcaption>
+		</figure>
+		<div class="care-intro__body">
+		  <header class="section-head section-head--tight">
+			<h2 id="sister-company-h"><?php echo esc_html( $care_sister_heading ); ?></h2>
+			<?php if ( '' !== $care_sister_lede ) : ?>
+			<p class="lede"><?php echo esc_html( $care_sister_lede ); ?></p>
+			<?php endif; ?>
+		  </header>
+		  <dl class="care-points">
+			<?php foreach ( $care_sister_items as $care_point ) : ?>
+				<?php
+				if ( '' === trim( (string) $care_point['title'] ) ) {
+					continue;
+				}
+				?>
 			<div>
-				<?php if ( '' !== $support_item['title'] ) : ?>
-			  <h3><?php echo esc_html( $support_item['title'] ); ?></h3>
-			  <?php endif; ?>
-				<?php if ( '' !== $support_item['body'] ) : ?>
-			  <p><?php echo esc_html( $support_item['body'] ); ?></p>
-			  <?php endif; ?>
+			  <dt><?php echo esc_html( $care_point['title'] ); ?></dt>
+			  <dd><?php echo esc_html( $care_point['body'] ); ?></dd>
 			</div>
-		  </li>
-		  <?php endforeach; ?>
-		</ul>
+			<?php endforeach; ?>
+		  </dl>
+		  <p class="care-intro__note">
+			<?php echo esc_html( $care_sister_note ); ?>
+			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>"><?php echo esc_html( $care_sister_rates_label ); ?></a>
+		  </p>
+		  <div class="care-intro__badges">
+			<a href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" sizes="200px" width="405" height="69" loading="lazy" decoding="async" />
+			</a>
+			<a href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'CQC rating Good, Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" sizes="96px" width="710" height="399" loading="lazy" decoding="async" />
+			</a>
+		  </div>
+		</div>
 	  </div>
 	</section>
 
-	<section class="section-y band-white" id="bring-your-own-carer" aria-labelledby="bring-your-own-carer-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <?php if ( '' !== $care_own_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $care_own_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="bring-your-own-carer-h"><?php echo esc_html( $care_own_heading ); ?></h2>
-		</header>
-		<dl class="comparison-list comparison-list--features">
-		  <?php foreach ( $care_own_items as $item ) : ?>
-		  <div class="comparison-list__item">
-				<?php if ( '' !== $item['title'] ) : ?>
-			<dt><?php echo esc_html( $item['title'] ); ?></dt>
-			<?php endif; ?>
-				<?php if ( '' !== $item['body'] ) : ?>
-			<dd><?php echo esc_html( $item['body'] ); ?></dd>
-			<?php endif; ?>
-		  </div>
-		  <?php endforeach; ?>
-		</dl>
+	<section class="section-y band-subtle care-support" id="what-we-arrange" aria-labelledby="what-we-arrange-h">
+	  <div class="container care-support__grid">
+		<div class="care-support__body">
+		  <header class="section-head section-head--tight">
+			<h2 id="what-we-arrange-h"><?php echo esc_html( $care_support_heading ); ?></h2>
+		  </header>
+		  <dl class="care-index">
+			<?php foreach ( $care_support_items as $support_item ) : ?>
+				<?php
+				if ( '' === trim( (string) $support_item['title'] ) ) {
+					continue;
+				}
+				?>
+			<div>
+			  <dt><?php echo esc_html( $support_item['title'] ); ?></dt>
+			  <dd><?php echo esc_html( $support_item['body'] ); ?></dd>
+			</div>
+			<?php endforeach; ?>
+		  </dl>
+		</div>
+		<figure class="care-support__photo">
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/H-1-LS.jpg' ) ); ?>" alt="The ceiling-track hoist in the accessible bedroom" width="2400" height="1500" loading="lazy" decoding="async" />
+		</figure>
+	  </div>
+	</section>
+
+	<section class="section-y band-white care-own" id="bring-your-own-carer" aria-labelledby="bring-your-own-carer-h">
+	  <div class="container care-own__grid">
+		<div class="care-own__body">
+		  <header class="section-head section-head--tight">
+			<h2 id="bring-your-own-carer-h"><?php echo esc_html( $care_own_heading ); ?></h2>
+		  </header>
+		  <dl class="care-points">
+			<?php foreach ( $care_own_items as $item ) : ?>
+				<?php
+				if ( '' === trim( (string) $item['title'] ) ) {
+					continue;
+				}
+				?>
+			<div>
+			  <dt><?php echo esc_html( $item['title'] ); ?></dt>
+			  <dd><?php echo esc_html( $item['body'] ); ?></dd>
+			</div>
+			<?php endforeach; ?>
+		  </dl>
+		</div>
+		<figure class="care-own__quote">
+		  <?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md). */ ?>
+		  <blockquote><p>The setup also works perfectly for support workers. The second bedroom provides a comfortable space for day support, and the adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.</p></blockquote>
+		  <figcaption><cite>G.G.</cite> <?php esc_html_e( 'Support team lead · Google review', 'restwell-retreats' ); ?></figcaption>
+		</figure>
 	  </div>
 	</section>
 
@@ -409,19 +433,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" aria-labelledby="pro-quote-h">
-	  <div class="container">
-		<h2 id="pro-quote-h" class="sr-only">What a support team wrote after staying</h2>
-		<figure class="pull-quote">
-		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-		  <?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md); the earlier version stitched three paragraphs together. */ ?>
-		  <blockquote class="pull-quote__text">The setup also works perfectly for support workers. The second bedroom provides a comfortable space for day support, and the adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.</blockquote>
-		  <figcaption class="pull-quote__cite">G.G.<span class="pull-quote__role">Support team lead &middot; Google review</span></figcaption>
-		</figure>
-	  </div>
-	</section>
-
-	<section class="section-y band-white" id="for-professionals" aria-labelledby="for-professionals-h">
+	<section class="section-y band-subtle" id="for-professionals" aria-labelledby="for-professionals-h">
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <?php if ( '' !== $care_pro_label ) : ?>
@@ -432,9 +444,9 @@ get_template_part(
 		  <p class="lede"><?php echo wp_kses_post( $care_link_phrase( esc_html( $care_pro_lede ), 'Who It’s For', restwell_nav_resolve_page_url( 'who-its-for' ) ) ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<dl class="comparison-list comparison-list--2">
+		<dl class="care-index care-index--wide">
 		  <?php foreach ( $care_pro_items as $item ) : ?>
-		  <div class="comparison-list__item">
+		  <div>
 				<?php if ( '' !== $item['title'] ) : ?>
 			<dt><?php echo esc_html( $item['title'] ); ?></dt>
 			<?php endif; ?>
@@ -452,7 +464,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
+	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">

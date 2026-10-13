@@ -11162,3 +11162,102 @@ body.page-template-template-care #main-content .persona-list__item .icon-circle,
    property tour, which read as a floor plan's legend. */
 .eyebrow { display: none; }
 .page-template-template-property .split .section-head > .eyebrow { display: block; }
+
+/* =========================================================================
+   Optional care (13 Oct 2026). Rebuilt away from the template patterns the
+   owner flagged: no rows of three principle cards, no 2x2 icon grids, no
+   lone quote band. Victoria's photo carries the intro; the support types
+   are an index beside the hoist; G.G.'s words about support workers sit
+   with "Bringing your own carer", the section they speak to.
+   ========================================================================= */
+.care-intro__grid,
+.care-support__grid,
+.care-own__grid { display: grid; gap: var(--space-10); }
+@media (min-width: 900px) {
+  .care-intro__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-16); align-items: center; }
+  .care-support__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-16); align-items: center; }
+  .care-own__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-16); align-items: center; }
+}
+.care-intro__photo,
+.care-support__photo { margin: 0; }
+.care-intro__photo img,
+.care-support__photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background: var(--driftwood);
+}
+.care-intro__photo img { object-position: 50% 30%; }
+@media (min-width: 900px) {
+  .care-intro__photo img,
+  .care-support__photo img { aspect-ratio: 4 / 5; }
+}
+.care-intro__photo figcaption {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--muted-grey);
+}
+.care-intro__photo figcaption strong { color: var(--deep-teal); font-weight: var(--weight-semibold); }
+
+/* Principles and own-carer points: a short serif name over a line of text,
+   spaced, no boxes or icons. */
+.care-points { display: grid; gap: var(--space-6); margin: var(--space-8) 0 0; }
+.care-points > div { display: grid; gap: var(--space-1); }
+.care-points dt,
+.care-index dt {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--type-title-weight);
+  line-height: var(--leading-snug);
+  color: var(--deep-teal);
+}
+.care-points dd,
+.care-index dd { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
+.care-intro__note { margin: var(--space-8) 0 0; color: var(--muted-grey); font-size: var(--text-sm); }
+.care-intro__note .text-link { margin-left: var(--space-2); }
+.care-intro__badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-top: var(--space-6); }
+.care-intro__badges a { display: inline-flex; }
+.care-intro__badges img { display: block; width: auto; height: 2.25rem; }
+.care-intro__badges a + a img { height: 3rem; }
+
+/* Index rows: the name on the left, the detail on the right, one hairline
+   between rows. */
+.care-index { display: grid; margin: var(--space-8) 0 0; }
+.care-index > div { display: grid; gap: var(--space-1); padding: var(--space-5) 0; }
+.care-index > div + div { border-top: 1px solid var(--rule); }
+.care-index > div:first-child { padding-top: 0; }
+.care-index > div:last-child { padding-bottom: 0; }
+@media (min-width: 700px) {
+  .care-index > div { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: var(--space-8); align-items: baseline; }
+}
+.section-head + .care-index--wide { margin-top: var(--space-4); }
+@media (min-width: 900px) {
+  .care-index--wide > div { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--space-16); padding-block: var(--space-6); }
+}
+
+/* G.G.'s words, set large beside the points they speak to. */
+.care-own__quote { margin: 0; }
+.care-own__quote::before {
+  content: "\201C";
+  display: block;
+  height: 0.5em;
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--warm-gold);
+}
+.care-own__quote blockquote { margin: 0; }
+.care-own__quote blockquote p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 1.05rem + 1.1vw, 2rem);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--deep-teal);
+  text-wrap: pretty;
+}
+.care-own__quote figcaption { margin-top: var(--space-5); font-size: var(--text-sm); color: var(--muted-grey); }
+.care-own__quote cite { margin-right: var(--space-2); font-style: normal; font-weight: var(--weight-semibold); color: var(--deep-teal); }
