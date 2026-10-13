@@ -976,6 +976,9 @@ blockquote:not(.pull-quote__text),
   font-size: var(--type-ui-size);
   line-height: var(--leading-snug);
   text-align: center;
+  /* A long label that must wrap on a 320px phone splits into two even lines,
+     not a full line and an orphan. */
+  text-wrap: balance;
   /* Buttons inherited body 400, which reads underweight against the label
      size; carry a consistent semibold across every button (design-audit c3). */
   font-weight: var(--weight-semibold);

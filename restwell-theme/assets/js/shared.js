@@ -1148,4 +1148,55 @@
     scrollChipIntoScroller(event.target);
   });
 
+  /* ---------- Sharper cover-cropped photos ----------
+   * sizes="auto" tells the browser the box's width, but a photo cropped with
+   * object-fit: cover into a box taller than its own shape shows only part of
+   * its width, so it needs more pixels than the box is wide (a 16:10 room shot
+   * in a 700x650 box needs ~1040px, and auto picked the 800w file). Set sizes
+   * to the width the crop really needs: before a lazy photo loads, and again
+   * once it has loaded and its real shape is known, but only if the file it
+   * got is visibly short, so a photo downloads at most one more time.
+   */
+  function srcsetWidth(img) {
+    var current = img.currentSrc;
+    var found = 0;
+    if (!current) return 0;
+    img.srcset.split(',').forEach(function (part) {
+      var bits = part.trim().split(/\s+/);
+      if (bits[1] && /w$/.test(bits[1]) && current.indexOf(bits[0].split('/').pop()) !== -1) {
+        found = parseInt(bits[1], 10);
+      }
+    });
+    return found;
+  }
+  function fitCoverSize(img) {
+    if (img.getAttribute('fetchpriority') === 'high') return;
+    if (window.getComputedStyle(img).objectFit !== 'cover') return;
+    var boxW = img.clientWidth;
+    var boxH = img.clientHeight;
+    if (!boxW || !boxH) return;
+    /* The file's real shape once it has loaded; the width/height attributes
+       before that (some templates give 4:3 attributes to 16:10 files). */
+    var ratio = img.naturalWidth && img.naturalHeight
+      ? img.naturalWidth / img.naturalHeight
+      : parseFloat(img.getAttribute('width')) / parseFloat(img.getAttribute('height'));
+    if (!ratio || !isFinite(ratio)) return;
+    var need = Math.ceil(Math.max(boxW, boxH * ratio));
+    if (need <= boxW * 1.05) return;
+    if (img.complete && img.naturalWidth) {
+      var have = srcsetWidth(img);
+      if (have && have >= need * (window.devicePixelRatio || 1) * 0.9) return;
+    }
+    img.sizes = need + 'px';
+  }
+  function fitCoverSizes() {
+    Array.prototype.forEach.call(document.querySelectorAll('img[srcset]'), fitCoverSize);
+  }
+  fitCoverSizes();
+  window.addEventListener('load', fitCoverSizes);
+  document.addEventListener('load', function (event) {
+    var img = event.target;
+    if (img && img.tagName === 'IMG' && img.srcset) fitCoverSize(img);
+  }, true);
+
 })();

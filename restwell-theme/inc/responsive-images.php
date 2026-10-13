@@ -148,6 +148,12 @@ function restwell_theme_twin_url( $url ) {
 		}
 	}
 	$stem = strtolower( (string) preg_replace( '/-(?:\d+x\d+|scaled)$/i', '', (string) pathinfo( $path, PATHINFO_FILENAME ) ) );
+	// WordPress names a second upload of the same file "<name>-1": the Pricing
+	// and Accessibility heroes were WR-1-LS-1.jpg and LR-2-LS-1.jpg, so they
+	// missed their theme twins and served the 1200px upload full-width.
+	if ( ! isset( $index[ $stem ] ) && preg_match( '/^(.+)-\d$/', $stem, $dup ) && isset( $index[ $dup[1] ] ) ) {
+		$stem = $dup[1];
+	}
 	if ( ! isset( $index[ $stem ] ) ) {
 		return '';
 	}

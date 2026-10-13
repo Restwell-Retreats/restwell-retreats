@@ -22,16 +22,16 @@ Status: **Fixed** (in this pass), **Kept** (judged and left, with the reason), *
 |---|---|---|
 | Home, facts strip | At 960–1099px the four facts broke into three-line labels ("Driveway / parking / for two"). | **Fixed.** They show 2×2 until 1100px. |
 | Home, guest reviews | Three cards at 1024 ran about 25 characters a line. | **Fixed.** Three across from 1200px; 2 + 1 below that. |
-| Home, property | At 320 the "Have a proper look round the rooms" button wraps onto two centred lines. | **Kept.** It's centred, and the label is the copy. |
+| Home, property | At 320 the "Have a proper look round the rooms" button wraps onto two lines. | **Fixed (13 Oct).** The label is canonical copy (`copy-overwrites/home.md`) and can't fit 272px on one line, so buttons now wrap into balanced lines. One line from 375px up. |
 | Accessibility, equipment | The specifications accordion was a third white box under the slings note. | **Fixed.** It's an open accordion row between rules, like the FAQs. The download stays a box because it's a single action. |
 | Accessibility, "What we can't promise" | It had no eyebrow (every other section has one) and full section padding for three lines. | **Fixed.** Added an "Honest limits" eyebrow and a slim band. |
 | Accessibility, fit check | Boxes inside a panel. | **Kept.** It's an interactive tool; the boxes are the controls. |
 | Optional care, sister company | Three ~210px columns at 768: "Optional, not automatic" broke onto two lines. | **Fixed.** Side by side from 1024px, stacked below. |
 | Pricing, Continuity terms | White tiles inside a grey panel (boxes within a box). | **Fixed.** Open notes under rules. |
 | Pricing, rates table and calendar | Boxed. | **Kept.** They're data and an interactive control. |
-| Pricing, calendar | Past dates (#b0bdc1 on white, 1.9:1) fail axe contrast. | **Open.** They're non-interactive and de-emphasised on purpose. Darkening them makes them read as bookable. Your call. |
+| Pricing, calendar | Past dates (#b0bdc1 on white, 1.9:1) fail axe contrast. | **Fixed (13 Oct).** 4.7:1, still lighter and regular weight beside the semibold teal bookable dates. |
 | Funding, routes | The source line under each route ran 114 characters across the full rail. | **Fixed.** Capped to the reading measure. |
-| Funding, routes heading | "A starting point for the conversation with your coordinator" takes four lines at 320 and 1024. | **Open.** It's a copy length issue; a shorter title would fix it. |
+| Funding, routes heading | "A starting point for the conversation with your coordinator" takes four lines at 320 and 1024. | **Fixed (13 Oct).** Template copy (not in `copy-overwrites/`), shortened to "Where to start with your coordinator": one or two lines at every width. |
 | Blog article | The "how others read it" cards and the do / avoid panels were boxes in running text. | **Fixed.** Open under a rule; the "In short" summary stays as the one tinted callout. |
 | Enquire / FAQ, phones | "Continue" sat at the right edge while "Send question" sat at the left. | **Fixed.** The single primary action spans the column on phones. |
 | Legal pages | The 1440 "column void" was the sticky contents rail beside the text. | **Kept.** It's intended. |
@@ -47,3 +47,10 @@ Status: **Fixed** (in this pass), **Kept** (judged and left, with the reason), *
 ## Not testable here
 
 Safari, Firefox and real devices.
+
+## Follow-up, 13 October 2026
+
+- **Photo sharpness.** The theme carried 870-1280px copies of photos whose originals are 6000x3750 (`~/Downloads/Restwell-Retreats`). Sixteen masters were rebuilt at 2400px (colour and framing checked identical; BD2-3-LS kept, it is a straightened edit), giving 1920w variants. Media Library uploads named `<photo>-1.jpg` now find their theme twin, so the Accessibility and Pricing heroes use them. A small script in `shared.js` sets `sizes` from the crop a cover photo actually needs. Measured on every page: at 1440px 1x, soft photos went from 13 to 2 (both under 10%); at 2x the worst went from 2.4x upscaled to 1.5x. The phone hero is left at its current size so the first screen stays fast on mobile.
+- **FAQ ids, focus rings, icon family, category chip, article tables, verdict alignment:** see commit c6d7a1d.
+- **Still for the owner:** new photography with people in the house would lift the site further; the existing set is now served at its best.
+

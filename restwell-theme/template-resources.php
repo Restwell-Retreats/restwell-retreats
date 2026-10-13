@@ -116,7 +116,7 @@ get_template_part(
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">What each route usually pays</p>
-		  <h2 id="routes-h">A starting point for the conversation with your coordinator</h2>
+		  <h2 id="routes-h">Where to start with your coordinator</h2>
 		  <p class="lede">We’ve gone through the Care Act, NHS CHC guidance, and the main grant bodies, so you can see the pattern. Your own coordinator still has the last word. Ask us for the paperwork they need, and we’ll send it.</p>
 		</header>
 

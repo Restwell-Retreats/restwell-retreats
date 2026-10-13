@@ -450,7 +450,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				?>
 		  <li class="acc-glance__card">
 				<?php if ( '' !== $acc_gl_image ) : ?>
-			<img class="acc-glance__photo" src="<?php echo esc_url( restwell_theme_image_url( $acc_gl_image ) ); ?>" alt="<?php echo esc_attr( $acc_gl_alt ); ?>" width="800" height="600" sizes="(max-width: 639px) 100vw, 24rem" loading="lazy" decoding="async" />
+			<img class="acc-glance__photo" src="<?php echo esc_url( restwell_theme_image_url( $acc_gl_image ) ); ?>" alt="<?php echo esc_attr( $acc_gl_alt ); ?>" width="800" height="600" sizes="(max-width: 719px) 100vw, (max-width: 1239px) 50vw, 36rem" loading="lazy" decoding="async" />
 			<?php endif; ?>
 			<div class="acc-glance__body">
 			  <h3><?php echo esc_html( $acc_gmeta['title'] ); ?></h3>
