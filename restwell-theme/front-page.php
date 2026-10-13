@@ -69,8 +69,10 @@ $property_cta_label = function_exists( 'restwell_page_content_text' )
 $property_cta_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_cta_url', restwell_nav_resolve_page_url( 'the-property' ) )
 	: restwell_nav_resolve_page_url( 'the-property' );
-$property_image_url = restwell_theme_image_url( 'bungalow/PT-2-LS.jpg' );
-$property_image_alt = 'The bungalow and conservatory seen from the sunny back garden';
+// Restwell's first guests at the house (13 Oct 2026; the owner confirmed consent).
+// Until then no photo on the site showed anyone staying here.
+$property_image_url = restwell_theme_image_url( 'journey/restwell-first-guests.webp' );
+$property_image_alt = 'Restwell’s first guests outside the conservatory, one in a wheelchair';
 if ( $home_id > 0 && function_exists( 'restwell_page_content_meta_or_default' ) ) {
 	$property_image_id = absint( restwell_page_content_meta_or_default( $home_id, 'property_image_id' ) );
 	if ( $property_image_id > 0 ) {

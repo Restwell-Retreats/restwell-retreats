@@ -85,7 +85,7 @@ function restwell_accessibility_equipment() {
 				__( 'Overall frame', 'restwell-retreats' )          => __( '930 × 2250 mm', 'restwell-retreats' ),
 				__( 'Platform height', 'restwell-retreats' )        => __( '220–800 mm', 'restwell-retreats' ),
 				__( 'Profiling', 'restwell-retreats' )              => __( 'Four-section: backrest with auto-regression, kneebreak, Trendelenburg and anti-Trendelenburg', 'restwell-retreats' ),
-				__( 'Mattress', 'restwell-retreats' )               => __( 'Accora Allevia Comfort FirmEdge 90 cm, or Roma Medical MATT 1, both pressure-relieving', 'restwell-retreats' ),
+				__( 'Mattress', 'restwell-retreats' )               => __( 'Accora Allevia Comfort FirmEdge 90 cm, or Roma Medical MATT I (medium risk, rated to 113 kg / 17 st), both pressure-relieving', 'restwell-retreats' ),
 				__( 'Side rails', 'restwell-retreats' )             => __( 'Fabric siderail set, 200 cm', 'restwell-retreats' ),
 				__( 'Minimum user height', 'restwell-retreats' )    => __( '1460 mm', 'restwell-retreats' ),
 				__( 'Carer access', 'restwell-retreats' )           => __( 'Space for a carer on both sides of the bed', 'restwell-retreats' ),

@@ -11400,3 +11400,34 @@ p.blog-cluster-links__part > .text-link,
     font-weight: var(--type-title-weight);
   }
 }
+
+/* Our Story: the office team beside the host copy, a small round portrait and
+   a name each. */
+.host-team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-8);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.host-team__member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.host-team__photo {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+.host-team__name {
+  color: var(--deep-teal);
+  font-weight: var(--weight-semibold);
+}
+
+/* Portrait photo in a landscape slot (Our Story, home): keep heads in frame. */
+.split__media img[src*="restwell-first-guests"],
+.property__media[src*="restwell-first-guests"] { object-position: 50% 55%; }

@@ -262,6 +262,21 @@ get_template_part(
 			<?php if ( '' !== $story_host_lede ) : ?>
 			<p class="lede"><?php echo esc_html( $story_host_lede ); ?></p>
 			<?php endif; ?>
+			<?php
+			// Faces for "someone else in the office" (photos published with consent, 13 Oct 2026).
+			$story_team = array(
+				'keelie-varney' => 'Keelie Varney',
+				'nikki-mackay'  => 'Nikki Mackay',
+			);
+			?>
+			<ul class="host-team" role="list">
+			  <?php foreach ( $story_team as $story_team_file => $story_team_name ) : ?>
+			  <li class="host-team__member">
+				<img class="host-team__photo" src="<?php echo esc_url( restwell_theme_image_url( 'journey/' . $story_team_file . '.webp' ) ); ?>" alt="" width="1500" height="2000" sizes="4rem" loading="lazy" decoding="async" />
+				<span class="host-team__name"><?php echo esc_html( $story_team_name ); ?></span>
+			  </li>
+			  <?php endforeach; ?>
+			</ul>
 		  </header>
 		</div>
 		<div class="split__media" data-reveal>
@@ -346,7 +361,7 @@ get_template_part(
 		  </header>
 		</div>
 		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-2-LS.jpg' ) ); ?>" alt="Height-adjustable basin and shower in the level-access wet room" width="1200" height="750" loading="lazy" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/restwell-first-guests.webp' ) ); ?>" alt="Restwell’s first guests outside the conservatory, one in a wheelchair" width="1200" height="1600" loading="lazy" decoding="async" />
 		</div>
 	  </div>
 	</section>
