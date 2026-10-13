@@ -428,7 +428,12 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 						$acc_gl_alt   = isset( $acc_gl_item['image_alt'] ) ? (string) $acc_gl_item['image_alt'] : '';
 					}
 					$acc_gl_figure = isset( $acc_gl_item['figure'] ) ? (string) $acc_gl_item['figure'] : '';
-					if ( '' !== $acc_gl_figure && preg_match( '/\d/', $acc_gl_figure ) && count( $acc_gl_facts ) < 3 && ! in_array( $acc_gl_figure, array_column( $acc_gl_facts, 'value' ), true ) ) {
+					// Glance cards take any headline figure (the kitchen's is the oven, not a number); the register keeps measurements only.
+					if ( '' === $acc_gl_figure && ! empty( $acc_gl_item['glance_figure'] ) ) {
+						$acc_gl_figure = (string) $acc_gl_item['glance_figure'];
+						$acc_gl_item['figure_label'] = isset( $acc_gl_item['glance_label'] ) ? (string) $acc_gl_item['glance_label'] : '';
+					}
+					if ( '' !== $acc_gl_figure && count( $acc_gl_facts ) < 3 && ! in_array( $acc_gl_figure, array_column( $acc_gl_facts, 'value' ), true ) ) {
 						$acc_gl_facts[] = array(
 							'value' => $acc_gl_figure,
 							'label' => isset( $acc_gl_item['figure_label'] ) ? (string) $acc_gl_item['figure_label'] : '',
@@ -468,9 +473,12 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 
 		<details class="acc-register" id="register">
 			  <summary class="acc-register__summary">
-				<span class="acc-register__title"><?php esc_html_e( 'Full equipment specifications', 'restwell-retreats' ); ?></span>
-				<span class="acc-register__count"><?php echo esc_html( sprintf( /* translators: %d: number of items */ _n( '%d item', '%d items', count( $acc_equipment ), 'restwell-retreats' ), count( $acc_equipment ) ) ); ?></span>
-				<span class="acc-room__chevron" aria-hidden="true"></span>
+				<span class="acc-register__icon" aria-hidden="true"><?php restwell_the_icon( 'clipboard-list' ); ?></span>
+				<span class="acc-register__text">
+				  <span class="acc-register__title"><?php esc_html_e( 'Full equipment specifications', 'restwell-retreats' ); ?></span>
+				  <span class="acc-register__count"><?php echo esc_html( sprintf( /* translators: %d: number of items */ _n( '%d item: make, model and safe working load', '%d items: makes, models and safe working loads', count( $acc_equipment ), 'restwell-retreats' ), count( $acc_equipment ) ) ); ?></span>
+				</span>
+				<span class="acc-register__toggle" aria-hidden="true"></span>
 			  </summary>
 			<div class="acc-reg">
 				<p class="acc-reg__tour"><?php esc_html_e( 'Room-by-room photos and the property tour live on the property page. This register is the spec sheet: makes, models, and safe working loads.', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'Tour the property', 'restwell-retreats' ); ?></a></p>
@@ -601,14 +609,17 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		if ( '' !== $acc_pdf_url ) :
 			?>
 		<aside class="acc-download" aria-labelledby="acc-download-h">
-		  <span class="acc-download__icon" aria-hidden="true">PDF</span>
+		  <span class="acc-download__icon" aria-hidden="true"><?php restwell_the_icon( 'file-text' ); ?></span>
 		  <div class="acc-download__text">
 			<p class="acc-download__title" id="acc-download-h"><?php esc_html_e( 'Download the full access statement', 'restwell-retreats' ); ?></p>
 			<p><?php esc_html_e( 'Every measurement and piece of kit on one printable, screen-reader-friendly sheet, for occupational therapists, case managers and funding panels.', 'restwell-retreats' ); ?></p>
 		  </div>
 		  <a class="btn btn-gold acc-download__btn" href="<?php echo esc_url( $acc_pdf_url ); ?>" download data-analytics-event="access_statement_download">
+			<?php restwell_the_icon( 'download' ); ?>
 			<?php esc_html_e( 'Download PDF', 'restwell-retreats' ); ?>
-			<span class="acc-download__meta"><?php echo esc_html( trim( 'PDF' . ( '' !== $acc_pdf_size ? ', ' . $acc_pdf_size : '' ) ) ); ?></span>
+			<?php if ( '' !== $acc_pdf_size ) : ?>
+			<span class="acc-download__meta"><?php echo esc_html( $acc_pdf_size ); ?></span>
+			<?php endif; ?>
 		  </a>
 		</aside>
 		<?php endif; ?>
@@ -706,14 +717,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<?php if ( '' !== $acc_faq_intro ) : ?>
 			<p class="lede"><?php echo esc_html( $acc_faq_intro ); ?></p>
 			<?php endif; ?>
-			<?php if ( $restwell_access_guide_url ) : ?>
-			<aside class="acc-guide" aria-labelledby="access-guide-h">
-			  <p class="eyebrow">Comparing other cottages?</p>
-			  <h3 id="access-guide-h">How to read any access statement</h3>
-			  <p>This page is Restwell’s property-specific statement. For a general checklist of measurements, red flags and OT questions, read our guide.</p>
-			  <a class="acc-guide__link" href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php echo esc_html( rtrim( get_the_title( $restwell_access_guide ), '.' ) ); ?><span aria-hidden="true"> &rarr;</span></a>
-			</aside>
-			<?php endif; ?>
 		  </header>
 		  <?php
 			$acc_faq_accordion = array();
@@ -738,6 +741,22 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			);
 			?>
 		</div>
+		<?php if ( $restwell_access_guide_url ) : ?>
+			<?php list( $acc_guide_thumb, $acc_guide_thumb_alt ) = restwell_get_post_card_thumb( $restwell_access_guide->ID, 'medium_large' ); ?>
+		<aside class="acc-guide" aria-labelledby="access-guide-h">
+			<?php if ( '' !== (string) $acc_guide_thumb ) : ?>
+		  <a class="acc-guide__media" href="<?php echo esc_url( $restwell_access_guide_url ); ?>" aria-hidden="true" tabindex="-1">
+			<img src="<?php echo esc_url( $acc_guide_thumb ); ?>" alt="<?php echo esc_attr( $acc_guide_thumb_alt ); ?>" width="640" height="427" loading="lazy" decoding="async" />
+		  </a>
+		  <?php endif; ?>
+		  <div class="acc-guide__body">
+			<p class="eyebrow"><?php esc_html_e( 'Comparing other cottages?', 'restwell-retreats' ); ?></p>
+			<h3 id="access-guide-h"><a href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php esc_html_e( 'How to read any access statement', 'restwell-retreats' ); ?></a></h3>
+			<p><?php esc_html_e( 'This page is Restwell’s own statement. For a general checklist of measurements, red flags and questions for an OT, read our guide.', 'restwell-retreats' ); ?></p>
+			<span class="acc-guide__more" aria-hidden="true"><?php esc_html_e( 'Read the guide', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></span>
+		  </div>
+		</aside>
+		<?php endif; ?>
 	  </div>
 	</section>
 

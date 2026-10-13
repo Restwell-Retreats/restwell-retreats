@@ -286,7 +286,7 @@ $times_line    = sprintf(
 					<dl class="availability__breakdown" data-availability-breakdown hidden></dl>
 				</div>
 				<div class="availability__actions">
-					<button type="button" class="availability__clear" data-availability-clear hidden><?php esc_html_e( 'Clear dates', 'restwell-retreats' ); ?></button>
+					<button type="button" class="availability__clear" data-availability-clear hidden><?php restwell_the_icon( 'x' ); ?><span class="availability__clear-text"><?php esc_html_e( 'Clear dates', 'restwell-retreats' ); ?></span></button>
 					<a class="btn btn-gold availability__enquire" data-availability-enquire href="#availability-enquiry"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
 				</div>
 				<p class="availability__live sr-only" data-availability-live aria-live="polite"></p>

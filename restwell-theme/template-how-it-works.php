@@ -382,11 +382,12 @@ get_template_part(
 			<p class="lede"><?php echo esc_html( $hiw_arrival_lede ); ?></p>
 			<?php endif; ?>
 		  </header>
+		  <?php $hiw_arrival_icons = array( 'clock', 'square-parking', 'badge-check' ); ?>
 		  <dl class="hiw-facts">
-			<?php foreach ( $hiw_arrival_items as $arrival_item ) : ?>
+			<?php foreach ( $hiw_arrival_items as $arrival_i => $arrival_item ) : ?>
 			<div>
 				<?php if ( '' !== $arrival_item['dt'] ) : ?>
-			  <dt><?php echo esc_html( $arrival_item['dt'] ); ?></dt>
+			  <dt><span class="hiw-facts__icon" aria-hidden="true"><?php restwell_the_icon( $hiw_arrival_icons[ $arrival_i % 3 ] ); ?></span><?php echo esc_html( $arrival_item['dt'] ); ?></dt>
 			  <?php endif; ?>
 				<?php if ( '' !== $arrival_item['dd'] ) : ?>
 			  <dd><?php echo esc_html( $arrival_item['dd'] ); ?></dd>

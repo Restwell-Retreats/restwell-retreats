@@ -28,6 +28,8 @@ const ICONS = [
 	'info', 'triangle-alert', 'check', 'circle-check', 'plus', 'minus',
 	'arrow-right', 'arrow-up-right', 'arrow-up', 'x', 'chevron-left', 'chevron-right', 'chevron-down',
 	'phone', 'mail', 'map-pin',
+	// Accessibility: spec register and the access statement download.
+	'file-text', 'download',
 ];
 
 const pkg = JSON.parse(fs.readFileSync(path.join(LUCIDE, 'package.json'), 'utf8'));

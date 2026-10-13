@@ -200,6 +200,8 @@ function restwell_accessibility_equipment() {
 		array(
 			'group'         => 'kitchen',
 			'name'          => __( 'NEFF Slide & Hide: oven', 'restwell-retreats' ),
+			'glance_figure' => __( 'Slide & Hide', 'restwell-retreats' ),
+			'glance_label'  => __( 'Oven door folds away', 'restwell-retreats' ),
 			'where'         => __( 'Open-plan, wheelchair access to worktops', 'restwell-retreats' ),
 			'lead'          => true,
 			'image'         => 'bungalow/KT-1-LS.jpg',
