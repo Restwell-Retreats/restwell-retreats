@@ -137,7 +137,9 @@ $footer_enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restw
 					<li><a href="tel:<?php echo esc_attr( $footer_phone_tel ); ?>"><?php echo esc_html( $footer_phone ); ?></a></li>
 					<li><a href="mailto:<?php echo esc_attr( $footer_email ); ?>"><?php echo esc_html( $footer_email ); ?></a></li>
 				</ul>
+				<?php if ( ! is_page_template( 'template-enquire.php' ) ) : // The form is already on the page. ?>
 				<a class="btn btn-gold" href="<?php echo esc_url( $footer_enquire_url ); ?>"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
+				<?php endif; ?>
 			</div>
 		</div>
 		<div class="site-footer__bottom">

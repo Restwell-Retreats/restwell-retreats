@@ -8,7 +8,9 @@
 .layout-sidebar > *, .sidebar-card, .field, .form-step, fieldset { min-width: 0; }
 .sidebar-card a, .site-footer a, .prose a { overflow-wrap: anywhere; }
 .field input, .field select, .field textarea { min-width: 0; max-width: 100%; }
-.step-indicator__item { min-width: 0; flex: 0 1 30%; }
+/* Steps size to their labels so the connector lines run the full gap between
+   the circles; at a 30% basis each line was an 18px dash floating in space. */
+.step-indicator__item { min-width: 0; flex: 0 1 auto; }
 .step-indicator__connector { min-width: var(--space-2); }
 .multistep,
 .field :is(input, select, textarea),
