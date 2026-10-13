@@ -28,6 +28,13 @@ $faq_accordion_args = wp_parse_args(
 	)
 );
 ?>
+<?php
+// One running number across every column. Callers split the list with
+// array_slice(), which re-keys from 0, so numbering by key restarted in the
+// second column and repeated the first column's ids: two buttons then
+// controlled the same answer.
+$faq_accordion_n = 0;
+?>
 <div class="faq-list <?php echo esc_attr( ltrim( $faq_accordion_args['list_class'] ) ); ?>" data-faq-accordion>
 	<?php foreach ( $faq_accordion_args['columns'] as $faq_accordion_index => $faq_accolumn_items ) : ?>
 		<?php if ( empty( $faq_accolumn_items ) ) : ?>
@@ -36,13 +43,14 @@ $faq_accordion_args = wp_parse_args(
 		<?php if ( $faq_accordion_args['wrap_columns'] ) : ?>
 			<div class="faq-list__col">
 		<?php endif; ?>
-		<?php foreach ( $faq_accolumn_items as $faq_accordion_pos => $faq_accordion_item ) : ?>
+		<?php foreach ( $faq_accolumn_items as $faq_accordion_item ) : ?>
 			<?php
 			$faq_q = (string) ( $faq_accordion_item['q'] ?? '' );
 			if ( '' === $faq_q ) {
 				continue;
 			}
-			$faq_id     = sprintf( '%s%d', $faq_accordion_args['id_prefix'], (int) $faq_accordion_pos + 1 );
+			++$faq_accordion_n;
+			$faq_id     = sprintf( '%s%d', $faq_accordion_args['id_prefix'], $faq_accordion_n );
 			$faq_open   = ! empty( $faq_accordion_item['open'] );
 			$faq_cat    = (string) ( $faq_accordion_item['cat'] ?? '' );
 			$faq_answer = (string) ( $faq_accordion_item['a'] ?? '' );

@@ -78,7 +78,14 @@ while ( have_posts() ) :
 		<?php endif; ?>
 		<div class="blog-article__main">
 		<p class="blog-meta">
-			<?php if ( $category !== '' ) : ?>
+			<?php
+			// The category chip looked like a button but did nothing; it now
+			// opens that topic's article list, like the topic chips on the blog.
+			$category_url = $category !== '' && function_exists( 'restwell_get_primary_category_id' ) ? get_category_link( restwell_get_primary_category_id( $entry_id ) ) : '';
+			?>
+			<?php if ( $category !== '' && $category_url && ! is_wp_error( $category_url ) ) : ?>
+				<a class="tag" href="<?php echo esc_url( $category_url ); ?>"><?php echo esc_html( $category ); ?></a>
+			<?php elseif ( $category !== '' ) : ?>
 				<span class="tag"><?php echo esc_html( $category ); ?></span>
 			<?php endif; ?>
 			<span><?php echo esc_html( sprintf( /* translators: %d: minutes */ _n( '%d min read', '%d min read', $read_mins, 'restwell-retreats' ), $read_mins ) ); ?></span>

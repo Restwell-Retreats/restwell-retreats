@@ -211,6 +211,12 @@ function restwell_enhance_post_html( $html ) {
 		}
 		$frame = $doc->createElement( 'div' );
 		$frame->setAttribute( 'class', 'post-table' );
+		// The frame scrolls sideways on phones, so keyboard users must be able to
+		// focus it, and a screen reader needs to know what the region holds.
+		$frame->setAttribute( 'role', 'region' );
+		$frame->setAttribute( 'tabindex', '0' );
+		$caption = $table->getElementsByTagName( 'caption' )->item( 0 );
+		$frame->setAttribute( 'aria-label', $caption ? trim( $caption->textContent ) : __( 'Table', 'restwell-retreats' ) );
 		$table->parentNode->replaceChild( $frame, $table );
 		$frame->appendChild( $table );
 	}

@@ -511,6 +511,21 @@ ul { margin: 0; padding: 0; list-style: none; }
   outline: 2px solid var(--deep-teal);
   outline-offset: 3px;
 }
+/* Focus rings need 3:1 against what is behind them. Light surfaces take the
+   deep-teal default above (gold on white measured 2.1:1); every dark surface
+   takes the light gold (teal on the teal header measured 1:1). */
+.site-header :focus-visible,
+.mobile-nav :focus-visible,
+.hero :focus-visible,
+.mid-cta :focus-visible,
+.band-teal :focus-visible,
+.testimonials :focus-visible,
+.site-footer :focus-visible,
+.companies__start :focus-visible {
+  outline-color: var(--warm-gold-hero);
+}
+/* The plain FAQ hero is light, so it keeps the dark ring. */
+.hero.hero--plain :focus-visible { outline-color: var(--deep-teal); }
 
 /* In-page anchors clear the fixed header (+ optional concept banner). */
 section[id],
@@ -1842,7 +1857,7 @@ body.nav-open { overflow: hidden; }
 }
 .faq-item__trigger:focus { outline: none; }
 .faq-item__trigger:focus-visible {
-  outline: 2px solid var(--warm-gold);
+  outline: 2px solid var(--deep-teal);
   outline-offset: 4px;
   border-radius: 0.35rem;
 }
@@ -4888,7 +4903,7 @@ body:has(.subnav) {
 }
 .peak-dates__summary:focus { outline: none; }
 .peak-dates__summary:focus-visible {
-  outline: 3px solid var(--warm-gold);
+  outline: 3px solid var(--deep-teal);
   outline-offset: 2px;
 }
 .peak-dates__summary::-webkit-details-marker { display: none; }
@@ -5461,7 +5476,10 @@ button.availability__cell:focus-visible .availability__date {
 /* Past and booked: quiet, and booked is hatched + struck through. */
 .availability__day.is-past .availability__date {
   font-weight: var(--weight-regular);
-  color: color-mix(in srgb, var(--muted-grey) 40%, var(--white));
+  /* 82% muted grey is 4.7:1 on white (40% was 1.9:1 and failed WCAG 1.4.3:
+     a past date is text, not a disabled control). It still reads as spent
+     beside the semibold teal of a bookable date. */
+  color: color-mix(in srgb, var(--muted-grey) 82%, var(--white));
 }
 .availability__day.is-booked::after {
   content: "";
@@ -6746,7 +6764,7 @@ fieldset.form-stack {
   background: color-mix(in srgb, var(--deep-teal) 7%, var(--white));
 }
 .pagination a.page-numbers:focus-visible {
-  outline: 3px solid var(--warm-gold);
+  outline: 3px solid var(--deep-teal);
   outline-offset: 3px;
 }
 .pagination .page-numbers.current {
@@ -6764,6 +6782,14 @@ fieldset.form-stack {
   color: var(--deep-teal);
   font-size: var(--text-2xs);
   font-weight: 600;
+}
+a.tag {
+  text-decoration: none;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+a.tag:hover {
+  background: var(--deep-teal);
+  color: var(--white);
 }
 .blog-featured__tag,
 .media-card__tag {
@@ -9165,6 +9191,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   border-radius: var(--radius);
 }
 .post-table table { margin: 0; }
+.post-table:focus-visible { outline: 2px solid var(--deep-teal); outline-offset: 2px; }
 
 /* Site search (search results + 404, audit I30) */
 .site-search {
@@ -9684,7 +9711,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   list-style: none;
 }
 .acc-room__summary::-webkit-details-marker { display: none; }
-.acc-room__summary:focus-visible { outline: 3px solid var(--warm-gold); outline-offset: -3px; border-radius: var(--radius-lg); }
+.acc-room__summary:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: -3px; border-radius: var(--radius-lg); }
 .acc-room__no {
   font-family: var(--font-serif);
   font-size: var(--text-lg);
@@ -10102,7 +10129,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   list-style: none;
 }
 .acc-register__summary::-webkit-details-marker { display: none; }
-.acc-register__summary:focus-visible { outline: 3px solid var(--warm-gold); outline-offset: -3px; border-radius: var(--radius-lg); }
+.acc-register__summary:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: -3px; border-radius: var(--radius-lg); }
 .acc-register__title { font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--type-title-weight); color: var(--deep-teal); }
 .acc-register__count { color: var(--muted-grey); font-size: var(--text-sm); }
 .acc-register[open] > .acc-register__summary .acc-room__chevron::before { transform: translateY(20%) rotate(-135deg); }
@@ -10306,6 +10333,12 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   border-radius: var(--radius-lg);
   background: var(--deep-teal);
   text-align: center;
+}
+/* Phones: the verdict runs to nine lines, and a centred paragraph that long
+   loses its left edge. Centre it only where it fits in three or four lines. */
+@media (max-width: 767px) {
+  .acc-dest__verdict { align-items: flex-start; text-align: left; }
+  .acc-dest__verdict-body { text-align: left; }
 }
 .acc-dest__verdict-label {
   margin: 0;

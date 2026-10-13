@@ -88,7 +88,11 @@
 .prose .wp-block-table { max-width: 100%; overflow-x: auto; }
 .prose table { width: 100%; border-collapse: collapse; font-size: 0.9375em; }
 .prose caption { text-align: left; font-weight: 600; color: var(--deep-teal); padding-block: 0.75rem; }
-.prose :is(th, td) { padding: 0.85rem; text-align: left; vertical-align: top; border-bottom: 1px solid #d5e1e2; overflow-wrap: anywhere; }
+/* break-word, not anywhere: "anywhere" lowers each cell's minimum width to one
+   letter, so on phones the table squeezed columns and split words mid-word
+   ("Sectio / n", "Emerg / ency"). break-word sizes columns to whole words and
+   only splits a word that can't fit at all. */
+.prose :is(th, td) { padding: 0.85rem; text-align: left; vertical-align: top; border-bottom: 1px solid #d5e1e2; overflow-wrap: break-word; }
 .prose thead { background: var(--deep-teal); color: #fff; }
 .prose tbody tr:nth-child(even) { background: var(--bg-subtle); }
 .blog-article__back { margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid #d5e1e2; }

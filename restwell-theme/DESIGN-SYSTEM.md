@@ -106,7 +106,10 @@ Sibling rules already manage the top padding after a hero or a sticky subnav (`.
 
 ## Interactive states
 
-- **Focus:** a visible `:focus-visible` ring in `--deep-teal` (≥3:1 on white and sand). Never `outline: none` without a replacement.
+- **Focus:** a visible `:focus-visible` ring that measures at least 3:1 against what is behind it. Light surfaces use `--deep-teal`; dark ones (header, mobile menu, photo heroes, mid-CTA, teal bands, reviews, footer, the companies strip) use `--warm-gold-hero`, set once beside the global rule. Never a `--warm-gold` ring on a light surface (2.1:1), and never `outline: none` without a replacement.
+- **Things that look clickable are clickable.** Pill chips are links or controls (topic filters, the category chip on a post, which opens its topic). A label that does nothing is plain text, not a pill.
+- **Icons are one family:** outline strokes with round caps and joins at a consistent weight (2 on the 48 grid, 1.6 on the 24 grid). No solid filled pictograms beside outline ones.
+- **Wide tables in articles scroll inside a focusable, labelled frame** (`.post-table`, added by `restwell_enhance_post_html()`); cells wrap at word boundaries (`overflow-wrap: break-word`, never `anywhere`, which split words mid-word on phones).
 - **Targets:** buttons, nav, FAQ summaries and footer links are ≥44px (`--tap-target`, 2.75rem; 2.25rem in the dense desktop footer).
 
 ## Header and footer
