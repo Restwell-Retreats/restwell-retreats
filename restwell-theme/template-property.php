@@ -106,11 +106,11 @@ $prop_gallery_heading = $prop_heading( 'prop_gallery_heading', 'See more of the 
 $prop_care_heading = $prop_heading( 'prop_care_heading', 'Optional home care' );
 $prop_care_body    = $prop_txt(
 	'prop_care_body',
-	'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.'
+	'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.'
 );
 // Pages seeded before the 9 Oct 2026 wording pass still hold the old line in meta.
-if ( 'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own carer if you prefer.' === $prop_care_body ) {
-	$prop_care_body = 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.';
+if ( 'Home care from Continuity can be added on the same enquiry, and they’ll quote for it. Bring your own carer if you prefer.' === $prop_care_body ) {
+	$prop_care_body = 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.';
 }
 
 $prop_location_heading = $prop_heading( 'prop_location_heading', 'A quiet street in Whitstable, close to the coast path' );
@@ -400,10 +400,11 @@ get_template_part(
 	<section class="section-y section-y--slim band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
+		  <?php get_template_part( 'template-parts/care-faces' ); ?>
 		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
 		  <h2 id="care-h"><?php echo esc_html( $prop_care_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $prop_care_body ); ?></p>
-		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
+		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></a>
 		</div>
 	  </div>
 	</section>

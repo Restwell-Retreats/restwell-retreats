@@ -75,7 +75,7 @@
   --leading-tight: 1.2;
   --leading-snug: 1.45;
   --leading-body: 1.65;
-  --leading-lede: 1.7;
+  --leading-lede: 1.55;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
@@ -915,38 +915,9 @@ blockquote:not(.pull-quote__text),
   text-wrap: balance;
 }
 
-/* Section heads at desktop: heading on the left, intro on the right, level with
-   the content rail below. A 38rem intro under a heading, above cards that run
-   the full 1120px, left the right half of every section empty and made the
-   text look like it belonged to a different, narrower page. Only heads that sit
-   directly in a full-width container: heads inside a photo-and-copy column, a
-   route split, a centred band or the gallery keep their own layout. */
-@media (min-width: 1024px) {
-  /* Rows: a flexible spacer, then eyebrow, then heading. The intro spans all
-     three, so when it is taller than the heading the spare height goes into the
-     spacer above the eyebrow (spanning items feed flexible tracks first) and
-     eyebrow and heading stay together instead of drifting apart. */
-  .container:not(.split):not(.route-split):not(.acc-intro) > .section-head:has(> .lede):not(.section-head--center) {
-    display: grid;
-    /* Equal halves (was 5/7). At 44px a 5fr heading broke into three lines;
-       7/5 fixed that but stacked long intros into a narrow tower. */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: 1fr auto auto;
-    column-gap: var(--space-16);
-    row-gap: var(--space-3);
-    align-items: end;
-  }
-  .container:not(.split):not(.route-split):not(.acc-intro) > .section-head:has(> .lede):not(.section-head--center) > .eyebrow { grid-column: 1; grid-row: 2; }
-  .container:not(.split):not(.route-split):not(.acc-intro) > .section-head:has(> .lede):not(.section-head--center) > h2 { grid-column: 1; grid-row: 3; }
-  .container:not(.split):not(.route-split):not(.acc-intro) > .section-head:has(> .lede):not(.section-head--center) > .lede {
-    grid-column: 2;
-    grid-row: 1 / span 3;
-    align-self: end;
-    max-width: 44rem;
-    margin: 0;
-  }
-  .container:not(.split):not(.route-split):not(.acc-intro) > .section-head:has(> .lede):not(.section-head--center) > :not(.eyebrow):not(h2):not(.lede) { grid-column: 2; }
-}
+/* Section heads stack at every width: eyebrow, heading, then the intro under
+   it. A desktop split (heading left, intro right, on one line) was removed on
+   13 Oct 2026 at the owner's request; don't bring it back. */
 
 /* Centered compositions */
 .section-head--center .lede,
@@ -6389,7 +6360,7 @@ fieldset.form-stack {
   -webkit-appearance: none;
   -moz-appearance: none;
   padding-right: var(--space-10);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5l3.5 3.5 3.5-3.5' fill='none' stroke='%231B4D5C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%231B4D5C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right var(--space-3) center;
   background-size: 0.75rem;
@@ -7737,7 +7708,7 @@ body.page-template-template-accessibility-php .scroll-top {
   height: var(--space-8);
   border-radius: 999px;
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 56% no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 56% no-repeat,
     color-mix(in srgb, var(--deep-teal) 9%, var(--white));
 }
 .comparison-list__item::after { display: none; }
@@ -9594,7 +9565,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   margin-top: 0.2em;
   border-radius: 50%;
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 70% no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 70% no-repeat,
     color-mix(in srgb, var(--deep-teal) 9%, var(--white));
 }
 .persona-list--cards .persona-list__cta { margin-top: auto; padding-top: var(--space-4); }
@@ -10320,7 +10291,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 }
 .acc-dest__panel--good .acc-dest__lines li::before {
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 70% no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 70% no-repeat,
     color-mix(in srgb, var(--deep-teal) 9%, var(--white));
 }
 .acc-dest__panel--watch .acc-dest__lines li::before {
@@ -11436,3 +11407,170 @@ p.blog-cluster-links__part > .text-link,
    the garden beyond in frame rather than the floor. */
 .split__media img.media-guest-doors { object-position: 50% 28%; }
 .split__media img.media-guest-garden { object-position: 50% 40%; }
+
+/* Icons: one Lucide set (inc/icons.php) on a 24px grid at a 1.75 stroke. The
+   containers below size them; this is the default. */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  vertical-align: middle;
+}
+.text-link .icon { width: 1em; height: 1em; }
+
+/* Whitstable parking: the two places to park, each led by its headline figure
+   (2 spaces, free bays) under a rule, then the harbour car parks as a notice.
+   It was two plain paragraphs and a grey box with a gold "!" disc. */
+.parking-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 var(--space-10);
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 768px) {
+  .parking-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.parking-option {
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--rule);
+}
+.parking-option__figure {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-serif);
+  font-size: var(--type-h2);
+  font-weight: var(--type-display-weight);
+  line-height: 1;
+  color: var(--deep-teal);
+}
+.parking-option__unit {
+  margin-left: var(--space-1);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--type-label-tracking);
+  text-transform: uppercase;
+  color: var(--warm-gold-text);
+  vertical-align: 0.35em;
+}
+.parking-option__title { margin: 0 0 var(--space-2); font-size: var(--type-h3); }
+.parking-option > p:not(.parking-option__figure) {
+  margin: 0;
+  max-width: var(--measure-text);
+  color: var(--body-secondary);
+}
+
+/* Notices (Harbour ANPR): a cool tint, a line icon, the copy, and any links
+   stacked on the right from 960px. */
+.notice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--deep-teal) 5%, var(--white));
+  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+}
+.notice__icon { padding-top: 0.1rem; color: var(--warm-gold-text); }
+.notice__icon .icon { display: block; }
+.notice__title { margin: 0 0 var(--space-1); font-size: var(--type-h3); }
+.notice__body p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
+.notice__links {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.notice__links .text-link { gap: var(--space-1); }
+@media (min-width: 960px) {
+  .notice {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: var(--space-6);
+  }
+  .notice__links {
+    grid-column: 3;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Accessibility notes (slings, own hoist): the Lucide warning and info icons
+   in place of a gold "!" disc and an italic "i". */
+.acc-callout__icon,
+.acc-callout--quiet .acc-callout__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0;
+  background: none;
+  color: var(--warm-gold-text);
+  font-style: normal;
+}
+.acc-callout--quiet .acc-callout__icon { color: var(--deep-teal); }
+.acc-callout__icon .icon { display: block; width: 100%; height: 100%; }
+
+/* Notice links keep their arrow beside the last word when they wrap. */
+.notice__links li { display: flex; align-items: center; min-height: var(--tap-target, 2.75rem); }
+.notice__links .text-link { display: inline; min-height: 0; }
+.notice__links .text-link .icon { margin-left: 0.15em; vertical-align: -0.1em; }
+
+/* Optional care band (13 Oct 2026, owner's pick): Keelie and Nikki's faces
+   beside one column of copy, so the band reads as "ask us", not as a stray
+   link. Two earlier layouts (link far right; two halves) were rejected. */
+.care-pointer__card { display: grid; gap: var(--space-3); }
+.care-pointer__card > * { margin: 0; }
+.care-faces { display: flex; }
+.care-faces__photo {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 3px solid var(--white);
+  object-fit: cover;
+  object-position: 50% 28%;
+  box-shadow: 0 1px 3px rgba(12, 35, 42, 0.12);
+}
+.care-faces__photo + .care-faces__photo { margin-left: -0.9rem; }
+.band-subtle .care-faces__photo { border-color: var(--bg-subtle); }
+.care-pointer__card > .lede { max-width: var(--measure-text); color: var(--body-secondary); }
+.care-pointer__card > .text-link { justify-self: start; gap: var(--space-2); white-space: normal; }
+.care-pointer__card > .text-link .icon {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform var(--duration-fast, 0.15s) ease;
+}
+.care-pointer__card > .text-link:hover .icon { transform: translateX(0.2rem); }
+@media (min-width: 768px) {
+  .care-pointer__card {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: var(--space-8);
+    row-gap: var(--space-3);
+    align-items: start;
+  }
+  .care-pointer__card > .care-faces { grid-column: 1; grid-row: 1 / span 4; padding-top: var(--space-1); }
+  .care-pointer__card > :not(.care-faces) { grid-column: 2; }
+  .care-pointer__card > .text-link { grid-row: auto; align-self: start; }
+  .care-faces__photo { width: 5rem; height: 5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .care-pointer__card > .text-link .icon { transition: none; }
+}
+
+/* Measure and leading (13 Oct 2026). Section intros were balanced, so a
+   two-line intro broke at ~40 characters in a 70-character column, and set at
+   1.7 leading, looser than body copy, under 1.1 headings: short, gappy lines
+   that read as unfinished at tablet widths. Intros now fill their measure
+   (pretty only avoids a lone last word) at 1.55, and heads stacked below the
+   1024px split take the full column instead of a 608px box. */
+.container > .section-head .lede,
+.section-head .lede,
+.care-pointer__card .lede { text-wrap: pretty; }
+.container > .process__head,
+.container > .section-head { max-width: none; }
+.container > .section-head > h2,
+.container > .process__head > h2 { max-width: 20em; }

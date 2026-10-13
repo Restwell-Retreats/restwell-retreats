@@ -148,15 +148,15 @@ $hiw_care_body    = $restwell_hiw_prefer_live(
 		? restwell_page_content_text(
 			$restwell_hiw_id,
 			'hiw_care_cta_body',
-			'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.'
+			'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.'
 		)
-		: 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
-	'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
+		: 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
+	'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
 	array(
-		'Home care from Continuity can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
+		'Home care from Continuity can be added on the same enquiry, and they’ll quote for it. Bring your own team if you prefer.',
 		'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.',
 		'Ask about Continuity of Care Services when you enquire, or bring your own team. Care can be arranged in the same conversation as your booking.',
-		'Continuity home care can be added on the same enquiry, quoted separately. Bring your own team if you prefer.',
+		'Continuity home care can be added on the same enquiry, and they’ll quote for it. Bring your own team if you prefer.',
 	)
 );
 $hiw_care_btn     = $restwell_hiw_prefer_live(
@@ -411,6 +411,7 @@ get_template_part(
 	<section class="section-y section-y--slim band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
+		  <?php get_template_part( 'template-parts/care-faces' ); ?>
 		  <?php if ( '' !== $hiw_care_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $hiw_care_label ); ?></p>
 		  <?php endif; ?>
@@ -419,7 +420,7 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $hiw_care_body ); ?></p>
 		  <?php endif; ?>
 		  <?php if ( '' !== $hiw_care_btn && '' !== $hiw_care_url ) : ?>
-		  <a class="text-link" href="<?php echo esc_url( $hiw_care_url ); ?>"><?php echo esc_html( $hiw_care_btn ); ?></a>
+		  <a class="text-link" href="<?php echo esc_url( $hiw_care_url ); ?>"><?php echo esc_html( $hiw_care_btn ); ?><?php restwell_the_icon( 'arrow-right' ); ?></a>
 		  <?php endif; ?>
 		</div>
 	  </div>

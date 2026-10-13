@@ -54,7 +54,7 @@ If you need a measurement that isn’t on the access statement, ring us and we�
 
 ## If you’re commissioning or funding a stay
 
-This is a private holiday let, not a local authority short-break service. Restwell invoices the accommodation; Continuity of Care Services invoice any care separately and hold the CQC registration.
+This is a private holiday let, not a local authority short-break service. Restwell provides the accommodation; Continuity of Care Services provide any care and hold the CQC registration.
 
 The house rate doesn’t change with the funder. Only the name on the invoice does. We can bill you, a council, the NHS or a grant body. → `/resources/`
 

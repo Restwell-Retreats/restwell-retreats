@@ -22,7 +22,7 @@ Booking has three steps: enquire with your dates, we confirm the bungalow and ta
 
 ## Optional care
 
-Continuity of Care Services provides home care inside the bungalow during a stay, from a morning visit to nurse-led support for complex needs. Continuity is a separate company that invoices the care and holds the CQC rating; Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell provides the accommodation.
+Continuity of Care Services provides home care inside the bungalow during a stay, from a morning visit to nurse-led support for complex needs. Continuity quote for the care and hold the CQC rating; Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell provides the accommodation.
 
 ## Pricing & dates
 

@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once get_template_directory() . '/inc/icons.php';
 require_once get_template_directory() . '/inc/admin-meta-boxes.php';
 require_once get_template_directory() . '/inc/blog-categories.php';
 require_once get_template_directory() . '/inc/accessibility-equipment.php';

@@ -471,7 +471,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		</ul>
 
 		<aside class="acc-callout" id="equip-slings">
-			  <span class="acc-callout__icon" aria-hidden="true">!</span>
+			  <span class="acc-callout__icon" aria-hidden="true"><?php restwell_the_icon( 'triangle-alert' ); ?></span>
 			  <div>
 				<p class="acc-callout__title"><?php esc_html_e( 'Please bring your own slings', 'restwell-retreats' ); ?></p>
 				<p><?php esc_html_e( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ); ?></p>
@@ -592,7 +592,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 
 					<?php if ( 'transfers' === $acc_gid ) : ?>
 					<aside class="acc-callout acc-callout--quiet">
-					<span class="acc-callout__icon" aria-hidden="true">i</span>
+					<span class="acc-callout__icon" aria-hidden="true"><?php restwell_the_icon( 'info' ); ?></span>
 					<div>
 					  <p class="acc-callout__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></p>
 					  <p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
@@ -731,7 +731,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			$acc_faq_accordion = array();
 			foreach ( $acc_faq_items as $faq_i => $faq_row ) {
 				$answer = esc_html( $faq_row['a'] );
-				$answer = $acc_link_phrase( $answer, 'care can be arranged separately', restwell_nav_resolve_page_url( 'optional-care' ) );
+				$answer = $acc_link_phrase( $answer, 'optional home care', restwell_nav_resolve_page_url( 'optional-care' ) );
 				$acc_faq_accordion[] = array(
 					'q'    => $faq_row['q'],
 					'a'    => '<p>' . $answer . '</p>',

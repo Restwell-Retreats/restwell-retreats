@@ -26,9 +26,9 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_subheading',
-		'Private bungalow with a level wet room and ceiling track hoist. Home care from Continuity, quoted separately.'
+		'Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.'
 	)
-	: 'Private bungalow with a level wet room and ceiling track hoist. Home care from Continuity, quoted separately.';
+	: 'Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.';
 
 $hero_cta_primary_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'hero_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
@@ -272,19 +272,19 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  <div class="container">
 		<ul class="facts-strip__list" role="list">
 		  <li>
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M5 23 24 7l19 16M10 20v21h28V20M20 41V29h8v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'house' ); ?></span>
 			<span><?php esc_html_e( 'Private,', 'restwell-retreats' ); ?> <span class="nowrap"><?php esc_html_e( 'single-storey house', 'restwell-retreats' ); ?></span></span>
 		  </li>
 		  <li>
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 22l3.2-8.3c.5-1.1 1.5-1.7 2.6-1.7h10.4c1.1 0 2.1.6 2.6 1.7L35 22"/><path d="M10 22h28a3 3 0 0 1 3 3v8H7v-8a3 3 0 0 1 3-3z"/><path d="M10 33v3.5a1.5 1.5 0 0 0 1.5 1.5h2a1.5 1.5 0 0 0 1.5-1.5V33M33 33v3.5a1.5 1.5 0 0 0 1.5 1.5h2a1.5 1.5 0 0 0 1.5-1.5V33M19 28h10"/><circle cx="12.5" cy="27.5" r="1.5"/><circle cx="35.5" cy="27.5" r="1.5"/><path d="M4 43h40"/></g></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-front' ); ?></span>
 			<span><?php esc_html_e( 'Driveway parking for two', 'restwell-retreats' ); ?></span>
 		  </li>
 		  <li>
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 42V13a6 6 0 0 1 6-6h3a6 6 0 0 1 6 6v2"/><path d="M20 15h14a7 7 0 0 1-14 0z"/><path d="M23 27l-1 3M27 27v4M31 27l1 3"/><path d="M5 42h38M22 38h10"/></g></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'shower-head' ); ?></span>
 			<span><?php esc_html_e( 'Level-access wet room', 'restwell-retreats' ); ?></span>
 		  </li>
 		  <li>
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M5 7h38M24 7v4M17 11h14v7H17zM24 18v5M14 23h20M15 23l2.6 14c.2 1.1 1.2 1.9 2.3 1.9h8.2c1.1 0 2.1-.8 2.3-1.9L33 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="29.5" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bed' ); ?></span>
 			<span><?php esc_html_e( 'Ceiling track hoist', 'restwell-retreats' ); ?></span>
 		  </li>
 		</ul>

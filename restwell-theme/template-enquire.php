@@ -128,7 +128,7 @@ get_template_part(
 		<div class="multistep" data-multistep>
 			<?php if ( $enq_success ) : ?>
 			<div class="step-success" tabindex="-1">
-				<span class="icon-circle icon-circle--lg" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+				<span class="icon-circle icon-circle--lg" aria-hidden="true"><?php restwell_the_icon( 'check' ); ?></span>
 				<?php if ( $enq_duplicate ) : ?>
 				<h2><?php esc_html_e( 'We already have your enquiry', 'restwell-retreats' ); ?></h2>
 				<p class="lede"><?php esc_html_e( 'You submitted recently with this email, so we have not sent another acknowledgement. Our team is still working from your earlier message and will reply within 48 hours on most enquiries.', 'restwell-retreats' ); ?></p>
@@ -159,7 +159,7 @@ get_template_part(
 				<li class="step-indicator__item is-current" data-step-item="1" aria-current="step">
 					<span class="step-indicator__marker" aria-hidden="true">
 						<span class="step-indicator__num">1</span>
-						<svg class="step-indicator__check" viewBox="0 0 24 24" focusable="false"><path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<?php restwell_the_icon( 'check', 'step-indicator__check' ); ?>
 					</span>
 					<span class="step-indicator__label"><?php esc_html_e( 'About you', 'restwell-retreats' ); ?></span>
 				</li>
@@ -167,7 +167,7 @@ get_template_part(
 				<li class="step-indicator__item" data-step-item="2">
 					<span class="step-indicator__marker" aria-hidden="true">
 						<span class="step-indicator__num">2</span>
-						<svg class="step-indicator__check" viewBox="0 0 24 24" focusable="false"><path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<?php restwell_the_icon( 'check', 'step-indicator__check' ); ?>
 					</span>
 					<span class="step-indicator__label"><?php esc_html_e( 'Your stay', 'restwell-retreats' ); ?></span>
 				</li>
@@ -175,7 +175,7 @@ get_template_part(
 				<li class="step-indicator__item" data-step-item="3">
 					<span class="step-indicator__marker" aria-hidden="true">
 						<span class="step-indicator__num">3</span>
-						<svg class="step-indicator__check" viewBox="0 0 24 24" focusable="false"><path d="M4.5 12.5l5 5L19.5 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<?php restwell_the_icon( 'check', 'step-indicator__check' ); ?>
 					</span>
 					<span class="step-indicator__label"><?php esc_html_e( 'Your needs', 'restwell-retreats' ); ?></span>
 				</li>

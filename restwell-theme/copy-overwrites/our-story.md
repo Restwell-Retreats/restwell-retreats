@@ -30,7 +30,7 @@ Family, friends and three specialist teams helped bring the bungalow together. O
 
 ## Two companies, and why that matters to you
 
-Restwell provides the accommodation. Continuity of Care Services provides the optional care. They invoice separately, and that is deliberate: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.
+Restwell provides the accommodation. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.
 
 Victoria Walker owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call. The phone number is 01622 809881.
 

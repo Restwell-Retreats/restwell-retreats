@@ -75,10 +75,10 @@ $care_support_items   = array(
 	),
 );
 $care_support_icons = array(
-	'<svg viewBox="0 0 24 24" focusable="false"><path d="M12 20.5s-7.5-4.6-9.3-9C1.4 8 3 5 6.2 5c2.1 0 4 1.3 5.8 3.8C13.8 6.3 15.7 5 17.8 5 21 5 22.6 8 21.3 11.5c-1.8 4.4-9.3 9-9.3 9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-	'<svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5V12l3.2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-	'<svg viewBox="0 0 24 24" focusable="false"><path d="M15.8 3.6a8.4 8.4 0 1 0 4.9 15.2A8.4 8.4 0 0 1 15.8 3.6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-	'<svg viewBox="0 0 24 24" focusable="false"><path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+	restwell_icon( 'hand-heart' ),
+	restwell_icon( 'clock' ),
+	restwell_icon( 'moon' ),
+	restwell_icon( 'move-vertical' ),
 );
 
 $care_own_label   = $care_txt( 'care_own_label', 'Your own team' );

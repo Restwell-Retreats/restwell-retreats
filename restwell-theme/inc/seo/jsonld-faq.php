@@ -103,7 +103,7 @@ function restwell_get_faq_page_default_pairs() {
 		),
 		array(
 			'q'   => 'Can we add care to our booking?',
-			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Care is quoted separately from the bungalow. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
+			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Continuity quote for the care once you’ve talked through what you need. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
 			'cat' => 'care',
 		),
 		array(

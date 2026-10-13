@@ -50,7 +50,7 @@ $restwell_res_intro   = $res_txt(
 $res_chc_heading = $res_txt( 'res_chc_heading', 'Continuing Healthcare and personal health budgets' );
 $res_chc_body    = $res_txt(
 	'res_chc_body',
-	'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that, which is why we keep it on a separate invoice.'
+	'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that.'
 );
 
 $res_grants_heading = $res_txt( 'res_grants_heading', 'Grants and key contacts' );
@@ -191,7 +191,7 @@ get_template_part(
 			<div class="funding-route__copy">
 			  <p class="eyebrow">Grants and self-pay</p>
 			  <h3>Charity awards, or you pay Restwell</h3>
-			  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates. If it only covers part, we can split the invoices.</p>
+			  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
 			</div>
 			<div class="cover-split">
 			  <div class="cover-split__col cover-split__col--yes">
@@ -199,7 +199,6 @@ get_template_part(
 				<ul>
 				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> A contribution toward the holiday itself from Revitalise (typically £500)</li>
 				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> A cover carer from Respite Association (average around £450)</li>
-				  <li><span class="cover-split__mark" aria-hidden="true">✓</span> Split invoices, if a grant only covers part</li>
 				</ul>
 			  </div>
 			  <div class="cover-split__col cover-split__col--no">
@@ -313,20 +312,20 @@ get_template_part(
 		<header class="section-head">
 		  <p class="eyebrow">What we send</p>
 		  <h2 id="help-h">We’ll send what they usually ask for</h2>
-		  <p class="lede">Tell us the dates, the funding route, and who should receive which invoice. Continuity can quote care on the same call if you want it.</p>
+		  <p class="lede">Tell us the dates and who’s funding the stay. Continuity can quote care on the same call if you want it.</p>
 		</header>
 		<ul class="persona-list persona-list--docs" role="list">
 		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 3h7l4 4v14H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v4h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M11.5 17.5h3M10 17.5c1-.8 1.2-2 .9-3.4-.3-1.4.4-2.6 1.8-2.6 1 0 1.6.5 1.8 1.3M9.8 14.8h3.4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'receipt-text' ); ?></span>
 			<h3>Written quote at published rates</h3>
 		  </li>
 		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4V3h6v1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 9.5h7M8.5 13h7M8.5 16.5h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'clipboard-list' ); ?></span>
 			<h3>Access statement and equipment list</h3>
 		  </li>
 		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M4 6h10v14H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 3h12v14h-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M6.5 10h5M6.5 13h5M6.5 16h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-			<h3>Invoices set up for the house, and for Continuity if you want care</h3>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'files' ); ?></span>
+			<h3>A care quote from Continuity, if you want care</h3>
 		  </li>
 		</ul>
 		<p class="docs-note">Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
@@ -384,7 +383,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="res-q5-a" role="region" aria-labelledby="res-q5" hidden>
-				<p>Speak to your CHC coordinator and ask which hours continue away from home. Enquire with Restwell, and Continuity can quote the care on the same call. We’ll send the access statement; you agree who receives which invoice.</p>
+				<p>Speak to your CHC coordinator and ask which hours continue away from home. Enquire with Restwell, and Continuity can quote the care on the same call. We’ll send the access statement.</p>
 			  </div>
 			</div>
 			<div class="faq-item">

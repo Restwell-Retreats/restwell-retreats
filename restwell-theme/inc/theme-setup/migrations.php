@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 75;
+const RESTWELL_SCHEMA_VERSION = 76;
 
 
 /**
@@ -1912,6 +1912,66 @@ function restwell_migrate_daylight_heroes_v75() {
 }
 
 /**
+ * Care copy corrected by the owner (13 Oct 2026): Continuity quote the care, and
+ * the site must not claim care is invoiced, quoted or arranged "separately", or
+ * describe split invoices. Swaps those exact sentences inside any stored page
+ * field, so the rest of a hand-edited value is kept.
+ */
+function restwell_migrate_care_quote_wording_v76() {
+	if ( get_option( 'restwell_care_quote_wording_v76', '' ) === '1' ) {
+		return;
+	}
+	$pairs = array(
+		'Home care from Continuity, quoted separately.' => 'Optional home care from Continuity, who quote for it.',
+		'Home care from Continuity can be added on the same enquiry, quoted separately from the bungalow.' => 'Home care from Continuity can be added on the same enquiry, and they’ll quote for it.',
+		'Home care from Continuity can go on the same enquiry, quoted separately.' => 'Home care from Continuity can go on the same enquiry, and they’ll quote for it.',
+		'Home care from Continuity can be added on the same enquiry, quoted separately.' => 'Home care from Continuity can be added on the same enquiry, and they’ll quote for it.',
+		'Continuity home care can be added on the same enquiry, quoted separately.' => 'Continuity home care can be added on the same enquiry, and they’ll quote for it.',
+		'Care is quoted separately from the bungalow.' => 'Continuity quote for the care once you’ve talked through what you need.',
+		', and is arranged separately if you want it.' => ', if you want it.',
+		'Optional home care from Continuity of Care Services, our sister company, arranged separately from the bungalow.' => 'Optional home care from Continuity of Care Services, our sister company.',
+		'They invoice separately, and that is deliberate: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.' => 'They quote for it once you’ve talked through what you need.',
+		'The bungalow rent is rarely part of that, which is why we keep it on a separate invoice.' => 'The bungalow rent is rarely part of that.',
+		' If it only covers part, we can split the invoices.' => '',
+		'Tell us the dates, the funding route, and who should receive which invoice.' => 'Tell us the dates and who’s funding the stay.',
+		'Invoices set up for the house, and for Continuity if you want care' => 'A care quote from Continuity, if you want care',
+		' We’ll send the access statement; you agree who receives which invoice.' => ' We’ll send the access statement.',
+		'Care is optional and arranged separately from your stay. Tell us what you need when you enquire and we will put together a clear quote.' => 'Care is optional. Tell us what you need when you enquire and Continuity will put together a clear quote.',
+		'our sister company, invoice that separately.' => 'our sister company, will quote for it.',
+		'Home care from Continuity of Care Services, if you’d like it, is invoiced separately by them.' => 'Home care from Continuity of Care Services, if you’d like it, is quoted by them.',
+		' Home care from Continuity of Care Services is invoiced separately by them.' => ' Home care from Continuity of Care Services is quoted by them.',
+		'Restwell is the accommodation; Continuity provide and invoice the care.' => 'Restwell is the accommodation; Continuity provide the care.',
+		'Continuity invoice their care separately from the bungalow, so the house rate stays the house rate whatever you decide.' => 'Continuity quote for care themselves, and the house rate stays the house rate whatever you decide.',
+		'Restwell invoices the accommodation; Continuity of Care Services invoice any care separately and hold the CQC registration.' => 'Restwell provides the accommodation; Continuity of Care Services provide any care and hold the CQC registration.',
+		'Continuity is a separate company that invoices the care and holds the CQC rating;' => 'Continuity quote for the care and hold the CQC rating;',
+		'If you’d like professional care while you’re here, that comes separately from our sister company.' => 'If you’d like professional care while you’re here, that comes from our sister company, Continuity.',
+		'Split invoices, if a grant only covers part' => '',
+		// Guests gave input; they did not design it.
+		'Shaped by guests'                            => 'Shaped with guests',
+	);
+	$pages = get_posts(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+	foreach ( $pages as $page_id ) {
+		foreach ( (array) get_post_meta( (int) $page_id ) as $key => $values ) {
+			if ( '' === $key || '_' === $key[0] || ! isset( $values[0] ) || ! is_string( $values[0] ) || is_serialized( $values[0] ) ) {
+				continue;
+			}
+			$fresh = strtr( $values[0], $pairs );
+			if ( $fresh !== $values[0] ) {
+				update_post_meta( (int) $page_id, $key, $fresh );
+			}
+		}
+	}
+	update_option( 'restwell_care_quote_wording_v76', '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2022,6 +2082,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_post_title_tags_v73',
 		'restwell_our_story_companies_dedupe_v74',
 		'restwell_daylight_heroes_v75',
+		'restwell_care_quote_wording_v76',
 	);
 }
 
@@ -2158,6 +2219,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_companies_dedupe_v74', 112 );
 	add_action( 'init', 'restwell_migrate_daylight_heroes_v75', 118 );
 	add_action( 'after_switch_theme', 'restwell_migrate_daylight_heroes_v75', 113 );
+	add_action( 'init', 'restwell_migrate_care_quote_wording_v76', 119 );
+	add_action( 'after_switch_theme', 'restwell_migrate_care_quote_wording_v76', 114 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

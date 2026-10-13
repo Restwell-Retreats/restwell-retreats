@@ -25,7 +25,7 @@ If your question isn’t here, ring us on 01622 809881 and just ask it. We keep 
 ## The questions
 
 **Is Restwell a care home?**
-No. It’s a private adapted bungalow that you rent as a holiday, and the whole house is yours for the stay. There’s no staff on site and nobody has a key but you. If you’d like professional care while you’re here, that comes separately from our sister company. → `/optional-care/`
+No. It’s a private adapted bungalow that you rent as a holiday, and the whole house is yours for the stay. There’s no staff on site and nobody has a key but you. If you’d like professional care while you’re here, that comes from our sister company, Continuity. → `/optional-care/`
 
 **Is it a respite centre?**
 No, though your funder may well use the word respite, and that’s fine. It’s often how a break like this gets described on paperwork. It’s still a private house rather than a registered respite service.

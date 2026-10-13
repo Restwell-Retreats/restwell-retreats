@@ -70,7 +70,7 @@ $story_host_lede    = $story_txt( 'story_host_lede', 'Victoria owns Restwell and
 
 $story_companies_label   = $story_txt( 'story_companies_label', 'Who does what' );
 $story_companies_heading = $story_txt( 'story_companies_heading', 'Two companies, one conversation' );
-$story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They invoice separately, and that is deliberate: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.' );
+$story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.' );
 $story_companies_items   = array(
 	array(
 		'title' => $story_txt( 'story_companies_1_title', 'Restwell' ),
@@ -88,7 +88,7 @@ $story_companies_items   = array(
 $story_companies_note      = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider. Continuity of Care Services is.' );
 $story_companies_cqc_label = $story_txt( 'story_companies_cqc_label', 'Read Continuity’s CQC profile' );
 
-$story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped by guests' );
+$story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped with guests' );
 $story_shaped_heading = $story_txt( 'story_shaped_heading', 'Designed with the people who’d actually stay' );
 $story_shaped_lede    = $story_txt( 'story_shaped_lede', 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.' );
 

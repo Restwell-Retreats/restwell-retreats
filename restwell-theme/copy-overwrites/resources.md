@@ -16,7 +16,7 @@ Paying for a break, without the guesswork
 
 ## Opening paragraph (print directly under the H1)
 
-Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is invoiced separately by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.
+Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is quoted by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.
 
 ## Intro (`res_intro`)
 
@@ -34,11 +34,9 @@ A Disabled Facilities Grant is for adaptations to your own home: ramps, stairlif
 
 If you’re looking at direct payments for the accommodation or for a PA’s time, start here → `/direct-payment-holiday-accommodation/`
 
-## The house and the care go on separate invoices
+## Care is quoted by Continuity
 
-Restwell invoices the bungalow. Continuity of Care Services invoice any care you’ve asked for. That separation is deliberate and it usually helps, because funders frequently treat accommodation and care as two different budgets with two different people signing them off.
-
-One enquiry starts both conversations, on the same phone number: 01622 809881. Tell us who we need to speak to and we’ll send the paperwork to the right desk.
+If you’d like home care during the stay, Continuity of Care Services quote for it once you’ve talked through what you need. One enquiry starts both conversations, on the same phone number: 01622 809881.
 
 ## Grants and charities
 

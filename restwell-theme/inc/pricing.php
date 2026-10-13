@@ -175,7 +175,7 @@ function restwell_get_pricing(): array {
 			__( 'A one-off £30 fee applies when setting up your initial care package.', 'restwell-retreats' ),
 			__( 'Escort outings, such as hospital appointments or shopping trips, are charged at 50p per mile plus any parking.', 'restwell-retreats' ),
 			__( 'Bank holidays are charged at double the standard rate. Christmas Day, Boxing Day and New Year\'s Day are charged at treble, as is New Year\'s Eve after 7pm.', 'restwell-retreats' ),
-			__( 'Care is optional and arranged separately from your stay. Tell us what you need when you enquire and we will put together a clear quote.', 'restwell-retreats' ),
+			__( 'Care is optional. Tell us what you need when you enquire and Continuity will put together a clear quote.', 'restwell-retreats' ),
 		),
 	);
 
@@ -500,7 +500,7 @@ function restwell_get_pricing_faq_defaults(): array {
 		),
 		array(
 			'q'   => 'Is care included in the price?',
-			'a'   => 'No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, invoice that separately.',
+			'a'   => 'No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, will quote for it.',
 			'cat' => 'care',
 		),
 		array(

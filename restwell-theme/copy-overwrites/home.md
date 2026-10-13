@@ -24,7 +24,7 @@ Accessible holidays in Whitstable
 
 ## Opening paragraph (print directly under the H1, before the welcome)
 
-Private bungalow with a level wet room and ceiling track hoist. Home care from Continuity, quoted separately.
+Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.
 
 ## Hero proof line
 
@@ -32,7 +32,7 @@ One named Google review, or a rating and review count, inside the first screen. 
 
 ## Intro (`hero_subheading`)
 
-Private bungalow with a level wet room and ceiling track hoist. Home care from Continuity, quoted separately.
+Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.
 
 ## Hero CTAs
 
@@ -42,7 +42,7 @@ Private bungalow with a level wet room and ceiling track hoist. Home care from C
 - Secondary: Look inside the bungalow → `/the-property/`
 - Beneath the primary: We aim to reply within 48 hours, and there’s no deposit until you’ve decided the house fits.
 
-No em dashes in on-page copy. Continuity depth stays on `/optional-care/`. Hero keeps the searchable care claim, but never imply care is free or bundled into the bungalow rate: say “arranged separately” / “quoted separately.”
+No em dashes in on-page copy. Continuity depth stays on `/optional-care/`. Hero keeps the searchable care claim, but never imply care is free or bundled into the bungalow rate: say care is optional and Continuity quote for it. Never say care is invoiced, quoted or arranged “separately” (corrected by the owner, 13 Oct 2026).
 
 ## The bungalow (`#property`)
 
@@ -73,7 +73,7 @@ Here you’re on one level from the driveway to the garden, with only the people
 
 H2: Optional home care
 
-Home care from Continuity can be added on the same enquiry, quoted separately from the bungalow. Bringing your own carer is fine too.
+Home care from Continuity can be added on the same enquiry, and they’ll quote for it. Bringing your own carer is fine too.
 
 What home care here actually looks like → `/optional-care/`
 
@@ -88,14 +88,14 @@ If a council, a grant or a direct payment might go towards the cost, we can invo
 ## FAQ (visible + JSON-LD, same three)
 
 1. **Is Restwell a care home?**
-   No. It’s a private bungalow holiday: one house, by the sea, for your party alone. Optional home care comes from our sister company, Continuity, and is arranged separately if you want it.
+   No. It’s a private bungalow holiday: one house, by the sea, for your party alone. Optional home care comes from our sister company, Continuity, if you want it.
 
 2. **Will a wheelchair actually fit?**
    The house is single-storey and step-free throughout. The front door is 965mm, internal doorways are 926mm, the wet room is level-access, and there’s a ceiling hoist over the profiling bed. If you need a measurement we haven’t published, just ask and we’ll go and measure it.
 
 3. **Can we add home care?**
-   Yes. Continuity of Care Services can come in while you’re staying. Care is quoted separately from the bungalow. Mention it when you enquire, or ring us on 01622 809881.
+   Yes. Continuity of Care Services can come in while you’re staying. Continuity quote for the care once you’ve talked through what you need. Mention it when you enquire, or ring us on 01622 809881.
 
 ## JSON-LD LodgingBusiness description
 
-A private adapted bungalow by the sea in Whitstable, sleeping five. Single-storey and step-free, with a level-access wet room and a ceiling track hoist. Optional home care from Continuity of Care Services, our sister company, arranged separately from the bungalow.
+A private adapted bungalow by the sea in Whitstable, sleeping five. Single-storey and step-free, with a level-access wet room and a ceiling track hoist. Optional home care from Continuity of Care Services, our sister company.

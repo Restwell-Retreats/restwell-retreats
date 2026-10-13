@@ -16,7 +16,7 @@ Care during your stay, arranged in the same conversation
 
 ## Opening paragraph (print directly under the H1)
 
-Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide and invoice the care.
+Continuity of Care Services can provide home care inside the bungalow while you’re staying here. They’re our sister company, rated Good by the CQC, and they can be arranged on the same enquiry as the house. Victoria Walker owns Restwell and is Continuity’s registered manager. Restwell is the accommodation; Continuity provide the care.
 
 ## Intro (`care_intro`)
 
@@ -58,7 +58,7 @@ A support worker can use the second bedroom, or we can think about the sleeping 
 
 ## What it costs
 
-Continuity invoice their care separately from the bungalow, so the house rate stays the house rate whatever you decide. Any guide rates we publish sit on `/pricing/` and are labelled as Continuity’s, because the right support genuinely depends on the person and we won’t quote you a figure before we understand what would help.
+Continuity quote for care themselves, and the house rate stays the house rate whatever you decide. Any guide rates we publish sit on `/pricing/` and are labelled as Continuity’s, because the right support genuinely depends on the person and we won’t quote you a figure before we understand what would help.
 
 If a council, the NHS or a direct payment might be involved, → `/resources/`
 

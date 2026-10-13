@@ -162,24 +162,18 @@ $footer_enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restw
 <?php get_template_part( 'template-parts/cookie-banner' ); ?>
 <div class="lightbox" id="gallery-lightbox" hidden role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Photo gallery', 'restwell-retreats' ); ?>">
 	<button type="button" class="lightbox__close" data-lightbox-close>
-		<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-			<path d="M3.2 3.2l9.6 9.6M12.8 3.2L3.2 12.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-		</svg>
+		<?php restwell_the_icon( 'x' ); ?>
 		<?php esc_html_e( 'Close', 'restwell-retreats' ); ?>
 	</button>
 	<div class="lightbox__stage">
 		<button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="<?php esc_attr_e( 'Previous image', 'restwell-retreats' ); ?>">
-			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-				<path d="M15 5L8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
+			<?php restwell_the_icon( 'chevron-left' ); ?>
 		</button>
 		<figure class="lightbox__figure">
 			<img class="lightbox__image" data-lightbox-image src="" alt="<?php echo esc_attr__( 'Gallery image', 'restwell-retreats' ); ?>" decoding="async" />
 		</figure>
 		<button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="<?php esc_attr_e( 'Next image', 'restwell-retreats' ); ?>">
-			<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-				<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
+			<?php restwell_the_icon( 'chevron-right' ); ?>
 		</button>
 	</div>
 	<div class="lightbox__meta">
@@ -188,9 +182,7 @@ $footer_enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restw
 	</div>
 </div>
 <button type="button" class="scroll-top" data-scroll-top hidden aria-label="<?php esc_attr_e( 'Back to top', 'restwell-retreats' ); ?>">
-	<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-		<path d="M8 12.8V3.2M3.6 7.6L8 3.2l4.4 4.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-	</svg>
+	<?php restwell_the_icon( 'arrow-up' ); ?>
 </button>
 <?php wp_footer(); ?>
 </body>

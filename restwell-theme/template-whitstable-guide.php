@@ -205,20 +205,28 @@ get_template_part(
 			<h2 id="parking-h"><?php echo esc_html( $wg_parking_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wg_parking_body ); ?></p>
 		  </header>
-		<dl class="comparison-list parking-pair">
-			<div class="comparison-list__item">
-			  <dt>At Restwell</dt>
-			  <dd>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</dd>
+		<ul class="parking-options" role="list">
+			<li class="parking-option">
+			  <p class="parking-option__figure" aria-hidden="true">2 <span class="parking-option__unit">spaces</span></p>
+			  <h3 class="parking-option__title">At Restwell</h3>
+			  <p>Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow; check signs on arrival.</p>
+			</li>
+			<li class="parking-option">
+			  <p class="parking-option__figure" aria-hidden="true">Free <span class="parking-option__unit">Blue Badge bays</span></p>
+			  <h3 class="parking-option__title">Marine Parade &amp; Tankerton</h3>
+			  <p>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</p>
+			</li>
+		</ul>
+		<aside class="notice parking-notice" aria-labelledby="parking-anpr-h">
+			<span class="notice__icon"><?php restwell_the_icon( 'triangle-alert' ); ?></span>
+			<div class="notice__body">
+			  <h3 id="parking-anpr-h" class="notice__title">Harbour ANPR</h3>
+			  <p>Gorrell Tank and Keam’s Yard need your vehicle and Blue Badge pre-registered online. Parking at Tankerton Road and rolling the promenade is usually easier.</p>
 			</div>
-			<div class="comparison-list__item">
-			  <dt>Marine Parade &amp; Tankerton</dt>
-			  <dd>Free Blue Badge bays along Marine Parade (display badge, no app). Tankerton Road Car Park gives three hours free with a physical badge.</dd>
-			</div>
-		  </dl>
-		<aside class="callout parking-notice">
-			<h3>Harbour ANPR</h3>
-			<p>Gorrell Tank and Keam’s Yard need your vehicle and Blue Badge pre-registered online. Parking at Tankerton Road and rolling the promenade is usually easier.</p>
-			<p class="place-list__actions"><a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register Blue Badge for ANPR<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span></a></p>
+			<ul class="notice__links" role="list">
+			  <li><a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register Blue Badge for ANPR<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a></li>
+			  <li><a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a></li>
+			</ul>
 		  </aside>
 	  </div>
 	</section>
@@ -324,21 +332,21 @@ get_template_part(
 		</header>
 		<ul class="persona-list persona-list--cards" role="list">
 		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="5" y="3" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 11h14M8.5 21l2-4M15.5 21l-2-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'train-front' ); ?></span>
 			<div>
 			  <h3>Station</h3>
 			  <p>Whitstable station access varies by platform, check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</p>
 			</div>
 		  </li>
 		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="16" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 10h16M7 20v-3M17 20v-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="13.5" r="1" fill="currentColor"/><circle cx="16" cy="13.5" r="1" fill="currentColor"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bus-front' ); ?></span>
 			<div>
 			  <h3>Buses</h3>
 			  <p><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</p>
 			</div>
 		  </li>
 		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 16V12l2-5h10l2 5v4M3.5 16h17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="16.5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="16.5" r="1.8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-taxi-front' ); ?></span>
 			<div>
 			  <h3>Accessible taxis</h3>
 			  <p>Pre-book on busy days. Abacus Cars: <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>

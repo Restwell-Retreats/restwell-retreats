@@ -91,7 +91,7 @@ $wif_resolve_url = static function ( $key, $fallback ) use ( $restwell_wif_id, $
 
 $wif_personas = array(
 	array(
-		'icon'             => 'home',
+		'icon'             => 'house',
 		'title'            => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_family_title', 'Guests and families' )
 			: 'Guests and families',
@@ -112,10 +112,9 @@ $wif_personas = array(
 			? restwell_page_content_text( $restwell_wif_id, 'wif_family_inline_cta_label', 'Read accessibility specification' )
 			: 'Read accessibility specification',
 		'inline_cta_url'   => $wif_resolve_url( 'wif_family_inline_cta_url', '/accessibility/' ),
-		'svg'              => '<path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h3v-5h4v5h3a1 1 0 0 0 1-1v-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
 	),
 	array(
-		'icon'             => 'carers',
+		'icon'             => 'users',
 		'title'            => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_carers_title', 'Carers and support workers' )
 			: 'Carers and support workers',
@@ -136,10 +135,9 @@ $wif_personas = array(
 			? restwell_page_content_text( $restwell_wif_id, 'wif_carers_inline_cta_label', 'Ask a suitability question' )
 			: 'Ask a suitability question',
 		'inline_cta_url'   => $wif_resolve_url( 'wif_carers_inline_cta_url', '/enquire/' ),
-		'svg'              => '<circle cx="8.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c0-3 2.2-5 5-5s5 2 5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="16.5" cy="9" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 19c.2-2.6 1.9-4.5 4.3-4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
 	),
 	array(
-		'icon'             => 'ot',
+		'icon'             => 'clipboard-check',
 		'title'            => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_ot_title', 'Occupational therapists' )
 			: 'Occupational therapists',
@@ -160,10 +158,9 @@ $wif_personas = array(
 			? restwell_page_content_text( $restwell_wif_id, 'wif_ot_inline_cta_label', 'Review accessibility details' )
 			: 'Review accessibility details',
 		'inline_cta_url'   => $wif_resolve_url( 'wif_ot_inline_cta_url', '/accessibility/' ),
-		'svg'              => '<rect x="5" y="4.5" width="14" height="17" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 4.5V3.8A1.8 1.8 0 0 1 10.8 2h2.4A1.8 1.8 0 0 1 15 3.8v.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8.5 12.2l2 2 4-4.5M8.5 17h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
 	),
 	array(
-		'icon'             => 'commissioners',
+		'icon'             => 'building-2',
 		'title'            => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_title', 'Commissioners & social care' )
 			: 'Commissioners & social care',
@@ -184,7 +181,6 @@ $wif_personas = array(
 			? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_inline_cta_label', 'Enquire about a funded stay' )
 			: 'Enquire about a funded stay',
 		'inline_cta_url'   => $wif_resolve_url( 'wif_commissioners_inline_cta_url', '/enquire/' ),
-		'svg'              => '<path d="M4 21V6.5L12 3l8 3.5V21M9 21v-5h6v5M4 21h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
 	),
 );
 
@@ -366,7 +362,7 @@ get_template_part(
 		  <ul class="persona-list persona-list--cards persona-list--index" role="list">
 			<?php foreach ( $wif_personas as $persona ) : ?>
 			<li class="persona-list__item">
-			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><?php echo $persona['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG paths. ?></svg></span>
+			  <span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( $persona['icon'] ); ?></span>
 			  <div>
 				<h3><?php echo esc_html( $persona['title'] ); ?></h3>
 				<?php
@@ -464,10 +460,11 @@ get_template_part(
 	<section class="section-y section-y--slim band-subtle care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
+		  <?php get_template_part( 'template-parts/care-faces' ); ?>
 		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
 		  <h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.', 'restwell-retreats' ); ?></p>
-		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?></a>
+		  <p class="lede"><?php esc_html_e( 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.', 'restwell-retreats' ); ?></p>
+		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></a>
 		</div>
 	  </div>
 	</section>

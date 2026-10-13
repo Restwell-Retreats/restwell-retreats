@@ -65,7 +65,7 @@ function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
 		'hero_heading'             => 'Accessible holidays in Whitstable',
-		'hero_subheading'          => 'Private bungalow with a level wet room and ceiling track hoist. Home care from Continuity, quoted separately.',
+		'hero_subheading'          => 'Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'Enquire',
 		'hero_cta_primary_url'     => '/enquire/',
@@ -240,7 +240,7 @@ function restwell_get_property_page_defaults() {
 		'prop_throughout_body'    => 'The bungalow is on one level with wide doorways (926 mm and 965 mm clear widths) and step-free routes from the porch through to the patio. Full door and transfer measurements are on the accessibility page if you need them before booking.',
 
 		'prop_care_heading' => 'Optional home care',
-		'prop_care_body'    => 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
+		'prop_care_body'    => 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
 
 		'prop_location_heading' => 'A quiet street in Whitstable, close to the coast path',
 		'prop_location_body'    => "The bungalow sits on a quiet residential street, a short walk from The Plough pub and about ten minutes on foot from the seafront.\n\nThe beach is shingle, but the wide, paved promenade offers a step-free route along the coast and forms part of the King Charles III England Coast Path.\n\nJoJo’s is about twenty minutes on foot: ten minutes down to the sea, then west along Tankerton promenade. The Marine Hotel sits on that same stretch. A short drive if you’d rather save your energy for lunch.",
@@ -423,7 +423,7 @@ function restwell_get_how_it_works_page_defaults() {
 
 		'hiw_care_cta_label'   => 'Optional care',
 		'hiw_care_cta_heading' => 'If you’d like care while you’re here',
-		'hiw_care_cta_body'    => 'Home care from Continuity can go on the same enquiry, quoted separately. Or bring your own team. There’s no pressure either way.',
+		'hiw_care_cta_body'    => 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
 		'hiw_care_type1_title' => 'Personal care',
 		'hiw_care_type1_text'  => 'Washing, dressing and daily routines on agreed times.',
 		'hiw_care_type2_title' => 'Visiting care',
@@ -620,7 +620,7 @@ function restwell_get_resources_page_defaults() {
 		'res_grants_body'    => 'These are the organisations people actually use. We can’t say yes on their behalf, but we can send whatever paperwork they ask for.',
 
 		'res_chc_heading' => 'Continuing Healthcare and personal health budgets',
-		'res_chc_body'    => 'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that, which is why we keep it on a separate invoice.',
+		'res_chc_body'    => 'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that.',
 
 		'res_complaints_heading' => 'What if my funding application is refused?',
 		'res_complaints_body'    => 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
@@ -915,7 +915,7 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_companies_label'     => 'Who does what',
 		'story_companies_heading'   => 'Two companies, one conversation',
-		'story_companies_lede'      => 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They invoice separately, and that is deliberate: funders usually treat accommodation and care as two different budgets, so keeping them apart makes your paperwork simpler, not harder.',
+		'story_companies_lede'      => 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.',
 		'story_companies_1_title'   => 'Restwell',
 		'story_companies_1_body'    => 'The bungalow: a private adapted house in Whitstable. Not a care home, and not a respite centre.',
 		'story_companies_2_title'   => 'Continuity of Care Services',
@@ -925,7 +925,7 @@ function restwell_get_our_story_page_defaults() {
 		'story_companies_note'      => 'Restwell is not a registered care provider. Continuity of Care Services is.',
 		'story_companies_cqc_label' => 'Read Continuity’s CQC profile',
 
-		'story_shaped_label'   => 'Shaped by guests',
+		'story_shaped_label'   => 'Shaped with guests',
 		'story_shaped_heading' => 'Designed with the people who’d actually stay',
 		'story_shaped_lede'    => 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.',
 

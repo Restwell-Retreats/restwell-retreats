@@ -24,7 +24,7 @@ We’ve put the numbers at the top because that’s what you came for, and becau
 
 The price is the price. It doesn’t change if a council is paying, or the NHS, or a grant body, or you. Nobody gets quoted differently because of who signs the cheque.
 
-Home care from Continuity of Care Services, if you’d like it, is invoiced separately by them. That’s the only other thing you might pay for, and it’s entirely optional.
+Home care from Continuity of Care Services, if you’d like it, is quoted by them. That’s the only other thing you might pay for, and it’s entirely optional.
 
 ## The tariff
 
@@ -56,7 +56,7 @@ Who might help pay for a stay → `/resources/`
    You book the whole house, with all the access equipment included. A week is £1,300 off-peak and £1,400 in peak season; midweek nights are £185 and £200. A 50% deposit reserves your dates, and the balance is due a week before arrival.
 
 2. **Is care included in the price?**
-   No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, invoice that separately.
+   No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, will quote for it.
 
 3. **Are there extra charges for the equipment?**
    No. The hoist, the profiling bed and the wet room kit listed on the access statement are all included in the house rate.
