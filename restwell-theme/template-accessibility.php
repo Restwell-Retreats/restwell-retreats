@@ -271,87 +271,75 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		  <p class="lede"><?php echo esc_html( $acc_fit_intro ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<div class="fit-check" data-fit-check>
-		  <div class="fit-check__panel">
-			<div class="fit-check__control">
-			  <div class="fit-check__control-row">
-				<label class="fit-check__label" for="fit-check-number" id="fit-check-label">Wheelchair width</label>
-				<div class="fit-check__control-right">
-				  <div class="fit-check__readout">
-					<input type="number" id="fit-check-number" data-fit-number inputmode="decimal" min="500" max="1050" step="1" value="700" aria-describedby="fit-check-summary" />
-				  </div>
-				  <div class="fit-check__unit-toggle" role="group" aria-label="Measurement units">
-					<button type="button" data-fit-unit="mm" aria-pressed="true">mm</button>
-					<button type="button" data-fit-unit="in" aria-pressed="false">in</button>
-				  </div>
-				</div>
+		<div class="door-check" data-fit-check>
+		  <div class="door-check__controls">
+			<label class="door-check__label" for="fit-check-number" id="fit-check-label"><?php esc_html_e( 'Your chair’s width', 'restwell-retreats' ); ?></label>
+			<div class="door-check__readout">
+			  <input class="door-check__number" type="number" id="fit-check-number" data-fit-number inputmode="decimal" min="500" max="1050" step="1" value="700" aria-describedby="fit-check-summary" />
+			  <div class="door-check__units" role="group" aria-label="<?php esc_attr_e( 'Measurement units', 'restwell-retreats' ); ?>">
+				<button type="button" data-fit-unit="mm" aria-pressed="true">mm</button>
+				<button type="button" data-fit-unit="in" aria-pressed="false">in</button>
 			  </div>
-			  <label class="screen-reader-text" for="fit-check-input">Wheelchair width slider</label>
-			  <input type="range" id="fit-check-input" min="500" max="1050" step="1" value="700" data-fit-input aria-labelledby="fit-check-label" aria-describedby="fit-check-summary" />
-			  <div class="fit-check__scale" aria-hidden="true">
-				<span data-fit-min-label>500mm</span>
-				<span data-fit-max-label>1050mm</span>
-			  </div>
-			  <p class="fit-check__summary" id="fit-check-summary" data-fit-summary role="status" aria-live="polite"></p>
 			</div>
-			<div class="fit-check__presets">
-			  <h3 class="fit-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
-			  <?php if ( '' !== $acc_fit_guide_intro ) : ?>
-			  <p class="fit-check__presets-intro"><?php echo esc_html( $acc_fit_guide_intro ); ?></p>
-			  <?php endif; ?>
-			  <div class="fit-check__chips" role="group" aria-labelledby="fit-check-presets-h">
-				<button type="button" class="fit-check__chip" data-fit-preset="570" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 570 millimetres, typical transit chair', 'restwell-retreats' ); ?>">
-				  <span class="fit-check__chip-name"><?php esc_html_e( 'Transit', 'restwell-retreats' ); ?></span>
-				  <span class="fit-check__chip-size">530–610mm</span>
-				</button>
-				<button type="button" class="fit-check__chip" data-fit-preset="660" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 660 millimetres, typical self-propelled chair', 'restwell-retreats' ); ?>">
-				  <span class="fit-check__chip-name"><?php esc_html_e( 'Self-propelled', 'restwell-retreats' ); ?></span>
-				  <span class="fit-check__chip-size">635–685mm</span>
-				</button>
-				<button type="button" class="fit-check__chip" data-fit-preset="700" aria-pressed="true" aria-label="<?php echo esc_attr__( 'Set checker to 700 millimetres, typical powered chair', 'restwell-retreats' ); ?>">
-				  <span class="fit-check__chip-name"><?php esc_html_e( 'Powered', 'restwell-retreats' ); ?></span>
-				  <span class="fit-check__chip-size">600–760mm+</span>
-				</button>
-				<button type="button" class="fit-check__chip" data-fit-preset="800" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 800 millimetres, typical bariatric chair', 'restwell-retreats' ); ?>">
-				  <span class="fit-check__chip-name"><?php esc_html_e( 'Bariatric', 'restwell-retreats' ); ?></span>
-				  <span class="fit-check__chip-size">Over 760mm</span>
-				</button>
-			  </div>
-			  <p class="fit-check__presets-note"><?php esc_html_e( 'Choose a type to try a midpoint. Measure your own chair before you book.', 'restwell-retreats' ); ?></p>
+			<label class="screen-reader-text" for="fit-check-input"><?php esc_html_e( 'Wheelchair width slider', 'restwell-retreats' ); ?></label>
+			<input class="door-check__range" type="range" id="fit-check-input" min="500" max="1050" step="1" value="700" data-fit-input aria-labelledby="fit-check-label" aria-describedby="fit-check-summary" />
+			<div class="door-check__scale" aria-hidden="true">
+			  <span data-fit-min-label>500mm</span>
+			  <span data-fit-max-label>1050mm</span>
 			</div>
-			<div class="fit-check__gauges">
-			<div class="fit-check__bars">
-			  <div class="fit-bar" data-fit-gauge data-door-width="965" data-fit-name="the front door">
-				<div class="fit-bar__head">
-				  <span class="fit-bar__label">Front door</span>
-				  <span class="fit-bar__spec" data-fit-spec>965mm</span>
-				</div>
-				<div class="fit-bar__track" data-fit-track aria-hidden="true">
-				  <span class="fit-bar__door-mark fit-bar__door-mark--start"></span>
-				  <span class="fit-bar__fill" data-fit-fill></span>
-				  <span class="fit-bar__door-mark fit-bar__door-mark--end"></span>
-				</div>
-				<p class="fit-bar__result" data-fit-result></p>
+			<div class="door-check__presets">
+			  <h3 class="door-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
+			  <div class="door-check__chips" role="group" aria-labelledby="fit-check-presets-h">
+				<button type="button" class="door-check__chip" data-fit-preset="570" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 570 millimetres, typical transit chair', 'restwell-retreats' ); ?>">
+				  <span class="door-check__chip-name"><?php esc_html_e( 'Transit', 'restwell-retreats' ); ?></span>
+				  <span class="door-check__chip-size">530–610mm</span>
+				</button>
+				<button type="button" class="door-check__chip" data-fit-preset="660" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 660 millimetres, typical self-propelled chair', 'restwell-retreats' ); ?>">
+				  <span class="door-check__chip-name"><?php esc_html_e( 'Self-propelled', 'restwell-retreats' ); ?></span>
+				  <span class="door-check__chip-size">635–685mm</span>
+				</button>
+				<button type="button" class="door-check__chip" data-fit-preset="700" aria-pressed="true" aria-label="<?php echo esc_attr__( 'Set checker to 700 millimetres, typical powered chair', 'restwell-retreats' ); ?>">
+				  <span class="door-check__chip-name"><?php esc_html_e( 'Powered', 'restwell-retreats' ); ?></span>
+				  <span class="door-check__chip-size">600–760mm+</span>
+				</button>
+				<button type="button" class="door-check__chip" data-fit-preset="800" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 800 millimetres, typical bariatric chair', 'restwell-retreats' ); ?>">
+				  <span class="door-check__chip-name"><?php esc_html_e( 'Bariatric', 'restwell-retreats' ); ?></span>
+				  <span class="door-check__chip-size">Over 760mm</span>
+				</button>
 			  </div>
-
-			  <div class="fit-bar" data-fit-gauge data-door-width="926" data-fit-name="the internal doors">
-				<div class="fit-bar__head">
-				  <span class="fit-bar__label">Internal doors</span>
-				  <span class="fit-bar__spec" data-fit-spec>926mm</span>
+			  <p class="door-check__hint"><?php echo esc_html( '' !== $acc_fit_guide_intro ? $acc_fit_guide_intro : __( 'Wheel to wheel, including hand rims.', 'restwell-retreats' ) ); ?> <?php esc_html_e( 'Choose a type to try a midpoint, then measure your own chair.', 'restwell-retreats' ); ?></p>
+			</div>
+		  </div>
+		  <div class="door-check__results">
+			<p class="door-check__verdict" id="fit-check-summary" data-fit-summary role="status" aria-live="polite"></p>
+			<div class="door-check__doors">
+			  <?php
+				$acc_doors = array(
+					array( 965, __( 'Front door', 'restwell-retreats' ), 'the front door' ),
+					array( 926, __( 'Internal doors', 'restwell-retreats' ), 'the internal doors' ),
+				);
+				foreach ( $acc_doors as $acc_door ) :
+					?>
+			  <div class="door-check__door" data-fit-gauge data-door-width="<?php echo (int) $acc_door[0]; ?>" data-fit-name="<?php echo esc_attr( $acc_door[2] ); ?>">
+				<div class="door-check__door-head">
+				  <span class="door-check__door-name"><?php echo esc_html( $acc_door[1] ); ?></span>
+				  <span class="door-check__door-width"><span data-fit-spec><?php echo (int) $acc_door[0]; ?>mm</span> <?php esc_html_e( 'clear opening', 'restwell-retreats' ); ?></span>
 				</div>
-				<div class="fit-bar__track" data-fit-track aria-hidden="true">
-				  <span class="fit-bar__door-mark fit-bar__door-mark--start"></span>
-				  <span class="fit-bar__fill" data-fit-fill></span>
-				  <span class="fit-bar__door-mark fit-bar__door-mark--end"></span>
+				<div class="door-check__track" aria-hidden="true">
+				  <span class="door-check__jamb door-check__jamb--start"></span>
+				  <span class="door-check__chair" data-fit-fill></span>
+				  <span class="door-check__jamb door-check__jamb--end"></span>
 				</div>
-				<p class="fit-bar__result" data-fit-result></p>
+				<p class="door-check__result" data-fit-result></p>
 			  </div>
+				<?php endforeach; ?>
 			</div>
 			<?php if ( '' !== $acc_fit_note ) : ?>
-			<p class="fit-check__note"><?php echo esc_html( $acc_fit_note ); ?></p>
+			<p class="door-check__note"><?php echo esc_html( $acc_fit_note ); ?></p>
 			<?php endif; ?>
-			<p class="fit-check__refs-label" id="fit-check-refs-h"><?php esc_html_e( 'Reference standards', 'restwell-retreats' ); ?></p>
-			<ul class="fit-check__refs" aria-labelledby="fit-check-refs-h">
+			<div class="door-check__standards">
+			  <p class="door-check__refs-label" id="fit-check-refs-h"><?php esc_html_e( 'Reference standards', 'restwell-retreats' ); ?></p>
+			  <ul class="door-check__refs" aria-labelledby="fit-check-refs-h">
 			  <li>
 				<a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'UK Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
 			  </li>
