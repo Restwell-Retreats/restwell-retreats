@@ -154,6 +154,11 @@ function restwell_theme_twin_url( $url ) {
 	if ( ! isset( $index[ $stem ] ) && preg_match( '/^(.+)-\d$/', $stem, $dup ) && isset( $index[ $dup[1] ] ) ) {
 		$stem = $dup[1];
 	}
+	// Hero sideloads were saved as "<name>-hero" (How It Works served
+	// BD1-2-LS-hero-1920x1200.jpg, a soft upload, instead of its theme twin).
+	if ( ! isset( $index[ $stem ] ) && preg_match( '/^(.+)-hero$/', $stem, $hero ) && isset( $index[ $hero[1] ] ) ) {
+		$stem = $hero[1];
+	}
 	if ( ! isset( $index[ $stem ] ) ) {
 		return '';
 	}

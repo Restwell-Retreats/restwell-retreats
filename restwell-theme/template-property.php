@@ -164,7 +164,7 @@ get_template_part(
 	</nav>
 
 	<section class="section-y band-white" id="rooms" aria-labelledby="rooms-h">
-	  <div class="container split split--fill">
+	  <div class="container split split--media-first split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="Accessible bedroom with two profiling beds and coastal bedding" width="900" height="675" loading="lazy" decoding="async" />
 		</div>
@@ -189,7 +189,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="wetroom" aria-labelledby="wetroom-h">
-	  <div class="container split split--flip split--fill">
+	  <div class="container split split--flip split--media-first split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
 		</div>
@@ -213,7 +213,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="living" aria-labelledby="living-h">
-	  <div class="container split split--fill">
+	  <div class="container split split--media-first split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living room with rise-and-recline chair and wide walkways" width="900" height="675" loading="lazy" />
 		</div>
@@ -242,7 +242,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="kitchen" aria-labelledby="kitchen-h">
-	  <div class="container split split--flip split--fill">
+	  <div class="container split split--flip split--media-first split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with lowered wheel-under worksurface" width="900" height="675" loading="lazy" />
 		</div>
@@ -266,7 +266,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
-	  <div class="container split split--fill">
+	  <div class="container split split--media-first split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-2-LS.jpg' ) ); ?>" alt="Sunny conservatory with level access to the resin patio and garden" width="900" height="675" loading="lazy" />
 		</div>
@@ -290,7 +290,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="garden" aria-labelledby="garden-h">
-	  <div class="container split split--flip split--fill">
+	  <div class="container split split--flip split--media-first split--fill">
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-1-LS.jpg' ) ); ?>" alt="Level patio and enclosed dog-friendly garden" width="900" height="675" loading="lazy" />
 		</div>

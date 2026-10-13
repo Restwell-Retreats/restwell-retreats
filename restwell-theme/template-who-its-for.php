@@ -198,8 +198,8 @@ $wif_visual_intro = function_exists( 'restwell_page_content_text' )
 
 $wif_kit_cards = array(
 	array(
-		'fallback_src' => 'bungalow/WR-3-LS.jpg',
-		'fallback_alt' => 'Level-access wet room with grab rails',
+		'fallback_src' => 'bungalow/WR-1-LS.jpg',
+		'fallback_alt' => 'Level-access wet room with grab rails and a shower commode chair',
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_1_caption', 'Level-access wet room' )
 			: 'Level-access wet room',
@@ -216,7 +216,7 @@ $wif_kit_cards = array(
 		'slot_index'   => 1,
 	),
 	array(
-		'fallback_src' => 'bungalow/kitchen.png',
+		'fallback_src' => 'bungalow/KT-1-LS.jpg',
 		'fallback_alt' => 'Kitchen with wheel-under worksurface',
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_3_caption', 'Reachable kitchen' )
@@ -363,7 +363,7 @@ get_template_part(
 			<h2 id="situations-h"><?php echo esc_html( $wif_audience_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wif_audience_intro ); ?></p>
 		  </header>
-		  <ul class="persona-list persona-list--cards" role="list">
+		  <ul class="persona-list persona-list--cards persona-list--index" role="list">
 			<?php foreach ( $wif_personas as $persona ) : ?>
 			<li class="persona-list__item">
 			  <span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><?php echo $persona['svg']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- hard-coded SVG paths. ?></svg></span>
@@ -479,7 +479,7 @@ get_template_part(
 		  <h2 id="funding-h"><?php echo esc_html( $wif_funding_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wif_funding_body ); ?></p>
 		</header>
-		<ul class="persona-list persona-list--cards" role="list">
+		<ul class="persona-list persona-list--cards persona-list--index" role="list">
 		  <?php foreach ( $wif_funding_routes as $route ) : ?>
 		  <li class="persona-list__item">
 			<div>

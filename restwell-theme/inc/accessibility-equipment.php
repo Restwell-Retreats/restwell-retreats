@@ -24,8 +24,8 @@ function restwell_accessibility_equipment() {
 			'name'          => __( 'Parking and getting around', 'restwell-retreats' ),
 			'where'         => __( 'Single storey, no internal steps', 'restwell-retreats' ),
 			'lead'          => true,
-			'image'         => 'bungalow/entrance.png',
-			'image_alt'     => __( 'Level driveway and front door of the bungalow', 'restwell-retreats' ),
+			'image'         => 'bungalow/FD-1-LS.jpg',
+			'image_alt'     => __( 'Porch outer doors open onto a level-threshold front door', 'restwell-retreats' ),
 			'specs'         => array(
 				__( 'Driveway', 'restwell-retreats' )          => __( 'Private, resin-bound: two off-road spaces, adapted vehicles welcome', 'restwell-retreats' ),
 				__( 'Street parking', 'restwell-retreats' )    => __( 'Outside the house if you need extra room. No residents permit on this road; check signs on arrival in case street rules change', 'restwell-retreats' ),

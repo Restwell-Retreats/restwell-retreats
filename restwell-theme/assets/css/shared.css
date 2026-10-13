@@ -94,6 +94,9 @@
   --type-body-weight: var(--weight-regular);
 
   --type-lede-size: var(--text-base);
+  /* Hero subtitles are the largest body text on a page (13 Oct 2026): on phones
+     they were 14px over 17px body copy, on desktop the same 17px as every lede. */
+  --type-hero-lede-size: clamp(var(--text-lg), 1rem + 0.4vw, 1.3125rem);
   --type-lede-leading: var(--leading-lede);
 
   --type-eyebrow-size: var(--text-2xs);
@@ -1446,7 +1449,7 @@ body.nav-open { overflow: hidden; }
 .hero__text p:not(.eyebrow) {
   color: rgba(255, 255, 255, 0.92);
   max-width: min(var(--hero-measure), var(--measure-text));
-  font-size: var(--type-lede-size);
+  font-size: var(--type-hero-lede-size);
   line-height: var(--type-lede-leading);
   text-align: left;
   text-align-last: auto;
@@ -1546,7 +1549,7 @@ body.nav-open { overflow: hidden; }
   .hero__text p:not(.eyebrow) {
     margin-inline: 0;
     max-width: 22rem;
-    font-size: var(--type-lede-size);
+    font-size: var(--type-hero-lede-size);
     line-height: var(--type-lede-leading);
     text-align: left;
     text-align-last: left;
@@ -7825,10 +7828,10 @@ body.page-template-template-accessibility-php .scroll-top {
   .testimonials__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  /* With an odd count the final card was orphaned in a 2-up grid, leaving a
-     large empty well beside it at iPad portrait. Let it span the row instead
-     (design-audit follow-up). Only applies while the grid is 2-up. */
-  .testimonials__grid > li:last-child:nth-child(odd) {
+  /* With an odd count one card has to span the row while the grid is 2-up.
+     The first one does, as a lead quote with two beneath it; the last one
+     spanning read as an orphan left over at the bottom (13 Oct 2026). */
+  .testimonials__grid > li:first-child:nth-last-child(odd) {
     grid-column: 1 / -1;
   }
 }
@@ -7837,7 +7840,7 @@ body.page-template-template-accessibility-php .scroll-top {
   .testimonials__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .testimonials__grid > li:last-child:nth-child(odd) {
+  .testimonials__grid > li:first-child:nth-last-child(odd) {
     grid-column: auto;
   }
 }
@@ -8611,13 +8614,13 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 @media (min-width: 720px) {
   .comparison-list--2,
   .comparison-list:has(> .comparison-list__item:nth-child(4):last-child),
-  .persona-list:not(.persona-list--rows):not(.persona-list--docs):has(> .persona-list__item:nth-child(4):last-child),
+  .persona-list:not(.persona-list--rows):not(.persona-list--docs):not(.persona-list--index):has(> .persona-list__item:nth-child(4):last-child),
   .persona-list--2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (min-width: 1100px) {
-  .persona-list:not(.persona-list--2):has(> .persona-list__item:nth-child(4):last-child) {
+  .persona-list:not(.persona-list--2):not(.persona-list--index):has(> .persona-list__item:nth-child(4):last-child) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
@@ -9534,12 +9537,12 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 /* Three cards never wrap 2 + 1 (an orphan card on its own row): they stack
    until all three fit side by side. */
 .comparison-list:has(> :nth-child(3):last-child):not(.split .comparison-list),
-.persona-list:not(.persona-list--rows):not(.persona-list--docs):has(> :nth-child(3):last-child) {
+.persona-list:not(.persona-list--rows):not(.persona-list--docs):not(.persona-list--index):has(> :nth-child(3):last-child) {
   grid-template-columns: minmax(0, 1fr);
 }
 @media (min-width: 900px) {
   .comparison-list:has(> :nth-child(3):last-child):not(.split .comparison-list),
-  .persona-list:not(.persona-list--rows):not(.persona-list--docs):has(> :nth-child(3):last-child) {
+  .persona-list:not(.persona-list--rows):not(.persona-list--docs):not(.persona-list--index):has(> :nth-child(3):last-child) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
@@ -9555,8 +9558,8 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   gap: var(--space-5);
 }
 @media (min-width: 800px) {
-  .persona-list--cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
-  .persona-list--cards:has(> :nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .persona-list--cards:not(.persona-list--index) { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+  .persona-list--cards:not(.persona-list--index):has(> :nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 .persona-list--cards .persona-list__item {
   display: flex;
@@ -11167,3 +11170,196 @@ p.blog-cluster-links__part > .text-link,
   .faq-ask .btn { width: 100%; }
 }
 
+
+/* =========================================================================
+   Premium pass (13 Oct 2026). Benchmarked against the reference sites the
+   owner shared: colour where the photos have it, fewer small boxes and pills,
+   and one composed moment per section.
+   ========================================================================= */
+
+/* Who it's for: the four audiences and the three funding routes read as an
+   index, one row each under a full-width rule, title on the left half and the
+   detail on the right, on the same axis as the section head above. As a 2x2
+   of small blocks each with a tinted icon tile, two rules and a link, the
+   section was busy and nothing lined up across the pair. */
+.persona-list.persona-list--index {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0;
+}
+.persona-list--index .persona-list__item {
+  padding: var(--space-8) 0;
+  border-top: 1px solid var(--rule);
+}
+.persona-list--index .persona-list__item:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.persona-list--index .icon-circle { display: none; }
+.persona-list--index .persona-list__item h3 {
+  font-size: var(--type-title-lg);
+  line-height: var(--leading-snug);
+}
+.persona-list--index .persona-list__item > div > p:not(.persona-list__cta) {
+  color: var(--body-secondary);
+  max-width: var(--measure-text);
+}
+.persona-list--index .checklist {
+  margin-top: var(--space-1);
+  padding-top: 0;
+  border-top: 0;
+}
+.persona-list--index .persona-list__cta { padding-top: var(--space-1); }
+@media (min-width: 900px) {
+  .persona-list--index .persona-list__item > div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-16);
+    row-gap: var(--space-3);
+    align-items: start;
+  }
+  .persona-list--index .persona-list__item > div > h3 {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+  }
+  .persona-list--index .persona-list__item > div > :not(h3) { grid-column: 2; }
+  .persona-list--index .persona-list__item h3 { font-size: var(--text-3xl); }
+}
+
+/* Venue actions (Website / Map / Call): plain underlined links in a row, not
+   bordered pills. Nine pill clusters down the Whitstable guide read as a tag
+   cloud; the links keep their 44px target from .text-link. */
+.place-list__actions { gap: 0 var(--space-5); }
+.place-list__actions .text-link {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--deep-teal) 28%, transparent);
+}
+.place-list__actions .text-link:hover {
+  border-color: transparent;
+  background: none;
+  text-decoration-color: currentColor;
+}
+
+/* Journey strip (Whitstable): the three figures are the page's headline facts,
+   so they set at display size, not body-plus. */
+@media (min-width: 700px) {
+  .stat__value {
+    font-size: var(--type-h2);
+    font-weight: var(--type-display-weight);
+    line-height: var(--leading-display);
+    letter-spacing: -0.01em;
+  }
+  .stat + .stat {
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--rule);
+  }
+}
+
+/* Further reading: rows under a rule, not grey boxes. Two columns of boxed
+   links left an odd one out on its own (2+2+1, 2+2+2+1); a ruled list carries
+   an odd count without looking unfinished. The whole row is still the link. */
+.link-list--cards li,
+.section-head + .link-list.link-list--cards > li:first-child {
+  min-height: 3.5rem;
+  padding: var(--space-3) var(--space-8) var(--space-3) 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.link-list--cards li:hover {
+  border-color: var(--rule);
+  background: none;
+}
+.link-list--cards li:hover a { text-decoration: underline; text-underline-offset: 0.18em; }
+.link-list--cards li::after { right: 0; }
+@media (min-width: 720px) {
+  .link-list--cards { column-gap: var(--space-10); row-gap: 0; }
+}
+
+/* Icons beside list items (Getting around, What we send): the line icon on
+   its own, not in a tinted tile. A row of tinted tiles was the most
+   template-looking detail on the guide pages. */
+.persona-list__item .icon-circle,
+.persona-list--docs .icon-circle {
+  --icon-circle-size: 2rem;
+  justify-content: flex-start;
+  background: none;
+  border-radius: 0;
+  color: var(--warm-gold-text);
+}
+.persona-list__item .icon-circle svg,
+.persona-list--docs .icon-circle svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Keeps a compound together where a break at its hyphen would strand half of
+   it ("single-/storey"). */
+.nowrap { white-space: nowrap; }
+
+/* Key facts on phones: a 2x2 of icon-over-label, not four full-width rows that
+   filled the first screen under the hero like a settings list. */
+@media (max-width: 599px) {
+  .facts-strip__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .facts-strip__list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-4) var(--space-4) 0;
+    font-size: var(--text-md);
+  }
+  .facts-strip__list li + li { border-top: 0; }
+  .facts-strip__list li:nth-child(even) {
+    padding-left: var(--space-4);
+    border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  }
+  .facts-strip__list li:nth-child(n + 3) { border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
+  .facts-strip .icon-circle { --icon-circle-size: 2.75rem; }
+}
+
+/* Article point cards: an odd count reads as a list, one per row under its
+   rule. In the 713px article column three points wrapped 2 + 1. */
+.post-cards:has(> .post-card:last-child:nth-child(odd)) { grid-template-columns: minmax(0, 1fr); }
+
+/* Accessibility, "The house in numbers": the three figures are the page's
+   signature, so they stand open at display size under fine rules rather than
+   in a small white card. */
+.acc-figures {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.acc-figures dd { font-size: clamp(2.75rem, 2rem + 2.4vw, 4rem); }
+.acc-figures dt { font-size: var(--text-md); }
+.acc-figures__row + .acc-figures__row { border-top-color: var(--rule); }
+@media (min-width: 600px) and (max-width: 959px) {
+  .acc-figures { padding: 0; }
+  .acc-figures__row:first-child { padding-left: 0; }
+  .acc-figures__row + .acc-figures__row { border-left-color: var(--rule); }
+}
+
+/* Kit cards: the headline figures as a ruled row of open figures, not a strip
+   of tinted chips under each photo. */
+.acc-glance__facts {
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  margin-top: var(--space-4);
+}
+.acc-glance__facts > div {
+  padding: var(--space-3) var(--space-4) 0 0;
+  border-radius: 0;
+  background: none;
+}
+.acc-glance__facts > div + div {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--rule);
+}
+.acc-glance__facts dd { font-size: var(--text-2xl); }

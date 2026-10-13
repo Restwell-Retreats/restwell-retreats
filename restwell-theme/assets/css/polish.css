@@ -324,7 +324,7 @@ a.path-card:hover {
   .hero:not(.hero--interior) .hero__sub,
   .hero:not(.hero--interior) .hero__text p:not(.eyebrow) {
     max-width: 100%;
-    font-size: var(--text-sm);
+    font-size: var(--type-hero-lede-size);
     line-height: var(--leading-snug);
     color: rgba(255, 255, 255, 0.88);
     text-wrap: pretty;
@@ -393,7 +393,7 @@ html.has-cookie-banner body {
 }
 @media (max-width: 767px) {
   .hero.hero--interior.hero--place .hero__text p:not(.eyebrow) {
-    font-size: var(--text-sm);
+    font-size: var(--type-hero-lede-size);
     line-height: var(--leading-snug);
     max-width: 100%;
   }

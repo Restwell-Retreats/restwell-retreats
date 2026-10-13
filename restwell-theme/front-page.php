@@ -69,8 +69,8 @@ $property_cta_label = function_exists( 'restwell_page_content_text' )
 $property_cta_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_cta_url', restwell_nav_resolve_page_url( 'the-property' ) )
 	: restwell_nav_resolve_page_url( 'the-property' );
-$property_image_url = restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' );
-$property_image_alt = 'Restwell bungalow exterior in Whitstable';
+$property_image_url = restwell_theme_image_url( 'bungalow/PT-2-LS.jpg' );
+$property_image_alt = 'The bungalow and conservatory seen from the sunny back garden';
 if ( $home_id > 0 && function_exists( 'restwell_page_content_meta_or_default' ) ) {
 	$property_image_id = absint( restwell_page_content_meta_or_default( $home_id, 'property_image_id' ) );
 	if ( $property_image_id > 0 ) {
@@ -271,7 +271,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		<ul class="facts-strip__list" role="list">
 		  <li>
 			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><path d="M5 23 24 7l19 16M10 20v21h28V20M20 41V29h8v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-			<span><?php esc_html_e( 'Private, single-storey house', 'restwell-retreats' ); ?></span>
+			<span><?php esc_html_e( 'Private,', 'restwell-retreats' ); ?> <span class="nowrap"><?php esc_html_e( 'single-storey house', 'restwell-retreats' ); ?></span></span>
 		  </li>
 		  <li>
 			<span class="icon-circle" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 22l3.2-8.3c.5-1.1 1.5-1.7 2.6-1.7h10.4c1.1 0 2.1.6 2.6 1.7L35 22"/><path d="M10 22h28a3 3 0 0 1 3 3v8H7v-8a3 3 0 0 1 3-3z"/><path d="M10 33v3.5a1.5 1.5 0 0 0 1.5 1.5h2a1.5 1.5 0 0 0 1.5-1.5V33M33 33v3.5a1.5 1.5 0 0 0 1.5 1.5h2a1.5 1.5 0 0 0 1.5-1.5V33M19 28h10"/><circle cx="12.5" cy="27.5" r="1.5"/><circle cx="35.5" cy="27.5" r="1.5"/><path d="M4 43h40"/></g></svg></span>
@@ -299,7 +299,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			<h2 id="property-h"><?php echo esc_html( $property_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $property_body ); ?></p>
 			<div class="property__cta-row">
-			  <a class="btn btn-gold" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
+			  <a class="btn btn-outline-teal" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
 			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
 			</div>
 		  </div>

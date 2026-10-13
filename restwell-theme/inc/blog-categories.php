@@ -212,8 +212,10 @@ add_action( 'init', 'restwell_ensure_default_blog_categories', 20 );
 add_action( 'admin_init', 'restwell_assign_seeded_posts_to_categories_once', 25 );
 
 /**
- * Blog index and category archives show one featured post plus a two-column grid.
- * An odd page size (11) keeps that grid even, so the last row never holds a lone card.
+ * Blog index and category archives show one featured post plus a grid that is
+ * two across on tablets and three across from 1000px. Twelve grid cards fill
+ * both (6 rows of 2, 4 rows of 3), so with the featured post the page size is
+ * 13. At 11 the three-across grid ended on a lone card.
  *
  * @param WP_Query $query Main query.
  */
@@ -222,7 +224,7 @@ function restwell_blog_even_grid_page_size( $query ) {
 		return;
 	}
 	if ( $query->is_home() || $query->is_category() || $query->is_tag() ) {
-		$query->set( 'posts_per_page', 11 );
+		$query->set( 'posts_per_page', 13 );
 	}
 }
 add_action( 'pre_get_posts', 'restwell_blog_even_grid_page_size' );

@@ -92,11 +92,13 @@ get_template_part(
 			),
 		),
 		'post_id'    => (int) get_queried_object_id(),
-		/* Force coastal hospitality hero — seeded woodland attachment must not override. */
+		/* Force a coastal hero (a seeded woodland attachment must not override). A
+		   daylight seafront since 13 Oct 2026: the sunset huts went near-black
+		   under the scrim. */
 		'image_url'  => function_exists( 'restwell_theme_image_url' )
-			? restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg' )
+			? restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-4-LS.jpg' )
 			: '',
-		'image_alt'  => __( 'Colourful beach huts along Tankerton promenade at sunset, Whitstable', 'restwell-retreats' ),
+		'image_alt'  => __( 'Beach huts along the green Tankerton slopes above the sea', 'restwell-retreats' ),
 	)
 );
 ?>

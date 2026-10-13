@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 74;
+const RESTWELL_SCHEMA_VERSION = 75;
 
 
 /**
@@ -1872,6 +1872,46 @@ function restwell_migrate_our_story_companies_dedupe_v74() {
 }
 
 /**
+ * Daylight heroes for Who It's For and How It Works (13 Oct 2026). The dusk
+ * beach-hut slope and the patterned bedroom went near-black under the hero
+ * scrim; the garden shots from the photoshoot read as the house in the sun.
+ * Replaces a Featured image only while it is still the photo the theme seeded,
+ * so a hero the owner picked by hand is left alone.
+ */
+function restwell_migrate_daylight_heroes_v75() {
+	if ( get_option( 'restwell_daylight_heroes_v75', '' ) === '1' ) {
+		return;
+	}
+	// Mark first: a sideload timeout still leaves the theme-file fallback working.
+	update_option( 'restwell_daylight_heroes_v75', '1', false );
+	if ( ! function_exists( 'restwell_sideload_stock_image' ) || ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		return;
+	}
+	$swaps = array(
+		'who-its-for'  => array( 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg', 'bungalow/GRDEN-3-LS.jpg' ),
+		'how-it-works' => array( 'bungalow/BD1-2-LS.jpg', 'bungalow/GRDEN-4-LS.jpg' ),
+	);
+	foreach ( $swaps as $slug => $paths ) {
+		$page_id = restwell_page_id_for_stock_slug( $slug );
+		if ( $page_id < 1 ) {
+			continue;
+		}
+		$thumb = (int) get_post_thumbnail_id( $page_id );
+		if ( $thumb > 0 && ! restwell_page_featured_matches_stock_rel( $page_id, $paths[0] ) ) {
+			continue;
+		}
+		$att_id = restwell_sideload_stock_image( $paths[1] );
+		if ( $att_id < 1 ) {
+			continue;
+		}
+		set_post_thumbnail( $page_id, $att_id );
+		if ( function_exists( 'restwell_sync_page_hero_image_trio' ) ) {
+			restwell_sync_page_hero_image_trio( $page_id );
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -1981,6 +2021,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_approved_meta_descriptions_v72',
 		'restwell_post_title_tags_v73',
 		'restwell_our_story_companies_dedupe_v74',
+		'restwell_daylight_heroes_v75',
 	);
 }
 
@@ -2115,6 +2156,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_post_title_tags_v73', 111 );
 	add_action( 'init', 'restwell_migrate_our_story_companies_dedupe_v74', 117 );
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_companies_dedupe_v74', 112 );
+	add_action( 'init', 'restwell_migrate_daylight_heroes_v75', 118 );
+	add_action( 'after_switch_theme', 'restwell_migrate_daylight_heroes_v75', 113 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
