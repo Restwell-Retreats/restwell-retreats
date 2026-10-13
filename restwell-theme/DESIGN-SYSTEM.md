@@ -16,7 +16,7 @@ Tailwind is **not** loaded. Utility class names such as `pt-8`, `border-t` or `t
 
 ## Typography
 
-- **Families:** Inter for body and UI, Lora (semibold, never bold) for headings and display.
+- **Families:** Inter for body and UI, Lora for headings and display. Never bold Lora.
 - **Size primitives:** `--text-2xs` (0.75rem) to `--text-3xl`. Body is `--text-base` (1.0625rem, 17px). Never render text below 0.75rem (12px).
 - **Roles:** prefer `--type-body-*`, `--type-lede-*`, `--type-eyebrow-*`, `--type-ui-*`, `--type-meta-size` over raw primitives.
 - **Headings:** `--type-h1`, `--type-h2`, `--type-h3` are rem + vw clamps (pure vw can fail WCAG 1.4.4). One H1 per page; no skipped levels.
@@ -25,7 +25,10 @@ Tailwind is **not** loaded. Utility class names such as `pt-8`, `border-t` or `t
   - `--type-h3` (18px phone to 20.8px desktop): every card, step and panel title.
   - `--type-title-lg` (24px): a heading that leads a group inside a section (a funding route, an access chapter, the "good / challenges" panels).
   - `--type-title-sm` (18px): asides, callouts, compact cards, the legal contents title.
-  Lora headings are always semibold (`--type-display-weight`); medium-weight Lora titles were removed on 9 Oct 2026.
+  **Weights (11 Oct 2026):** h1 and h2 are Lora regular (`--type-display-weight`), large (h2 is 44px at desktop) and tightly led (`--leading-display`, 1.1), the editorial register of the reference sites Ellie benchmarked against. Every title role, h3 and serif figure uses `--type-title-weight` (medium), so small titles still hold. Write one of the two tokens, never a literal weight.
+- **Homepage hero:** up to 76px, in a column wide enough to break into two lines.
+- **Interior heroes pin the breadcrumb to the top** and the eyebrow, title and intro to the foot, so the breadcrumb is at the same height on every page whatever the title length.
+- **Headings inside running text** (`.prose` h2 in articles and legal pages) are a step below the section h2: 24px on phones to 32px on desktop. h3 is `--type-title-lg`.
 - **Eyebrows:** `.eyebrow` (gold text, uppercase, `--type-eyebrow-tracking`, 12px); `.eyebrow--on-dark` on teal bands. Over a hero photo it is one step up, `--type-eyebrow-hero-size` (13px). Interior heroes all print one (`hero_eyebrow` meta, falling back to the page's section name).
 - **An eyebrow is a `<p>`, so container rules must not restyle it.** A rule like `.hero__text p` or `.funding-route__copy > p` outranks `.eyebrow` and turns the label into 17px body text. Write such rules as `p:not(.eyebrow)`.
 - **Other small caps labels** (table heads, meta lines, `dt`) use `--type-label-tracking` (0.08em).
@@ -58,6 +61,7 @@ Token-first and mobile-first. The layers are documented at the top of `shared.cs
 | `.section-y` | Default content band (`padding-block: var(--section-y)`). |
 | `.section-y--compact` | Shorter bands: related links, further reading, FAQ footers. |
 | `.section-y--cta` | Conversion bands, which take a little more air than body sections. |
+| `.section-y--slim` | A section that is a single row (the optional-care pointer, the Accessibility limits note): 32/48/64px instead of a full section. |
 | `.band-white`, `.band-subtle`, `.band-teal` | Band backgrounds; pair with one `.section-y*` class. |
 | `.container`, `.container--sm`, `.container--md` | Page rail: max `--rw-max-page` (1200px), side padding `--rw-gutter-x` (24px on phones, fluid to 40px). |
 | `.section-head`, `.section-head--tight`, `.section-head--center` | Eyebrow + heading + lede cluster, with gaps from `--section-head-gap` and `--section-after-head`. |
@@ -76,14 +80,20 @@ Sibling rules already manage the top padding after a hero or a sticky subnav (`.
 
 ## Cards and panels
 
-- **Cards are flat: no shadow, ever.** A card stands off its band by colour. On a `band-white` section it is the cool tint `var(--tint-cool)` (a 5% deep-teal wash) with no border; on a `band-subtle` section it is white with a `1px` hairline. Both come from the tokens `--card-bg`, `--card-line` and `--card-inset`, which flip with the band, so write `background: var(--card-bg)` and `border: 1px solid var(--card-line)` and the card is right on either. A tile *inside* a card uses `var(--card-inset)` (the opposite surface) or it vanishes into its parent. `--card-shadow` is `none`; keep using it so the look can change in one place. Never a sand or beige fill, and never a drop shadow (Ellie, 9 Oct 2026: white-with-shadow "looks kinda weird").
+- **Most parallel points are open columns, not cards (11 Oct 2026).** A row of personas, support types, parking options, places to eat, funding routes or room summaries sits under a 1px rule (`--rule`) with space around it: no fill, no border, no radius. Ellie called the boxed version a format that "sucks"; a page of boxed rows read as a template next to the reference sites. Boxes are kept only where the box does a job: interactive link cards, warnings (`.callout`, `.acc-callout`), the calendar, forms, the fit check, the CQC rating card, the access-statement download, and the white review cards on the teal band.
+- **One section, one composition.** A section must not be a photo row with a second block (steps, cards) bolted underneath: put the steps in the copy column beside the photo (`.process--story`), or give the second block its own section with its own heading. A short closing point (Accessibility's "What we can't promise") is its own section, not a sixth block in the one above.
+- **Two things and a conclusion is a pair plus a statement.** Our Story's "Who does what" is one panel split into Restwell & Continuity, then the shared phone line as a dark `--deep-teal` strip, never three equal cards.
+- **Where a card is still used, it is flat: no shadow, ever.** A card stands off its band by colour. On a `band-white` section it is the cool tint `var(--tint-cool)` (a 5% deep-teal wash) with no border; on a `band-subtle` section it is white with a `1px` hairline. Both come from the tokens `--card-bg`, `--card-line` and `--card-inset`, which flip with the band, so write `background: var(--card-bg)` and `border: 1px solid var(--card-line)` and the card is right on either. A tile *inside* a card uses `var(--card-inset)` (the opposite surface) or it vanishes into its parent. `--card-shadow` is `none`; keep using it so the look can change in one place. Never a sand or beige fill, and never a drop shadow (Ellie, 9 Oct 2026: white-with-shadow "looks kinda weird").
 - **A conclusion is not a third card.** When two panels lead to a verdict (the Accessibility destination section), the verdict is the one dark `--deep-teal` block, centred, in the display face.
 - **Neighbouring sections alternate `band-white` and `band-subtle`**, or the theme fuses them into one field. `tests/BandAlternationTest.php` enforces it.
-- **Section intros at 1024px and up sit beside the heading**, not in a narrow column above full-width content. This applies to `.section-head` straight inside `.container` (including a steps head) and to a sister-company band with nothing beside its intro. Don't wrap a head in a bare `<div>`: it drops out of the rule.
+- **Section intros at 1024px and up sit beside the heading** in equal halves, not in a narrow column above full-width content. This applies to `.section-head` straight inside `.container` (including a steps head) and to a sister-company band with nothing beside its intro. Don't wrap a head in a bare `<div>`: it drops out of the rule.
 - **Photo and copy splits are equal halves** at 900px and up, whichever side the photo is on.
 - **Numbered steps look the same everywhere.** `.process-list` and `.payment-steps` both draw large faded serif numerals (`--step-figure-size`, `--step-figure-size-lg`) over a hairline, never circles joined by a dashed line.
 - **Guest quotes in a grid** (homepage testimonials, Our Story) are body size with the trimmed gold mark; only a single featured `.pull-quote` takes the larger display size.
 - **Icon tiles are cool**: the 10% teal tile, never pale gold.
+- **Radii are small:** `--radius-lg` 8px for cards and framed photos, `--radius` 6px, `--radius-sm` 4px; buttons keep their pill.
+- **Photo and copy rows bleed.** At 900px and up, a `.split` on the page rail (the container itself, or its direct child) runs its photo to the viewport edge on its own side with no radius, while the copy keeps the rail; the homepage house photo does the same. They use `--bleed`, and their section clips `overflow-x`. Splits nested inside a column keep a framed photo.
+- **The closing mid-CTA shows the beach huts** through a teal scrim that is darkest behind the text.
 - **`.band-subtle` is a flat `--bg-subtle`.** The old sand-to-driftwood gradient stretched with the band, so tall and short bands came out different colours.
 - **No single-edge accent borders.** No `border-top`, `border-left` or `border-bottom` in a thick colour on one side of a card, callout or panel. With a radius they draw a crescent that curls round the corners, and they read as generated UI. Say what a card is with a marker (icon tile, tick, tinted circle), a heading or a tint, not a coloured edge. (Hairline dividers between rows, chevron arrows and the blog table-of-contents rail are fine.)
 
@@ -98,6 +108,11 @@ Sibling rules already manage the top padding after a hero or a sticky subnav (`.
 
 - **Focus:** a visible `:focus-visible` ring in `--deep-teal` (≥3:1 on white and sand). Never `outline: none` without a replacement.
 - **Targets:** buttons, nav, FAQ summaries and footer links are ≥44px (`--tap-target`, 2.75rem; 2.25rem in the dense desktop footer).
+
+## Header and footer
+
+- The desktop menu separates items with space, not 1px pipes.
+- The footer is columns, left-aligned: brand (logo, the "Rest Easy, Stay Well." sign-off, place, Continuity and CQC links), then the header menu's own groups built from `restwell_get_primary_nav_structure()` (FAQ and Blog join the last group), then "Get in touch" with the phone, email and an Enquire button. Legal links and the copyright sit under a hairline. Change the menu in `inc/nav.php` and the footer follows.
 - **Motion:** respect `prefers-reduced-motion` for anything non-essential.
 
 ## Copy standards

@@ -332,9 +332,10 @@ get_template_part(
 	  </div>
 	</nav>
 
-	<section class="section-y band-white process" id="process" aria-labelledby="process-h">
-	  <div class="container">
-		<div class="split split--fill process__intro">
+	<?php // One composition: heading, intro and the three steps in one column, the photo beside them (was a photo row with the steps bolted on underneath). ?>
+	<section class="section-y band-white process process--story" id="process" aria-labelledby="process-h">
+	  <div class="container process__layout">
+		<div class="process__main">
 		  <header class="section-head process__head">
 		  <?php if ( '' !== $hiw_steps_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $hiw_steps_label ); ?></p>
@@ -343,12 +344,7 @@ get_template_part(
 		  <?php if ( '' !== $hiw_steps_intro ) : ?>
 		  <p class="lede"><?php echo esc_html( $hiw_steps_intro ); ?></p>
 		  <?php endif; ?>
-		</header>
-		  <div class="split__media" data-reveal>
-					<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/patio-1.png' ) ); ?>" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
-		  </div>
-		</div>
-		<div class="process__layout">
+		  </header>
 		  <ol class="process-list">
 			<?php foreach ( $hiw_steps as $step_i => $step ) : ?>
 			<li>
@@ -365,6 +361,9 @@ get_template_part(
 			<?php endforeach; ?>
 		  </ol>
 		</div>
+		<figure class="process__media" data-reveal>
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/patio-1.png' ) ); ?>" alt="Level resin patio and seating area at Restwell" width="900" height="1200" loading="lazy" />
+		</figure>
 	  </div>
 	</section>
 
@@ -409,7 +408,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white care-pointer" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--slim band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
 		  <?php if ( '' !== $hiw_care_label ) : ?>

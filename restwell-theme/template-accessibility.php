@@ -418,23 +418,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		  <p class="lede"><?php esc_html_e( 'Every piece of equipment is named by make and model, with safe working loads and clearances taken from the manufacturers’ own spec sheets. The headlines are below; the full specifications are one tap away, or download them as a PDF to file with a risk assessment.', 'restwell-retreats' ); ?></p>
 		</header>
 
-		<?php
-		$acc_pdf_url  = function_exists( 'restwell_access_statement_pdf_url' ) ? restwell_access_statement_pdf_url() : '';
-		$acc_pdf_size = function_exists( 'restwell_access_statement_pdf_size' ) ? restwell_access_statement_pdf_size() : '';
-		if ( '' !== $acc_pdf_url ) :
-			?>
-		<aside class="acc-download" aria-labelledby="acc-download-h">
-		  <span class="acc-download__icon" aria-hidden="true">PDF</span>
-		  <div class="acc-download__text">
-			<p class="acc-download__title" id="acc-download-h"><?php esc_html_e( 'Download the full access statement', 'restwell-retreats' ); ?></p>
-			<p><?php esc_html_e( 'Every measurement and piece of kit on one printable, screen-reader-friendly sheet, for occupational therapists, case managers and funding panels.', 'restwell-retreats' ); ?></p>
-		  </div>
-		  <a class="btn btn-gold acc-download__btn" href="<?php echo esc_url( $acc_pdf_url ); ?>" download data-analytics-event="access_statement_download">
-			<?php esc_html_e( 'Download PDF', 'restwell-retreats' ); ?>
-			<span class="acc-download__meta"><?php echo esc_html( trim( 'PDF' . ( '' !== $acc_pdf_size ? ', ' . $acc_pdf_size : '' ) ) ); ?></span>
-		  </a>
-		</aside>
-		<?php endif; ?>
 
 		<?php
 		/*
@@ -625,15 +608,32 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		</details>
 
 		<?php
-		/*
-		 * Closing chapter. The caveats are part of the register: every line
-		 * above is kit we own and can point a tape measure at, and this says
-		 * where that stops.
-		 */
-		?>
-		<section class="acc-chapter acc-chapter--limits" id="acc-limits" aria-labelledby="acc-limits-h">
-		  <h3 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h3>
-		  <p class="acc-chapter__lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
+		$acc_pdf_url  = function_exists( 'restwell_access_statement_pdf_url' ) ? restwell_access_statement_pdf_url() : '';
+		$acc_pdf_size = function_exists( 'restwell_access_statement_pdf_size' ) ? restwell_access_statement_pdf_size() : '';
+		if ( '' !== $acc_pdf_url ) :
+			?>
+		<aside class="acc-download" aria-labelledby="acc-download-h">
+		  <span class="acc-download__icon" aria-hidden="true">PDF</span>
+		  <div class="acc-download__text">
+			<p class="acc-download__title" id="acc-download-h"><?php esc_html_e( 'Download the full access statement', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'Every measurement and piece of kit on one printable, screen-reader-friendly sheet, for occupational therapists, case managers and funding panels.', 'restwell-retreats' ); ?></p>
+		  </div>
+		  <a class="btn btn-gold acc-download__btn" href="<?php echo esc_url( $acc_pdf_url ); ?>" download data-analytics-event="access_statement_download">
+			<?php esc_html_e( 'Download PDF', 'restwell-retreats' ); ?>
+			<span class="acc-download__meta"><?php echo esc_html( trim( 'PDF' . ( '' !== $acc_pdf_size ? ', ' . $acc_pdf_size : '' ) ) ); ?></span>
+		  </a>
+		</aside>
+		<?php endif; ?>
+	  </div>
+	</section>
+
+	<?php // Its own section (11 Oct 2026): it closed the equipment band as a sixth block and read as part of the kit list. ?>
+	<section class="section-y section-y--slim band-white acc-limits" id="acc-limits" aria-labelledby="acc-limits-h">
+	  <div class="container">
+		<header class="section-head">
+		  <p class="eyebrow"><?php esc_html_e( 'Honest limits', 'restwell-retreats' ); ?></p>
+		  <h2 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h2>
+		  <p class="lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
 		  <p class="acc-limits__contact">
 			<?php
 			echo wp_kses(
@@ -654,11 +654,11 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			);
 			?>
 		  </p>
-		</section>
+		</header>
 	  </div>
 	</section>
 
-	<section class="section-y band-white" id="destination" aria-labelledby="destination-h">
+	<section class="section-y band-subtle" id="destination" aria-labelledby="destination-h">
 	  <div class="container">
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $acc_dest_label ) : ?>
@@ -707,7 +707,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	$restwell_access_guide     = get_page_by_path( 'how-to-read-holiday-cottage-access-statement', OBJECT, 'post' );
 	$restwell_access_guide_url = $restwell_access_guide instanceof WP_Post ? get_permalink( $restwell_access_guide ) : '';
 	?>
-	<section class="section-y band-subtle" id="faq" aria-labelledby="faq-h">
+	<section class="section-y band-white" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">

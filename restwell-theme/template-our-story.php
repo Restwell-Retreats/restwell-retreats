@@ -180,9 +180,10 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle process" id="month" aria-labelledby="month-h">
-	  <div class="container">
-		<div class="split split--fill process__intro">
+	<?php // One composition: the heading, intro and the month's three dates in one column, the finished house beside them. It was a photo row with the steps bolted on underneath, which read as two sections. ?>
+	<section class="section-y band-subtle process process--story" id="month" aria-labelledby="month-h">
+	  <div class="container process__layout">
+		<div class="process__main">
 		  <header class="section-head process__head">
 		  <?php if ( '' !== $story_month_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $story_month_label ); ?></p>
@@ -191,12 +192,7 @@ get_template_part(
 		  <?php if ( '' !== $story_month_lede ) : ?>
 		  <p class="lede"><?php echo esc_html( $story_month_lede ); ?></p>
 		  <?php endif; ?>
-		</header>
-		  <div class="split__media" data-reveal>
-			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="The adapted bungalow as it is now, with a level driveway and front garden" width="1600" height="1000" loading="lazy" />
-		  </div>
-		</div>
-		<div class="process__layout">
+		  </header>
 		  <ol class="process-list">
 			<li>
 			  <span class="process-list__index" aria-hidden="true">01</span>
@@ -249,6 +245,9 @@ get_template_part(
 			</li>
 		  </ol>
 		</div>
+		<figure class="process__media" data-reveal>
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="The adapted bungalow as it is now, with a level driveway and front garden" width="1600" height="1000" loading="lazy" />
+		</figure>
 	  </div>
 	</section>
 
@@ -272,34 +271,66 @@ get_template_part(
 	</section>
 
 	<?php
-	$story_companies_band_items = $story_companies_items;
-	if ( isset( $story_companies_band_items[2] ) ) {
-		$story_companies_band_items[0]['link'] = array(
-			'label' => __( 'Tour the property', 'restwell-retreats' ),
-			'url'   => restwell_nav_resolve_page_url( 'the-property' ),
-		);
-		$story_companies_band_items[2]['html'] = '<a class="text-link" href="' . esc_url( 'tel:' . $restwell_host_tel ) . '">' . esc_html( $restwell_host_phone ) . '</a>';
-	}
-	get_template_part(
-		'template-parts/sister-company',
-		null,
-		array(
-			'id'      => 'companies',
-			'band'    => 'band-subtle',
-			'badges_in'  => 1,
-			'label'   => $story_companies_label,
-			'heading' => $story_companies_heading,
-			'lede'    => $story_companies_lede,
-			'items'   => $story_companies_band_items,
-			'note'    => $story_companies_note,
-			'link'    => array(
-				'label'    => $story_companies_cqc_label,
-				'url'      => 'https://www.cqc.org.uk/location/1-2624556588',
-				'external' => true,
-			),
-		)
-	);
+	// Who does what (11 Oct 2026): the two companies as one paired panel, and
+	// "one place to start" as the dark statement under it. It was three
+	// same-weight cards in a row, with the conclusion posing as a third company.
+	$story_co_restwell = $story_companies_items[0];
+	$story_co_care     = $story_companies_items[1];
+	$story_co_start    = $story_companies_items[2];
+	$story_co_cqc_url  = 'https://www.cqc.org.uk/location/1-2624556588';
 	?>
+	<section class="section-y band-subtle companies" id="companies" aria-labelledby="companies-h">
+	  <div class="container">
+		<header class="section-head">
+		  <?php if ( '' !== $story_companies_label ) : ?>
+		  <p class="eyebrow"><?php echo esc_html( $story_companies_label ); ?></p>
+		  <?php endif; ?>
+		  <h2 id="companies-h"><?php echo esc_html( $story_companies_heading ); ?></h2>
+		  <?php if ( '' !== $story_companies_lede ) : ?>
+		  <p class="lede"><?php echo esc_html( $story_companies_lede ); ?></p>
+		  <?php endif; ?>
+		</header>
+		<div class="companies__pair">
+		  <div class="companies__side">
+			<h3><?php echo esc_html( $story_co_restwell['title'] ); ?></h3>
+			<p><?php echo esc_html( $story_co_restwell['body'] ); ?></p>
+			<div class="sister-band__badges">
+			  <span class="sister-band__badge"><img src="<?php echo esc_url( restwell_theme_image_url( 'long_logo.png' ) ); ?>" alt="" sizes="180px" width="2588" height="403" loading="lazy" decoding="async" /></span>
+			</div>
+			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'Tour the property', 'restwell-retreats' ); ?></a>
+		  </div>
+		  <span class="companies__join" aria-hidden="true"></span>
+		  <div class="companies__side">
+			<h3><?php echo esc_html( $story_co_care['title'] ); ?></h3>
+			<p><?php echo esc_html( $story_co_care['body'] ); ?></p>
+			<div class="sister-band__badges" aria-label="<?php esc_attr_e( 'Sister company and CQC rating', 'restwell-retreats' ); ?>">
+			  <a class="sister-band__badge" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
+				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" sizes="180px" width="405" height="69" loading="lazy" decoding="async" />
+			  </a>
+			  <a class="sister-band__badge sister-band__badge--cqc" href="<?php echo esc_url( $story_co_cqc_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'CQC rating Good, Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
+				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" sizes="80px" width="710" height="399" loading="lazy" decoding="async" />
+			  </a>
+			</div>
+			<?php if ( '' !== $story_companies_note ) : ?>
+			<p class="companies__note"><?php echo esc_html( $story_companies_note ); ?></p>
+			<?php endif; ?>
+			<?php if ( '' !== $story_companies_cqc_label ) : ?>
+			<a class="text-link" href="<?php echo esc_url( $story_co_cqc_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $story_companies_cqc_label ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+			<?php endif; ?>
+		  </div>
+		</div>
+		<div class="companies__start">
+		  <div class="companies__start-text">
+			<h3><?php echo esc_html( $story_co_start['title'] ); ?></h3>
+			<p><?php echo esc_html( $story_co_start['body'] ); ?></p>
+		  </div>
+		  <div class="companies__start-actions">
+			<a class="companies__phone" href="<?php echo esc_url( 'tel:' . $restwell_host_tel ); ?>"><?php echo esc_html( $restwell_host_phone ); ?></a>
+			<a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
+		  </div>
+		</div>
+	  </div>
+	</section>
 
 	<section class="section-y band-white" id="shaped" aria-labelledby="shaped-h">
 	  <div class="container split split--flip split--fill">

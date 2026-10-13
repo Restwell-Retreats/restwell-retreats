@@ -300,7 +300,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			<p class="lede"><?php echo esc_html( $property_body ); ?></p>
 			<div class="property__cta-row">
 			  <a class="btn btn-gold" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
-			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
 			</div>
 		  </div>
 		  <div class="property__media-wrap">

@@ -397,7 +397,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white care-pointer" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--slim band-white care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
 		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>

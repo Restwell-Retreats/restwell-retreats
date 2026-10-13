@@ -79,8 +79,13 @@
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
-  /* Display/serif: semibold (never bold Lora). Italic only via rare emphasis rules. */
-  --type-display-weight: var(--weight-semibold);
+  /* Display/serif (11 Oct 2026): h1 and h2 are regular weight, large and
+     tightly led, the register of an editorial site; semibold at 34-43px read
+     as a template. Titles (h3, card titles, serif figures) are medium so they
+     still hold at 18-21px. Never bold Lora. Italic only via rare emphasis rules. */
+  --type-display-weight: var(--weight-regular);
+  --type-title-weight: var(--weight-medium);
+  --leading-display: 1.1;
   --type-display-style: normal;
 
   /* 3. Semantic roles */
@@ -113,12 +118,14 @@
    */
   /* Mobile floor 2.25rem (was 1.85) — hero display was only ~1.74× body @390 */
   --type-h1: clamp(2.25rem, 1.2rem + 4.2vw, 3.25rem);
-  --type-h2: clamp(var(--text-2xl), 1.175rem + 1.3vw, 2.15rem);
+  /* 44px at desktop (was 34px): section titles carry the page now, with the
+     eyebrow and intro around them at small sizes for contrast. */
+  --type-h2: clamp(1.75rem, 1.2rem + 1.9vw, 2.75rem);
   --type-h3: clamp(var(--text-lg), 1.038rem + 0.35vw, 1.3rem);
   /* Every interior hero title (photo, plain and post heroes): one size, so the
      H1 doesn't change from page to page. The homepage hero keeps its own
      larger display size. */
-  --type-h1-interior: clamp(1.85rem, 1.1rem + 2.9vw, 2.7rem);
+  --type-h1-interior: clamp(1.85rem, 1.15rem + 3vw, 3.5rem);
   /* Title roles under h2. --type-h3 is the card and step title; the large one
      heads a group inside a section (a funding route, an access chapter); the
      small one is for asides, callouts and compact cards. Components pick a
@@ -253,6 +260,13 @@
      their content hard under the photo). */
   --rhythm-lead-3: var(--space-14);
 
+  /* Slim band: a section that is one row (the optional-care pointer, the
+     accessibility limits note). A full section-y above and below a single row
+     read as an empty band (12 Oct 2026 section audit). */
+  --rhythm-slim-0: var(--space-8);
+  --rhythm-slim-2: var(--space-12);
+  --rhythm-slim-3: var(--space-16);
+
   --rhythm-hero-pad-top-0: var(--space-4);
   --rhythm-hero-pad-top-2: var(--space-8);
   --rhythm-hero-pad-bottom-0: var(--space-7);
@@ -270,6 +284,7 @@
   --section-y-compact: var(--rhythm-compact-0);
   --section-y-cta: var(--rhythm-cta-0);
   --section-y-lead: var(--section-y);
+  --section-y-slim: var(--rhythm-slim-0);
   --section-after-head: var(--rhythm-after-head-0);
   --section-after-head-tight: var(--rhythm-after-head-tight-0);
   --section-head-gap: var(--rhythm-head-gap-0);
@@ -285,6 +300,10 @@
 
   /* Widths / measures — match live theme page rail (input.css --rw-max-page) */
   --rw-max-page: 1200px;
+  /* Distance from the content rail to the viewport edge, for photos that
+     bleed off the page. Sections that use it clip overflow-x, because 100vw
+     includes a classic scrollbar. */
+  --bleed: calc(max(0px, (100vw - var(--rw-max-page)) / 2) + var(--rw-gutter-x));
   --rw-readable: min(38rem, 100%);
   --rw-measure-faq: min(40rem, 100%);
   --rw-measure-care: min(38rem, 100%);
@@ -293,9 +312,12 @@
      var() resolves in the consuming element, so it tracks that element's size. */
   --measure-text: 38rem;
 
-  --radius: 0.75rem;
-  --radius-sm: 0.5rem;
-  --radius-lg: 1.15rem;
+  /* Tighter radii (11 Oct 2026): 18px corners on every photo and card read
+     as app UI; the editorial references sit at 0-8px. Photos that bleed to
+     the viewport edge drop the radius altogether. */
+  --radius: 0.375rem;
+  --radius-sm: 0.25rem;
+  --radius-lg: 0.5rem;
   /* Pill. The design audit trialled 0.65rem; it read corporate against the coastal brand, so buttons keep their pill. */
   --radius-control: 999px;
 
@@ -353,6 +375,7 @@
     --section-y: var(--rhythm-section-2);
     --section-y-compact: var(--rhythm-compact-2);
     --section-y-cta: var(--rhythm-cta-2);
+    --section-y-slim: var(--rhythm-slim-2);
     --section-after-head: var(--rhythm-after-head-2);
     --section-after-head-tight: var(--rhythm-after-head-tight-2);
     --section-stack-gap: var(--rhythm-after-head-2);
@@ -379,6 +402,7 @@
     --section-y: var(--rhythm-section-3);
     --section-y-compact: var(--rhythm-compact-3);
     --section-y-cta: var(--rhythm-cta-3);
+    --section-y-slim: var(--rhythm-slim-3);
     --panel-pad: var(--rhythm-panel-3);
     --hero-pad-bottom: var(--rhythm-hero-pad-bottom-3);
     --hero-min-h: min(92svh, 54rem);
@@ -564,6 +588,7 @@ html.admin-bar .subnav ~ section[id] {
 .section-y { padding-block: var(--section-y); }
 .section-y--compact { padding-block: var(--section-y-compact); }
 .section-y--cta { padding-block: var(--section-y-cta); }
+.section-y--slim { padding-block: var(--section-y-slim); }
 .subnav + .section-y { padding-top: var(--section-y-lead); }
 /* Hero already breaks the page — another full --section-y of white after a
    photo/teal band left the first eyebrow floating (home property, interiors).
@@ -795,6 +820,11 @@ h1, h2, h3 {
 h1 {
   font-size: var(--type-h1);
 }
+h1, h2 {
+  line-height: var(--leading-display);
+  letter-spacing: -0.018em;
+}
+h3 { font-weight: var(--type-title-weight); }
 h2 { font-size: var(--type-h2); }
 h3 { font-size: var(--type-h3); }
 
@@ -809,7 +839,7 @@ h3 { font-size: var(--type-h3); }
 }
 blockquote:not(.pull-quote__text):not(.testimonial-card__quote):not(.quote-block__text) {
   font-style: italic;
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
 }
 
 .lede {
@@ -880,7 +910,9 @@ blockquote:not(.pull-quote__text),
      eyebrow and heading stay together instead of drifting apart. */
   .container:not(.split):not(.route-split):not(.acc-intro) > .section-head:has(> .lede):not(.section-head--center) {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    /* Equal halves (was 5/7). At 44px a 5fr heading broke into three lines;
+       7/5 fixed that but stacked long intros into a narrow tower. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: 1fr auto auto;
     column-gap: var(--space-16);
     row-gap: var(--space-3);
@@ -902,8 +934,6 @@ blockquote:not(.pull-quote__text),
 .section-head--center .lede,
 .section-head--center p,
 .mid-cta p,
-.site-footer p,
-.site-footer__copyright,
 .empty-state p,
 .partners .section-head .lede,
 .pull-quote,
@@ -1104,7 +1134,7 @@ button.text-link {
 .logo {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   font-style: normal;
   letter-spacing: -0.02em;
   color: var(--white);
@@ -1368,6 +1398,10 @@ body.nav-open { overflow: hidden; }
   .hero__content {
     width: clamp(40rem, 45vw, 44rem);
   }
+  /* The homepage title is 76px now; give it room to break into two lines. */
+  .hero:not(.hero--interior) .hero__content {
+    width: clamp(40rem, 54vw, 54rem);
+  }
   /* Text-only interior heroes (no photo panel eating the row) can afford a
      wider column than the photo hero's clamp — longer titles were breaking
      to an uneven 3 lines at the narrower measure. .hero--place keeps the
@@ -1426,7 +1460,7 @@ body.nav-open { overflow: hidden; }
    --type-h1 caps at 3.25rem, which read timid on the full-bleed coastal image
    at 1440px+. Scoped so interior heroes keep the standard h1 (design-audit c1). */
 .hero:not(.hero--interior) h1 {
-  font-size: clamp(2.25rem, 1.2rem + 4.2vw, 3.6rem);
+  font-size: clamp(2.25rem, 1.2rem + 4.6vw, 4.75rem);
 }
 .hero__note {
   font-size: var(--text-sm);
@@ -1591,7 +1625,8 @@ body.nav-open { overflow: hidden; }
 .mid-cta__inner {
   position: relative;
   z-index: 1;
-  width: min(34rem, 100%);
+  /* 46rem (was 34rem): the 44px heading broke into three lines. */
+  width: min(46rem, 100%);
   padding-inline: max(var(--rw-gutter-x), env(safe-area-inset-left))
                   max(var(--rw-gutter-x), env(safe-area-inset-right));
   display: flex;
@@ -1601,7 +1636,7 @@ body.nav-open { overflow: hidden; }
 }
 .mid-cta__inner p {
   color: rgba(255, 255, 255, 0.9);
-  max-width: 30rem;
+  max-width: 36rem;
 }
 .mid-cta__btns {
   display: flex;
@@ -1857,7 +1892,7 @@ body.nav-open { overflow: hidden; }
 .faq-cta__title {
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
   margin: 0;
@@ -1872,28 +1907,55 @@ body.nav-open { overflow: hidden; }
   align-self: flex-start;
 }
 
-/* Footer — brand, care/CQC trust line, and a real legal/nav row (borrowed from the live theme) */
+/* Footer (11 Oct 2026): brand column, the header menu's two groups as link
+   columns, then contact. Left-aligned like the rest of the page; the old
+   centred stack of links read as an afterthought next to the bands above. */
 .site-footer {
+  --footer-ink: rgba(255, 255, 255, 0.82);
+  --footer-rule: rgba(255, 255, 255, 0.14);
   background: var(--deep-teal);
-  color: rgba(255, 255, 255, 0.85);
-  padding-block: var(--space-10) var(--space-6);
+  color: var(--footer-ink);
+  padding-block: var(--space-16) var(--space-8);
+}
+.site-footer__top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-10) var(--space-8);
+  padding-bottom: var(--space-10);
+  border-bottom: 1px solid var(--footer-rule);
+}
+.site-footer__brand,
+.site-footer__contact { grid-column: 1 / -1; }
+@media (min-width: 768px) {
+  .site-footer__top { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .site-footer__contact { grid-column: auto; }
+}
+@media (min-width: 1024px) {
+  /* Contact gets the brand column's width: at 1024px a 1fr column broke the
+     email address mid-word. */
+  .site-footer__top { grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr)) minmax(0, 1.3fr); column-gap: var(--space-10); }
+  .site-footer__brand { grid-column: auto; }
 }
 .site-footer__brand {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-3);
-  padding-bottom: var(--space-6);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  align-items: flex-start;
+  gap: var(--space-2);
 }
-.site-footer .logo { color: var(--white); }
+.site-footer .logo { color: var(--white); margin-bottom: var(--space-2); }
+.site-footer__signoff {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-style: italic;
+  color: var(--warm-gold-hero);
+}
 .site-footer__partner-line {
-  margin: 0 auto;
-  max-width: 36rem;
+  margin: 0;
+  max-width: 24rem;
   font-size: var(--text-md);
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.8);
+  line-height: var(--leading-snug);
+  color: var(--footer-ink);
   text-wrap: pretty;
 }
 .site-footer__partner-line a {
@@ -1901,104 +1963,91 @@ body.nav-open { overflow: hidden; }
   align-items: center;
   min-height: var(--tap-target, 2.75rem);
   color: var(--warm-gold-hero);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
-  text-decoration-skip-ink: none;
 }
 .site-footer__partner-line a:hover { color: var(--white); }
-.site-footer__sep {
-  display: inline-block;
-  padding-inline: 0.3em; /* em nudge: separator breathing scales with its font-size */
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.75em;
-  line-height: 1;
-  vertical-align: 0.1em;
-}
-
-/* Main-page links: the footer's own route onward on phones (audit I34). */
-.site-footer__nav {
-  padding-block: var(--space-4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-.site-footer__nav ul {
+.site-footer__col {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  column-gap: var(--space-5);
-  row-gap: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.site-footer__heading {
+  margin: 0;
+  font-size: var(--type-eyebrow-size);
+  font-weight: var(--type-eyebrow-weight);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--warm-gold-hero);
+}
+.site-footer__links {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.site-footer__nav a {
+.site-footer__links a {
   display: inline-flex;
   align-items: center;
   min-height: var(--tap-target, 2.75rem);
   color: var(--white);
   font-size: var(--text-md);
-  font-weight: var(--weight-medium);
   text-decoration: none;
+  overflow-wrap: anywhere;
 }
-.site-footer__nav a:hover,
-.site-footer__nav a:focus-visible {
+.site-footer__links a:hover,
+.site-footer__links a:focus-visible {
   color: var(--warm-gold-hero);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
+@media (min-width: 1024px) {
+  /* Dense desktop footer: 36px rows (pointer devices; see DESIGN-SYSTEM.md). */
+  .site-footer nav .site-footer__links a { min-height: 2.25rem; }
+}
+.site-footer__contact .btn { margin-top: var(--space-2); }
 
 .site-footer__bottom {
   padding-top: var(--space-6);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  text-align: center;
+  align-items: flex-start;
+  gap: var(--space-2);
 }
 .site-footer__legal {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
-  column-gap: var(--space-4);
-  row-gap: var(--space-2);
+  column-gap: var(--space-5);
+  row-gap: 0;
   font-size: var(--text-sm);
 }
-.site-footer__legal a {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-  padding: var(--space-1) 0;
-  min-height: var(--tap-target, 2.75rem);
+.site-footer__legal a,
+.site-footer__cookie-settings {
   display: inline-flex;
   align-items: center;
+  min-height: var(--tap-target, 2.75rem);
+  color: var(--footer-ink);
+  text-decoration: none;
   white-space: nowrap;
 }
-.site-footer__legal a:hover,
-.site-footer__legal a:focus-visible { color: var(--warm-gold-hero); }
 .site-footer__cookie-settings {
   appearance: none;
   margin: 0;
-  padding: var(--space-1) 0;
+  padding: 0;
   border: 0;
   background: none;
   font: inherit;
-  font-size: inherit;
-  color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
-  min-height: var(--tap-target, 2.75rem);
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
 }
+.site-footer__legal a:hover,
+.site-footer__legal a:focus-visible,
 .site-footer__cookie-settings:hover,
 .site-footer__cookie-settings:focus-visible { color: var(--warm-gold-hero); }
-.site-footer__legal-sep {
-  flex: 0 0 auto;
-  color: rgba(255, 255, 255, 0.32);
-  font-size: 0.7em;
-  line-height: 1;
-}
 .site-footer__copyright {
   margin: 0;
   font-size: var(--type-meta-size);
@@ -2112,14 +2161,10 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   position: relative;
 }
 /* Soft hairline between items — light enough to group, not a clinical table */
-.nav > li + li::before {
-  content: "";
-  width: 1px;
-  height: 0.85rem;
-  margin-inline: var(--space-3);
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 1px;
-  flex-shrink: 0;
+.nav > li + li {
+  /* Space, not pipes, between items (11 Oct 2026): the 1px separators made
+     the menu read as a breadcrumb. */
+  margin-left: var(--space-6);
 }
 .nav a.is-active,
 .nav__dropdown a.is-active {
@@ -2430,6 +2475,11 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   color: var(--deep-teal);
   margin-top: var(--space-8);
 }
+/* Headings inside running text (articles, legal pages) are a step below the
+   section h2: at the full 44px they outweighed a 38rem reading column and
+   broke into three or four lines on phones. */
+.prose h2 { font-size: clamp(1.5rem, 1.15rem + 1.1vw, 2rem); }
+.prose h3 { font-size: var(--type-title-lg); }
 .prose ul, .prose ol {
   padding-left: var(--space-5);
   list-style: disc;
@@ -2759,6 +2809,19 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 
 
+/* Photo and copy rows (11 Oct 2026): the photo runs off the page on its own
+   side, the copy keeps the rail. Alternating rooms now read as an editorial
+   sequence instead of a column of framed pictures. Only splits on the page
+   rail (the container itself, or its direct child); splits nested deeper,
+   inside a column, keep their frame. */
+@media (min-width: 900px) {
+  .section-y:has(.split) { overflow-x: clip; }
+  :is(.container.split, .container > .split):not(.split--flip) > .split__media:first-child,
+  :is(.container.split, .container > .split).split--flip > .split__media:last-child { margin-left: calc(-1 * var(--bleed)); }
+  :is(.container.split, .container > .split):not(.split--flip) > .split__media:last-child,
+  :is(.container.split, .container > .split).split--flip > .split__media:first-child { margin-right: calc(-1 * var(--bleed)); }
+  :is(.container.split, .container > .split) > .split__media img { border-radius: 0; }
+}
 @media (min-width: 900px) {
   /* Equal halves. At 1.05/0.95 whichever child came first took the wider
      track, so on pages that alternate photo and copy the text column swapped
@@ -3062,7 +3125,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   color: var(--deep-teal);
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   line-height: 1.2;
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -3181,7 +3244,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-lg);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
 }
 .fit-check__summary--tight { color: var(--warm-gold-text); }
@@ -3300,7 +3363,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
 }
 .fit-check__presets-intro,
@@ -3391,7 +3454,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
 }
 .width-guide__lede,
@@ -3495,7 +3558,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--fact-dt-size);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
   line-height: var(--leading-tight);
   font-variant-numeric: tabular-nums;
@@ -3600,7 +3663,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
   line-height: var(--leading-tight);
 }
@@ -3616,7 +3679,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   gap: 0.3em; /* em: keep “From” glued to the figure */
   font-family: var(--font-serif);
   font-size: var(--care-price-size);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
@@ -3704,7 +3767,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--care-hourly-price-size);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
   font-variant-numeric: tabular-nums;
   line-height: var(--leading-tight);
@@ -4041,7 +4104,7 @@ body:has(.subnav) {
   margin: 0 0 var(--space-1);
   font-family: var(--font-serif);
   font-size: var(--type-title-sm);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
   line-height: var(--leading-tight);
 }
@@ -4243,7 +4306,7 @@ body:has(.subnav) {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
 }
@@ -4591,7 +4654,7 @@ body:has(.subnav) {
 .data-table--rates .is-price,
 .data-table .is-price {
   font-family: var(--font-serif);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   font-size: var(--rates-price-size, var(--text-lg));
   color: var(--deep-teal);
   font-variant-numeric: tabular-nums;
@@ -4878,7 +4941,7 @@ body:has(.subnav) {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--peak-title-size);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-tight);
   letter-spacing: -0.015em;
   color: var(--deep-teal);
@@ -5048,7 +5111,7 @@ body:has(.subnav) {
   align-items: flex-start;
   gap: var(--space-1);
   font-family: var(--font-serif);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   font-size: var(--rates-examples-price-size);
   color: var(--deep-teal);
   font-variant-numeric: tabular-nums;
@@ -5307,7 +5370,7 @@ body:has(.subnav) {
   margin: 0 0 var(--space-5);
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
   text-align: center;
 }
@@ -6045,6 +6108,111 @@ button.availability__cell:focus-visible .availability__date {
   }
 }
 
+/* Who does what (Our Story, 11 Oct 2026): Restwell and Continuity as two
+   halves of one panel, joined by an ampersand on the divider, and the shared
+   phone line as the dark statement beneath. Replaces three equal cards whose
+   third was the conclusion, not a third company. */
+.companies__pair {
+  display: grid;
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius-lg);
+  background: var(--card-bg);
+}
+.companies__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--panel-pad);
+}
+.companies__side > * { margin: 0; }
+.companies__side h3 { font-size: var(--type-title-lg); color: var(--deep-teal); }
+.companies__side > p { max-width: var(--measure-text); color: var(--body-secondary); }
+.companies__side .sister-band__badges { margin-block: var(--space-2); }
+.companies__side .text-link { margin-top: auto; }
+.companies__note { font-size: var(--text-sm); color: var(--muted-grey); }
+.companies__join {
+  position: relative;
+  height: 1px;
+  background: var(--card-line);
+}
+.companies__join::before {
+  content: "&";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: var(--space-12);
+  height: var(--space-12);
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--card-line);
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-style: italic;
+  line-height: 1;
+  color: var(--warm-gold-text);
+}
+.companies__start {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--grid-gap);
+  padding: var(--panel-pad);
+  border-radius: var(--radius-lg);
+  background: var(--deep-teal);
+  color: var(--white);
+}
+.companies__start h3 { margin: 0 0 var(--space-2); font-size: var(--type-title-lg); color: var(--white); }
+.companies__start p { margin: 0; color: rgba(255, 255, 255, 0.86); }
+.companies__start-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+}
+.companies__phone {
+  font-family: var(--font-serif);
+  font-size: var(--type-title-lg);
+  color: var(--warm-gold-hero);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.companies__phone:hover { color: var(--white); }
+.companies__start :focus-visible { outline-color: var(--warm-gold-hero); }
+@media (min-width: 768px) {
+  .companies__pair { grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); }
+  .companies__side { padding: var(--space-10); }
+  .companies__join { height: auto; }
+  .companies__start {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--space-12);
+    padding: var(--space-8) var(--space-10);
+  }
+}
+
+/* Steps beside a photo (Our Story "The build", How it works). Heading, intro
+   and steps share one column, and the photo is their full-height partner,
+   running off the page on the right like the room rows. Before, the photo sat
+   in a row with the heading and the steps ran underneath, which read as two
+   sections stacked in one band. */
+.process--story .process__main { gap: var(--section-after-head); }
+@media (min-width: 900px) {
+  .process--story { overflow-x: clip; }
+  .process--story .process__layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-16);
+  }
+  .process--story .process__media {
+    margin: 0 calc(-1 * var(--bleed)) 0 0;
+    border-radius: 0;
+    min-height: 32rem;
+  }
+}
+
 /*
  * How-it-works arrival: compact facts, not a second process list.
  * Same left edge as the heading — a fixed label column left a hole after
@@ -6139,7 +6307,7 @@ fieldset.form-stack {
 .form-legend {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   margin-bottom: var(--space-2);
   padding: 0;
   color: var(--deep-teal);
@@ -6675,7 +6843,13 @@ fieldset.form-stack {
 }
 
 .mid-cta--plain .mid-cta__media {
-  background: linear-gradient(180deg, rgba(27, 77, 92, 0.92), rgba(27, 77, 92, 0.96));
+  /* The closing band shows its beach huts through the teal (11 Oct 2026); a
+     flat slab above the flat footer was the plainest moment on every page.
+     Darkest at the centre, where the text sits: over pure white the scrim
+     still leaves white text above 6:1 at its lightest point. */
+  background:
+    radial-gradient(ellipse at center, rgba(14, 42, 50, 0.86) 0%, rgba(14, 42, 50, 0.72) 70%),
+    url('../images/stock/restwell-whitstable-beach-huts.webp') center 60% / cover no-repeat;
 }
 
 /*
@@ -7411,14 +7585,18 @@ body.page-template-template-accessibility-php .scroll-top {
 }
 
 @media (min-width: 900px) {
-  /* Two long labels never fit abreast in the copy column, so they stack at one
-     width instead of wrapping to two different ones. */
+  /* One button and a text link on one line (the secondary was a second
+     full-width pill stacked under the first). */
   .property__cta-row {
-    flex-direction: column;
-    align-items: stretch;
-    max-width: 24rem;
+    align-items: center;
+    column-gap: var(--space-6);
   }
-  .property__cta-row .btn { justify-content: center; text-align: center; }
+  .property.section-y { overflow-x: clip; }
+  /* The house photo runs off the right edge, like the room rows. */
+  .property__media-wrap {
+    width: calc(100% + var(--bleed));
+    margin-right: calc(-1 * var(--bleed));
+  }
   .property {
     --property-layout-gap: var(--space-8);
   }
@@ -7430,7 +7608,7 @@ body.page-template-template-accessibility-php .scroll-top {
     min-height: 22rem;
     aspect-ratio: auto;
     height: 100%;
-    border-radius: var(--radius-lg);
+    border-radius: 0;
   }
   .property__copy {
     max-width: none;
@@ -7477,7 +7655,7 @@ body.page-template-template-accessibility-php .scroll-top {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
 }
@@ -7534,7 +7712,7 @@ body.page-template-template-accessibility-php .scroll-top {
 .comparison-list__item dt {
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
 }
@@ -7625,7 +7803,8 @@ body.page-template-template-accessibility-php .scroll-top {
     grid-column: 1 / -1;
   }
 }
-@media (min-width: 1024px) {
+/* Three across from 1200px: at 1024 each quote ran about 25 characters a line. */
+@media (min-width: 1200px) {
   .testimonials__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -7847,7 +8026,7 @@ body.page-template-template-accessibility-php .scroll-top {
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-h3);
-  font-weight: var(--type-display-weight);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-tight);
   color: var(--deep-teal);
 }
@@ -8176,7 +8355,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   .sister-band__head:not(:has(.sister-band__aside)) { grid-template-columns: minmax(0, 1fr); }
   .sister-band__head:not(:has(.sister-band__aside)) .sister-band__intro:has(.sister-band__lede) {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: 1fr auto auto;
     column-gap: var(--space-16);
     row-gap: var(--space-3);
@@ -8235,7 +8414,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   color: var(--deep-teal);
   font-family: var(--font-serif);
   font-size: var(--text-lg);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
 }
 .sister-band__badges {
   display: flex;
@@ -8265,7 +8444,9 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   padding: 0;
   list-style: none;
 }
-@media (min-width: 768px) {
+/* Side by side from 1024px; at 768 three columns were ~210px wide and
+   "Optional, not automatic" broke onto two lines. */
+@media (min-width: 1024px) {
   .sister-band__cards {
     grid-template-columns: repeat(var(--sister-cols, 3), minmax(0, 1fr));
   }
@@ -8375,7 +8556,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--type-display);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
   line-height: 1;
   color: var(--deep-teal);
 }
@@ -9171,10 +9352,8 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
     border-radius: var(--radius-lg);
   }
 }
-/* Both labels are long: at desktop they never fit side by side, so stack them
-   as an equal-width pair instead of two ragged widths. */
+/* The secondary is a text link now, so the pair fits on one line. */
 @media (min-width: 900px) {
-  .property__cta-row { flex-direction: column; align-items: stretch; max-width: 22rem; }
   .property__layout { align-items: stretch; }
   .property__media-wrap { height: auto; min-height: 24rem; max-height: 34rem; align-self: center; aspect-ratio: 4 / 3; }
 }
@@ -9216,7 +9395,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   background: var(--card-bg);
   box-shadow: var(--card-shadow);
 }
-.care--tease .care__type-title { font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--type-display-weight); line-height: var(--leading-tight); }
+.care--tease .care__type-title { font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--type-title-weight); line-height: var(--leading-tight); }
 
 /* FAQ lists below the two-column FAQ layout (960px): full width so the rules
    run edge to edge, one list (no 900-959px split inside a single column). */
@@ -9632,7 +9811,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   margin: 0 0 var(--space-1);
   font-family: var(--font-serif);
   font-size: var(--type-title-sm);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
   color: var(--deep-teal);
 }
 .acc-callout p:not(.acc-callout__title) { margin: 0; color: var(--body-secondary); }
@@ -9701,7 +9880,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   margin: 0;
   font-family: var(--font-serif);
   font-size: var(--text-lg);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
   line-height: var(--leading-snug);
   color: var(--deep-teal);
 }
@@ -9819,7 +9998,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   color: var(--deep-teal);
 }
 .acc-download__text { flex: 1 1 22rem; display: grid; gap: var(--space-1); }
-.acc-download__title { margin: 0; font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.acc-download__title { margin: 0; font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--type-title-weight); color: var(--deep-teal); }
 .acc-download p:not(.acc-download__title) { margin: 0; color: var(--body-secondary); max-width: 38rem; }
 .acc-download__btn { flex: 0 0 auto; flex-direction: column; gap: 0; line-height: 1.2; }
 .acc-download__meta { font-size: var(--text-xs); font-weight: var(--weight-semibold); }
@@ -9885,7 +10064,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   background: color-mix(in srgb, var(--deep-teal) 5%, var(--white));
 }
 .acc-glance__facts dt { color: var(--muted-grey); font-size: var(--text-xs); line-height: var(--leading-snug); }
-.acc-glance__facts dd { margin: 0; font-family: var(--font-serif); font-size: var(--text-xl); font-weight: var(--weight-semibold); color: var(--deep-teal); line-height: 1.1; }
+.acc-glance__facts dd { margin: 0; font-family: var(--font-serif); font-size: var(--text-xl); font-weight: var(--type-title-weight); color: var(--deep-teal); line-height: 1.1; }
 
 #equip-slings { margin-top: var(--space-8); }
 /* The slings notice is the one thing in the equipment band a guest must not
@@ -9924,7 +10103,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 }
 .acc-register__summary::-webkit-details-marker { display: none; }
 .acc-register__summary:focus-visible { outline: 3px solid var(--warm-gold); outline-offset: -3px; border-radius: var(--radius-lg); }
-.acc-register__title { font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.acc-register__title { font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--type-title-weight); color: var(--deep-teal); }
 .acc-register__count { color: var(--muted-grey); font-size: var(--text-sm); }
 .acc-register[open] > .acc-register__summary .acc-room__chevron::before { transform: translateY(20%) rotate(-135deg); }
 .acc-register > .acc-reg { margin: 0; padding: 0 var(--panel-pad) var(--panel-pad); }
@@ -10237,6 +10416,11 @@ body.page-template-template-care #main-content .mid-cta {
   --deep-teal: #1B4D5C;
   --warm-gold-hero: #F0C97A;
 }
+/* The faded step numerals are the theme ink at 68%; in Continuity's lighter
+   violet that falls to 2.9:1, under the 3:1 large-text floor. 80% is 3.7:1. */
+body.page-template-template-care #main-content .payment-steps__index {
+  color: color-mix(in srgb, var(--warm-gold-text) 80%, var(--white));
+}
 body.page-template-template-care #main-content .persona-list__item .icon-circle {
   background: color-mix(in srgb, var(--continuity-violet) 16%, var(--white));
   color: var(--deep-teal);
@@ -10450,7 +10634,7 @@ body.page-template-template-care #main-content .prose a {
   border: 1px solid var(--card-line);
   box-shadow: none;
 }
-.parking-pair .comparison-list__item dt { font-size: var(--text-xl); }
+.parking-pair .comparison-list__item dt { font-size: var(--type-h3); }
 .parking-pair .comparison-list__item::before,
 .parking-pair .comparison-list__item::after { display: none; }
 .parking-pair .comparison-list__item dt { margin: 0; }
@@ -10501,7 +10685,7 @@ body.page-template-template-care #main-content .prose a {
   color: var(--deep-teal);
   font-family: var(--font-serif);
   font-size: var(--text-lg);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--type-title-weight);
   line-height: 1.2;
 }
 .care-rates__foot {
@@ -10679,7 +10863,9 @@ body.page-template-template-care #main-content .prose a {
   .facts-strip__list li:nth-child(even) { border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
   .facts-strip__list li:nth-child(n + 3) { border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
 }
-@media (min-width: 960px) {
+/* Four across from 1100px; at 960-1099 "Driveway / parking / for two" broke
+   into three lines beside its icon. */
+@media (min-width: 1100px) {
   .facts-strip__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .facts-strip__list li,
   .facts-strip__list li + li { padding: var(--space-3) var(--space-5); border: 0; }
@@ -10717,3 +10903,231 @@ p.blog-cluster-links__part > .text-link,
   display: inline;
   min-height: 0;
 }
+
+/* =========================================================================
+   Open columns (11 Oct 2026). Parallel points (who it's for, what support
+   looks like, the parking pair, the places to eat) are columns under a fine
+   rule, not grey or white boxes. A page of boxed card rows read as a
+   template; the reference sites Ellie benchmarked against separate items
+   with rules and space, and the step lists here already did. Boxes stay
+   where they do a job: interactive link cards, warnings (.callout,
+   .acc-callout), the calendar, forms, the rating card, the fit check, and
+   the white review cards on the teal band.
+   ========================================================================= */
+:root { --rule: color-mix(in srgb, var(--deep-teal) 18%, transparent); }
+.persona-list__item,
+.band-white .persona-list__item,
+.persona-list--cards .persona-list__item,
+.persona-list--docs .persona-list__item,
+.sister-band__card,
+.band-subtle .sister-band__card,
+.comparison-list__item:not(.funding-route *),
+.band-subtle .comparison-list__item:not(.funding-route *),
+.comparison-list--features .comparison-list__item,
+.parking-pair .comparison-list__item,
+.place-list__item,
+.place-list--venues .place-list__item,
+.place-list--venues .place-list__item:first-child,
+.place-list--venues .place-list__item:last-child,
+.care--tease .care__types li,
+.care--tease .care__types li + li,
+.care--tease .care__types li:first-child,
+.care--tease .care__types li:last-child,
+.info-card:not(a):not(#directory *) {
+  padding: var(--space-6) 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+/* The tick marker sat inside the box's padding; it now sits on the rule's
+   step, with the title clearing it. */
+.comparison-list__item:not(.funding-route *):not(.parking-pair *):not(.comparison-list--features *) {
+  padding-top: calc(var(--space-6) + var(--space-10));
+}
+.comparison-list__item:not(.funding-route *)::before { top: var(--space-6); left: 0; }
+.place-list__item:hover,
+.place-list--venues .place-list__item:hover {
+  border-color: var(--rule);
+  transform: none;
+  box-shadow: none;
+}
+:is(.persona-list, .sister-band__cards, .place-list, .comparison-list:not(.funding-route *), .care--tease .care__types) {
+  row-gap: var(--space-10);
+}
+@media (min-width: 768px) {
+  :is(.persona-list, .sister-band__cards, .place-list, .comparison-list:not(.funding-route *), .care--tease .care__types) {
+    column-gap: var(--space-10);
+  }
+}
+/* A single featured review is open type on its band, centred, without a box.
+   Two side by side (Our Story) sit under a rule like the other columns. */
+.pull-quote {
+  --pull-quote-pad-y: 0;
+  --pull-quote-pad-x: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+.story-quotes__grid { column-gap: var(--space-10); }
+.story-quotes__grid .pull-quote {
+  padding: var(--space-6) 0 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+/* Accessibility: the download closes the equipment section, one step under
+   the full specifications it offers as a PDF. */
+.acc-register + .acc-download { margin-top: var(--grid-gap); }
+/* "What we can't promise" as its own short section: the contact line joins
+   the intro column. */
+.acc-limits .acc-limits__contact { margin: var(--space-3) 0 0; max-width: var(--measure-text); color: var(--body-secondary); }
+
+/* Funding routes, open (11 Oct 2026): each route sits under a rule instead of
+   in a tinted box, and its covered / not covered lists are open columns
+   under their own rule, so there are no boxes inside boxes. */
+#routes .funding-routes { gap: var(--space-12); }
+#routes .funding-route {
+  padding: var(--space-8) 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+#routes .cover-split__col,
+#routes .cover-split__col--yes {
+  padding: var(--space-4) 0 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+}
+
+/* Accessibility rooms at a glance, open: photo, then title and figures on
+   the band, no white card round them. The good / the challenges likewise sit
+   under a rule; the dark verdict under them stays the one block. */
+.acc-glance { column-gap: var(--space-10); row-gap: var(--space-12); }
+.acc-glance__card {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.acc-glance__photo { border-radius: var(--radius-lg); }
+.acc-glance__body { padding: var(--space-5) 0 0; }
+.acc-glance__facts > div { background: var(--white); }
+.acc-dest__pair { column-gap: var(--space-10); }
+.acc-dest__panel {
+  padding: var(--space-6) 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+/* =========================================================================
+   Section audit fixes (12 Oct 2026): every section of every page checked at
+   375, 768, 1024 and 1440 (and 320/1920 by script). Findings are listed in
+   docs/visual-audit-2026-10-12.md.
+   ========================================================================= */
+
+/* Interior heroes: the breadcrumb sits at the same height on every page and
+   the title block sits at the foot of the photo. The two moved together as one
+   bottom-aligned block, so the breadcrumb landed anywhere from 140px to 230px
+   down depending on how many lines the title took. */
+.hero.hero--interior > .container {
+  display: flex;
+  align-self: stretch;
+}
+.hero.hero--interior .hero__content { justify-content: space-between; }
+/* Pinned to the top, the breadcrumb sat ~30px under the menu and read as part
+   of the header; give it a clear step below the bar from tablet up. */
+@media (min-width: 768px) {
+  .hero.hero--interior { --hero-pad-top-extra: var(--space-14); }
+}
+
+/* Optional-care pointer: one open row in a slim band, not a grey box adrift
+   in a full-height section. */
+.care-pointer__card,
+.band-subtle.care-pointer .care-pointer__card {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+@media (min-width: 768px) {
+  .care-pointer__card,
+  .band-subtle.care-pointer .care-pointer__card { padding: 0; }
+}
+
+/* Splits whose photo bleeds but does not fill the copy height: cap the photo,
+   or at 1920 a 4:3 crop of half the viewport stood 700px tall beside a few
+   lines of text. */
+@media (min-width: 900px) {
+  :is(.container.split, .container > .split):not(.split--fill):not(.split--cover) > .split__media img {
+    max-height: min(34rem, 75vh);
+  }
+}
+
+/* Pricing, Continuity terms: open notes under rules, not white tiles inside
+   the grey panel. */
+.care-rates__notes { column-gap: var(--space-8); row-gap: var(--space-5); }
+.care-rates__notes li,
+.care-rates__notes li:last-child {
+  padding: var(--space-4) 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+}
+
+/* Accessibility, full equipment specifications: an accordion row between
+   rules like the FAQs, not a third white box under the slings note. */
+.acc-register {
+  border: 0;
+  border-block: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+}
+.acc-register__summary { padding-inline: 0; }
+.acc-register > .acc-reg { padding-inline: 0; }
+
+/* Funding: the source line under each route keeps a reading measure (it ran
+   114 characters across the full rail). */
+#routes .cover-split__source { max-width: var(--measure-text); }
+
+/* Articles: the "how others read it" points and the do / avoid lists are open
+   under a rule, like the rest of the site. The "In short" summary stays a tint:
+   it is the one callout. */
+.post-cards { column-gap: var(--space-8); row-gap: var(--space-6); }
+.post-card {
+  padding: var(--space-4) 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+}
+.post-panel,
+.post-panel--do,
+.post-panel--avoid {
+  padding: var(--space-6) 0 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+  background: none;
+}
+
+/* FAQ questions: pretty, not balanced. Balancing evened a three-line question
+   into three short lines with a wide gap before the plus. */
+.faq-item__heading,
+.faq-item__trigger { text-wrap: pretty; }
+
+/* Forms on phones: the primary action spans the column, as the hero buttons
+   do; "Continue" sat at the right edge while "Send question" sat at the left. */
+@media (max-width: 639px) {
+  .form-actions--end .btn,
+  .faq-ask .btn { width: 100%; }
+}
+
