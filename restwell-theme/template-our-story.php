@@ -398,18 +398,35 @@ get_template_part(
 	<section class="section-y band-white story-quotes" aria-labelledby="quote-h">
 	  <div class="container">
 		<h2 id="quote-h" class="sr-only">What guests say</h2>
+		<?php
+		// Guest words, consecutive and unedited bar the capital and the closing
+		// stop (docs/guest-reviews-bank.md); initials only. One line about the
+		// design leads, then two about the stay.
+		$story_quotes = array(
+			array(
+				'text' => 'The entire house though, mirrors one philosophy, be flat, be accessible.',
+				'name' => 'M.P.',
+				'role' => 'Wheelchair user · Google review',
+			),
+			array(
+				'text' => 'The bungalow is modern and spotless. It is fully equipped – for both the person you are caring for, and for the carer.',
+				'name' => 'M.H.',
+				'role' => 'Family carer · Google review',
+			),
+			array(
+				'text' => 'Everything is thoughtfully organised and easy to use, and Victoria was friendly, helpful and very easy to communicate with.',
+				'name' => 'N.T.',
+				'role' => 'Guest · Google review',
+			),
+		);
+		?>
 		<div class="story-quotes__grid">
-		  <figure class="pull-quote">
-		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-		  <blockquote class="pull-quote__text">It truly amazes me, just how much work has gone into this “home from home”.</blockquote>
-		  <figcaption class="pull-quote__cite"><cite>M.P.</cite><span class="pull-quote__role">Guest review</span></figcaption>
-		</figure>
-		  <figure class="pull-quote">
-		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-		  <?php /* Guest words: consecutive from M.W. Facebook review (docs/guest-reviews-bank.md). Distinct reviewer from the homepage cards and the M.P. pull-quote above. */ ?>
-		  <blockquote class="pull-quote__text">The house was well equipped with all the facilities we needed for my Dad’s complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.</blockquote>
-		  <figcaption class="pull-quote__cite"><cite>M.W.</cite><span class="pull-quote__role">Visiting family &middot; Facebook review</span></figcaption>
-		</figure>
+		<?php foreach ( $story_quotes as $story_quote_i => $story_quote ) : ?>
+		  <figure class="story-quote<?php echo 0 === $story_quote_i ? ' story-quote--lead' : ''; ?>">
+			<blockquote class="story-quote__text"><p><?php echo esc_html( $story_quote['text'] ); ?></p></blockquote>
+			<figcaption class="story-quote__cite"><cite><?php echo esc_html( $story_quote['name'] ); ?></cite><span><?php echo esc_html( $story_quote['role'] ); ?></span></figcaption>
+		  </figure>
+		<?php endforeach; ?>
 		</div>
 	  </div>
 	</section>

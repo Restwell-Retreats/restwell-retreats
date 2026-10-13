@@ -108,16 +108,10 @@ $footer_enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restw
 				</a>
 				<p class="site-footer__signoff"><?php esc_html_e( 'Rest Easy, Stay Well.', 'restwell-retreats' ); ?></p>
 				<p class="site-footer__partner-line"><?php esc_html_e( 'Accessible holidays, Whitstable, Kent', 'restwell-retreats' ); ?></p>
-				<p class="site-footer__partner-line">
+				<p class="site-footer__partner-line site-footer__partner-links">
 					<?php esc_html_e( 'Sister company:', 'restwell-retreats' ); ?>
-					<a href="<?php echo esc_url( $footer_partner_url ); ?>" target="_blank" rel="noopener noreferrer">
-						<?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span>
-					</a>
-				</p>
-				<p class="site-footer__partner-line">
-					<a href="<?php echo esc_url( $footer_cqc_profile_url ); ?>" target="_blank" rel="noopener noreferrer">
-						<?php esc_html_e( 'CQC inspection profile', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span>
-					</a>
+					<a href="<?php echo esc_url( $footer_partner_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+					<a href="<?php echo esc_url( $footer_cqc_profile_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'CQC inspection profile', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
 				</p>
 			</div>
 			<?php foreach ( $footer_groups as $footer_group ) : ?>
@@ -126,7 +120,8 @@ $footer_enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restw
 				<p class="site-footer__heading" id="<?php echo esc_attr( $footer_group_h ); ?>"><?php echo esc_html( $footer_group['label'] ); ?></p>
 				<ul class="site-footer__links">
 					<?php foreach ( $footer_group['links'] as $footer_link ) : ?>
-					<li><a href="<?php echo esc_url( $footer_link['url'] ); ?>"><?php echo esc_html( $footer_link['label'] ); ?></a></li>
+						<?php $footer_link_current = function_exists( 'restwell_nav_url_is_current' ) && restwell_nav_url_is_current( $footer_link['url'] ); ?>
+					<li><a href="<?php echo esc_url( $footer_link['url'] ); ?>"<?php echo $footer_link_current ? ' aria-current="page"' : ''; ?>><?php echo esc_html( $footer_link['label'] ); ?></a></li>
 					<?php endforeach; ?>
 				</ul>
 			</nav>

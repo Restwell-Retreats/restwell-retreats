@@ -268,7 +268,7 @@ get_template_part(
 	<section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
 	  <div class="container split split--media-first split--fill">
 		<div class="split__media">
-		  <img class="media-guest-doors" src="<?php echo esc_url( restwell_theme_image_url( 'journey/guest-conservatory-doors.jpg' ) ); ?>" alt="A guest in a powered wheelchair at the open conservatory doors, looking out over the level garden" width="1500" height="2000" loading="lazy" decoding="async" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/SB-1-LS.jpg' ) ); ?>" alt="The conservatory: the sofa bed under the windows on level wood flooring" width="2400" height="1500" loading="lazy" decoding="async" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">

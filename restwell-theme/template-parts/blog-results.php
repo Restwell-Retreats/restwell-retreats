@@ -74,16 +74,13 @@ $pagination_aria = (string) $args['pagination_aria'];
 					?>
 		<article class="blog-featured">
 		  <a class="blog-featured__media" href="<?php echo esc_url( $permalink ); ?>" aria-hidden="true" tabindex="-1">
-			<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="625" sizes="(max-width: 767px) calc(100vw - 48px), 1120px" decoding="async" />
-			<span class="blog-featured__scrim" aria-hidden="true"></span>
-					<?php if ( $category !== '' ) : ?>
-			  <span class="tag blog-featured__tag"><?php echo esc_html( $category ); ?></span>
-			<?php endif; ?>
+			<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="1000" height="667" sizes="(max-width: 899px) calc(100vw - 48px), 720px" decoding="async" />
 		  </a>
-		  <div class="blog-featured__overlay">
-			<p class="blog-meta blog-meta--overlay"><?php echo esc_html( sprintf( /* translators: %d: minutes */ _n( '%d min read', '%d min read', $read_mins, 'restwell-retreats' ), $read_mins ) ); ?></p>
+		  <div class="blog-featured__body">
+					<?php restwell_blog_card_meta( $category, $read_mins ); ?>
 			<h2><a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_html( $entry_title ); ?></a></h2>
 			<p class="blog-featured__excerpt"><?php echo esc_html( $excerpt ); ?></p>
+			<span class="blog-featured__more" aria-hidden="true"><?php esc_html_e( 'Read the guide', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></span>
 		  </div>
 		</article>
 					<?php
@@ -104,16 +101,13 @@ $pagination_aria = (string) $args['pagination_aria'];
 		<ul class="card-grid card-grid--2 card-grid--blog" role="list" data-reveal>
 				<?php foreach ( $cards as $card ) : ?>
 					<?php list( $thumb, $thumb_alt ) = restwell_get_post_card_thumb( $card['post_id'], 'medium_large' ); ?>
-		  <li><article class="media-card">
+		  <li><article class="media-card blog-card">
 			<a class="media-card__image" href="<?php echo esc_url( $card['permalink'] ); ?>" aria-hidden="true" tabindex="-1">
-			  <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
-					<?php if ( $card['category'] !== '' ) : ?>
-				<span class="tag media-card__tag"><?php echo esc_html( $card['category'] ); ?></span>
-			  <?php endif; ?>
+			  <img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( $thumb_alt ); ?>" width="640" height="427" loading="lazy" decoding="async" />
 			</a>
-			<p class="blog-meta"><?php echo esc_html( sprintf( /* translators: %d: minutes */ _n( '%d min read', '%d min read', $card['read_mins'], 'restwell-retreats' ), $card['read_mins'] ) ); ?></p>
+					<?php restwell_blog_card_meta( $card['category'], $card['read_mins'] ); ?>
 			<h3><a href="<?php echo esc_url( $card['permalink'] ); ?>"><?php echo esc_html( $card['title'] ); ?></a></h3>
-			<p><?php echo esc_html( $card['excerpt'] ); ?></p>
+			<p class="blog-card__excerpt"><?php echo esc_html( $card['excerpt'] ); ?></p>
 		  </article></li>
 		  <?php endforeach; ?>
 		</ul>

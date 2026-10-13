@@ -718,9 +718,9 @@ html.admin-bar .subnav ~ section[id] {
 }
 
 /* Our Story closing band: the page's closing statement. The heading and the
-   sign-off on the left, the three commitments on the right as wide rows with
-   the gold marker the site uses for lists. Every row is the same size of type,
-   so the unequal lengths read as sentences, not as a ragged stack. */
+   sign-off on the left, the three commitments on the right with the gold
+   list marker, a hairline between them and none above or below (13 Oct
+   2026: a rule over and under every row read as a table). */
 .story-close__grid {
   display: grid;
   gap: var(--space-8);
@@ -753,7 +753,6 @@ html.admin-bar .subnav ~ section[id] {
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
 }
 .story-close__list li {
   display: flex;
@@ -761,68 +760,86 @@ html.admin-bar .subnav ~ section[id] {
   align-items: flex-start;
   margin: 0;
   padding: var(--space-5) 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
   font-family: var(--font-serif);
   font-size: var(--text-lg);
   line-height: var(--leading-snug);
   color: var(--deep-teal);
   text-align: left;
+  text-wrap: pretty;
 }
+.story-close__list li + li { border-top: 1px solid var(--rule); }
+.story-close__list li:first-child { padding-top: 0; }
+.story-close__list li:last-child { padding-bottom: 0; }
 @media (min-width: 640px) {
   .story-close__list li { font-size: var(--text-xl); }
 }
 .story-close__list li::before {
   content: "";
   flex-shrink: 0;
-  width: 0.6rem;
-  height: 0.6rem;
-  margin-top: 0.55em;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.6em;
   border-radius: 50%;
   background: var(--warm-gold);
 }
 
-/* Both guest quotes in one band, side by side and level, instead of two bands
-   each holding one small card in a field of space. */
+/* Our Story guest quotes (13 Oct 2026): one line about the design set large
+   across the band, then two about the stay in a pair beneath. Open type on
+   white, a gold mark over each, no cards and no rules. */
 .story-quotes__grid {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-12) var(--space-10);
 }
 @media (min-width: 768px) {
   .story-quotes__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .story-quote--lead { grid-column: 1 / -1; }
 }
-.story-quotes__grid .pull-quote {
-  width: 100%;
+.story-quote {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
   margin: 0;
-  padding: var(--panel-pad);
-  align-items: flex-start;
-  justify-content: flex-start;
-  text-align: left;
 }
-/* Two quotes of different length: the mark sits top-left on both and each name
-   follows its own quote; the cards stay equal height, with any spare room at the
-   foot rather than as a gap between a quote and its name. */
-.story-quotes__grid .pull-quote__text { text-align: left; }
-/* Two quotes side by side are a grid of reviews, the same job as the homepage
-   testimonial cards, so they take the same type: body size, not the 23px of a
-   single featured pull quote, and the same trimmed gold mark. */
-.story-quotes__grid .pull-quote__text {
-  font-size: var(--text-base);
-  line-height: var(--leading-body);
-  color: var(--body-secondary);
-}
-.story-quotes__grid .pull-quote__mark {
+.story-quote::before {
+  content: "\201C";
   display: block;
-  height: 0.42em;
-  margin-top: calc(-0.08em);
-  font-size: calc(var(--type-display) * 1.5);
+  height: 0.5em;
+  font-family: var(--font-serif);
+  font-size: 4rem;
   line-height: 1;
-  color: var(--warm-gold); /* decorative, aria-hidden: same gold as the homepage cards */
+  color: var(--warm-gold);
 }
-.story-quotes__grid .pull-quote__cite {
-  align-items: flex-start;
-  margin-top: var(--space-2);
-  padding-top: var(--space-2);
-  text-align: left;
+.story-quote__text { margin: 0; }
+.story-quote__text p {
+  margin: 0;
+  max-width: 30em;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: 1.45;
+  color: var(--deep-teal);
+  text-wrap: pretty;
+}
+.story-quote--lead { gap: var(--space-5); }
+.story-quote--lead::before { font-size: clamp(4.5rem, 3rem + 4vw, 7rem); height: 0.45em; }
+.story-quote--lead .story-quote__text p {
+  max-width: 21em;
+  font-size: clamp(1.875rem, 1.2rem + 2.6vw, 3.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.story-quote__cite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--muted-grey);
+}
+.story-quote__cite cite {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--deep-teal);
 }
 
 h1, h2, h3 {
@@ -1960,6 +1977,13 @@ body.nav-open { overflow: hidden; }
   text-underline-offset: 0.18em;
 }
 .site-footer__partner-line a:hover { color: var(--white); }
+/* The two partner links share one short block, a line apiece. As separate
+   paragraphs each link carried its own 44px tap row and they drifted apart. */
+.site-footer__partner-links { line-height: 1.9; }
+/* "Sister company:" on its own line, then each link on its own line
+   (blocks, not <br>s: a <br> after a wrapped link left an empty line where
+   the hidden "(opens in new tab)" text broke). */
+.site-footer__partner-links a { display: block; width: fit-content; min-height: 0; }
 .site-footer__col {
   display: flex;
   flex-direction: column;
@@ -1995,6 +2019,20 @@ body.nav-open { overflow: hidden; }
   color: var(--warm-gold-hero);
   text-decoration: underline;
   text-underline-offset: 0.18em;
+}
+/* You are here: the current page's link in gold with a short gold rule
+   before it, the same cue as the header's active item. */
+.site-footer__links a[aria-current="page"] {
+  gap: var(--space-2);
+  color: var(--warm-gold-hero);
+  font-weight: var(--weight-semibold);
+}
+.site-footer__links a[aria-current="page"]::before {
+  content: "";
+  width: 0.75rem;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
 }
 @media (min-width: 1024px) {
   /* Dense desktop footer: 36px rows (pointer devices; see DESIGN-SYSTEM.md). */
@@ -4061,44 +4099,75 @@ body:has(.subnav) {
 .media-card { height: 100%; }
 .media-card .place-list__actions { margin-top: auto; }
 
-/* Blog index grid: equal cards, three across on a wide screen, so the page is
-   a shelf of articles instead of a long scroll of 400px-tall photos. The photo
-   is a 3:2 header, the read time sits under the title block's top edge, titles
-   wrap evenly, and every excerpt stops at three lines so the cards end level. */
-.card-grid--blog { gap: var(--space-6); }
+/* Blog index grid: open editorial cards, three across on a wide screen. A 3:2
+   photo with nothing pinned over it, then one meta line (topic in teal, read
+   time in grey), the title, and a three-line excerpt. No box: on a white band
+   the photos give each card its edge, and the titles line up across the row.
+   (13 Oct 2026: the boxed cards had a chip over every photo and a clamp whose
+   padding let a fourth line leak under the ellipsis.) */
+.card-grid--blog { gap: var(--space-10) var(--space-6); }
+@media (min-width: 700px) {
+  .card-grid--blog { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (min-width: 1000px) {
-  .card-grid--blog { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .card-grid--blog { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-8); }
 }
-.card-grid--blog .media-card {
+.blog-card {
+  position: relative;
   gap: 0;
-  height: 100%;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
 }
-.card-grid--blog .media-card__image { border-radius: 0; }
-.card-grid--blog .media-card img { aspect-ratio: 3 / 2; border-radius: 0; }
-.card-grid--blog .media-card .blog-meta { padding: var(--space-4) var(--panel-pad) 0; }
-.card-grid--blog .media-card h3 {
-  padding: var(--space-2) var(--panel-pad) 0;
+.blog-card .media-card__image { border-radius: var(--radius-lg); }
+.blog-card .media-card__image img {
+  aspect-ratio: 3 / 2;
+  border-radius: 0;
+  transition: transform 0.5s ease;
+}
+.blog-meta.blog-card__meta {
+  margin-top: var(--space-5);
+  gap: 0;
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+.blog-card__topic {
+  color: var(--deep-teal);
+  font-weight: 600;
+}
+.blog-card__topic::after {
+  content: "·";
+  margin-inline: 0.5em;
+  color: var(--muted-grey);
+  font-weight: 400;
+}
+.blog-card h3 {
+  margin-top: var(--space-2);
   font-size: var(--type-h3);
   line-height: var(--leading-tight);
-  text-wrap: balance;
+  text-wrap: pretty;
 }
-.card-grid--blog .media-card h3 a { text-decoration: none; color: var(--deep-teal); }
-.card-grid--blog .media-card h3 a::after { content: ""; position: absolute; inset: 0; }
-.card-grid--blog .media-card { position: relative; }
-.card-grid--blog .media-card > p:last-child {
-  padding: var(--space-3) var(--panel-pad) var(--panel-pad);
+.blog-card h3 a { color: var(--deep-teal); text-decoration: none; }
+.blog-card h3 a::after { content: ""; position: absolute; inset: 0; }
+.blog-card .blog-card__excerpt {
+  margin-top: var(--space-3);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-size: var(--text-md);
-  line-height: 1.55;
+  line-height: 1.6;
 }
-.card-grid--blog .media-card:hover { border-color: color-mix(in srgb, var(--deep-teal) 28%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .blog-card:hover .media-card__image img { transform: scale(1.04); }
+  .card-grid--blog .blog-card:hover h3 a {
+    color: var(--deep-teal);
+    text-decoration: underline;
+    text-decoration-color: var(--warm-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+  .blog-card .media-card__image:hover { transform: none; }
+}
+.blog-card:has(h3 a:focus-visible) .media-card__image { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
+.blog-card h3 a:focus-visible { outline: none; }
 
 /* Single post: "Part of" pillar link, sibling guides and next steps. */
 .blog-cluster-links {
@@ -6158,27 +6227,29 @@ fieldset.form-stack {
 }
 
 /*
- * Featured post — full-bleed photo with headline overlaid on a scrim,
- * reusing .hero's photo-plus-gradient language so the blog's top story
- * reads as an extension of the brand rather than a bolted-on card style.
+ * Featured post: the newest article as a wide split, photo left and the
+ * story beside it on white (stacked on phones). It used to be a 21:9 photo
+ * with the headline on a dark scrim and a chip in the corner.
  */
 .blog-featured {
   position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  isolation: isolate;
+  display: grid;
+  gap: var(--space-5);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .blog-featured {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-10);
+  }
 }
 .blog-featured__media {
   position: relative;
   display: block;
-  /* Dark base so the white overlay text reads before the photo arrives (audit I39). */
-  background: var(--deep-teal);
-  /* Taller on narrow screens — a wrapped 3-line title + excerpt needs the
-     room, or it collides with the tag chip pinned at the top. */
-  aspect-ratio: 3 / 4;
-}
-@media (min-width: 700px) {
-  .blog-featured__media { aspect-ratio: 21 / 9; }
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--driftwood);
+  aspect-ratio: 3 / 2;
 }
 .blog-featured__media img {
   position: absolute;
@@ -6186,37 +6257,50 @@ fieldset.form-stack {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: var(--deep-teal);
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
-@media (hover: hover) and (pointer: fine) {
-  .blog-featured__media:hover img { transform: scale(1.035); }
+.blog-featured__body { min-width: 0; }
+.blog-featured__body .blog-card__meta { margin-top: 0; font-size: var(--text-sm); }
+.blog-featured__body h2 {
+  margin: var(--space-3) 0 0;
+  font-size: var(--type-h2);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
 }
-.blog-featured__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(12, 35, 42, 0) 32%, rgba(12, 35, 42, 0.6) 72%, rgba(12, 35, 42, 0.88) 100%);
-}
-.blog-featured__tag {
-  position: absolute;
-  top: var(--space-4);
-  left: var(--space-4);
-}
-.blog-featured__overlay {
-  position: absolute;
-  inset: auto 0 0 0;
-  padding: var(--space-5) var(--space-6) var(--space-6);
-  color: var(--white);
-  pointer-events: none;
-}
-.blog-featured__overlay h2 {
-  margin: var(--space-2) 0;
-  color: var(--white);
-}
+.blog-featured__body h2 a { color: var(--deep-teal); text-decoration: none; }
+.blog-featured__body h2 a::after { content: ""; position: absolute; inset: 0; }
 .blog-featured__excerpt {
-  margin: 0;
-  max-width: 40rem;
-  color: rgba(255, 255, 255, 0.86);
+  margin: var(--space-4) 0 0;
+  max-width: 34em;
+  color: var(--muted-grey);
+  font-size: var(--text-lg);
+  line-height: var(--leading-lede);
+  text-wrap: pretty;
+}
+.blog-featured__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  color: var(--deep-teal);
+  font-weight: var(--type-ui-weight);
+  text-decoration: underline;
+  text-decoration-color: var(--warm-gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+}
+.blog-featured__more .icon { width: 1.125rem; height: 1.125rem; transition: transform var(--duration-base) ease; }
+@media (hover: hover) and (pointer: fine) {
+  .blog-featured:hover .blog-featured__media img { transform: scale(1.03); }
+  .blog-featured:hover .blog-featured__more .icon { transform: translateX(0.2rem); }
+}
+.blog-featured:has(h2 a:focus-visible) .blog-featured__media { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
+.blog-featured__body h2 a:focus-visible { outline: none; }
+/* The grid starts a clear beat after the lead story, as far as the cards sit
+   apart from each other, so the featured post doesn't read as row one. */
+.blog-featured + .card-grid--blog { margin-top: var(--space-12); }
+@media (min-width: 900px) {
+  .blog-featured + .card-grid--blog { margin-top: var(--space-16); }
 }
 /* Card photo doubles as a link to the article — aria-hidden/tabindex="-1" in
    markup so screen readers hit the one real (title) link, not a duplicate. */
@@ -6233,30 +6317,14 @@ fieldset.form-stack {
     box-shadow: none;
   }
 }
-.media-card__tag {
-  position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
-}
-.blog-featured__overlay h2 a,
 .media-card h3 a {
   text-decoration: none;
   color: inherit;
-}
-.blog-featured__overlay h2 a {
-  pointer-events: auto;
 }
 .media-card h3 a:hover {
   color: var(--warm-gold-text);
   text-decoration: underline;
   text-decoration-color: var(--warm-gold);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-}
-.blog-featured__overlay h2 a:hover {
-  color: var(--warm-gold-hero);
-  text-decoration: underline;
-  text-decoration-color: var(--warm-gold-hero);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
 }
@@ -6268,7 +6336,6 @@ fieldset.form-stack {
   color: var(--muted-grey);
   margin: 0;
 }
-.blog-meta--overlay { color: rgba(255, 255, 255, 0.78); }
 .pagination {
   margin-block-start: var(--rhythm-after-head-dense);
 }
@@ -6322,13 +6389,6 @@ a.tag {
 a.tag:hover {
   background: var(--deep-teal);
   color: var(--white);
-}
-.blog-featured__tag,
-.media-card__tag {
-  /* Overlaid on a photo — the near-white default .tag wash disappears against
-     light sky/sand; solid + shadow keeps it legible on any image. */
-  background: var(--white);
-  box-shadow: 0 2px 8px rgb(15 35 42 / 0.18);
 }
 
 .empty-state {
@@ -8393,6 +8453,14 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   .split--fill > .split__media { display: flex; }
   .split--fill > .split__media img { width: 100%; height: 100%; min-height: 22rem; object-fit: cover; }
 }
+/* A long copy column beside the photo (at 900-1100px especially) stretched a
+   landscape room shot into a tall sliver, 433 x 789 for the second bedroom.
+   The photo still fills, but never past a square; past that it centres on
+   the copy instead. cqw is the photo cell's own width. */
+@media (min-width: 900px) {
+  .split--fill > .split__media { container-type: inline-size; align-items: center; }
+  .split--fill > .split__media img { max-height: max(22rem, 100cqw); }
+}
 
 .callout {
   display: flex;
@@ -10306,20 +10374,13 @@ p.blog-cluster-links__part > .text-link,
     column-gap: var(--space-10);
   }
 }
-/* A single featured review is open type on its band, centred, without a box.
-   Two side by side (Our Story) sit under a rule like the other columns. */
+/* A single featured review is open type on its band, centred, without a box. */
 .pull-quote {
   --pull-quote-pad-y: 0;
   --pull-quote-pad-x: 0;
   background: none;
   border: 0;
   box-shadow: none;
-}
-.story-quotes__grid { column-gap: var(--space-10); }
-.story-quotes__grid .pull-quote {
-  padding: var(--space-6) 0 0;
-  border-top: 1px solid var(--rule);
-  border-radius: 0;
 }
 
 /* Accessibility: the download closes the equipment section, one step under
@@ -10484,7 +10545,7 @@ p.blog-cluster-links__part > .text-link,
    ========================================================================= */
 
 /* Who it's for: the four audiences and the three funding routes read as an
-   index, one row each under a full-width rule, title on the left half and the
+   index, one row each, title on the left half and the
    detail on the right, on the same axis as the section head above. As a 2x2
    of small blocks each with a tinted icon tile, two rules and a link, the
    section was busy and nothing lined up across the pair. */
@@ -10492,12 +10553,19 @@ p.blog-cluster-links__part > .text-link,
   grid-template-columns: minmax(0, 1fr);
   row-gap: 0;
 }
+/* One hairline between neighbouring rows and none above the first or under
+   the last (13 Oct 2026: five rules for four rows read as a table, and the
+   closing one sat on its own before the band ended). */
 .persona-list--index .persona-list__item {
   padding: var(--space-8) 0;
-  border-top: 1px solid var(--rule);
+  border: 0;
 }
-.persona-list--index .persona-list__item:last-child {
-  border-bottom: 1px solid var(--rule);
+.persona-list--index .persona-list__item + .persona-list__item { border-top: 1px solid var(--rule); }
+.persona-list--index .persona-list__item:first-child { padding-top: 0; }
+.persona-list--index .persona-list__item:last-child { padding-bottom: 0; }
+@media (min-width: 900px) {
+  .persona-list--index .persona-list__item { padding-block: var(--space-10); }
+  .section-head + .persona-list--index { margin-top: var(--space-14); }
 }
 .persona-list--index .icon-circle { display: none; }
 .persona-list--index .persona-list__item h3 {
@@ -10740,12 +10808,12 @@ p.blog-cluster-links__part > .text-link,
 
 /* Guest photos (portrait phone shots) in landscape slots: keep the guest and
    the garden beyond in frame rather than the floor. */
-.split__media img.media-guest-doors { object-position: 50% 28%; }
 .split__media img.media-guest-garden { object-position: 50% 40%; }
 
 /* Icons: one Lucide set (inc/icons.php) on a 24px grid at a 1.75 stroke. The
-   containers below size them; this is the default. */
-.icon {
+   containers below size them; this is the default, at zero specificity so any
+   component rule (sizes, hidden states such as the stepper's check) wins. */
+:where(.icon) {
   display: inline-block;
   flex: none;
   width: 1.5rem;

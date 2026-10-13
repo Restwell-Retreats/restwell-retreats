@@ -414,7 +414,8 @@ get_template_part(
 		<h2 id="pro-quote-h" class="sr-only">What a support team wrote after staying</h2>
 		<figure class="pull-quote">
 		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
-		  <blockquote class="pull-quote__text">Our support team recently stayed at Restwell Retreats while supporting our client on a UK holiday, and they were extremely impressed with the accommodation. Everything is clean, well-maintained, and fully accessible for clients who require disabled access, including wide doors, no thresholds, and a portable ramp for accessing the community. The toilet system is outstanding and makes a significant difference to the client’s comfort and dignity.</blockquote>
+		  <?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md); the earlier version stitched three paragraphs together. */ ?>
+		  <blockquote class="pull-quote__text">The setup also works perfectly for support workers. The second bedroom provides a comfortable space for day support, and the adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.</blockquote>
 		  <figcaption class="pull-quote__cite">G.G.<span class="pull-quote__role">Support team lead &middot; Google review</span></figcaption>
 		</figure>
 	  </div>

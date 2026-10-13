@@ -55,3 +55,47 @@ I've watched, waited, patiently, while this whole project was being put together
 I came to the bungalow in Whitstable with my disabled parents, we were greeted with a Hamper with Crumpets, jams, Wine & some other bits and pieces that came in handy. The house was well equipped with all the facilities we needed for my Dad's complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind. We had a BBQ on the first night (cole provided) in the garden which is a lovely sun trap. Overall our stay was comfortable and a home away from home. Recommended 5 Stars.
 
 **Suggested homepage excerpt (consecutive):** The house was well equipped with all the facilities we needed for my Dad's complex needs. Vicky and Keeley could not do enough for us, we forgot flannels and they traveled to bring us some which was very kind.
+
+---
+
+## M.H. — Google Review
+
+Same text as the Facebook review above (posted to Google too).
+
+**In use:** Our Story (consecutive): The bungalow is modern and spotless. It is fully equipped - for both the person you are caring for, and for the carer.
+
+---
+
+## M.Z. — Google Review
+
+My husband and I stayed at Restwell over the weekend, and we thoroughly enjoyed our stay. The property is beautifully presented, exceptionally clean, well equipped, and in a fantastic location.
+We spent time exploring the surrounding area, including the beautiful city of Canterbury, Herne Bay, and Whitstable, where we enjoyed a relaxing day at the beach.
+One of the highlights was waking up to the sound of birds singing each morning and watching them from the garden while enjoying our breakfast. It was the perfect way to start the day.
+We would highly recommend Restwell to anyone looking for a peaceful and comfortable getaway, and we hope to return again in the future.
+
+**In use:** homepage card 3.
+
+---
+
+## N.T. — Google Review
+
+My daughter and I had a fantastic stay at Victoria's place in Whitstable and would definitely recommend it. The house is spotlessly clean, very comfortable and exceptionally well equipped. Everything feels fresh and new from the furniture and very comfortable beds to the kitchen appliances and bathroom fittings.
+The kitchen has everything you could possibly need, even for a longer stay, rather than just the usual holiday-rental basics. The bathroom is modern and even has a Japanese-style toilet, which we both thought was brilliant!
+There's a private, well-maintained garden with plenty of space to sit outside, and another big bonus for us was that the property is dog-friendly. The house and surrounding area are very quiet and peaceful, yet it's also really well connected. The sea is within walking distance, and from there you can follow a beautiful, natural coastal path — perfect for a walk, especially with a dog.
+Food delivery was easy, we could order a taxi in no time, and the train station is only a short taxi ride away, so getting around without a car wasn't a problem at all.
+Everything is thoughtfully organised and easy to use, and Victoria was friendly, helpful and very easy to communicate with. My daughter and I would absolutely recommend staying here and would happily come back ourselves.
+
+**In use:** Our Story (consecutive): Everything is thoughtfully organised and easy to use, and Victoria was friendly, helpful and very easy to communicate with.
+
+---
+
+## G.G. — Google Review (support provider)
+
+Our support team recently stayed at Restwell Retreats while supporting our client on a UK holiday, and they were extremely impressed with the accommodation. Everything is clean, well‑maintained, and fully accessible for clients who require disabled access, including wide doors, no thresholds, a portable ramp for accessing the community, and additional equipment available if needed.
+The setup also works perfectly for support workers. The second bedroom provides a comfortable space for day support, and the adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.
+The accommodation itself is fabulous, especially the bathroom facilities. The toilet system is outstanding and makes a significant difference to the clients comfort and dignity.
+Overall, Restwell Retreats provides a brilliant environment that truly supports both the individual and their carer.
+
+**In use:** Optional care (consecutive): The setup also works perfectly for support workers. The second bedroom provides a comfortable space for day support, and the adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.
+
+**Our Story lead (M.P., consecutive):** The entire house though, mirrors one philosophy, be flat, be accessible.

@@ -239,3 +239,20 @@ function restwell_get_post_byline() {
  * Post dates in UK format ("1 October 2026"), whatever the site date setting.
  */
 const RESTWELL_POST_DATE_FORMAT = 'j F Y';
+
+/**
+ * The meta line on a blog card: topic, then read time ("Kent & coast · 2 min read").
+ * It sits above the title, so the photo stays clean (no chip pinned over it).
+ *
+ * @param string $category  Primary category name ('' to leave it out).
+ * @param int    $read_mins Estimated minutes to read.
+ */
+function restwell_blog_card_meta( $category, $read_mins ) {
+	echo '<p class="blog-meta blog-card__meta">';
+	if ( '' !== $category ) {
+		echo '<span class="blog-card__topic">' . esc_html( html_entity_decode( $category, ENT_QUOTES, 'UTF-8' ) ) . '</span>';
+	}
+	/* translators: %d: minutes */
+	echo '<span>' . esc_html( sprintf( _n( '%d min read', '%d min read', $read_mins, 'restwell-retreats' ), $read_mins ) ) . '</span>';
+	echo '</p>';
+}
