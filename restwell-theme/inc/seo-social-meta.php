@@ -33,7 +33,7 @@ function restwell_get_default_og_stock_filename_map() {
 		'who-its-for'           => 'bungalow/GRDEN-3-LS.jpg',
 		'whitstable-area-guide' => 'stock/restwell-whitstable-painted-beach-huts.jpg',
 		'resources'             => 'bungalow/WHIT-SEAFRONT-4-LS.jpg',
-		'optional-care'         => 'bungalow/LR-1-LS.jpg',
+		'optional-care'         => 'bungalow/BD2-2-LS.jpg',
 		'faq'                   => 'stock/restwell-canterbury-riverside-walk.jpg',
 		'enquire'               => 'stock/restwell-whitstable-beach-huts-pier-view.jpg',
 		'blog'                  => 'stock/restwell-whitstable-beach-sailboats-sunset.jpg',

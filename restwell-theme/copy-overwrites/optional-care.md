@@ -1,6 +1,6 @@
 # Optional care `/optional-care/`
 
-**Layer:** `care_heading` `care_intro`. Never “fully accessible” in Restwell-owned copy. The attributed Google review on this page stays verbatim. Never a published care lead time: it depends on the person and on who’s working that week. CQC belongs to Continuity, never to Restwell. This page is not Continuity’s Maidstone homepage. Voice: the Welcome Guide.
+**Layer:** `care_heading` `care_intro`. Never “fully accessible” in Restwell-owned copy. Never imply the care is free: no “the bungalow costs the same either way” lines (owner, 14 Oct 2026). Never claim Continuity’s carers know the house (owner veto, 5 Sep 2026). The attributed Google review on this page stays verbatim. Never a published care lead time: it depends on the person and on who’s working that week. CQC belongs to Continuity, never to Restwell. This page is not Continuity’s Maidstone homepage. Voice: the Welcome Guide.
 
 ## Title
 
@@ -22,9 +22,7 @@ Continuity of Care Services can provide home care inside the bungalow while you�
 
 Most people arrive at this page with the same worry: that a holiday means either leaving the care behind or spending the week doing all of it yourself.
 
-You don’t have to use Continuity. A great many guests bring their own carer or PA, or simply manage the way they manage at home, and the bungalow costs exactly the same either way. But if having someone come in would turn a difficult week into a good one, that’s what this page is for.
-
-They already know this house: the wet room, where the hoist track runs, how the bed works. So nobody arrives on the first morning trying to work out somebody else’s bathroom.
+You don’t have to use Continuity. A great many guests bring their own carer or PA, or simply manage the way they manage at home. But if having someone come in would turn a difficult week into a good one, that’s what this page is for.
 
 ## What they can actually do
 
@@ -52,13 +50,13 @@ Restwell isn’t a registered care provider and doesn’t pretend to be one. We�
 
 ## Bringing your own team
 
-You’re very welcome to. The bungalow rate doesn’t change, and Restwell doesn’t employ carers, so there’s nothing to negotiate and nobody to work around.
+You’re very welcome to. Just tell us who’s coming.
 
 A support worker can use the second bedroom, or we can think about the sleeping arrangements with you if that’s easier. Just tell us who’s coming.
 
 ## What it costs
 
-Continuity quote for care themselves, and the house rate stays the house rate whatever you decide. Any guide rates we publish sit on `/pricing/` and are labelled as Continuity’s, because the right support genuinely depends on the person and we won’t quote you a figure before we understand what would help.
+Continuity quote for care themselves. Any guide rates we publish sit on `/pricing/` and are labelled as Continuity’s, because the right support genuinely depends on the person and we won’t quote you a figure before we understand what would help.
 
 If a council, the NHS or a direct payment might be involved, → `/resources/`
 

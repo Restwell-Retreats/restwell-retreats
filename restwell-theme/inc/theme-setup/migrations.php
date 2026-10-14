@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 77;
+const RESTWELL_SCHEMA_VERSION = 78;
 
 
 /**
@@ -2006,6 +2006,213 @@ function restwell_migrate_oven_door_wording_v77() {
 }
 
 /**
+ * Optional care rewritten in the Welcome Guide voice (14 Oct 2026, owner: "the
+ * copywriting could undergo desperate improvement"), its hero moved from the
+ * living room to the accessible bedroom, and lines that implied care is free
+ * ("the bungalow costs the same either way") removed site-wide. Each field is replaced only while
+ * it still holds the theme's previous default, so hand-edited copy is kept;
+ * the Featured image only while it is still the photo the theme seeded.
+ */
+function restwell_migrate_care_copy_v78() {
+	if ( get_option( 'restwell_care_copy_v78', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_care_copy_v78', '1', false );
+	if ( ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		return;
+	}
+	$page_id = restwell_page_id_for_stock_slug( 'optional-care' );
+	if ( $page_id < 1 ) {
+		return;
+	}
+	$fields = array(
+		'care_intro' => array(
+			'Optional home care from Continuity of Care Services, our CQC-rated sister company, arranged on the same enquiry.',
+			'Our sister company, Continuity of Care Services, can come into the bungalow while you stay. Ask on the same enquiry as the house.',
+		),
+		'care_sister_heading' => array(
+			'One conversation if you need both the bungalow and care',
+			'We’re the house. Continuity are the care.',
+		),
+		'care_sister_lede' => array(
+			'Victoria Walker owns Restwell and is Continuity’s CQC registered manager. That’s why one call can cover the house and the care, without a handover to somebody else.',
+			'You don’t have to use them. Plenty of guests bring their own carer or PA, or manage the way they do at home. But if someone coming in would turn a hard week into a good one, that’s what Continuity are here for.',
+		),
+		'care_sister_note' => array(
+			'We add nothing until you agree the support package.',
+			'Nothing is added to your stay until you’ve agreed it.',
+		),
+		'care_support_heading' => array(
+			'What support looks like',
+			'You choose how much, and it isn’t a package',
+		),
+		'care_support_1_body' => array(
+			'Support with washing, dressing and daily routines on your schedule.',
+			'Help getting up, washed and dressed, at the times you keep at home.',
+		),
+		'care_support_2_title' => array(
+			'Visiting care',
+			'A few hours off',
+		),
+		'care_support_2_body' => array(
+			'Short daytime visits, or support for a promenade or town trip.',
+			'Time here and there, so whoever normally does the caring can walk down to Tankerton and look at the water without watching the clock.',
+		),
+		'care_support_3_title' => array(
+			'Overnight cover',
+			'Overnight',
+		),
+		'care_support_3_body' => array(
+			'Sleep-in or waking night support when daytime visits are not enough.',
+			'A sleep-in or a waking night, when daytime visits aren’t enough.',
+		),
+		'care_support_4_title' => array(
+			'Mobility and hoisting',
+			'Hoisting and transfers',
+		),
+		'care_support_4_body' => array(
+			'Transfers with trained carers, using the ceiling track and wet-room kit already in the house.',
+			'The hoist is over the bed and the chair is in the wet room, so Continuity aren’t improvising around a standard holiday let.',
+		),
+		'care_own_1_title' => array(
+			'No extra fee',
+			'Use of the kit',
+		),
+		'care_own_1_body' => array(
+			'Bring your own carer or PA at no extra charge; the bungalow rate is the same either way.',
+			'The ceiling hoist, profiling beds and shower chair are here for your carer to use as well.',
+		),
+		'care_own_2_title' => array(
+			'Separate sleeping space',
+			'A room of their own',
+		),
+		'care_own_2_body' => array(
+			'The second double bedroom, or the conservatory’s double sofa bed, keeps your carer’s sleeping space away from yours.',
+			'Your carer can have the second double bedroom, or the double sofa bed in the conservatory. We can think it through with you if that’s easier.',
+		),
+		'care_own_3_body' => array(
+			'The driveway holds two cars, so a carer’s vehicle can park alongside yours.',
+			'The driveway holds two cars, so a carer’s car can park alongside yours.',
+		),
+		'care_how_heading' => array(
+			'How care is arranged',
+			'Sooner if you ask sooner, and we won’t pretend otherwise',
+		),
+		'care_how_lede' => array(
+			'This is the care conversation specifically; see How It Works for the full booking journey from enquiry to arrival.',
+			'We don’t publish a lead time, because we’d only be making it up: it depends on what you need and who’s working that week. What we will do is give you a straight answer quickly.',
+		),
+		'care_how_step1_title' => array(
+			'Enquire as usual',
+			'Mention it when you enquire',
+		),
+		'care_how_step1_body' => array(
+			'Share dates, access needs, and any support you think would help. Call 01622 809881 or use the enquire form. No separate care booking maze.',
+			'Say what you’re thinking when you first write or ring 01622 809881, even if your dates are vague. There’s no separate form for care.',
+		),
+		'care_how_step2_title' => array(
+			'Agree tasks and hours',
+			'Talk it through with Continuity',
+		),
+		'care_how_step2_body' => array(
+			'If care is needed, Continuity confirms what is possible and what it costs. Many packages settle on the first call; a short follow-up covers overnight or complex rotas.',
+			'They’ll ask about hours and tasks and tell you plainly what’s possible. Many people settle it on the first call; overnight or complex rotas can take a short follow-up.',
+		),
+		'care_how_step3_title' => array(
+			'Guide rates, then your figure',
+			'They quote, you decide',
+		),
+		'care_how_step3_body' => array(
+			'Guide rates live on Pricing & dates. Continuity quotes your care cost once hours and tasks are agreed.',
+			'Continuity quote your care once hours and tasks are agreed. Their guide rates are on Pricing & dates.',
+		),
+		'care_pro_lede' => array(
+			'Restwell and Continuity can support a funded short break with care alongside it: here’s what each side provides. See Who It’s For for guest, carer and professional-referrer suitability at a glance.',
+			'What each of us can give you when you’re planning a funded break with care. Who It’s For has suitability at a glance.',
+		),
+		'care_pro_1_body' => array(
+			'Published door widths, hoist and wet-room specs; we’ll measure unpublished clearances on request.',
+			'Door widths, hoist and wet-room specs are published, and we’ll measure anything that isn’t.',
+		),
+		'care_pro_2_title' => array(
+			'Care documentation',
+			'The care plan and cost',
+		),
+		'care_pro_2_body' => array(
+			'Continuity confirms the care plan and cost once hours and tasks are agreed: the detail a funding panel needs to approve a break.',
+			'Continuity confirm the care plan and the cost once hours and tasks are agreed.',
+		),
+		'care_pro_3_body' => array(
+			'Care Act short breaks, direct payments, personal health budgets or NHS CHC: the bungalow rate is the same whoever we invoice.',
+			'Care Act short breaks, direct payments, personal health budgets or NHS CHC.',
+		),
+		'care_pro_4_body' => array(
+			'Restwell and Continuity share 01622 809881, so access needs and a care conversation can happen in one call.',
+			'Restwell and Continuity share 01622 809881, so access and care can be one call.',
+		),
+		'care_faq_intro' => array(
+			'Whether care is required, who Continuity is, and where guide rates live.',
+			'The questions people ask most before they mention care.',
+		),
+		'care_cta_heading' => array(
+			'Ask about care with your enquiry',
+			'Tell us what you need, and we’ll work it out with you',
+		),
+		'care_cta_body' => array(
+			'Share your dates and what support would help.',
+			'Ring 01622 809881 or send a note. There’s no such thing as a silly question.',
+		),
+	);
+	foreach ( $fields as $key => $pair ) {
+		if ( metadata_exists( 'post', $page_id, $key ) && get_post_meta( $page_id, $key, true ) === $pair[0] ) {
+			update_post_meta( $page_id, $key, $pair[1] );
+		}
+	}
+	// Care is never implied free (owner, 14 Oct 2026): price-sameness lines
+	// beside care or carers come out of any stored page field.
+	$sentences = array(
+		'How you manage your care is entirely up to you. The bungalow rate stays exactly the same whichever you choose:' => 'How you manage your care is entirely up to you:',
+		'How you manage care is up to you, and the bungalow rate stays the same whichever you choose:' => 'How you manage care is up to you:',
+		'Of course, and the price doesn’t change. A support worker' => 'Of course. A support worker',
+		'Bringing your own carer or PA? Lovely. The rate doesn’t change and there’s nothing extra to arrange.' => 'Bringing your own carer or PA? Lovely. Just tell us who’s coming.',
+		'They’re very welcome, and the bungalow rate doesn’t change.' => 'They’re very welcome.',
+	);
+	$pages     = get_posts(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+	foreach ( $pages as $any_page_id ) {
+		foreach ( (array) get_post_meta( (int) $any_page_id ) as $key => $values ) {
+			if ( '' === $key || '_' === $key[0] || ! isset( $values[0] ) || ! is_string( $values[0] ) || is_serialized( $values[0] ) ) {
+				continue;
+			}
+			$fresh = strtr( $values[0], $sentences );
+			if ( $fresh !== $values[0] ) {
+				update_post_meta( (int) $any_page_id, $key, $fresh );
+			}
+		}
+	}
+	if ( ! function_exists( 'restwell_sideload_stock_image' ) || ! function_exists( 'restwell_page_featured_matches_stock_rel' ) ) {
+		return;
+	}
+	$thumb = (int) get_post_thumbnail_id( $page_id );
+	if ( $thumb > 0 && ! restwell_page_featured_matches_stock_rel( $page_id, 'bungalow/LR-1-LS.jpg' ) ) {
+		return;
+	}
+	$att_id = restwell_sideload_stock_image( 'bungalow/BD2-2-LS.jpg' );
+	if ( $att_id > 0 ) {
+		set_post_thumbnail( $page_id, $att_id );
+		if ( function_exists( 'restwell_sync_page_hero_image_trio' ) ) {
+			restwell_sync_page_hero_image_trio( $page_id );
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2118,6 +2325,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_daylight_heroes_v75',
 		'restwell_care_quote_wording_v76',
 		'restwell_oven_door_wording_v77',
+		'restwell_care_copy_v78',
 	);
 }
 
@@ -2258,6 +2466,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_care_quote_wording_v76', 114 );
 	add_action( 'init', 'restwell_migrate_oven_door_wording_v77', 120 );
 	add_action( 'after_switch_theme', 'restwell_migrate_oven_door_wording_v77', 115 );
+	add_action( 'init', 'restwell_migrate_care_copy_v78', 121 );
+	add_action( 'after_switch_theme', 'restwell_migrate_care_copy_v78', 116 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

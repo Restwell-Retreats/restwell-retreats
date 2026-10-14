@@ -56,7 +56,7 @@ Check-out is by 11am, and if you need longer for personal care or transport, tel
 
 ## Bringing your own carer or PA
 
-They’re very welcome, and the bungalow rate doesn’t change. A support worker can have the second bedroom, or we can plan the sleeping arrangements with you if that suits better. Just tell us who’s coming so the house is set up properly.
+They’re very welcome. A support worker can have the second bedroom, or we can plan the sleeping arrangements with you if that suits better. Just tell us who’s coming so the house is set up properly.
 
 ## Adding home care
 

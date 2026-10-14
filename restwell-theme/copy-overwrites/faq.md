@@ -49,7 +49,7 @@ Yes. Continuity of Care Services, our sister company, can come into the bungalow
 The sooner you ask, the more likely we can say yes. We don’t publish a lead time because it honestly depends on what you need and who’s available that week, and we’d rather give you a real answer quickly than a number we’ve invented.
 
 **Can we bring our own carer or PA?**
-Of course, and the price doesn’t change. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.
+Of course. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.
 
 **How far is the bungalow from the seafront?**
 About ten minutes on foot from the driveway. Places along Tankerton promenade take longer, because you walk down to the sea first and then head west along the prom. JoJo’s is roughly twenty minutes all in. → `/whitstable-area-guide/`

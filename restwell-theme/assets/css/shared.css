@@ -9472,54 +9472,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 }
 
 /* =========================================================================
-   Optional care in Continuity of Care Services' colours (5 Oct 2026). The
-   page is about their care, so its content area takes their purple: the
-   design tokens are re-pointed inside <main>, and every component follows.
-   Header, footer and the gold Enquire buttons stay Restwell.
-   Contrast on white: ink 10.5:1, eyebrow 6.0:1, body 9.1:1, muted 6.8:1.
-   ========================================================================= */
-body.page-template-template-care #main-content {
-  --deep-teal: #3f3285;
-  --warm-gold-text: #6a52b8;
-  --warm-gold-hero: #c9b8f2;
-  --body-secondary: #4a4560;
-  --muted-grey: #5d5873;
-  --soft-sand: #efe9fa;
-  --driftwood: #e2daf3;
-  --continuity-violet: #8868d8;
-  /* Re-declared so text that inherits colour (h2, body copy) takes the new ink,
-     not the value <body> already resolved. */
-  color: var(--deep-teal);
-}
-/* The closing band sits on the teal footer, so it stays Restwell teal. */
-body.page-template-template-care #main-content .mid-cta {
-  --deep-teal: #1B4D5C;
-  --warm-gold-hero: #F0C97A;
-}
-/* The faded step numerals are the theme ink at 68%; in Continuity's lighter
-   violet that falls to 2.9:1, under the 3:1 large-text floor. 80% is 3.7:1. */
-body.page-template-template-care #main-content .payment-steps__index {
-  color: color-mix(in srgb, var(--warm-gold-text) 80%, var(--white));
-}
-body.page-template-template-care #main-content .persona-list__item .icon-circle {
-  background: color-mix(in srgb, var(--continuity-violet) 16%, var(--white));
-  color: var(--deep-teal);
-}
-body.page-template-template-care #main-content .checklist li::before,
-body.page-template-template-care #main-content .comparison-list__item::after {
-  background: var(--continuity-violet);
-}
-body.page-template-template-care #main-content .subnav a[aria-current="true"],
-body.page-template-template-care #main-content .subnav a.is-active {
-  background: color-mix(in srgb, var(--continuity-violet) 14%, var(--white));
-  border-color: color-mix(in srgb, var(--continuity-violet) 40%, transparent);
-}
-body.page-template-template-care #main-content .text-link,
-body.page-template-template-care #main-content .prose a {
-  text-decoration-color: color-mix(in srgb, var(--continuity-violet) 60%, transparent);
-}
-
-/* =========================================================================
    Line length (audit I42) — last in the file so it caps components that set
    their own wider max-width earlier.
    ========================================================================= */
@@ -9759,6 +9711,10 @@ p.payment-note > .text-link,
 p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
 p.blog-cluster-links__part > .text-link,
+p.care-cqc__note > .text-link,
+p.care-how__note > .text-link,
+.care-route__stop p > .text-link,
+.care-index dd > .text-link,
 .payment-steps__body p > .text-link,
 .persona-list__item p > .text-link,
 .faq-item__panel p > .text-link {
@@ -11126,7 +11082,6 @@ p.blog-cluster-links__part > .text-link,
 .icon-circle,
 .persona-list__item .icon-circle,
 .facts-strip .icon-circle,
-body.page-template-template-care #main-content .persona-list__item .icon-circle,
 .hiw-facts__icon,
 .acc-callout__icon,
 .acc-callout--quiet .acc-callout__icon,
@@ -11167,49 +11122,93 @@ body.page-template-template-care #main-content .persona-list__item .icon-circle,
 .page-template-template-property .split .section-head > .eyebrow { display: block; }
 
 /* =========================================================================
-   Optional care (13 Oct 2026). Rebuilt away from the template patterns the
-   owner flagged: no rows of three principle cards, no 2x2 icon grids, no
-   lone quote band. Victoria's photo carries the intro; the support types
-   are an index beside the hoist; G.G.'s words about support workers sit
-   with "Bringing your own carer", the section they speak to.
+   Optional care (14 Oct 2026). In Restwell's teal, built from the site's
+   own pieces so it reads as one site: the usual photo hero, then the
+   reader's worry set large, Victoria beside the CQC facts as a photo and
+   copy row (the photo runs off the page like The Property's rooms), the
+   wet room across the full width over the four kinds of support, the care
+   steps on one line like the Whitstable route lists, and the armchair
+   beside "Bringing your own carer". The owner chose this layout from
+   rendered options over a sticky-photo variant that matched no other page.
    ========================================================================= */
-.care-intro__grid,
-.care-support__grid,
-.care-own__grid { display: grid; gap: var(--space-10); }
-@media (min-width: 900px) {
-  .care-intro__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-16); align-items: center; }
-  .care-support__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-16); align-items: center; }
-  .care-own__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-16); align-items: center; }
+.care-standfirst {
+  max-width: 23em;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.625rem, 1.15rem + 1.9vw, 2.5rem);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--deep-teal);
+  text-wrap: pretty;
 }
-.care-intro__photo,
-.care-support__photo { margin: 0; }
-.care-intro__photo img,
+.care-intro__split { margin-top: var(--space-14); }
+.care-intro__split .split__media img { object-position: 50% 28%; }
+.care-own .split__media img { object-position: 46% 60%; }
+@media (min-width: 900px) {
+  .care-intro__split { margin-top: var(--space-20); }
+}
+
+/* The wet room across the page, under the support head. */
+.care-support { overflow-x: clip; }
+.care-support__photo { margin: var(--section-after-head) 0 0; }
 .care-support__photo img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
+  object-position: 50% 55%;
   border-radius: var(--radius-lg);
   background: var(--driftwood);
 }
-.care-intro__photo img { object-position: 50% 30%; }
 @media (min-width: 900px) {
-  .care-intro__photo img,
-  .care-support__photo img { aspect-ratio: 4 / 5; }
+  .care-support__photo { margin-inline: calc(-1 * var(--bleed)); }
+  .care-support__photo img { aspect-ratio: 21 / 8; border-radius: 0; }
 }
-.care-intro__photo figcaption {
-  margin-top: var(--space-3);
-  font-size: var(--text-sm);
+
+/* The four kinds of support in a row under the photo. */
+.care-types { display: grid; gap: var(--space-8); margin: var(--space-10) 0 0; }
+@media (min-width: 600px) {
+  .care-types { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-10) var(--space-12); }
+}
+@media (min-width: 1200px) {
+  .care-types { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.care-types > div { display: grid; gap: var(--space-2); align-content: start; }
+
+/* The CQC facts: label over value in two columns. */
+.care-cqc { margin-top: var(--space-10); scroll-margin-top: calc(var(--header-offset) + var(--space-6)); }
+.care-cqc__facts { display: grid; gap: var(--space-6) var(--space-10); margin: 0; max-width: 36rem; }
+@media (min-width: 480px) {
+  .care-cqc__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.care-cqc__facts > div { display: flex; flex-direction: column; gap: var(--space-1); }
+.care-cqc__facts dt { font-size: var(--text-sm); color: var(--muted-grey); }
+.care-cqc__facts dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
   line-height: var(--leading-snug);
+  color: var(--deep-teal);
+}
+.care-cqc__facts dd.care-cqc__rating { font-size: clamp(2.25rem, 1.75rem + 1.2vw, 2.75rem); line-height: 1; }
+.care-cqc__note {
+  max-width: 36rem;
+  margin: var(--space-8) 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
   color: var(--muted-grey);
 }
-.care-intro__photo figcaption strong { color: var(--deep-teal); font-weight: var(--weight-semibold); }
+.care-cqc__note .text-link { margin-left: var(--space-1); }
+.care-intro__badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-top: var(--space-6); }
+.care-intro__badges a { display: inline-flex; }
+.care-intro__badges img { display: block; width: auto; height: 2rem; }
+.care-intro__badges a + a img { height: 2.75rem; }
 
-/* Principles and own-carer points: a short serif name over a line of text,
-   spaced, no boxes or icons. */
-.care-points { display: grid; gap: var(--space-6); margin: var(--space-8) 0 0; }
+/* Own-carer points: a short serif name over a line of text, spaced. */
+.care-points { display: grid; gap: var(--space-6); margin: var(--space-8) 0 0; max-width: 36rem; }
 .care-points > div { display: grid; gap: var(--space-1); }
 .care-points dt,
+.care-types dt,
 .care-index dt {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
@@ -11218,16 +11217,72 @@ body.page-template-template-care #main-content .persona-list__item .icon-circle,
   color: var(--deep-teal);
 }
 .care-points dd,
+.care-types dd,
 .care-index dd { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
-.care-intro__note { margin: var(--space-8) 0 0; color: var(--muted-grey); font-size: var(--text-sm); }
-.care-intro__note .text-link { margin-left: var(--space-2); }
-.care-intro__badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-top: var(--space-6); }
-.care-intro__badges a { display: inline-flex; }
-.care-intro__badges img { display: block; width: auto; height: 2.25rem; }
-.care-intro__badges a + a img { height: 3rem; }
 
-/* Index rows: the name on the left, the detail on the right, one hairline
-   between rows. */
+/* How it's arranged: three stops down one line, like the route lists in the
+   Whitstable guide; the last stop, where you decide, is the gold one. */
+.care-route {
+  --route-dot: 0.875rem;
+  --route-gap: var(--space-8);
+  position: relative;
+  display: grid;
+  gap: var(--route-gap);
+  max-width: 36rem;
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.care-route__stop { position: relative; padding-left: calc(var(--route-dot) + var(--space-5)); }
+.care-route__stop::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0.4em;
+  left: 0;
+  width: var(--route-dot);
+  height: var(--route-dot);
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: inset 0 0 0 2px var(--deep-teal);
+}
+.care-route__stop:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: calc(0.4em + var(--route-dot));
+  bottom: calc(-1 * var(--route-gap) - 0.4em);
+  left: calc(var(--route-dot) / 2 - 1px);
+  width: 2px;
+  background: color-mix(in srgb, var(--deep-teal) 22%, transparent);
+}
+.care-route__stop:last-child::before {
+  background: var(--warm-gold);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--warm-gold) 24%, transparent);
+}
+.care-route__stop h3 { margin: 0; font-size: var(--text-xl); line-height: var(--leading-snug); }
+.care-route__stop p { margin: var(--space-2) 0 0; color: var(--body-secondary); }
+@media (min-width: 900px) {
+  .care-route { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-12); max-width: none; margin-top: var(--section-after-head); }
+  /* One line under the three dots, ending at the last. */
+  .care-route::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--route-dot) / 2 - 1px);
+    left: 0;
+    right: calc((100% - 2 * var(--space-12)) / 3 - var(--route-dot) / 2);
+    height: 2px;
+    background: color-mix(in srgb, var(--deep-teal) 22%, transparent);
+  }
+  .care-route__stop { padding: calc(var(--route-dot) + var(--space-6)) 0 0; }
+  .care-route__stop::before { top: 0; }
+  .care-route__stop:not(:last-child)::after { content: none; }
+  .care-route__stop p { max-width: 30rem; }
+}
+.care-how__note { max-width: 36rem; margin: var(--space-10) 0 0; font-size: var(--text-sm); color: var(--muted-grey); }
+.care-how__note .text-link { margin-left: var(--space-1); }
+
+/* Index rows (professionals): the name on the left, the detail on the right,
+   one hairline between rows. */
 .care-index { display: grid; margin: var(--space-8) 0 0; }
 .care-index > div { display: grid; gap: var(--space-1); padding: var(--space-5) 0; }
 .care-index > div + div { border-top: 1px solid var(--rule); }
@@ -11236,31 +11291,32 @@ body.page-template-template-care #main-content .persona-list__item .icon-circle,
 @media (min-width: 700px) {
   .care-index > div { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: var(--space-8); align-items: baseline; }
 }
-.section-head + .care-index--wide { margin-top: var(--space-4); }
+.section-head + .care-index--wide { margin-top: var(--section-after-head); }
 @media (min-width: 900px) {
   .care-index--wide > div { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--space-16); padding-block: var(--space-6); }
 }
 
-/* G.G.'s words, set large beside the points they speak to. */
-.care-own__quote { margin: 0; }
-.care-own__quote::before {
+/* G.G.'s words about the second bedroom and the armchair. */
+.care-own__quote { max-width: 36rem; margin: var(--space-10) 0 0; }
+.care-own__quote blockquote { position: relative; margin: 0; padding-left: var(--space-8); }
+.care-own__quote blockquote::before {
   content: "\201C";
-  display: block;
-  height: 0.5em;
+  position: absolute;
+  top: -0.1em;
+  left: 0;
   font-family: var(--font-serif);
-  font-size: 5rem;
+  font-size: 3rem;
   line-height: 1;
   color: var(--warm-gold);
 }
-.care-own__quote blockquote { margin: 0; }
 .care-own__quote blockquote p {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.375rem, 1.05rem + 1.1vw, 2rem);
-  font-style: italic;
-  line-height: 1.35;
+  font-size: var(--text-xl);
+  font-style: normal;
+  line-height: 1.45;
   color: var(--deep-teal);
   text-wrap: pretty;
 }
-.care-own__quote figcaption { margin-top: var(--space-5); font-size: var(--text-sm); color: var(--muted-grey); }
+.care-own__quote figcaption { margin-top: var(--space-4); padding-left: var(--space-8); font-size: var(--text-sm); color: var(--muted-grey); }
 .care-own__quote cite { margin-right: var(--space-2); font-style: normal; font-weight: var(--weight-semibold); color: var(--deep-teal); }

@@ -33,7 +33,7 @@ A few things that might save you a question:
 - Nothing is due at this stage. A deposit only comes after you’ve confirmed the house works for you.
 - We’ll answer within 48 hours, and we’ll tell you straight away if your dates aren’t free rather than leaving you waiting.
 - If you’d like care during the stay, mention it here. It’s the same office and the same phone number, so you won’t be passed around.
-- Bringing your own carer or PA? Lovely. The rate doesn’t change and there’s nothing extra to arrange.
+- Bringing your own carer or PA? Lovely. Just tell us who’s coming.
 
 ## Form
 

@@ -187,9 +187,9 @@ $home_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_intro',
-		__( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' )
+		__( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you:', 'restwell-retreats' )
 	)
-	: __( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you, and the bungalow rate stays the same whichever you choose:', 'restwell-retreats' );
+	: __( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you:', 'restwell-retreats' );
 $home_care_item1_title = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_item1_title', __( 'Bring your own support', 'restwell-retreats' ) )
 	: __( 'Bring your own support', 'restwell-retreats' );

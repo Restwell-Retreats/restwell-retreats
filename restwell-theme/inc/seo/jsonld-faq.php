@@ -113,7 +113,7 @@ function restwell_get_faq_page_default_pairs() {
 		),
 		array(
 			'q'   => 'Can we bring our own carer or PA?',
-			'a'   => 'Of course, and the price doesn’t change. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.',
+			'a'   => 'Of course. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.',
 			'cat' => 'care',
 		),
 		array(
