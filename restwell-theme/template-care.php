@@ -295,13 +295,13 @@ $care_day = array(
 		<div class="care-day__copy">
 		  <h3><?php echo esc_html( $care_moment['time'] ); ?></h3>
 		  <p><?php echo esc_html( $care_moment['text'] ); ?></p>
-		  <?php if ( $care_moment['quote'] ) : ?>
+			<?php if ( $care_moment['quote'] ) : ?>
 		  <figure class="care-own__quote">
-			<?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md). */ ?>
+				<?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md). */ ?>
 			<blockquote><p>The adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.</p></blockquote>
 			<figcaption><cite>G.G.</cite> <?php esc_html_e( 'Support team lead · Google review', 'restwell-retreats' ); ?></figcaption>
 		  </figure>
-		  <?php endif; ?>
+			<?php endif; ?>
 		</div>
 	  </div>
 	  <?php endforeach; ?>
