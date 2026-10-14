@@ -23,17 +23,8 @@
   scroll-margin-top: calc(var(--header-offset) + var(--wp-admin--admin-bar--height, 32px) + var(--space-8));
 }
 
-/* All six question topics remain visible, including to keyboard users. */
-.pill-tabs {
-  flex-wrap: wrap;
-  overflow: visible;
-  mask-image: none;
-  -webkit-mask-image: none;
-  padding: var(--space-1);
-  gap: var(--space-2);
-}
-.pill-tabs button { min-height: 2.75rem; }
-.pill-tabs button:hover { border-color: var(--deep-teal); }
+/* Filters scroll in one row on phones like the subnav (14 Oct 2026); each
+   tab still takes focus, and scroll-margin-inline brings it into view. */
 
 /* A little more separation makes a question's expanded state easier to scan. */
 .faq-item__trigger { gap: var(--space-4); }

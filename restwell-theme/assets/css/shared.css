@@ -1715,6 +1715,8 @@ body.nav-open { overflow: hidden; }
 }
 .faq-page .pill-tabs {
   margin-bottom: var(--space-6);
+  /* The question list's own top rule follows 24px below: one line, not two. */
+  border-bottom-color: transparent;
 }
 .faq-page__layout {
   display: grid;
@@ -3579,13 +3581,15 @@ body:has(.subnav) {
     --subnav-pad-y: var(--space-3);
   }
 }
+/* Tabs (14 Oct 2026): the current section is underlined on the bar's rule,
+   as on Funding's tabs; the gold pill was one of the owner's "AI tells". */
 .subnav a {
+  position: relative;
   scroll-margin-inline: var(--space-5);
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
   padding: var(--space-2) var(--space-3);
-  border-radius: 999px;
   text-decoration: none;
   font-size: var(--text-sm);
   font-weight: 600;
@@ -3594,15 +3598,16 @@ body:has(.subnav) {
   scroll-snap-align: start;
 }
 .subnav a:hover,
-.subnav a:focus-visible {
-  color: var(--deep-teal);
-  background: color-mix(in srgb, var(--deep-teal) 7%, var(--white));
-}
-.subnav a.is-active {
-  color: var(--deep-teal);
-  font-weight: var(--weight-semibold);
-  background: color-mix(in srgb, var(--warm-gold) 14%, var(--white));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--warm-gold) 40%, transparent);
+.subnav a:focus-visible { color: var(--deep-teal); }
+.subnav a.is-active { color: var(--deep-teal); font-weight: var(--weight-semibold); }
+.subnav a.is-active::after {
+  content: "";
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: calc(-1 * var(--subnav-pad-y));
+  height: 2px;
+  background: var(--deep-teal);
 }
 
 .layout-sidebar {
@@ -4593,16 +4598,20 @@ body:has(.subnav) {
   }
 }
 
+/* Filters (FAQ topics, blog topics), 14 Oct 2026: words on one rule with the
+   chosen one underlined, the same as Funding's tabs and the subnav. They were
+   outlined pills with a solid teal pill for the current one. */
 .pill-tabs {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  gap: var(--space-2);
+  gap: 0 var(--space-6);
   margin: 0 0 var(--section-stack-gap);
   padding: 0;
   list-style: none;
+  border-bottom: 1px solid var(--rule);
   /* Fade the trailing edge so a cut-off pill reads as "more to scroll", not clipping */
   mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
@@ -4619,30 +4628,41 @@ body:has(.subnav) {
 }
 .pill-tabs a,
 .pill-tabs button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   text-decoration: none;
   scroll-margin-inline: var(--space-4);
   appearance: none;
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 16%, transparent);
-  background: var(--white);
-  color: var(--deep-teal);
+  border: 0;
+  background: none;
+  color: var(--muted-grey);
   font: inherit;
-  font-size: var(--text-sm);
-  font-weight: 600;
+  font-size: var(--text-md);
+  font-weight: var(--type-ui-weight);
   white-space: nowrap;
-  min-height: 2.5rem;
-  padding: var(--space-2) var(--space-4);
-  border-radius: 999px;
+  min-height: 2.75rem;
+  padding: 0;
   cursor: pointer;
+  transition: color 0.2s ease;
 }
+.pill-tabs a:hover,
+.pill-tabs button:hover { color: var(--deep-teal); }
 .pill-tabs a[aria-current="page"],
 .pill-tabs button[aria-pressed="true"],
 .pill-tabs button[aria-selected="true"],
-.pill-tabs button.is-active {
+.pill-tabs button.is-active { color: var(--deep-teal); font-weight: var(--weight-semibold); }
+.pill-tabs a[aria-current="page"]::after,
+.pill-tabs button[aria-pressed="true"]::after,
+.pill-tabs button[aria-selected="true"]::after,
+.pill-tabs button.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
   background: var(--deep-teal);
-  border-color: var(--deep-teal);
-  color: var(--white);
 }
 
 /*
