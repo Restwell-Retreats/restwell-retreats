@@ -362,7 +362,7 @@ get_template_part(
 		  </ol>
 		</div>
 		<figure class="process__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/SB-1-LS.jpg' ) ); ?>" alt="Conservatory sofa with level access to the garden" width="2400" height="1500" loading="lazy" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-2-LS.jpg' ) ); ?>" alt="The open-plan living room, with doors out to the garden at the far end" width="1920" height="1200" loading="lazy" />
 		</figure>
 	  </div>
 	</section>
