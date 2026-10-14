@@ -9711,6 +9711,7 @@ p.payment-note > .text-link,
 p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
 p.blog-cluster-links__part > .text-link,
+p.door-check__refs > .text-link,
 p.care-cqc__note > .text-link,
 p.care-how__note > .text-link,
 .care-route__stop p > .text-link,
@@ -10267,15 +10268,12 @@ p.care-how__note > .text-link,
 }
 .door-check__controls { display: flex; flex-direction: column; min-width: 0; }
 .door-check__label,
-.door-check__presets-title,
-.door-check__refs-label {
+.door-check__presets-title {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: var(--type-eyebrow-size, var(--text-xs));
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  letter-spacing: var(--type-label-tracking);
-  text-transform: uppercase;
-  color: var(--warm-gold-text);
+  color: var(--deep-teal);
 }
 .door-check__readout {
   display: flex;
@@ -10305,26 +10303,29 @@ p.care-how__note > .text-link,
 .door-check__number:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 4px; border-radius: 2px; }
 .door-check__units {
   display: inline-flex;
+  gap: var(--space-1);
   margin-bottom: var(--space-2);
-  padding: 3px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 18%, transparent);
-  background: var(--white);
 }
+/* mm / in as two words, the chosen one underlined (a pill switch was one
+   of the "AI tells"). */
 .door-check__units button {
   min-width: 2.75rem;
-  min-height: 2.25rem;
-  padding: 0 var(--space-3);
+  min-height: 2.75rem;
+  padding: 0 var(--space-2);
   border: 0;
-  border-radius: 999px;
   background: none;
   font: inherit;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--deep-teal);
+  font-size: var(--text-md);
+  color: var(--muted-grey);
   cursor: pointer;
 }
-.door-check__units button[aria-pressed="true"] { background: var(--deep-teal); color: var(--white); }
+.door-check__units button[aria-pressed="true"] {
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}
 .door-check__units button:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
 
 /* Slider: a fine rail, teal to the thumb (the script sets --fit-slider-pct). */
@@ -10375,13 +10376,14 @@ p.care-how__note > .text-link,
   color: var(--muted-grey);
 }
 
-/* Typical chairs: four quiet text buttons, the chosen one filled. */
+/* Typical chairs: four text buttons, no boxes (14 Oct 2026, owner: "polish
+   current"); the chosen one's name is underlined. */
 .door-check__presets { margin-top: var(--space-8); }
 .door-check__chips {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin-top: var(--space-3);
+  gap: var(--space-1) var(--space-6);
+  margin-top: var(--space-2);
 }
 .door-check__chip {
   display: flex;
@@ -10389,29 +10391,32 @@ p.care-how__note > .text-link,
   align-items: flex-start;
   gap: 2px;
   min-height: 3.25rem;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 16%, transparent);
-  border-radius: var(--radius);
-  background: var(--white);
+  padding: var(--space-2) 0;
+  border: 0;
+  background: none;
   font: inherit;
   text-align: left;
   color: var(--deep-teal);
   cursor: pointer;
-  transition: border-color var(--duration-fast, 0.15s) ease, background-color var(--duration-fast, 0.15s) ease;
 }
-.door-check__chip:hover { border-color: var(--deep-teal); }
 .door-check__chip:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
-.door-check__chip[aria-pressed="true"] { border-color: var(--deep-teal); background: var(--deep-teal); color: var(--white); }
-.door-check__chip-name { font-size: var(--text-sm); font-weight: var(--weight-semibold); line-height: 1.2; }
-.door-check__chip-size { font-size: var(--text-xs); font-variant-numeric: tabular-nums; opacity: 0.8; }
+.door-check__chip-name {
+  font-size: var(--text-md);
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--duration-fast, 0.15s) ease;
+}
+.door-check__chip:hover .door-check__chip-name { text-decoration-color: color-mix(in srgb, var(--deep-teal) 35%, transparent); }
+.door-check__chip[aria-pressed="true"] .door-check__chip-name { font-weight: var(--weight-semibold); text-decoration-color: var(--deep-teal); }
+.door-check__chip-size { font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--muted-grey); }
 .door-check__hint { margin: var(--space-3) 0 0; font-size: var(--text-sm); line-height: var(--leading-snug); color: var(--body-secondary); }
 
 /* Results: the verdict as a sentence with a status mark, then each doorway. */
 .door-check__results { min-width: 0; }
 .door-check__verdict {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
   margin: 0 0 var(--space-6);
   font-family: var(--font-serif);
   font-size: var(--text-2xl);
@@ -10419,19 +10424,12 @@ p.care-how__note > .text-link,
   line-height: 1.25;
   color: var(--deep-teal);
 }
-.door-check__verdict::before {
-  content: "";
-  flex: none;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background: var(--deep-teal);
-}
-.door-check__verdict.fit-check__summary--tight::before { background: var(--warm-gold-text); }
+.door-check__verdict.fit-check__summary--tight { color: var(--warm-gold-text); }
 .door-check__verdict.fit-check__summary--no { color: var(--error-red); }
-.door-check__verdict.fit-check__summary--no::before { background: var(--error-red); }
-.door-check__door { padding: var(--space-5) 0; border-top: 1px solid var(--rule); }
-.door-check__door:last-child { border-bottom: 1px solid var(--rule); }
+/* One rule, between the two doorways. */
+.door-check__door { padding: var(--space-5) 0; }
+.door-check__door:first-child { padding-top: 0; }
+.door-check__door + .door-check__door { border-top: 1px solid var(--rule); }
 .door-check__door-head {
   display: flex;
   align-items: baseline;
@@ -10492,17 +10490,9 @@ p.care-how__note > .text-link,
 .fit-bar--no .door-check__result { color: var(--error-red); }
 .fit-bar--no .door-check__jamb { background: var(--error-red); }
 .door-check__note { margin: var(--space-5) 0 0; max-width: var(--measure-text); font-size: var(--text-sm); color: var(--body-secondary); }
-.door-check__standards {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-5);
-  margin-top: var(--space-4);
-}
-.door-check__refs { display: flex; flex-wrap: wrap; gap: 0 var(--space-5); margin: 0; padding: 0; list-style: none; }
-.door-check__refs .text-link { font-size: var(--text-sm); }
+.door-check__refs { margin: var(--space-3) 0 0; font-size: var(--text-sm); color: var(--body-secondary); }
 @media (prefers-reduced-motion: reduce) {
-  .door-check__chair, .door-check__chip { transition: none; }
+  .door-check__chair, .door-check__chip-name { transition: none; }
 }
 @media (max-width: 479px) {
   .door-check { padding: var(--space-5); margin-inline: calc(-1 * var(--space-2)); }

@@ -337,17 +337,12 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			<?php if ( '' !== $acc_fit_note ) : ?>
 			<p class="door-check__note"><?php echo esc_html( $acc_fit_note ); ?></p>
 			<?php endif; ?>
-			<div class="door-check__standards">
-			  <p class="door-check__refs-label" id="fit-check-refs-h"><?php esc_html_e( 'Reference standards', 'restwell-retreats' ); ?></p>
-			  <ul class="door-check__refs" aria-labelledby="fit-check-refs-h">
-			  <li>
-				<a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'UK Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
-			  </li>
-			  <li>
-				<a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'BS 8300 accessible environment', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
-			  </li>
-			</ul>
-			</div>
+			<p class="door-check__refs">
+				<?php esc_html_e( 'Guidance:', 'restwell-retreats' ); ?>
+			  <a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
+				<?php esc_html_e( 'and', 'restwell-retreats' ); ?>
+			  <a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'BS 8300', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>.
+			</p>
 		  </div>
 		</div>
 	  </div>
