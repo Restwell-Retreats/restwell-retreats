@@ -162,6 +162,28 @@
 
   document.querySelectorAll('[data-faq-accordion]').forEach(bindFaqAccordion);
 
+  /* A link to a question (#faq-q3, e.g. from the FAQ hero) opens its answer:
+     any topic filter is cleared first so the question is showing. */
+  function openFaqFromHash() {
+    var id = window.location.hash.slice(1);
+    if (!id) return;
+    var trigger = document.getElementById(id);
+    if (!trigger || !trigger.classList.contains('faq-item__trigger')) return;
+    var item = trigger.closest('.faq-item');
+    var root = trigger.closest('[data-faq-accordion]');
+    if (!item || !root) return;
+    if (item.hidden) {
+      var all = document.querySelector('[data-faq-filters] [data-filter="all"]');
+      if (all) all.click();
+    }
+    root.querySelectorAll('.faq-item').forEach(function (other) {
+      setFaqItemOpen(other, other === item);
+    });
+    trigger.scrollIntoView({ block: 'start' });
+  }
+  openFaqFromHash();
+  window.addEventListener('hashchange', openFaqFromHash);
+
   /* ---------- FAQ category pills ---------- */
   var pillRoot = document.querySelector('[data-faq-filters]');
   var faqRootForFilters = pillRoot

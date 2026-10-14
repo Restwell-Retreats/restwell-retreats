@@ -24,6 +24,7 @@ $restwell_faq_intro   = function_exists( 'restwell_page_content_text' )
 		'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.'
 	)
 	: 'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.';
+$faq_page_items = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'faq-page' ) : array();
 ?>
 
 
@@ -68,8 +69,7 @@ get_template_part(
 		</div>
 		<div class="faq-page__layout">
 		  <?php
-			$faq_page_items = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'faq-page' ) : array();
-			$faq_page_col   = array();
+			$faq_page_col = array();
 			foreach ( $faq_page_items as $faq_page_i => $faq_page_item ) {
 				$faq_page_answer = (string) ( $faq_page_item['a'] ?? '' );
 				if ( $faq_page_answer !== '' && false === stripos( $faq_page_answer, '<p' ) ) {

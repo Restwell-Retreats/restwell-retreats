@@ -8293,16 +8293,14 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 .hero.hero--plain {
   min-height: 0;
   color: var(--deep-teal);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='560' height='240' viewBox='0 0 560 240' fill='none' stroke='%23D4A853' stroke-width='1.4'%3E%3Cpath d='M0 40c70 0 70-24 140-24s70 24 140 24 70-24 140-24 70 24 140 24' opacity='.5'/%3E%3Cpath d='M0 80c70 0 70-24 140-24s70 24 140 24 70-24 140-24 70 24 140 24' opacity='.4'/%3E%3Cpath d='M0 120c70 0 70-24 140-24s70 24 140 24 70-24 140-24 70 24 140 24' opacity='.3'/%3E%3Cpath d='M0 160c70 0 70-24 140-24s70 24 140 24 70-24 140-24 70 24 140 24' opacity='.2'/%3E%3Cpath d='M0 200c70 0 70-24 140-24s70 24 140 24 70-24 140-24 70 24 140 24' opacity='.1'/%3E%3C/svg%3E") right -4rem center / 34rem auto no-repeat,
-    linear-gradient(165deg, var(--tint-cool) 0%, var(--bg-subtle) 100%);
-  /* Cool tint, not sand (9 Oct 2026): the only warm-filled band left on the
-     site after the subtle bands went flat. The gold waves carry the warmth. */
+  background: linear-gradient(165deg, var(--tint-cool) 0%, var(--bg-subtle) 100%);
+  /* Cool tint, not sand (9 Oct 2026). The gold wave motif went on 13 Oct
+     2026 (decoration with no meaning). */
   border-bottom: 1px solid var(--card-line);
 }
 .hero.hero--plain .hero__content {
-  padding-top: calc(var(--header-offset) + var(--space-10));
-  padding-bottom: var(--space-12);
+  padding-top: calc(var(--header-offset) + var(--space-8));
+  padding-bottom: var(--space-10);
 }
 .hero.hero--plain .hero__text .eyebrow { color: var(--warm-gold-text); text-shadow: none; }
 .hero.hero--plain .breadcrumb,
@@ -8310,8 +8308,11 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 .hero.hero--plain .breadcrumb li { color: var(--muted-grey); text-shadow: none; }
 .hero.hero--plain .hero__text h1 { color: var(--deep-teal); text-shadow: none; }
 .hero.hero--plain .hero__text p:not(.eyebrow) { color: var(--body-secondary); text-shadow: none; }
-@media (max-width: 767px) {
-  .hero.hero--plain { background-size: 20rem auto, auto; background-position: right -6rem bottom 0, 0 0; }
+/* Plain hero, compact (13 Oct 2026, owner's pick): heading on one line at
+   desktop, the intro under it, and the FAQ list starts soon after. A chat
+   of question bubbles was tried here and dropped. */
+@media (min-width: 1024px) {
+  .hero.hero--interior.hero--plain .hero__content { width: 100%; }
 }
 
 /* -------------------------------------------------------------------------
@@ -10264,22 +10265,24 @@ p.blog-cluster-links__part > .text-link,
 .container > .section-head { max-width: none; }
 .container > .section-head > h2,
 .container > .process__head > h2 { max-width: 20em; }
-/* The intro runs as wide as its heading (owner, 13 Oct 2026): a heading that
-   ran 1,070px over a 608px intro read as two different columns, and the
-   heading is not to be shortened. The head shrinks to fit its heading (the
-   intro is given no width of its own, then fills the head), never narrower
-   than 40rem so a short heading still gets a readable intro. */
-.container > .section-head:not(.section-head--center),
-.container > .process__head {
-  width: fit-content;
-  min-width: min(100%, 40rem);
-  max-width: 100%;
-}
+/* One intro width on every section (owner, 14 Oct 2026): 36rem, about 70
+   characters, whatever the heading's length. Matching each intro to its
+   heading was tried first: a short heading left a tall, narrow intro, and a
+   40rem floor ran the intro past it. Heroes and the closing band share it. */
 .container > .section-head:not(.section-head--center) > .lede,
-.container > .process__head > .lede {
-  width: 0;
-  min-width: 100%;
-  max-width: none;
+.section-head.process__head > .lede,
+.care--tease .care__tease > .lede,
+.hero .hero__text > p:not(.eyebrow),
+.mid-cta .mid-cta__inner > p {
+  max-width: min(100%, 36rem);
+}
+/* On a phone a balanced heading breaks into two short lines over an intro
+   that fills the column; wrapping it fully keeps the two edges together.
+   The centred closing band keeps balance (no lone last word). */
+@media (max-width: 599px) {
+  .container > .section-head > h2,
+  .section-head.process__head > h2,
+  .hero__text > h1 { text-wrap: pretty; }
 }
 
 /* =========================================================================
