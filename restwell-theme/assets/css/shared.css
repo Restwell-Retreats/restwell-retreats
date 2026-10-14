@@ -11351,3 +11351,27 @@ p.care-how__note > .text-link,
     background: color-mix(in srgb, var(--deep-teal) 22%, transparent);
   }
 }
+
+/* Optional care trial (14 Oct 2026): a day in three photo-and-copy rows,
+   morning, in the day and overnight, each photo running off the page on its
+   own side like The Property's rooms. */
+.care-day__moment { margin-top: var(--space-14); }
+@media (min-width: 900px) {
+  .care-day__moment { margin-top: var(--space-20); }
+}
+.care-day__copy h3 {
+  margin: 0;
+  font-size: var(--type-h2);
+  line-height: 1.1;
+}
+.care-day__copy > p {
+  max-width: 32rem;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-lg);
+  line-height: var(--leading-lede);
+  color: var(--body-secondary);
+}
+.care-day .care-own__quote { margin-top: var(--space-8); }
+#morning .split__media img { object-position: 34% 50%; }
+#overnight .split__media img { object-position: 46% 60%; }
+.care-who .split__media img { object-position: 50% 28%; }
