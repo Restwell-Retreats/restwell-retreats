@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 78;
+const RESTWELL_SCHEMA_VERSION = 79;
 
 
 /**
@@ -2213,6 +2213,69 @@ function restwell_migrate_care_copy_v78() {
 }
 
 /**
+ * Optional care rebuilt from the site's own sections (14 Oct 2026): the fields
+ * the page keeps take their new copy, each only while it still holds the
+ * previous default (the v78 copy, or the original heading), so hand-edited
+ * copy is kept. New fields read their theme defaults.
+ */
+function restwell_migrate_care_copy_v79() {
+	if ( get_option( 'restwell_care_copy_v79', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_care_copy_v79', '1', false );
+	if ( ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		return;
+	}
+	$page_id = restwell_page_id_for_stock_slug( 'optional-care' );
+	if ( $page_id < 1 ) {
+		return;
+	}
+	$fields = array(
+		'care_heading' => array(
+			'Care during your stay, arranged in the same conversation',
+			'Care that comes to your holiday',
+		),
+		'care_intro' => array(
+			'Our sister company, Continuity of Care Services, can come into the bungalow while you stay. Ask on the same enquiry as the house.',
+			'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.',
+		),
+		'care_own_lede' => array(
+			'You’re very welcome to. Just tell us who’s coming.',
+			'Plenty of guests do. They can have the second double bedroom or the sofa bed in the conservatory, use the hoist and shower chair, and park on the drive.',
+		),
+		'care_how_heading' => array(
+			'Sooner if you ask sooner, and we won’t pretend otherwise',
+			'Asking for care',
+		),
+		'care_how_step1_body' => array(
+			'Say what you’re thinking when you first write or ring 01622 809881, even if your dates are vague. There’s no separate form for care.',
+			'Even if your dates are vague.',
+		),
+		'care_how_step2_title' => array(
+			'Talk it through with Continuity',
+			'Talk it through',
+		),
+		'care_how_step2_body' => array(
+			'They’ll ask about hours and tasks and tell you plainly what’s possible. Many people settle it on the first call; overnight or complex rotas can take a short follow-up.',
+			'Continuity ask about hours and tasks.',
+		),
+		'care_how_step3_body' => array(
+			'Continuity quote your care once hours and tasks are agreed. Their guide rates are on Pricing & dates.',
+			'Nothing is booked until you say yes.',
+		),
+		'care_pro_lede' => array(
+			'What each of us can give you when you’re planning a funded break with care. Who It’s For has suitability at a glance.',
+			'Door widths and kit are published, and Continuity confirm the care plan and cost once hours and tasks are agreed.',
+		),
+	);
+	foreach ( $fields as $key => $pair ) {
+		if ( metadata_exists( 'post', $page_id, $key ) && get_post_meta( $page_id, $key, true ) === $pair[0] ) {
+			update_post_meta( $page_id, $key, $pair[1] );
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2326,6 +2389,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_care_quote_wording_v76',
 		'restwell_oven_door_wording_v77',
 		'restwell_care_copy_v78',
+		'restwell_care_copy_v79',
 	);
 }
 
@@ -2468,6 +2532,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_oven_door_wording_v77', 115 );
 	add_action( 'init', 'restwell_migrate_care_copy_v78', 121 );
 	add_action( 'after_switch_theme', 'restwell_migrate_care_copy_v78', 116 );
+	add_action( 'init', 'restwell_migrate_care_copy_v79', 122 );
+	add_action( 'after_switch_theme', 'restwell_migrate_care_copy_v79', 117 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

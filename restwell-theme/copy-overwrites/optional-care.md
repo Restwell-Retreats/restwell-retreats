@@ -12,7 +12,7 @@ Continuity of Care Services, our sister company, can come into the bungalow whil
 
 ## H1 (`care_heading`)
 
-Care during your stay, arranged in the same conversation
+Care that comes to your holiday
 
 ## Opening paragraph (print directly under the H1)
 

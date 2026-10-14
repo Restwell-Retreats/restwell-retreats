@@ -15,15 +15,15 @@ get_header();
 
 $restwell_care_id      = (int) get_queried_object_id();
 $restwell_care_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Care during your stay, arranged in the same conversation' )
-	: 'Care during your stay, arranged in the same conversation';
+	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Care that comes to your holiday' )
+	: 'Care that comes to your holiday';
 $restwell_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_care_id,
 		'care_intro',
-		'Our sister company, Continuity of Care Services, can come into the bungalow while you stay. Ask on the same enquiry as the house.'
+		'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.'
 	)
-	: 'Our sister company, Continuity of Care Services, can come into the bungalow while you stay. Ask on the same enquiry as the house.';
+	: 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.';
 $restwell_care_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_care_id, 'care_label', '' )
 	: '';
@@ -34,113 +34,31 @@ $care_txt = static function ( $key, $fallback ) use ( $restwell_care_id ) {
 		: $fallback;
 };
 
-$care_standfirst     = $care_txt( 'care_standfirst', 'Most people arrive here with the same worry: that a holiday means either leaving the care behind, or doing all of it yourself.' );
-$care_sister_heading = $care_txt( 'care_sister_heading', 'We’re the house. Continuity are the care.' );
-$care_sister_lede    = $care_txt( 'care_sister_lede', 'You don’t have to use them. Plenty of guests bring their own carer or PA, or manage the way they do at home. But if someone coming in would turn a hard week into a good one, that’s what Continuity are here for.' );
-$care_sister_note        = $care_txt( 'care_sister_note', 'Nothing is added to your stay until you’ve agreed it.' );
-$care_sister_rates_label = $care_txt( 'care_sister_rates_label', 'See care guide rates' );
-
-$care_support_heading = $care_txt( 'care_support_heading', 'You choose how much, and it isn’t a package' );
-$care_support_lede    = $care_txt( 'care_support_lede', 'Tell us what a good day would look like and we’ll work backwards from there. There’s no minimum package to squeeze yourself into.' );
-$care_support_items   = array(
-	array(
-		'title' => $care_txt( 'care_support_1_title', 'Personal care' ),
-		'body'  => $care_txt( 'care_support_1_body', 'Help getting up, washed and dressed, at the times you keep at home.' ),
-	),
-	array(
-		'title' => $care_txt( 'care_support_2_title', 'A few hours off' ),
-		'body'  => $care_txt( 'care_support_2_body', 'Time here and there, so whoever normally does the caring can walk down to Tankerton and look at the water without watching the clock.' ),
-	),
-	array(
-		'title' => $care_txt( 'care_support_3_title', 'Overnight' ),
-		'body'  => $care_txt( 'care_support_3_body', 'A sleep-in or a waking night, when daytime visits aren’t enough.' ),
-	),
-	array(
-		'title' => $care_txt( 'care_support_4_title', 'Hoisting and transfers' ),
-		'body'  => $care_txt( 'care_support_4_body', 'The hoist is over the bed and the chair is in the wet room, so Continuity aren’t improvising around a standard holiday let.' ),
-	),
-);
-$care_own_heading = $care_txt( 'care_own_heading', 'Bringing your own carer' );
-$care_own_lede    = $care_txt( 'care_own_lede', 'You’re very welcome to. Just tell us who’s coming.' );
-$care_own_items   = array(
-	array(
-		'title' => $care_txt( 'care_own_1_title', 'Use of the kit' ),
-		'body'  => $care_txt( 'care_own_1_body', 'The ceiling hoist, profiling beds and shower chair are here for your carer to use as well.' ),
-	),
-	array(
-		'title' => $care_txt( 'care_own_2_title', 'A room of their own' ),
-		'body'  => $care_txt( 'care_own_2_body', 'Your carer can have the second double bedroom, or the double sofa bed in the conservatory. We can think it through with you if that’s easier.' ),
-	),
-	array(
-		'title' => $care_txt( 'care_own_3_title', 'Room to park' ),
-		'body'  => $care_txt( 'care_own_3_body', 'The driveway holds two cars, so a carer’s car can park alongside yours.' ),
-	),
-);
-
-$care_how_heading = $care_txt( 'care_how_heading', 'Sooner if you ask sooner, and we won’t pretend otherwise' );
-$care_how_lede    = $care_txt( 'care_how_lede', 'We don’t publish a lead time, because we’d only be making it up: it depends on what you need and who’s working that week. What we will do is give you a straight answer quickly.' );
-$care_how_steps   = array(
-	array(
-		'title' => $care_txt( 'care_how_step1_title', 'Mention it when you enquire' ),
-		'body'  => $care_txt(
-			'care_how_step1_body',
-			'Say what you’re thinking when you first write or ring 01622 809881, even if your dates are vague. There’s no separate form for care.'
-		),
-		'link'  => null,
-	),
-	array(
-		'title' => $care_txt( 'care_how_step2_title', 'Talk it through with Continuity' ),
-		'body'  => $care_txt(
-			'care_how_step2_body',
-			'They’ll ask about hours and tasks and tell you plainly what’s possible. Many people settle it on the first call; overnight or complex rotas can take a short follow-up.'
-		),
-		'link'  => null,
-	),
-	array(
-		'title' => $care_txt( 'care_how_step3_title', 'They quote, you decide' ),
-		'body'  => $care_txt(
-			'care_how_step3_body',
-			'Continuity quote your care once hours and tasks are agreed. Their guide rates are on Pricing & dates.'
-		),
-		'link'  => array(
-			'phrase' => 'Pricing & dates',
-			'url'    => restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates',
-		),
-	),
-);
-
+$care_day_heading = $care_txt( 'care_day_heading', 'A day, with as much help as you like' );
+$care_day_lede = $care_txt( 'care_day_lede', 'Tell us what a good day looks like at home and we’ll work backwards from there.' );
+$care_who_heading = $care_txt( 'care_who_heading', 'Rated Good by the Care Quality Commission' );
+$care_who_lede = $care_txt( 'care_who_lede', 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.' );
 $care_cqc_link_label = $care_txt( 'care_cqc_link_label', 'Read the CQC inspection profile' );
-
+$care_how_heading = $care_txt( 'care_how_heading', 'Asking for care' );
+$care_how_lede = $care_txt( 'care_how_lede', 'Mention it on the same enquiry as the house. Nothing is booked until you say yes.' );
+$care_own_heading = $care_txt( 'care_own_heading', 'Bringing your own carer' );
+$care_own_lede = $care_txt( 'care_own_lede', 'Plenty of guests do. They can have the second double bedroom or the sofa bed in the conservatory, use the hoist and shower chair, and park on the drive.' );
 $care_pro_heading = $care_txt( 'care_pro_heading', 'For OTs, case managers and commissioners' );
-$care_pro_lede    = $care_txt( 'care_pro_lede', 'What each of us can give you when you’re planning a funded break with care. Who It’s For has suitability at a glance.' );
-$care_pro_items   = array(
-	array(
-		'title' => $care_txt( 'care_pro_1_title', 'Access evidence' ),
-		'body'  => $care_txt( 'care_pro_1_body', 'Door widths, hoist and wet-room specs are published, and we’ll measure anything that isn’t.' ),
-		'link'  => array(
-			'label' => 'Accessibility',
-			'url'   => restwell_nav_resolve_page_url( 'accessibility' ),
-		),
-	),
-	array(
-		'title' => $care_txt( 'care_pro_2_title', 'The care plan and cost' ),
-		'body'  => $care_txt( 'care_pro_2_body', 'Continuity confirm the care plan and the cost once hours and tasks are agreed.' ),
-		'link'  => null,
-	),
-	array(
-		'title' => $care_txt( 'care_pro_3_title', 'Funding routes' ),
-		'body'  => $care_txt( 'care_pro_3_body', 'Care Act short breaks, direct payments, personal health budgets or NHS CHC.' ),
-		'link'  => array(
-			'label' => 'Funding & Support',
-			'url'   => restwell_nav_resolve_page_url( 'resources' ),
-		),
-	),
-	array(
-		'title' => $care_txt( 'care_pro_4_title', 'One number for both' ),
-		'body'  => $care_txt( 'care_pro_4_body', 'Restwell and Continuity share 01622 809881, so access and care can be one call.' ),
-		'link'  => null,
-	),
-);
+$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths and kit are published, and Continuity confirm the care plan and cost once hours and tasks are agreed.' );
+$care_day = array();
+for ( $care_day_i = 1; $care_day_i <= 3; $care_day_i++ ) {
+	$care_day[] = array(
+		'time' => $care_txt( "care_day_{$care_day_i}_time", '' ),
+		'body' => $care_txt( "care_day_{$care_day_i}_body", '' ),
+	);
+}
+$care_how_steps = array();
+for ( $care_step_i = 1; $care_step_i <= 3; $care_step_i++ ) {
+	$care_how_steps[] = array(
+		'title' => $care_txt( "care_how_step{$care_step_i}_title", '' ),
+		'body'  => $care_txt( "care_how_step{$care_step_i}_body", '' ),
+	);
+}
 
 $care_faq_label   = $care_txt( 'care_faq_label', 'Care questions' );
 $care_faq_heading = $care_txt( 'care_faq_heading', 'Optional care FAQ' );
@@ -204,19 +122,19 @@ $care_link_phrase = static function ( $escaped, $phrase, $url ) {
 
 <main id="main-content">
 <?php
-// Trial (14 Oct 2026, owner: "shake off the current copywriting and design,
-// and trial a fresh approach"). The page is built around a day: what help
-// could look like in the morning, in the day and overnight, then who comes
-// in, bringing your own carer, and how to ask. Copy is set here while it is
-// on trial; it moves into the page fields once the owner keeps it.
+// Built only from sections the rest of the site already uses (14 Oct 2026,
+// after bespoke layouts read as a different site): the interior photo hero,
+// the subnav, Who It's For's photo cards and pull quote, How It Works' split
+// with facts and its route of steps. Large photos come from the professional
+// shoot only.
 get_template_part(
 	'template-parts/concept/photo-hero',
 	null,
 	array(
 		'heading_id' => 'page-h',
-		'heading'    => __( 'Care that comes to your holiday', 'restwell-retreats' ),
+		'heading'    => $restwell_care_heading,
 		'eyebrow'    => $restwell_care_eyebrow,
-		'intro'      => __( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.', 'restwell-retreats' ),
+		'intro'      => $restwell_care_intro,
 		'crumbs'     => array(
 			array(
 				'label' => __( 'Home', 'restwell-retreats' ),
@@ -227,43 +145,15 @@ get_template_part(
 				'url'   => '',
 			),
 		),
-		'image_url'  => restwell_theme_image_url( 'stock/restwell-whitstable-coastal-pathway.webp' ),
-		'image_alt'  => __( 'Flat, paved coastal pathway along Tankerton promenade', 'restwell-retreats' ),
-		'overlay'    => 'heavy',
+		'image_url'  => restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-2-LS.jpg' ),
+		'image_alt'  => __( 'Boats pulled up on the shingle on Whitstable seafront at dusk', 'restwell-retreats' ),
 		'post_id'    => (int) get_queried_object_id(),
 	)
 );
-$care_day = array(
-	array(
-		'id'    => 'morning',
-		'time'  => __( 'Morning', 'restwell-retreats' ),
-		'text'  => __( 'Someone to help you up, washed and dressed, at the time you’d get up at home. The hoist is over the bed and the shower chair is already in the wet room, so nobody’s improvising.', 'restwell-retreats' ),
-		'img'   => 'bungalow/WR-1-LS.jpg',
-		'alt'   => __( 'The level-access wet room: height-adjustable washbasin, grab rails and a tilt-in-space shower commode chair', 'restwell-retreats' ),
-		'w'     => 2400,
-		'h'     => 1500,
-		'quote' => false,
-	),
-	array(
-		'id'    => 'daytime',
-		'time'  => __( 'In the day', 'restwell-retreats' ),
-		'text'  => __( 'Company for a trip along the promenade or into town. Or a few hours to yourselves, so whoever usually does the caring can walk down to Tankerton and look at the water without watching the clock.', 'restwell-retreats' ),
-		'img'   => 'journey/guest-harbour-beach.jpg',
-		'alt'   => __( 'A guest in a powered wheelchair and a companion on the firm Harbour Beach by the lifeboat station', 'restwell-retreats' ),
-		'w'     => 1620,
-		'h'     => 1012,
-		'quote' => false,
-	),
-	array(
-		'id'    => 'overnight',
-		'time'  => __( 'Overnight', 'restwell-retreats' ),
-		'text'  => __( 'A sleep-in, or a waking night if someone needs to be up. Either way, the person who usually lies awake listening gets to sleep.', 'restwell-retreats' ),
-		'img'   => 'bungalow/RAR-1-LS.jpg',
-		'alt'   => __( 'The rise-and-recline armchair in the living room, footrest raised', 'restwell-retreats' ),
-		'w'     => 2400,
-		'h'     => 1500,
-		'quote' => true,
-	),
+$care_day_photos = array(
+	array( 'bungalow/WR-1-LS.jpg', __( 'The level-access wet room, with the shower chair and height-adjustable basin', 'restwell-retreats' ) ),
+	array( 'bungalow/WHIT-SEAFRONT-1-LS.jpg', __( 'The flat promenade path past the beach huts', 'restwell-retreats' ) ),
+	array( 'bungalow/BD2-2-LS.jpg', __( 'The twin profiling beds in the accessible bedroom', 'restwell-retreats' ) ),
 );
 ?>
 
@@ -272,138 +162,146 @@ $care_day = array(
 		<ul class="subnav__list">
 		  <li><a href="#a-day"><?php esc_html_e( 'A day', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#who-comes-in"><?php esc_html_e( 'Who comes in', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#how-care-works"><?php esc_html_e( 'Asking', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#bring-your-own-carer"><?php esc_html_e( 'Your own carer', 'restwell-retreats' ); ?></a></li>
-		  <li><a href="#asking"><?php esc_html_e( 'Asking for care', 'restwell-retreats' ); ?></a></li>
-		  <li><a href="#for-professionals"><?php esc_html_e( 'Professionals', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#faq"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a></li>
 		</ul>
 	  </div>
 	</nav>
 
-	<section class="section-y band-white care-day" id="a-day" aria-labelledby="a-day-h">
+	<section class="section-y band-white" id="a-day" aria-labelledby="care-day-h">
 	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <h2 id="a-day-h"><?php esc_html_e( 'What a day could look like', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Tell us what a good day looks like at home and we’ll work backwards from there. There’s no package to squeeze into.', 'restwell-retreats' ); ?></p>
+		<header class="section-head">
+		  <h2 id="care-day-h"><?php echo esc_html( $care_day_heading ); ?></h2>
+		  <?php if ( '' !== $care_day_lede ) : ?>
+		  <p class="lede"><?php echo esc_html( $care_day_lede ); ?></p>
+		  <?php endif; ?>
 		</header>
+		<ul class="card-grid card-grid--3" role="list">
+		  <?php foreach ( $care_day as $care_day_i => $care_moment ) : ?>
+				<?php
+				if ( '' === trim( $care_moment['time'] ) || empty( $care_day_photos[ $care_day_i ] ) ) {
+					continue;
+				}
+				$care_photo = $care_day_photos[ $care_day_i ];
+				?>
+		  <li>
+			<article class="media-card">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( $care_photo[0] ) ); ?>" alt="<?php echo esc_attr( $care_photo[1] ); ?>" width="640" height="480" loading="lazy" decoding="async" />
+			  <h3><?php echo esc_html( $care_moment['time'] ); ?></h3>
+			  <p><?php echo esc_html( $care_moment['body'] ); ?></p>
+			</article>
+		  </li>
+		  <?php endforeach; ?>
+		</ul>
 	  </div>
-	  <?php foreach ( $care_day as $care_day_i => $care_moment ) : ?>
-	  <div class="container split split--media-first split--fill<?php echo 1 === $care_day_i % 2 ? ' split--flip' : ''; ?> care-day__moment" id="<?php echo esc_attr( $care_moment['id'] ); ?>">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( $care_moment['img'] ) ); ?>" alt="<?php echo esc_attr( $care_moment['alt'] ); ?>" width="<?php echo (int) $care_moment['w']; ?>" height="<?php echo (int) $care_moment['h']; ?>" loading="lazy" decoding="async" />
-		</div>
-		<div class="care-day__copy">
-		  <h3><?php echo esc_html( $care_moment['time'] ); ?></h3>
-		  <p><?php echo esc_html( $care_moment['text'] ); ?></p>
-			<?php if ( $care_moment['quote'] ) : ?>
-		  <figure class="care-own__quote">
-				<?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md). */ ?>
-			<blockquote><p>The adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.</p></blockquote>
-			<figcaption><cite>G.G.</cite> <?php esc_html_e( 'Support team lead · Google review', 'restwell-retreats' ); ?></figcaption>
-		  </figure>
-			<?php endif; ?>
-		</div>
-	  </div>
-	  <?php endforeach; ?>
 	</section>
 
-	<section class="section-y band-subtle care-who" id="who-comes-in" aria-labelledby="who-comes-in-h">
-	  <div class="container split split--media-first split--fill">
+	<section class="section-y band-subtle" id="who-comes-in" aria-labelledby="who-comes-in-h">
+	  <div class="container split split--flip split--fill">
 		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker-full.webp' ) ); ?>" alt="Victoria Walker cutting the ribbon at the bungalow’s front door" width="1620" height="1859" loading="lazy" decoding="async" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-RNR-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The living room, with the rise-and-recline armchair by the window', 'restwell-retreats' ); ?>" width="2400" height="1500" loading="lazy" decoding="async" />
+		</div>
+		<div id="cqc-regulated">
+		  <header class="section-head section-head--tight">
+			<h2 id="who-comes-in-h"><?php echo esc_html( $care_who_heading ); ?></h2>
+			<?php if ( '' !== $care_who_lede ) : ?>
+			<p class="lede"><?php echo esc_html( $care_who_lede ); ?></p>
+			<?php endif; ?>
+		  </header>
+		  <dl class="hiw-facts">
+			<div>
+			  <dt><span class="hiw-facts__icon" aria-hidden="true"><?php restwell_the_icon( 'badge-check' ); ?></span><?php esc_html_e( 'CQC rating', 'restwell-retreats' ); ?></dt>
+			  <dd><?php esc_html_e( 'Good, for Continuity of Care Services', 'restwell-retreats' ); ?></dd>
+			</div>
+			<div>
+			  <dt><span class="hiw-facts__icon" aria-hidden="true"><?php restwell_the_icon( 'users' ); ?></span><?php esc_html_e( 'Registered manager', 'restwell-retreats' ); ?></dt>
+			  <dd><?php esc_html_e( 'Victoria Walker, who owns Restwell', 'restwell-retreats' ); ?></dd>
+			</div>
+			<div>
+			  <dt><span class="hiw-facts__icon" aria-hidden="true"><?php restwell_the_icon( 'clipboard-check' ); ?></span><?php esc_html_e( 'CQC location', 'restwell-retreats' ); ?></dt>
+			  <dd>1-2624556588</dd>
+			</div>
+		  </dl>
+		  <?php if ( '' !== $care_cqc_link_label ) : ?>
+		  <p class="hiw-arrival__links">
+			<a class="btn btn-outline-teal" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $care_cqc_link_label ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+		  </p>
+		  <?php endif; ?>
+		</div>
+	  </div>
+	</section>
+
+	<section class="section-y band-white" aria-labelledby="care-quote-h">
+	  <div class="container">
+		<h2 id="care-quote-h" class="sr-only"><?php esc_html_e( 'What a support team lead wrote', 'restwell-retreats' ); ?></h2>
+		<figure class="pull-quote">
+		  <span class="pull-quote__mark" aria-hidden="true">&ldquo;</span>
+		  <?php /* Consecutive words from G.G.'s Google review (docs/guest-reviews-bank.md). */ ?>
+		  <blockquote class="pull-quote__text">The setup also works perfectly for support workers. The second bedroom provides a comfortable space for day support, and the adjustable armchair is ideal for a waking night carer, offering great comfort throughout their shift.</blockquote>
+		  <figcaption class="pull-quote__cite">G.G.<span class="pull-quote__role"><?php esc_html_e( 'Support team lead · Google review', 'restwell-retreats' ); ?></span></figcaption>
+		</figure>
+	  </div>
+	</section>
+
+	<section class="section-y band-subtle process process--story" id="how-care-works" aria-labelledby="how-care-works-h">
+	  <div class="container process__layout">
+		<div class="process__main">
+		  <header class="section-head process__head">
+			<h2 id="how-care-works-h"><?php echo esc_html( $care_how_heading ); ?></h2>
+			<?php if ( '' !== $care_how_lede ) : ?>
+			<p class="lede"><?php echo esc_html( $care_how_lede ); ?></p>
+			<?php endif; ?>
+		  </header>
+		  <ol class="process-list">
+			<?php foreach ( $care_how_steps as $care_step_i => $care_how_step ) : ?>
+				<?php
+				if ( '' === trim( $care_how_step['title'] ) ) {
+					continue;
+				}
+				?>
+			<li>
+			  <span class="process-list__index" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $care_step_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
+			  <div class="process-list__body">
+				<h3><?php echo esc_html( $care_how_step['title'] ); ?></h3>
+				<?php if ( '' !== $care_how_step['body'] ) : ?>
+				<p><?php echo esc_html( $care_how_step['body'] ); ?></p>
+				<?php endif; ?>
+			  </div>
+			</li>
+			<?php endforeach; ?>
+		  </ol>
+		</div>
+		<figure class="process__media" data-reveal>
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-2-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The level patio and garden behind the bungalow', 'restwell-retreats' ); ?>" width="1920" height="1200" loading="lazy" />
+		</figure>
+	  </div>
+	</section>
+
+	<section class="section-y band-white" id="bring-your-own-carer" aria-labelledby="own-carer-h">
+	  <div class="container split split--fill">
+		<div class="split__media">
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/SB-1-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The conservatory, with the sofa bed made up as a sofa', 'restwell-retreats' ); ?>" width="2400" height="1500" loading="lazy" decoding="async" />
 		</div>
 		<div>
 		  <header class="section-head section-head--tight">
-			<h2 id="who-comes-in-h"><?php esc_html_e( 'Who comes in', 'restwell-retreats' ); ?></h2>
-			<p class="lede"><?php esc_html_e( 'Carers from Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.', 'restwell-retreats' ); ?></p>
+			<h2 id="own-carer-h"><?php echo esc_html( $care_own_heading ); ?></h2>
+			<?php if ( '' !== $care_own_lede ) : ?>
+			<p class="lede"><?php echo esc_html( $care_own_lede ); ?></p>
+			<?php endif; ?>
 		  </header>
-		  <div class="care-cqc" id="cqc-regulated">
-			<dl class="care-cqc__facts">
-			  <div><dt><?php esc_html_e( 'CQC rating', 'restwell-retreats' ); ?></dt><dd class="care-cqc__rating"><?php esc_html_e( 'Good', 'restwell-retreats' ); ?></dd></div>
-			  <div><dt><?php esc_html_e( 'Registered manager', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'Victoria Walker', 'restwell-retreats' ); ?></dd></div>
-			  <div><dt><?php esc_html_e( 'Care provider', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'Continuity of Care Services', 'restwell-retreats' ); ?></dd></div>
-			  <div><dt><?php esc_html_e( 'CQC location', 'restwell-retreats' ); ?></dt><dd>1-2624556588</dd></div>
-			</dl>
-			<p class="care-cqc__note">
-			  <?php esc_html_e( 'Restwell is the house, not a care provider, and doesn’t pretend to be one. The rating is Continuity’s, and you can read the report yourself.', 'restwell-retreats' ); ?>
-			  <a class="text-link" href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Read the CQC report', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+		  <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>"><?php esc_html_e( 'Who the house suits', 'restwell-retreats' ); ?></a></p>
+		  <div class="care-pro" id="for-professionals">
+			<h3><?php echo esc_html( $care_pro_heading ); ?></h3>
+			<?php if ( '' !== $care_pro_lede ) : ?>
+			<p><?php echo esc_html( $care_pro_lede ); ?></p>
+			<?php endif; ?>
+			<p class="care-pro__links">
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Accessibility', 'restwell-retreats' ); ?></a>
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & Support', 'restwell-retreats' ); ?></a>
 			</p>
-			<div class="care-intro__badges">
-			  <a href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
-				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" sizes="200px" width="405" height="69" loading="lazy" decoding="async" />
-			  </a>
-			  <a href="https://www.cqc.org.uk/location/1-2624556588" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'CQC rating Good, Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
-				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" sizes="96px" width="710" height="399" loading="lazy" decoding="async" />
-			  </a>
-			</div>
 		  </div>
 		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-white" id="bring-your-own-carer" aria-labelledby="bring-your-own-carer-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <h2 id="bring-your-own-carer-h"><?php esc_html_e( 'Bringing your own carer instead', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Plenty of guests do. Just tell us who’s coming.', 'restwell-retreats' ); ?></p>
-		</header>
-		<dl class="care-index care-index--wide">
-		  <div><dt><?php esc_html_e( 'Their own room', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'The second double bedroom, or the double sofa bed in the conservatory.', 'restwell-retreats' ); ?></dd></div>
-		  <div><dt><?php esc_html_e( 'The same kit', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'The ceiling hoist, profiling beds and shower chair are there for them to use.', 'restwell-retreats' ); ?></dd></div>
-		  <div><dt><?php esc_html_e( 'Parking', 'restwell-retreats' ); ?></dt><dd><?php esc_html_e( 'The driveway takes two cars, so theirs can go alongside yours.', 'restwell-retreats' ); ?></dd></div>
-		</dl>
-	  </div>
-	</section>
-
-	<section class="section-y band-subtle care-how" id="asking" aria-labelledby="asking-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <h2 id="asking-h"><?php esc_html_e( 'Asking for care', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'We don’t publish a lead time, because we’d only be making it up. Ask early, even if your dates are vague, and we’ll give you a straight answer quickly.', 'restwell-retreats' ); ?></p>
-		</header>
-		<ol class="care-route">
-		  <li class="care-route__stop">
-			<h3><?php esc_html_e( 'Mention it when you enquire', 'restwell-retreats' ); ?></h3>
-			<p><?php esc_html_e( 'Say what would help when you write or ring 01622 809881. There’s no separate form.', 'restwell-retreats' ); ?></p>
-		  </li>
-		  <li class="care-route__stop">
-			<h3><?php esc_html_e( 'Talk it through', 'restwell-retreats' ); ?></h3>
-			<p><?php esc_html_e( 'Continuity ask about hours and tasks, and tell you plainly what’s possible.', 'restwell-retreats' ); ?></p>
-		  </li>
-		  <li class="care-route__stop">
-			<h3><?php esc_html_e( 'They quote, you decide', 'restwell-retreats' ); ?></h3>
-			<p><?php esc_html_e( 'Continuity quote for the care once you’ve agreed what’s needed. Their guide rates are on', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) . '#care-rates' ); ?>"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a>.</p>
-		  </li>
-		</ol>
-		<p class="care-how__note"><?php esc_html_e( 'Nothing is booked until you’ve said yes.', 'restwell-retreats' ); ?></p>
-	  </div>
-	</section>
-
-	<section class="section-y band-white" id="for-professionals" aria-labelledby="for-professionals-h">
-	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <h2 id="for-professionals-h"><?php echo esc_html( $care_pro_heading ); ?></h2>
-		  <?php if ( '' !== $care_pro_lede ) : ?>
-		  <p class="lede"><?php echo wp_kses_post( $care_link_phrase( esc_html( $care_pro_lede ), 'Who It’s For', restwell_nav_resolve_page_url( 'who-its-for' ) ) ); ?></p>
-		  <?php endif; ?>
-		</header>
-		<dl class="care-index care-index--wide">
-		  <?php foreach ( $care_pro_items as $item ) : ?>
-		  <div>
-				<?php if ( '' !== $item['title'] ) : ?>
-			<dt><?php echo esc_html( $item['title'] ); ?></dt>
-			<?php endif; ?>
-				<?php if ( '' !== $item['body'] ) : ?>
-			<dd>
-					<?php echo esc_html( $item['body'] ); ?>
-					<?php if ( ! empty( $item['link'] ) ) : ?>
-						<?php echo ' '; ?>See <a class="text-link" href="<?php echo esc_url( $item['link']['url'] ); ?>"><?php echo esc_html( $item['link']['label'] ); ?></a>.
-			  <?php endif; ?>
-			</dd>
-			<?php endif; ?>
-		  </div>
-		  <?php endforeach; ?>
-		</dl>
 	  </div>
 	</section>
 
