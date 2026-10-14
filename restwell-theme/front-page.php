@@ -328,7 +328,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		  </li>
 		  <li class="gallery__item">
 			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-3-LS.jpg' ) ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="The accessible bedroom: two profiling beds side by side, with rails" width="2400" height="1500" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
 			</button>
 		  </li>
 		  <li class="gallery__item">
