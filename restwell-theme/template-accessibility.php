@@ -228,7 +228,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	<section class="section-y band-subtle" id="statement" aria-labelledby="statement-h">
 	  <div class="container acc-intro">
 		<figure class="acc-intro__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/FD-1-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Porch outer doors open onto a level-threshold front door', 'restwell-retreats' ); ?>" width="1200" height="900" loading="lazy" decoding="async" />
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/int-front-door.png' ) ); ?>" alt="<?php esc_attr_e( 'The hallway looking from the front door through to the French doors and the garden', 'restwell-retreats' ); ?>" width="1200" height="1600" loading="lazy" decoding="async" />
 		</figure>
 		<div class="acc-intro__body">
 		<header class="section-head section-head--tight acc-intro__head">
