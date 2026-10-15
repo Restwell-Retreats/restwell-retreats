@@ -11049,3 +11049,19 @@ p.care-how__note > .text-link,
 .fit-bar--no .door-check__chair { background: #ffb4a6; color: #4a130b; }
 .fit-bar--no .door-check__result { color: #ffb4a6; }
 .fit-bar--no .door-check__jamb { background: #ffb4a6; }
+
+/* Type upgrades on two quiet moments (15 Oct 2026): the lead guest quote a
+   size up, and the home facts strip labelled in the display serif rather than
+   semibold sans, so both read as part of the same editorial voice as the
+   numbers and the headings. */
+.testimonials__grid > li:first-child .testimonial-card__quote p {
+  max-width: 28em;
+  font-size: clamp(1.75rem, 1.15rem + 2vw, 2.75rem);
+  line-height: 1.25;
+}
+.facts-strip__list li > span:last-child {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--type-display-weight);
+  line-height: 1.25;
+}
