@@ -31,7 +31,7 @@ function restwell_get_homepage_faq_defaults(): array {
 	$q1_html = '<p>' . esc_html( $q1_text ) . '</p>';
 
 	$q2_text = __(
-		'Single-storey and step-free throughout: a 965mm front door, 926mm internal doors, a level-access wet room, and a ceiling track hoist over the profiling bed. Every measurement is published on the Accessibility page, including the ones that aren’t flattering.',
+		'The bungalow is on one level and step-free throughout. It has a 965mm front door, 926mm internal doors, a level-access wet room and a ceiling track hoist over the profiling bed. Every measurement is published on the Accessibility page, including the ones that aren’t flattering.',
 		'restwell-retreats'
 	);
 	$q2_html = '<p>' . esc_html( $q2_text ) . '</p>';

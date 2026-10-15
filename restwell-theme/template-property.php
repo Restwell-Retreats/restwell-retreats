@@ -64,7 +64,7 @@ $prop_wetroom_heading = $prop_heading( 'prop_wetroom_heading', 'Roll-in shower a
 $prop_wetroom_paras   = $prop_paras(
 	$prop_txt(
 		'prop_wetroom_body',
-		"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive."
+		"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll of this is already installed, so there’s nothing to hire or set up before you arrive."
 	)
 );
 
@@ -72,7 +72,7 @@ $prop_living_heading = $prop_heading( 'prop_living_heading', 'A comfortable plac
 $prop_living_paras   = $prop_paras(
 	$prop_txt(
 		'prop_living_body',
-		"After time by the sea, the living room gives everyone space to settle in.\n\nYou’ll find a rise-and-recline armchair, a sofa with pull-out footrests, and a TV with Netflix. The open-plan layout makes it easy for wheelchair users, families, and carers to move around comfortably.\n\nThere’s enough seating for everyone, and we keep the space between the sofa and armchair clear so wheelchairs can turn easily."
+		"After time by the sea, the living room gives everyone space to settle in.\n\nThere’s a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. The open-plan layout leaves plenty of room for wheelchair users, families and carers to move around.\n\nThere’s seating for everyone. We keep the space between the sofa and armchair clear, so wheelchairs can turn."
 	)
 );
 
@@ -88,7 +88,7 @@ $prop_conservatory_heading = $prop_heading( 'prop_conservatory_heading', 'Sunny 
 $prop_conservatory_paras   = $prop_paras(
 	$prop_txt(
 		'prop_conservatory_body',
-		"The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nIt has a fold-out dining table, a double sofa bed, level access to the patio, and laundry cupboards with a washing machine and tumble dryer."
+		"The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nThere’s a fold-out dining table, a double sofa bed and level access to the patio. The laundry cupboards hold a washing machine and a tumble dryer."
 	)
 );
 
@@ -96,7 +96,7 @@ $prop_garden_heading = $prop_heading( 'prop_garden_heading', 'Level patio, enclo
 $prop_garden_paras   = $prop_paras(
 	$prop_txt(
 		'prop_garden_body',
-		"French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front, there’s a resin-bound, level-access driveway with space for two cars. It’s been tested with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, ready for you to use around the property or take with you during your stay."
+		"French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars. We’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, to use around the property or take with you."
 	)
 );
 
@@ -412,7 +412,7 @@ get_template_part(
 	$mid_cta_heading = $prop_txt( 'prop_cta_heading', __( 'See if the bungalow fits your group.', 'restwell-retreats' ) );
 	$mid_cta_intro   = $prop_txt(
 		'prop_cta_body',
-		__( 'Tell us your preferred dates, group size, and any access or equipment needs. We’ll reply with availability, measurements, equipment details, and your next steps.', 'restwell-retreats' )
+		__( 'Tell us your dates, your group size and any access or equipment needs. We’ll reply with availability, measurements and your next steps.', 'restwell-retreats' )
 	);
 	$mid_cta_primary_label = $prop_txt( 'prop_cta_btn', __( 'Enquire', 'restwell-retreats' ) );
 	$mid_cta_primary_url   = $prop_txt( 'prop_cta_url', restwell_nav_resolve_page_url( 'enquire' ) );

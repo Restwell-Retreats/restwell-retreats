@@ -68,10 +68,10 @@ $res_contacts_body    = $res_txt( 'res_contacts_body', '' );
 
 $res_complaints_body = $res_txt(
 	'res_complaints_body',
-	'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.'
+	'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.'
 );
 if ( false !== strpos( (string) $res_complaints_body, '<' ) ) {
-	$res_complaints_body = 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.';
+	$res_complaints_body = 'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.';
 }
 
 get_template_part(
@@ -130,7 +130,7 @@ get_template_part(
 			  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils aren’t allowed to ban holidays as a blanket rule. Whether the bungalow rent is in depends on what’s written down, so it’s worth asking before you book.</p>
 			</div>
 			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> assessed care hours during the break, replacement care so an unpaid carer can rest, and the bungalow if it’s written into the plan.</p>
+			  <p><strong>Usually covers</strong> assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</p>
 			  <p><strong>Usually doesn’t cover</strong> travel, food or holiday extras, or the rent unless the support plan names it. A long stay in a care home has different rules.</p>
 			</div>
 			<p class="cover-split__source">That’s from the <a href="https://www.legislation.gov.uk/ukpga/2014/23/part/1/crossheading/direct-payments/enacted" target="_blank" rel="noopener noreferrer">Care Act 2014<span class="sr-only"> (opens in new tab)</span></a> and how councils write their handbooks. If you live in Kent, start with the number below.</p>
@@ -166,7 +166,7 @@ get_template_part(
 			  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
 			</div>
 			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> a contribution toward the holiday itself from Revitalise, typically £500, or a cover carer from Respite Association, around £450 on average.</p>
+			  <p><strong>Usually covers</strong> a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</p>
 			  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, entertainment and travel aren’t covered either, unless the letter names them.</p>
 			</div>
 			<p class="cover-split__source">Revitalise closed its centres in 2024 and now awards grants toward a break of your choice. Ask us for a quote if you need a provisional booking to apply.</p>

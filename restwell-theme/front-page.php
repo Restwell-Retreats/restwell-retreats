@@ -203,9 +203,9 @@ $home_care_item2_body  = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_item2_body',
-		__( 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC, and because we share an office and phone number, one conversation covers everything.', 'restwell-retreats' )
+		__( 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC. We share an office and phone number, so one conversation covers everything.', 'restwell-retreats' )
 	)
-	: __( 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC, and because we share an office and phone number, one conversation covers everything.', 'restwell-retreats' );
+	: __( 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC. We share an office and phone number, so one conversation covers everything.', 'restwell-retreats' );
 $home_care_note      = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_note', __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' ) )
 	: __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' );

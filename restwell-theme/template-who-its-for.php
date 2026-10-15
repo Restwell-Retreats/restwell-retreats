@@ -45,12 +45,12 @@ $wif_default_family_bullets = function_exists( 'restwell_get_property_facts_pers
 	: array(
 		'Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.',
 		'Published access measurements before you commit.',
-		'A private self-catering layout: your daily routines run on your schedule.',
+		'A private, self-catering house, so your routines run to your own schedule.',
 	);
 $wif_default_carers_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
 	? restwell_get_property_facts_persona_bullets( 'carers' )
 	: array(
-		'Separate sleeping area for the support worker or carer.',
+		'A separate place to sleep for the support worker or carer.',
 		'A wet room set up for assisted personal care on the same level.',
 		'You have a legal right to a Carer\'s Assessment under the Care Act 2014.',
 	);
@@ -66,7 +66,7 @@ $wif_default_commissioners_bullets = function_exists( 'restwell_get_property_fac
 	: array(
 		'Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.',
 		'We provide the paperwork: property spec, access measurements, and CQC-registered care provider confirmation.',
-		'Direct payments, personal health budgets, and CHC pathways all supported.',
+		'We support direct payments, personal health budgets and CHC.',
 	);
 
 $wif_resolve_url = static function ( $key, $fallback ) use ( $restwell_wif_id, $wif_defaults ) {
@@ -208,7 +208,7 @@ $wif_kit_cards = array(
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_2_caption', 'Ceiling track hoist' )
 			: 'Ceiling track hoist',
-		'body'         => 'Full-room Amico track over the profiling bed; mobile hoist also on site.',
+		'body'         => 'An Amico track over the profiling bed, and a mobile hoist on site.',
 		'slot_index'   => 1,
 	),
 	array(
@@ -242,7 +242,7 @@ $wif_fund_la_bullets = function_exists( 'restwell_wif_bullet_list' )
 		$restwell_wif_id,
 		'wif_fund_la_bullets',
 		array(
-			'Begins with a Care and Support Assessment. Unpaid carers can request a Carer\'s Assessment too (Care Act 2014).',
+			'It starts with a Care and Support Assessment. Unpaid carers can ask for a Carer\'s Assessment too (Care Act 2014).',
 			'Direct payments: you receive the funding and choose your provider.',
 			'Capital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.',
 		)
@@ -561,7 +561,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q2-a" role="region" aria-labelledby="wif-q2" hidden>
-				<p>Start on the Accessibility page for Restwell’s door widths and hoist. Then coordinate carers or Continuity, confirm slings, sort prescriptions, build buffer into travel, and agree a backup if a carer is ill. Enquire with dates and care needs once that list is drafted.</p>
+				<p>Start with our access statement for the door widths and hoist. Then line up carers or Continuity, check slings, sort prescriptions, leave spare time for travel, and agree a backup if a carer is ill. Enquire with your dates and care needs once the list is drafted.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -570,7 +570,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q3-a" role="region" aria-labelledby="wif-q3" hidden>
-				<p>Confirm access details in writing. Pack slings, meds, chargers and comfort items the house won’t supply. Share care plans with anyone covering the stay. Note the nearest accessible parking, toilets and pharmacy. Keep Restwell and care-provider numbers to hand.</p>
+				<p>Confirm access details in writing. Pack slings, meds, chargers and comfort items the house won’t have. Share care plans with anyone covering the stay. Note the nearest accessible parking, toilets and pharmacy. Keep Restwell and care-provider numbers to hand.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -579,7 +579,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q4-a" role="region" aria-labelledby="wif-q4" hidden>
-				<p>Make five lists: access needs, medical, care rota and backup, documents (funding letters, insurance, access statement), and comfort and daily living. Tick each against Restwell’s published kit, so you don’t pack what is already on site or assume kit that isn’t.</p>
+				<p>Make five lists: access needs, medical needs, care rota and backup, documents, and comfort and daily living. Tick each off against our published kit, so you don’t pack what we already have.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -588,7 +588,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q5-a" role="region" aria-labelledby="wif-q5" hidden>
-				<p>Yes, if doorway widths, overnight staffing and transfers match before you travel. Start with measurements and the care rota, not brochure photos. This page and Accessibility are the fit check before you enquire.</p>
+				<p>Yes, if door widths, overnight staffing and transfers all match before you travel. Start with the measurements and the care rota, not brochure photos. This page and our access statement are the fit check before you enquire.</p>
 			  </div>
 			</div>
 			</div>
@@ -599,7 +599,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
-				<p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break. Restwell with optional Continuity care fits the first case. It is not a substitute for registered residential care when that is clinically required.</p>
+				<p>Neither is better in every case. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits people who need more clinical oversight on site. Choose by risk, staffing and what the person wants from the break. Restwell with optional Continuity care fits the first case. It is not a substitute for registered residential care when that is clinically required.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -608,7 +608,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q9-a" role="region" aria-labelledby="wif-q9" hidden>
-				<p>Respite usually means planned carer relief or continued formal care under funding language. An accessible holiday describes a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions.</p>
+				<p>Respite usually means planned relief for a carer, or formal care that carries on under a funding plan. An accessible holiday is a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions.</p>
 			  </div>
 			</div>
 			</div>

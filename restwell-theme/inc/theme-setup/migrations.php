@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 80;
+const RESTWELL_SCHEMA_VERSION = 81;
 
 
 /**
@@ -2276,6 +2276,35 @@ function restwell_migrate_care_copy_v79() {
 }
 
 /**
+ * Replace stored page copy that still equals an old seed.
+ *
+ * Both sides are compared on normalised line endings (wp-admin saves textarea
+ * paragraphs with \r\n), and a value Victoria or Ellie has edited is left alone.
+ *
+ * @param array<string, array<string, array{0: string, 1: string}>> $pages Page slug => meta key => [ old, new ].
+ */
+function restwell_replace_stale_page_copy( array $pages ): void {
+	if ( ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		return;
+	}
+	foreach ( $pages as $slug => $fields ) {
+		$page_id = restwell_page_id_for_stock_slug( $slug );
+		if ( $page_id < 1 ) {
+			continue;
+		}
+		foreach ( $fields as $key => $pair ) {
+			if ( ! metadata_exists( 'post', $page_id, $key ) ) {
+				continue;
+			}
+			$stored = trim( str_replace( array( "\r\n", "\r" ), "\n", (string) get_post_meta( $page_id, $key, true ) ) );
+			if ( $stored === trim( $pair[0] ) ) {
+				update_post_meta( $page_id, $key, $pair[1] );
+			}
+		}
+	}
+}
+
+/**
  * 15 Oct 2026 copy pass: shorter wording where a page was saying too much
  * (the door checker's lede, the property's bedroom paragraphs). A stored value
  * is replaced only while it still equals the old seed, so a line Victoria or
@@ -2333,22 +2362,102 @@ function restwell_migrate_page_copy_v80() {
 			),
 		),
 	);
-	foreach ( $pages as $slug => $fields ) {
-		$page_id = restwell_page_id_for_stock_slug( $slug );
-		if ( $page_id < 1 ) {
-			continue;
-		}
-		foreach ( $fields as $key => $pair ) {
-			if ( ! metadata_exists( 'post', $page_id, $key ) ) {
-				continue;
-			}
-			// wp-admin saves textarea paragraphs with \r\n; compare on \n.
-			$stored = trim( str_replace( array( "\r\n", "\r" ), "\n", (string) get_post_meta( $page_id, $key, true ) ) );
-			if ( $stored === trim( $pair[0] ) ) {
-				update_post_meta( $page_id, $key, $pair[1] );
-			}
-		}
+	restwell_replace_stale_page_copy( $pages );
+}
+
+/**
+ * 15 Oct 2026, readability pass two (Flesch 70 across the pages): long
+ * sentences split and long words swapped on the homepage, property and Our
+ * Story. Same rule as v80: only a value that still equals the old seed.
+ */
+function restwell_migrate_page_copy_v81() {
+	if ( get_option( 'restwell_page_copy_v81', '' ) === '1' ) {
+		return;
 	}
+	update_option( 'restwell_page_copy_v81', '1', false );
+	$pages = array(
+		'home' => array(
+			'property_body' => array(
+				'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address and directions once your stay is confirmed.',
+				'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park. We’ll send the address and directions once your stay is confirmed.',
+			),
+			'home_care_item2_body' => array(
+				'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC, and because we share an office and phone number, one conversation covers everything.',
+				'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC. We share an office and phone number, so one conversation covers everything.',
+			),
+		),
+		'the-property' => array(
+			'prop_wetroom_body' => array(
+				"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.",
+				"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll of this is already installed, so there’s nothing to hire or set up before you arrive.",
+			),
+			'prop_living_body' => array(
+				"After time by the sea, the living room gives everyone space to settle in.\n\nYou’ll find a rise-and-recline armchair, a sofa with pull-out footrests, and a TV with Netflix. The open-plan layout makes it easy for wheelchair users, families, and carers to move around comfortably.\n\nThere’s enough seating for everyone, and we keep the space between the sofa and armchair clear so wheelchairs can turn easily.",
+				"After time by the sea, the living room gives everyone space to settle in.\n\nThere’s a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. The open-plan layout leaves plenty of room for wheelchair users, families and carers to move around.\n\nThere’s seating for everyone. We keep the space between the sofa and armchair clear, so wheelchairs can turn.",
+			),
+			'prop_conservatory_body' => array(
+				"The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nIt has a fold-out dining table, a double sofa bed, level access to the patio, and laundry cupboards with a washing machine and tumble dryer.",
+				"The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nThere’s a fold-out dining table, a double sofa bed and level access to the patio. The laundry cupboards hold a washing machine and a tumble dryer.",
+			),
+			'prop_garden_body' => array(
+				"French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front, there’s a resin-bound, level-access driveway with space for two cars. It’s been tested with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, ready for you to use around the property or take with you during your stay.",
+				"French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars. We’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, to use around the property or take with you.",
+			),
+			'prop_cta_body' => array(
+				'Tell us your preferred dates, group size, and any access or equipment needs. We’ll reply with availability, measurements, equipment details, and your next steps.',
+				'Tell us your dates, your group size and any access or equipment needs. We’ll reply with availability, measurements and your next steps.',
+			),
+		),
+		'funding-and-support' => array(
+			'res_complaints_body' => array(
+				'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
+				'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
+			),
+		),
+		'who-its-for' => array(
+			'wif_family_detail_bullets' => array(
+				"Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private self-catering layout: your daily routines run on your schedule.",
+				"Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private, self-catering house, so your routines run to your own schedule.",
+			),
+			'wif_carers_detail_bullets' => array(
+				"Separate sleeping area for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
+				"A separate place to sleep for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
+			),
+			'wif_ot_detail_bullets' => array(
+				"Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nIf a transfer clearance or equipment position isn’t published, we’ll confirm it.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
+				"Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
+			),
+			'wif_commissioners_detail_bullets' => array(
+				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements, and confirmation that the care provider is CQC registered.\nDirect payments, personal health budgets, and CHC pathways all supported.",
+				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
+			),
+			'wif_fund_la_bullets' => array(
+				"Begins with a Care and Support Assessment. Unpaid carers can request a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
+				"It starts with a Care and Support Assessment. Unpaid carers can ask for a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
+			),
+		),
+		'whitstable-area-guide' => array(
+			'wg_planning_before_bullets' => array(
+				"Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and Marine Hotel (venue accessible loos)",
+				"Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and the Marine Hotel, which both have accessible loos",
+			),
+		),
+		'our-story' => array(
+			'story_origin_body' => array(
+				'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.',
+				'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, flattering or not. Guests can check the bungalow will work for them before they set off. They can arrange optional care through the same office.',
+			),
+			'story_specialists_lede' => array(
+				'Every measurement is on the Accessibility page, including the ones that aren’t flattering. Compare the door widths, spaces, and equipment limits with your own chair, hoist, or other kit before you book. If you’re unsure whether something will work, please ask.',
+				'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and equipment limits with your own chair or hoist before you book. If you’re unsure, please ask.',
+			),
+			'story_next_lede' => array(
+				'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in a single conversation, without anyone having to explain their situation four times to four different people.',
+				'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.',
+			),
+		),
+	);
+	restwell_replace_stale_page_copy( $pages );
 }
 
 /**
@@ -2467,6 +2576,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_care_copy_v78',
 		'restwell_care_copy_v79',
 		'restwell_page_copy_v80',
+		'restwell_page_copy_v81',
 	);
 }
 
@@ -2613,6 +2723,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_care_copy_v79', 117 );
 	add_action( 'init', 'restwell_migrate_page_copy_v80', 123 );
 	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_v80', 118 );
+	add_action( 'init', 'restwell_migrate_page_copy_v81', 124 );
+	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_v81', 119 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

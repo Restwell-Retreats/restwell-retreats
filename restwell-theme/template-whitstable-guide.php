@@ -96,7 +96,7 @@ $wg_toilet_bullets   = $wg_lines(
 		'By the Marine Parade cafe at the top',
 		'Under the promenade cafe near the castle',
 		'Changing Places: Whitstable Harbour WC, Harbour Road',
-		'JoJo’s Tankerton and Marine Hotel (venue accessible loos)',
+		'JoJo’s Tankerton and the Marine Hotel, which both have accessible loos',
 	)
 );
 
@@ -242,7 +242,7 @@ get_template_part(
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_1_src ); ?>" alt="<?php echo esc_attr( $wg_stop_1_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://whitstablecastle.co.uk/" target="_blank" rel="noopener noreferrer">Whitstable Castle &amp; Gardens<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Promenade stop</p>
-			<p>Paved grounds and Orangery Tearooms with an accessible loo, a level stop about halfway along the promenade.</p>
+			<p>Paved grounds and the Orangery Tearooms, which has an accessible loo. A level stop about halfway along the promenade.</p>
 			<p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227281726">Call 01227 281726</a></p>
 		  </article>
 		  <article class="place-list__item">
@@ -283,7 +283,7 @@ get_template_part(
 		  <article class="place-list__item">
 			<h3 class="place-list__title"><a href="https://jojosrestaurant.co.uk/" target="_blank" rel="noopener noreferrer">JoJo’s, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">2 Herne Bay Road · CT5 2LQ</p>
-			<p>About twenty minutes on foot from the bungalow: ten to the seafront, then west along the promenade. Wheelchair access and an accessible toilet. Book ahead: it fills quickly.</p>
+			<p>About twenty minutes on foot from the bungalow: ten to the seafront, then west along the promenade. It has wheelchair access and an accessible toilet. Book ahead, as it fills quickly.</p>
 			<p class="place-list__actions"><a href="https://jojosrestaurant.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227274591">Call 01227 274591</a></p>
 		  </article>
 		  <article class="place-list__item">
@@ -362,7 +362,7 @@ get_template_part(
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-taxi-front' ); ?></span>
 			<div>
 			  <h3>Accessible taxis</h3>
-			  <p>Ask for a wheelchair-accessible car and say if the passenger stays in their chair. Pre-book on busy days: Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
+			  <p>Ask for a wheelchair-accessible car, and say if the passenger stays in their chair. Pre-book on busy days with Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
 			</div>
 		  </li>
 		</ul>
@@ -386,13 +386,13 @@ get_template_part(
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.dreamland.co.uk/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Dreamland, Margate<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>Wheelchair accessible park; Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
+			<p>A wheelchair accessible park, with the Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
 			<p class="place-list__actions"><a href="https://www.dreamland.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Dreamland website<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' ) ); ?>" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.canterbury-cathedral.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Canterbury<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>~20 minutes by car. Cathedral Welcome Centre lends wheelchairs; riverside and Westgate Gardens are smoother than the cobbles.</p>
+			<p>About 20 minutes by car. The Cathedral Welcome Centre lends wheelchairs, and the riverside and Westgate Gardens are smoother than the cobbles.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury-cathedral.org/visit/" class="text-link" target="_blank" rel="noopener noreferrer">Cathedral visit info<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		</ul>
@@ -424,7 +424,7 @@ get_template_part(
 			  </button>
 			  <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
 				<p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route. Places along Tankerton promenade take longer because you then walk west along the prom. JoJo’s is roughly twenty minutes all in. Stay on the paved path; grassy slopes above are steep.</p>
-				<p>Plan parking, toilets and seafront routes first: Tankerton promenade is the main long level coastal stretch, and the shingle beach itself is not a wheelchair surface. Restwell’s step-free bungalow with driveway parking removes the hardest barrier before the day starts.</p>
+				<p>Plan parking, toilets and seafront routes first. Tankerton promenade is the main long, level stretch of coast, and the shingle beach is not a wheelchair surface. Restwell’s step-free bungalow with driveway parking removes the hardest barrier before the day starts.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -444,7 +444,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q5-a" role="region" aria-labelledby="whit-q5" hidden>
-				<p>Secure step-free accommodation first; use Tankerton promenade for sea air; check accessible toilets and parking; leave rest days in the plan. This guide lists the local detail from the bungalow.</p>
+				<p>Secure step-free accommodation first. Use Tankerton promenade for sea air. Check accessible toilets and parking, and leave rest days in the plan. This guide lists the local detail from the bungalow.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -453,7 +453,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q6-a" role="region" aria-labelledby="whit-q6" hidden>
-				<p>Level promenade, nearby parking and toilets, and knowing the shingle beach itself is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs; ask locally if you need one.</p>
+				<p>Level promenade, nearby parking and toilets, and knowing the shingle beach itself is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs, so ask locally if you need one.</p>
 			  </div>
 			</div>
 			<div class="faq-item">

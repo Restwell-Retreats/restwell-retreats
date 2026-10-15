@@ -131,7 +131,7 @@ function restwell_get_theme_setup_defaults() {
 
 		'property_label'      => 'The bungalow',
 		'property_heading'   => 'One bungalow, and it’s all yours',
-		'property_body'      => 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address and directions once your stay is confirmed.',
+		'property_body'      => 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park. We’ll send the address and directions once your stay is confirmed.',
 		'property_cta_label' => 'Have a proper look round the rooms',
 		'property_cta_url'   => '/the-property/',
 		'property_image_id'  => 0,
@@ -169,7 +169,7 @@ function restwell_get_theme_setup_defaults() {
 		'home_care_item1_title' => 'Bring your own support',
 		'home_care_item1_body'  => 'Plenty of guests bring their own carer or manage just like they do at home.',
 		'home_care_item2_title' => 'Use our care team',
-		'home_care_item2_body'  => 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC, and because we share an office and phone number, one conversation covers everything.',
+		'home_care_item2_body'  => 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC. We share an office and phone number, so one conversation covers everything.',
 		'home_care_note'        => 'Ring 01622 809881 if that’s easier than a form.',
 		'home_care_cta_label'   => 'What home care here actually looks like',
 		'home_care_cta_url'     => '/optional-care/',
@@ -222,19 +222,19 @@ function restwell_get_property_page_defaults() {
 		'prop_bedrooms_section_body'    => "The accessible bedroom has a ceiling-track hoist that reaches the whole room, with one or two profiling beds set up around what you tell us when you book.\n\nA second double is next door and the conservatory has a double sofa bed, so up to five can stay. Hoists, a standing aid and profiling beds are included in the price.",
 
 		'prop_wetroom_heading' => 'Roll-in shower and accessible washroom',
-		'prop_wetroom_body'    => "The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.",
+		'prop_wetroom_body'    => "The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll of this is already installed, so there’s nothing to hire or set up before you arrive.",
 
 		'prop_living_heading' => 'A comfortable place to come back to',
-		'prop_living_body'    => "After time by the sea, the living room gives everyone space to settle in.\n\nYou’ll find a rise-and-recline armchair, a sofa with pull-out footrests, and a TV with Netflix. The open-plan layout makes it easy for wheelchair users, families, and carers to move around comfortably.\n\nThere’s enough seating for everyone, and we keep the space between the sofa and armchair clear so wheelchairs can turn easily.",
+		'prop_living_body'    => "After time by the sea, the living room gives everyone space to settle in.\n\nThere’s a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. The open-plan layout leaves plenty of room for wheelchair users, families and carers to move around.\n\nThere’s seating for everyone. We keep the space between the sofa and armchair clear, so wheelchairs can turn.",
 
 		'prop_kitchen_heading' => 'Wheel-under kitchen, ready for everyday meals',
 		'prop_kitchen_body'    => "The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans.",
 
 		'prop_conservatory_heading' => 'Sunny dining space with level garden access',
-		'prop_conservatory_body'    => "The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nIt has a fold-out dining table, a double sofa bed, level access to the patio, and laundry cupboards with a washing machine and tumble dryer.",
+		'prop_conservatory_body'    => "The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nThere’s a fold-out dining table, a double sofa bed and level access to the patio. The laundry cupboards hold a washing machine and a tumble dryer.",
 
 		'prop_garden_heading' => 'Level patio, enclosed garden, and private driveway',
-		'prop_garden_body'    => "French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front, there’s a resin-bound, level-access driveway with space for two cars. It’s been tested with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, ready for you to use around the property or take with you during your stay.",
+		'prop_garden_body'    => "French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars. We’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, to use around the property or take with you.",
 
 		'prop_throughout_heading' => 'Wide doorways, step-free throughout',
 		'prop_throughout_body'    => 'The bungalow is on one level with wide doorways (926 mm and 965 mm clear widths) and step-free routes from the porch through to the patio. Full door and transfer measurements are on the accessibility page if you need them before booking.',
@@ -381,7 +381,7 @@ function restwell_get_property_page_defaults() {
 		'prop_nearby_cta_url'     => '/enquire/',
 
 		'prop_cta_heading' => 'See if the bungalow fits your group',
-		'prop_cta_body'    => 'Tell us your preferred dates, group size, and any access or equipment needs. We’ll reply with availability, measurements, equipment details, and your next steps.',
+		'prop_cta_body'    => 'Tell us your dates, your group size and any access or equipment needs. We’ll reply with availability, measurements and your next steps.',
 		'prop_cta_btn'     => 'Enquire',
 		'prop_cta_url'     => '/enquire/',
 		'prop_cta_promise' => 'We reply within 48 hours. No booking commitment.',
@@ -621,7 +621,7 @@ function restwell_get_resources_page_defaults() {
 		'res_chc_body'    => 'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that.',
 
 		'res_complaints_heading' => 'What if my funding application is refused?',
-		'res_complaints_body'    => 'You can ask for a review. For a local authority decision, that’s your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
+		'res_complaints_body'    => 'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
 
 		'res_contacts_heading' => 'Who to call',
 		'res_contacts_body'    => '',
@@ -675,25 +675,25 @@ function restwell_get_who_its_for_page_defaults() {
 
 		'wif_family_title' => 'Guests and families',
 		'wif_family_body'  => 'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.',
-		'wif_family_detail_bullets'   => "Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private self-catering layout: your daily routines run on your schedule.",
+		'wif_family_detail_bullets'   => "Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private, self-catering house, so your routines run to your own schedule.",
 		'wif_family_inline_cta_label' => 'Read accessibility specification',
 		'wif_family_inline_cta_url'   => '/accessibility/',
 
 		'wif_carers_title' => 'Carers and support workers',
 		'wif_carers_body'  => 'Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.',
-		'wif_carers_detail_bullets'   => "Separate sleeping area for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
+		'wif_carers_detail_bullets'   => "A separate place to sleep for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
 		'wif_carers_inline_cta_label' => 'Ask a suitability question',
 		'wif_carers_inline_cta_url'   => '/enquire/',
 
 		'wif_ot_title' => 'Occupational therapists',
 		'wif_ot_body'  => 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.',
-		'wif_ot_detail_bullets'   => "Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nIf a transfer clearance or equipment position isn’t published, we’ll confirm it.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
+		'wif_ot_detail_bullets'   => "Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
 		'wif_ot_inline_cta_label' => 'Review accessibility details',
 		'wif_ot_inline_cta_url'   => '/accessibility/',
 
 		'wif_commissioners_title' => 'Commissioners & social care',
 		'wif_commissioners_body'  => 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
-		'wif_commissioners_detail_bullets'   => "Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements, and confirmation that the care provider is CQC registered.\nDirect payments, personal health budgets, and CHC pathways all supported.",
+		'wif_commissioners_detail_bullets'   => "Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
 		'wif_commissioners_inline_cta_label' => 'Enquire about a funded stay',
 		'wif_commissioners_inline_cta_url'   => '/enquire/',
 
@@ -707,7 +707,7 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_funding_body'    => 'If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.',
 
 		'wif_fund_la_title'     => 'Local authority & direct payments',
-		'wif_fund_la_bullets'   => "Begins with a Care and Support Assessment. Unpaid carers can request a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
+		'wif_fund_la_bullets'   => "It starts with a Care and Support Assessment. Unpaid carers can ask for a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
 		'wif_fund_la_cta_label' => 'Direct payments guide',
 		'wif_fund_la_cta_url'   => '/direct-payment-holiday-accommodation/',
 
@@ -767,7 +767,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_planning_intro'          => 'Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.',
 		'wg_planning_before_heading' => '',
 		'wg_planning_day_heading'    => '',
-		'wg_planning_before_bullets' => "Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and Marine Hotel (venue accessible loos)",
+		'wg_planning_before_bullets' => "Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and the Marine Hotel, which both have accessible loos",
 		'wg_planning_day_bullets'    => '',
 		'wg_eating_label'            => 'Places to eat',
 		'wg_eating_heading'          => 'Pubs and restaurants near the house',
@@ -860,7 +860,7 @@ function restwell_get_our_story_page_defaults() {
 		'story_origin_label'   => 'The gap',
 		'story_origin_heading' => 'How Restwell started',
 		'story_origin_lede'    => 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.',
-		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.',
+		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, flattering or not. Guests can check the bungalow will work for them before they set off. They can arrange optional care through the same office.',
 
 		'story_month_label'   => 'The build',
 		'story_month_heading' => 'How the bungalow was built',
@@ -897,13 +897,13 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_specialists_label'      => 'Check the details for yourself',
 		'story_specialists_heading'    => 'The numbers are published so you don’t have to trust us',
-		'story_specialists_lede'       => 'Every measurement is on the Accessibility page, including the ones that aren’t flattering. Compare the door widths, spaces, and equipment limits with your own chair, hoist, or other kit before you book. If you’re unsure whether something will work, please ask.',
+		'story_specialists_lede'       => 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and equipment limits with your own chair or hoist before you book. If you’re unsure, please ask.',
 		'story_specialists_btn1_label' => 'Read the access specs',
 		'story_specialists_btn2_label' => 'Tour the property',
 
 		'story_next_label'   => 'What we’re trying to do',
 		'story_next_heading' => 'Nothing very complicated',
-		'story_next_lede'    => 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in a single conversation, without anyone having to explain their situation four times to four different people.',
+		'story_next_lede'    => 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.',
 
 		'story_cta_heading'         => 'See what that means inside the bungalow',
 		'story_cta_body'            => 'You can check door widths, hoist details, and photographs of each room before you contact us. Compare them with what you need, and ask about anything that isn’t clear.',
