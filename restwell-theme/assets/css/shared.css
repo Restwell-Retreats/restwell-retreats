@@ -4563,6 +4563,8 @@ body:has(.subnav) {
   font-weight: var(--type-ui-weight);
   white-space: nowrap;
   min-height: 2.75rem;
+  min-width: 2.75rem; /* "All" is three letters; keep every filter a full target */
+  justify-content: center;
   padding: 0;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -10587,6 +10589,7 @@ p.care-how__note > .text-link,
 .acc-guide h3 a { color: var(--deep-teal); text-decoration: none; }
 .acc-guide h3 a::after { content: ""; position: absolute; inset: 0; }
 .acc-guide__body > p:not(.eyebrow) { max-width: 34em; color: var(--body-secondary); }
+.acc-guide__body h3 a { display: inline-flex; align-items: center; min-height: var(--tap-target, 2.75rem); }
 .acc-guide__more {
   display: inline-flex;
   align-items: center;
