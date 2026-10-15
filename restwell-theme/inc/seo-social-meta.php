@@ -18,14 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Paths are under assets/images/. Place-led and local-area pages use the new
  * Kent/Whitstable stock JPGs; most product pages use inviting bungalow photos
  * (garden, lounge, bedroom). The access statement uses the wet-room lead so
- * social shares show the kit, not a generic sunset.
+ * social shares show the kit, not a generic sunset. Our Story shows the
+ * finished bungalow itself (15 Oct 2026; it was a generic Kent brick house).
  *
  * @return array<string, string> Slug => path relative to assets/images/.
  */
 function restwell_get_default_og_stock_filename_map() {
 	return array(
 		'home'                  => 'stock/restwell-whitstable-promenade-golden-hour.jpg',
-		'our-story'             => 'stock/restwell-kent-riverside-brick-house.jpg',
+		'our-story'             => 'bungalow/accessible-holiday-whitstable.png',
 		'the-property'          => 'bungalow/GRDEN-1-LS.jpg',
 		'accessibility'         => 'bungalow/WR-1-LS.jpg',
 		'pricing'               => 'bungalow/LR-2-LS.jpg',

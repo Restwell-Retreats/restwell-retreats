@@ -284,6 +284,7 @@ function restwell_theme_image_alt_map() {
 		'journey/victoria-walker.webp'                              => __( 'Victoria Walker cutting the ribbon at the Restwell Retreats bungalow', 'restwell-retreats' ),
 		'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg' => __( 'Colourful beach huts along Tankerton promenade at sunset, Whitstable', 'restwell-retreats' ),
 		'stock/restwell-kent-riverside-brick-house.jpg'             => __( 'Brick house beside a riverside path in Kent', 'restwell-retreats' ),
+		'bungalow/accessible-holiday-whitstable.png'               => __( 'The front of the adapted bungalow in Whitstable, a white single-storey house with hanging baskets and a level drive', 'restwell-retreats' ),
 		'stock/restwell-whitstable-promenade-golden-hour.jpg'       => __( 'Tankerton promenade at golden hour, Whitstable', 'restwell-retreats' ),
 		'stock/restwell-whitstable-beach-huts-sunset-slope.jpg'     => __( 'Beach huts on the Tankerton slope at sunset', 'restwell-retreats' ),
 		'stock/restwell-whitstable-painted-beach-huts.jpg'          => __( 'Painted beach huts on the Whitstable seafront', 'restwell-retreats' ),

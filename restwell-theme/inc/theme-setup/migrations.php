@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 81;
+const RESTWELL_SCHEMA_VERSION = 82;
 
 
 /**
@@ -2485,6 +2485,51 @@ function restwell_migrate_page_copy_v81() {
 }
 
 /**
+ * 15 Oct 2026: Our Story opens on the finished bungalow, not the generic Kent
+ * brick house it was seeded with.
+ *
+ * Only an untouched seed is replaced: the page's Featured image must still be
+ * the sideloaded stock brick house (its _restwell_stock_source says so), and
+ * the hero field must be empty or already equal to it. A photograph Victoria
+ * or Ellie chose in wp-admin is left alone.
+ */
+function restwell_migrate_our_story_hero_v82() {
+	if ( get_option( 'restwell_our_story_hero_v82', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_our_story_hero_v82', '1', false );
+	if ( ! function_exists( 'restwell_page_id_for_stock_slug' )
+		|| ! function_exists( 'restwell_sideload_stock_image' )
+		|| ! function_exists( 'restwell_sync_page_hero_image_trio' )
+		|| ! function_exists( 'restwell_normalise_stock_rel' ) ) {
+		return;
+	}
+	$page_id = restwell_page_id_for_stock_slug( 'our-story' );
+	if ( $page_id < 1 ) {
+		return;
+	}
+	$thumb = (int) get_post_thumbnail_id( $page_id );
+	if ( $thumb < 1 ) {
+		// No Featured image: the theme default (now the bungalow) already applies.
+		return;
+	}
+	$source = restwell_normalise_stock_rel( (string) get_post_meta( $thumb, '_restwell_stock_source', true ) );
+	if ( 'stock/restwell-kent-riverside-brick-house.jpg' !== $source ) {
+		return;
+	}
+	$hero = absint( get_post_meta( $page_id, 'story_hero_image_id', true ) );
+	if ( $hero > 0 && $hero !== $thumb ) {
+		return;
+	}
+	$att_id = restwell_sideload_stock_image( 'bungalow/accessible-holiday-whitstable.png' );
+	if ( $att_id < 1 ) {
+		return;
+	}
+	set_post_thumbnail( $page_id, $att_id );
+	restwell_sync_page_hero_image_trio( $page_id );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2601,6 +2646,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_care_copy_v79',
 		'restwell_page_copy_v80',
 		'restwell_page_copy_v81',
+		'restwell_our_story_hero_v82',
 	);
 }
 
@@ -2749,6 +2795,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_v80', 118 );
 	add_action( 'init', 'restwell_migrate_page_copy_v81', 124 );
 	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_v81', 119 );
+	add_action( 'init', 'restwell_migrate_our_story_hero_v82', 125 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_hero_v82', 120 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
