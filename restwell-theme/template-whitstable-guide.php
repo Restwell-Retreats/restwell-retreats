@@ -96,7 +96,7 @@ $wg_toilet_bullets   = $wg_lines(
 		'By the Marine Parade cafe at the top',
 		'Under the promenade cafe near the castle',
 		'Changing Places: Whitstable Harbour WC, Harbour Road',
-		'JoJo’s Tankerton and the Marine Hotel, which both have accessible loos',
+		'JoJo’s Tankerton and the Marine Hotel, both with accessible loos',
 	)
 );
 
@@ -242,7 +242,7 @@ get_template_part(
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_1_src ); ?>" alt="<?php echo esc_attr( $wg_stop_1_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://whitstablecastle.co.uk/" target="_blank" rel="noopener noreferrer">Whitstable Castle &amp; Gardens<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Promenade stop</p>
-			<p>Paved grounds and the Orangery Tearooms, which has an accessible loo. A level stop about halfway along the promenade.</p>
+			<p>Paved grounds and the Orangery Tearooms, which has an accessible loo. It’s a level stop halfway along the promenade.</p>
 			<p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227281726">Call 01227 281726</a></p>
 		  </article>
 		  <article class="place-list__item">
@@ -277,7 +277,7 @@ get_template_part(
 		  <article class="place-list__item">
 			<h3 class="place-list__title"><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" target="_blank" rel="noopener noreferrer">The Plough Inn, Swalecliffe<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Nearest pub · CT5 2RN</p>
-			<p>Around the corner via a footpath at the end of the road. We’ll point it out in your welcome pack. Step-free entry; no accessible toilet, confirm on the day if that matters.</p>
+			<p>Around the corner via a footpath at the end of the road. We’ll point it out in your welcome pack. Step-free entry, but no accessible toilet, so confirm on the day if that matters.</p>
 			<p class="place-list__actions"><a class="text-link" href="tel:01227794636">Call 01227 794636</a><a href="https://maps.google.com/?q=The+Plough+St+Johns+Road+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
@@ -289,7 +289,7 @@ get_template_part(
 		  <article class="place-list__item">
 			<h3 class="place-list__title"><a href="https://www.marinewhitstable.co.uk/" target="_blank" rel="noopener noreferrer">Marine Hotel, Tankerton<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">32–33 Marine Parade · CT5 2BE</p>
-			<p>Ground-floor lounge and restaurant, step-free, with an accessible loo by reception. It looks out over the Tankerton Slopes to the sea from Marine Parade; ask for a window table when you book.</p>
+			<p>Ground-floor lounge and restaurant, step-free, with an accessible loo by reception. It looks out over the Tankerton Slopes to the sea from Marine Parade. Ask for a window table when you book.</p>
 			<p class="place-list__actions"><a href="https://www.marinewhitstable.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227272672">Call 01227 272672</a></p>
 		  </article>
 		  </div>
@@ -348,21 +348,21 @@ get_template_part(
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'train-front' ); ?></span>
 			<div>
 			  <h3>Station</h3>
-			  <p>Whitstable station access varies by platform, check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. About 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi.</p>
+			  <p>Access at Whitstable station varies by platform, so check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. It’s about 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi ride.</p>
 			</div>
 		  </li>
 		  <li class="persona-list__item">
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bus-front' ); ?></span>
 			<div>
 			  <h3>Buses</h3>
-			  <p><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary; same-day check.</p>
+			  <p><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary, so check on the day.</p>
 			</div>
 		  </li>
 		  <li class="persona-list__item">
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-taxi-front' ); ?></span>
 			<div>
 			  <h3>Accessible taxis</h3>
-			  <p>Ask for a wheelchair-accessible car, and say if the passenger stays in their chair. Pre-book on busy days with Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
+			  <p>Ask for a car with wheelchair access, and say if the passenger stays in their chair. Book ahead on busy days with Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
 			</div>
 		  </li>
 		</ul>
@@ -380,19 +380,19 @@ get_template_part(
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-kent-woodland-paved-path.jpg' ) ); ?>" alt="Paved woodland path near the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>~30 minutes. Mostly accessible woodland paths; scooters bookable ahead on 01227 209621.</p>
+			<p>About 30 minutes. The woodland paths are mostly accessible, and scooters can be booked ahead on 01227 209621.</p>
 			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.dreamland.co.uk/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Dreamland, Margate<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>A wheelchair accessible park, with the Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
+			<p>A park you can use in a wheelchair, with the Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
 			<p class="place-list__actions"><a href="https://www.dreamland.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Dreamland website<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' ) ); ?>" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.canterbury-cathedral.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Canterbury<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>About 20 minutes by car. The Cathedral Welcome Centre lends wheelchairs, and the riverside and Westgate Gardens are smoother than the cobbles.</p>
+			<p>About 20 minutes by car. The Cathedral Welcome Centre lends wheelchairs. The riverside and Westgate Gardens are smoother than the cobbles.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury-cathedral.org/visit/" class="text-link" target="_blank" rel="noopener noreferrer">Cathedral visit info<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		</ul>
@@ -424,7 +424,7 @@ get_template_part(
 			  </button>
 			  <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
 				<p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route. Places along Tankerton promenade take longer because you then walk west along the prom. JoJo’s is roughly twenty minutes all in. Stay on the paved path; grassy slopes above are steep.</p>
-				<p>Plan parking, toilets and seafront routes first. Tankerton promenade is the main long, level stretch of coast, and the shingle beach is not a wheelchair surface. Restwell’s step-free bungalow with driveway parking removes the hardest barrier before the day starts.</p>
+				<p>Plan parking, toilets and seafront routes first. Tankerton promenade is the main long, level stretch of coast. The shingle beach is not a wheelchair surface. Restwell’s step-free bungalow, with driveway parking, removes the hardest barrier before the day starts.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -433,7 +433,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q4-a" role="region" aria-labelledby="whit-q4" hidden>
-				<p>Favour paved promenades over shingle or steep slips. Tankerton’s promenade near Restwell is the local stretch we use most. A step-free bungalow means the day is about the route, not stairs at the house.</p>
+				<p>Choose paved promenades over shingle or steep slips. Tankerton’s promenade near Restwell is the local stretch we use most. A step-free bungalow means the day is about the route, not stairs at the house.</p>
 			  </div>
 			</div>
 			</div>
@@ -453,7 +453,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q6-a" role="region" aria-labelledby="whit-q6" hidden>
-				<p>Level promenade, nearby parking and toilets, and knowing the shingle beach itself is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs, so ask locally if you need one.</p>
+				<p>A level promenade, parking and toilets nearby, and knowing the shingle beach is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs, so ask locally if you need one.</p>
 			  </div>
 			</div>
 			<div class="faq-item">

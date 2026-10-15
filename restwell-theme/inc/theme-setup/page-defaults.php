@@ -674,7 +674,7 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_nav_commissioners_label' => "I'm a commissioner",
 
 		'wif_family_title' => 'Guests and families',
-		'wif_family_body'  => 'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.',
+		'wif_family_body'  => 'Hoist and wet room already fitted. Measurements published. A private home, not a hotel room.',
 		'wif_family_detail_bullets'   => "Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private, self-catering house, so your routines run to your own schedule.",
 		'wif_family_inline_cta_label' => 'Read accessibility specification',
 		'wif_family_inline_cta_url'   => '/accessibility/',
@@ -686,14 +686,14 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_carers_inline_cta_url'   => '/enquire/',
 
 		'wif_ot_title' => 'Occupational therapists',
-		'wif_ot_body'  => 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.',
-		'wif_ot_detail_bullets'   => "Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
+		'wif_ot_body'  => 'Door widths, hoist and wet-room specs are published. If you need one that isn’t, ask and we’ll measure it.',
+		'wif_ot_detail_bullets'   => 'You’re welcome to talk to us about a referral before you commit to a booking.',
 		'wif_ot_inline_cta_label' => 'Review accessibility details',
 		'wif_ot_inline_cta_url'   => '/accessibility/',
 
 		'wif_commissioners_title' => 'Commissioners & social care',
-		'wif_commissioners_body'  => 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
-		'wif_commissioners_detail_bullets'   => "Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
+		'wif_commissioners_body'  => 'Care Act short breaks, with paperwork for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
+		'wif_commissioners_detail_bullets'   => "Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
 		'wif_commissioners_inline_cta_label' => 'Enquire about a funded stay',
 		'wif_commissioners_inline_cta_url'   => '/enquire/',
 
@@ -712,7 +712,7 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_fund_la_cta_url'   => '/direct-payment-holiday-accommodation/',
 
 		'wif_fund_phb_title'     => 'Personal health budget',
-		'wif_fund_phb_bullets'   => "Available if you have continuing healthcare needs and are assessed as eligible.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted house can be written into a care and support plan where it’s clinically appropriate.",
+		'wif_fund_phb_bullets'   => "For people with continuing healthcare needs who are found eligible.\nYour ICB or NHS continuing healthcare team handles the application.\nA private adapted house can go into a care and support plan where it suits your clinical needs.",
 		'wif_fund_phb_cta_label' => 'PHB and funding overview',
 		'wif_fund_phb_cta_url'   => '/funding-and-support/',
 
@@ -767,7 +767,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_planning_intro'          => 'Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.',
 		'wg_planning_before_heading' => '',
 		'wg_planning_day_heading'    => '',
-		'wg_planning_before_bullets' => "Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and the Marine Hotel, which both have accessible loos",
+		'wg_planning_before_bullets' => "Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and the Marine Hotel, both with accessible loos",
 		'wg_planning_day_bullets'    => '',
 		'wg_eating_label'            => 'Places to eat',
 		'wg_eating_heading'          => 'Pubs and restaurants near the house',
@@ -870,7 +870,7 @@ function restwell_get_our_story_page_defaults() {
 		'story_month_1_body'  => 'The bungalow needed more than a lick of paint.',
 		'story_month_2_meta'  => 'During the build',
 		'story_month_2_title' => 'The specialists arrived',
-		'story_month_2_body'  => 'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends filled the rest.',
+		'story_month_2_body'  => 'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends did the rest.',
 		'story_month_3_meta'  => 'Four weeks later',
 		'story_month_3_title' => 'The bungalow was ready',
 		'story_month_3_body'  => 'Once the work was finished, we measured everything and wrote the numbers down.',
@@ -885,7 +885,7 @@ function restwell_get_our_story_page_defaults() {
 		'story_companies_1_title'   => 'Restwell',
 		'story_companies_1_body'    => 'The bungalow: a private adapted house in Whitstable. Not a care home, and not a respite centre.',
 		'story_companies_2_title'   => 'Continuity of Care Services',
-		'story_companies_2_body'    => 'Optional home care during your stay, always from Continuity’s own team.',
+		'story_companies_2_body'    => 'Home care during your stay is optional, and always from Continuity’s own team.',
 		'story_companies_3_title'   => 'One place to start',
 		'story_companies_3_body'    => 'Ask about the bungalow and any care in the same call, to the same office.',
 		'story_companies_note'      => 'Restwell is not a registered care provider. Continuity of Care Services is.',
@@ -897,13 +897,13 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_specialists_label'      => 'Check the details for yourself',
 		'story_specialists_heading'    => 'The numbers are published so you don’t have to trust us',
-		'story_specialists_lede'       => 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and equipment limits with your own chair or hoist before you book. If you’re unsure, please ask.',
+		'story_specialists_lede'       => 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and limits with your own chair or hoist before you book. If you’re unsure, please ask.',
 		'story_specialists_btn1_label' => 'Read the access specs',
 		'story_specialists_btn2_label' => 'Tour the property',
 
 		'story_next_label'   => 'What we’re trying to do',
 		'story_next_heading' => 'Nothing very complicated',
-		'story_next_lede'    => 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.',
+		'story_next_lede'    => 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four people.',
 
 		'story_cta_heading'         => 'See what that means inside the bungalow',
 		'story_cta_body'            => 'You can check door widths, hoist details, and photographs of each room before you contact us. Compare them with what you need, and ask about anything that isn’t clear.',

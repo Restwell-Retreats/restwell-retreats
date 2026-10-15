@@ -167,7 +167,7 @@ get_template_part(
 			</div>
 			<div class="cover-prose">
 			  <p><strong>Usually covers</strong> a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</p>
-			  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, entertainment and travel aren’t covered either, unless the letter names them.</p>
+			  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, days out and travel aren’t covered either, unless the letter names them.</p>
 			</div>
 			<p class="cover-split__source">Revitalise closed its centres in 2024 and now awards grants toward a break of your choice. Ask us for a quote if you need a provisional booking to apply.</p>
 			<div class="funding-route__foot">

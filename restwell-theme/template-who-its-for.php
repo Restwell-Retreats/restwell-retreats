@@ -100,11 +100,11 @@ $wif_personas = array(
 				$restwell_wif_id,
 				'wif_family_body',
 				'wif_family_detail_body',
-				'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.'
+				'Hoist and wet room already fitted. Measurements published. A private home, not a hotel room.'
 			)
 			: ( function_exists( 'restwell_page_content_text' )
-				? restwell_page_content_text( $restwell_wif_id, 'wif_family_body', 'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.' )
-				: 'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.' ),
+				? restwell_page_content_text( $restwell_wif_id, 'wif_family_body', 'Hoist and wet room already fitted. Measurements published. A private home, not a hotel room.' )
+				: 'Hoist and wet room already fitted. Measurements published. A private home, not a hotel room.' ),
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_family_detail_bullets', $wif_default_family_bullets )
 			: $wif_default_family_bullets,
@@ -146,11 +146,11 @@ $wif_personas = array(
 				$restwell_wif_id,
 				'wif_ot_body',
 				'wif_ot_detail_body',
-				'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.'
+				'Door widths, hoist and wet-room specs are published. If you need one that isn’t, ask and we’ll measure it.'
 			)
 			: ( function_exists( 'restwell_page_content_text' )
-				? restwell_page_content_text( $restwell_wif_id, 'wif_ot_body', 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.' )
-				: 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.' ),
+				? restwell_page_content_text( $restwell_wif_id, 'wif_ot_body', 'Door widths, hoist and wet-room specs are published. If you need one that isn’t, ask and we’ll measure it.' )
+				: 'Door widths, hoist and wet-room specs are published. If you need one that isn’t, ask and we’ll measure it.' ),
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_ot_detail_bullets', $wif_default_ot_bullets )
 			: $wif_default_ot_bullets,
@@ -169,11 +169,11 @@ $wif_personas = array(
 				$restwell_wif_id,
 				'wif_commissioners_body',
 				'wif_commissioners_detail_body',
-				'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.'
+				'Care Act short breaks, with paperwork for direct payments, PHB or CHC. Same rates regardless of who we invoice.'
 			)
 			: ( function_exists( 'restwell_page_content_text' )
-				? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_body', 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.' )
-				: 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.' ),
+				? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_body', 'Care Act short breaks, with paperwork for direct payments, PHB or CHC. Same rates regardless of who we invoice.' )
+				: 'Care Act short breaks, with paperwork for direct payments, PHB or CHC. Same rates regardless of who we invoice.' ),
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_commissioners_detail_bullets', $wif_default_commissioners_bullets )
 			: $wif_default_commissioners_bullets,
@@ -199,7 +199,7 @@ $wif_kit_cards = array(
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_1_caption', 'Level-access wet room' )
 			: 'Level-access wet room',
-		'body'         => 'Roll-in shower, grab rails and a height-adjustable basin. Care Spaces adapted.',
+		'body'         => 'Roll-in shower, grab rails and a basin that moves up and down. Adapted by Care Spaces.',
 		'slot_index'   => 0,
 	),
 	array(
@@ -217,7 +217,7 @@ $wif_kit_cards = array(
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_3_caption', 'Reachable kitchen' )
 			: 'Reachable kitchen',
-		'body'         => 'Wheel-under worksurface, stocked basics and a gas hob.',
+		'body'         => 'A worktop you can wheel under, stocked basics and a gas hob.',
 		'slot_index'   => 2,
 	),
 );
@@ -262,9 +262,9 @@ $wif_fund_phb_bullets = function_exists( 'restwell_wif_bullet_list' )
 		$restwell_wif_id,
 		'wif_fund_phb_bullets',
 		array(
-			'Available if you have continuing healthcare needs and are assessed as eligible.',
-			'Your ICB or NHS continuing healthcare team manages the application.',
-			'A private adapted house can be written into a care and support plan where it’s clinically appropriate.',
+			'For people with continuing healthcare needs who are found eligible.',
+			'Your ICB or NHS continuing healthcare team handles the application.',
+			'A private adapted house can go into a care and support plan where it suits your clinical needs.',
 		)
 	)
 	: array();
@@ -599,7 +599,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
-				<p>Neither is better in every case. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits people who need more clinical oversight on site. Choose by risk, staffing and what the person wants from the break. Restwell with optional Continuity care fits the first case. It is not a substitute for registered residential care when that is clinically required.</p>
+				<p>Neither is better in every case. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits people who need more clinical oversight on site. Choose by risk, staffing and what the person wants. Restwell with optional Continuity care fits the first case. It is not a substitute for registered residential care when that is clinically required.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -608,7 +608,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q9-a" role="region" aria-labelledby="wif-q9" hidden>
-				<p>Respite usually means planned relief for a carer, or formal care that carries on under a funding plan. An accessible holiday is a place a disabled traveller can use. Many Restwell stays are both, but the paperwork answers different questions.</p>
+				<p>Respite usually means planned time off for a carer, or formal care that carries on under a funding plan. An accessible holiday is a place a disabled traveller can use. Many stays here are both, but the paperwork answers different questions.</p>
 			  </div>
 			</div>
 			</div>

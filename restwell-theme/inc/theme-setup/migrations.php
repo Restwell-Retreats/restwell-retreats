@@ -2415,6 +2415,10 @@ function restwell_migrate_page_copy_v81() {
 			),
 		),
 		'who-its-for' => array(
+			'wif_family_body' => array(
+				'Hoist and wet room already fitted; measurements published; a private home, not a hotel room.',
+				'Hoist and wet room already fitted. Measurements published. A private home, not a hotel room.',
+			),
 			'wif_family_detail_bullets' => array(
 				"Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private self-catering layout: your daily routines run on your schedule.",
 				"Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private, self-catering house, so your routines run to your own schedule.",
@@ -2423,23 +2427,35 @@ function restwell_migrate_page_copy_v81() {
 				"Separate sleeping area for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
 				"A separate place to sleep for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
 			),
+			'wif_ot_body' => array(
+				'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.',
+				'Door widths, hoist and wet-room specs are published. If you need one that isn’t, ask and we’ll measure it.',
+			),
 			'wif_ot_detail_bullets' => array(
 				"Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nIf a transfer clearance or equipment position isn’t published, we’ll confirm it.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
-				"Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
+				'You’re welcome to talk to us about a referral before you commit to a booking.',
+			),
+			'wif_commissioners_body' => array(
+				'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
+				'Care Act short breaks, with paperwork for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
 			),
 			'wif_commissioners_detail_bullets' => array(
 				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements, and confirmation that the care provider is CQC registered.\nDirect payments, personal health budgets, and CHC pathways all supported.",
-				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
+				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
 			),
 			'wif_fund_la_bullets' => array(
 				"Begins with a Care and Support Assessment. Unpaid carers can request a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
 				"It starts with a Care and Support Assessment. Unpaid carers can ask for a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
 			),
+			'wif_fund_phb_bullets' => array(
+				"Available if you have continuing healthcare needs and are assessed as eligible.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted house can be written into a care and support plan where it’s clinically appropriate.",
+				"For people with continuing healthcare needs who are found eligible.\nYour ICB or NHS continuing healthcare team handles the application.\nA private adapted house can go into a care and support plan where it suits your clinical needs.",
+			),
 		),
 		'whitstable-area-guide' => array(
 			'wg_planning_before_bullets' => array(
 				"Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and Marine Hotel (venue accessible loos)",
-				"Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and the Marine Hotel, which both have accessible loos",
+				"Behind the sailing club at the foot of the slopes\nBy the Marine Parade cafe at the top\nUnder the promenade cafe near the castle\nChanging Places: Whitstable Harbour WC, Harbour Road\nJoJo’s Tankerton and the Marine Hotel, both with accessible loos",
 			),
 		),
 		'our-story' => array(
@@ -2447,13 +2463,21 @@ function restwell_migrate_page_copy_v81() {
 				'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, including the ones that aren’t flattering. Guests can check the bungalow will work for them before they set off, and arrange optional care through the same office.',
 				'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, flattering or not. Guests can check the bungalow will work for them before they set off. They can arrange optional care through the same office.',
 			),
+			'story_month_2_body' => array(
+				'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends filled the rest.',
+				'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends did the rest.',
+			),
+			'story_companies_2_body' => array(
+				'Optional home care during your stay, always from Continuity’s own team.',
+				'Home care during your stay is optional, and always from Continuity’s own team.',
+			),
 			'story_specialists_lede' => array(
 				'Every measurement is on the Accessibility page, including the ones that aren’t flattering. Compare the door widths, spaces, and equipment limits with your own chair, hoist, or other kit before you book. If you’re unsure whether something will work, please ask.',
-				'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and equipment limits with your own chair or hoist before you book. If you’re unsure, please ask.',
+				'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and limits with your own chair or hoist before you book. If you’re unsure, please ask.',
 			),
 			'story_next_lede' => array(
 				'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in a single conversation, without anyone having to explain their situation four times to four different people.',
-				'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.',
+				'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four people.',
 			),
 		),
 	);

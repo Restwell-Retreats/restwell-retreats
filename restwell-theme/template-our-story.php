@@ -58,7 +58,7 @@ $story_month_1_title = $story_txt( 'story_month_1_title', 'We got the keys' );
 $story_month_1_body  = $story_txt( 'story_month_1_body', 'The bungalow needed more than a lick of paint.' );
 $story_month_2_meta  = $story_txt( 'story_month_2_meta', 'During the build' );
 $story_month_2_title = $story_txt( 'story_month_2_title', 'The specialists arrived' );
-$story_month_2_body_default = 'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends filled the rest.';
+$story_month_2_body_default = 'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends did the rest.';
 $story_month_2_body  = $story_txt( 'story_month_2_body', $story_month_2_body_default );
 $story_month_3_meta  = $story_txt( 'story_month_3_meta', 'Four weeks later' );
 $story_month_3_title = $story_txt( 'story_month_3_title', 'The bungalow was ready' );
@@ -78,7 +78,7 @@ $story_companies_items   = array(
 	),
 	array(
 		'title' => $story_txt( 'story_companies_2_title', 'Continuity of Care Services' ),
-		'body'  => $story_txt( 'story_companies_2_body', 'Optional home care during your stay, always from Continuity’s own team.' ),
+		'body'  => $story_txt( 'story_companies_2_body', 'Home care during your stay is optional, and always from Continuity’s own team.' ),
 	),
 	array(
 		'title' => $story_txt( 'story_companies_3_title', 'One place to start' ),
@@ -94,13 +94,13 @@ $story_shaped_lede    = $story_txt( 'story_shaped_lede', 'People with muscular d
 
 $story_specialists_label      = $story_txt( 'story_specialists_label', 'Check the details for yourself' );
 $story_specialists_heading    = $story_txt( 'story_specialists_heading', 'The numbers are published so you don’t have to trust us' );
-$story_specialists_lede       = $story_txt( 'story_specialists_lede', 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and equipment limits with your own chair or hoist before you book. If you’re unsure, please ask.' );
+$story_specialists_lede       = $story_txt( 'story_specialists_lede', 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and limits with your own chair or hoist before you book. If you’re unsure, please ask.' );
 $story_specialists_btn1_label = $story_txt( 'story_specialists_btn1_label', 'Read the access specs' );
 $story_specialists_btn2_label = $story_txt( 'story_specialists_btn2_label', 'Tour the property' );
 
 $story_next_label   = $story_txt( 'story_next_label', 'What we’re trying to do' );
 $story_next_heading = $story_txt( 'story_next_heading', 'Nothing very complicated' );
-$story_next_lede    = $story_txt( 'story_next_lede', 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.' );
+$story_next_lede    = $story_txt( 'story_next_lede', 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four people.' );
 ?>
 
 
@@ -222,7 +222,7 @@ get_template_part(
 					<?php esc_html_e( 'The accessible bedroom and wet room were built by', 'restwell-retreats' ); ?>
 					<a class="text-link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer">Care Spaces by Wealden Rehab<span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a>
 					<?php esc_html_e( 'and', 'restwell-retreats' ); ?>
-					<a class="text-link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a><?php esc_html_e( ', with the occupational therapists’ advice. Family and friends filled the rest.', 'restwell-retreats' ); ?>
+					<a class="text-link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a><?php esc_html_e( ', with the occupational therapists’ advice. Family and friends did the rest.', 'restwell-retreats' ); ?>
 				</p>
 				<?php elseif ( '' !== $story_month_2_body ) : ?>
 				<p><?php echo esc_html( $story_month_2_body ); ?></p>
