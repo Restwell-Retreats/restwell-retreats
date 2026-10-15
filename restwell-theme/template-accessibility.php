@@ -348,26 +348,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		}
 		$acc_grouped[ $acc_gid ][] = $acc_equip_item;
 	}
-
-	/*
-	 * Chapter numbers for the register.
-	 *
-	 * The numerals give the register the shape of a document, and the chapter
-	 * index beside it (desktop) uses the same numbers. The limits chapter is
-	 * numbered last because the honest caveats belong inside the spec
-	 * document, not stranded in a band of their own after it.
-	 */
-	$acc_chapter_ids = array();
-	foreach ( $acc_equip_groups as $acc_gid => $acc_gmeta ) {
-		if ( empty( $acc_grouped[ $acc_gid ] ) ) {
-			continue;
-		}
-		$acc_chapter_ids[] = 'equip-' . $acc_gid;
-	}
-	$acc_chapter_no = array();
-	foreach ( $acc_chapter_ids as $acc_ci => $acc_chapter_id ) {
-		$acc_chapter_no[ $acc_chapter_id ] = str_pad( (string) ( $acc_ci + 1 ), 2, '0', STR_PAD_LEFT );
-	}
 	?>
 
 	<section class="section-y band-subtle" id="equipment" aria-labelledby="equipment-h">
@@ -491,7 +471,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					?>
 				<details class="acc-room" id="equip-<?php echo esc_attr( $acc_gid ); ?>"<?php echo $acc_room_first ? ' open' : ''; ?>>
 				  <summary class="acc-room__summary">
-					<span class="acc-room__no" aria-hidden="true"><?php echo esc_html( $acc_chapter_no[ 'equip-' . $acc_gid ] ); ?></span>
 					<h3 id="<?php echo esc_attr( $acc_heading_id ); ?>"><?php echo esc_html( $acc_gtitle ); ?></h3>
 					<?php if ( ! empty( $acc_pack_facts ) ) : ?>
 					<span class="acc-room__facts">
