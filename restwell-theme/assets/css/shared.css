@@ -8168,10 +8168,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
    timeline in the same panel; parking is a ranked sequence and keeps it, the
    toilets are places, so the Changing Places loo leads in the serif and the
    others sit beside it as a plain list. */
-.loo-list { display: grid; gap: var(--space-8); }
-@media (min-width: 900px) {
-  .loo-list { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-16); align-items: start; }
-}
+.loo-list { display: grid; gap: var(--space-8); margin-top: var(--space-6); }
 .loo-list__tag { margin: 0 0 var(--space-2); font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--warm-gold-text); }
 .loo-list__name {
   margin: 0;
@@ -8848,6 +8845,25 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   display: grid;
   gap: var(--space-10);
 }
+@media (min-width: 960px) {
+  .acc-intro {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-16);
+    align-items: center;
+  }
+}
+/* The front door beside the numbers it measures (15 Oct 2026). */
+.acc-intro__media {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  aspect-ratio: 16 / 10;
+}
+@media (min-width: 960px) {
+  .acc-intro__media { aspect-ratio: 4 / 5; }
+}
+.acc-intro__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.acc-intro__body { display: grid; gap: var(--space-10); min-width: 0; }
 .acc-intro__head { margin: 0; }
 .acc-figures {
   display: grid;
@@ -8868,7 +8884,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   order: -1;
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2.75rem, 2rem + 2.4vw, 4rem);
+  font-size: clamp(2.5rem, 1.7rem + 2.2vw, 3.75rem);
   font-variant-numeric: lining-nums;
   line-height: 1;
   color: var(--deep-teal);
@@ -9603,6 +9619,7 @@ p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
 p.blog-cluster-links__part > .text-link,
 p.door-check__foot > .text-link,
+.trio__item p > .text-link,
 p.care-cqc__note > .text-link,
 p.care-how__note > .text-link,
 .care-route__stop p > .text-link,
@@ -10670,27 +10687,64 @@ p.care-how__note > .text-link,
   scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
 }
 @media (min-width: 1100px) {
+  /* One comparison grid: a key column of row labels, then the three routes,
+     six rows that line up across them (head, what it is, covers, doesn't
+     cover, source, who to ask). Each route stays its own article; the grid
+     is subgrid all the way down. */
   .funding-routes {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: repeat(4, auto);
-    gap: 0 var(--space-12);
+    grid-template-columns: 11rem repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(6, auto);
+    gap: 0 var(--space-10);
   }
-  .funding-route { grid-row: span 4; grid-template-rows: subgrid; }
+  .funding-key,
+  .funding-route { grid-row: span 6; display: grid; grid-template-rows: subgrid; gap: 0; }
+  .funding-routes .cover-prose { display: contents; }
+  .funding-key > span,
+  .funding-routes .funding-route > *,
+  .funding-routes .funding-route > .cover-prose > * {
+    margin: 0;
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .funding-key > span:first-child,
+  .funding-routes .funding-route > .funding-route__head { border-top: 0; }
+  .funding-routes .funding-route > .funding-route__head { border-bottom: 2px solid var(--deep-teal); padding: 0 0 var(--space-4); }
+  .funding-key > span:first-child { padding: 0; }
+  .funding-key > span {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--deep-teal);
+  }
+  /* The row label says "Usually covers": keep the lead-in for screen readers
+     and let each cell read as a plain statement. */
+  .funding-route__covers strong {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .funding-route__covers > span { display: block; }
+  .funding-route__covers > span::first-letter { text-transform: uppercase; }
 }
-.funding-route__copy > * { margin: 0; }
+@media (max-width: 1099px) {
+  .funding-key { display: none; }
+}
+.funding-route__head > * { margin: 0; }
 .funding-route__label {
   margin-bottom: var(--space-2);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   color: var(--warm-gold-text);
 }
-.funding-route__copy h3 {
+.funding-route__head h3 {
   font-size: var(--text-2xl);
   line-height: var(--leading-tight);
   text-wrap: balance;
 }
-.funding-route__copy p:not(.funding-route__label) {
-  margin-top: var(--space-4);
+.funding-route__what {
+  margin: 0;
   max-width: var(--measure-text);
   font-size: var(--text-md);
   line-height: var(--leading-lede);
@@ -10728,37 +10782,37 @@ p.care-how__note > .text-link,
    so the line sits on the same baseline as its neighbours. */
 .funding-route__foot p > .text-link { display: inline; min-height: 0; }
 
-/* What we send (15 Oct 2026): the heading, the one-line ask and the button on
-   the left; the three documents on the right as plain entries, the name over a
-   line of what's in it. It was three index rows with hairlines and the button
-   stranded at the foot of the band. */
+/* What we send (15 Oct 2026): the site's own teal band, the three documents
+   across in a row under fine rules and the one ask beneath them. It was a
+   plain white split with the button stranded under the heading. */
 .help-ask {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-6);
+  margin-top: var(--space-10);
 }
-/* Heading, the documents, then the ask on a phone; on a wide screen the ask
-   sits under the heading and the documents run down the right. */
-@media (min-width: 900px) {
-  .route-split--help {
-    grid-template-areas: "head docs" "ask docs";
-    grid-template-rows: auto 1fr;
-    row-gap: var(--space-8);
-  }
-  .route-split--help > .section-head { grid-area: head; margin: 0; }
-  .route-split--help > .send-docs { grid-area: docs; }
-  .route-split--help > .help-ask { grid-area: ask; align-self: start; }
+.help-ask p { margin: 0; max-width: var(--measure-text); }
+@media (min-width: 768px) {
+  .help-ask { flex-direction: row; align-items: center; justify-content: space-between; gap: var(--space-8); }
 }
-.help-ask p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
 .send-docs {
   display: grid;
   gap: var(--space-8);
-  margin: 0;
+  margin: var(--space-10) 0 0;
   padding: 0;
   list-style: none;
 }
-.send-docs__item { display: grid; gap: var(--space-2); }
+@media (min-width: 768px) {
+  .send-docs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-10); }
+}
+.send-docs__item {
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.send-band .send-docs__item h3 { color: var(--white); }
+.send-band .send-docs__item p { color: rgba(255, 255, 255, 0.86); }
+.send-docs__item { display: grid; gap: var(--space-2); align-content: start; }
 .send-docs__item h3 { margin: 0; font-size: var(--text-2xl); line-height: var(--leading-snug); }
 .send-docs__item p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
 
@@ -10914,3 +10968,49 @@ p.care-how__note > .text-link,
   }
 }
 
+/* What we can't promise (15 Oct 2026): the copy on the left, the way to reach
+   us as a panel on the right with the phone number set large. It was one
+   narrow column against an empty half-page. */
+.acc-limits__layout { display: grid; gap: var(--space-8); align-items: start; }
+@media (min-width: 900px) {
+  .acc-limits__layout { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--space-16); }
+}
+.acc-limits__layout > .section-head { margin: 0; }
+.acc-limits__layout > .acc-limits__contact {
+  margin: 0;
+  max-width: none;
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: var(--deep-teal);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: var(--text-md);
+  line-height: var(--leading-lede);
+}
+.acc-limits__layout > .acc-limits__contact a { color: var(--warm-gold-hero); font-weight: var(--weight-semibold); }
+.acc-limits__layout > .acc-limits__contact a[href^="tel:"] {
+  display: block;
+  margin: var(--space-1) 0 var(--space-3);
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: var(--type-display-weight);
+  line-height: 1.2;
+  text-decoration: none;
+}
+.acc-limits__layout > .acc-limits__contact a:focus-visible { outline-color: var(--warm-gold-hero); }
+
+/* Three short items side by side under a fine rule (15 Oct 2026). Getting
+   around on the Whitstable guide was three rows of about 270px for three lines
+   of text; this is the same content at a third of the height. */
+.trio {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 768px) {
+  .trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-10); }
+}
+.trio__item { padding-top: var(--space-5); border-top: 1px solid var(--rule); }
+.trio__item h3 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); line-height: var(--leading-snug); }
+.trio__item p { margin: 0; font-size: var(--text-md); line-height: var(--leading-lede); color: var(--body-secondary); }

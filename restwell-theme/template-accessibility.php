@@ -227,6 +227,10 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 
 	<section class="section-y band-subtle" id="statement" aria-labelledby="statement-h">
 	  <div class="container acc-intro">
+		<figure class="acc-intro__media">
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/FD-1-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'Porch outer doors open onto a level-threshold front door', 'restwell-retreats' ); ?>" width="1200" height="900" loading="lazy" decoding="async" />
+		</figure>
+		<div class="acc-intro__body">
 		<header class="section-head section-head--tight acc-intro__head">
 		  <p class="eyebrow"><?php echo esc_html( $acc_statement_label ); ?></p>
 		  <h2 id="statement-h"><?php echo esc_html( $acc_statement_heading ); ?></h2>
@@ -252,6 +256,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		  </div>
 		  <?php endforeach; ?>
 		</dl>
+		</div>
 	  </div>
 	</section>
 
@@ -579,12 +584,13 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 
 	<?php // Its own section (11 Oct 2026): it closed the equipment band as a sixth block and read as part of the kit list. ?>
 	<section class="section-y section-y--slim band-white acc-limits" id="acc-limits" aria-labelledby="acc-limits-h">
-	  <div class="container">
+	  <div class="container acc-limits__layout">
 		<header class="section-head">
 		  <p class="eyebrow"><?php esc_html_e( 'Honest limits', 'restwell-retreats' ); ?></p>
 		  <h2 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h2>
 		  <p class="lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
-		  <p class="acc-limits__contact">
+		</header>
+		<p class="acc-limits__contact">
 			<?php
 			echo wp_kses(
 				sprintf(
@@ -603,8 +609,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				)
 			);
 			?>
-		  </p>
-		</header>
+		</p>
 	  </div>
 	</section>
 

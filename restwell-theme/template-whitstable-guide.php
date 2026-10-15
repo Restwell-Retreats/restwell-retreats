@@ -310,8 +310,12 @@ get_template_part(
 	}
 	?>
 	<section class="section-y band-subtle" id="toilets" aria-labelledby="toilets-h">
-	  <div class="container">
-		<header class="section-head">
+	  <div class="container split split--media-first split--fill">
+		<div class="split__media">
+		  <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-promenade-golden-hour.jpg' ) ); ?>" alt="The level paved promenade at Whitstable at sunset, with beach huts beside the path" width="900" height="675" loading="lazy" decoding="async" />
+		</div>
+		<div>
+		  <header class="section-head section-head--tight">
 		  <p class="eyebrow"><?php echo esc_html( $wg_planning_label ); ?></p>
 		  <h2 id="toilets-h"><?php echo esc_html( $wg_planning_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_planning_intro ); ?></p>
@@ -333,6 +337,7 @@ get_template_part(
 			</ul>
 		  </div>
 		</div>
+		</div>
 	  </div>
 	</section>
 
@@ -343,27 +348,18 @@ get_template_part(
 		  <h2 id="travel-h"><?php echo esc_html( $wg_travel_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_travel_body ); ?></p>
 		</header>
-		<ul class="persona-list persona-list--cards persona-list--index" role="list">
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'train-front' ); ?></span>
-			<div>
-			  <h3>Station</h3>
-			  <p>Access at Whitstable station varies by platform, so check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. It’s about 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi ride.</p>
-			</div>
+		<ul class="trio" role="list">
+		  <li class="trio__item">
+			<h3>Station</h3>
+			<p>Access at Whitstable station varies by platform, so check <a class="text-link" href="https://www.nationalrail.co.uk/" target="_blank" rel="noopener noreferrer">National Rail<span class="sr-only"> (opens in new tab)</span></a> before you travel. It’s about 20–30 minutes’ walk from the bungalow on paved routes, or a short taxi ride.</p>
 		  </li>
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bus-front' ); ?></span>
-			<div>
-			  <h3>Buses</h3>
-			  <p><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary, so check on the day.</p>
-			</div>
+		  <li class="trio__item">
+			<h3>Buses</h3>
+			<p><a class="text-link" href="https://www.stagecoachbus.com/" target="_blank" rel="noopener noreferrer">Stagecoach South East<span class="sr-only"> (opens in new tab)</span></a> route 400 links The Plough area toward the beach, harbour and Canterbury. Low-floor space can vary, so check on the day.</p>
 		  </li>
-		  <li class="persona-list__item">
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-taxi-front' ); ?></span>
-			<div>
-			  <h3>Accessible taxis</h3>
-			  <p>Ask for a car with wheelchair access, and say if the passenger stays in their chair. Book ahead on busy days with Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
-			</div>
+		  <li class="trio__item">
+			<h3>Accessible taxis</h3>
+			<p>Ask for a car with wheelchair access, and say if the passenger stays in their chair. Book ahead on busy days with Abacus Cars, <a class="text-link" href="tel:01227277745">01227 277745</a>.</p>
 		  </li>
 		</ul>
 	  </div>

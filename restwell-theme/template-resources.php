@@ -123,15 +123,23 @@ get_template_part(
 		</header>
 
 		<div class="funding-routes">
+		  <div class="funding-key" aria-hidden="true">
+			<span></span>
+			<span>What it is</span>
+			<span>Usually covers</span>
+			<span>Usually doesn’t cover</span>
+			<span>Where that comes from</span>
+			<span>Who to ask</span>
+		  </div>
 		  <article class="funding-route" id="local-authority" aria-labelledby="route-local-h">
-			<div class="funding-route__copy">
+			<header class="funding-route__head">
 			  <p class="funding-route__label">Care Act</p>
 			  <h3 id="route-local-h">Direct payments and personal budgets</h3>
-			  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils aren’t allowed to ban holidays as a blanket rule. Whether the bungalow rent is in depends on what’s written down, so it’s worth asking before you book.</p>
-			</div>
+			</header>
+			<p class="funding-route__what">If a short break would meet needs in your support plan, a direct payment can usually help. Councils aren’t allowed to ban holidays as a blanket rule. Whether the bungalow rent is in depends on what’s written down, so it’s worth asking before you book.</p>
 			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</p>
-			  <p><strong>Usually doesn’t cover</strong> travel, food or holiday extras, or the rent unless the support plan names it. A long stay in a care home has different rules.</p>
+			  <p class="funding-route__covers"><strong>Usually covers</strong> <span>assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</span></p>
+			  <p class="funding-route__covers"><strong>Usually doesn’t cover</strong> <span>travel, food or holiday extras, or the rent unless the support plan names it. A long stay in a care home has different rules.</span></p>
 			</div>
 			<p class="cover-split__source">That’s from the <a href="https://www.legislation.gov.uk/ukpga/2014/23/part/1/crossheading/direct-payments/enacted" target="_blank" rel="noopener noreferrer">Care Act 2014<span class="sr-only"> (opens in new tab)</span></a> and how councils write their handbooks. If you live in Kent, start with the number below.</p>
 			<div class="funding-route__foot">
@@ -143,14 +151,14 @@ get_template_part(
 		  </article>
 
 		  <article class="funding-route" id="nhs" aria-labelledby="route-nhs-h">
-			<div class="funding-route__copy">
+			<header class="funding-route__head">
 			  <p class="funding-route__label">NHS</p>
 			  <h3 id="route-nhs-h"><?php echo esc_html( $res_chc_heading ); ?></h3>
-			  <p><?php echo esc_html( $res_chc_body ); ?></p>
-			</div>
+			</header>
+			<p class="funding-route__what"><?php echo esc_html( $res_chc_body ); ?></p>
 			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> the care hours you already have, if the team says they continue. Also a personal health budget, if you’re CHC-eligible and take one, and care away from hospital in a place that works for you.</p>
-			  <p><strong>Usually doesn’t cover</strong> the holiday itself (travel, food, the Restwell rent) or extra hours just because you’re away from home. There’s no scheme where the NHS pays for the holiday.</p>
+			  <p class="funding-route__covers"><strong>Usually covers</strong> <span>the care hours you already have, if the team says they continue. Also a personal health budget, if you’re CHC-eligible and take one, and care away from hospital in a place that works for you.</span></p>
+			  <p class="funding-route__covers"><strong>Usually doesn’t cover</strong> <span>the holiday itself (travel, food, the Restwell rent) or extra hours just because you’re away from home. There’s no scheme where the NHS pays for the holiday.</span></p>
 			</div>
 			<p class="cover-split__source">That’s from the <a href="https://www.gov.uk/government/publications/nhs-continuing-healthcare-and-nhs-funded-nursing-care-public-information-leaflet/public-information-leaflet-nhs-continuing-healthcare-and-nhs-funded-nursing-care--2" target="_blank" rel="noopener noreferrer">GOV.UK CHC leaflet<span class="sr-only"> (opens in new tab)</span></a> and how ICBs write holiday-support policies. In Kent, Kent &amp; Medway ICB decides.</p>
 			<div class="funding-route__foot">
@@ -160,14 +168,14 @@ get_template_part(
 		  </article>
 
 		  <article class="funding-route" id="private" aria-labelledby="route-private-h">
-			<div class="funding-route__copy">
+			<header class="funding-route__head">
 			  <p class="funding-route__label">Grants and self-pay</p>
 			  <h3 id="route-private-h">Charity awards, or you pay Restwell</h3>
-			  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
-			</div>
+			</header>
+			<p class="funding-route__what">You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
 			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</p>
-			  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, days out and travel aren’t covered either, unless the letter names them.</p>
+			  <p class="funding-route__covers"><strong>Usually covers</strong> <span>a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</span></p>
+			  <p class="funding-route__covers"><strong>Usually doesn’t cover</strong> <span>the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, days out and travel aren’t covered either, unless the letter names them.</span></p>
 			</div>
 			<p class="cover-split__source">Revitalise closed its centres in 2024 and now awards grants toward a break of your choice. Ask us for a quote if you need a provisional booking to apply.</p>
 			<div class="funding-route__foot">
@@ -266,8 +274,8 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white" id="help" aria-labelledby="help-h">
-	  <div class="container route-split route-split--help">
+	<section class="section-y band-teal send-band" id="help" aria-labelledby="help-h">
+	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow">What we send</p>
 		  <h2 id="help-h">We’ll send what they usually ask for</h2>
