@@ -100,6 +100,24 @@
       if (event.target === lightbox) closeLightbox();
     });
 
+    /* Touch: a mostly horizontal swipe moves between photos. Vertical
+       gestures are left alone so the page can't be scrolled by accident. */
+    var touchStartX = null;
+    var touchStartY = null;
+    lightbox.addEventListener('touchstart', function (event) {
+      if (event.touches.length !== 1) { touchStartX = null; return; }
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    }, { passive: true });
+    lightbox.addEventListener('touchend', function (event) {
+      if (touchStartX === null || !event.changedTouches.length) return;
+      var dx = event.changedTouches[0].clientX - touchStartX;
+      var dy = event.changedTouches[0].clientY - touchStartY;
+      touchStartX = null;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      showSlide(index + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+
     document.addEventListener('keydown', function (event) {
       if (lightbox.hasAttribute('hidden')) return;
       if (event.key === 'Escape') {
