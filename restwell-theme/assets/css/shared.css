@@ -780,65 +780,6 @@ html.admin-bar .subnav ~ section[id] {
   background: var(--warm-gold);
 }
 
-/* Our Story guest quotes (13 Oct 2026): one line about the design set large
-   across the band, then two about the stay in a pair beneath. Open type on
-   white, a gold mark over each, no cards and no rules. */
-.story-quotes__grid {
-  display: grid;
-  gap: var(--space-12) var(--space-10);
-}
-@media (min-width: 768px) {
-  .story-quotes__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .story-quote--lead { grid-column: 1 / -1; }
-}
-.story-quote {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  margin: 0;
-}
-.story-quote::before {
-  content: "\201C";
-  display: block;
-  height: 0.5em;
-  font-family: var(--font-serif);
-  font-size: 4rem;
-  line-height: 1;
-  color: var(--warm-gold);
-}
-.story-quote__text { margin: 0; }
-.story-quote__text p {
-  margin: 0;
-  max-width: 30em;
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  line-height: 1.45;
-  color: var(--deep-teal);
-  text-wrap: pretty;
-}
-.story-quote--lead { gap: var(--space-5); }
-.story-quote--lead::before { font-size: clamp(4.5rem, 3rem + 4vw, 7rem); height: 0.45em; }
-.story-quote--lead .story-quote__text p {
-  max-width: 21em;
-  font-size: clamp(1.875rem, 1.2rem + 2.6vw, 3.25rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-}
-.story-quote__cite {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
-  font-size: var(--text-sm);
-  color: var(--muted-grey);
-}
-.story-quote__cite cite {
-  font-style: normal;
-  font-weight: 600;
-  color: var(--deep-teal);
-}
-
 h1, h2, h3 {
   font-family: var(--font-serif);
   font-weight: var(--type-display-weight);
@@ -8251,6 +8192,26 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 /* Parking (13 Oct 2026, owner's pick): the four places to park as stops,
    easiest first, the name and its tag on one line and a note under it. The
    harbour stop, where you must register first, is the gold one. */
+/* Whitstable guide, toilets (15 Oct 2026). Parking and toilets were the same
+   timeline in the same panel; parking is a ranked sequence and keeps it, the
+   toilets are places, so the Changing Places loo leads in the serif and the
+   others sit beside it as a plain list. */
+.loo-list { display: grid; gap: var(--space-8); }
+@media (min-width: 900px) {
+  .loo-list { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-16); align-items: start; }
+}
+.loo-list__tag { margin: 0 0 var(--space-2); font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--warm-gold-text); }
+.loo-list__name {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--type-display-weight);
+  line-height: 1.25;
+  color: var(--deep-teal);
+}
+.loo-list__tag--plain { color: var(--body-secondary); }
+.loo-list__rest ul { display: grid; gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.loo-list__rest li { font-size: var(--text-lg); line-height: var(--leading-snug); color: var(--deep-teal); }
 .route-list--parking .route-list__stop { color: var(--deep-teal); }
 .route-list__head {
   display: flex;
@@ -8913,40 +8874,35 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
    its own band; the register as a chapter index (desktop) beside chapters of
    spec cards, each card's figures in a two-column key grid.
    ========================================================================= */
+/* The house in numbers (15 Oct 2026): the statement at the site's intro width,
+   then the three figures as one open row under a single rule. They were
+   stacked in a column beside a long paragraph, with their rules and sizes
+   set in three separate overrides. */
 .acc-intro {
   display: grid;
   gap: var(--space-10);
 }
-@media (min-width: 960px) {
-  .acc-intro {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--space-16);
-    align-items: center;
-  }
-}
 .acc-intro__head { margin: 0; }
 .acc-figures {
+  display: grid;
+  gap: var(--space-8);
   margin: 0;
-  padding: var(--space-2) var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
+  padding: var(--space-8) 0 0;
+  border-top: 1px solid var(--rule);
+}
+@media (min-width: 600px) {
+  .acc-figures { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-12); }
 }
 .acc-figures__row {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-5) 0;
-}
-.acc-figures__row + .acc-figures__row {
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  gap: var(--space-2);
 }
 .acc-figures dd {
   order: -1;
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 1.7rem + 1.8vw, 3rem);
+  font-size: clamp(2.75rem, 2rem + 2.4vw, 4rem);
   font-variant-numeric: lining-nums;
   line-height: 1;
   color: var(--deep-teal);
@@ -8957,8 +8913,8 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   letter-spacing: 0.02em;
 }
 .acc-figures dt {
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
+  color: var(--body-secondary);
+  font-size: var(--text-md);
 }
 
 .acc-reg__tour .text-link { display: inline; min-height: 0; padding: 0; }
@@ -9292,13 +9248,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   }
 }
 .acc-register .acc-room { background: color-mix(in srgb, var(--bg-subtle) 55%, var(--white)); }
-
-/* Tablet: the three figures sit in one row, not a tall stacked card. */
-@media (min-width: 600px) and (max-width: 959px) {
-  .acc-figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: var(--space-2) var(--space-4); }
-  .acc-figures__row { padding: var(--space-4); }
-  .acc-figures__row + .acc-figures__row { border-top: 0; border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-}
 
 /* Whitstable: the good and the challenges as a pair, then the verdict drawn
    from them as one conclusion line, not a third tile. */
@@ -9704,7 +9653,7 @@ p.payment-note > .text-link,
 p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
 p.blog-cluster-links__part > .text-link,
-p.door-check__refs > .text-link,
+p.door-check__foot > .text-link,
 p.care-cqc__note > .text-link,
 p.care-how__note > .text-link,
 .care-route__stop p > .text-link,
@@ -10044,25 +9993,6 @@ p.care-how__note > .text-link,
    rule. In the 713px article column three points wrapped 2 + 1. */
 .post-cards:has(> .post-card:last-child:nth-child(odd)) { grid-template-columns: minmax(0, 1fr); }
 
-/* Accessibility, "The house in numbers": the three figures are the page's
-   signature, so they stand open at display size under fine rules rather than
-   in a small white card. */
-.acc-figures {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-}
-.acc-figures dd { font-size: clamp(2.75rem, 2rem + 2.4vw, 4rem); }
-.acc-figures dt { font-size: var(--text-md); }
-.acc-figures__row + .acc-figures__row { border-top-color: var(--rule); }
-@media (min-width: 600px) and (max-width: 959px) {
-  .acc-figures { padding: 0; }
-  .acc-figures__row:first-child { padding-left: 0; }
-  .acc-figures__row + .acc-figures__row { border-left-color: var(--rule); }
-}
-
 /* Home care tease: the intro and its link on the left half, the two choices
    stacked on the right under rules. Side by side the choices ran 2 lines
    against 4 and the link sat stranded under the short one. The trailing 1fr
@@ -10238,11 +10168,12 @@ p.care-how__note > .text-link,
 }
 
 /* =========================================================================
-   Door checker (Accessibility, rebuilt 13 Oct 2026). One surface: the chair
-   width as a large readout with its slider and typical chairs on the left,
-   the verdict and the two doorways on the right under fine rules. It was a
-   grey panel of white cards, pills and boxed chips at six text sizes. The
-   script (assets/js/shared.js) works off the data-fit-* hooks.
+   Door checker (Accessibility). One question, one answer: the chair's width
+   as a large typed number with four typical chairs beneath it, and on the
+   right a sentence of verdict and a line for each doorway. 15 Oct 2026: the
+   slider and its scale, the chair ranges, the three-sentence hint and the
+   per-door captions went; "too complex to use". The script
+   (assets/js/shared.js) works off the data-fit-* hooks.
    ========================================================================= */
 .door-check {
   display: grid;
@@ -10262,8 +10193,7 @@ p.care-how__note > .text-link,
   }
 }
 .door-check__controls { display: flex; flex-direction: column; min-width: 0; }
-.door-check__label,
-.door-check__presets-title {
+.door-check__label {
   margin: 0;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -10274,7 +10204,7 @@ p.care-how__note > .text-link,
   display: flex;
   align-items: flex-end;
   gap: var(--space-4);
-  margin: var(--space-2) 0 var(--space-6);
+  margin: var(--space-2) 0 var(--space-3);
 }
 .door-check__number {
   width: 4.2ch;
@@ -10322,94 +10252,32 @@ p.care-how__note > .text-link,
   text-underline-offset: 0.35em;
 }
 .door-check__units button:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
+.door-check__hint { margin: 0; font-size: var(--text-sm); line-height: var(--leading-snug); color: var(--body-secondary); }
 
-/* Slider: a fine rail, teal to the thumb (the script sets --fit-slider-pct). */
-.door-check__range {
-  --fit-slider-pct: 36%;
-  width: 100%;
-  height: 2.75rem;
-  margin: 0;
-  background: none;
-  -webkit-appearance: none;
-  appearance: none;
-  cursor: pointer;
-}
-.door-check__range:focus { outline: none; }
-.door-check__range::-webkit-slider-runnable-track {
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(to right, var(--deep-teal) var(--fit-slider-pct), color-mix(in srgb, var(--deep-teal) 16%, transparent) var(--fit-slider-pct));
-}
-.door-check__range::-moz-range-track { height: 4px; border-radius: 999px; background: color-mix(in srgb, var(--deep-teal) 16%, transparent); }
-.door-check__range::-moz-range-progress { height: 4px; border-radius: 999px; background: var(--deep-teal); }
-.door-check__range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-top: calc(-0.75rem + 2px); /* waiver: optical offset inside the door gauge */
-  border-radius: 50%;
-  border: 2px solid var(--deep-teal);
-  background: var(--white);
-  box-shadow: 0 1px 4px rgba(12, 35, 42, 0.18);
-}
-.door-check__range::-moz-range-thumb {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  border: 2px solid var(--deep-teal);
-  background: var(--white);
-  box-shadow: 0 1px 4px rgba(12, 35, 42, 0.18);
-}
-.door-check__range:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
-.door-check__range:focus-visible::-moz-range-thumb { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
-.door-check__scale {
-  display: flex;
-  justify-content: space-between;
-  margin-top: calc(-1 * var(--space-1));
-  font-size: var(--text-xs);
-  font-variant-numeric: tabular-nums;
-  color: var(--muted-grey);
-}
-
-/* Typical chairs: four text buttons, no boxes (14 Oct 2026, owner: "polish
-   current"); the chosen one's name is underlined. */
+/* Typical chairs: four plain words in one row; the chosen one is underlined. */
 .door-check__presets { margin-top: var(--space-8); }
-.door-check__chips {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-1) var(--space-6);
-  margin-top: var(--space-2);
-}
+.door-check__presets-title { margin: 0; font-size: var(--text-sm); color: var(--body-secondary); }
+.door-check__chips { display: flex; flex-wrap: wrap; gap: 0 var(--space-6); margin-top: var(--space-1); }
 .door-check__chip {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  min-height: 3.25rem;
-  padding: var(--space-2) 0;
+  min-height: 2.75rem;
+  padding: 0;
   border: 0;
   background: none;
   font: inherit;
-  text-align: left;
-  color: var(--deep-teal);
-  cursor: pointer;
-}
-.door-check__chip:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
-.door-check__chip-name {
   font-size: var(--text-md);
-  line-height: 1.3;
+  color: var(--deep-teal);
   text-decoration: underline;
   text-decoration-color: transparent;
   text-decoration-thickness: 2px;
-  text-underline-offset: 0.3em;
+  text-underline-offset: 0.35em;
+  cursor: pointer;
   transition: text-decoration-color var(--duration-fast, 0.15s) ease;
 }
-.door-check__chip:hover .door-check__chip-name { text-decoration-color: color-mix(in srgb, var(--deep-teal) 35%, transparent); }
-.door-check__chip[aria-pressed="true"] .door-check__chip-name { font-weight: var(--weight-semibold); text-decoration-color: var(--deep-teal); }
-.door-check__chip-size { font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--muted-grey); }
-.door-check__hint { margin: var(--space-3) 0 0; font-size: var(--text-sm); line-height: var(--leading-snug); color: var(--body-secondary); }
+.door-check__chip:hover { text-decoration-color: color-mix(in srgb, var(--deep-teal) 35%, transparent); }
+.door-check__chip[aria-pressed="true"] { font-weight: var(--weight-semibold); text-decoration-color: var(--deep-teal); }
+.door-check__chip:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
 
-/* Results: the verdict as a sentence with a status mark, then each doorway. */
+/* Results: the verdict as a sentence, then one line and one gauge per doorway. */
 .door-check__results { min-width: 0; }
 .door-check__verdict {
   margin: 0 0 var(--space-6);
@@ -10433,7 +10301,13 @@ p.care-how__note > .text-link,
   margin-bottom: var(--space-4);
 }
 .door-check__door-name { font-family: var(--font-serif); font-size: var(--text-xl); color: var(--deep-teal); }
-.door-check__door-width { font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--muted-grey); white-space: nowrap; }
+.door-check__result {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--deep-teal);
+}
 /* The track is the doorway (jamb to jamb); the chair sits centred in it, so
    the gap at each side is the clearance and a chair too wide overhangs. */
 .door-check__track {
@@ -10472,26 +10346,22 @@ p.care-how__note > .text-link,
   white-space: nowrap;
   transition: width 0.15s ease, background-color var(--duration-fast, 0.15s) ease;
 }
-.door-check__result {
-  margin: var(--space-3) 0 0;
-  font-size: var(--text-md);
-  font-weight: var(--weight-semibold);
-  font-variant-numeric: tabular-nums;
-  color: var(--deep-teal);
-}
+.door-check__door-width { margin: var(--space-3) 0 0; font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--muted-grey); }
 .fit-bar--tight .door-check__chair { background: var(--warm-gold-text); }
 .fit-bar--tight .door-check__result { color: var(--warm-gold-text); }
 .fit-bar--no .door-check__chair { background: var(--error-red); }
 .fit-bar--no .door-check__result { color: var(--error-red); }
 .fit-bar--no .door-check__jamb { background: var(--error-red); }
-.door-check__note { margin: var(--space-5) 0 0; max-width: var(--measure-text); font-size: var(--text-sm); color: var(--body-secondary); }
-.door-check__refs { margin: var(--space-3) 0 0; font-size: var(--text-sm); color: var(--body-secondary); }
+/* The guide note and the two standards, once, under the card. */
+.door-check__foot { margin: var(--space-5) 0 0; max-width: var(--measure-text); font-size: var(--text-sm); color: var(--body-secondary); }
 @media (prefers-reduced-motion: reduce) {
-  .door-check__chair, .door-check__chip-name { transition: none; }
+  .door-check__chair, .door-check__chip { transition: none; }
 }
 @media (max-width: 479px) {
   .door-check { padding: var(--space-5); margin-inline: calc(-1 * var(--space-2)); }
   .door-check__verdict { font-size: var(--text-xl); }
+  /* Two and two, rather than three and one left over. */
+  .door-check__chips { display: grid; grid-template-columns: repeat(2, max-content); gap: 0 var(--space-8); }
 }
 
 /* =========================================================================
@@ -10839,112 +10709,56 @@ p.care-how__note > .text-link,
 }
 
 /* =========================================================================
-   Funding & Support (13 Oct 2026; 14 Oct). The three routes as tabs: plain
-   names on one long rule, the chosen one underlined (the owner preferred a
-   rule to numerals, and the pill track was one of the "AI tells"), then one
-   panel: the route's title and what it is, then what it usually covers and
-   doesn't as two short sentences side by side (owner's pick from rendered
-   options over tick-and-cross lists). Without script the tab list stays
-   hidden and the three panels stack.
+   Funding & Support (15 Oct 2026). The three routes sit side by side so a
+   family can compare them at a glance: what the route is, what it usually
+   covers and doesn't, where that comes from, who to ring. The rows line up
+   across the columns (subgrid). They were tabs, which hid two of the three
+   routes and left each panel half empty. Under 1100px they stack, with the
+   two coverage sentences side by side. Open on the white band: no panels and
+   no boxes (owner, 13 Oct 2026).
    ========================================================================= */
-.funding-tabs { scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4)); }
-.funding-tabs__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--space-10);
-  margin-bottom: var(--space-6);
-  border-bottom: 1px solid var(--rule);
-}
-.funding-tabs__list[hidden] { display: none; }
-.funding-tabs__list [role="tab"] {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: 3rem;
-  padding: 0 0 var(--space-3);
-  border: 0;
-  background: none;
-  color: var(--muted-grey);
-  font: inherit;
-  font-size: var(--text-lg);
-  font-weight: var(--type-ui-weight);
-  line-height: 1.2;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.funding-tabs__list [role="tab"]:hover { color: var(--deep-teal); }
-.funding-tabs__list [role="tab"][aria-selected="true"] { color: var(--deep-teal); font-weight: var(--weight-semibold); }
-.funding-tabs__list [role="tab"][aria-selected="true"]::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 2px;
-  background: var(--deep-teal);
-}
-.funding-tabs__list [role="tab"]:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
-@media (max-width: 599px) {
-  .funding-tabs__list { gap: 0 var(--space-6); }
-  .funding-tabs__list [role="tab"] { font-size: var(--text-md); }
-}
-.funding-routes {
-  display: grid;
-  gap: var(--space-6);
-}
+.funding-routes { display: grid; gap: var(--space-16); }
 .funding-route {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-6);
   min-width: 0;
-  padding: var(--space-6) 0 0;
   scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
 }
-.funding-route[hidden] { display: none; }
-.funding-route:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
-/* Inside a tab: the title with what the route is under it, then the two
-   lists side by side, then the source and the contacts on one line. Open on
-   the white band: no panel and no boxes inside it (owner, 13 Oct 2026: the
-   description beside the title and the white cards in a grey panel were
-   rejected). */
-@media (min-width: 900px) {
-  .funding-route {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "copy copy"
-      "split split"
-      "source foot";
-    column-gap: var(--space-12);
-    row-gap: var(--space-10);
+@media (min-width: 1100px) {
+  .funding-routes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(4, auto);
+    gap: 0 var(--space-12);
   }
-  .funding-route__copy { grid-area: copy; }
-  .funding-route .cover-prose { grid-area: split; }
-  .funding-route .cover-split__source { grid-area: source; align-self: center; }
-  .funding-route__foot { grid-area: foot; align-self: center; justify-content: flex-end; }
+  .funding-route { grid-row: span 4; grid-template-rows: subgrid; }
 }
 .funding-route__copy > * { margin: 0; }
-/* The tab names the route, so the panel's own eyebrow goes once tabbed. */
-.is-tabbed .funding-route__copy .eyebrow { display: none; }
+.funding-route__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--warm-gold-text);
+}
 .funding-route__copy h3 {
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   line-height: var(--leading-tight);
   text-wrap: balance;
 }
-.funding-route__copy .eyebrow + h3 { margin-top: var(--space-3); }
-.funding-route__copy p:not(.eyebrow) {
+.funding-route__copy p:not(.funding-route__label) {
   margin-top: var(--space-4);
-  max-width: 46rem;
-  font-size: var(--text-lg);
+  max-width: var(--measure-text);
+  font-size: var(--text-md);
   line-height: var(--leading-lede);
   color: var(--body-secondary);
 }
-.cover-prose { display: grid; gap: var(--space-5); }
-@media (min-width: 900px) {
+.cover-prose { display: grid; gap: var(--space-5); align-content: start; }
+@media (min-width: 640px) and (max-width: 1099px) {
   .cover-prose { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-12); }
 }
 .cover-prose p {
   margin: 0;
   max-width: var(--measure-text);
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   line-height: var(--leading-lede);
   color: var(--body-secondary);
 }
@@ -10960,52 +10774,48 @@ p.care-how__note > .text-link,
 .funding-route__foot {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-1) var(--space-5);
 }
 .funding-route__foot p { margin: 0; color: var(--deep-teal); font-weight: var(--weight-semibold); }
 .funding-route__foot a { color: var(--deep-teal); }
+/* A link inside the one-line paragraph reads as text, not as a 44px target,
+   so the line sits on the same baseline as its neighbours. */
+.funding-route__foot p > .text-link { display: inline; min-height: 0; }
 
-/* What we send: the three documents as index rows (13 Oct 2026), the name on
-   the left and what's in it on the right, one hairline between rows; a row
-   of three icon cards was one of the "AI tells". */
+/* What we send (15 Oct 2026): the heading, the one-line ask and the button on
+   the left; the three documents on the right as plain entries, the name over a
+   line of what's in it. It was three index rows with hairlines and the button
+   stranded at the foot of the band. */
+.help-ask {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+/* Heading, the documents, then the ask on a phone; on a wide screen the ask
+   sits under the heading and the documents run down the right. */
+@media (min-width: 900px) {
+  .route-split--help {
+    grid-template-areas: "head docs" "ask docs";
+    grid-template-rows: auto 1fr;
+    row-gap: var(--space-8);
+  }
+  .route-split--help > .section-head { grid-area: head; margin: 0; }
+  .route-split--help > .send-docs { grid-area: docs; }
+  .route-split--help > .help-ask { grid-area: ask; align-self: start; }
+}
+.help-ask p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
 .send-docs {
   display: grid;
+  gap: var(--space-8);
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.send-docs__item {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-6) 0;
-}
-.send-docs__item + .send-docs__item { border-top: 1px solid var(--rule); }
-.send-docs__item:first-child { padding-top: 0; }
-.send-docs__item:last-child { padding-bottom: 0; }
-.send-docs__icon { display: none; }
+.send-docs__item { display: grid; gap: var(--space-2); }
 .send-docs__item h3 { margin: 0; font-size: var(--text-2xl); line-height: var(--leading-snug); }
 .send-docs__item p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
-@media (min-width: 900px) {
-  .send-docs__item {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-16);
-    align-items: baseline;
-    padding-block: var(--space-8);
-  }
-}
-.send-docs__next {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4) var(--space-8);
-  margin-top: var(--space-12);
-}
-.send-docs__next p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
-@media (max-width: 599px) {
-  .send-docs__next .btn { width: 100%; }
-}
 
 /* =========================================================================
    No icon tiles (13 Oct 2026). A line icon sitting in a tinted disc or

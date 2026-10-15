@@ -56,7 +56,7 @@ $prop_bedrooms_heading = $prop_heading( 'prop_bedrooms_section_heading', 'The ro
 $prop_bedrooms_paras   = $prop_paras(
 	$prop_txt(
 		'prop_bedrooms_section_body',
-		"The accessible bedroom has a ceiling-track hoist that reaches the whole room and can have one or two adjustable profiling beds, depending on what your group needs. There’s a second double bedroom next door, and the conservatory has a double sofa bed for extra guests. We also have a mobile hoist and a standing aid (an AAL RS4, rated to 185kg).\n\nThe bungalow can sleep up to five people using the accessible bedroom, the second double, and the conservatory sofa bed. Hoists, profiling beds, and wet-room equipment are all included in the price, unless you need something very specific that we don’t have. When you get in touch, we’ll ask about your group and accessibility needs so we can set up the room for you, with one or two profiling beds as needed. For example, a guest once asked us to match her mum’s bedroom layout from home, and we were happy to help."
+		"The accessible bedroom has a ceiling-track hoist that reaches the whole room, with one or two profiling beds set up around what you tell us when you book.\n\nA second double is next door and the conservatory has a double sofa bed, so up to five can stay. Hoists, a standing aid and profiling beds are included in the price."
 	)
 );
 
@@ -64,7 +64,7 @@ $prop_wetroom_heading = $prop_heading( 'prop_wetroom_heading', 'Roll-in shower a
 $prop_wetroom_paras   = $prop_paras(
 	$prop_txt(
 		'prop_wetroom_body',
-		"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nThe wet room is arranged to make washing, using the toilet, and transfers easier while you’re here.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive."
+		"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive."
 	)
 );
 
@@ -80,7 +80,7 @@ $prop_kitchen_heading = $prop_heading( 'prop_kitchen_heading', 'Wheel-under kitc
 $prop_kitchen_paras   = $prop_paras(
 	$prop_txt(
 		'prop_kitchen_body',
-		"The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nIt’s set up for easy breakfasts, family meals, and relaxed evenings at home.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans."
+		"The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans."
 	)
 );
 

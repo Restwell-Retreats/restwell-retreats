@@ -62,7 +62,7 @@ function restwell_access_statement_notes() {
 		),
 		'own-hoist' => array(
 			'title' => __( 'Bringing your own mobile hoist', 'restwell-retreats' ),
-			'body'  => __( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ),
+			'body'  => __( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures. Tell us what you are bringing and we will set the room up for it.', 'restwell-retreats' ),
 		),
 		'limits' => array(
 			'title' => __( 'What we can’t promise', 'restwell-retreats' ),

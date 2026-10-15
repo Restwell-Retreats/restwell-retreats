@@ -4,6 +4,7 @@
  *
  * $args:
  *   fallbacks array<int, array{quote:string,name:string,role:string}> Current on-page quotes (copy source of truth).
+ *   curated   bool  Show the fallbacks even when live reviews are available (Our Story's chosen three).
  *
  * Renders live Google reviews when the Places API returns them; otherwise
  * re-renders the exact static quotes already on the page. Never empty.
@@ -20,12 +21,16 @@ $google_reviews_args = wp_parse_args(
 	$args ?? array(),
 	array(
 		'fallbacks' => array(),
+		'curated'   => false,
 		'label'     => 'What guests say',
 		'heading'   => 'What guests wrote after staying',
 	)
 );
 
 $google_reviews  = restwell_get_google_reviews();
+if ( ! empty( $google_reviews_args['curated'] ) ) {
+	$google_reviews['reviews'] = array();
+}
 $reviews_label   = (string) $google_reviews_args['label'];
 $reviews_heading = (string) $google_reviews_args['heading'];
 if ( '' === $reviews_label ) {

@@ -145,9 +145,7 @@ function restwell_get_accessibility_field_definitions() {
 			'acc_fit_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),
 			'acc_fit_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
 			'acc_fit_intro'   => restwell_field( __( 'Intro under the heading', 'restwell-retreats' ), 'textarea' ),
-			'acc_fit_note'    => restwell_field( __( 'Guide note under the gauges', 'restwell-retreats' ), 'textarea' ),
-			'acc_fit_guide_heading' => restwell_field( __( 'Typical widths aside heading', 'restwell-retreats' ) ),
-			'acc_fit_guide_intro'   => restwell_field( __( 'Typical widths aside intro', 'restwell-retreats' ), 'textarea' ),
+			'acc_fit_note'    => restwell_field( __( 'Guide note under the checker', 'restwell-retreats' ), 'textarea' ),
 		),
 		'The destination' => array(
 			'acc_dest_label'             => restwell_field( __( 'Section label', 'restwell-retreats' ) ),

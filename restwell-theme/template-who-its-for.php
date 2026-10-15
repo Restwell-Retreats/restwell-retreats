@@ -262,9 +262,9 @@ $wif_fund_phb_bullets = function_exists( 'restwell_wif_bullet_list' )
 		$restwell_wif_id,
 		'wif_fund_phb_bullets',
 		array(
-			'Available for people with continuing healthcare needs, subject to eligibility assessment.',
+			'Available if you have continuing healthcare needs and are assessed as eligible.',
 			'Your ICB or NHS continuing healthcare team manages the application.',
-			'A private adapted setting can be written into a care and support plan where clinically appropriate.',
+			'A private adapted house can be written into a care and support plan where it’s clinically appropriate.',
 		)
 	)
 	: array();
@@ -273,8 +273,8 @@ $wif_fund_private_bullets = function_exists( 'restwell_wif_bullet_list' )
 		$restwell_wif_id,
 		'wif_fund_private_bullets',
 		array(
-			'The same clear accessibility information and direct answers as for funded guests.',
-			'Documentation for insurers or employers if you need it.',
+			'You get the same clear access information and straight answers as funded guests.',
+			'Paperwork for insurers or employers, if you need it.',
 			'No pressure: we tell you plainly whether the property is a good fit.',
 		)
 	)
@@ -552,7 +552,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q1-a" role="region" aria-labelledby="wif-q1">
-				<p>Work in this order: match published access specs to the person’s equipment; set staffing (daytime, sleep-in vs waking night, backup); decide who pays lodging vs care; get kit confirmation in writing; sort medication, transport and emergency contacts. Only lock dates once those are clear.</p>
+				<p>Work in this order. Match our published access specs to the person’s equipment. Set staffing: daytime, sleep-in or waking night, and a backup. Decide who pays for the stay and who pays for care. Get kit confirmed in writing. Sort medication, transport and emergency contacts. Lock your dates only once those are clear.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -570,7 +570,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q3-a" role="region" aria-labelledby="wif-q3" hidden>
-				<p>Confirm access details in writing; pack slings, meds, chargers and comfort items the house won’t supply; share care plans with anyone covering the stay; note nearest accessible parking, toilets and pharmacy; keep Restwell and care-provider numbers to hand.</p>
+				<p>Confirm access details in writing. Pack slings, meds, chargers and comfort items the house won’t supply. Share care plans with anyone covering the stay. Note the nearest accessible parking, toilets and pharmacy. Keep Restwell and care-provider numbers to hand.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -579,7 +579,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q4-a" role="region" aria-labelledby="wif-q4" hidden>
-				<p>Five lists: access needs; medical; care rota and backup; documents (funding letters, insurance, access statement); comfort and daily living. Tick each against Restwell’s published kit so you don’t pack what is already on site, or assume kit that isn’t.</p>
+				<p>Make five lists: access needs, medical, care rota and backup, documents (funding letters, insurance, access statement), and comfort and daily living. Tick each against Restwell’s published kit, so you don’t pack what is already on site or assume kit that isn’t.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -599,7 +599,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
-				<p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break. Restwell with optional Continuity care fits the first case; it is not a substitute for registered residential care when that is clinically required.</p>
+				<p>Neither is universally better. A specialist cottage suits private stays with your own or visiting carers and enough kit for transfers. A respite placement suits higher on-site clinical oversight. Match setting to risk, staffing and what the person wants from the break. Restwell with optional Continuity care fits the first case. It is not a substitute for registered residential care when that is clinically required.</p>
 			  </div>
 			</div>
 			<div class="faq-item">

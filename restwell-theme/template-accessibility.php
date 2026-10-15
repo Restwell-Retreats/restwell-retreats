@@ -110,7 +110,7 @@ $acc_faq_live    = array(
 	),
 	2 => array(
 		'q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+		'a' => 'It is fixed to the ceiling and moves a person in a sling along a rail. It takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
 	),
 	3 => array(
 		'q' => 'Why does a profiling bed matter in an accessible bedroom?',
@@ -142,16 +142,11 @@ $acc_fit_label         = $acc_txt( 'acc_fit_label', 'Door clearances' );
 $acc_fit_heading       = $acc_txt( 'acc_fit_heading', 'Compare your chair width to our doorways' );
 $acc_fit_intro         = $acc_txt(
 	'acc_fit_intro',
-	'Enter the overall width of the chair you travel with (widest point, including hand rims). We’ll show the clearance at each doorway so you can judge the numbers before you enquire.'
+	'Type in your chair’s width and see the clearance at each doorway before you enquire.'
 );
 $acc_fit_note          = $acc_txt(
 	'acc_fit_note',
 	'This is a guide only. Aim for at least 50mm of clearance where you can, and we’re happy to talk through your measurements before you book.'
-);
-$acc_fit_guide_heading = $acc_txt( 'acc_fit_guide_heading', 'Typical chair widths' );
-$acc_fit_guide_intro   = $acc_txt(
-	'acc_fit_guide_intro',
-	'Wheel to wheel, including hand rims. These are common ranges, not a measurement of your chair.'
 );
 
 /**
@@ -273,41 +268,23 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		</header>
 		<div class="door-check" data-fit-check>
 		  <div class="door-check__controls">
-			<label class="door-check__label" for="fit-check-number" id="fit-check-label"><?php esc_html_e( 'Your chair’s width', 'restwell-retreats' ); ?></label>
+			<label class="door-check__label" for="fit-check-number"><?php esc_html_e( 'Your chair’s width', 'restwell-retreats' ); ?></label>
 			<div class="door-check__readout">
-			  <input class="door-check__number" type="number" id="fit-check-number" data-fit-number inputmode="decimal" min="500" max="1050" step="1" value="700" aria-describedby="fit-check-summary" />
+			  <input class="door-check__number" type="number" id="fit-check-number" data-fit-number inputmode="decimal" min="500" max="1050" step="1" value="700" aria-describedby="fit-check-hint fit-check-summary" />
 			  <div class="door-check__units" role="group" aria-label="<?php esc_attr_e( 'Measurement units', 'restwell-retreats' ); ?>">
 				<button type="button" data-fit-unit="mm" aria-pressed="true">mm</button>
 				<button type="button" data-fit-unit="in" aria-pressed="false">in</button>
 			  </div>
 			</div>
-			<label class="screen-reader-text" for="fit-check-input"><?php esc_html_e( 'Wheelchair width slider', 'restwell-retreats' ); ?></label>
-			<input class="door-check__range" type="range" id="fit-check-input" min="500" max="1050" step="1" value="700" data-fit-input aria-labelledby="fit-check-label" aria-describedby="fit-check-summary" />
-			<div class="door-check__scale" aria-hidden="true">
-			  <span data-fit-min-label>500mm</span>
-			  <span data-fit-max-label>1050mm</span>
-			</div>
-			<div class="door-check__presets">
-			  <h3 class="door-check__presets-title" id="fit-check-presets-h"><?php echo esc_html( $acc_fit_guide_heading ); ?></h3>
-			  <div class="door-check__chips" role="group" aria-labelledby="fit-check-presets-h">
-				<button type="button" class="door-check__chip" data-fit-preset="570" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 570 millimetres, typical transit chair', 'restwell-retreats' ); ?>">
-				  <span class="door-check__chip-name"><?php esc_html_e( 'Transit', 'restwell-retreats' ); ?></span>
-				  <span class="door-check__chip-size">530–610mm</span>
-				</button>
-				<button type="button" class="door-check__chip" data-fit-preset="660" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 660 millimetres, typical self-propelled chair', 'restwell-retreats' ); ?>">
-				  <span class="door-check__chip-name"><?php esc_html_e( 'Self-propelled', 'restwell-retreats' ); ?></span>
-				  <span class="door-check__chip-size">635–685mm</span>
-				</button>
-				<button type="button" class="door-check__chip" data-fit-preset="700" aria-pressed="true" aria-label="<?php echo esc_attr__( 'Set checker to 700 millimetres, typical powered chair', 'restwell-retreats' ); ?>">
-				  <span class="door-check__chip-name"><?php esc_html_e( 'Powered', 'restwell-retreats' ); ?></span>
-				  <span class="door-check__chip-size">600–760mm+</span>
-				</button>
-				<button type="button" class="door-check__chip" data-fit-preset="800" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 800 millimetres, typical bariatric chair', 'restwell-retreats' ); ?>">
-				  <span class="door-check__chip-name"><?php esc_html_e( 'Bariatric', 'restwell-retreats' ); ?></span>
-				  <span class="door-check__chip-size">Over 760mm</span>
-				</button>
+			<p class="door-check__hint" id="fit-check-hint"><?php esc_html_e( 'The widest point, wheel to wheel, hand rims included.', 'restwell-retreats' ); ?></p>
+			<div class="door-check__presets" role="group" aria-labelledby="fit-check-presets-h">
+			  <p class="door-check__presets-title" id="fit-check-presets-h"><?php esc_html_e( 'Or start from a typical chair', 'restwell-retreats' ); ?></p>
+			  <div class="door-check__chips">
+				<button type="button" class="door-check__chip" data-fit-preset="570" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 570 millimetres, typical transit chair', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Transit', 'restwell-retreats' ); ?></button>
+				<button type="button" class="door-check__chip" data-fit-preset="660" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 660 millimetres, typical self-propelled chair', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Self-propelled', 'restwell-retreats' ); ?></button>
+				<button type="button" class="door-check__chip" data-fit-preset="700" aria-pressed="true" aria-label="<?php echo esc_attr__( 'Set checker to 700 millimetres, typical powered chair', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Powered', 'restwell-retreats' ); ?></button>
+				<button type="button" class="door-check__chip" data-fit-preset="800" aria-pressed="false" aria-label="<?php echo esc_attr__( 'Set checker to 800 millimetres, typical bariatric chair', 'restwell-retreats' ); ?>"><?php esc_html_e( 'Bariatric', 'restwell-retreats' ); ?></button>
 			  </div>
-			  <p class="door-check__hint"><?php echo esc_html( '' !== $acc_fit_guide_intro ? $acc_fit_guide_intro : __( 'Wheel to wheel, including hand rims.', 'restwell-retreats' ) ); ?> <?php esc_html_e( 'Choose a type to try a midpoint, then measure your own chair.', 'restwell-retreats' ); ?></p>
 			</div>
 		  </div>
 		  <div class="door-check__results">
@@ -323,28 +300,28 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			  <div class="door-check__door" data-fit-gauge data-door-width="<?php echo (int) $acc_door[0]; ?>" data-fit-name="<?php echo esc_attr( $acc_door[2] ); ?>">
 				<div class="door-check__door-head">
 				  <span class="door-check__door-name"><?php echo esc_html( $acc_door[1] ); ?></span>
-				  <span class="door-check__door-width"><span data-fit-spec><?php echo (int) $acc_door[0]; ?>mm</span> <?php esc_html_e( 'clear opening', 'restwell-retreats' ); ?></span>
+				  <span class="door-check__result" data-fit-result></span>
 				</div>
 				<div class="door-check__track" aria-hidden="true">
 				  <span class="door-check__jamb door-check__jamb--start"></span>
 				  <span class="door-check__chair" data-fit-fill></span>
 				  <span class="door-check__jamb door-check__jamb--end"></span>
 				</div>
-				<p class="door-check__result" data-fit-result></p>
+				<p class="door-check__door-width"><span data-fit-spec><?php echo (int) $acc_door[0]; ?>mm</span> <?php esc_html_e( 'clear opening', 'restwell-retreats' ); ?></p>
 			  </div>
 				<?php endforeach; ?>
 			</div>
-			<?php if ( '' !== $acc_fit_note ) : ?>
-			<p class="door-check__note"><?php echo esc_html( $acc_fit_note ); ?></p>
-			<?php endif; ?>
-			<p class="door-check__refs">
-				<?php esc_html_e( 'Guidance:', 'restwell-retreats' ); ?>
-			  <a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
-				<?php esc_html_e( 'and', 'restwell-retreats' ); ?>
-			  <a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'BS 8300', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>.
-			</p>
 		  </div>
 		</div>
+		<p class="door-check__foot">
+			<?php if ( '' !== $acc_fit_note ) : ?>
+				<?php echo esc_html( $acc_fit_note ); ?>
+			<?php endif; ?>
+			<?php esc_html_e( 'Guidance:', 'restwell-retreats' ); ?>
+		  <a class="text-link" href="https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Approved Document M', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>
+			<?php esc_html_e( 'and', 'restwell-retreats' ); ?>
+		  <a class="text-link" href="https://www.bsigroup.com/en-GB/standards/bs-8300-1-and-2/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'BS 8300', 'restwell-retreats' ); ?><span class="sr-only"> <?php esc_html_e( '(opens in a new tab)', 'restwell-retreats' ); ?></span></a>.
+		</p>
 	  </div>
 	</section>
 
@@ -586,7 +563,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					<span class="acc-callout__icon" aria-hidden="true"><?php restwell_the_icon( 'info' ); ?></span>
 					<div>
 					  <p class="acc-callout__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></p>
-					  <p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures, and tell us what you are bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
+					  <p><?php esc_html_e( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures. Tell us what you are bringing and we will set the room up for it.', 'restwell-retreats' ); ?></p>
 					</div>
 					</aside>
 					<?php endif; ?>

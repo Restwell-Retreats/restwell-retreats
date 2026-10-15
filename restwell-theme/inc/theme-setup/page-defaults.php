@@ -219,16 +219,16 @@ function restwell_get_property_page_defaults() {
 		'prop_bungalow_image_id' => 0,
 
 		'prop_bedrooms_section_heading' => 'The room with the hoist, and room for everyone else',
-		'prop_bedrooms_section_body'    => "The accessible bedroom has a ceiling-track hoist that reaches the whole room and can have one or two adjustable profiling beds, depending on what your group needs. There’s a second double bedroom next door, and the conservatory has a double sofa bed for extra guests. We also have a mobile hoist and a standing aid (an AAL RS4, rated to 185kg).\n\nThe bungalow can sleep up to five people using the accessible bedroom, the second double, and the conservatory sofa bed. Hoists, profiling beds, and wet-room equipment are all included in the price, unless you need something very specific that we don’t have. When you get in touch, we’ll ask about your group and accessibility needs so we can set up the room for you, with one or two profiling beds as needed. For example, a guest once asked us to match her mum’s bedroom layout from home, and we were happy to help.",
+		'prop_bedrooms_section_body'    => "The accessible bedroom has a ceiling-track hoist that reaches the whole room, with one or two profiling beds set up around what you tell us when you book.\n\nA second double is next door and the conservatory has a double sofa bed, so up to five can stay. Hoists, a standing aid and profiling beds are included in the price.",
 
 		'prop_wetroom_heading' => 'Roll-in shower and accessible washroom',
-		'prop_wetroom_body'    => "The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nThe wet room is arranged to make washing, using the toilet, and transfers easier while you’re here.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.",
+		'prop_wetroom_body'    => "The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.",
 
 		'prop_living_heading' => 'A comfortable place to come back to',
 		'prop_living_body'    => "After time by the sea, the living room gives everyone space to settle in.\n\nYou’ll find a rise-and-recline armchair, a sofa with pull-out footrests, and a TV with Netflix. The open-plan layout makes it easy for wheelchair users, families, and carers to move around comfortably.\n\nThere’s enough seating for everyone, and we keep the space between the sofa and armchair clear so wheelchairs can turn easily.",
 
 		'prop_kitchen_heading' => 'Wheel-under kitchen, ready for everyday meals',
-		'prop_kitchen_body'    => "The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nIt’s set up for easy breakfasts, family meals, and relaxed evenings at home.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans.",
+		'prop_kitchen_body'    => "The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans.",
 
 		'prop_conservatory_heading' => 'Sunny dining space with level garden access',
 		'prop_conservatory_body'    => "The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nIt has a fold-out dining table, a double sofa bed, level access to the patio, and laundry cupboards with a washing machine and tumble dryer.",
@@ -476,10 +476,8 @@ function restwell_get_accessibility_page_defaults() {
 
 		'acc_fit_label'         => 'Door clearances',
 		'acc_fit_heading'       => 'Compare your chair width to our doorways',
-		'acc_fit_intro'         => 'Enter the overall width of the chair you travel with (widest point, including hand rims). We’ll show the clearance at each doorway so you can judge the numbers before you enquire.',
+		'acc_fit_intro'         => 'Type in your chair’s width and see the clearance at each doorway before you enquire.',
 		'acc_fit_note'          => 'This is a guide only. Aim for at least 50mm of clearance where you can, and we’re happy to talk through your measurements before you book.',
-		'acc_fit_guide_heading' => 'Typical chair widths',
-		'acc_fit_guide_intro'   => 'Wheel to wheel, including hand rims. These are common ranges, not a measurement of your chair.',
 
 		'acc_dest_label'             => 'Whitstable',
 		'acc_dest_heading'           => 'The destination, honestly.',
@@ -498,7 +496,7 @@ function restwell_get_accessibility_page_defaults() {
 		'acc_faq_1_q' => 'Do you provide hoist slings?',
 		'acc_faq_1_a' => 'No. Bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we cannot supply one.',
 		'acc_faq_2_q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'acc_faq_2_a' => 'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+		'acc_faq_2_a' => 'It is fixed to the ceiling and moves a person in a sling along a rail. It takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
 		'acc_faq_3_q' => 'Why does a profiling bed matter in an accessible bedroom?',
 		'acc_faq_3_a' => 'It helps with positioning, pressure care and safer transfers, and it sets a working height that protects the back of whoever is providing care. A fixed divan gives you none of that, and a mobile hoist often cannot get its legs underneath one. We have two profiling beds; the accessible bedroom takes one or two.',
 		'acc_faq_4_q' => 'What should “wheelchair friendly” actually mean?',
@@ -689,13 +687,13 @@ function restwell_get_who_its_for_page_defaults() {
 
 		'wif_ot_title' => 'Occupational therapists',
 		'wif_ot_body'  => 'Published doorway widths, hoist and wet-room specs. Ask for unpublished clearances; we’ll measure.',
-		'wif_ot_detail_bullets'   => "Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nTransfer clearances and equipment positioning confirmed if not already published.\nReferral conversations welcomed before any booking commitment.",
+		'wif_ot_detail_bullets'   => "Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nIf a transfer clearance or equipment position isn’t published, we’ll confirm it.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
 		'wif_ot_inline_cta_label' => 'Review accessibility details',
 		'wif_ot_inline_cta_url'   => '/accessibility/',
 
 		'wif_commissioners_title' => 'Commissioners & social care',
 		'wif_commissioners_body'  => 'Care Act short breaks; documentation for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
-		'wif_commissioners_detail_bullets'   => "Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nDocumentation provided: property spec, access measurements, and CQC-registered care provider confirmation.\nDirect payments, personal health budgets, and CHC pathways all supported.",
+		'wif_commissioners_detail_bullets'   => "Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements, and confirmation that the care provider is CQC registered.\nDirect payments, personal health budgets, and CHC pathways all supported.",
 		'wif_commissioners_inline_cta_label' => 'Enquire about a funded stay',
 		'wif_commissioners_inline_cta_url'   => '/enquire/',
 
@@ -714,12 +712,12 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_fund_la_cta_url'   => '/direct-payment-holiday-accommodation/',
 
 		'wif_fund_phb_title'     => 'Personal health budget',
-		'wif_fund_phb_bullets'   => "Available for people with continuing healthcare needs, subject to eligibility assessment.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted setting can be written into a care and support plan where clinically appropriate.",
+		'wif_fund_phb_bullets'   => "Available if you have continuing healthcare needs and are assessed as eligible.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted house can be written into a care and support plan where it’s clinically appropriate.",
 		'wif_fund_phb_cta_label' => 'PHB and funding overview',
 		'wif_fund_phb_cta_url'   => '/funding-and-support/',
 
 		'wif_fund_private_title'     => 'Private / self-funded',
-		'wif_fund_private_bullets'   => "The same clear accessibility information and direct answers as for funded guests.\nDocumentation for insurers or employers if you need it.\nNo pressure: we tell you plainly whether the property is a good fit.",
+		'wif_fund_private_bullets'   => "You get the same clear access information and straight answers as funded guests.\nPaperwork for insurers or employers, if you need it.\nNo pressure: we tell you plainly whether the property is a good fit.",
 		'wif_fund_private_cta_label' => 'Ask about your dates',
 		'wif_fund_private_cta_url'   => '/enquire/',
 

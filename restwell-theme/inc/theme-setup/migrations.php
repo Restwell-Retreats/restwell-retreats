@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 79;
+const RESTWELL_SCHEMA_VERSION = 80;
 
 
 /**
@@ -2276,6 +2276,82 @@ function restwell_migrate_care_copy_v79() {
 }
 
 /**
+ * 15 Oct 2026 copy pass: shorter wording where a page was saying too much
+ * (the door checker's lede, the property's bedroom paragraphs). A stored value
+ * is replaced only while it still equals the old seed, so a line Victoria or
+ * Ellie has edited in wp-admin is left alone.
+ */
+function restwell_migrate_page_copy_v80() {
+	if ( get_option( 'restwell_page_copy_v80', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_page_copy_v80', '1', false );
+	if ( ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		return;
+	}
+	$pages = array(
+		'the-property' => array(
+			'prop_bedrooms_section_body' => array(
+				"The accessible bedroom has a ceiling-track hoist that reaches the whole room and can have one or two adjustable profiling beds, depending on what your group needs. There’s a second double bedroom next door, and the conservatory has a double sofa bed for extra guests. We also have a mobile hoist and a standing aid (an AAL RS4, rated to 185kg).\n\nThe bungalow can sleep up to five people using the accessible bedroom, the second double, and the conservatory sofa bed. Hoists, profiling beds, and wet-room equipment are all included in the price, unless you need something very specific that we don’t have. When you get in touch, we’ll ask about your group and accessibility needs so we can set up the room for you, with one or two profiling beds as needed. For example, a guest once asked us to match her mum’s bedroom layout from home, and we were happy to help.",
+				"The accessible bedroom has a ceiling-track hoist that reaches the whole room, with one or two profiling beds set up around what you tell us when you book.\n\nA second double is next door and the conservatory has a double sofa bed, so up to five can stay. Hoists, a standing aid and profiling beds are included in the price.",
+			),
+			'prop_wetroom_body' => array(
+				"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nThe wet room is arranged to make washing, using the toilet, and transfers easier while you’re here.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.",
+				"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll the equipment mentioned is already installed in the bungalow, so you don’t need to hire or set up anything before you arrive.",
+			),
+			'prop_kitchen_body' => array(
+				"The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nIt’s set up for easy breakfasts, family meals, and relaxed evenings at home.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans.",
+				"The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans.",
+			),
+		),
+		'who-its-for' => array(
+			'wif_ot_detail_bullets' => array(
+				"Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nTransfer clearances and equipment positioning confirmed if not already published.\nReferral conversations welcomed before any booking commitment.",
+				"Doorway widths, turning circles, hoist specs, and wet room measurements on request.\nIf a transfer clearance or equipment position isn’t published, we’ll confirm it.\nYou’re welcome to talk to us about a referral before you commit to a booking.",
+			),
+			'wif_commissioners_detail_bullets' => array(
+				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nDocumentation provided: property spec, access measurements, and CQC-registered care provider confirmation.\nDirect payments, personal health budgets, and CHC pathways all supported.",
+				"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the access measurements, and confirmation that the care provider is CQC registered.\nDirect payments, personal health budgets, and CHC pathways all supported.",
+			),
+			'wif_fund_phb_bullets' => array(
+				"Available for people with continuing healthcare needs, subject to eligibility assessment.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted setting can be written into a care and support plan where clinically appropriate.",
+				"Available if you have continuing healthcare needs and are assessed as eligible.\nYour ICB or NHS continuing healthcare team manages the application.\nA private adapted house can be written into a care and support plan where it’s clinically appropriate.",
+			),
+			'wif_fund_private_bullets' => array(
+				"The same clear accessibility information and direct answers as for funded guests.\nDocumentation for insurers or employers if you need it.\nNo pressure: we tell you plainly whether the property is a good fit.",
+				"You get the same clear access information and straight answers as funded guests.\nPaperwork for insurers or employers, if you need it.\nNo pressure: we tell you plainly whether the property is a good fit.",
+			),
+		),
+		'accessibility' => array(
+			'acc_faq_2_a' => array(
+				'It is fixed to the ceiling and moves a person in a sling along a rail, so it takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+				'It is fixed to the ceiling and moves a person in a sling along a rail. It takes no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into position. Ours runs over the bed in the main bedroom. Full coverage, capacity and attachment details are in the equipment register above.',
+			),
+			'acc_fit_intro' => array(
+				'Enter the overall width of the chair you travel with (widest point, including hand rims). We’ll show the clearance at each doorway so you can judge the numbers before you enquire.',
+				'Type in your chair’s width and see the clearance at each doorway before you enquire.',
+			),
+		),
+	);
+	foreach ( $pages as $slug => $fields ) {
+		$page_id = restwell_page_id_for_stock_slug( $slug );
+		if ( $page_id < 1 ) {
+			continue;
+		}
+		foreach ( $fields as $key => $pair ) {
+			if ( ! metadata_exists( 'post', $page_id, $key ) ) {
+				continue;
+			}
+			// wp-admin saves textarea paragraphs with \r\n; compare on \n.
+			$stored = trim( str_replace( array( "\r\n", "\r" ), "\n", (string) get_post_meta( $page_id, $key, true ) ) );
+			if ( $stored === trim( $pair[0] ) ) {
+				update_post_meta( $page_id, $key, $pair[1] );
+			}
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2390,6 +2466,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_oven_door_wording_v77',
 		'restwell_care_copy_v78',
 		'restwell_care_copy_v79',
+		'restwell_page_copy_v80',
 	);
 }
 
@@ -2534,6 +2611,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_care_copy_v78', 116 );
 	add_action( 'init', 'restwell_migrate_care_copy_v79', 122 );
 	add_action( 'after_switch_theme', 'restwell_migrate_care_copy_v79', 117 );
+	add_action( 'init', 'restwell_migrate_page_copy_v80', 123 );
+	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_v80', 118 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

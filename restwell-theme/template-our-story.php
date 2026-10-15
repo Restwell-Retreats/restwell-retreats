@@ -395,41 +395,35 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-white story-quotes" aria-labelledby="quote-h">
-	  <div class="container">
-		<h2 id="quote-h" class="sr-only">What guests say</h2>
-		<?php
-		// Guest words, consecutive and unedited bar the capital and the closing
-		// stop (docs/guest-reviews-bank.md); initials only. One line about the
-		// design leads, then two about the stay.
-		$story_quotes = array(
-			array(
-				'text' => 'The entire house though, mirrors one philosophy, be flat, be accessible.',
-				'name' => 'M.P.',
-				'role' => 'Wheelchair user · Google review',
+	<?php
+	// Guest words, consecutive and unedited bar the capital and the closing
+	// stop (docs/guest-reviews-bank.md); initials only. One line about the
+	// design leads, then two about the stay. The same band as the homepage.
+	get_template_part(
+		'template-parts/google-reviews',
+		null,
+		array(
+			'curated'   => true,
+			'fallbacks' => array(
+				array(
+					'quote' => 'The entire house though, mirrors one philosophy, be flat, be accessible.',
+					'name'  => 'M.P.',
+					'role'  => 'Wheelchair user · Google review',
+				),
+				array(
+					'quote' => 'The bungalow is modern and spotless. It is fully equipped – for both the person you are caring for, and for the carer.',
+					'name'  => 'M.H.',
+					'role'  => 'Family carer · Google review',
+				),
+				array(
+					'quote' => 'Everything is thoughtfully organised and easy to use, and Victoria was friendly, helpful and very easy to communicate with.',
+					'name'  => 'N.T.',
+					'role'  => 'Guest · Google review',
+				),
 			),
-			array(
-				'text' => 'The bungalow is modern and spotless. It is fully equipped – for both the person you are caring for, and for the carer.',
-				'name' => 'M.H.',
-				'role' => 'Family carer · Google review',
-			),
-			array(
-				'text' => 'Everything is thoughtfully organised and easy to use, and Victoria was friendly, helpful and very easy to communicate with.',
-				'name' => 'N.T.',
-				'role' => 'Guest · Google review',
-			),
-		);
-		?>
-		<div class="story-quotes__grid">
-		<?php foreach ( $story_quotes as $story_quote_i => $story_quote ) : ?>
-		  <figure class="story-quote<?php echo 0 === $story_quote_i ? ' story-quote--lead' : ''; ?>">
-			<blockquote class="story-quote__text"><p><?php echo esc_html( $story_quote['text'] ); ?></p></blockquote>
-			<figcaption class="story-quote__cite"><cite><?php echo esc_html( $story_quote['name'] ); ?></cite><span><?php echo esc_html( $story_quote['role'] ); ?></span></figcaption>
-		  </figure>
-		<?php endforeach; ?>
-		</div>
-	  </div>
-	</section>
+		)
+	);
+	?>
 
 	<?php
 	// The closing lines are three short commitments; each gets its own row.

@@ -226,31 +226,24 @@
   /* ---------- Wheelchair-width fit-check ---------- */
   var fitCheck = document.querySelector('[data-fit-check]');
   if (fitCheck) {
-    var fitInput = fitCheck.querySelector('[data-fit-input]');
     var fitNumber = fitCheck.querySelector('[data-fit-number]');
     var fitSummary = fitCheck.querySelector('[data-fit-summary]');
     var fitGauges = fitCheck.querySelectorAll('[data-fit-gauge]');
     var fitUnitBtns = fitCheck.querySelectorAll('[data-fit-unit]');
-    var fitMinLabel = fitCheck.querySelector('[data-fit-min-label]');
-    var fitMaxLabel = fitCheck.querySelector('[data-fit-max-label]');
-    var FIT_MIN = parseInt(fitInput.min, 10) || 500;
-    var FIT_MAX = parseInt(fitInput.max, 10) || 1050;
+    var fitPresets = fitCheck.querySelectorAll('[data-fit-preset]');
+    var FIT_MIN = 500;
+    var FIT_MAX = 1050;
     var MM_PER_IN = 25.4;
     var fitUnit = 'mm';
-    var fitSection = fitCheck.closest('#fit-check') || document;
+    var fitWidth = 700;
 
-    var formatLength = function (mm) {
-      if (fitUnit === 'in') {
-        return (mm / MM_PER_IN).toFixed(1) + 'in';
-      }
-      return Math.round(mm) + 'mm';
+    var toMm = function (value) {
+      var mm = fitUnit === 'in' ? value * MM_PER_IN : value;
+      return Math.round(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
     };
 
-    var displayNumber = function (mm) {
-      if (fitUnit === 'in') {
-        return (mm / MM_PER_IN).toFixed(1);
-      }
-      return String(Math.round(mm));
+    var formatLength = function (mm) {
+      return fitUnit === 'in' ? (mm / MM_PER_IN).toFixed(1) + 'in' : Math.round(mm) + 'mm';
     };
 
     var joinList = function (items) {
@@ -259,32 +252,17 @@
     };
 
     var syncNumberBounds = function () {
-      if (!fitNumber) return;
-      if (fitUnit === 'in') {
-        fitNumber.min = (FIT_MIN / MM_PER_IN).toFixed(1);
-        fitNumber.max = (FIT_MAX / MM_PER_IN).toFixed(1);
-        fitNumber.step = '0.1';
-      } else {
-        fitNumber.min = String(FIT_MIN);
-        fitNumber.max = String(FIT_MAX);
-        fitNumber.step = '1';
-      }
+      var inches = fitUnit === 'in';
+      fitNumber.min = inches ? (FIT_MIN / MM_PER_IN).toFixed(1) : String(FIT_MIN);
+      fitNumber.max = inches ? (FIT_MAX / MM_PER_IN).toFixed(1) : String(FIT_MAX);
+      fitNumber.step = inches ? '0.1' : '1';
     };
 
-    var renderFit = function (opts) {
-      var skipNumber = opts && opts.skipNumber;
-      var chairWidth = parseInt(fitInput.value, 10);
-      var sliderPct = ((chairWidth - FIT_MIN) / (FIT_MAX - FIT_MIN)) * 100;
-      fitInput.style.setProperty('--fit-slider-pct', sliderPct + '%');
-      fitInput.setAttribute('aria-valuetext', formatLength(chairWidth));
-
-      if (fitNumber && !skipNumber) {
-        fitNumber.value = displayNumber(chairWidth);
+    var renderFit = function (skipNumber) {
+      if (!skipNumber) {
+        fitNumber.value = fitUnit === 'in' ? (fitWidth / MM_PER_IN).toFixed(1) : String(fitWidth);
       }
-      if (fitMinLabel) fitMinLabel.textContent = formatLength(FIT_MIN);
-      if (fitMaxLabel) fitMaxLabel.textContent = formatLength(FIT_MAX);
 
-      var totalDoors = fitGauges.length;
       var failing = [];
       var tightOnes = [];
 
@@ -298,79 +276,62 @@
         // No upper clamp: the fill is the chair sitting in the opening, so a
         // chair wider than the door has to overhang the jamb marks. Clamped
         // to 100% it sat flush inside the aperture and read as a perfect fit.
-        var fillPct = (chairWidth / doorWidth) * 100;
-        fill.style.width = fillPct + '%';
-        // The block is the chair, so it carries the chair's width.
-        fill.textContent = formatLength(chairWidth);
+        fill.style.width = (fitWidth / doorWidth) * 100 + '%';
+        fill.textContent = formatLength(fitWidth);
         if (spec) spec.textContent = formatLength(doorWidth);
 
-        var clearance = doorWidth - chairWidth;
+        var clearance = doorWidth - fitWidth;
         var fits = clearance >= 0;
         var tight = fits && clearance < 50;
         gauge.classList.toggle('fit-bar--tight', tight);
         gauge.classList.toggle('fit-bar--no', !fits);
         if (!fits) {
-          result.textContent = 'Short by ' + formatLength(Math.abs(clearance)) + '.';
+          result.textContent = 'Short by ' + formatLength(-clearance);
           failing.push(name);
         } else if (tight) {
-          result.textContent = 'Tight: ' + formatLength(clearance) + ' clearance.';
+          result.textContent = formatLength(clearance) + ' clearance, tight';
           tightOnes.push(name);
         } else {
-          result.textContent = formatLength(clearance) + ' clearance.';
+          result.textContent = formatLength(clearance) + ' clearance';
         }
       });
 
       var summaryState = 'ok';
-      var summaryText = 'Comfortable clearance at both doors.';
+      var summaryText = 'Fits both doorways comfortably.';
       if (failing.length) {
         summaryState = 'no';
-        summaryText = failing.length === totalDoors
-          ? 'This width is wider than both doorways.'
-          : 'This width is wider than ' + joinList(failing) + '.';
+        summaryText = failing.length === fitGauges.length
+          ? 'Wider than both doorways.'
+          : 'Wider than ' + joinList(failing) + '.';
       } else if (tightOnes.length) {
         summaryState = 'tight';
-        summaryText = tightOnes.length === totalDoors
-          ? 'Tight clearance at both doors.'
-          : 'Tight clearance at ' + joinList(tightOnes) + '.';
+        summaryText = tightOnes.length === fitGauges.length
+          ? 'Fits, but tightly, at both doorways.'
+          : 'Fits, but tightly, at ' + joinList(tightOnes) + '.';
       }
       fitSummary.textContent = summaryText;
       fitSummary.classList.toggle('fit-check__summary--tight', summaryState === 'tight');
       fitSummary.classList.toggle('fit-check__summary--no', summaryState === 'no');
 
-      fitSection.querySelectorAll('[data-fit-preset]').forEach(function (presetBtn) {
-        var preset = parseInt(presetBtn.getAttribute('data-fit-preset'), 10);
-        presetBtn.setAttribute('aria-pressed', ( ! isNaN(preset) && preset === chairWidth ) ? 'true' : 'false');
+      fitPresets.forEach(function (presetBtn) {
+        var pressed = parseInt(presetBtn.getAttribute('data-fit-preset'), 10) === fitWidth;
+        presetBtn.setAttribute('aria-pressed', pressed ? 'true' : 'false');
       });
     };
 
-    var commitNumber = function () {
-      if (!fitNumber) return;
+    // Typing re-renders the answer without rewriting the field under the cursor.
+    fitNumber.addEventListener('input', function () {
       var raw = parseFloat(fitNumber.value);
-      if (isNaN(raw)) {
-        renderFit();
-        return;
-      }
-      var mm = fitUnit === 'in' ? raw * MM_PER_IN : raw;
-      mm = Math.round(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
-      fitInput.value = String(mm);
-      renderFit();
-    };
-
-    fitInput.addEventListener('input', function () {
+      if (isNaN(raw)) return;
+      fitWidth = toMm(raw);
+      renderFit(true);
+    });
+    // On leaving the field, show the (clamped) value that was used.
+    fitNumber.addEventListener('change', function () {
+      var raw = parseFloat(fitNumber.value);
+      if (!isNaN(raw)) fitWidth = toMm(raw);
       renderFit();
     });
-
-    if (fitNumber) {
-      fitNumber.addEventListener('input', function () {
-        var raw = parseFloat(fitNumber.value);
-        if (isNaN(raw)) return;
-        var mm = fitUnit === 'in' ? raw * MM_PER_IN : raw;
-        mm = Math.round(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
-        fitInput.value = String(mm);
-        renderFit({ skipNumber: true });
-      });
-      fitNumber.addEventListener('change', commitNumber);
-    }
 
     fitUnitBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -384,17 +345,18 @@
       });
     });
 
-    syncNumberBounds();
-    renderFit();
-
-    fitSection.querySelectorAll('[data-fit-preset]').forEach(function (presetBtn) {
+    fitPresets.forEach(function (presetBtn) {
       presetBtn.addEventListener('click', function () {
         var mm = parseInt(presetBtn.getAttribute('data-fit-preset'), 10);
         if (isNaN(mm)) return;
-        fitInput.value = String(Math.min(FIT_MAX, Math.max(FIT_MIN, mm)));
+        fitWidth = Math.min(FIT_MAX, Math.max(FIT_MIN, mm));
         renderFit();
       });
     });
+
+    fitWidth = toMm(parseFloat(fitNumber.value) || 700);
+    syncNumberBounds();
+    renderFit();
   }
 
   /* ---------- Desktop dropdowns (The Bungalow, Plan your trip) ---------- */
@@ -1220,59 +1182,5 @@
     var img = event.target;
     if (img && img.tagName === 'IMG' && img.srcset) fitCoverSize(img);
   }, true);
-
-  /* Tabs ([data-tabs], Funding routes): the panels are stacked in the markup
-     and the tab list ships hidden, so without script every route shows. With
-     it, one panel at a time; arrow keys, Home and End move between tabs, and
-     a link to a panel's id (#nhs) opens that tab. */
-  Array.prototype.forEach.call(document.querySelectorAll('[data-tabs]'), function (root) {
-    var list = root.querySelector('[role="tablist"]');
-    if (!list) return;
-    var tabs = Array.prototype.slice.call(list.querySelectorAll('[role="tab"]'));
-    var panels = tabs.map(function (tab) { return document.getElementById(tab.getAttribute('aria-controls')); });
-    if (!tabs.length || panels.indexOf(null) !== -1) return;
-    function select(index, focus) {
-      tabs.forEach(function (tab, i) {
-        var on = i === index;
-        tab.setAttribute('aria-selected', on ? 'true' : 'false');
-        tab.tabIndex = on ? 0 : -1;
-        panels[i].hidden = !on;
-      });
-      if (focus) tabs[index].focus();
-    }
-    panels.forEach(function (panel, i) {
-      panel.setAttribute('role', 'tabpanel');
-      panel.setAttribute('aria-labelledby', tabs[i].id);
-      panel.tabIndex = 0;
-    });
-    tabs.forEach(function (tab, i) {
-      tab.addEventListener('click', function () { select(i, false); });
-      tab.addEventListener('keydown', function (event) {
-        var to = null;
-        if (event.key === 'ArrowRight') to = (i + 1) % tabs.length;
-        else if (event.key === 'ArrowLeft') to = (i - 1 + tabs.length) % tabs.length;
-        else if (event.key === 'Home') to = 0;
-        else if (event.key === 'End') to = tabs.length - 1;
-        if (to === null) return;
-        event.preventDefault();
-        select(to, true);
-      });
-    });
-    function fromHash(scroll) {
-      var id = window.location.hash.slice(1);
-      for (var i = 0; i < panels.length; i++) {
-        if (panels[i].id === id) {
-          select(i, false);
-          if (scroll) root.scrollIntoView({ block: 'start' });
-          return true;
-        }
-      }
-      return false;
-    }
-    list.hidden = false;
-    root.classList.add('is-tabbed');
-    if (!fromHash(true)) select(0, false);
-    window.addEventListener('hashchange', function () { fromHash(true); });
-  });
 
 })();

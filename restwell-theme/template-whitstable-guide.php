@@ -296,29 +296,43 @@ get_template_part(
 	  </div>
 	</section>
 
+	<?php
+	// The Changing Places loo is the one that matters most to a hoisted guest, so
+	// it leads; the rest are places to know about along the way.
+	$wg_cp_lines    = array();
+	$wg_other_lines = array();
+	foreach ( $wg_toilet_bullets as $wg_toilet_line ) {
+		if ( 0 === stripos( $wg_toilet_line, 'Changing Places' ) ) {
+			$wg_cp_lines[] = trim( preg_replace( '/^Changing Places:\s*/i', '', $wg_toilet_line ) );
+		} else {
+			$wg_other_lines[] = $wg_toilet_line;
+		}
+	}
+	?>
 	<section class="section-y band-subtle" id="toilets" aria-labelledby="toilets-h">
-	  <div class="container route-split">
-		<header class="section-head section-head--tight">
+	  <div class="container">
+		<header class="section-head">
 		  <p class="eyebrow"><?php echo esc_html( $wg_planning_label ); ?></p>
 		  <h2 id="toilets-h"><?php echo esc_html( $wg_planning_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $wg_planning_intro ); ?></p>
 		  <p><a href="https://www.changing-places.org/find" class="text-link" target="_blank" rel="noopener noreferrer">Changing Places map<span class="sr-only"> (opens in new tab)</span></a></p>
 		</header>
-		<ol class="route-list" aria-label="<?php esc_attr_e( 'Accessible toilets along the promenade route', 'restwell-retreats' ); ?>">
-		  <?php
-			foreach ( $wg_toilet_bullets as $wg_toilet_line ) :
-				$wg_is_cp = 0 === stripos( $wg_toilet_line, 'Changing Places' );
-				?>
-		  <li class="route-list__stop<?php echo $wg_is_cp ? ' route-list__stop--key' : ''; ?>">
-				<?php if ( $wg_is_cp ) : ?>
-			<span class="route-list__tag"><?php esc_html_e( 'Changing Places', 'restwell-retreats' ); ?></span>
-					<?php echo esc_html( trim( preg_replace( '/^Changing Places:\s*/i', '', $wg_toilet_line ) ) ); ?>
-				<?php else : ?>
-					<?php echo esc_html( $wg_toilet_line ); ?>
-				<?php endif; ?>
-		  </li>
-		  <?php endforeach; ?>
-		</ol>
+		<div class="loo-list">
+		  <?php if ( ! empty( $wg_cp_lines ) ) : ?>
+		  <div class="loo-list__key">
+			<p class="loo-list__tag"><?php esc_html_e( 'Changing Places', 'restwell-retreats' ); ?></p>
+			<p class="loo-list__name"><?php echo esc_html( implode( ', ', $wg_cp_lines ) ); ?></p>
+		  </div>
+		  <?php endif; ?>
+		  <div class="loo-list__rest">
+			<p class="loo-list__tag loo-list__tag--plain" id="loo-rest-h"><?php esc_html_e( 'Along the promenade', 'restwell-retreats' ); ?></p>
+			<ul role="list" aria-labelledby="loo-rest-h">
+			  <?php foreach ( $wg_other_lines as $wg_other_line ) : ?>
+			  <li><?php echo esc_html( $wg_other_line ); ?></li>
+			  <?php endforeach; ?>
+			</ul>
+		  </div>
+		</div>
 	  </div>
 	</section>
 

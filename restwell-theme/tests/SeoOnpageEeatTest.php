@@ -144,9 +144,13 @@ class SeoOnpageEeatTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'Victoria Walker', $php );
 		$this->assertStringContainsString( 'https://www.cqc.org.uk/location/1-2624556588', $php );
 		$this->assertStringContainsString( 'not a registered care provider', $php );
-		// Guest quotes: initials in a <cite>, words consecutive from the review.
-		$this->assertStringContainsString( '<cite><?php echo esc_html( $story_quote[\'name\'] ); ?></cite>', $php );
-		$this->assertStringContainsString( "'name' => 'M.P.'", $php );
+		// Guest quotes: initials only, words consecutive from the review. The
+		// template hands them to the shared reviews band, which prints each
+		// attribution in a <cite>.
+		$reviews = (string) file_get_contents( dirname( __DIR__ ) . '/template-parts/google-reviews.php' );
+		$this->assertStringContainsString( 'template-parts/google-reviews', $php );
+		$this->assertStringContainsString( '<cite class="testimonial-card__cite">', $reviews );
+		$this->assertStringContainsString( "'name'  => 'M.P.'", $php );
 		$this->assertStringContainsString( 'mirrors one philosophy, be flat, be accessible', $php );
 		$this->assertStringNotContainsString( 'fully accessible', $php );
 		$this->assertStringNotContainsString( 'fully-accessible', $php );

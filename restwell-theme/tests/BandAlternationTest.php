@@ -28,7 +28,7 @@ class BandAlternationTest extends PHPUnit\Framework\TestCase {
 		$theme = dirname( __DIR__ );
 		$found = array();
 
-		preg_match_all( '/<section\b([^>]*)>|get_template_part\(\s*\'template-parts\/(sister-company|availability-calendar)\'(.*?)\);/s', $source, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE );
+		preg_match_all( '/<section\b([^>]*)>|get_template_part\(\s*\'template-parts\/(sister-company|availability-calendar|google-reviews)\'(.*?)\);/s', $source, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE );
 
 		foreach ( $matches as $m ) {
 			$offset = $m[0][1];
@@ -47,6 +47,12 @@ class BandAlternationTest extends PHPUnit\Framework\TestCase {
 			}
 			$part = $m[2][0];
 			$args = $m[3][0];
+			if ( 'google-reviews' === $part ) {
+				// The reviews are a dark teal band: neither white nor subtle, so it
+				// separates its neighbours rather than joining them.
+				$found[ $offset ] = array( 'id' => 'reviews', 'band' => '' );
+				continue;
+			}
 			if ( 'sister-company' === $part ) {
 				$band = preg_match( "/'band'\s*=>\s*'(band-[a-z]+)'/", $args, $b ) ? $b[1] : 'band-white';
 				$id   = preg_match( "/'id'\s*=>\s*'([^']+)'/", $args, $i ) ? $i[1] : 'sister-company';
