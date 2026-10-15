@@ -383,6 +383,7 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		  <?php if ( '' !== $home_care_cta_label && '' !== $home_care_cta_url ) : ?>
 		  <a class="text-link" href="<?php echo esc_url( $home_care_cta_url ); ?>"><?php echo esc_html( $home_care_cta_label ); ?></a>
 		  <?php endif; ?>
+		  <?php get_template_part( 'template-parts/care-faces' ); ?>
 		</div>
 	  </div>
 	</section>
