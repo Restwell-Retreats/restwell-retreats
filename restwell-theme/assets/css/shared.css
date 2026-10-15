@@ -11065,3 +11065,29 @@ p.care-how__note > .text-link,
   font-weight: var(--type-display-weight);
   line-height: 1.25;
 }
+
+/* Marks without discs on the blog (15 Oct 2026): the do/avoid ticks and
+   crosses and the category tag lose their fills and pill, like the register
+   and the destination lists. */
+.post-body ul.post-marks--do li::before { background: none; color: var(--deep-teal); }
+.post-body ul.post-marks--avoid li::before { background: none; color: var(--muted-grey); }
+.post-body ul.post-marks li::before { font-size: var(--text-md); }
+.tag {
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: var(--text-sm);
+}
+/* The FAQ page's H1 already says it; the list's own heading stays for
+   assistive tech only, so the questions start straight under the tabs. */
+.faq-page__head {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
