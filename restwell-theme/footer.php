@@ -165,7 +165,7 @@ $footer_enquire_url = function_exists( 'restwell_nav_resolve_page_url' ) ? restw
 			<?php restwell_the_icon( 'chevron-left' ); ?>
 		</button>
 		<figure class="lightbox__figure">
-			<img class="lightbox__image" data-lightbox-image src="" alt="<?php echo esc_attr__( 'Gallery image', 'restwell-retreats' ); ?>" decoding="async" />
+			<img class="lightbox__image" data-lightbox-image alt="<?php echo esc_attr__( 'Gallery image', 'restwell-retreats' ); ?>" decoding="async" />
 		</figure>
 		<button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="<?php esc_attr_e( 'Next image', 'restwell-retreats' ); ?>">
 			<?php restwell_the_icon( 'chevron-right' ); ?>
