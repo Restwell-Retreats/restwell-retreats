@@ -227,10 +227,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 
 	<section class="section-y band-subtle" id="statement" aria-labelledby="statement-h">
 	  <div class="container acc-intro">
-		<figure class="acc-intro__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/int-front-door.png' ) ); ?>" alt="<?php esc_attr_e( 'The hallway looking from the front door through to the French doors and the garden', 'restwell-retreats' ); ?>" width="1200" height="1600" loading="lazy" decoding="async" />
-		</figure>
-		<div class="acc-intro__body">
 		<header class="section-head section-head--tight acc-intro__head">
 		  <p class="eyebrow"><?php echo esc_html( $acc_statement_label ); ?></p>
 		  <h2 id="statement-h"><?php echo esc_html( $acc_statement_heading ); ?></h2>
@@ -256,7 +252,6 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		  </div>
 		  <?php endforeach; ?>
 		</dl>
-		</div>
 	  </div>
 	</section>
 
