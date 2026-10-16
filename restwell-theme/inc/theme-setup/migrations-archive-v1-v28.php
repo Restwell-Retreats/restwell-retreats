@@ -624,6 +624,12 @@ function restwell_migrate_legal_policy_templates_v1() {
 	$assign( 'terms-and-conditions', 'template-terms-and-conditions.php' );
 
 	$ap = get_page_by_path( 'accessibility-policy', OBJECT, 'page' );
+	// On a fresh install the first page loads also create this page; let one
+	// request do it, then look again.
+	$has_lock = ! $ap && function_exists( 'restwell_take_page_creation_lock' ) && restwell_take_page_creation_lock( 20 );
+	if ( $has_lock ) {
+		$ap = get_page_by_path( 'accessibility-policy', OBJECT, 'page' );
+	}
 	if ( ! $ap ) {
 		$admins = get_users(
 			array(
@@ -654,6 +660,9 @@ function restwell_migrate_legal_policy_templates_v1() {
 		}
 	} else {
 		update_post_meta( (int) $ap->ID, '_wp_page_template', 'template-accessibility-policy.php' );
+	}
+	if ( $has_lock ) {
+		restwell_release_page_creation_lock();
 	}
 
 	update_option( 'restwell_legal_policy_templates_v1', '1' );

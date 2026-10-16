@@ -844,6 +844,40 @@ function restwell_orphan_audit() {
 }
 
 /**
+ * Drop both cached SEO audits when pages change or the front / posts page is
+ * set, so the admin bar never reports something that has already been fixed.
+ * (On a fresh install the front page showed as the orphan /home/ for five
+ * minutes: the audit ran before page_on_front was set and was cached.)
+ */
+function restwell_flush_seo_audits() {
+	delete_transient( 'restwell_orphan_audit' );
+	delete_transient( 'restwell_keyword_cannibalisation_audit' );
+}
+add_action( 'save_post_page', 'restwell_flush_seo_audits' );
+add_action( 'save_post_post', 'restwell_flush_seo_audits' );
+add_action( 'trashed_post', 'restwell_flush_seo_audits' );
+add_action( 'deleted_post', 'restwell_flush_seo_audits' );
+foreach ( array( 'page_on_front', 'page_for_posts', 'show_on_front' ) as $restwell_seo_audit_option ) {
+	add_action( 'add_option_' . $restwell_seo_audit_option, 'restwell_flush_seo_audits' );
+	add_action( 'update_option_' . $restwell_seo_audit_option, 'restwell_flush_seo_audits' );
+}
+
+/**
+ * Drop both SEO admin-bar audits when the front page or posts page changes.
+ *
+ * Each audit is cached for five minutes. Computed on a fresh install before
+ * the front page was set, the orphan audit listed /home/ (the front page
+ * itself) for those five minutes.
+ */
+function restwell_flush_seo_audit_caches() {
+	delete_transient( 'restwell_orphan_audit' );
+	delete_transient( 'restwell_keyword_cannibalisation_audit' );
+}
+add_action( 'update_option_show_on_front', 'restwell_flush_seo_audit_caches' );
+add_action( 'update_option_page_on_front', 'restwell_flush_seo_audit_caches' );
+add_action( 'update_option_page_for_posts', 'restwell_flush_seo_audit_caches' );
+
+/**
  * Whether the orphan audit may run (WP_DEBUG or administrators only).
  *
  * @return bool

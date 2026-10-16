@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 82;
+const RESTWELL_SCHEMA_VERSION = 83;
 
 
 /**
@@ -2530,6 +2530,60 @@ function restwell_migrate_our_story_hero_v82() {
 }
 
 /**
+ * 16 Oct 2026: trash empty duplicate Home and Blog pages.
+ *
+ * The first-request race that v66 cleaned up also made a second /home/ and a
+ * /blog-2/, and v66 skips pages without a template, which is exactly these
+ * two. They showed in the SEO admin bar as an identical H1, a near-duplicate
+ * title and two orphans. The page set as the front page or the posts page is
+ * always kept; another published page is trashed only if its slug is "home"
+ * or "blog" (or that with a "-N" suffix), it has the same title, no body
+ * content and no page template. Trash, not delete, so it can be restored.
+ */
+function restwell_migrate_dedupe_home_blog_v83() {
+	if ( get_option( 'restwell_dedupe_home_blog_v83', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_dedupe_home_blog_v83', '1', false );
+	$keep = array(
+		'home' => (int) get_option( 'page_on_front', 0 ),
+		'blog' => (int) get_option( 'page_for_posts', 0 ),
+	);
+	$protected = array_filter( array_merge( array_values( $keep ), array( (int) get_option( 'wp_page_for_privacy_policy', 0 ) ) ) );
+	$trashed   = false;
+	foreach ( $keep as $slug => $keep_id ) {
+		$keeper = $keep_id > 0 ? get_post( $keep_id ) : null;
+		if ( ! $keeper instanceof WP_Post ) {
+			continue;
+		}
+		$candidates = get_posts(
+			array(
+				'post_type'        => 'page',
+				'post_status'      => 'publish',
+				'posts_per_page'   => 20,
+				'post__not_in'     => $protected,
+				'title'            => $keeper->post_title,
+				'suppress_filters' => true,
+			)
+		);
+		foreach ( $candidates as $dupe ) {
+			$template = (string) get_post_meta( (int) $dupe->ID, '_wp_page_template', true );
+			if ( ! preg_match( '/^' . preg_quote( $slug, '/' ) . '(-\d+)?$/', (string) $dupe->post_name )
+				|| '' !== trim( (string) $dupe->post_content )
+				|| ( '' !== $template && 'default' !== $template ) ) {
+				continue;
+			}
+			wp_trash_post( (int) $dupe->ID );
+			$trashed = true;
+		}
+	}
+	if ( $trashed ) {
+		delete_transient( 'restwell_keyword_cannibalisation_audit' );
+		delete_transient( 'restwell_orphan_audit' );
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2647,6 +2701,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_page_copy_v80',
 		'restwell_page_copy_v81',
 		'restwell_our_story_hero_v82',
+		'restwell_dedupe_home_blog_v83',
 	);
 }
 
@@ -2797,6 +2852,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_v81', 119 );
 	add_action( 'init', 'restwell_migrate_our_story_hero_v82', 125 );
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_hero_v82', 120 );
+	add_action( 'init', 'restwell_migrate_dedupe_home_blog_v83', 126 );
+	add_action( 'after_switch_theme', 'restwell_migrate_dedupe_home_blog_v83', 121 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

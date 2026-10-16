@@ -61,3 +61,6 @@ function restwell_ensure_privacy_policy_page_exists() {
 }
 add_action( 'after_switch_theme', 'restwell_ensure_privacy_policy_page_exists' );
 add_action( 'admin_init', 'restwell_ensure_privacy_policy_page_exists' );
+// The safety net the docblock promises: a fresh install's first front-end
+// request publishes it too (flagged, so it costs one option read after that).
+add_action( 'init', 'restwell_ensure_privacy_policy_page_exists', 7 );
