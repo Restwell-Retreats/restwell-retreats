@@ -11029,45 +11029,6 @@ p.care-how__note > .text-link,
 .trio__item { padding-top: var(--space-5); border-top: 1px solid var(--rule); }
 .trio__item h3 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); line-height: var(--leading-snug); }
 .trio__item p { margin: 0; font-size: var(--text-md); line-height: var(--leading-lede); color: var(--body-secondary); }
-
-/* Door checker as the one dark tool on the page (15 Oct 2026): white numerals
-   and rules on the site's teal, gold for the chosen chair and for "tight".
-   It was a pale grey box on a white band. */
-.door-check { background: var(--deep-teal); color: rgba(255, 255, 255, 0.88); }
-.door-check__label { color: rgba(255, 255, 255, 0.82); }
-.door-check__number {
-  color: var(--white);
-  border-bottom-color: rgba(255, 255, 255, 0.4);
-  font-size: clamp(3.5rem, 2.4rem + 3.4vw, 5.25rem);
-}
-.door-check__number:focus { border-bottom-color: var(--warm-gold-hero); }
-.door-check__number:focus-visible,
-.door-check__units button:focus-visible,
-.door-check__chip:focus-visible { outline-color: var(--warm-gold-hero); }
-.door-check__units button { color: rgba(255, 255, 255, 0.72); }
-.door-check__units button[aria-pressed="true"] { color: var(--white); text-decoration-color: var(--warm-gold-hero); }
-.door-check__hint,
-.door-check__presets-title { color: rgba(255, 255, 255, 0.8); }
-.door-check__chip { color: rgba(255, 255, 255, 0.92); }
-.door-check__chip:hover { text-decoration-color: rgba(255, 255, 255, 0.45); }
-.door-check__chip[aria-pressed="true"] { color: var(--white); text-decoration-color: var(--warm-gold-hero); }
-.door-check__results { border-left-color: rgba(255, 255, 255, 0.22); }
-.door-check__verdict { color: var(--white); }
-.door-check__verdict.fit-check__summary--tight { color: var(--warm-gold-hero); }
-.door-check__verdict.fit-check__summary--no { color: #ffb4a6; }
-.door-check__door + .door-check__door { border-top-color: rgba(255, 255, 255, 0.22); }
-.door-check__door-name,
-.door-check__result { color: var(--white); }
-.door-check__door-width { color: rgba(255, 255, 255, 0.74); }
-.door-check__track { background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3); }
-.door-check__jamb { background: var(--white); }
-.door-check__chair { background: var(--white); color: var(--deep-teal); }
-.fit-bar--tight .door-check__chair { background: var(--warm-gold-hero); color: var(--deep-teal); }
-.fit-bar--tight .door-check__result { color: var(--warm-gold-hero); }
-.fit-bar--no .door-check__chair { background: #ffb4a6; color: #4a130b; }
-.fit-bar--no .door-check__result { color: #ffb4a6; }
-.fit-bar--no .door-check__jamb { background: #ffb4a6; }
-
 /* Type upgrades on two quiet moments (15 Oct 2026): the lead guest quote a
    size up, and the home facts strip labelled in the display serif rather than
    semibold sans, so both read as part of the same editorial voice as the
