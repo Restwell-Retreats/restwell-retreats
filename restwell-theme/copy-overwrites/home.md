@@ -40,61 +40,67 @@ A private, single-storey bungalow a short walk from the sea, with a level wet ro
 
 - Primary: Enquire → `/enquire/`
 - Secondary: Look inside the bungalow → `/the-property/`
-- Beneath the primary: We aim to reply within 48 hours, and there’s no deposit until you’ve decided the house fits.
+- Beneath the primary: We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure the house fits.
 
 No em dashes in on-page copy. Continuity depth stays on `/optional-care/`. Hero keeps the searchable care claim, but never imply care is free or bundled into the bungalow rate: say care is optional and Continuity quote for it. Never say care is invoiced, quoted or arranged “separately” (corrected by the owner, 13 Oct 2026).
 
 ## The bungalow (`#property`)
 
-Eyebrow: The bungalow
+Facts strip: Two bedrooms, sleeps up to five · Level parking for two cars · Level-access wet room · Ceiling track hoist
 
-H2: One bungalow, and it’s all yours
+H2: A private bungalow that sleeps five
 
-It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, takes two cars including an adapted vehicle, and the front door is straight ahead of you when you park. We’ll send you the address and directions once your stay is confirmed.
+It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.
 
-Inside, everything is on one floor. There’s no lift to wait for, no corridor to share, and nobody else’s door to pass on your way to the kitchen at midnight. The house sleeps up to five, so there’s room for a partner, a PA, or simply a bit of quiet between you.
-
-It’s wheelchair friendly because somebody measured. 965mm at the front, 926mm through the internal doorways, a level-access wet room with a tilt-in-space shower commode chair, and a ceiling track hoist rated to 180kg over the profiling bed. There’s a mobile hoist as well, a standing aid, and a basin that winds up and down to your height. If you need a second profiling bed, we’ll set one up. All of it is there to be used. That’s rather the point of it.
-
-At the back, French doors open onto a level patio and the garden, with a non-slip threshold ramp taking the lip off the doorway so the BBQ isn’t a second project. We also keep a set of portable fold-up ramps you’re welcome to borrow and take out with you for the day.
+Inside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.
 
 Have a proper look round the rooms → `/the-property/`
-Door widths, the wet room and the hoist, all written down → `/accessibility/`
+Door widths and the hoist → `/accessibility/`
+Prices and dates → `/pricing/`
 
-## Why a house rather than a hotel
+## Gallery
 
-H2: A wet room in a hotel still comes with the corridor
+H2: Living room, bedroom and wet room
 
-Plenty of hotels will tell you they have an accessible room. What they don’t mention is the lift you queue for, the breakfast room you cross, and the feeling of being a logistical problem in somebody else’s building.
+- The open-plan living room, with wide, clear walkways between the furniture
+- The accessible bedroom, with two profiling beds side by side
+- The level-access shower, with the tilt-in-space shower chair and a grab rail (there is no fold-down seat: a shower stool and the RAZ-AT chair)
 
-Here you’re on one level from the driveway to the garden, with only the people you came with. The linen and towels are already on the beds. The heating is within reach from a seated position, so you can set the temperature without a stretch or a struggle. Nobody is going to knock unless you’ve asked them to.
+## Dropped sections
 
-## Can we add home care?
+“Why a house rather than a hotel” (the hotel-corridor comparison) and “Plan a day, or a way to pay” are no longer on the page. Don’t bring their old wording back: headings name plainly what’s there, with no clever or soft lifestyle lines (owner, 17 Oct 2026). Whitstable detail lives on `/whitstable-area-guide/` and funding on `/funding-and-support/`.
+
+## Optional home care
 
 H2: Optional home care
 
-Home care from Continuity can be added on the same enquiry, and they’ll quote for it. Bringing your own carer is fine too.
+How you handle care on holiday is up to you, and most guests do one of two things.
+
+- **Bring your own support.** Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.
+- **Add care from Continuity.** Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.
 
 What home care here actually looks like → `/optional-care/`
 
-(Full two-option panel lives on `/optional-care/` and Pricing. Never imply Continuity hours are included in the bungalow rate.)
-
-## Plan a day, or a way to pay
-
-The harbour beach is shingle, which is lovely to look at and no use at all in a wheelchair. Tankerton promenade is the level stretch with the sea view. We’ve written down what we know about surfaces, parking and which places have an accessible loo, including the ones that don’t, because that’s the bit nobody else tells you. → `/whitstable-area-guide/`
-
-If a council, a grant or a direct payment might go towards the cost, we can invoice whoever you name. We can’t promise your package will stretch to a holiday, but we can tell you honestly how the paperwork usually goes. → `/resources/`
+(Never imply Continuity hours are included in the bungalow rate, and never say care is charged or quoted “separately”.)
 
 ## FAQ (visible + JSON-LD, same three)
 
+H2: Common questions before booking
+
 1. **Is Restwell a care home?**
-   No. It’s a private bungalow holiday: one house, by the sea, for your party alone. Optional home care comes from our sister company, Continuity, if you want it.
+   No. It’s a private bungalow you rent as a holiday, so the whole house is yours and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity, can arrange it.
 
 2. **Will a wheelchair actually fit?**
-   The house is single-storey and step-free throughout. The front door is 965mm, internal doorways are 926mm, the wet room is level-access, and there’s a ceiling hoist over the profiling bed. If you need a measurement we haven’t published, just ask and we’ll go and measure it.
+   The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. Every measurement is on the Accessibility page, including the ones that aren’t flattering, so you can check your own chair before you book.
 
 3. **Can we add home care?**
-   Yes. Continuity of Care Services can come in while you’re staying. Continuity quote for the care once you’ve talked through what you need. Mention it when you enquire, or ring us on 01622 809881.
+   Yes. Continuity of Care Services can come in while you’re staying, and they’ll give you a quote once you’ve talked through what you need. Just mention it when you enquire, or ring us on 01622 809881.
+
+## CTA
+
+H2: Ask us anything about a stay
+
+Tell us your dates and what you need from the house, and we’ll aim to reply within 48 hours. There’s no deposit to pay until we’ve talked it through and you’re happy it fits.
 
 ## JSON-LD LodgingBusiness description
 

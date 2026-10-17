@@ -16,15 +16,15 @@ The full access statement: a 965mm front door, 926mm internal doors, a ceiling h
 
 The wet room, the hoists, and every measurement
 
-## Opening paragraph (print directly under the H1)
-
-This is the access statement for Restwell, a single-storey adapted bungalow in Whitstable. The front door has a 965mm clear opening and internal doorways are 926mm. There is a ceiling track hoist rated to 180kg, a mobile hoist, a level-access wet room, and up to two profiling beds depending on what you need.
-
 ## Intro (`acc_intro`)
 
-We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who has been asked to sign off a stay on the strength of three photographs.
+This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable, so you can check it against your own needs before you book.
 
-So here is the house in numbers. If there’s a measurement we haven’t published, ring us and we’ll go and take it properly.
+## The house in numbers
+
+H2: The house in numbers
+
+We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who’s been asked to sign off a stay on the strength of three photographs. If there’s a measurement we haven’t published, ring us and we’ll go and take it properly.
 
 ## Getting in
 
@@ -70,7 +70,9 @@ There’s a bin in the wet room for continence products, and it’s emptied betw
 
 **Standing aid.** An AAL RS4 non-powered sit-to-stand transfer aid, **rated to 185kg**, with a knee pad, reinforced grab bar, footplate and dual rear-locking brakes. Seat height adjusts between 620mm and 670mm. It suits someone who can weight-bear and rise actively.
 
-Guests bring their own slings.
+**Slings.** Slings are prescribed for each person and fitted to them and to the hoist, so we can’t safely supply them. Both hoists here take loop-style slings on a two-point spreader bar, so please bring the sling the person already uses.
+
+**Bringing your own hoist.** The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. If you’re bringing your own hoist, check its leg height and turning circle against those figures, and tell us what you’re bringing so we can set the room up for it.
 
 ## The kitchen, living space and garden
 
@@ -88,17 +90,28 @@ Two bedrooms plus the conservatory sofa bed. Five is what our safety checks are 
 
 ## What we can’t promise
 
-We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.
+H2: What we can’t promise
 
-Ring 01622 809881 or email hello@restwellretreats.co.uk and tell us what would make the stay work.
+We can’t guarantee every piece of specialist kit at short notice, because some of it has to be hired in and some depends on what’s free that week. What we can promise is a straight answer, quickly, rather than leaving you hoping.
 
-## Getting out and about
+Ring 01622 809881 or email hello@restwellretreats.co.uk and tell us what would make the stay work. Five guests is the limit our safety checks are based on.
 
-Tankerton promenade is the level stretch with the sea view, about ten minutes on foot. The harbour beach is shingle, and shingle isn’t a wheelchair route however good it looks in photographs. Which venues have an accessible toilet, and which don’t → `/whitstable-area-guide/`
+## Getting around Whitstable
+
+H2: Getting around Whitstable
+
+Whitstable is an old seaside town, so some parts are easier to get around than others. Here’s what we’ve found.
+
+- **The good:** Tankerton promenade is a long, level, surfaced path along the seafront, and it’s the route most of our guests use. There’s free Blue Badge parking along Marine Parade. There are accessible toilets along the promenade, and a Changing Places toilet at the harbour. The streets around the bungalow are level and paved, with dropped kerbs.
+- **The challenges:** Harbour Street and the old town have narrow pavements that get crowded at weekends and in summer. Some shops and cafes have a step at the door and no ramp. The ground around the harbour and the fish market can be uneven. Weekday mornings are the easiest time to visit.
+
+Our Whitstable guide lists the routes, cafes and accessible toilets we know work, and we send the same notes in your welcome pack. “Whitstable guide” → `/whitstable-area-guide/`
 
 ## CTA
 
-Still got a question about access? Ask it. There’s no such thing as a silly one. → `/enquire/`
+H2: Ask about your equipment and clearances
+
+If you’ve a question about door widths, hoist limits, the wet room or care, ask us and we’ll give you a clear answer. → `/enquire/`
 
 ## Not published, because it isn’t confirmed yet
 
