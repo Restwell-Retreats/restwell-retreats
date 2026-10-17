@@ -26,9 +26,9 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_subheading',
-		'Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.'
+		'A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.'
 	)
-	: 'Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.';
+	: 'A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.';
 
 $hero_cta_primary_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'hero_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
@@ -46,23 +46,23 @@ $hero_cta_note = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_cta_reassurance',
-		__( 'We aim to reply within 48 hours, and there’s no deposit until you’ve decided the house fits.', 'restwell-retreats' )
+		__( 'We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure the house fits.', 'restwell-retreats' )
 	)
-	: __( 'We aim to reply within 48 hours, and there’s no deposit until you’ve decided the house fits.', 'restwell-retreats' );
+	: __( 'We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure the house fits.', 'restwell-retreats' );
 
 $property_label   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_label', __( 'The bungalow', 'restwell-retreats' ) )
 	: __( 'The bungalow', 'restwell-retreats' );
 $property_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'property_heading', __( 'One bungalow, and it’s all yours', 'restwell-retreats' ) )
-	: __( 'One bungalow, and it’s all yours', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'property_heading', __( 'A private bungalow that sleeps five', 'restwell-retreats' ) )
+	: __( 'A private bungalow that sleeps five', 'restwell-retreats' );
 $property_body    = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'property_body',
-		__( 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, with room for two cars including an adapted vehicle. Park up and the front door is straight ahead. We’ll send you the address once your stay is confirmed.', 'restwell-retreats' )
+		__( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.", 'restwell-retreats' )
 	)
-	: __( 'It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level, with room for two cars including an adapted vehicle. Park up and the front door is straight ahead. We’ll send you the address once your stay is confirmed.', 'restwell-retreats' );
+	: __( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.", 'restwell-retreats' );
 $property_cta_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_cta_label', __( 'Have a proper look round the rooms', 'restwell-retreats' ) )
 	: __( 'Have a proper look round the rooms', 'restwell-retreats' );
@@ -161,9 +161,9 @@ $mid_cta_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'cta_body',
-		__( 'There’s no deposit until you’ve decided the house fits. We aim to reply within 48 hours.', 'restwell-retreats' )
+		__( 'Tell us your dates and what you need from the house, and we’ll aim to reply within 48 hours. There’s no deposit to pay until we’ve talked it through and you’re happy it fits.', 'restwell-retreats' )
 	)
-	: __( 'There’s no deposit until you’ve decided the house fits. We aim to reply within 48 hours.', 'restwell-retreats' );
+	: __( 'Tell us your dates and what you need from the house, and we’ll aim to reply within 48 hours. There’s no deposit to pay until we’ve talked it through and you’re happy it fits.', 'restwell-retreats' );
 $mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
 	: __( 'Enquire', 'restwell-retreats' );
@@ -187,25 +187,25 @@ $home_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_intro',
-		__( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you:', 'restwell-retreats' )
+		__( 'How you handle care on holiday is up to you, and most guests do one of two things.', 'restwell-retreats' )
 	)
-	: __( 'Restwell is a private bungalow holiday: one house, by the sea, for your party alone, not a care home. How you manage care is up to you:', 'restwell-retreats' );
+	: __( 'How you handle care on holiday is up to you, and most guests do one of two things.', 'restwell-retreats' );
 $home_care_item1_title = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_item1_title', __( 'Bring your own support', 'restwell-retreats' ) )
 	: __( 'Bring your own support', 'restwell-retreats' );
 $home_care_item1_body  = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'home_care_item1_body', __( 'Plenty of guests bring their own carer or manage just like they do at home.', 'restwell-retreats' ) )
-	: __( 'Plenty of guests bring their own carer or manage just like they do at home.', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'home_care_item1_body', __( 'Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.', 'restwell-retreats' ) )
+	: __( 'Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.', 'restwell-retreats' );
 $home_care_item2_title = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'home_care_item2_title', __( 'Use our care team', 'restwell-retreats' ) )
-	: __( 'Use our care team', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'home_care_item2_title', __( 'Add care from Continuity', 'restwell-retreats' ) )
+	: __( 'Add care from Continuity', 'restwell-retreats' );
 $home_care_item2_body  = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_item2_body',
-		__( 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC. We share an office and phone number, so one conversation covers everything.', 'restwell-retreats' )
+		__( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.', 'restwell-retreats' )
 	)
-	: __( 'If you\'d like professional home care, our sister company Continuity of Care Services can come to you. They\'re rated Good by the CQC. We share an office and phone number, so one conversation covers everything.', 'restwell-retreats' );
+	: __( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.', 'restwell-retreats' );
 $home_care_note      = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_note', __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' ) )
 	: __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' );
@@ -220,8 +220,8 @@ $home_faq_label   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_faq_label', __( 'Quick answers', 'restwell-retreats' ) )
 	: __( 'Quick answers', 'restwell-retreats' );
 $home_faq_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'home_faq_heading', __( 'The questions that stop an enquiry', 'restwell-retreats' ) )
-	: __( 'The questions that stop an enquiry', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'home_faq_heading', __( 'Common questions before booking', 'restwell-retreats' ) )
+	: __( 'Common questions before booking', 'restwell-retreats' );
 
 $partners     = function_exists( 'restwell_get_homepage_partners' )
 	? restwell_get_homepage_partners( $home_id )
@@ -272,19 +272,19 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  <div class="container">
 		<ul class="facts-strip__list" role="list">
 		  <li>
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'house' ); ?></span>
-			<span><?php esc_html_e( 'Private,', 'restwell-retreats' ); ?> <span class="nowrap"><?php esc_html_e( 'single-storey house', 'restwell-retreats' ); ?></span></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bed' ); ?></span>
+			<span><?php esc_html_e( 'Two bedrooms,', 'restwell-retreats' ); ?> <span class="nowrap"><?php esc_html_e( 'sleeps up to five', 'restwell-retreats' ); ?></span></span>
 		  </li>
 		  <li>
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-front' ); ?></span>
-			<span><?php esc_html_e( 'Driveway parking for two', 'restwell-retreats' ); ?></span>
+			<span><?php esc_html_e( 'Level parking for two cars', 'restwell-retreats' ); ?></span>
 		  </li>
 		  <li>
 			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'shower-head' ); ?></span>
 			<span><?php esc_html_e( 'Level-access wet room', 'restwell-retreats' ); ?></span>
 		  </li>
 		  <li>
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bed' ); ?></span>
+			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'move-vertical' ); ?></span>
 			<span><?php esc_html_e( 'Ceiling track hoist', 'restwell-retreats' ); ?></span>
 		  </li>
 		</ul>
@@ -299,10 +299,13 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			<p class="eyebrow"><?php echo esc_html( $property_label ); ?></p>
 			<?php endif; ?>
 			<h2 id="property-h"><?php echo esc_html( $property_heading ); ?></h2>
-			<p class="lede"><?php echo esc_html( $property_body ); ?></p>
+			<?php foreach ( preg_split( '/\n\s*\n/', trim( $property_body ) ) as $property_para ) : ?>
+			<p class="lede"><?php echo esc_html( trim( $property_para ) ); ?></p>
+			<?php endforeach; ?>
 			<div class="property__cta-row">
 			  <a class="btn btn-outline-teal" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
 			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>"><?php esc_html_e( 'Prices and dates', 'restwell-retreats' ); ?></a>
 			</div>
 		  </div>
 		  <div class="property__media-wrap">
@@ -321,19 +324,19 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 		</header>
 		<ul class="gallery__grid" role="list" aria-label="Property photo preview">
 		  <li class="gallery__item">
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Open-plan living room with wide, step-free walkways between furniture">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: The open-plan living room, with wide, clear walkways between the furniture">
 			  <?php /* Mosaic images load eagerly (no loading=lazy): the mosaic sits ~1 screen down and lazy-decode left a beige placeholder flash on scroll. Hero keeps LCP priority (design-audit c9). */ ?>
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="Open-plan living room with wide, step-free walkways between furniture" width="640" height="480" sizes="(max-width: 767px) 84vw, 660px" decoding="async" />
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="The open-plan living room, with wide, clear walkways between the furniture" width="640" height="480" sizes="(max-width: 767px) 84vw, 660px" decoding="async" />
 			</button>
 		  </li>
 		  <li class="gallery__item">
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="The accessible bedroom: two profiling beds side by side, with rails" width="2400" height="1500" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: The accessible bedroom, with two profiling beds side by side">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="The accessible bedroom, with two profiling beds side by side" width="2400" height="1500" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
 			</button>
 		  </li>
 		  <li class="gallery__item">
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: The level-access shower, with the tilt-in-space shower chair and a grab rail">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="The level-access shower, with the tilt-in-space shower chair and a grab rail" width="640" height="480" sizes="(max-width: 767px) 41vw, 460px" decoding="async" />
 			</button>
 		  </li>
 		</ul>

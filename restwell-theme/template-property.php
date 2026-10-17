@@ -46,49 +46,49 @@ $prop_paras = static function ( $text ) {
 	);
 };
 
-$restwell_prop_heading = $prop_heading( 'prop_hero_heading', 'A proper look round the bungalow' );
+$restwell_prop_heading = $prop_heading( 'prop_hero_heading', 'Inside the bungalow, room by room' );
 $restwell_prop_intro   = $prop_txt(
 	'prop_hero_subtitle',
-	'A room-by-room look round Restwell: a single-storey adapted bungalow in Whitstable that sleeps up to five.'
+	'Here’s a walk round Restwell, room by room. It’s a single-storey adapted bungalow on a quiet street in Whitstable, with two bedrooms and space for up to five people.'
 );
 
-$prop_bedrooms_heading = $prop_heading( 'prop_bedrooms_section_heading', 'The room with the hoist, and room for everyone else' );
+$prop_bedrooms_heading = $prop_heading( 'prop_bedrooms_section_heading', 'Two bedrooms and a sofa bed, for up to five' );
 $prop_bedrooms_paras   = $prop_paras(
 	$prop_txt(
 		'prop_bedrooms_section_body',
-		"The accessible bedroom has a ceiling-track hoist that reaches the whole room, with one or two profiling beds set up around what you tell us when you book.\n\nA second double is next door and the conservatory has a double sofa bed, so up to five can stay. Hoists, a standing aid and profiling beds are included in the price."
+		"The accessible bedroom has a ceiling track hoist that covers the whole room, and we set it up with one or two profiling beds, depending on what you tell us when you book. If you’d like the furniture moved to match the way things are at home, just say, and it’ll be ready when you arrive.\n\nThe second bedroom next door has a double bed, and the conservatory has a double sofa bed, so up to five people can stay. The hoists, the standing aid and the profiling beds are all included in the price."
 	)
 );
 
-$prop_wetroom_heading = $prop_heading( 'prop_wetroom_heading', 'Roll-in shower and accessible washroom' );
+$prop_wetroom_heading = $prop_heading( 'prop_wetroom_heading', 'Level-access wet room' );
 $prop_wetroom_paras   = $prop_paras(
 	$prop_txt(
 		'prop_wetroom_body',
-		"The step-free wet room includes a roll-in shower, grab rails, shower and commode chairs, a tilt-in-space chair, a height-adjustable 180° spin wash basin, and a Geberit AquaClean wash-dry WC.\n\nAll of this is already installed, so there’s nothing to hire or set up before you arrive."
+		"The wet room is step-free from the door to the shower. It has grab rails, a shower stool and a tilt-in-space shower chair, a basin that swings round and moves up and down to the height you need, and a wash-and-dry toilet.\n\nIt’s all fitted already, so there’s nothing to hire or set up before you arrive. If you’d like the makes, models and safe working loads, you’ll find them on the Accessibility page."
 	)
 );
 
-$prop_living_heading = $prop_heading( 'prop_living_heading', 'A comfortable place to come back to' );
+$prop_living_heading = $prop_heading( 'prop_living_heading', 'Open-plan living room' );
 $prop_living_paras   = $prop_paras(
 	$prop_txt(
 		'prop_living_body',
-		"After time by the sea, the living room gives everyone space to settle in.\n\nThere’s a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. The open-plan layout leaves plenty of room for wheelchair users, families and carers to move around.\n\nThere’s seating for everyone. We keep the space between the sofa and armchair clear, so wheelchairs can turn."
+		"The living room is open-plan, with a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. There’s room for wheelchairs, carers and family to get past each other.\n\nWe keep the floor between the sofa and the armchair clear so a wheelchair can turn. There’s free high-speed WiFi throughout, which matters more than people admit when someone needs to keep an eye on work or a hospital app."
 	)
 );
 
-$prop_kitchen_heading = $prop_heading( 'prop_kitchen_heading', 'Wheel-under kitchen, ready for everyday meals' );
+$prop_kitchen_heading = $prop_heading( 'prop_kitchen_heading', 'Kitchen with a wheel-under worktop' );
 $prop_kitchen_paras   = $prop_paras(
 	$prop_txt(
 		'prop_kitchen_body',
-		"The kitchen features a lowered wheel-under counter, a slide-under oven, microwave, fridge, dishwasher, and all the plates, cutlery, utensils, and cooking basics you’ll need.\n\nThe hob is gas, not induction, which might be useful to know for your cooking plans."
+		"The kitchen has a lowered worktop you can wheel under, an oven with a door that slides away underneath, a microwave, a fridge and a dishwasher. You’ll also find plates, pans, cutlery and the cooking basics.\n\nThe hob is gas rather than induction, which is worth knowing when you plan what to cook."
 	)
 );
 
-$prop_conservatory_heading = $prop_heading( 'prop_conservatory_heading', 'Sunny dining space with level garden access' );
+$prop_conservatory_heading = $prop_heading( 'prop_conservatory_heading', 'Conservatory with level access to the patio' );
 $prop_conservatory_paras   = $prop_paras(
 	$prop_txt(
 		'prop_conservatory_body',
-		"The conservatory is a bright space where you can eat, read, or enjoy the garden view.\n\nThere’s a fold-out dining table, a double sofa bed and level access to the patio. The laundry cupboards hold a washing machine and a tumble dryer."
+		"The conservatory has a fold-out table to eat at and a double sofa bed, and its doors open out level onto the patio.\n\nThe laundry cupboards are in here too, with a washing machine and a tumble dryer."
 	)
 );
 
@@ -96,28 +96,28 @@ $prop_garden_heading = $prop_heading( 'prop_garden_heading', 'Level patio, enclo
 $prop_garden_paras   = $prop_paras(
 	$prop_txt(
 		'prop_garden_body',
-		"French doors open onto a level patio with a non-slip ramp at the threshold.\n\nThe garden is fully enclosed and dog-friendly, with outdoor seating, a BBQ, and fairy lights. You can eat outside or let your dog out safely. Please let us know ahead of time so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars. We’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, to use around the property or take with you."
+		"French doors open onto a level patio, with a non-slip ramp over the threshold. The garden is fully enclosed, with outdoor seating, a barbecue and fairy lights.\n\nDogs are welcome, and we just ask you to let us know before you arrive so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars, and we’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, for use around the house or on days out."
 	)
 );
 
 $prop_gallery_label   = $prop_txt( 'prop_gallery_label', 'Photos' );
-$prop_gallery_heading = $prop_heading( 'prop_gallery_heading', 'See more of the bungalow.' );
+$prop_gallery_heading = $prop_heading( 'prop_gallery_heading', 'More photos of the bungalow' );
 
 $prop_care_heading = $prop_heading( 'prop_care_heading', 'Optional home care' );
 $prop_care_body    = $prop_txt(
 	'prop_care_body',
-	'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.'
+	'If someone in your group needs help with personal care, our sister company, Continuity, can come into the bungalow, and they’ll quote once you’ve talked through what’s needed. Plenty of guests bring their own carer instead, and the second bedroom is there for them.'
 );
 // Pages seeded before the 9 Oct 2026 wording pass still hold the old line in meta.
 if ( 'Home care from Continuity can be added on the same enquiry, and they’ll quote for it. Bring your own carer if you prefer.' === $prop_care_body ) {
-	$prop_care_body = 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.';
+	$prop_care_body = 'If someone in your group needs help with personal care, our sister company, Continuity, can come into the bungalow, and they’ll quote once you’ve talked through what’s needed. Plenty of guests bring their own carer instead, and the second bedroom is there for them.';
 }
 
-$prop_location_heading = $prop_heading( 'prop_location_heading', 'A quiet street in Whitstable, close to the coast path' );
+$prop_location_heading = $prop_heading( 'prop_location_heading', 'On a quiet street, ten minutes from the seafront' );
 $prop_location_paras   = $prop_paras(
 	$prop_txt(
 		'prop_location_body',
-		"The bungalow sits on a quiet residential street, a short walk from The Plough pub and about ten minutes on foot from the seafront.\n\nThe beach is shingle, but the wide, paved promenade offers a step-free route along the coast and forms part of the King Charles III England Coast Path.\n\nJoJo’s is about twenty minutes on foot: ten minutes down to the sea, then west along Tankerton promenade. The Marine Hotel sits on that same stretch. A short drive if you’d rather save your energy for lunch."
+		"The bungalow is on a quiet residential street, a short walk from The Plough pub and about ten minutes on foot from the seafront. Down there, the wide, paved promenade gives you a step-free route along the coast.\n\nThe beach is shingle, so the paved promenade is the step-free way along the seafront."
 	)
 );
 ?>
@@ -204,7 +204,18 @@ get_template_part(
 		  <?php
 			foreach ( array_slice( $prop_wetroom_paras, 1 ) as $prop_wetroom_para ) :
 				?>
-		  <p class="lede"><?php echo esc_html( $prop_wetroom_para ); ?></p>
+		  <p class="lede">
+					<?php
+					// The spec belongs to /accessibility/: link the phrase that points there.
+					echo wp_kses_post(
+						str_replace(
+							esc_html__( 'makes, models and safe working loads', 'restwell-retreats' ),
+							'<a class="text-link" href="' . esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ) . '">' . esc_html__( 'makes, models and safe working loads', 'restwell-retreats' ) . '</a>',
+							esc_html( $prop_wetroom_para )
+						)
+					);
+					?>
+		  </p>
 				<?php
 			endforeach;
 			?>
@@ -323,8 +334,8 @@ get_template_part(
 		</header>
 		<ul class="gallery-grid" role="list" aria-label="Property photos">
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Level-access wet room shower with grab rails and fold-down seat">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with grab rails and fold-down seat" width="640" height="480" loading="lazy" decoding="async" />
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Level-access wet room shower with the tilt-in-space shower chair and a grab rail">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with the tilt-in-space shower chair and a grab rail" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
@@ -389,7 +400,7 @@ get_template_part(
 				<?php
 			endforeach;
 			?>
-		  <p class="lede">For route tips, local recommendations, and access details, check our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable accessibility guide</a>.</p>
+		  <p class="lede">Our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a> covers where to eat, where to park and which places have an accessible loo.</p>
 		</div>
 		<div class="split__media">
 		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-1-LS.jpg' ) ); ?>" alt="Tankerton promenade and Whitstable seafront" width="900" height="675" loading="lazy" />
@@ -409,16 +420,16 @@ get_template_part(
 	  </div>
 	</section>
 	<?php
-	$mid_cta_heading = $prop_txt( 'prop_cta_heading', __( 'See if the bungalow fits your group.', 'restwell-retreats' ) );
+	$mid_cta_heading = $prop_txt( 'prop_cta_heading', __( 'See if the bungalow fits your group', 'restwell-retreats' ) );
 	$mid_cta_intro   = $prop_txt(
 		'prop_cta_body',
-		__( 'Tell us your dates, your group size and any access or equipment needs. We’ll reply with availability, measurements and your next steps.', 'restwell-retreats' )
+		__( 'Tell us your dates, who’s coming and any access or equipment needs, and we’ll come back with availability and an honest answer on whether the house will work for you.', 'restwell-retreats' )
 	);
 	$mid_cta_primary_label = $prop_txt( 'prop_cta_btn', __( 'Enquire', 'restwell-retreats' ) );
 	$mid_cta_primary_url   = $prop_txt( 'prop_cta_url', restwell_nav_resolve_page_url( 'enquire' ) );
 
-	$mid_cta_secondary_label = __( 'Read accessibility details', 'restwell-retreats' );
-	$mid_cta_secondary_url   = restwell_nav_resolve_page_url( 'accessibility' );
+	$mid_cta_secondary_label = __( 'See prices and dates', 'restwell-retreats' );
+	$mid_cta_secondary_url   = restwell_nav_resolve_page_url( 'pricing' );
 
 	get_template_part(
 		'template-parts/mid-cta',

@@ -58,15 +58,15 @@ function restwell_access_statement_notes() {
 	return array(
 		'slings' => array(
 			'title' => __( 'Please bring your own slings', 'restwell-retreats' ),
-			'body'  => __( 'Slings are prescribed items of personal care. They are fitted to the individual and to the hoist mechanism, so we cannot safely supply them. Both hoists here take loop-style slings on a two-point spreader bar. Bring the sling the person already uses.', 'restwell-retreats' ),
+			'body'  => __( 'Slings are prescribed for each person and fitted to them and to the hoist, so we can’t safely supply them. Both hoists here take loop-style slings on a two-point spreader bar, so please bring the sling the person already uses.', 'restwell-retreats' ),
 		),
 		'own-hoist' => array(
 			'title' => __( 'Bringing your own mobile hoist', 'restwell-retreats' ),
-			'body'  => __( 'The bed platform lowers to 220 mm. The Oxford Midi’s legs stand 100 mm high with 25 mm of ground clearance, and its turning radius is 1235 mm. If you are bringing your own hoist, measure its leg height and turning circle against those figures. Tell us what you are bringing and we will set the room up for it.', 'restwell-retreats' ),
+			'body'  => __( 'The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. If you’re bringing your own hoist, check its leg height and turning circle against those figures, and tell us what you’re bringing so we can set the room up for it.', 'restwell-retreats' ),
 		),
 		'limits' => array(
 			'title' => __( 'What we can’t promise', 'restwell-retreats' ),
-			'body'  => __( 'We can’t guarantee every piece of specialist equipment at short notice. Some has to be hired in, and some depends on what’s available that week. What we can promise is a straight answer quickly rather than leaving you hoping.', 'restwell-retreats' ),
+			'body'  => __( 'We can’t guarantee every piece of specialist kit at short notice, because some of it has to be hired in and some depends on what’s free that week. What we can promise is a straight answer, quickly, rather than leaving you hoping.', 'restwell-retreats' ),
 		),
 	);
 }

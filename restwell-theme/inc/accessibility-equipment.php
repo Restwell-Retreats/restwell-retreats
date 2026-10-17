@@ -224,19 +224,19 @@ function restwell_accessibility_equipment_groups() {
 	return array(
 		'getting-in' => array(
 			'title' => __( 'Getting in', 'restwell-retreats' ),
-			'lede'  => __( 'The driveway is resin-bound, level, and takes two cars including an adapted vehicle. There is no step up into the house from where you park.', 'restwell-retreats' ),
+			'lede'  => __( 'The driveway is resin-bound and level, with room for two cars including an adapted vehicle, and there’s no step up into the house from where you park.', 'restwell-retreats' ),
 		),
 		'transfers'  => array(
 			'title' => __( 'Beds and hoists', 'restwell-retreats' ),
-			'lede'  => __( 'The accessible bedroom can be set up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
+			'lede'  => __( 'The accessible bedroom has a ceiling track hoist that covers the whole room, and we set it up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
 		),
 		'wet-room'   => array(
 			'title' => __( 'Wet room', 'restwell-retreats' ),
-			'lede'  => __( 'Level-access throughout, with no lip at the entrance. Specified by Care Spaces.', 'restwell-retreats' ),
+			'lede'  => __( 'The wet room is level from the door to the shower, with no lip at the entrance, and it was designed with Care Spaces.', 'restwell-retreats' ),
 		),
 		'kitchen'    => array(
 			'title' => __( 'Kitchen', 'restwell-retreats' ),
-			'lede'  => __( 'Worktops you can reach from a seated position. The living room has a rise-and-recline chair; rear French doors onto the patio give a 1720 mm opening.', 'restwell-retreats' ),
+			'lede'  => __( 'The worktop is low enough to use from a seat, the living room has a rise-and-recline chair, and the rear French doors give a 1720mm opening onto the patio.', 'restwell-retreats' ),
 		),
 	);
 }

@@ -4,15 +4,15 @@
 
 ## Title
 
-Look inside the accessible holiday bungalow
+Inside the accessible holiday bungalow in Whitstable
 
 ## Meta description
 
-A room-by-room look round the bungalow: two bedrooms, a level-access wet room, an open kitchen and French doors to the garden. Sleeps five, and it’s all yours.
+A room-by-room look round the bungalow: two bedrooms, a level-access wet room, a kitchen you can wheel under and a level garden. It sleeps up to five.
 
 ## H1 (`prop_hero_heading`)
 
-A proper look round the bungalow
+Inside the bungalow, room by room
 
 ## Opening paragraph (print directly under the H1)
 

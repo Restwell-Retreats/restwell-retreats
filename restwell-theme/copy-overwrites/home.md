@@ -16,7 +16,7 @@ Accessible holiday cottage in Whitstable, sleeps five
 
 ## Meta description
 
-One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and home care can be arranged if you’d like it.
+A private bungalow in Whitstable with a level wet room and ceiling hoist. It sleeps five, and you can add home care from our sister company if you’d like.
 
 ## H1 (`hero_heading`)
 
@@ -24,7 +24,7 @@ Accessible holidays in Whitstable
 
 ## Opening paragraph (print directly under the H1, before the welcome)
 
-Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.
+A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.
 
 ## Hero proof line
 
@@ -32,7 +32,7 @@ One named Google review, or a rating and review count, inside the first screen. 
 
 ## Intro (`hero_subheading`)
 
-Private bungalow with a level wet room and ceiling track hoist. Optional home care from Continuity, who quote for it.
+A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.
 
 ## Hero CTAs
 

@@ -10,7 +10,7 @@ A disabled holiday cottage with a wet room and hoist
 
 ## Meta description
 
-The access statement in full: a 965mm front door, 926mm inside, a ceiling hoist rated to 180kg, a height-adjustable basin and a tilt-in-space shower chair.
+The full access statement: a 965mm front door, 926mm internal doors, a ceiling hoist rated to 180kg, a level wet room and a tilt-in-space shower chair.
 
 ## H1 (`acc_heading`)
 
