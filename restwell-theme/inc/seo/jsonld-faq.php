@@ -53,7 +53,7 @@ function restwell_get_homepage_faq_meta_seed_map() {
 	$pairs = restwell_get_homepage_faq_pairs( 0 );
 	$out   = array(
 		'home_faq_label'   => __( 'Quick answers', 'restwell-retreats' ),
-		'home_faq_heading' => __( 'The questions that stop an enquiry', 'restwell-retreats' ),
+		'home_faq_heading' => __( 'Common questions before booking', 'restwell-retreats' ),
 	);
 	foreach ( $pairs as $i => $p ) {
 		$n = $i + 1;
