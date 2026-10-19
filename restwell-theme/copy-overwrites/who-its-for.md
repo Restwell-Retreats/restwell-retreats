@@ -2,29 +2,23 @@
 
 **Layer:** `wif_heading` `wif_intro`. Never “fully accessible” in Restwell-owned copy. This page is about fit, not specification: millimetres link to `/accessibility/`, money links to `/resources/`. Voice: the Welcome Guide.
 
+**Live copy (19 Oct 2026, batch 3):** the page’s wording lives in `inc/theme-setup/page-defaults.php` and the template. Everything below the intro is editorial background, so check it against the house rules before lifting any of it onto the page: no soft headings, no staccato, never “separately” or “costs the same” next to care.
+
 ## Title
 
 Holidays for disabled adults and their carers
 
 ## Meta description
 
-A private adapted bungalow that sleeps five, for disabled adults, families and the people who care for them. A holiday, not a placement. See whether it fits.
+A private adapted bungalow in Whitstable for disabled adults, their families and carers, in groups of up to five. Check the measurements before you book.
 
 ## H1 (`wif_heading`)
 
 Is this the right house for your group?
 
-## Opening paragraph (print directly under the H1)
-
-Restwell suits disabled adults, families and the people who care for them, in parties of up to five. It’s a private adapted bungalow you rent as a holiday, not a care home, not a nursing home, and not a registered respite centre. Home care is available if you want it, and entirely optional.
-
 ## Intro (`wif_intro`)
 
-The honest answer to “is this for us?” is that it depends on what went wrong last time.
-
-If you’ve been put off by a listing that called itself accessible and turned out to mean a downstairs loo, this page is worth your time. If you need registered residential care rather than a house with equipment in it, we’re not the right answer, and we’d rather say that now than take a deposit.
-
-Here’s who tends to end up here, and what they usually want to know.
+Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.
 
 ## If you’re coming as a guest or a family
 

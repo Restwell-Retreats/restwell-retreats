@@ -2,29 +2,23 @@
 
 **Layer:** `res_heading` `res_intro`. Never “fully accessible” in Restwell-owned copy. No eligibility promises, ever: we can say who we invoice, never what a funder will agree to. Kit lists belong on `/accessibility/`. Voice: the Welcome Guide.
 
+**Live copy (19 Oct 2026, batch 3):** the page’s wording lives in `inc/theme-setup/page-defaults.php` and the template. Everything below the intro is editorial background, so check it against the house rules before lifting any of it onto the page: no soft headings, no staccato, never “separately” or “costs the same” next to care.
+
 ## Title
 
-Funding an accessible holiday, and who we invoice
+Funding an accessible holiday
 
 ## Meta description
 
-We can invoice you, a council, the NHS or a grant body, and the bungalow rate is the same either way. What we can’t do is promise your package will cover it.
+How a break at Restwell can be paid for: direct payments, NHS Continuing Healthcare, charity grants or paying yourself, and the paperwork we can send.
 
 ## H1 (`res_heading`)
 
-Paying for a break, without the guesswork
-
-## Opening paragraph (print directly under the H1)
-
-Restwell can invoice you directly, a local authority, the NHS, or a grant body, and the bungalow costs the same whoever pays. Home care from Continuity of Care Services is quoted by them. We can’t promise that your funding will cover a holiday. That decision sits with your social worker or case manager.
+Funding an accessible holiday
 
 ## Intro (`res_intro`)
 
-Money is usually the bit that stalls a holiday, and it’s rarely because the sums don’t work. It’s because nobody will give you a straight answer about who’s allowed to pay for what.
-
-We can’t fix that entirely. A great deal of it sits with your local authority rather than with us. But we can be completely clear about our end of it, and we can wait. Nothing is due until you’ve confirmed the house fits, so you can go and have the conversation with your funder before anybody asks you for a deposit.
-
-If your funder calls it a respite break, that’s fine. That’s often the language they use. It’s still a private bungalow rather than a respite centre, and we’ll describe it accurately on any paperwork you need.
+A stay can be paid for by you, a council, the NHS or a grant body. Here’s how each route usually works, and what to ask before you book.
 
 ## A Disabled Facilities Grant won’t pay for this
 
@@ -32,7 +26,7 @@ H2: It sounds like it should, and it doesn’t
 
 A Disabled Facilities Grant is for adaptations to your own home: ramps, stairlifts, a downstairs bathroom. It doesn’t cover a holiday, however much the name suggests otherwise. We mention it because people arrive here having been told it might, and it’s better to know now.
 
-If you’re looking at direct payments for the accommodation or for a PA’s time, start here → `/direct-payment-holiday-accommodation/`
+Direct payments usually pay for care rather than the stay itself, and whether they cover the stay is up to the council → `/direct-payment-holiday-accommodation/`
 
 ## Care is quoted by Continuity
 

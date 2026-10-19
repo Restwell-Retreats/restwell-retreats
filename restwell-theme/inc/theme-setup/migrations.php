@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 86;
+const RESTWELL_SCHEMA_VERSION = 87;
 
 
 /**
@@ -3223,6 +3223,214 @@ function restwell_migrate_blog_summaries_v86() {
 }
 
 /**
+ * 19 Oct 2026, copy brief batch 3 (Who It's For, Optional Care, Funding &
+ * Support). Ellie asked for these to be decided and applied without a
+ * separate sign-off, under the same rules as batches 1 and 2: no staccato
+ * fragments, no soft headings, the hoist described as covering the whole
+ * bedroom, the funding detail (capital limits, "same rate") left to the
+ * Funding and Pricing pages, the unverified "councils can't ban holidays"
+ * line replaced with what the guidance says, and care described as optional
+ * with a Continuity quote. Same rule as v84: a stored value is replaced only
+ * while it still equals the shipped seed.
+ */
+function restwell_migrate_batch3_copy_v87() {
+	if ( get_option( 'restwell_batch3_copy_v87', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_batch3_copy_v87', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'who-its-for' => array(
+				'wif_intro' => array(
+					'Built for disabled adults, families and carers, in parties of up to five. A holiday let, not a care home or respite centre.',
+					'Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.',
+				),
+				'wif_audience_intro' => array(
+					'Families, carers, OTs and commissioners use the same published door widths and kit list, then decide if this bungalow fits before they travel.',
+					'Families, carers, occupational therapists and commissioners all work from the same published door widths and equipment list. That way you can decide whether the bungalow fits before anyone travels.',
+				),
+				'wif_family_body' => array(
+					'Hoist and wet room already fitted. Measurements published. A private home, not a hotel room.',
+					'The hoist and the wet room are already fitted, and every measurement is published. It’s a private house, so your routines run on your own time rather than a hotel’s.',
+				),
+				'wif_family_detail_bullets' => array(
+					"Ceiling track hoist in the accessible bedroom, profiling bed, and wet room with roll-in shower.\nPublished access measurements before you commit.\nA private, self-catering house, so your routines run to your own schedule.",
+					"A ceiling track hoist across the whole bedroom, two profiling beds and a level wet room.\nEvery door width and safe working load published before you book.\nA private, self-catering house, so you keep your own routines.",
+				),
+				'wif_family_inline_cta_label' => array(
+					'Read accessibility specification',
+					'Door widths and the hoist',
+				),
+				'wif_carers_body' => array(
+					'Separate sleeping and space to assist without blocking hall routes. Ask your council about a Carer’s Assessment under the Care Act 2014 if you need funding for a break.',
+					'There’s a separate bedroom for a carer or support worker, and room to help with transfers and personal care. If you look after someone, you can ask your council for a carer’s assessment.',
+				),
+				'wif_carers_detail_bullets' => array(
+					"A separate place to sleep for the support worker or carer.\nWet room designed for assisted personal care on the same level.\nYou have a legal right to a Carer's Assessment under the Care Act 2014.",
+					"A separate bedroom for the support worker or carer.\nA level-access wet room with space to help with personal care.\nA legal right to a carer’s assessment under the Care Act 2014.",
+				),
+				'wif_ot_body' => array(
+					'Door widths, hoist and wet-room specs are published. If you need one that isn’t, ask and we’ll measure it.',
+					'Door widths, hoist details and wet room measurements are all published. If you need one we haven’t listed, ask and we’ll go and measure it.',
+				),
+				'wif_ot_detail_bullets' => array(
+					'You’re welcome to talk to us about a referral before you commit to a booking.',
+					'You’re welcome to talk a referral through with us before anyone commits to a booking.',
+				),
+				'wif_ot_inline_cta_label' => array(
+					'Review accessibility details',
+					'Door widths and the hoist',
+				),
+				'wif_commissioners_body' => array(
+					'Care Act short breaks, with paperwork for direct payments, PHB or CHC. Same rates regardless of who we invoice.',
+					'A stay here can form part of a Care Act short break. We can supply the paperwork for direct payments, personal health budgets or CHC.',
+				),
+				'wif_commissioners_detail_bullets' => array(
+					"Short breaks at a private adapted setting can form part of a care and support plan under the Care Act 2014.\nWe can send the property spec, the measurements and the care provider’s CQC registration.\nWe support direct payments, personal health budgets and CHC.",
+					"A short break in a private adapted house can be part of a care and support plan under the Care Act 2014.\nWe can send you the house details, the measurements and Continuity’s CQC rating.\nWe can work with direct payments, personal health budgets and CHC funding.",
+				),
+				'wif_visual_intro' => array(
+					'These three items are on site before arrival, not hired for the week.',
+					'All three are in the bungalow before you arrive, so there’s nothing to hire for the week.',
+				),
+				'wif_funding_body' => array(
+					'If a stay is funded through a local authority, CHC, direct payments or a personal budget, the bungalow rate stays the same. Funding only changes who we invoice.',
+					'We can invoice you, a council, an NHS team or a grant body. Our funding page explains how each route usually works and what to ask before you book.',
+				),
+				'wif_fund_la_bullets' => array(
+					"It starts with a Care and Support Assessment. Unpaid carers can ask for a Carer's Assessment too (Care Act 2014).\nDirect payments: you receive the funding and choose your provider.\nCapital limits in England (2026/27): above £23,250 you generally pay in full; below £14,250 is usually ignored. Councils can set their own limits for care at home, so check yours.",
+					"It starts with an assessment of your care needs, and unpaid carers can ask for their own assessment too.\nWith direct payments, you hold the money and choose who provides the support.\nWhether a direct payment covers the stay is up to your council, so ask before you book.",
+				),
+				'wif_fund_phb_bullets' => array(
+					"For people with continuing healthcare needs who are found eligible.\nYour ICB or NHS continuing healthcare team handles the application.\nA private adapted house can go into a care and support plan where it suits your clinical needs.",
+					"For people found eligible for NHS Continuing Healthcare.\nYour ICB or continuing healthcare team handles the application.\nA stay in a private adapted house can be written into the plan where it meets the person’s needs.",
+				),
+				'wif_fund_phb_cta_label' => array(
+					'PHB and funding overview',
+					'How NHS funding usually works',
+				),
+				'wif_fund_private_bullets' => array(
+					"You get the same clear access information and straight answers as funded guests.\nPaperwork for insurers or employers, if you need it.\nNo pressure: we tell you plainly whether the property is a good fit.",
+					"You get the same access information and straight answers as funded guests.\nWe can send paperwork for your insurer or employer if you need it.\nWe’ll tell you plainly if the bungalow isn’t the right fit.",
+				),
+				'wif_cta_heading' => array(
+					'Describe the party and equipment',
+					'Tell us who’s coming and what you use',
+				),
+				'wif_cta_body' => array(
+					'We’ll say straight whether the bungalow fits, or where it doesn’t.',
+					'We’ll tell you plainly whether the bungalow fits, and where it doesn’t.',
+				),
+				'wif_cta_secondary_label' => array(
+					'Read accessibility',
+					'Door widths and the hoist',
+				),
+				'meta_description' => array(
+					'A private adapted bungalow that sleeps five, for disabled adults, families and the people who care for them. A holiday, not a placement. See whether it fits.',
+					'A private adapted bungalow in Whitstable for disabled adults, their families and carers, in groups of up to five. Check the measurements before you book.',
+				),
+			),
+			'optional-care' => array(
+				'care_heading' => array(
+					'Care that comes to your holiday',
+					'Optional home care during your stay',
+				),
+				'care_intro' => array(
+					'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.',
+					'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.',
+				),
+				'care_day_heading' => array(
+					'A day, with as much help as you like',
+					'Morning, daytime and overnight help',
+				),
+				'care_day_lede' => array(
+					'Tell us what a good day looks like at home and we’ll work backwards from there.',
+					'Tell us what a normal day looks like at home, and Continuity will plan the help around it.',
+				),
+				'care_day_1_body' => array(
+					'Help up, washed and dressed, at the time you’d get up at home. The shower chair is already in the wet room.',
+					'Help getting up, washed and dressed at the time you’d get up at home. The shower chair is already in the wet room.',
+				),
+				'care_day_2_body' => array(
+					'Company along the promenade or into town. Or a few hours so whoever usually does the caring can look at the water without watching the clock.',
+					'Someone to come along the promenade or into town, or a few hours of cover so the usual carer can have some time off.',
+				),
+				'care_day_3_body' => array(
+					'A sleep-in, or a waking night if someone needs to be up, so the person who usually lies awake listening gets to sleep.',
+					'A sleep-in, or a waking night if someone needs help during the night, so the person who usually cares can get some sleep.',
+				),
+				'care_how_lede' => array(
+					'Mention it on the same enquiry as the house. Nothing is booked until you say yes.',
+					'Mention it on the same enquiry as the house, and nothing is booked until you say yes.',
+				),
+				'care_how_step1_body' => array(
+					'Even if your dates are vague.',
+					'Mention it in your first message, even if your dates aren’t fixed yet.',
+				),
+				'care_how_step2_body' => array(
+					'Continuity ask about hours and tasks.',
+					'Continuity will ask about the hours and the tasks you need help with.',
+				),
+				'care_how_step3_body' => array(
+					'Nothing is booked until you say yes.',
+					'Continuity give you a quote, and nothing is booked until you’re happy with it.',
+				),
+				'care_pro_lede' => array(
+					'Door widths and kit are published, and Continuity confirm the care plan and cost once hours and tasks are agreed.',
+					'Door widths and equipment are published, and Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
+				),
+				'care_faq_1_a' => array(
+					'No. Many guests book the house as a self-catering holiday and need no additional support. Continuity care is optional.',
+					'No. Plenty of guests book the house as a self-catering holiday and don’t need any extra support. Care from Continuity is there if you’d like it.',
+				),
+				'care_faq_2_a' => array(
+					'No. Restwell is a private holiday bungalow. Continuity of Care Services (our sister company) is the CQC-regulated provider if you want professional care during your stay.',
+					'No. Restwell is a private holiday bungalow. Continuity of Care Services, our sister company, is the CQC-registered provider if you’d like professional care during your stay.',
+				),
+				'care_faq_3_q' => array(
+					'Do I book care separately?',
+					'Do I need to book care on its own?',
+				),
+				'care_faq_3_a' => array(
+					'No. Ask when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so house and care can start in one conversation when you want both.',
+					'No. Just mention it when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so the house and the care can start in one conversation.',
+				),
+				'care_faq_4_a' => array(
+					'Yes. The layout supports familiar routines, with separate sleeping and space to assist. Tell us your party layout when you enquire.',
+					'Yes. A carer can have the second bedroom, and there’s space to help with transfers and personal care. Tell us who’s coming when you enquire, and we’ll set the rooms up to suit.',
+				),
+				'care_faq_5_a' => array(
+					'On Pricing & dates. They are Continuity guide rates only. Continuity quotes your care cost once hours and tasks are agreed.',
+					'On Pricing & dates. They’re Continuity’s guide rates, and Continuity give you a quote once the hours and tasks are agreed.',
+				),
+				'care_cta_body' => array(
+					'Ring 01622 809881 or send a note. There’s no such thing as a silly question.',
+					'Ring 01622 809881 or send us a note, and we’ll talk through what would help.',
+				),
+				'meta_description' => array(
+					'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Same conversation as the house. Ring 01622 809881 or send us a note.',
+					'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Ask on the same enquiry as the house, or call 01622 809881.',
+				),
+			),
+			'funding-and-support' => array(
+				'res_heading' => array(
+					'Paying for a break, without the guesswork',
+					'Funding an accessible holiday',
+				),
+				'res_intro' => array(
+					'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.',
+					'A stay can be paid for by you, a council, the NHS or a grant body. Here’s how each route usually works, and what to ask before you book.',
+				),
+				'meta_description' => array(
+					'How Restwell handles funding, invoices and care costs for an accessible holiday. Clear information before you commit to dates or a deposit.',
+					'How a break at Restwell can be paid for: direct payments, NHS Continuing Healthcare, charity grants or paying yourself, and the paperwork we can send.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3344,6 +3552,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch1_copy_v84',
 		'restwell_batch2_copy_v85',
 		'restwell_blog_summaries_v86',
+		'restwell_batch3_copy_v87',
 	);
 }
 
@@ -3502,6 +3711,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch2_copy_v85', 123 );
 	add_action( 'init', 'restwell_migrate_blog_summaries_v86', 129 );
 	add_action( 'after_switch_theme', 'restwell_migrate_blog_summaries_v86', 124 );
+	add_action( 'init', 'restwell_migrate_batch3_copy_v87', 130 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch3_copy_v87', 125 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

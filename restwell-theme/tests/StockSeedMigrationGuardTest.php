@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 86;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 87;', $source );
 	}
 
 	public function test_home_blog_cleanup_never_touches_the_front_or_posts_page() {

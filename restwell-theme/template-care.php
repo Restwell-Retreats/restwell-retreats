@@ -15,15 +15,15 @@ get_header();
 
 $restwell_care_id      = (int) get_queried_object_id();
 $restwell_care_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Care that comes to your holiday' )
-	: 'Care that comes to your holiday';
+	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Optional home care during your stay' )
+	: 'Optional home care during your stay';
 $restwell_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_care_id,
 		'care_intro',
-		'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.'
+		'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.'
 	)
-	: 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. As much or as little as you’d like, and only if you ask.';
+	: 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.';
 $restwell_care_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_care_id, 'care_label', '' )
 	: '';
@@ -34,17 +34,17 @@ $care_txt = static function ( $key, $fallback ) use ( $restwell_care_id ) {
 		: $fallback;
 };
 
-$care_day_heading = $care_txt( 'care_day_heading', 'A day, with as much help as you like' );
-$care_day_lede = $care_txt( 'care_day_lede', 'Tell us what a good day looks like at home and we’ll work backwards from there.' );
+$care_day_heading = $care_txt( 'care_day_heading', 'Morning, daytime and overnight help' );
+$care_day_lede = $care_txt( 'care_day_lede', 'Tell us what a normal day looks like at home, and Continuity will plan the help around it.' );
 $care_who_heading = $care_txt( 'care_who_heading', 'Rated Good by the Care Quality Commission' );
 $care_who_lede = $care_txt( 'care_who_lede', 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.' );
 $care_cqc_link_label = $care_txt( 'care_cqc_link_label', 'Read the CQC inspection profile' );
 $care_how_heading = $care_txt( 'care_how_heading', 'Asking for care' );
-$care_how_lede = $care_txt( 'care_how_lede', 'Mention it on the same enquiry as the house. Nothing is booked until you say yes.' );
+$care_how_lede = $care_txt( 'care_how_lede', 'Mention it on the same enquiry as the house, and nothing is booked until you say yes.' );
 $care_own_heading = $care_txt( 'care_own_heading', 'Bringing your own carer' );
 $care_own_lede = $care_txt( 'care_own_lede', 'Plenty of guests do. They can have the second double bedroom or the sofa bed in the conservatory, use the hoist and shower chair, and park on the drive.' );
 $care_pro_heading = $care_txt( 'care_pro_heading', 'For OTs, case managers and commissioners' );
-$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths and kit are published, and Continuity confirm the care plan and cost once hours and tasks are agreed.' );
+$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths and equipment are published, and Continuity confirm the care plan and the cost once the hours and tasks are agreed.' );
 $care_day = array();
 for ( $care_day_i = 1; $care_day_i <= 3; $care_day_i++ ) {
 	$care_day[] = array(
@@ -66,23 +66,23 @@ $care_faq_intro   = $care_txt( 'care_faq_intro', 'The questions people ask most 
 $care_faq_live    = array(
 	1 => array(
 		'q' => 'Do I have to book care?',
-		'a' => 'No. Many guests book the house as a self-catering holiday and need no additional support. Continuity care is optional.',
+		'a' => 'No. Plenty of guests book the house as a self-catering holiday and don’t need any extra support. Care from Continuity is there if you’d like it.',
 	),
 	2 => array(
 		'q' => 'Who regulates the care team?',
 		'a' => 'The Care Quality Commission. Continuity of Care Services is rated Good, and Victoria Walker, who owns Restwell, is their registered manager. Read the published report yourself rather than take our word for it.',
 	),
 	3 => array(
-		'q' => 'Do I book care separately?',
-		'a' => 'No. Ask when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so house and care can start in one conversation when you want both.',
+		'q' => 'Do I need to book care on its own?',
+		'a' => 'No. Just mention it when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so the house and the care can start in one conversation.',
 	),
 	4 => array(
 		'q' => 'Can I bring my own carers?',
-		'a' => 'Yes. The layout supports familiar routines, with separate sleeping and space to assist. Tell us your party layout when you enquire.',
+		'a' => 'Yes. A carer can have the second bedroom, and there’s space to help with transfers and personal care. Tell us who’s coming when you enquire, and we’ll set the rooms up to suit.',
 	),
 	5 => array(
 		'q' => 'Where do I see guide rates?',
-		'a' => 'On Pricing & dates. They are Continuity guide rates only. Continuity quotes your care cost once hours and tasks are agreed.',
+		'a' => 'On Pricing & dates. They’re Continuity’s guide rates, and Continuity give you a quote once the hours and tasks are agreed.',
 	),
 );
 $care_faq_items = array();
@@ -348,8 +348,8 @@ $care_day_photos = array(
 		? restwell_page_content_text( $restwell_care_id, 'care_cta_heading', __( 'Tell us what you need, and we’ll work it out with you', 'restwell-retreats' ) )
 		: __( 'Tell us what you need, and we’ll work it out with you', 'restwell-retreats' );
 	$care_mid_cta_intro   = function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_care_id, 'care_cta_body', __( 'Ring 01622 809881 or send a note. There’s no such thing as a silly question.', 'restwell-retreats' ) )
-		: __( 'Ring 01622 809881 or send a note. There’s no such thing as a silly question.', 'restwell-retreats' );
+		? restwell_page_content_text( $restwell_care_id, 'care_cta_body', __( 'Ring 01622 809881 or send us a note, and we’ll talk through what would help.', 'restwell-retreats' ) )
+		: __( 'Ring 01622 809881 or send us a note, and we’ll talk through what would help.', 'restwell-retreats' );
 	$care_mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_care_id, 'care_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
 		: __( 'Enquire', 'restwell-retreats' );

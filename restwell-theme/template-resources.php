@@ -41,10 +41,10 @@ $res_txt = static function ( $key, $fallback ) use ( $restwell_res_id ) {
 		: $fallback;
 };
 
-$restwell_res_heading = $res_txt( 'res_heading', 'Paying for a break, without the guesswork' );
+$restwell_res_heading = $res_txt( 'res_heading', 'Funding an accessible holiday' );
 $restwell_res_intro   = $res_txt(
 	'res_intro',
-	'Who can pay for a stay: direct, a council, the NHS or a grant body, and how funding for a break usually works.'
+	'A stay can be paid for by you, a council, the NHS or a grant body. Here’s how each route usually works, and what to ask before you book.'
 );
 
 $res_chc_heading = $res_txt( 'res_chc_heading', 'Continuing Healthcare and personal health budgets' );
@@ -119,7 +119,7 @@ get_template_part(
 		<header class="section-head">
 		  <p class="eyebrow">What each route usually pays</p>
 		  <h2 id="routes-h">Where to start with your coordinator</h2>
-		  <p class="lede">The usual pattern for each route. Your own coordinator has the last word.</p>
+		  <p class="lede">This is the usual pattern for each route, but your own coordinator has the last word.</p>
 		</header>
 
 		<div class="funding-tabs" data-tabs>
@@ -133,7 +133,7 @@ get_template_part(
 			<div class="funding-route__copy">
 			  <p class="eyebrow">Care Act</p>
 			  <h3>Direct payments and personal budgets</h3>
-			  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils aren’t allowed to ban holidays as a blanket rule. Whether the bungalow rent is in depends on what’s written down, so it’s worth asking before you book.</p>
+			  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils are told not to restrict direct payments unreasonably, but each one sets its own rules. Whether the bungalow rent is covered depends on what’s written in the plan, so it’s worth asking before you book.</p>
 			</div>
 			<div class="cover-prose">
 			  <p><strong>Usually covers</strong> assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</p>
@@ -339,7 +339,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="res-q2-a" role="region" aria-labelledby="res-q2" hidden>
-				<p>There isn’t a general scheme where the NHS pays for holidays. Your assessed care can sometimes continue while you’re away. Treat the house, travel and care as separate costs, and get each one clear in writing.</p>
+				<p>There isn’t a general scheme where the NHS pays for holidays. Your assessed care can sometimes continue while you’re away. Work out the house, the travel and the care one at a time, and get each one clear in writing.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -348,7 +348,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="res-q3-a" role="region" aria-labelledby="res-q3" hidden>
-				<p>Yes, if it fits your support plan. Councils can’t ban short breaks as a blanket rule. The bungalow rent is only in if the plan names it, and food and souvenirs usually aren’t. Check with your social worker before you pay a deposit.</p>
+				<p>Yes, if it fits your support plan, although each council sets its own rules. The bungalow rent is only covered if the plan names it, and food and souvenirs usually aren’t. Check with your social worker before you pay a deposit.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
