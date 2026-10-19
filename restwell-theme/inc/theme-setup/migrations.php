@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 84;
+const RESTWELL_SCHEMA_VERSION = 85;
 
 
 /**
@@ -2793,6 +2793,299 @@ function restwell_migrate_batch1_copy_v84() {
 }
 
 /**
+ * 19 Oct 2026, copy brief batch 2 (Pricing, How It Works, FAQ, Enquire), as
+ * approved by Ellie: plain headings, one "We aim to reply within 48 hours"
+ * promise, the one-night minimum stay on Pricing and the FAQ, the FAQ's first
+ * answer no longer saying Restwell is "both" a bungalow and a respite centre,
+ * the duplicate respite question swapped for the minimum stay, full-room hoist
+ * coverage, care described as optional with a Continuity quote (never
+ * "separately"), "Ask us about a stay" on Enquire, and the four titles and
+ * meta descriptions. Same rule as v84: a stored value is replaced only while
+ * it still equals the shipped seed.
+ */
+function restwell_migrate_batch2_copy_v85() {
+	if ( get_option( 'restwell_batch2_copy_v85', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_batch2_copy_v85', '1', false );
+	$pages = array(
+		'pricing' => array(
+			'pricing_intro' => array(
+				'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.',
+				'Here are the weekly and nightly rates, the nights that are free and how the deposit works. You can stay for one night or a whole week, and the access equipment is included.',
+			),
+			'pricing_rates_heading' => array(
+				'Published bungalow rates',
+				'Weekly and nightly rates',
+			),
+			'pricing_rates_intro' => array(
+				'The bungalow sleeps five people. Prices vary for midweek (Monday to Thursday) and weekend (Friday to Sunday) nights. Care is optional and has a separate charge.',
+				'You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.',
+			),
+			'pricing_payment_intro' => array(
+				'You can pay by bank transfer or card. For information about invoicing different funders, see Funding & Support.',
+				'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works.',
+			),
+			'pricing_care_rates_heading' => array(
+				'Optional care while you stay',
+				'Guide rates for optional care',
+			),
+			'pricing_care_rates_intro' => array(
+				'Guide rates for care from Continuity depend on the hours and tasks you need. Continuity will give you a quote after you speak with them.',
+				'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.',
+			),
+			'pricing_cta_heading' => array(
+				'Enquire about dates and care',
+				'Ask about dates and care',
+			),
+			'pricing_cta_body' => array(
+				'Let us know your arrival dates, access needs, and if you want support from Continuity. You do not need to pay a deposit until you decide.',
+				'Tell us when you’d like to come, what you need from the house and whether you’d like care from Continuity. We aim to reply within 48 hours, and there’s no deposit to pay until you’re happy the house fits.',
+			),
+			'meta_title' => array(
+				'Prices for the bungalow, and what’s included',
+				'Accessible holiday prices for the Whitstable bungalow',
+			),
+			'meta_description' => array(
+				'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all the access equipment included. The rate is the same whoever pays the invoice.',
+				'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, and you can book a single night. The access equipment is included in the price.',
+			),
+		),
+		'how-it-works' => array(
+			'hiw_heading' => array(
+				'The bookends of a holiday should be the easy bit',
+				'How booking a stay works',
+			),
+			'hiw_intro' => array(
+				'Booking Restwell is three steps: enquire, confirm with a deposit, and arrive from 3pm using a key safe.',
+				'There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.',
+			),
+			'hiw_steps_intro' => array(
+				'Three steps from your first message to the front door. There is no online checkout, and you only pay a deposit after we’ve both agreed the bungalow fits.',
+				'There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.',
+			),
+			'hiw_step1_body' => array(
+				'Send us your dates, who’s coming, and anything that would make the house work better for you. We aim to reply within 48 hours. Nothing to pay at this stage.',
+				'Send us your dates, who’s coming and anything that would help the house work for you, like how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
+			),
+			'hiw_step2_body' => array(
+				'We set the house up around what you’ve told us. A 50% deposit reserves the dates; the balance is due a week before you arrive. Care from Continuity stays in the same conversation.',
+				'Once we’ve agreed the house fits, a 50% deposit holds your dates and the rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.',
+			),
+			'hiw_step3_body' => array(
+				'Check-in is from 3pm, through a key safe. We send the code and the address with your confirmation, never on the website.',
+				'Check-in is from 3pm, and you let yourselves in with a key safe. We send the code and the address with your confirmation, and we never put them on the website.',
+			),
+			'hiw_arrival_heading' => array(
+				'Key-safe from 3pm',
+				'What happens on arrival day',
+			),
+			'hiw_arrival_lede' => array(
+				'There is no reception desk. Park in the driveway, open the key safe, and settle into a house that is already set up for your group.',
+				'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.',
+			),
+			'hiw_arrival_1_dd' => array(
+				'From 3pm via the key-safe · departure by 11am',
+				'From 3pm, using the key safe. Check-out is by 11am.',
+			),
+			'hiw_arrival_2_dd' => array(
+				'Level driveway for two cars, including accessible vehicles',
+				'A level driveway for two cars, including an adapted vehicle',
+			),
+			'hiw_arrival_3_dd' => array(
+				'Step-free routes and kit set from your enquiry · guest notes after dates are confirmed',
+				'Beds and equipment set up as we agreed, with a guest guide sent once your dates are confirmed',
+			),
+			'hiw_arrival_link2_label' => array(
+				'Door widths and kit notes',
+				'Door widths and the hoist',
+			),
+			'hiw_care_cta_heading' => array(
+				'If you’d like care while you’re here',
+				'Adding care to your stay',
+			),
+			'hiw_care_cta_body' => array(
+				'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
+				'If you’d like home care while you’re here, mention it in your first message. Continuity, our sister company, will talk it through with you and give you a quote. You’re just as welcome to bring your own carer or PA.',
+			),
+			'hiw_faq_heading' => array(
+				'Before you enquire',
+				'Questions about booking',
+			),
+			'hiw_faq_intro' => array(
+				'We will explain when to pay the deposit, who we invoice, arrival details, and how optional care works with a self-catering stay.',
+				'When the deposit is due, who we can invoice, and how care fits around a self-catering stay.',
+			),
+			'hiw_faq_1_a' => array(
+				'Three steps: send us your dates and what you need, we confirm the bungalow and take a 50% deposit, then you arrive from 3pm using a key safe. Care can go on the same enquiry.',
+				'Send us your dates and what you need, using the form, by email or on 01622 809881. Once we’ve checked the house fits, a 50% deposit holds your dates, and you arrive from 3pm on the day.',
+			),
+			'hiw_faq_2_a' => array(
+				'Mention it when you first write, even if the dates are still vague. We don’t publish a lead time because it depends on what you need and who’s available that week. We’ll give you a real answer quickly.',
+				'It’s best to mention it in your first message, even if your dates aren’t fixed yet. We don’t publish a lead time, because it depends on what you need and who’s free that week. We’ll give you a straight answer as soon as we can.',
+			),
+			'hiw_faq_3_a' => array(
+				'We can invoice you, a council, the NHS or a grant body, at the same bungalow rate. Who we invoice doesn’t change the price. See Funding and support for the paperwork.',
+				'You can pay by bank transfer or card, and we can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on <a href="/pricing/#payment">Prices and dates</a>, and <a href="/funding-and-support/">Funding and support</a> explains the paperwork.',
+			),
+			'hiw_faq_4_q' => array(
+				'Can a local authority, case manager or NHS team book for me?',
+				'Can a council, case manager or NHS team book for me?',
+			),
+			'hiw_faq_4_a' => array(
+				'Yes. Funded bookings are welcome, and funders can confirm a booking with a purchase order on the same payment timeline as every guest.',
+				'Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order, and the deposit and balance follow the same timings as any other stay.',
+			),
+			'hiw_cta_heading' => array(
+				'Send dates and access needs',
+				'Tell us your dates',
+			),
+			'hiw_cta_body' => array(
+				'We will reply with measurements, equipment notes, and your next steps.',
+				'Let us know when you’d like to come and what you need from the house. We’ll reply with the measurements, equipment details and what happens next.',
+			),
+			'meta_title' => array(
+				'Booking a stay, from first email to front door',
+				'How to book a stay at Restwell, step by step',
+			),
+			'meta_description' => array(
+				'Tell us your dates and who’s coming. We confirm the bungalow, you pay a deposit, and you arrive to a house set up for you. Care can go on the same note.',
+				'From your first message to the front door: how we check the bungalow fits, when the deposit is due and what happens when you arrive on the day.',
+			),
+		),
+		'faq' => array(
+			'faq_intro' => array(
+				'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.',
+				'These are the things people ask us most before they book. Each answer is short and links to the page with more detail.',
+			),
+			'faq_cta_heading' => array(
+				'Send dates and access needs',
+				'Ask about your dates',
+			),
+			'faq_cta_body' => array(
+				'We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.',
+				'Tell us when you’d like to come and what you need. We aim to reply within 48 hours, or you can call 01622 809881 if you’d rather talk it through.',
+			),
+			'faq_1_q' => array(
+				'What is Restwell, exactly: bungalow, care home, or respite centre?',
+				'Is Restwell a care home or a respite centre?',
+			),
+			'faq_1_a' => array(
+				'Both, in the way that helps you plan: it’s a private adapted bungalow that you rent as a holiday, with no staff on site, and optional care from Continuity if you want it. It’s not a registered respite centre, though your funder may use the word respite on paperwork, and that’s fine.',
+				'No. Restwell is a private bungalow that you rent as a holiday, so the house is yours and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity of Care Services, can provide it. Your funder may call the break respite on their paperwork, and that’s fine.',
+			),
+			'faq_2_q' => array(
+				'Is it a respite centre?',
+				'Can we book just one night?',
+			),
+			'faq_2_a' => array(
+				'No, though your funder may well use the word respite, and that’s fine. It’s often how a break like this gets described on paperwork. It’s still a private house rather than a registered respite service.',
+				'Yes. The minimum stay is one night, so you can book anything from a single night to a full week or more. The nightly and weekly rates are on <a href="/pricing/">Prices and dates</a>.',
+			),
+			'faq_2_cat' => array(
+				'about',
+				'booking',
+			),
+			'faq_3_q' => array(
+				'What are the doorway widths, and will my wheelchair fit?',
+				'What are the door widths, and will my wheelchair fit?',
+			),
+			'faq_3_a' => array(
+				'The house is single-storey and step-free throughout. The front door has a 965mm clear opening, the internal doorways are 926mm, the wet room is level-access, and there’s a ceiling track hoist over the profiling bed. If you need a measurement we haven’t published, ask and we’ll go and take it. See the <a href="/accessibility/">access statement</a>.',
+				'The bungalow is all on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm, so you can check those against your own chair. If you need a measurement we haven’t published, ask and we’ll go and measure it. Every figure is in the <a href="/accessibility/">access statement</a>.',
+			),
+			'faq_4_a' => array(
+				'There’s a ceiling track hoist rated to 180kg, and an electric mobile hoist also rated to 180kg. Both are subject to a LOLER thorough examination every six months. Guests bring their own slings, because a sling needs to fit the person.',
+				'Yes. There’s a ceiling track hoist that covers the whole of the main bedroom, and a mobile hoist you can use in any room. Both have a safe working load of 180kg and are examined under LOLER every six months. Please bring your own slings, because a sling needs to fit the person using it.',
+			),
+			'faq_5_a' => array(
+				'Yes. We arrange the accessible bedroom around each guest: one profiling bed if that’s what you need, two if it isn’t. Tell us when you book so it’s set up before you arrive.',
+				'Yes. We have two profiling beds, and we set the accessible bedroom up with one or both, depending on who needs them. Tell us when you book and it’ll be ready when you arrive.',
+			),
+			'faq_6_a' => array(
+				'Five. There are two bedrooms and a double sofa bed in the conservatory. Five is what our safety checks are based on, so we do have to hold to it.',
+				'Up to five. There are two bedrooms and a double sofa bed in the conservatory. Our safety checks are based on five people, so we can’t go above that.',
+			),
+			'faq_7_a' => array(
+				'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Continuity quote for the care once you’ve talked through what you need. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
+				'Yes. Continuity of Care Services, our sister company, can come into the bungalow during your stay, from a morning visit to nurse-led support. Mention it on the same enquiry as the house, and Continuity will give you a quote once you’ve talked through what you need. There’s more on the <a href="/optional-care/">Optional care</a> page.',
+			),
+			'faq_8_q' => array(
+				'How far ahead do we need to arrange the care?',
+				'How far ahead do we need to arrange care?',
+			),
+			'faq_8_a' => array(
+				'The sooner you ask, the more likely we can say yes. We don’t publish a lead time because it honestly depends on what you need and who’s available that week, and we’d rather give you a real answer quickly than a number we’ve invented.',
+				'The sooner you ask, the more likely it is that we can say yes. We don’t publish a lead time, because it depends on what you need and who’s free that week. We’d rather give you a real answer quickly than a number we’ve made up.',
+			),
+			'faq_9_a' => array(
+				'Of course. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.',
+				'Of course. Plenty of guests bring their own carer or PA, and the second bedroom gives them somewhere proper to sleep. If you’d like to talk through who sleeps where, we’re happy to help.',
+			),
+			'faq_10_a' => array(
+				'About ten minutes on foot from the driveway. Places along Tankerton promenade take longer, because you walk down to the sea first and then head west along the prom. JoJo’s is roughly twenty minutes all in. See the <a href="/whitstable-area-guide/">Whitstable guide</a>.',
+				'It’s about ten minutes on foot from the driveway to the seafront. Places along Tankerton promenade take a bit longer, because you head down to the sea first and then west along the prom. JoJo’s is about twenty minutes in all. The <a href="/whitstable-area-guide/">Whitstable guide</a> has the step-free routes.',
+			),
+			'faq_11_a' => array(
+				'A week is £1,300 off-peak and £1,400 in peak season, with all the access equipment, linen, towels and parking included. A 50% deposit reserves your dates and the balance follows a week before arrival. See <a href="/pricing/">Pricing & dates</a>.',
+				'A week is £1,300 off-peak and £1,400 in peak season, and the access equipment, linen, towels and parking are all included. A 50% deposit holds your dates and the rest is due a week before you arrive. Every rate is on <a href="/pricing/">Prices and dates</a>.',
+			),
+			'faq_12_a' => array(
+				'We can invoice you, a local authority, the NHS or a grant body, and the rate is identical either way. What we can’t do is promise your package will cover a holiday. That decision sits with your social worker or case manager. See <a href="/funding-and-support/">Funding and support</a>.',
+				'We can invoice you, a local authority, the NHS or a grant body. What we can’t do is promise that your care package will cover a holiday, because that decision sits with your social worker or case manager. <a href="/funding-and-support/">Funding and support</a> explains how it usually works.',
+			),
+			'faq_13_a' => array(
+				'Some guests do, for the accommodation or for a PA’s time. The rules vary by area, so start with your own care team. See <a href="/direct-payment-holiday-accommodation/">direct payments</a>.',
+				'Some guests do, either for the stay or for a PA’s time. The rules vary from area to area, so it’s best to start with your own care team. Our <a href="/direct-payment-holiday-accommodation/">guide to direct payments</a> explains more.',
+			),
+			'faq_14_a' => array(
+				'Yes, with a bit of notice so we can run a quick risk assessment. Assistance dogs are welcome on the same terms.',
+				'Yes, with a little notice so we can do a quick risk assessment first. Assistance dogs are welcome on the same terms.',
+			),
+			'faq_15_a' => array(
+				'From 3pm, through a key safe, with the code sent to you beforehand. Check-out is by 11am, and if you need longer for personal care or transport, tell us a few days ahead and we’ll do our best. See <a href="/how-it-works/">How it works</a>.',
+				'Check-in is from 3pm, using a key safe, and we send you the code beforehand. Check-out is by 11am. If you need longer for personal care or transport, let us know a few days ahead and we’ll do our best. <a href="/how-it-works/">How it works</a> covers arrival day in full.',
+			),
+			'meta_title' => array(
+				'The questions guests ask us before booking',
+				'Restwell FAQ: the questions guests ask before booking',
+			),
+			'meta_description' => array(
+				'Straight answers about the house, the access equipment, optional home care, deposits and who we can invoice. Then a link to the page that covers it properly.',
+				'Straight answers to what people ask before booking, from door widths and hoists to home care, prices and who can pay, each linked to the page with more.',
+			),
+		),
+		'enquire' => array(
+			'enq_heading' => array(
+				'Get in touch whenever you’re ready',
+				'Ask us about a stay',
+			),
+			'enq_intro' => array(
+				'Send your dates and what you need, and we’ll reply within 48 hours. There’s no deposit until you’ve decided it fits.',
+				'Tell us your dates and what you need from the house, and ask about care on the same form if you’d like it. We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure it fits.',
+			),
+			'enq_success_body' => array(
+				'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.',
+				'Thank you, we’ve got your enquiry. We’ve emailed you to confirm, and one of us will read your details and aim to reply within 48 hours. If you’d rather talk it through, call 01622 809881.',
+			),
+			'enq_success_urgent_body' => array(
+				'We’ve flagged this for a priority callback and aim to contact you sooner than our usual 48-hour window. If you need to speak now, call 01622 809881.',
+				'We’ve marked this as urgent and will try to call you back sooner than our usual 48 hours. If you need to speak to someone now, call 01622 809881.',
+			),
+			'meta_title' => array(
+				'Ask us anything about a stay at Restwell',
+				'Contact Restwell about a stay in Whitstable',
+			),
+			'meta_description' => array(
+				'Call, email or fill in the form. Tell us your dates and what you need from the house, with any care questions on the same note. Nothing to pay until it fits.',
+				'Call 01622 809881, email or use the form to ask about dates, access or care. We aim to reply within 48 hours, and there’s no deposit until it fits.',
+			),
+		),
+	);
+	restwell_replace_stale_page_copy( $pages );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -2912,6 +3205,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_our_story_hero_v82',
 		'restwell_dedupe_home_blog_v83',
 		'restwell_batch1_copy_v84',
+		'restwell_batch2_copy_v85',
 	);
 }
 
@@ -3066,6 +3360,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_dedupe_home_blog_v83', 121 );
 	add_action( 'init', 'restwell_migrate_batch1_copy_v84', 127 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch1_copy_v84', 122 );
+	add_action( 'init', 'restwell_migrate_batch2_copy_v85', 128 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch2_copy_v85', 123 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

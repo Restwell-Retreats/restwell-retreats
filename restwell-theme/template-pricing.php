@@ -66,8 +66,8 @@ $restwell_pricing_heading = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_pricing_id, 'pricing_heading', 'What a stay here costs' )
 	: 'What a stay here costs';
 $restwell_pricing_intro   = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_pricing_id, 'pricing_intro', 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.' )
-	: 'Weekly and nightly rates, the deposit, and what’s included, at the same price whoever pays.';
+	? restwell_page_content_text( $restwell_pricing_id, 'pricing_intro', 'Here are the weekly and nightly rates, the nights that are free and how the deposit works. You can stay for one night or a whole week, and the access equipment is included.' )
+	: 'Here are the weekly and nightly rates, the nights that are free and how the deposit works. You can stay for one night or a whole week, and the access equipment is included.';
 
 $pricing_txt = static function ( $key, $fallback ) use ( $restwell_pricing_id ) {
 	return function_exists( 'restwell_page_content_text' )
@@ -76,22 +76,22 @@ $pricing_txt = static function ( $key, $fallback ) use ( $restwell_pricing_id ) 
 };
 
 $pricing_rates_label   = $pricing_txt( 'pricing_rates_label', __( 'Bungalow rates', 'restwell-retreats' ) );
-$pricing_rates_heading = $pricing_txt( 'pricing_rates_heading', __( 'Published bungalow rates', 'restwell-retreats' ) );
+$pricing_rates_heading = $pricing_txt( 'pricing_rates_heading', __( 'Weekly and nightly rates', 'restwell-retreats' ) );
 $pricing_rates_intro   = $pricing_txt(
 	'pricing_rates_intro',
-	__( 'The bungalow sleeps five people. Prices vary for midweek (Monday to Thursday) and weekend (Friday to Sunday) nights. Care is optional and has a separate charge.', 'restwell-retreats' )
+	__( 'You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.', 'restwell-retreats' )
 );
 $pricing_payment_label   = $pricing_txt( 'pricing_payment_label', __( 'Deposits and balance', 'restwell-retreats' ) );
 $pricing_payment_heading = $pricing_txt( 'pricing_payment_heading', __( 'How payment works', 'restwell-retreats' ) );
 $pricing_payment_intro   = $pricing_txt(
 	'pricing_payment_intro',
-	__( 'You can pay by bank transfer or card. For information about invoicing different funders, see Funding & Support.', 'restwell-retreats' )
+	__( 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works.', 'restwell-retreats' )
 );
 $pricing_care_rates_label   = $pricing_txt( 'pricing_care_rates_label', __( 'Guide rates', 'restwell-retreats' ) );
-$pricing_care_rates_heading = $pricing_txt( 'pricing_care_rates_heading', __( 'Optional care while you stay', 'restwell-retreats' ) );
+$pricing_care_rates_heading = $pricing_txt( 'pricing_care_rates_heading', __( 'Guide rates for optional care', 'restwell-retreats' ) );
 $pricing_care_rates_intro   = $pricing_txt(
 	'pricing_care_rates_intro',
-	__( 'Guide rates for care from Continuity depend on the hours and tasks you need. Continuity will give you a quote after you speak with them.', 'restwell-retreats' )
+	__( 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.', 'restwell-retreats' )
 );
 
 /**
@@ -200,7 +200,7 @@ get_template_part(
 			  </ul>
 			</div>
 		  </div>
-		  <p class="rates-follow">You can find room details and capacity on the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">property page</a>. Equipment and measurements are listed in the <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">access details</a>.</p>
+		  <p class="rates-follow">If you’d like to see the rooms first, <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">have a look round the bungalow</a>. The <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">door widths and the full equipment list</a> are on the Accessibility page.</p>
 		  <details class="peak-dates" data-peak-dates>
 			<summary class="peak-dates__summary">
 			  <h3 id="peak-dates-h" class="peak-dates__summary-title">Peak season dates</h3>
@@ -241,25 +241,25 @@ get_template_part(
 			<span class="payment-steps__index" aria-hidden="true">01</span>
 			<div class="payment-steps__body">
 			  <h3><?php echo esc_html( sprintf( /* translators: %d: deposit percentage */ __( '%d%% deposit', 'restwell-retreats' ), (int) $timeline['deposit_percent'] ) ); ?></h3>
-			  <p><?php echo esc_html( __( 'This deposit secures your dates and removes the bungalow from the calendar.', 'restwell-retreats' ) ); ?></p>
+			  <p><?php echo esc_html( __( 'Once we’ve talked it through and you’re happy the house fits, the deposit holds your dates and takes them off the calendar.', 'restwell-retreats' ) ); ?></p>
 			</div>
 		  </li>
 		  <li class="payment-steps__item">
 			<span class="payment-steps__index" aria-hidden="true">02</span>
 			<div class="payment-steps__body">
 			  <h3>Balance before arrival</h3>
-			  <p><?php echo esc_html( sprintf( /* translators: %s: balance due timing, e.g. "no later than one week before you arrive" */ __( 'The remaining balance is due %s.', 'restwell-retreats' ), $timeline['balance_due_clause_you'] ) ); ?></p>
+			  <p><?php echo esc_html( sprintf( /* translators: %s: balance due timing, e.g. "no later than one week before you arrive" */ __( 'You pay the rest %s.', 'restwell-retreats' ), $timeline['balance_due_clause_you'] ) ); ?></p>
 			</div>
 		  </li>
 		  <li class="payment-steps__item">
 			<span class="payment-steps__index" aria-hidden="true">03</span>
 			<div class="payment-steps__body">
 			  <h3>No extras</h3>
-			  <p>We do not charge a damage deposit or a cleaning fee at the end of your stay.</p>
+			  <p>There’s no damage deposit and no cleaning fee to pay at the end of your stay.</p>
 			</div>
 		  </li>
 		</ol>
-		<p class="payment-note">If your plans change, our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'terms-and-conditions' ) ); ?>">terms and cancellation policy</a> will explain what happens next.</p>
+		<p class="payment-note">If your plans change, our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'terms-and-conditions' ) ); ?>">terms and cancellation policy</a> explain what happens next.</p>
 	  </div>
 	</section>
 
@@ -395,8 +395,8 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 		<div class="faq__layout">
 		  <header class="faq__intro">
 			<p class="eyebrow">Money questions</p>
-			<h2 id="faq-h">Pricing FAQ</h2>
-			<p class="lede">See what is included in the bungalow rate, how Continuity guide rates work, and why funding does not change our published price.</p>
+			<h2 id="faq-h">Questions about prices</h2>
+			<p class="lede">What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.</p>
 		  </header>
 		  <div class="faq-list" data-faq-accordion>
 			<div class="faq-item is-open">
@@ -405,7 +405,7 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="pr-q1-a" role="region" aria-labelledby="pr-q1">
-				<p>No. The bungalow rate covers the house and on-site access equipment. Care is optional and provided by Continuity of Care Services. See the guide rates above for details.</p>
+				<p>No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -414,16 +414,16 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="pr-q2-a" role="region" aria-labelledby="pr-q2" hidden>
-				<p>On-site hoists, profiling beds, and wet-room equipment are included. If you need to hire specialist equipment, there is an extra charge, so let us know when you enquire. For fit and hygiene, please bring your own slings.</p>
+				<p>The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
 			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="pr-q3" aria-controls="pr-q3-a">
-				<span>Do prices change with funding?</span>
+				<span>Does the price change if a council or the NHS pays?</span>
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="pr-q3-a" role="region" aria-labelledby="pr-q3" hidden>
-				<p>No. Funding only affects who receives the invoice. See <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; Support</a> for more information.</p>
+				<p>No. The price is the same whoever pays, and the only thing that changes is who we send the invoice to. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; Support</a> explains how that works.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -432,7 +432,7 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="pr-q4-a" role="region" aria-labelledby="pr-q4" hidden>
-				<p>Weekends, bank holidays, and complex care cost more. Continuity reviews their rates regularly, and the next review date is listed above. They will give you a care quote once you agree on the hours and tasks.</p>
+				<p>Care costs more at weekends, on bank holidays and for complex care. Continuity review their rates regularly, and the next review date is shown above. They’ll give you a quote once you’ve agreed the hours and tasks with them.</p>
 			  </div>
 			</div>
 		  </div>
@@ -443,15 +443,15 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 	<?php
 	$restwell_pricing_id = (int) get_queried_object_id();
 	$pricing_mid_cta_heading = function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_heading', __( 'Enquire about dates and care', 'restwell-retreats' ) )
-		: __( 'Enquire about dates and care', 'restwell-retreats' );
+		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_heading', __( 'Ask about dates and care', 'restwell-retreats' ) )
+		: __( 'Ask about dates and care', 'restwell-retreats' );
 	$pricing_mid_cta_intro = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text(
 			$restwell_pricing_id,
 			'pricing_cta_body',
-			__( 'Let us know your arrival dates, access needs, and if you want support from Continuity. You do not need to pay a deposit until you decide.', 'restwell-retreats' )
+			__( 'Tell us when you’d like to come, what you need from the house and whether you’d like care from Continuity. We aim to reply within 48 hours, and there’s no deposit to pay until you’re happy the house fits.', 'restwell-retreats' )
 		)
-		: __( 'Let us know your arrival dates, access needs, and if you want support from Continuity. You do not need to pay a deposit until you decide.', 'restwell-retreats' );
+		: __( 'Tell us when you’d like to come, what you need from the house and whether you’d like care from Continuity. We aim to reply within 48 hours, and there’s no deposit to pay until you’re happy the house fits.', 'restwell-retreats' );
 	$pricing_mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_pricing_id, 'pricing_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
 		: __( 'Enquire', 'restwell-retreats' );

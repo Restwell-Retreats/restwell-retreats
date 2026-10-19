@@ -231,22 +231,22 @@ function restwell_get_how_it_works_faq_defaults(): array {
 	return array(
 		array(
 			'q'   => __( 'How do I book a stay?', 'restwell-retreats' ),
-			'a'   => __( 'Three steps: send us your dates and what you need, we confirm the bungalow and take a 50% deposit, then you arrive from 3pm using a key safe. Care can go on the same enquiry.', 'restwell-retreats' ),
+			'a'   => __( 'Send us your dates and what you need, using the form, by email or on 01622 809881. Once we’ve checked the house fits, a 50% deposit holds your dates, and you arrive from 3pm on the day.', 'restwell-retreats' ),
 			'cat' => 'booking',
 		),
 		array(
 			'q'   => __( 'When can care be added?', 'restwell-retreats' ),
-			'a'   => __( 'Mention it when you first write, even if the dates are still vague. We don’t publish a lead time because it depends on what you need and who’s available that week. We’ll give you a real answer quickly.', 'restwell-retreats' ),
+			'a'   => __( 'It’s best to mention it in your first message, even if your dates aren’t fixed yet. We don’t publish a lead time, because it depends on what you need and who’s free that week. We’ll give you a straight answer as soon as we can.', 'restwell-retreats' ),
 			'cat' => 'care',
 		),
 		array(
 			'q'   => __( 'How can I pay?', 'restwell-retreats' ),
-			'a'   => __( 'We can invoice you, a council, the NHS or a grant body, at the same bungalow rate. Who we invoice doesn’t change the price. See Funding and support for the paperwork.', 'restwell-retreats' ),
+			'a'   => __( 'You can pay by bank transfer or card, and we can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on <a href="/pricing/#payment">Prices and dates</a>, and <a href="/funding-and-support/">Funding and support</a> explains the paperwork.', 'restwell-retreats' ),
 			'cat' => 'funding',
 		),
 		array(
-			'q'   => __( 'Can a local authority, case manager or NHS team book for me?', 'restwell-retreats' ),
-			'a'   => __( 'Yes. Funded bookings are welcome, and funders can confirm a booking with a purchase order on the same payment timeline as every guest.', 'restwell-retreats' ),
+			'q'   => __( 'Can a council, case manager or NHS team book for me?', 'restwell-retreats' ),
+			'a'   => __( 'Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order, and the deposit and balance follow the same timings as any other stay.', 'restwell-retreats' ),
 			'cat' => 'funding',
 		),
 	);

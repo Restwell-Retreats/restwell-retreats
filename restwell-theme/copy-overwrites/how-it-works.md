@@ -4,75 +4,74 @@
 
 ## Title
 
-Booking a stay, from first email to front door
+How to book a stay at Restwell, step by step
 
 ## Meta description
 
-Tell us your dates and who’s coming. We confirm the bungalow, you pay a deposit, and you arrive to a house set up for you. Care can go on the same note.
+From your first message to the front door: how we check the bungalow fits, when the deposit is due and what happens when you arrive on the day.
 
 ## H1 (`hiw_heading`)
 
-The bookends of a holiday should be the easy bit
-
-## Opening paragraph (print directly under the H1)
-
-Booking Restwell has three steps: you enquire with your dates and what you need, we confirm the bungalow and take a 50% deposit, and then you arrive from 3pm using a key safe. If you’d like home care during the stay, it goes on the same enquiry.
+How booking a stay works
 
 ## Intro (`hiw_intro`)
 
-Nobody books an accessible holiday casually. By the time you get to a page like this you’ve usually already made a dozen phone calls, and at least one of them has gone badly.
+There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.
 
-So we’ve kept this simple, and we’ve tried to take the guesswork out of each step. Write when you’re ready, tell us as much or as little as you like, and we’ll do the working out at our end.
+## The three steps
 
-There really is no such thing as a silly question, and we’d much rather hear from you early than have you worry about it.
+H2: Enquire, confirm, arrive
 
-## Step one: enquire
+There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.
 
-H2: No deposit, no obligation, no sales call
+1. **Enquire.** Send us your dates, who’s coming and anything that would help the house work for you, like how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.
+2. **Confirm.** Once we’ve agreed the house fits, a 50% deposit holds your dates and the rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.
+3. **Arrive.** Check-in is from 3pm, and you let yourselves in with a key safe. We send the code and the address with your confirmation, and we never put them on the website.
 
-Send us your dates, who’s coming with you, and anything that would make the house work better for you. If a 3pm arrival is difficult because of travel or care, say so in the same message. We can’t always move the clock, but we’ll always try.
+## Arrival day
 
-We aim to reply within 48 hours. If your dates turn out not to be free, we’ll tell you straight away rather than leaving it hanging.
+H2: What happens on arrival day
 
-## Step two: confirm
+There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.
 
-H2: We set the house up around what you’ve told us
+- **Check-in:** From 3pm, using the key safe. Check-out is by 11am.
+- **Parking:** A level driveway for two cars, including an adapted vehicle
+- **Ready for you:** Beds and equipment set up as we agreed, with a guest guide sent once your dates are confirmed
 
-Once we’ve both agreed the bungalow fits, we hold your dates and get the house ready: the profiling bed, the hoist, the chair in the wet room, extra blankets if you’ve asked for them. Everything is in place before you arrive, so you’re not unpacking and rearranging at the same time.
+Tour the property → `/the-property/` · Door widths and the hoist → `/accessibility/`
 
-A 50% deposit reserves the dates, and the balance is due a week before you arrive. There’s no damage deposit and no cleaning fee.
+## Care
 
-If you’ve asked about care from Continuity, that carries on in the same conversation. You won’t be handed over to anybody.
+H2: Adding care to your stay
 
-## Step three: arrive
+If you’d like home care while you’re here, mention it in your first message. Continuity, our sister company, will talk it through with you and give you a quote. You’re just as welcome to bring your own carer or PA.
 
-H2: A key safe, a level drive, and the door straight ahead
+How optional care works → `/optional-care/`. No advertised lead times, and never “it doesn’t change the price” next to care.
 
-Check-in is from 3pm, through a key safe. We send you the code before the day, so there’s no reception desk to find and nobody to wait for. The driveway is level and the front door is directly ahead of where you park.
+## FAQ
 
-The full address, satnav details and a description of the house all come with your confirmation, along with everything you need to find it easily on the day. We keep them off the website because guests are staying in a private home on a residential street, and it’s their privacy as much as ours.
+H2: Questions about booking
 
-Check-out is by 11am, and if you need longer for personal care or transport, tell us a few days beforehand and we’ll do our best. You’re not expected to clean anything on the way out. Everything else you need to know arrives with your welcome pack.
+When the deposit is due, who we can invoice, and how care fits around a self-catering stay.
 
-## Bringing your own carer or PA
+1. **How do I book a stay?**
+   Send us your dates and what you need, using the form, by email or on 01622 809881. Once we’ve checked the house fits, a 50% deposit holds your dates, and you arrive from 3pm on the day.
 
-They’re very welcome. A support worker can have the second bedroom, or we can plan the sleeping arrangements with you if that suits better. Just tell us who’s coming so the house is set up properly.
+2. **When can care be added?**
+   It’s best to mention it in your first message, even if your dates aren’t fixed yet. We don’t publish a lead time, because it depends on what you need and who’s free that week. We’ll give you a straight answer as soon as we can.
 
-## Adding home care
+3. **How can I pay?**
+   You can pay by bank transfer or card, and we can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on Prices and dates, and Funding and support explains the paperwork.
 
-If you’d like professional care while you’re here, Continuity of Care Services, our sister company, can come into the bungalow. They’re CQC-rated Good; that rating is theirs, not ours.
+4. **Can a council, case manager or NHS team book for me?**
+   Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order, and the deposit and balance follow the same timings as any other stay.
 
-There’s no pressure either way, and it doesn’t change the price of the house. The detail is on `/optional-care/`.
-
-## If you need something we haven’t mentioned
-
-Ask. We can’t promise every extra at short notice, particularly anything that has to be hired in, but we’ll give you a straight answer quickly.
-
-Door widths and the wet room → `/accessibility/`
-What the house costs → `/pricing/`
-Who we can invoice → `/resources/`
+“Prices and dates” → `/pricing/#payment` · “Funding and support” → `/funding-and-support/`
 
 ## CTA
 
-Ready when you are → `/enquire/`
-01622 809881 · hello@restwellretreats.co.uk
+H2: Tell us your dates
+
+Let us know when you’d like to come and what you need from the house. We’ll reply with the measurements, equipment details and what happens next.
+
+Enquire → `/enquire/` · View the property → `/the-property/`

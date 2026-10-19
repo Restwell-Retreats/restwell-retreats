@@ -4,51 +4,44 @@
 
 ## Title
 
-Ask us anything about a stay at Restwell
+Contact Restwell about a stay in Whitstable
 
 ## Meta description
 
-Call, email or fill in the form. Tell us your dates and what you need from the house, with any care questions on the same note. Nothing to pay until it fits.
+Call 01622 809881, email or use the form to ask about dates, access or care. We aim to reply within 48 hours, and there’s no deposit until it fits.
 
 ## H1 (`enq_heading`)
 
-Get in touch whenever you’re ready
-
-## Opening paragraph (print directly under the H1)
-
-Send us your dates, who’s coming and anything you need from the house, and we’ll reply within 48 hours. There’s no deposit until you’ve decided the bungalow fits. You can also ring 01622 809881 or email hello@restwellretreats.co.uk instead of using the form.
+Ask us about a stay
 
 ## Intro (`enq_intro`)
 
-There is genuinely no such thing as a silly question here, and you won’t be the first person to ask any of them.
-
-Tell us as much or as little as you like. Your dates, who’s travelling, whether anyone needs a particular setup, whether you’d like home care from Continuity of Care Services while you’re here. It can all go in the same message, and it saves you explaining twice.
-
-If there’s a piece of equipment or an arrangement that would make the difference, say so now rather than later. We can’t promise everything at short notice, especially anything we’d need to hire in, but we’d much rather hear from you early than have you worry about it on the drive down.
-
-## Before you write
-
-A few things that might save you a question:
-
-- Nothing is due at this stage. A deposit only comes after you’ve confirmed the house works for you.
-- We’ll answer within 48 hours, and we’ll tell you straight away if your dates aren’t free rather than leaving you waiting.
-- If you’d like care during the stay, mention it here. It’s the same office and the same phone number, so you won’t be passed around.
-- Bringing your own carer or PA? Lovely. Just tell us who’s coming.
+Tell us your dates and what you need from the house, and ask about care on the same form if you’d like it. We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure it fits.
 
 ## Form
 
 Name, email, phone, dates, funding, access needs, message.
 
-The dates field is the stay they’d like, not a hold. Point them to booked nights on Pricing & dates (`#availability`). We still confirm by hand when we reply.
+The dates field is the stay they’d like, not a hold. Point them to the availability calendar on Pricing (`/pricing/#availability`). We still confirm by hand when we reply.
 
 Keep the access field open text rather than tick boxes. People’s needs don’t fit a dropdown, and asking them to squeeze into one is the exact experience this whole site exists to avoid.
 
+Dates hint: Tell us the dates that would suit you, and we’ll check them when we reply. You can also see which nights are free on the availability calendar. (“availability calendar” → `/pricing/#availability`)
+
+After sending: Thank you, we’ve got your enquiry. We’ve emailed you to confirm, and one of us will read your details and aim to reply within 48 hours. If you’d rather talk it through, call 01622 809881.
+
+If marked urgent: We’ve marked this as urgent and will try to call you back sooner than our usual 48 hours. If you need to speak to someone now, call 01622 809881.
+
 ## Other ways to reach us
+
+H2: Talk to us
 
 Phone: 01622 809881
 Email: hello@restwellretreats.co.uk
 
-Both sit on the page in plain sight, above the form as well as below it. Nobody should have to fill in a form to find a phone number.
+Both sit on the page in plain sight. Nobody should have to fill in a form to find a phone number.
+
+Links: Funding & support → `/funding-and-support/` · Who it’s for → `/who-its-for/` · See the adapted bungalow → `/the-property/` · Pricing & dates → `/pricing/` · Common questions → `/faq/`
 
 ## Email
 

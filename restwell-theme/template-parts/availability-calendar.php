@@ -116,11 +116,19 @@ $booked_json   = wp_json_encode( $upcoming_booked );
 $pricing_json  = wp_json_encode( $pricing_payload );
 $weekday_short = wp_json_encode( wp_list_pluck( $weekdays, 'short' ) );
 $weekday_long  = wp_json_encode( wp_list_pluck( $weekdays, 'long' ) );
+// "15:00" reads as 3pm everywhere else on the site, so say it the same way here.
+$clock_time    = static function ( $hhmm ) {
+	$time = DateTime::createFromFormat( '!H:i', $hhmm, new DateTimeZone( 'UTC' ) );
+	if ( ! $time ) {
+		return $hhmm;
+	}
+	return $time->format( '00' === $time->format( 'i' ) ? 'ga' : 'g.ia' );
+};
 $times_line    = sprintf(
 	/* translators: 1: check-in time, 2: check-out time */
 	__( 'Arrive from %1$s, leave by %2$s.', 'restwell-retreats' ),
-	$check_in,
-	$check_out
+	$clock_time( $check_in ),
+	$clock_time( $check_out )
 );
 ?>
 <section class="section-y band-subtle" id="availability" aria-labelledby="availability-h">
@@ -296,7 +304,7 @@ $times_line    = sprintf(
 			<dialog class="availability__enquiry" data-availability-enquiry data-multistep aria-labelledby="availability-enquiry-h">
 				<button class="availability__enquiry-close" type="button" data-availability-enquiry-close aria-label="<?php esc_attr_e( 'Close enquiry form', 'restwell-retreats' ); ?>">&times;</button>
 				<h3 id="availability-enquiry-h"><?php esc_html_e( 'Tell us about your stay', 'restwell-retreats' ); ?></h3>
-				<p data-availability-enquiry-dates><?php esc_html_e( 'Your selected dates are already included. Add your details and we will reply within 48 hours.', 'restwell-retreats' ); ?></p>
+				<p data-availability-enquiry-dates><?php esc_html_e( 'Your dates are already filled in. Add your details and we aim to reply within 48 hours.', 'restwell-retreats' ); ?></p>
 				<ol class="step-indicator" data-step-indicator role="list" aria-label="<?php esc_attr_e( 'Enquiry form progress', 'restwell-retreats' ); ?>">
 					<li class="step-indicator__item is-current" data-step-item="1" aria-current="step"><span class="step-indicator__marker" aria-hidden="true"><span class="step-indicator__num">1</span></span><span class="step-indicator__label"><?php esc_html_e( 'About you', 'restwell-retreats' ); ?></span></li>
 					<li class="step-indicator__connector" aria-hidden="true"></li>

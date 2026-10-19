@@ -72,78 +72,78 @@ function restwell_get_faq_page_default_pairs() {
 	// Broader set -- kept distinct from per-page FAQs (homepage, how-it-works) to prevent duplicate-content cannibalisation.
 	return array(
 		array(
-			'q'   => 'What is Restwell, exactly: bungalow, care home, or respite centre?',
-			'a'   => 'Both, in the way that helps you plan: it’s a private adapted bungalow that you rent as a holiday, with no staff on site, and optional care from Continuity if you want it. It’s not a registered respite centre, though your funder may use the word respite on paperwork, and that’s fine.',
+			'q'   => 'Is Restwell a care home or a respite centre?',
+			'a'   => 'No. Restwell is a private bungalow that you rent as a holiday, so the house is yours and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity of Care Services, can provide it. Your funder may call the break respite on their paperwork, and that’s fine.',
 			'cat' => 'about',
 		),
 		array(
-			'q'   => 'Is it a respite centre?',
-			'a'   => 'No, though your funder may well use the word respite, and that’s fine. It’s often how a break like this gets described on paperwork. It’s still a private house rather than a registered respite service.',
-			'cat' => 'about',
+			'q'   => 'Can we book just one night?',
+			'a'   => 'Yes. The minimum stay is one night, so you can book anything from a single night to a full week or more. The nightly and weekly rates are on <a href="/pricing/">Prices and dates</a>.',
+			'cat' => 'booking',
 		),
 		array(
-			'q'   => 'What are the doorway widths, and will my wheelchair fit?',
-			'a'   => 'The house is single-storey and step-free throughout. The front door has a 965mm clear opening, the internal doorways are 926mm, the wet room is level-access, and there’s a ceiling track hoist over the profiling bed. If you need a measurement we haven’t published, ask and we’ll go and take it. See the <a href="/accessibility/">access statement</a>.',
+			'q'   => 'What are the door widths, and will my wheelchair fit?',
+			'a'   => 'The bungalow is all on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm, so you can check those against your own chair. If you need a measurement we haven’t published, ask and we’ll go and measure it. Every figure is in the <a href="/accessibility/">access statement</a>.',
 			'cat' => 'about',
 		),
 		array(
 			'q'   => 'Is there a hoist, and what’s it rated to?',
-			'a'   => 'There’s a ceiling track hoist rated to 180kg, and an electric mobile hoist also rated to 180kg. Both are subject to a LOLER thorough examination every six months. Guests bring their own slings, because a sling needs to fit the person.',
+			'a'   => 'Yes. There’s a ceiling track hoist that covers the whole of the main bedroom, and a mobile hoist you can use in any room. Both have a safe working load of 180kg and are examined under LOLER every six months. Please bring your own slings, because a sling needs to fit the person using it.',
 			'cat' => 'about',
 		),
 		array(
 			'q'   => 'Can we have two profiling beds?',
-			'a'   => 'Yes. We arrange the accessible bedroom around each guest: one profiling bed if that’s what you need, two if it isn’t. Tell us when you book so it’s set up before you arrive.',
+			'a'   => 'Yes. We have two profiling beds, and we set the accessible bedroom up with one or both, depending on who needs them. Tell us when you book and it’ll be ready when you arrive.',
 			'cat' => 'about',
 		),
 		array(
 			'q'   => 'How many people does it sleep?',
-			'a'   => 'Five. There are two bedrooms and a double sofa bed in the conservatory. Five is what our safety checks are based on, so we do have to hold to it.',
+			'a'   => 'Up to five. There are two bedrooms and a double sofa bed in the conservatory. Our safety checks are based on five people, so we can’t go above that.',
 			'cat' => 'about',
 		),
 		array(
 			'q'   => 'Can we add care to our booking?',
-			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow, anything from a morning visit to nurse-led support. Continuity quote for the care once you’ve talked through what you need. Mention it on the same enquiry as the house and we’ll work it out together. See <a href="/optional-care/">Optional care</a>.',
+			'a'   => 'Yes. Continuity of Care Services, our sister company, can come into the bungalow during your stay, from a morning visit to nurse-led support. Mention it on the same enquiry as the house, and Continuity will give you a quote once you’ve talked through what you need. There’s more on the <a href="/optional-care/">Optional care</a> page.',
 			'cat' => 'care',
 		),
 		array(
-			'q'   => 'How far ahead do we need to arrange the care?',
-			'a'   => 'The sooner you ask, the more likely we can say yes. We don’t publish a lead time because it honestly depends on what you need and who’s available that week, and we’d rather give you a real answer quickly than a number we’ve invented.',
+			'q'   => 'How far ahead do we need to arrange care?',
+			'a'   => 'The sooner you ask, the more likely it is that we can say yes. We don’t publish a lead time, because it depends on what you need and who’s free that week. We’d rather give you a real answer quickly than a number we’ve made up.',
 			'cat' => 'care',
 		),
 		array(
 			'q'   => 'Can we bring our own carer or PA?',
-			'a'   => 'Of course. A support worker can use the second bedroom, or we can think through the sleeping arrangements with you.',
+			'a'   => 'Of course. Plenty of guests bring their own carer or PA, and the second bedroom gives them somewhere proper to sleep. If you’d like to talk through who sleeps where, we’re happy to help.',
 			'cat' => 'care',
 		),
 		array(
 			'q'   => 'How far is the bungalow from the seafront?',
-			'a'   => 'About ten minutes on foot from the driveway. Places along Tankerton promenade take longer, because you walk down to the sea first and then head west along the prom. JoJo’s is roughly twenty minutes all in. See the <a href="/whitstable-area-guide/">Whitstable guide</a>.',
+			'a'   => 'It’s about ten minutes on foot from the driveway to the seafront. Places along Tankerton promenade take a bit longer, because you head down to the sea first and then west along the prom. JoJo’s is about twenty minutes in all. The <a href="/whitstable-area-guide/">Whitstable guide</a> has the step-free routes.',
 			'cat' => 'local',
 		),
 		array(
 			'q'   => 'What does it cost, and what’s included?',
-			'a'   => 'A week is £1,300 off-peak and £1,400 in peak season, with all the access equipment, linen, towels and parking included. A 50% deposit reserves your dates and the balance follows a week before arrival. See <a href="/pricing/">Pricing & dates</a>.',
+			'a'   => 'A week is £1,300 off-peak and £1,400 in peak season, and the access equipment, linen, towels and parking are all included. A 50% deposit holds your dates and the rest is due a week before you arrive. Every rate is on <a href="/pricing/">Prices and dates</a>.',
 			'cat' => 'booking',
 		),
 		array(
 			'q'   => 'Can a council or the NHS pay?',
-			'a'   => 'We can invoice you, a local authority, the NHS or a grant body, and the rate is identical either way. What we can’t do is promise your package will cover a holiday. That decision sits with your social worker or case manager. See <a href="/funding-and-support/">Funding and support</a>.',
+			'a'   => 'We can invoice you, a local authority, the NHS or a grant body. What we can’t do is promise that your care package will cover a holiday, because that decision sits with your social worker or case manager. <a href="/funding-and-support/">Funding and support</a> explains how it usually works.',
 			'cat' => 'funding',
 		),
 		array(
 			'q'   => 'Can we use direct payments?',
-			'a'   => 'Some guests do, for the accommodation or for a PA’s time. The rules vary by area, so start with your own care team. See <a href="/direct-payment-holiday-accommodation/">direct payments</a>.',
+			'a'   => 'Some guests do, either for the stay or for a PA’s time. The rules vary from area to area, so it’s best to start with your own care team. Our <a href="/direct-payment-holiday-accommodation/">guide to direct payments</a> explains more.',
 			'cat' => 'funding',
 		),
 		array(
 			'q'   => 'Are dogs allowed?',
-			'a'   => 'Yes, with a bit of notice so we can run a quick risk assessment. Assistance dogs are welcome on the same terms.',
+			'a'   => 'Yes, with a little notice so we can do a quick risk assessment first. Assistance dogs are welcome on the same terms.',
 			'cat' => 'about',
 		),
 		array(
 			'q'   => 'What time is check-in?',
-			'a'   => 'From 3pm, through a key safe, with the code sent to you beforehand. Check-out is by 11am, and if you need longer for personal care or transport, tell us a few days ahead and we’ll do our best. See <a href="/how-it-works/">How it works</a>.',
+			'a'   => 'Check-in is from 3pm, using a key safe, and we send you the code beforehand. Check-out is by 11am. If you need longer for personal care or transport, let us know a few days ahead and we’ll do our best. <a href="/how-it-works/">How it works</a> covers arrival day in full.',
 			'cat' => 'booking',
 		),
 	);

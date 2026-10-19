@@ -15,15 +15,15 @@ get_header();
 
 $restwell_hiw_id      = (int) get_queried_object_id();
 $restwell_hiw_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'The bookends of a holiday should be the easy bit' )
-	: 'The bookends of a holiday should be the easy bit';
+	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'How booking a stay works' )
+	: 'How booking a stay works';
 $restwell_hiw_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,
 		'hiw_intro',
-		'Booking Restwell is three steps: enquire, confirm with a deposit, and arrive from 3pm using a key safe.'
+		'There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.'
 	)
-	: 'Booking Restwell is three steps: enquire, confirm with a deposit, and arrive from 3pm using a key safe.';
+	: 'There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.';
 $restwell_hiw_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_hiw_id, 'hiw_label', '' )
 	: '';
@@ -64,23 +64,23 @@ $hiw_steps_intro   = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_hiw_id, 'hiw_steps_intro', '' )
 		: '',
-	'Three steps from your first message to the front door. There is no online checkout, and you only pay a deposit after we’ve both agreed the bungalow fits.'
+	'There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.'
 );
 
 $hiw_step_live = array(
 	1 => array(
 		'title' => 'Enquire',
-		'body'  => 'Send us your dates, who’s coming, and anything that would make the house work better for you. We aim to reply within 48 hours. Nothing to pay at this stage.',
+		'body'  => 'Send us your dates, who’s coming and anything that would help the house work for you, like how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
 		'stale' => array( 'Tell us your dates and what you need. Nothing to pay at this stage.' ),
 	),
 	2 => array(
 		'title' => 'Confirm',
-		'body'  => 'We set the house up around what you’ve told us. A 50% deposit reserves the dates; the balance is due a week before you arrive. Care from Continuity stays in the same conversation.',
+		'body'  => 'Once we’ve agreed the house fits, a 50% deposit holds your dates and the rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.',
 		'stale' => array( 'We set the house up around you. A 50% deposit reserves the dates.' ),
 	),
 	3 => array(
 		'title' => 'Arrive',
-		'body'  => 'Check-in is from 3pm, through a key safe. We send the code and the address with your confirmation, never on the website.',
+		'body'  => 'Check-in is from 3pm, and you let yourselves in with a key safe. We send the code and the address with your confirmation, and we never put them on the website.',
 		'stale' => array( 'From 3pm, through a key safe. The address comes with your confirmation.' ),
 	),
 	4 => array(
@@ -138,9 +138,9 @@ $hiw_care_label   = $restwell_hiw_prefer_live(
 );
 $hiw_care_heading = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_hiw_id, 'hiw_care_cta_heading', 'If you’d like care while you’re here' )
-		: 'If you’d like care while you’re here',
-	'If you’d like care while you’re here',
+		? restwell_page_content_text( $restwell_hiw_id, 'hiw_care_cta_heading', 'Adding care to your stay' )
+		: 'Adding care to your stay',
+	'Adding care to your stay',
 	array( 'Care fits around your routine', 'Add care only if you need it' )
 );
 $hiw_care_body    = $restwell_hiw_prefer_live(
@@ -148,10 +148,10 @@ $hiw_care_body    = $restwell_hiw_prefer_live(
 		? restwell_page_content_text(
 			$restwell_hiw_id,
 			'hiw_care_cta_body',
-			'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.'
+			'If you’d like home care while you’re here, mention it in your first message. Continuity, our sister company, will talk it through with you and give you a quote. You’re just as welcome to bring your own carer or PA.'
 		)
-		: 'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
-	'Home care from Continuity can go on the same enquiry, and they’ll quote for it. Or bring your own team. There’s no pressure either way.',
+		: 'If you’d like home care while you’re here, mention it in your first message. Continuity, our sister company, will talk it through with you and give you a quote. You’re just as welcome to bring your own carer or PA.',
+	'If you’d like home care while you’re here, mention it in your first message. Continuity, our sister company, will talk it through with you and give you a quote. You’re just as welcome to bring your own carer or PA.',
 	array(
 		'Home care from Continuity can be added on the same enquiry, and they’ll quote for it. Bring your own team if you prefer.',
 		'Care is entirely optional. If you want it, Continuity of Care Services (CQC-regulated and experienced) will work to your schedule, not theirs. Morning check-ins, personal care, or more comprehensive support: you decide.',
@@ -178,29 +178,29 @@ $hiw_arrival_label   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_hiw_id, 'hiw_arrival_label', 'Arrival day' )
 	: 'Arrival day';
 $hiw_arrival_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_hiw_id, 'hiw_arrival_heading', 'Key-safe from 3pm' )
-	: 'Key-safe from 3pm';
+	? restwell_page_content_text( $restwell_hiw_id, 'hiw_arrival_heading', 'What happens on arrival day' )
+	: 'What happens on arrival day';
 $hiw_arrival_lede    = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,
 		'hiw_arrival_lede',
-		'There is no reception desk. Park in the driveway, open the key safe, and settle into a house that is already set up for your group.'
+		'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.'
 	)
-	: 'There is no reception desk. Park in the driveway, open the key safe, and settle into a house that is already set up for your group.';
+	: 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.';
 
 $hiw_arrival_items = array();
 $hiw_arrival_live  = array(
 	1 => array(
 		'dt' => 'Check-in',
-		'dd' => 'From 3pm via the key-safe · departure by 11am',
+		'dd' => 'From 3pm, using the key safe. Check-out is by 11am.',
 	),
 	2 => array(
 		'dt' => 'Parking',
-		'dd' => 'Level driveway for two cars, including accessible vehicles',
+		'dd' => 'A level driveway for two cars, including an adapted vehicle',
 	),
 	3 => array(
 		'dt' => 'Ready for you',
-		'dd' => 'Step-free routes and kit set from your enquiry · guest notes after dates are confirmed',
+		'dd' => 'Beds and equipment set up as we agreed, with a guest guide sent once your dates are confirmed',
 	),
 );
 for ( $i = 1; $i <= 3; $i++ ) {
@@ -226,8 +226,8 @@ $hiw_arrival_link1_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_hiw_id, 'hiw_arrival_link1_label', 'Tour the property' )
 	: 'Tour the property';
 $hiw_arrival_link2_label = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_hiw_id, 'hiw_arrival_link2_label', 'Door widths and kit notes' )
-	: 'Door widths and kit notes';
+	? restwell_page_content_text( $restwell_hiw_id, 'hiw_arrival_link2_label', 'Door widths and the hoist' )
+	: 'Door widths and the hoist';
 
 $hiw_care_type_live = array(
 	1 => array(
@@ -282,16 +282,16 @@ $hiw_faq_label   = $restwell_hiw_prefer_live(
 );
 $hiw_faq_heading = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_hiw_id, 'hiw_faq_heading', 'Before you enquire' )
-		: 'Before you enquire',
-	'Before you enquire',
+		? restwell_page_content_text( $restwell_hiw_id, 'hiw_faq_heading', 'Questions about booking' )
+		: 'Questions about booking',
+	'Questions about booking',
 	array( 'Things people often ask.' )
 );
 $hiw_faq_intro   = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_hiw_id, 'hiw_faq_intro', '' )
 		: '',
-	'We will explain when to pay the deposit, who we invoice, arrival details, and how optional care works with a self-catering stay.'
+	'When the deposit is due, who we can invoice, and how care fits around a self-catering stay.'
 );
 ?>
 
@@ -477,10 +477,10 @@ get_template_part(
 			? restwell_page_content_text(
 				$restwell_hiw_id,
 				'hiw_cta_body',
-				__( 'We will reply with measurements, equipment notes, and your next steps.', 'restwell-retreats' )
+				__( 'Let us know when you’d like to come and what you need from the house. We’ll reply with the measurements, equipment details and what happens next.', 'restwell-retreats' )
 			)
-			: __( 'We will reply with measurements, equipment notes, and your next steps.', 'restwell-retreats' ),
-		__( 'We will reply with measurements, equipment notes, and your next steps.', 'restwell-retreats' ),
+			: __( 'Let us know when you’d like to come and what you need from the house. We’ll reply with the measurements, equipment details and what happens next.', 'restwell-retreats' ),
+		__( 'Let us know when you’d like to come and what you need from the house. We’ll reply with the measurements, equipment details and what happens next.', 'restwell-retreats' ),
 		array(
 			'No commitment, no lengthy forms. Just get in touch and we\'ll take it from there.',
 			'No commitment, no lengthy forms. Just get in touch and we’ll take it from there.',

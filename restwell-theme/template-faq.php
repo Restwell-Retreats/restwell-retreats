@@ -21,9 +21,9 @@ $restwell_faq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_faq_id,
 		'faq_intro',
-		'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.'
+		'These are the things people ask us most before they book. Each answer is short and links to the page with more detail.'
 	)
-	: 'Short answers to what people ask before booking: what Restwell is, whether it fits, and what it costs.';
+	: 'These are the things people ask us most before they book. Each answer is short and links to the page with more detail.';
 $faq_page_items = function_exists( 'restwell_get_faq_items' ) ? restwell_get_faq_items( 'faq-page' ) : array();
 ?>
 
@@ -93,7 +93,7 @@ get_template_part(
 			  <header class="section-head section-head--tight">
 				<p class="eyebrow">Can’t find your answer?</p>
 				<h2 id="faq-ask-h">Ask us directly</h2>
-				<p>We reply within 48 hours on most questions. Prefer to talk? Call 01622 809881.</p>
+				<p>We aim to reply within 48 hours. If you’d rather talk, call us on 01622 809881.</p>
 			  </header>
 			  <?php
 				$faq_flash  = function_exists( 'restwell_faq_consume_flash' ) ? restwell_faq_consume_flash() : null;
@@ -109,7 +109,7 @@ get_template_part(
 				$faq_sent = isset( $_GET['question_sent'] ) && '1' === (string) wp_unslash( $_GET['question_sent'] );
 				?>
 			  <?php if ( $faq_sent ) : ?>
-			  <p class="lede" role="status"><?php esc_html_e( 'We’ve got your question. We’ll reply within 48 hours on most questions.', 'restwell-retreats' ); ?></p>
+			  <p class="lede" role="status"><?php esc_html_e( 'Thank you, we’ve got your question. We aim to reply within 48 hours.', 'restwell-retreats' ); ?></p>
 			  <?php elseif ( $faq_errors ) : ?>
 			  <div class="form-errors" role="alert" tabindex="-1">
 				<p><strong><?php esc_html_e( 'Please check the form and try again.', 'restwell-retreats' ); ?></strong></p>
@@ -144,15 +144,15 @@ get_template_part(
 
 	<?php
 	$faq_mid_cta_heading = function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_faq_id, 'faq_cta_heading', __( 'Send dates and access needs', 'restwell-retreats' ) )
-		: __( 'Send dates and access needs', 'restwell-retreats' );
+		? restwell_page_content_text( $restwell_faq_id, 'faq_cta_heading', __( 'Ask about your dates', 'restwell-retreats' ) )
+		: __( 'Ask about your dates', 'restwell-retreats' );
 	$faq_mid_cta_intro   = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text(
 			$restwell_faq_id,
 			'faq_cta_body',
-			__( 'We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.', 'restwell-retreats' )
+			__( 'Tell us when you’d like to come and what you need. We aim to reply within 48 hours, or you can call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' )
 		)
-		: __( 'We reply within 48 hours on most enquiries; phone 01622 809881 if you need to talk it through.', 'restwell-retreats' );
+		: __( 'Tell us when you’d like to come and what you need. We aim to reply within 48 hours, or you can call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' );
 	$faq_mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_faq_id, 'faq_cta_btn', __( 'Enquire', 'restwell-retreats' ) )
 		: __( 'Enquire', 'restwell-retreats' );

@@ -58,21 +58,21 @@ if ( '' === $public_email || ! is_email( $public_email ) ) {
 
 $restwell_enq_id      = (int) get_queried_object_id();
 $restwell_enq_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Get in touch whenever you’re ready' )
-	: 'Get in touch whenever you’re ready';
+	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Ask us about a stay' )
+	: 'Ask us about a stay';
 $restwell_enq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_enq_id,
 		'enq_intro',
-		'Send your dates and what you need, and we’ll reply within 48 hours. There’s no deposit until you’ve decided it fits.'
+		'Tell us your dates and what you need from the house, and ask about care on the same form if you’d like it. We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure it fits.'
 	)
-	: 'Send your dates and what you need, and we’ll reply within 48 hours. There’s no deposit until you’ve decided it fits.';
+	: 'Tell us your dates and what you need from the house, and ask about care on the same form if you’d like it. We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure it fits.';
 
 $enq_success_heading_default = __( 'We’ve got your enquiry', 'restwell-retreats' );
-$enq_success_body_default    = __( 'We’ve emailed you an acknowledgement. Next: a team member reviews your details and replies, usually within 48 hours. Call 01622 809881 if you’d rather talk it through.', 'restwell-retreats' );
+$enq_success_body_default    = __( 'Thank you, we’ve got your enquiry. We’ve emailed you to confirm, and one of us will read your details and aim to reply within 48 hours. If you’d rather talk it through, call 01622 809881.', 'restwell-retreats' );
 $enq_urgent_body_default     = sprintf(
 	/* translators: %s: phone number */
-	__( 'We’ve flagged this for a priority callback and aim to contact you sooner than our usual 48-hour window. If you need to speak now, call %s.', 'restwell-retreats' ),
+	__( 'We’ve marked this as urgent and will try to call you back sooner than our usual 48 hours. If you need to speak to someone now, call %s.', 'restwell-retreats' ),
 	$phone_number
 );
 
@@ -235,7 +235,7 @@ get_template_part(
 								</select>
 							</div>
 						</div>
-						<p class="field-hint"><?php esc_html_e( 'Tell us the dates that would work. We’ll check them when we reply. You can see when Restwell is available on:', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>#availability"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a>.</p>
+						<p class="field-hint"><?php esc_html_e( 'Tell us the dates that would suit you, and we’ll check them when we reply. You can also see which nights are free on the', 'restwell-retreats' ); ?> <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>#availability"><?php esc_html_e( 'availability calendar', 'restwell-retreats' ); ?></a>.</p>
 						<div class="field"><label for="enq-urgent"><input id="enq-urgent" type="checkbox" name="enq_urgent" value="1" <?php checked( $enq_val( 'enq_urgent', $enq_fields ), '1' ); ?> /> <?php esc_html_e( 'This enquiry is time-sensitive', 'restwell-retreats' ); ?></label></div>
 					</fieldset>
 					<div class="form-actions form-actions--split">
@@ -269,6 +269,8 @@ get_template_part(
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & support', 'restwell-retreats' ); ?></a></p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>"><?php esc_html_e( 'Who it’s for', 'restwell-retreats' ); ?></a></p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'See the adapted bungalow', 'restwell-retreats' ); ?></a></p>
+			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a></p>
+			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'faq' ) ); ?>"><?php esc_html_e( 'Common questions', 'restwell-retreats' ); ?></a></p>
 		</aside>
 	</div>
 </section>

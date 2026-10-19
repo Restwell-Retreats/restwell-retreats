@@ -4,69 +4,76 @@
 
 ## Title
 
-Prices for the bungalow, and what’s included
+Accessible holiday prices for the Whitstable bungalow
 
 ## Meta description
 
-A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all the access equipment included. The rate is the same whoever pays the invoice.
+A week in the bungalow is £1,300 off-peak and £1,400 in peak season, and you can book a single night. The access equipment is included in the price.
 
 ## H1 (`pricing_heading`)
 
 What a stay here costs
 
-## Opening paragraph (print directly under the H1)
-
-A full week in the bungalow is £1,300 off-peak and £1,400 in peak season. Midweek nights are £185 off-peak and £200 peak, with weekend nights in the table below. A 50% deposit reserves your dates and the balance is due a week before you arrive. The rate is the same whoever we invoice.
-
 ## Intro (`pricing_intro`)
 
-We’ve put the numbers at the top because that’s what you came for, and because we’ve been on the other end of a website that makes you fill in a form to find out whether you can afford something.
+Here are the weekly and nightly rates, the nights that are free and how the deposit works. You can stay for one night or a whole week, and the access equipment is included.
 
-The price is the price. It doesn’t change if a council is paying, or the NHS, or a grant body, or you. Nobody gets quoted differently because of who signs the cheque.
+## Rates
 
-Home care from Continuity of Care Services, if you’d like it, is quoted by them. That’s the only other thing you might pay for, and it’s entirely optional.
+H2: Weekly and nightly rates
 
-## The tariff
+You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.
 
-Print the off-peak and peak table from `restwell_get_pricing()`, weekend nights included. No seasonal framing and no urgency language until occupancy is live.
+The rates table, example stays and peak dates print from `restwell_get_pricing()`.
 
-## Deposit and balance
+If you’d like to see the rooms first, have a look round the bungalow. The door widths and the full equipment list are on the Accessibility page.
 
-H2: Nothing to pay until you’ve decided it fits
+“have a look round the bungalow” → `/the-property/` · “door widths and the full equipment list” → `/accessibility/`
 
-There’s no deposit at the enquiry stage. Once we’ve both agreed the house works for you, a 50% deposit reserves the dates and the balance is due one week before you arrive.
+Calendar enquiry note: Your dates are already filled in. Add your details and we aim to reply within 48 hours.
 
-There’s no damage deposit and no cleaning fee. We don’t expect you to deep-clean on the way out either. The cleaning team handle that. Just the few small courtesies in the guest guide.
+## Payment
 
-## What the price includes
+H2: How payment works
 
-Everything in the house, essentially. The ceiling hoist, the profiling bed with its pressure-relieving mattress, the standing aid, the wet room chair and stool, the adjustable sink, the portable ramps, linen and towels already on the beds, free WiFi, and the driveway with room for two cars.
+You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works. (“Funding & Support” → `/funding-and-support/`)
 
-The bungalow is professionally cleaned before every stay. On a longer booking we can arrange a mid-stay clean or fresh linen. Just ask in advance.
+1. **50% deposit.** Once we’ve talked it through and you’re happy the house fits, the deposit holds your dates and takes them off the calendar.
+2. **Balance before arrival.** You pay the rest no later than one week before you arrive.
+3. **No extras.** There’s no damage deposit and no cleaning fee to pay at the end of your stay.
 
-## If you’d like care as well
+If your plans change, our terms and cancellation policy explain what happens next.
 
-Any guide rates for Continuity of Care Services print separately and are clearly labelled as theirs. Treat them as starting points rather than quotes, because what somebody actually needs varies enormously and we won’t put a number on it before we’ve understood the situation.
+## Optional care
 
-Who might help pay for a stay → `/resources/`
+H2: Guide rates for optional care
 
-## Visible FAQ (must match the JSON-LD exactly)
+If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.
 
-1. **What does the bungalow price include?**
-   You book the whole house, with all the access equipment included. A week is £1,300 off-peak and £1,400 in peak season; midweek nights are £185 and £200. A 50% deposit reserves your dates, and the balance is due a week before arrival.
+Never say care is charged, quoted or invoiced “separately”, and never put a “same price either way” line next to care.
 
-2. **Is care included in the price?**
-   No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, will quote for it.
+## Visible FAQ (JSON-LD is built from what’s rendered)
 
-3. **Are there extra charges for the equipment?**
-   No. The hoist, the profiling bed and the wet room kit listed on the access statement are all included in the house rate.
+H2: Questions about prices
 
-4. **Does the price change depending on who’s funding it?**
-   No. The rate is identical whether you pay, a council pays, the NHS pays, or a grant body pays. All that changes is who receives the invoice.
+What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.
 
-5. **How much deposit do I pay?**
-   50%, once we’ve confirmed the house fits. The balance follows a week before you arrive.
+1. **Is care included in the bungalow price?**
+   No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.
+
+2. **Are there extra charges for equipment?**
+   The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.
+
+3. **Does the price change if a council or the NHS pays?**
+   No. The price is the same whoever pays, and the only thing that changes is who we send the invoice to. Funding & Support explains how that works.
+
+4. **When do care guide rates go up?**
+   Care costs more at weekends, on bank holidays and for complex care. Continuity review their rates regularly, and the next review date is shown above. They’ll give you a quote once you’ve agreed the hours and tasks with them.
 
 ## CTA
 
-Seen the tariff? Tell us your dates → `/enquire/`
+H2: Ask about dates and care
+
+Tell us when you’d like to come, what you need from the house and whether you’d like care from Continuity. We aim to reply within 48 hours, and there’s no deposit to pay until you’re happy the house fits.
+
+Enquire → `/enquire/` · Check availability → `#availability`
