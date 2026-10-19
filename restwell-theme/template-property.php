@@ -183,7 +183,7 @@ get_template_part(
 				<?php
 			endforeach;
 			?>
-		  <p><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and equipment notes</a></p>
+		  <p><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and the hoist</a></p>
 		</div>
 	  </div>
 	</section>
