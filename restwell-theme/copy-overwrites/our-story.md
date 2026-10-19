@@ -2,13 +2,15 @@
 
 **Layer:** playground story fields. Not a money-page primary; don’t retarget this URL at cottages-by-the-sea. Never “fully accessible” in Restwell-owned copy. Voice: the Welcome Guide, first person, because this is the one page where a person is allowed to speak.
 
+**Live copy (19 Oct 2026, batch 4):** the page’s wording lives in `inc/theme-setup/page-defaults.php` and the template. The prose below is editorial background, so check it against the house rules before lifting any of it onto the page: plain headings, full sentences, no SEO notes in visible copy.
+
 ## Title
 
 Why we built Restwell, and who Continuity are
 
 ## Meta description
 
-Restwell is a private adapted bungalow in Whitstable. Continuity of Care Services is our sister company for home care. Two companies, one family, one phone.
+Why we built Restwell, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.
 
 ## H1
 
@@ -38,7 +40,9 @@ Restwell isn’t a registered care provider. Continuity of Care Services is, and
 
 ## What we’re trying to do here
 
-Nothing very complicated. Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away and the support to enjoy it in a single conversation, without anyone having to explain their situation four times to four different people.
+H2: What we hold ourselves to
+
+We publish every measurement. We say what the house can’t do as clearly as what it can. You can arrange a week away and the support to enjoy it in a single conversation, without anyone having to explain their situation four times to four different people.
 
 Rest Easy, Stay Well.
 

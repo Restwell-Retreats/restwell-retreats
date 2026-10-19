@@ -447,7 +447,7 @@ function restwell_get_blog_post_direct_payments_html() {
 <tbody>
 <tr><td>Personal assistant wages during travel</td><td>Yes, when named in the plan</td><td>N/A</td></tr>
 <tr><td>Approved agency shifts on holiday</td><td>Yes, when pre-authorised</td><td>N/A</td></tr>
-<tr><td>Holiday cottage, hotel room, or letting fee</td><td>Rare via standard direct payment</td><td>Self-funded, grants, or bespoke short-break funding</td></tr>
+<tr><td>Holiday cottage, hotel room, or letting fee</td><td>Rare via standard direct payment</td><td>Self-funded, grants, or a short-break package agreed for the person</td></tr>
 </tbody>
 </table>
 </div>
@@ -491,8 +491,8 @@ function restwell_get_blog_post_direct_payments_html() {
 <h3>Can my PA travel with me using direct payment funds?</h3>
 <p>Yes when your plan documents PA coverage and the spend matches agreed rates and expenses.</p>
 <h3>Does CHC pay for both care and the hotel?</h3>
-<p>Care duties yes; room charges typically stay separate unless a bespoke NHS package states otherwise.</p>
-<h3>What question unlocks short-break funding?</h3>
+<p>Care, yes. Room charges usually aren’t covered unless an individual NHS package says otherwise.</p>
+<h3>What should you ask to get short-break funding?</h3>
 <p>Ask whether respite or a short break can be written into your support plan and which forms or OT letters they require.</p>
 <h3>Where can I read Restwell's accessibility evidence?</h3>
 <p>Use our <a href=\"{$acc}\">accessibility specification</a> alongside the funding page when you build a packet for commissioners.</p>

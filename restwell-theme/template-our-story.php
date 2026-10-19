@@ -74,7 +74,7 @@ $story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell provide
 $story_companies_items   = array(
 	array(
 		'title' => $story_txt( 'story_companies_1_title', 'Restwell' ),
-		'body'  => $story_txt( 'story_companies_1_body', 'The bungalow: a private adapted house in Whitstable. Not a care home, and not a respite centre.' ),
+		'body'  => $story_txt( 'story_companies_1_body', 'The bungalow is a private adapted house in Whitstable. It isn’t a care home or a respite centre.' ),
 	),
 	array(
 		'title' => $story_txt( 'story_companies_2_title', 'Continuity of Care Services' ),
@@ -89,18 +89,18 @@ $story_companies_note      = $story_txt( 'story_companies_note', 'Restwell is no
 $story_companies_cqc_label = $story_txt( 'story_companies_cqc_label', 'Read Continuity’s CQC profile' );
 
 $story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped with guests' );
-$story_shaped_heading = $story_txt( 'story_shaped_heading', 'Designed with the people who’d actually stay' );
+$story_shaped_heading = $story_txt( 'story_shaped_heading', 'Planned with disabled people before it opened' );
 $story_shaped_lede    = $story_txt( 'story_shaped_lede', 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.' );
 
 $story_specialists_label      = $story_txt( 'story_specialists_label', 'Check the details for yourself' );
-$story_specialists_heading    = $story_txt( 'story_specialists_heading', 'The numbers are published so you don’t have to trust us' );
+$story_specialists_heading    = $story_txt( 'story_specialists_heading', 'Every measurement is published' );
 $story_specialists_lede       = $story_txt( 'story_specialists_lede', 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and limits with your own chair or hoist before you book. If you’re unsure, please ask.' );
-$story_specialists_btn1_label = $story_txt( 'story_specialists_btn1_label', 'Read the access specs' );
+$story_specialists_btn1_label = $story_txt( 'story_specialists_btn1_label', 'Door widths and the hoist' );
 $story_specialists_btn2_label = $story_txt( 'story_specialists_btn2_label', 'Tour the property' );
 
 $story_next_label   = $story_txt( 'story_next_label', 'What we’re trying to do' );
-$story_next_heading = $story_txt( 'story_next_heading', 'Nothing very complicated' );
-$story_next_lede    = $story_txt( 'story_next_lede', 'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four people.' );
+$story_next_heading = $story_txt( 'story_next_heading', 'What we hold ourselves to' );
+$story_next_lede    = $story_txt( 'story_next_lede', 'We publish every measurement. We say what the house can’t do as clearly as what it can. You can arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.' );
 ?>
 
 

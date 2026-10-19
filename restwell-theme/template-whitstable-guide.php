@@ -47,10 +47,10 @@ $wg_spot_src = static function ( $n, $fallback_path ) use ( $restwell_wg_id ) {
 		: '';
 };
 
-$restwell_wg_heading = $wg_txt( 'wg_heading', 'Days out from the bungalow, and what to expect underfoot' );
+$restwell_wg_heading = $wg_txt( 'wg_heading', 'Accessible days out in Whitstable and Tankerton' );
 // Pages seeded before the 9 Oct 2026 rewrite still hold the old H1 in meta.
 if ( 'What a day out from the bungalow is actually like' === $restwell_wg_heading ) {
-	$restwell_wg_heading = 'Days out from the bungalow, and what to expect underfoot';
+	$restwell_wg_heading = 'Accessible days out in Whitstable and Tankerton';
 }
 $restwell_wg_intro   = $wg_txt(
 	'wg_intro',
@@ -60,34 +60,34 @@ $restwell_wg_intro   = $wg_txt(
 $wg_about_heading = $wg_txt( 'wg_about_heading', 'Tankerton promenade' );
 $wg_about_body    = $wg_txt(
 	'wg_about_body',
-	'About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep, stick to the promenade for level sea air.'
+	'About two miles of paved path runs from Tankerton Slopes towards the castle and harbour. The slopes down to the shingle are steep, so stay on the promenade for the level route.'
 );
 
 $wg_parking_heading = $wg_txt( 'wg_getting_here_heading', 'At the house and in town' );
 $wg_parking_body    = $wg_txt(
 	'wg_getting_here_body',
-	'Start from the driveway when you can. Harbour ANPR is the one that catches people out.'
+	'Park on the driveway when you can. In town, the harbour car parks are the ones that catch people out, because they use number-plate cameras.'
 );
 
 $wg_access_label   = $wg_txt( 'wg_access_label', 'Along the route' );
 $wg_access_heading = $wg_txt( 'wg_access_heading', 'Castle, harbour and beach pub' );
 $wg_access_intro   = $wg_txt(
 	'wg_access_intro',
-	'Level stops on the promenade route, with access notes and links so you can check opening times before you set out.'
+	'These are level stops on the promenade route, with access notes and links so you can check opening times before you set out.'
 );
 
 $wg_eating_label   = $wg_txt( 'wg_eating_label', 'Places to eat' );
 $wg_eating_heading = $wg_txt( 'wg_eating_heading', 'Pubs and restaurants near the house' );
 $wg_eating_intro   = $wg_txt(
 	'wg_eating_intro',
-	'The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings, call ahead if access is critical.'
+	'The Plough is around the corner, and JoJo’s and the Marine Hotel are on Tankerton. Most Whitstable venues are in older buildings, so call ahead if access is critical.'
 );
 
 $wg_planning_label   = $wg_txt( 'wg_planning_label', 'Loos along the way' );
 $wg_planning_heading = $wg_txt( 'wg_planning_heading', 'Accessible toilets' );
 $wg_planning_intro   = $wg_txt(
 	'wg_planning_intro',
-	'Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.'
+	'These are the public and venue toilets on the promenade route. The Changing Places toilet at the harbour needs a RADAR key.'
 );
 $wg_toilet_bullets   = $wg_lines(
 	'wg_planning_before_bullets',
@@ -103,7 +103,7 @@ $wg_toilet_bullets   = $wg_lines(
 $wg_travel_heading = $wg_txt( 'wg_getting_around_heading', 'Station, buses and taxis' );
 $wg_travel_body    = $wg_txt(
 	'wg_getting_around_body',
-	'Travel times from London are in the strip above. Below: how to move around Whitstable once you’ve arrived.'
+	'Travel times from London are in the strip at the top of the page. Here’s how to get around Whitstable once you’ve arrived.'
 );
 
 $wg_towns_heading = $wg_txt( 'wg_towns_heading', 'Wildwood, Dreamland and Canterbury' );
@@ -122,7 +122,7 @@ $wg_stop_3_alt = $wg_txt( 'wg_spotlight_image_3_caption', 'Shingle beach and tim
 $wg_related_heading = $wg_txt( 'wg_related_heading', 'Local Whitstable guides' );
 $wg_related_intro   = $wg_txt(
 	'wg_related_intro',
-	'Long-tail notes on parking, trains, eating out, beaches and quieter timing. This page stays the Whitstable Kent coast overview.'
+	'Longer guides on parking, trains, eating out, beaches and the quieter times to visit.'
 );
 ?>
 
@@ -187,9 +187,9 @@ get_template_part(
 			<p class="lede"><?php echo esc_html( $wg_about_body ); ?></p>
 		  </header>
 		  <ul class="checklist">
-			<li>Wide, surfaced path with weather shelters and benches</li>
-			<li>At low tide you can watch The Street spit: loose shingle, not a wheelchair route</li>
-			<li>Level route from Restwell: no steps on the approach</li>
+			<li>A wide, surfaced path with weather shelters and benches</li>
+			<li>At low tide you can see The Street, a shingle spit that isn’t a wheelchair route</li>
+			<li>A level route from Restwell, with no steps on the way</li>
 		  </ul>
 		</div>
 		<div class="split__media">
@@ -208,19 +208,19 @@ get_template_part(
 		<ol class="route-list route-list--parking" aria-label="<?php esc_attr_e( 'Where to park, easiest first', 'restwell-retreats' ); ?>">
 		  <li class="route-list__stop">
 			<p class="route-list__head"><span class="route-list__name">At Restwell</span><span class="route-list__tag">Easiest</span></p>
-			<p class="route-list__note">Two off-road spaces on the private driveway: level, step-free to the front door. Street parking outside usually works for overflow.</p>
+			<p class="route-list__note">There are two spaces on the private driveway, which is level and step-free to the front door. There’s usually room on the street outside if you need more.</p>
 		  </li>
 		  <li class="route-list__stop">
 			<p class="route-list__head"><span class="route-list__name">Marine Parade</span><span class="route-list__tag">Free</span></p>
-			<p class="route-list__note">Free Blue Badge bays along the seafront. Display your badge; no app needed.</p>
+			<p class="route-list__note">There are free Blue Badge bays along the seafront. Just display your badge, and there’s no app to download.</p>
 		  </li>
 		  <li class="route-list__stop">
 			<p class="route-list__head"><span class="route-list__name">Tankerton Road Car Park</span><span class="route-list__tag">3 hours free</span></p>
-			<p class="route-list__note">Three hours free with a physical Blue Badge, then roll along the promenade.</p>
+			<p class="route-list__note">You get three hours free with a physical Blue Badge, and the promenade is right there.</p>
 		  </li>
 		  <li class="route-list__stop route-list__stop--warn">
 			<p class="route-list__head"><span class="route-list__name">Harbour car parks</span><span class="route-list__tag">Register first</span></p>
-			<p class="route-list__note">Gorrell Tank and Keam’s Yard use ANPR: register your vehicle and Blue Badge online before you park.</p>
+			<p class="route-list__note">Gorrell Tank and Keam’s Yard use number-plate cameras, so register your vehicle and Blue Badge online before you park.</p>
 			<p class="route-list__links">
 			  <a href="https://www.canterbury.gov.uk/parking-and-roads/automatic-car-park-payments/register-your-blue-badge-park" class="text-link" target="_blank" rel="noopener noreferrer">Register your Blue Badge<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a>
 			  <a href="https://www.canterbury.gov.uk/parking-and-roads/blue-badge-parking" class="text-link" target="_blank" rel="noopener noreferrer">Blue Badge parking (CCC)<span class="sr-only"> (opens in new tab)</span><?php restwell_the_icon( 'arrow-up-right' ); ?></a>
@@ -249,14 +249,14 @@ get_template_part(
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_2_src ); ?>" alt="<?php echo esc_attr( $wg_stop_2_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.canterbury.co.uk/whitstable-harbour/" target="_blank" rel="noopener noreferrer">Whitstable Harbour<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Town &amp; seafood</p>
-			<p>Working oyster port. South Quay Shed has a lift to a quieter upper floor. Surfaces can be uneven, take it steady at peak times.</p>
+			<p>It’s a working oyster port. South Quay Shed has a lift to a quieter upper floor, and the ground can be uneven, so take it steady when it’s busy.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_3_src ); ?>" alt="<?php echo esc_attr( $wg_stop_3_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.thepubonthebeach.co.uk/" target="_blank" rel="noopener noreferrer">The Old Neptune<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Beach pub</p>
-			<p>Pub on the shingle. The terrace on firm ground is the realistic option: sloping floors inside, no step-free entrance.</p>
+			<p>This pub sits on the shingle. The terrace is on firm ground and is the realistic option, because the floors inside slope and there’s no step-free entrance.</p>
 			<p class="place-list__actions"><a href="https://www.thepubonthebeach.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=The+Old+Neptune+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		</div>
@@ -363,7 +363,7 @@ get_template_part(
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.dreamland.co.uk/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Dreamland, Margate<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>A park you can use in a wheelchair, with the Nimbus Access Card and Essential Companion scheme. Accessible parking nearby.</p>
+			<p>Dreamland accepts the Nimbus Access Card and runs an Essential Companion scheme, and there’s accessible parking nearby. Some rides have their own transfer rules, so check the access guide before you go.</p>
 			<p class="place-list__actions"><a href="https://www.dreamland.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Dreamland website<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
@@ -381,7 +381,7 @@ get_template_part(
 		  <header class="faq__intro">
 			<p class="eyebrow">Local access</p>
 			<h2 id="faq-h">Whitstable &amp; coast FAQ</h2>
-			<p class="lede">Tankerton promenade, Blue Badge parking, and what the shingle beach can and can’t do.</p>
+			<p class="lede">Answers about Tankerton promenade, Blue Badge parking and what the shingle beach can and can’t do.</p>
 		  </header>
 		  <div class="faq-list faq-list--split" data-faq-accordion>
 			<div class="faq-list__col">
@@ -391,7 +391,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q1-a" role="region" aria-labelledby="whit-q1">
-				<p>With planning, yes for paved routes. Tankerton’s level promenade works well; loose shingle and some older streets do not. Use Blue Badge parking notes, the harbour RADAR toilet, and a step-free base like Restwell.</p>
+				<p>Yes, with some planning, as long as you stick to the paved routes. Tankerton’s level promenade works well, but loose shingle and some of the older streets don’t. Plan your parking and toilet stops first, and bring a RADAR key for the Changing Places toilet at the harbour.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -400,8 +400,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
-				<p>Compact seaside town with harbour and independents; surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route. Places along Tankerton promenade take longer because you then walk west along the prom. JoJo’s is roughly twenty minutes all in. Stay on the paved path; grassy slopes above are steep.</p>
-				<p>Plan parking, toilets and seafront routes first. Tankerton promenade is the main long, level stretch of coast. The shingle beach is not a wheelchair surface. Restwell’s step-free bungalow, with driveway parking, removes the hardest barrier before the day starts.</p>
+				<p>It’s a compact seaside town with a harbour and plenty of independent shops, and the surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route, and JoJo’s on Tankerton promenade is about twenty minutes in all. Stay on the paved path, because the grassy slopes above it are steep, and keep off the shingle beach, which isn’t a wheelchair surface.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -410,7 +409,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q4-a" role="region" aria-labelledby="whit-q4" hidden>
-				<p>Choose paved promenades over shingle or steep slips. Tankerton’s promenade near Restwell is the local stretch we use most. A step-free bungalow means the day is about the route, not stairs at the house.</p>
+				<p>Paved promenades are a better bet than shingle or steep slipways. Tankerton’s promenade, near Restwell, is the stretch we use most, and our guide to accessible beaches covers the rest of the Kent coast.</p>
 			  </div>
 			</div>
 			</div>
@@ -421,7 +420,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q5-a" role="region" aria-labelledby="whit-q5" hidden>
-				<p>Secure step-free accommodation first. Use Tankerton promenade for sea air. Check accessible toilets and parking, and leave rest days in the plan. This guide lists the local detail from the bungalow.</p>
+				<p>Book step-free accommodation first, then plan your days around Tankerton promenade. Check where the accessible toilets and parking are, and leave some rest days in the plan. This guide has the local detail from the bungalow.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -430,7 +429,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q6-a" role="region" aria-labelledby="whit-q6" hidden>
-				<p>A level promenade, parking and toilets nearby, and knowing the shingle beach is not wheelchair-friendly. The promenade above is the coastal route. We don’t assume beach wheelchairs, so ask locally if you need one.</p>
+				<p>A level promenade with parking and toilets nearby, and knowing that the shingle beach isn’t wheelchair friendly. The promenade above the beach is the route to use. We can’t promise a beach wheelchair, so ask locally if you need one.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -439,7 +438,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q7-a" role="region" aria-labelledby="whit-q7" hidden>
-				<p>A private adapted base, known level routes, quieter timing if crowds are hard, and a backup indoor plan for weather. Restwell is that base on the Kent coast, with optional Continuity care if you need it.</p>
+				<p>Look for a private adapted base, level routes you know about, quieter times if crowds are hard, and an indoor backup plan for bad weather. Restwell is that kind of base on the Kent coast, with optional care from Continuity if you need it.</p>
 			  </div>
 			</div>
 			</div>
@@ -452,7 +451,7 @@ get_template_part(
 	$mid_cta_heading = $wg_txt( 'wg_cta_heading', __( 'Ask for route notes for your party', 'restwell-retreats' ) );
 	$mid_cta_intro   = $wg_txt(
 		'wg_cta_body',
-		__( 'Tell us chair size and energy levels, then look inside the bungalow.', 'restwell-retreats' )
+		__( 'Tell us your chair size and how far you like to go in a day, and we’ll point you to the routes that suit.', 'restwell-retreats' )
 	);
 	$mid_cta_primary_label = $wg_txt( 'wg_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) );
 	$mid_cta_primary_url   = $wg_txt( 'wg_cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) );

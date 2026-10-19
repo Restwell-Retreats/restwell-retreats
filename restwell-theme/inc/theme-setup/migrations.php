@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 87;
+const RESTWELL_SCHEMA_VERSION = 88;
 
 
 /**
@@ -3431,6 +3431,129 @@ function restwell_migrate_batch3_copy_v87() {
 }
 
 /**
+ * 19 Oct 2026, copy brief batch 4 (Our Story, Whitstable), decided and applied
+ * under the same rules as batches 1 to 3: plain headings in place of clever
+ * ones ("Nothing very complicated", "...what to expect underfoot"), full
+ * sentences in place of fragments, no SEO notes in visible copy, Dreamland
+ * described by its access schemes rather than "a park you can use in a
+ * wheelchair", and the banned words "bespoke" and "unlocks" taken out of the
+ * direct payments guide. Page copy is replaced only while it still equals the
+ * shipped seed; the post's phrases are swapped only where the exact old phrase
+ * is still present, so any other edits to the post are kept.
+ */
+function restwell_migrate_batch4_copy_v88() {
+	if ( get_option( 'restwell_batch4_copy_v88', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_batch4_copy_v88', '1', false );
+
+	restwell_replace_stale_page_copy(
+		array(
+			'our-story' => array(
+				'story_companies_1_body' => array(
+					'The bungalow: a private adapted house in Whitstable. Not a care home, and not a respite centre.',
+					'The bungalow is a private adapted house in Whitstable. It isn’t a care home or a respite centre.',
+				),
+				'story_shaped_heading' => array(
+					'Designed with the people who’d actually stay',
+					'Planned with disabled people before it opened',
+				),
+				'story_specialists_heading' => array(
+					'The numbers are published so you don’t have to trust us',
+					'Every measurement is published',
+				),
+				'story_specialists_btn1_label' => array(
+					'Read the access specs',
+					'Door widths and the hoist',
+				),
+				'story_next_heading' => array(
+					'Nothing very complicated',
+					'What we hold ourselves to',
+				),
+				'story_next_lede' => array(
+					'Publish the numbers. Say what the house can’t do as clearly as what it can. Make it possible to arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four people.',
+					'We publish every measurement. We say what the house can’t do as clearly as what it can. You can arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.',
+				),
+				'meta_description' => array(
+					'Restwell is a private adapted bungalow in Whitstable. Continuity of Care Services is our sister company for home care. Two companies, one family, one phone.',
+					'Why we built Restwell, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.',
+				),
+			),
+			'whitstable-area-guide' => array(
+				'wg_heading' => array(
+					'Days out from the bungalow, and what to expect underfoot',
+					'Accessible days out in Whitstable and Tankerton',
+				),
+				'wg_about_body' => array(
+					'About two miles of paved route from Tankerton Slopes toward the castle and harbour. Beach slopes to the shingle are steep, stick to the promenade for level sea air.',
+					'About two miles of paved path runs from Tankerton Slopes towards the castle and harbour. The slopes down to the shingle are steep, so stay on the promenade for the level route.',
+				),
+				'wg_getting_here_body' => array(
+					'Start from the driveway when you can. Harbour ANPR is the one that catches people out.',
+					'Park on the driveway when you can. In town, the harbour car parks are the ones that catch people out, because they use number-plate cameras.',
+				),
+				'wg_getting_around_body' => array(
+					'Travel times from London are in the strip above. Below: how to move around Whitstable once you’ve arrived.',
+					'Travel times from London are in the strip at the top of the page. Here’s how to get around Whitstable once you’ve arrived.',
+				),
+				'wg_access_intro' => array(
+					'Level stops on the promenade route, with access notes and links so you can check opening times before you set out.',
+					'These are level stops on the promenade route, with access notes and links so you can check opening times before you set out.',
+				),
+				'wg_related_intro' => array(
+					'Long-tail notes on parking, trains, eating out, beaches and quieter timing. This page stays the Whitstable Kent coast overview.',
+					'Longer guides on parking, trains, eating out, beaches and the quieter times to visit.',
+				),
+				'wg_planning_intro' => array(
+					'Public and venue loos on the promenade route. Changing Places at the harbour needs a RADAR key.',
+					'These are the public and venue toilets on the promenade route. The Changing Places toilet at the harbour needs a RADAR key.',
+				),
+				'wg_eating_intro' => array(
+					'The Plough is around the corner; JoJo’s and the Marine Hotel sit on Tankerton. Most Whitstable venues are older buildings, call ahead if access is critical.',
+					'The Plough is around the corner, and JoJo’s and the Marine Hotel are on Tankerton. Most Whitstable venues are in older buildings, so call ahead if access is critical.',
+				),
+				'wg_cta_body' => array(
+					'Tell us chair size and energy levels, then look inside the bungalow.',
+					'Tell us your chair size and how far you like to go in a day, and we’ll point you to the routes that suit.',
+				),
+			),
+		)
+	);
+
+	$post = get_page_by_path( 'direct-payment-holiday-accommodation', OBJECT, 'post' );
+	if ( ! $post ) {
+		return;
+	}
+	$content = (string) $post->post_content;
+	$phrases = array(
+		array(
+			'Self-funded, grants, or bespoke short-break funding',
+			'Self-funded, grants, or a short-break package agreed for the person',
+		),
+		array(
+			'Care duties yes; room charges typically stay separate unless a bespoke NHS package states otherwise.',
+			'Care, yes. Room charges usually aren’t covered unless an individual NHS package says otherwise.',
+		),
+		array(
+			'What question unlocks short-break funding?',
+			'What should you ask to get short-break funding?',
+		),
+	);
+	$updated = $content;
+	foreach ( $phrases as $pair ) {
+		$updated = str_replace( $pair[0], $pair[1], $updated );
+	}
+	if ( $updated !== $content ) {
+		wp_update_post(
+			array(
+				'ID'           => (int) $post->ID,
+				'post_content' => wp_slash( $updated ),
+			)
+		);
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3553,6 +3676,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch2_copy_v85',
 		'restwell_blog_summaries_v86',
 		'restwell_batch3_copy_v87',
+		'restwell_batch4_copy_v88',
 	);
 }
 
@@ -3713,6 +3837,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_blog_summaries_v86', 124 );
 	add_action( 'init', 'restwell_migrate_batch3_copy_v87', 130 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch3_copy_v87', 125 );
+	add_action( 'init', 'restwell_migrate_batch4_copy_v88', 131 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch4_copy_v88', 126 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

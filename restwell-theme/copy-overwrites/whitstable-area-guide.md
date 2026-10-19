@@ -2,6 +2,8 @@
 
 **Layer:** `wg_heading` `wg_intro`. Never “fully accessible” in Restwell-owned copy. Walk times are now resolved and publishable: about ten minutes from the driveway to the seafront, about twenty to JoJo’s because the last stretch runs west along the promenade. Venue access details come from the Welcome Guide; anything a venue could change overnight is written as “call ahead”. Voice: the Welcome Guide.
 
+**Live copy (19 Oct 2026, batch 4):** the page’s wording lives in `inc/theme-setup/page-defaults.php` and the template. The prose below is editorial background, so check it against the house rules before lifting any of it onto the page: plain headings, full sentences, no SEO notes in visible copy.
+
 ## Title
 
 Accessible days out in Whitstable and Tankerton
@@ -12,7 +14,7 @@ Which bits of Whitstable work in a wheelchair: Tankerton promenade is level, the
 
 ## H1 (`wg_heading`)
 
-Days out from the bungalow, and what to expect underfoot
+Accessible days out in Whitstable and Tankerton
 
 ## Opening paragraph (print directly under the H1)
 
@@ -60,7 +62,7 @@ One honest caveat: the building has step-free access but no wheelchair-accessibl
 
 The driveway at the bungalow is the easy part: private, level, room for two cars including an adapted vehicle.
 
-Blue Badge parking in town needs more of a plan, particularly around the harbour, where the ANPR will catch you out if you don’t know that day’s rules. Read the signs properly before you walk away, or ask us and we’ll tell you what we know.
+Blue Badge parking in town needs more of a plan, particularly around the harbour, where the number-plate cameras will catch you out if you don’t know that day’s rules. Read the signs properly before you walk away, or ask us and we’ll tell you what we know.
 
 ## Getting around without the car
 

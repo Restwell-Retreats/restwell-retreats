@@ -55,7 +55,7 @@ function restwell_theme_email_invite_steps( string $email ): string {
 		. ' <strong style="color:#1B4D5C;">' . esc_html( $email ) . '</strong></p>
       <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.55;">
         <span style="color:#D4A853;font-weight:bold;">3.</span>&nbsp; '
-		. esc_html__( 'We will send a one-time code to that address. Enter it to unlock your guide.', 'restwell-retreats' )
+		. esc_html__( 'We will send a one-time code to that address. Enter it to open your guide.', 'restwell-retreats' )
 		. '</p>';
 
 	if ( function_exists( 'restwell_email_panel' ) ) {
