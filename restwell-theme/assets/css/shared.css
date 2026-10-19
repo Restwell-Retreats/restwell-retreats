@@ -685,7 +685,6 @@ html.admin-bar .subnav ~ section[id] {
 .comparison-list + p,
 .comparison-list + .link-stack,
 .comparison-list + .download-panel,
-.testimonials__grid + .testimonials__more,
 .stat-row + .section-head,
 .blog-featured + .card-grid,
 .blog-meta + .prose,
@@ -2772,7 +2771,6 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     object-fit: cover;
   }
 }
-
 
 /* Photo and copy rows (11 Oct 2026): the photo runs off the page on its own
    side, the copy keeps the rail. Alternating rooms now read as an editorial
@@ -6240,51 +6238,7 @@ a.tag:hover {
 .care {
   background: var(--white);
 }
-/* Home tease: heading, intro, the two care choices, then a link (full panel
-   lives on /optional-care/). Open text on white, not a card (design-audit c12).
-   Left-aligned now it carries a list (audit I08, I26). */
-.care--tease .care__tease {
-  --care-type-pad-y: var(--space-4);
-  --care-type-pad-x: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: var(--space-3);
-  max-width: var(--rw-measure-care);
-  padding: 0;
-  background: none;
-  border: 0;
-}
-.care--tease .care__tease .eyebrow { margin: 0; }
-.care--tease .care__types {
-  width: 100%;
-  margin-block: var(--space-2);
-}
-@media (min-width: 720px) {
-  .care--tease .care__tease {
-    --care-type-pad-y: 0;
-    --care-type-pad-x: var(--space-6);
-  }
-  .care--tease .care__types {
-    grid-template-columns: repeat(2, 1fr);
-    border-top: 0;
-  }
-  .care--tease .care__types li { border-bottom: 0; }
-  .care--tease .care__types li:first-child { padding-left: 0; }
-  .care--tease .care__types li:last-child { padding-right: 0; }
-  .care--tease .care__types li + li {
-    border-left: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
-  }
-}
-.care--tease .care__tease h2 {
-  font-size: var(--type-h2);
-  font-weight: var(--type-display-weight);
-}
-.care--tease .care__tease .lede {
-  margin: 0;
-  color: color-mix(in srgb, var(--deep-teal) 78%, transparent);
-}
+
 /* How-it-works interrupt: teal band so this tease isn’t another beige head. */
 .care.band-teal {
   background:
@@ -6295,9 +6249,7 @@ a.tag:hover {
       color-mix(in srgb, var(--deep-teal) 92%, #12343c) 100%
     );
 }
-.band-teal.care--tease .care__tease .lede {
-  color: rgba(255, 255, 255, 0.86);
-}
+
 .care__panel {
   --care-panel-gap: var(--space-8);
   --care-type-pad-y: var(--space-5);
@@ -7114,8 +7066,8 @@ body.page-template-template-accessibility-php .scroll-top {
   --care-trust-pt: var(--space-6);
 }
 
-/* Testimonials: the teal band, the guests' words open on it (no cards since
-   14 Oct 2026, see below). */
+/* Testimonials: the teal band, with the guests' words on cards among real
+   photos (the wall, 19 Oct 2026, see below). */
 .testimonials {
   background: var(--deep-teal);
   color: var(--white);
@@ -7134,74 +7086,95 @@ body.page-template-template-accessibility-php .scroll-top {
   color: var(--white);
   text-decoration-color: var(--white);
 }
-/* No cards (14 Oct 2026): three white cards in a row on the teal was one of
-   the "AI tells" (a uniform card grid). The first review leads, set large in
-   the serif like Our Story's lead quote; the rest sit under it in two open
-   columns. Works for any count, including live Google reviews. */
-.testimonials__grid {
+
+/* The wall (19 Oct 2026): the first review large on a gold card, the rest
+   on white cards, with two real photos set among them. Three columns from
+   900px; one column below that, where the second photo is dropped. With
+   fewer than three reviews there are no photos and the cards sit two up. */
+.testimonials__wall {
   display: grid;
-  gap: var(--space-12);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  gap: var(--space-4);
 }
-@media (min-width: 768px) {
-  .testimonials__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-14) var(--space-16); }
-  .testimonials__grid > li:first-child { grid-column: 1 / -1; }
+.testimonials__wall + .testimonials__more { margin-top: var(--space-8); }
+@media (min-width: 900px) {
+  .testimonials__wall { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .testimonials__wall--full {
+    grid-template-columns: 1.15fr 1fr 1fr;
+    grid-template-areas:
+      "lead photo1 card2"
+      "lead card3 photo2";
+  }
+  .testimonials__wall--full .testimonial-card--lead { grid-area: lead; }
+  .testimonials__wall--full .testimonials__photo--1 { grid-area: photo1; }
+  .testimonials__wall--full .testimonial-card--2 { grid-area: card2; }
+  .testimonials__wall--full .testimonial-card--3 { grid-area: card3; }
+  .testimonials__wall--full .testimonials__photo--2 { grid-area: photo2; }
 }
-.testimonials__grid > li { display: flex; min-height: 0; }
-.testimonial-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+.testimonials__photo {
+  display: block;
   width: 100%;
-  padding-left: var(--space-10);
-  color: var(--white);
+  height: 100%;
+  min-height: 14rem;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
 }
-.testimonial-card__mark {
-  position: absolute;
-  top: -0.12em;
-  left: 0;
-  font-family: var(--font-serif);
-  font-size: 3.25rem;
-  line-height: 1;
-  color: var(--warm-gold);
+@media (max-width: 899px) {
+  .testimonials__photo { max-height: 18rem; }
+  .testimonials__photo--2 { display: none; }
+}
+.testimonial-card {
+  display: flex;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  color: var(--deep-teal);
 }
 .testimonial-card__quote {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  justify-content: space-between;
+  gap: var(--space-6);
+  width: 100%;
   margin: 0;
-  font-family: var(--font-sans);
   font-style: normal;
+}
+.testimonial-card__quote p {
+  margin: 0;
+  font-family: var(--font-serif);
   font-size: var(--text-lg);
-  line-height: var(--leading-lede);
-  color: rgb(255 255 255 / 0.88);
+  line-height: 1.45;
+  color: var(--deep-teal);
   text-wrap: pretty;
 }
-.testimonial-card__quote p { max-width: var(--measure-text); margin: 0; color: inherit; }
-.testimonial-card__quote footer { margin-top: 0; }
+.testimonial-card__quote p::before {
+  content: "\201C";
+  content: "\201C" / "";
+  display: block;
+  height: 0.55em;
+  font-size: 3em;
+  line-height: 1;
+  color: var(--warm-gold);
+}
 .testimonial-card__cite {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
+  flex-direction: column;
+  gap: 2px;
   font-family: var(--font-sans);
   font-style: normal;
 }
-.testimonial-card__name { font-weight: var(--weight-semibold); font-size: var(--text-md); color: var(--white); }
-.testimonial-card__role { font-weight: var(--weight-regular); font-size: var(--text-sm); color: rgb(255 255 255 / 0.72); }
-/* The lead review. */
-.testimonials__grid > li:first-child .testimonial-card { padding-left: var(--space-14); }
-.testimonials__grid > li:first-child .testimonial-card__mark { top: -0.18em; font-size: 5rem; }
-.testimonials__grid > li:first-child .testimonial-card__quote p {
-  max-width: 26em;
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 1.05rem + 1.5vw, 2.25rem);
+.testimonial-card__name { font-weight: var(--weight-semibold); font-size: var(--text-md); color: var(--deep-teal); }
+.testimonial-card__role { font-weight: var(--weight-regular); font-size: var(--text-sm); color: var(--muted-grey); }
+/* The lead review: gold card, the quote a size up. A darker teal on the gold
+   keeps every line above 4.5:1. */
+.testimonial-card--lead { padding: var(--space-8); background: var(--warm-gold); }
+.testimonial-card--lead .testimonial-card__quote p {
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 1.95rem);
   line-height: 1.3;
-  letter-spacing: -0.01em;
-  color: var(--white);
 }
+.testimonial-card--lead .testimonial-card__quote p,
+.testimonial-card--lead .testimonial-card__quote p::before,
+.testimonial-card--lead .testimonial-card__name,
+.testimonial-card--lead .testimonial-card__role { color: #0f3540; }
 
 /*
  * Pull-quote — a single featured review dropped into a plain band, no card.
@@ -7627,7 +7600,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
     flex: 0 0 auto;
   }
 }
-
 
 /* =========================================================================
    Section patterns (3 Oct 2026 redesign). Shared building blocks that
@@ -8592,31 +8564,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   .gallery .section-head > * { grid-column: 1; }
   .gallery .section-head > .text-link { grid-column: 2; grid-row: 1 / span 2; justify-self: end; align-self: end; }
 }
-/* Care tease: the two choices as equal cards across the container. */
-.care--tease .care__tease { max-width: none; }
-.care--tease .care__tease .lede { max-width: var(--measure-text); }
-.care--tease .care__types {
-  display: grid;
-  gap: var(--space-4);
-  border: 0;
-}
-@media (min-width: 720px) {
-  .care--tease .care__types { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-.care--tease .care__types li,
-.care--tease .care__types li + li,
-.care--tease .care__types li:first-child,
-.care--tease .care__types li:last-child {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--panel-pad);
-  border: 0;
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  box-shadow: var(--card-shadow);
-}
-.care--tease .care__type-title { font-family: var(--font-serif); font-size: var(--type-h3); font-weight: var(--type-title-weight); line-height: var(--leading-tight); }
 
 /* FAQ lists below the two-column FAQ layout (960px): full width so the rules
    run edge to edge, one list (no 900-959px split inside a single column). */
@@ -9533,46 +9480,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   border: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
 }
 
-/* Home key-facts strip, straight under the hero: three things a guest checks
-   first, each an icon and a line, divided by hairlines. Light, not a coloured
-   band, so it reads as part of the page rather than a banner. */
-.facts-strip { padding-block: var(--space-2); border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent); }
-.facts-strip__list { display: grid; margin: 0; padding: 0; list-style: none; }
-.facts-strip__list li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-4) 0;
-  color: var(--deep-teal);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-snug);
-}
-.facts-strip__list li + li { border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-/* Four across, a label gets ~170px: balance the two lines rather than leave
-   "two" or "room" alone on the second. */
-.facts-strip__list li > span:last-child { text-wrap: balance; }
-.facts-strip .icon-circle { background: var(--white); border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-.facts-strip .icon-circle { --icon-circle-size: 3.25rem; }
-.facts-strip .icon-circle svg { width: 62%; height: 62%; }
-@media (min-width: 600px) {
-  .facts-strip { padding-block: var(--space-4); }
-  .facts-strip__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .facts-strip__list li,
-  .facts-strip__list li + li { justify-content: flex-start; padding: var(--space-4) var(--space-5); border: 0; }
-  .facts-strip__list li:nth-child(even) { border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-  .facts-strip__list li:nth-child(n + 3) { border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-}
-/* Four across from 1100px; at 960-1099 "Driveway / parking / for two" broke
-   into three lines beside its icon. */
-@media (min-width: 1100px) {
-  .facts-strip__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .facts-strip__list li,
-  .facts-strip__list li + li { padding: var(--space-3) var(--space-5); border: 0; }
-  .facts-strip__list li:nth-child(n + 3) { border-top: 0; }
-  .facts-strip__list li + li { border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-}
-
-
 /* A text link that stands alone (the only thing in its paragraph, or a flex
    item in a card footer) is a tap target in its own right, not an inline link
    in a sentence, so it gets the theme's 44px height. Four were 20px at phone
@@ -9630,10 +9537,6 @@ p.care-how__note > .text-link,
 .place-list--venues .place-list__item,
 .place-list--venues .place-list__item:first-child,
 .place-list--venues .place-list__item:last-child,
-.care--tease .care__types li,
-.care--tease .care__types li + li,
-.care--tease .care__types li:first-child,
-.care--tease .care__types li:last-child,
 .info-card:not(a):not(#directory *) {
   padding: 0;
   border: 0;
@@ -9652,11 +9555,11 @@ p.care-how__note > .text-link,
   transform: none;
   box-shadow: none;
 }
-:is(.persona-list, .sister-band__cards, .place-list, .comparison-list:not(.funding-route *), .care--tease .care__types) {
+:is(.persona-list, .sister-band__cards, .place-list, .comparison-list:not(.funding-route *)) {
   row-gap: var(--space-10);
 }
 @media (min-width: 768px) {
-  :is(.persona-list, .sister-band__cards, .place-list, .comparison-list:not(.funding-route *), .care--tease .care__types) {
+  :is(.persona-list, .sister-band__cards, .place-list, .comparison-list:not(.funding-route *)) {
     column-gap: var(--space-10);
   }
 }
@@ -9668,7 +9571,6 @@ p.care-how__note > .text-link,
   border: 0;
   box-shadow: none;
 }
-
 
 /* "What we can't promise" as its own short section: the contact line joins
    the intro column. */
@@ -9739,8 +9641,6 @@ p.care-how__note > .text-link,
   background: none;
 }
 
-
-
 /* Articles: the "how others read it" points and the do / avoid lists are open
    under a rule, like the rest of the site. The "In short" summary stays a tint:
    it is the one callout. */
@@ -9773,7 +9673,6 @@ p.care-how__note > .text-link,
   .form-actions--end .btn,
   .faq-ask .btn { width: 100%; }
 }
-
 
 /* =========================================================================
    Premium pass (13 Oct 2026). Benchmarked against the reference sites the
@@ -9912,26 +9811,6 @@ p.care-how__note > .text-link,
    it ("single-/storey"). */
 .nowrap { white-space: nowrap; }
 
-/* Key facts on phones: a 2x2 of icon-over-label, not four full-width rows that
-   filled the first screen under the hero like a settings list. */
-@media (max-width: 599px) {
-  .facts-strip__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .facts-strip__list li {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-2);
-    padding: var(--space-4) var(--space-4) var(--space-4) 0;
-    font-size: var(--text-md);
-  }
-  .facts-strip__list li + li { border-top: 0; }
-  .facts-strip__list li:nth-child(even) {
-    padding-left: var(--space-4);
-    border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  }
-  .facts-strip__list li:nth-child(n + 3) { border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-  .facts-strip .icon-circle { --icon-circle-size: 2.75rem; }
-}
-
 /* Article point cards: an odd count reads as a list, one per row under its
    rule. In the 713px article column three points wrapped 2 + 1. */
 .post-cards:has(> .post-card:last-child:nth-child(odd)) { grid-template-columns: minmax(0, 1fr); }
@@ -9953,45 +9832,6 @@ p.care-how__note > .text-link,
   .acc-figures { padding: 0; }
   .acc-figures__row:first-child { padding-left: 0; }
   .acc-figures__row + .acc-figures__row { border-left-color: var(--rule); }
-}
-
-/* Home care tease: the intro and its link on the left half, the two choices
-   stacked on the right under rules. Side by side the choices ran 2 lines
-   against 4 and the link sat stranded under the short one. The trailing 1fr
-   row takes the list's extra height so the intro stays together. */
-@media (min-width: 900px) {
-  .care--tease .care__tease {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: auto auto auto auto 1fr;
-    column-gap: var(--space-16);
-    row-gap: var(--space-3);
-    align-items: start;
-  }
-  .care--tease .care__tease > :not(.care__types) { grid-column: 1; }
-  .care--tease .care__tease > .care__types {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 0;
-    margin: 0;
-  }
-  .care--tease .care__types li,
-  .care--tease .care__types li + li,
-  .care--tease .care__types li:first-child,
-  .care--tease .care__types li:last-child {
-    padding: var(--space-6) 0;
-    border-left: 0;
-  }
-  /* One rule, between the two choices (none above the first or below the last). */
-  .care--tease .care__types li:first-child { padding-top: 0; }
-  .care--tease .care__types li:last-child { padding-bottom: 0; }
-  .care--tease .care__types li + li { border-top: 1px solid var(--rule); }
-  .care--tease .care__type-title {
-    font-family: var(--font-serif);
-    font-size: var(--text-2xl);
-    font-weight: var(--type-title-weight);
-  }
 }
 
 /* Our Story: the office team beside the host copy, a small round portrait and
@@ -10115,7 +9955,6 @@ p.care-how__note > .text-link,
    40rem floor ran the intro past it. Heroes and the closing band share it. */
 .container > .section-head:not(.section-head--center) > .lede,
 .section-head.process__head > .lede,
-.care--tease .care__tease > .lede,
 .hero .hero__text > p:not(.eyebrow),
 .mid-cta .mid-cta__inner > p {
   max-width: min(100%, 36rem);
@@ -10843,7 +10682,6 @@ p.care-how__note > .text-link,
    ========================================================================= */
 .icon-circle,
 .persona-list__item .icon-circle,
-.facts-strip .icon-circle,
 .hiw-facts__icon,
 .acc-callout__icon,
 .acc-callout--quiet .acc-callout__icon,
@@ -10859,7 +10697,6 @@ p.care-how__note > .text-link,
   box-shadow: none;
 }
 .icon-circle svg,
-.facts-strip .icon-circle svg,
 .persona-list__item .icon-circle svg { width: 1.75rem; height: 1.75rem; }
 .step-success .icon-circle svg { width: 2.5rem; height: 2.5rem; }
 .hiw-facts > div { padding-left: calc(1.5rem + var(--space-4)); } /* waiver: the icon's width plus its gap */
@@ -10984,21 +10821,6 @@ p.care-how__note > .text-link,
 .trio__item { padding-top: var(--space-5); border-top: 1px solid var(--rule); }
 .trio__item h3 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); line-height: var(--leading-snug); }
 .trio__item p { margin: 0; font-size: var(--text-md); line-height: var(--leading-lede); color: var(--body-secondary); }
-/* Type upgrades on two quiet moments (15 Oct 2026): the lead guest quote a
-   size up, and the home facts strip labelled in the display serif rather than
-   semibold sans, so both read as part of the same editorial voice as the
-   numbers and the headings. */
-.testimonials__grid > li:first-child .testimonial-card__quote p {
-  max-width: 28em;
-  font-size: clamp(1.75rem, 1.15rem + 2vw, 2.75rem);
-  line-height: 1.25;
-}
-.facts-strip__list li > span:last-child {
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  font-weight: var(--type-display-weight);
-  line-height: 1.25;
-}
 
 /* Marks without discs on the blog (15 Oct 2026): the do/avoid ticks and
    crosses and the category tag lose their fills and pill, like the register
@@ -11025,3 +10847,185 @@ p.care-how__note > .text-link,
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* Home at a glance (19 Oct 2026): four real photos with a label each,
+   rising over the bottom of the hero like a hotel's amenity tiles. They
+   replaced icons in circles. The section's top is see-through so the tiles
+   sit on the hero photo, and the hero gains the same room at its foot.
+   Two across on phones, four from 900px. */
+.hero:has(+ .facts-strip),
+.facts-strip { --glance-rise: 2.5rem; }
+@media (min-width: 900px) {
+  .hero:has(+ .facts-strip),
+  .facts-strip { --glance-rise: 4.5rem; }
+}
+.hero:has(+ .facts-strip) .hero__content { padding-bottom: calc(var(--hero-pad-bottom) + var(--glance-rise)); }
+.facts-strip {
+  position: relative;
+  z-index: 3;
+  margin-top: calc(var(--glance-rise) * -1);
+  padding-bottom: var(--space-12);
+  background: linear-gradient(to bottom, transparent var(--glance-rise), var(--bg-subtle) var(--glance-rise));
+}
+.facts-strip__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .facts-strip__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+}
+.facts-strip__item {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: #0e2a32;
+}
+@media (min-width: 900px) {
+  .facts-strip__item { aspect-ratio: 1; }
+}
+.facts-strip__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.facts-strip__item:nth-child(1) .facts-strip__photo { object-position: 50% 60%; }
+.facts-strip__item:nth-child(2) .facts-strip__photo { object-position: 50% 45%; }
+.facts-strip__item:nth-child(4) .facts-strip__photo { object-position: 40% 40%; }
+.facts-strip__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgb(10 32 39 / 0.92) 0%, rgb(10 32 39 / 0.6) 40%, rgb(10 32 39 / 0) 68%);
+}
+.facts-strip__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-4);
+}
+@media (min-width: 900px) {
+  .facts-strip__text { padding: var(--space-5); }
+}
+.facts-strip__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.35rem);
+  line-height: 1.2;
+  color: var(--white);
+}
+.facts-strip__sub {
+  font-size: var(--text-md);
+  line-height: 1.4;
+  color: rgb(255 255 255 / 0.86);
+}
+
+/* Home care (19 Oct 2026): the two ways guests handle it, as two cards.
+   "Bring your own support" is a photo of the second bedroom with its words
+   on the darkened foot; "Add care from Continuity" is a teal card with
+   Keelie and Nikki. 7:5 from 900px, stacked below. */
+.care-choices {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 900px) {
+  .care-choices { grid-template-columns: 7fr 5fr; gap: var(--space-5); }
+}
+.care-choice {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  color: var(--white);
+}
+.care-choice--own { min-height: 26rem; }
+@media (min-width: 900px) {
+  .care-choice--own { min-height: 32rem; }
+}
+.care-choice__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.care-choice--own::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgb(10 32 39 / 0.92) 0%, rgb(10 32 39 / 0.55) 42%, rgb(10 32 39 / 0) 72%);
+}
+.care-choice--continuity { justify-content: space-between; background: var(--deep-teal); }
+.care-choice__text { padding: var(--space-6); }
+@media (min-width: 900px) {
+  .care-choice__text { padding: var(--space-8); }
+}
+.care-choice h3 {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.4rem, 1.1rem + 0.8vw, 1.85rem);
+  font-weight: var(--type-display-weight);
+  line-height: 1.2;
+  color: var(--white);
+}
+.care-choice p {
+  max-width: 32rem;
+  margin: 0;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.88);
+}
+.care-choice__team {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-6) 0;
+}
+@media (min-width: 900px) {
+  .care-choice__team { padding: var(--space-8) var(--space-8) 0; }
+}
+.care-choice__team figure { margin: 0; }
+.care-choice__team img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 18%;
+  border-radius: var(--radius);
+}
+.care-choice__team figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--text-md);
+  color: rgb(255 255 255 / 0.8);
+}
+.care-choice__link {
+  display: inline-block;
+  padding-block: 0.6rem;
+  margin-top: var(--space-3);
+  font-weight: var(--weight-semibold);
+  color: var(--warm-gold-hero);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--warm-gold-hero) 45%, transparent);
+  text-underline-offset: 0.2em;
+}
+.care-choice__link:hover { color: var(--white); text-decoration-color: var(--white); }
+.care-choice--continuity :focus-visible { outline-color: var(--warm-gold-hero); }
+.care-choice--link { justify-content: flex-start; color: var(--deep-teal); }
+.care-choice--link .care-choice__link { color: var(--deep-teal); }

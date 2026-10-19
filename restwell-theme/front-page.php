@@ -268,25 +268,29 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  </div>
 	</section>
 
+	<?php
+	// At a glance (19 Oct 2026): four real photos, each with a label, rising
+	// over the bottom edge of the hero. It replaced icons in circles. Facts as
+	// in inc/property-facts.php; the gallery below uses different shots.
+	$home_glance = array(
+		array( 'bungalow/BD1-1-LS.jpg', 2400, 1500, __( 'Two bedrooms', 'restwell-retreats' ), __( 'Sleeps up to five, with a sofa bed in the conservatory', 'restwell-retreats' ) ),
+		array( 'bungalow/FD-1-LS.jpg', 2400, 1500, __( 'Step-free front door', 'restwell-retreats' ), __( '965mm clear, off a level driveway for two cars', 'restwell-retreats' ) ),
+		array( 'bungalow/WR-1-LS.jpg', 2400, 1500, __( 'Level-access wet room', 'restwell-retreats' ), __( 'Shower chair, grab rails and a basin that rises and falls', 'restwell-retreats' ) ),
+		array( 'bungalow/H-1-LS.jpg', 1920, 1200, __( 'Ceiling track hoist', 'restwell-retreats' ), __( 'Rated to 180kg, over the profiling bed', 'restwell-retreats' ) ),
+	);
+	?>
 	<section class="facts-strip band-subtle" aria-label="<?php esc_attr_e( 'The bungalow at a glance', 'restwell-retreats' ); ?>">
 	  <div class="container">
 		<ul class="facts-strip__list" role="list">
-		  <li>
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'bed' ); ?></span>
-			<span><?php esc_html_e( 'Two bedrooms,', 'restwell-retreats' ); ?> <span class="nowrap"><?php esc_html_e( 'sleeps up to five', 'restwell-retreats' ); ?></span></span>
+		  <?php foreach ( $home_glance as $glance ) : ?>
+		  <li class="facts-strip__item">
+			<img class="facts-strip__photo" src="<?php echo esc_url( restwell_theme_image_url( $glance[0] ) ); ?>" alt="" width="<?php echo (int) $glance[1]; ?>" height="<?php echo (int) $glance[2]; ?>" sizes="(min-width: 900px) 280px, 50vw" decoding="async" />
+			<p class="facts-strip__text">
+			  <span class="facts-strip__title"><?php echo esc_html( $glance[3] ); ?></span>
+			  <span class="facts-strip__sub"><?php echo esc_html( $glance[4] ); ?></span>
+			</p>
 		  </li>
-		  <li>
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'car-front' ); ?></span>
-			<span><?php esc_html_e( 'Level parking for two cars', 'restwell-retreats' ); ?></span>
-		  </li>
-		  <li>
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'shower-head' ); ?></span>
-			<span><?php esc_html_e( 'Level-access wet room', 'restwell-retreats' ); ?></span>
-		  </li>
-		  <li>
-			<span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( 'move-vertical' ); ?></span>
-			<span><?php esc_html_e( 'Ceiling track hoist', 'restwell-retreats' ); ?></span>
-		  </li>
+		  <?php endforeach; ?>
 		</ul>
 	  </div>
 	</section>
@@ -364,30 +368,58 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	);
 	?>
 
+	<?php
+	// Care, the two ways guests handle it (19 Oct 2026): a photo card of the
+	// second bedroom for bringing your own carer, and a teal card with Keelie
+	// and Nikki for care from Continuity. They replaced two text columns and
+	// two small round faces. Photos of the team published with consent.
+	$home_care_link = ( '' !== $home_care_cta_label && '' !== $home_care_cta_url )
+		? '<a class="care-choice__link" href="' . esc_url( $home_care_cta_url ) . '">' . esc_html( $home_care_cta_label ) . ' <span aria-hidden="true">&rarr;</span></a>'
+		: '';
+	$home_care_team = array(
+		array( 'journey/keelie-varney.webp', 1500, 'Keelie Varney' ),
+		array( 'journey/nikki-mackay.webp', 1429, 'Nikki Mackay' ),
+	);
+	?>
 	<section class="care care--tease section-y band-white" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="care__tease">
+		<header class="section-head">
 		  <?php if ( '' !== $home_care_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $home_care_label ); ?></p>
 		  <?php endif; ?>
 		  <h2 id="care-h"><?php echo esc_html( $home_care_heading ); ?></h2>
 		  <p class="lede"><?php echo esc_html( $home_care_intro ); ?></p>
-		  <?php // The intro ends "whichever you choose:", so the two choices follow it (audit I08). ?>
-		  <ul class="care__types" role="list">
-			<?php foreach ( array( array( $home_care_item1_title, $home_care_item1_body ), array( $home_care_item2_title, $home_care_item2_body ) ) as $home_care_item ) : ?>
-				<?php if ( '' !== trim( $home_care_item[0] ) ) : ?>
-			<li>
-			  <span class="care__type-title"><?php echo esc_html( $home_care_item[0] ); ?></span>
-			  <span class="care__type-text"><?php echo esc_html( $home_care_item[1] ); ?></span>
-			</li>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		  </ul>
-		  <?php if ( '' !== $home_care_cta_label && '' !== $home_care_cta_url ) : ?>
-		  <a class="text-link" href="<?php echo esc_url( $home_care_cta_url ); ?>"><?php echo esc_html( $home_care_cta_label ); ?></a>
+		</header>
+		<ul class="care-choices" role="list">
+		  <?php if ( '' !== trim( $home_care_item1_title ) ) : ?>
+		  <li class="care-choice care-choice--own">
+			<img class="care-choice__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD1-1-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 900px) 660px, 100vw" loading="lazy" decoding="async" />
+			<div class="care-choice__text">
+			  <h3><?php echo esc_html( $home_care_item1_title ); ?></h3>
+			  <p><?php echo esc_html( $home_care_item1_body ); ?></p>
+			</div>
+		  </li>
 		  <?php endif; ?>
-		  <?php get_template_part( 'template-parts/care-faces' ); ?>
-		</div>
+		  <?php if ( '' !== trim( $home_care_item2_title ) ) : ?>
+		  <li class="care-choice care-choice--continuity">
+			<div class="care-choice__team">
+				<?php foreach ( $home_care_team as $home_care_person ) : ?>
+			  <figure>
+				<img src="<?php echo esc_url( restwell_theme_image_url( $home_care_person[0] ) ); ?>" alt="" width="<?php echo (int) $home_care_person[1]; ?>" height="2000" sizes="(min-width: 900px) 210px, 42vw" loading="lazy" decoding="async" />
+				<figcaption><?php echo esc_html( $home_care_person[2] ); ?></figcaption>
+			  </figure>
+				<?php endforeach; ?>
+			</div>
+			<div class="care-choice__text">
+			  <h3><?php echo esc_html( $home_care_item2_title ); ?></h3>
+			  <p><?php echo esc_html( $home_care_item2_body ); ?></p>
+				<?php echo $home_care_link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped when built above. ?>
+			</div>
+		  </li>
+		  <?php elseif ( '' !== $home_care_link ) : ?>
+		  <li class="care-choice care-choice--link"><?php echo $home_care_link; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped when built above. ?></li>
+		  <?php endif; ?>
+		</ul>
 	  </div>
 	</section>
 
