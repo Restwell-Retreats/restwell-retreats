@@ -93,6 +93,12 @@ $pricing_care_rates_intro   = $pricing_txt(
 	'pricing_care_rates_intro',
 	__( 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.', 'restwell-retreats' )
 );
+$pricing_faq_label   = $pricing_txt( 'pricing_faq_label', __( 'Money questions', 'restwell-retreats' ) );
+$pricing_faq_heading = $pricing_txt( 'pricing_faq_heading', __( 'Questions about prices', 'restwell-retreats' ) );
+$pricing_faq_intro   = $pricing_txt(
+	'pricing_faq_intro',
+	__( 'What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.', 'restwell-retreats' )
+);
 
 /**
  * Turn a phrase inside already-escaped copy into an internal text link.
@@ -394,48 +400,33 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">
-			<p class="eyebrow">Money questions</p>
-			<h2 id="faq-h">Questions about prices</h2>
-			<p class="lede">What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.</p>
+			<?php if ( '' !== $pricing_faq_label ) : ?>
+			<p class="eyebrow"><?php echo esc_html( $pricing_faq_label ); ?></p>
+			<?php endif; ?>
+			<h2 id="faq-h"><?php echo esc_html( $pricing_faq_heading ); ?></h2>
+			<?php if ( '' !== $pricing_faq_intro ) : ?>
+			<p class="lede"><?php echo esc_html( $pricing_faq_intro ); ?></p>
+			<?php endif; ?>
 		  </header>
-		  <div class="faq-list" data-faq-accordion>
-			<div class="faq-item is-open">
-			  <button type="button" class="faq-item__trigger" aria-expanded="true" id="pr-q1" aria-controls="pr-q1-a">
-				<span>Is care included in the bungalow price?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="pr-q1-a" role="region" aria-labelledby="pr-q1">
-				<p>No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.</p>
-			  </div>
-			</div>
-			<div class="faq-item">
-			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="pr-q2" aria-controls="pr-q2-a">
-				<span>Are there extra charges for equipment?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="pr-q2-a" role="region" aria-labelledby="pr-q2" hidden>
-				<p>The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.</p>
-			  </div>
-			</div>
-			<div class="faq-item">
-			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="pr-q3" aria-controls="pr-q3-a">
-				<span>Does the price change if a council or the NHS pays?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="pr-q3-a" role="region" aria-labelledby="pr-q3" hidden>
-				<p>No. The price is the same whoever pays, and the only thing that changes is who we send the invoice to. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>">Funding &amp; Support</a> explains how that works.</p>
-			  </div>
-			</div>
-			<div class="faq-item">
-			  <button type="button" class="faq-item__trigger" aria-expanded="false" id="pr-q4" aria-controls="pr-q4-a">
-				<span>When do care guide rates go up?</span>
-				<span class="faq-item__icon" aria-hidden="true"></span>
-			  </button>
-			  <div class="faq-item__panel" id="pr-q4-a" role="region" aria-labelledby="pr-q4" hidden>
-				<p>Care costs more at weekends, on bank holidays and for complex care. Continuity review their rates regularly, and the next review date is shown above. They’ll give you a quote once you’ve agreed the hours and tasks with them.</p>
-			  </div>
-			</div>
-		  </div>
+		  <?php
+			$pricing_faq_items = array();
+			foreach ( restwell_get_faq_items( 'pricing' ) as $row ) {
+				$pricing_faq_items[] = array(
+					'q'    => $row['q'],
+					'a'    => '<p>' . wp_kses_post( $row['a'] ) . '</p>',
+					'open' => empty( $pricing_faq_items ),
+					'cat'  => isset( $row['cat'] ) ? $row['cat'] : 'booking',
+				);
+			}
+			get_template_part(
+				'template-parts/faq-accordion',
+				null,
+				array(
+					'id_prefix' => 'pr-q',
+					'columns'   => array( $pricing_faq_items ),
+				)
+			);
+			?>
 		</div>
 	  </div>
 	</section>

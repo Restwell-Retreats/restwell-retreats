@@ -41,10 +41,41 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 88;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 90;', $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_heading_v90',", $source );
+	}
+
+	public function test_pricing_faq_heading_swap_only_replaces_the_july_seeds() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_pricing_faq_heading_v90' );
+		$this->assertStringContainsString( 'restwell_replace_stale_page_copy(', $body );
+		$this->assertStringContainsString( "'pricing_faq_label'   => array( 'FAQ', 'Money questions' ),", $body );
+		$this->assertStringContainsString( "'pricing_faq_heading' => array( 'Common questions about pricing', 'Questions about prices' ),", $body );
+		$this->assertStringContainsString( "update_option( 'restwell_pricing_faq_heading_v90', '1'", $body );
+		// The template reads the fields, with the same copy as its fallback.
+		$template = (string) file_get_contents( dirname( __DIR__ ) . '/template-pricing.php' );
+		$this->assertStringContainsString( "\$pricing_txt( 'pricing_faq_label', __( 'Money questions', 'restwell-retreats' ) )", $template );
+		$this->assertStringContainsString( "\$pricing_txt( 'pricing_faq_heading', __( 'Questions about prices', 'restwell-retreats' ) )", $template );
+		$this->assertStringContainsString( "'pricing_faq_intro',", $template );
+	}
+
+	public function test_pricing_faq_swap_moves_whole_pairs_to_the_shipped_defaults() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_pricing_faq_v89' );
+		// A slot moves only while its question and its answer are both the old seed.
+		$this->assertStringContainsString( 'continue 2;', $body );
+		$this->assertStringContainsString( "restwell_replace_stale_page_copy( array( 'pricing' => \$fields ) );", $body );
+		$this->assertStringContainsString( "update_option( 'restwell_pricing_faq_v89', '1'", $body );
+		// It writes exactly what a fresh install seeds.
+		require_once dirname( __DIR__ ) . '/inc/pricing.php';
+		foreach ( restwell_get_pricing_faq_defaults() as $row ) {
+			$this->assertStringContainsString( "'" . $row['q'] . "'", $body );
+			$this->assertStringContainsString( "'" . $row['a'] . "'", $body );
+		}
 	}
 
 	public function test_home_blog_cleanup_never_touches_the_front_or_posts_page() {

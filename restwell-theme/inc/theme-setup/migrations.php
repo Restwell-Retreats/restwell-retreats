@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 88;
+const RESTWELL_SCHEMA_VERSION = 90;
 
 
 /**
@@ -3554,6 +3554,109 @@ function restwell_migrate_batch4_copy_v88() {
 }
 
 /**
+ * 19 Oct 2026: the Pricing FAQ now renders the pricing_faq_{N} fields, so an
+ * edit in wp-admin reaches the page. Those fields still held the five
+ * questions seeded in August, one of them saying "the rate is identical" next
+ * to care. Each slot moves to the four questions the page has shown since
+ * Batch 2, and the old deposit question is cleared. A question and its answer
+ * move together, and only while both still equal the old seed, so a pair
+ * Victoria or Ellie has edited is never split.
+ */
+function restwell_migrate_pricing_faq_v89() {
+	if ( get_option( 'restwell_pricing_faq_v89', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_pricing_faq_v89', '1', false );
+	if ( ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		return;
+	}
+	$page_id = restwell_page_id_for_stock_slug( 'pricing' );
+	if ( $page_id < 1 ) {
+		return;
+	}
+	$slots = array(
+		1 => array(
+			'q' => array(
+				'What does the bungalow price include?',
+				'Is care included in the bungalow price?',
+			),
+			'a' => array(
+				'You book the whole house, with all the access equipment included. A week is £1,300 off-peak and £1,400 in peak season; midweek nights are £185 and £200. A 50% deposit reserves your dates, and the balance is due a week before arrival.',
+				'No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.',
+			),
+		),
+		2 => array(
+			'q' => array(
+				'Is care included in the price?',
+				'Are there extra charges for equipment?',
+			),
+			'a' => array(
+				'No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, will quote for it.',
+				'The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.',
+			),
+		),
+		3 => array(
+			'q' => array(
+				'Are there extra charges for the equipment?',
+				'Does the price change if a council or the NHS pays?',
+			),
+			'a' => array(
+				'No. The hoist, the profiling bed and the wet room kit listed on the access statement are all included in the house rate.',
+				'No. The price is the same whoever pays, and the only thing that changes is who we send the invoice to. <a class="text-link" href="/funding-and-support/">Funding & Support</a> explains how that works.',
+			),
+		),
+		4 => array(
+			'q' => array(
+				'Does the price change depending on who’s funding it?',
+				'When do care guide rates go up?',
+			),
+			'a' => array(
+				'No. The rate is identical whether you pay, a council pays, the NHS pays, or a grant body pays. All that changes is who receives the invoice.',
+				'Care costs more at weekends, on bank holidays and for complex care. Continuity review their rates regularly, and the next review date is shown above. They’ll give you a quote once you’ve agreed the hours and tasks with them.',
+			),
+		),
+		5 => array(
+			'q' => array( 'How much deposit do I pay?', '' ),
+			'a' => array( '50%, once we’ve confirmed the house fits. The remaining balance is due no later than one week before you arrive.', '' ),
+		),
+	);
+	$fields = array();
+	foreach ( $slots as $i => $slot ) {
+		foreach ( $slot as $part => $pair ) {
+			$stored = trim( str_replace( array( "\r\n", "\r" ), "\n", (string) get_post_meta( $page_id, "pricing_faq_{$i}_{$part}", true ) ) );
+			if ( $stored !== $pair[0] ) {
+				continue 2;
+			}
+		}
+		$fields[ "pricing_faq_{$i}_q" ] = $slot['q'];
+		$fields[ "pricing_faq_{$i}_a" ] = $slot['a'];
+	}
+	restwell_replace_stale_page_copy( array( 'pricing' => $fields ) );
+}
+
+/**
+ * 19 Oct 2026: the Pricing FAQ eyebrow and heading now read their wp-admin
+ * fields. Those still held the July seeds, "FAQ" and "Common questions about
+ * pricing", so they move to the "Money questions" and "Questions about
+ * prices" the page has shown since Batch 2. Same rule as v85: a stored value
+ * is replaced only while it still equals the old seed.
+ */
+function restwell_migrate_pricing_faq_heading_v90() {
+	if ( get_option( 'restwell_pricing_faq_heading_v90', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_pricing_faq_heading_v90', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'pricing' => array(
+				'pricing_faq_label'   => array( 'FAQ', 'Money questions' ),
+				'pricing_faq_heading' => array( 'Common questions about pricing', 'Questions about prices' ),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3677,6 +3780,8 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_blog_summaries_v86',
 		'restwell_batch3_copy_v87',
 		'restwell_batch4_copy_v88',
+		'restwell_pricing_faq_v89',
+		'restwell_pricing_faq_heading_v90',
 	);
 }
 
@@ -3839,6 +3944,10 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch3_copy_v87', 125 );
 	add_action( 'init', 'restwell_migrate_batch4_copy_v88', 131 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch4_copy_v88', 126 );
+	add_action( 'init', 'restwell_migrate_pricing_faq_v89', 132 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89', 127 );
+	add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90', 133 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_heading_v90', 128 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
