@@ -477,51 +477,33 @@ function restwell_format_peak_date_range( string $start, string $end ): string {
 /**
  * Default FAQ pairs for the Pricing page (visible accordion + FAQPage JSON-LD).
  *
+ * Seeds the pricing_faq_{N}_q/_a fields; the page renders those fields, so
+ * these only show on a site that has none saved. Copy record:
+ * copy-overwrites/pricing.md.
+ *
  * @return array<int, array{q: string, a: string, cat: string}>
  */
 function restwell_get_pricing_faq_defaults(): array {
-	$pricing    = restwell_get_pricing();
-	$off_peak   = $pricing['seasons']['off_peak'];
-	$peak       = $pricing['seasons']['peak'];
-	$timeline   = restwell_get_payment_timeline();
-
 	return array(
 		array(
-			'q'   => 'What does the bungalow price include?',
-			'a'   => sprintf(
-				/* translators: 1: off-peak full week, 2: peak full week, 3: off-peak midweek night, 4: peak midweek night */
-				__( 'You book the whole house, with all the access equipment included. A week is %1$s off-peak and %2$s in peak season; midweek nights are %3$s and %4$s. A 50%% deposit reserves your dates, and the balance is due a week before arrival.', 'restwell-retreats' ),
-				restwell_format_gbp( $off_peak['full_week'] ),
-				restwell_format_gbp( $peak['full_week'] ),
-				restwell_format_gbp( $off_peak['midweek_night'] ),
-				restwell_format_gbp( $peak['midweek_night'] )
-			),
-			'cat' => 'booking',
-		),
-		array(
-			'q'   => 'Is care included in the price?',
-			'a'   => 'No. Restwell is the accommodation. If you’d like home care, Continuity of Care Services, our sister company, will quote for it.',
+			'q'   => 'Is care included in the bungalow price?',
+			'a'   => 'No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.',
 			'cat' => 'care',
 		),
 		array(
-			'q'   => 'Are there extra charges for the equipment?',
-			'a'   => 'No. The hoist, the profiling bed and the wet room kit listed on the access statement are all included in the house rate.',
+			'q'   => 'Are there extra charges for equipment?',
+			'a'   => 'The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.',
 			'cat' => 'booking',
 		),
 		array(
-			'q'   => 'Does the price change depending on who’s funding it?',
-			'a'   => 'No. The rate is identical whether you pay, a council pays, the NHS pays, or a grant body pays. All that changes is who receives the invoice.',
+			'q'   => 'Does the price change if a council or the NHS pays?',
+			'a'   => 'No. The price is the same whoever pays, and the only thing that changes is who we send the invoice to. <a class="text-link" href="/funding-and-support/">Funding & Support</a> explains how that works.',
 			'cat' => 'funding',
 		),
 		array(
-			'q'   => 'How much deposit do I pay?',
-			'a'   => sprintf(
-				/* translators: 1: deposit percent, 2: balance due clause */
-				__( '%1$d%%, once we’ve confirmed the house fits. The remaining balance is due %2$s.', 'restwell-retreats' ),
-				(int) $timeline['deposit_percent'],
-				(string) $timeline['balance_due_clause_you']
-			),
-			'cat' => 'booking',
+			'q'   => 'When do care guide rates go up?',
+			'a'   => 'Care costs more at weekends, on bank holidays and for complex care. Continuity review their rates regularly, and the next review date is shown above. They’ll give you a quote once you’ve agreed the hours and tasks with them.',
+			'cat' => 'care',
 		),
 	);
 }
