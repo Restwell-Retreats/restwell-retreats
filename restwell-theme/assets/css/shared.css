@@ -2593,11 +2593,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 .persona-list__item .checklist {
   margin: 0;
 }
-/* Link at the foot of the card, so cards in a row share a baseline. */
-.persona-list__item .persona-list__cta {
-  margin-top: auto;
-  padding-top: var(--space-4);
-}
+
 /* Links inside running text stay inline: the 44px tap-target box on
    .text-link stretched the line spacing mid-sentence. */
 .persona-list__item p .text-link,
@@ -2606,7 +2602,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   display: inline;
   min-height: 0;
 }
-.persona-list__item .persona-list__cta .text-link { display: inline-flex; min-height: var(--tap-target, 2.75rem); }
+
 .section-head + .persona-list { margin-top: var(--space-2); }
 .persona-list + p { margin-top: var(--space-6); }
 
@@ -6788,7 +6784,6 @@ body.page-template-template-accessibility-php .scroll-top {
 
 /* Property — standard stack under hero */
 .property {
-  --property-layout-gap: var(--space-6);
   --property-copy-gap: var(--space-5);
   --property-copy-pt: 0;
   --property-section-pt: var(--section-y);
@@ -6806,31 +6801,7 @@ body.page-template-template-accessibility-php .scroll-top {
   padding-top: var(--property-section-pt);
   padding-bottom: var(--property-section-pb);
 }
-.property__layout {
-  display: grid;
-  gap: var(--property-layout-gap);
-}
-/* Sizing/bleed lives on the wrapper, not the <img> itself — as a flex/grid
-   item, a replaced element (img/video) resolves an explicit width that
-   exceeds its track/container differently than a plain box does: it gets
-   silently clamped back to the track size even with !important, so the
-   "full-bleed past the container" trick below only ever bled on one side.
-   A plain div wrapper doesn't have that replaced-element sizing quirk. */
-.property__media-wrap {
-  display: block;
-  border-radius: var(--radius);
-  min-height: 12rem;
-  aspect-ratio: 16 / 11;
-  width: 100%;
-  overflow: hidden;
-  background: var(--driftwood);
-}
-.property__media {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
 .property__copy {
   display: flex;
   flex-direction: column;
@@ -6867,37 +6838,6 @@ body.page-template-template-accessibility-php .scroll-top {
 }
 
 @media (max-width: 899px) {
-  .property {
-    /* Text now leads (matches desktop's order:-1 copy), so it needs a real
-       gap before the full-bleed photo that follows — and the section can
-       use its normal top padding instead of a one-off patch. */
-    --property-layout-gap: var(--space-7);
-    --property-copy-pt: 0;
-    background: var(--white);
-  }
-  /* Single stacked column here — doesn't need grid, and grid's default
-     justify-self:stretch silently overrides the image's explicit
-     width:calc(100% + 2*gutter) below back down to the track width,
-     capping the "full-bleed" at the container edge on one side instead of
-     the viewport edge. flex has no such override. */
-  .property__layout {
-    display: flex;
-    flex-direction: column;
-  }
-  /*
-   * Text-first here (matching desktop) so the section has a heading before any
-   * image, and the house photo doesn't butt straight onto the hero's own
-   * full-bleed coastline shot. Order now comes from source order (copy before
-   * media in the DOM) rather than flex `order`, so source = visual = SR order
-   * (design-audit c8).
-   */
-  .property__media-wrap {
-    width: calc(100% + (2 * var(--rw-gutter-x)));
-    margin-inline: calc(-1 * var(--rw-gutter-x));
-    min-height: 13rem;
-    aspect-ratio: 16 / 10;
-    border-radius: 0;
-  }
   .property__cta-row .btn {
     min-height: 2.75rem;
   }
@@ -6923,28 +6863,6 @@ body.page-template-template-accessibility-php .scroll-top {
   .property__cta-row {
     align-items: center;
     column-gap: var(--space-6);
-  }
-  .property.section-y { overflow-x: clip; }
-  /* The house photo runs off the right edge, like the room rows. */
-  .property__media-wrap {
-    width: calc(100% + var(--bleed));
-    margin-right: calc(-1 * var(--bleed));
-  }
-  .property {
-    --property-layout-gap: var(--space-8);
-  }
-  .property__layout {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    align-items: center;
-  }
-  .property__media-wrap {
-    min-height: 22rem;
-    aspect-ratio: auto;
-    height: 100%;
-    border-radius: 0;
-  }
-  .property__copy {
-    max-width: none;
   }
 }
 
@@ -8532,24 +8450,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 /* =========================================================================
    Homepage visual pass (5 Oct 2026, checked at 390/768/900/1280).
    ========================================================================= */
-/* The house photo sits in the gutter with the site's radius at every width
-   (full-bleed on phones broke the rhythm of every other image), and never
-   grows taller than the copy needs. */
-@media (max-width: 899px) {
-  .property__media-wrap {
-    width: 100%;
-    margin-inline: 0;
-    min-height: 0;
-    aspect-ratio: 4 / 3;
-    max-height: 30rem;
-    border-radius: var(--radius-lg);
-  }
-}
-/* The secondary is a text link now, so the pair fits on one line. */
-@media (min-width: 900px) {
-  .property__layout { align-items: stretch; }
-  .property__media-wrap { height: auto; min-height: 24rem; max-height: 34rem; align-self: center; aspect-ratio: 4 / 3; }
-}
 /* Gallery: "View photos" sits at the end of the heading row, not centred
    under a left-aligned title. */
 .gallery .section-head { align-items: flex-start; text-align: left; }
@@ -8732,7 +8632,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 70% no-repeat,
     color-mix(in srgb, var(--deep-teal) 9%, var(--white));
 }
-.persona-list--cards .persona-list__cta { margin-top: auto; padding-top: var(--space-4); }
+
 .persona-list--cards .persona-list__item > div > p:last-child:not(.persona-list__cta) { margin-top: 0; }
 
 /* Steps without a photo: one full-width list below 960px (the 900px
@@ -9485,8 +9385,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
    in a sentence, so it gets the theme's 44px height. Four were 20px at phone
    width. Links inside a sentence are untouched. */
 p > .text-link:only-child,
-.section-follow > .text-link,
-.persona-list__cta > .text-link {
+.section-follow > .text-link {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
@@ -9717,7 +9616,7 @@ p.care-how__note > .text-link,
   padding-top: 0;
   border-top: 0;
 }
-.persona-list--index .persona-list__cta { padding-top: var(--space-1); }
+
 @media (min-width: 900px) {
   .persona-list--index .persona-list__item > div {
     display: grid;
@@ -9862,8 +9761,7 @@ p.care-how__note > .text-link,
 }
 
 /* Portrait photo in a landscape slot (Our Story, home): keep heads in frame. */
-.split__media img[src*="restwell-first-guests"],
-.property__media[src*="restwell-first-guests"] { object-position: 50% 55%; }
+.split__media img[src*="restwell-first-guests"] { object-position: 50% 55%; }
 
 /* Guest photos (portrait phone shots) in landscape slots: keep the guest and
    the garden beyond in frame rather than the floor. */
@@ -10875,7 +10773,9 @@ p.care-how__note > .text-link,
   padding: 0;
   list-style: none;
 }
-@media (min-width: 900px) {
+/* Four across from 1000px; at 900-999 four tiles squeezed the sub-lines
+   into two and three lines side by side. */
+@media (min-width: 1000px) {
   .facts-strip__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
 }
 .facts-strip__item {
@@ -10888,7 +10788,10 @@ p.care-how__note > .text-link,
   border-radius: var(--radius-lg);
   background: #0e2a32;
 }
-@media (min-width: 900px) {
+@media (min-width: 600px) {
+  .facts-strip__item { aspect-ratio: 4 / 3; }
+}
+@media (min-width: 1000px) {
   .facts-strip__item { aspect-ratio: 1; }
 }
 .facts-strip__photo {
@@ -10926,9 +10829,14 @@ p.care-how__note > .text-link,
   color: var(--white);
 }
 .facts-strip__sub {
+  /* Capped so the four sub-lines wrap alike in wide two-up tiles too. */
+  max-width: 15em;
   font-size: var(--text-md);
   line-height: 1.4;
   color: rgb(255 255 255 / 0.86);
+}
+@media (max-width: 399px) {
+  .facts-strip__text { padding: var(--space-3); }
 }
 
 /* Home care (19 Oct 2026): the two ways guests handle it, as two cards.
@@ -11029,3 +10937,53 @@ p.care-how__note > .text-link,
 .care-choice--continuity :focus-visible { outline-color: var(--warm-gold-hero); }
 .care-choice--link { justify-content: flex-start; color: var(--deep-teal); }
 .care-choice--link .care-choice__link { color: var(--deep-teal); }
+
+/* The bungalow (19 Oct 2026): the first-guests photo large on the left and a
+   white panel overlapping its right edge, holding the words and links. The
+   copy is first in the markup; the grid sets the photo left from 960px and
+   above the panel on phones, where the panel rises over its foot. */
+.property__layout { display: grid; }
+.property__photo {
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 55%;
+  border-radius: var(--radius-lg);
+}
+.property__copy {
+  position: relative;
+  grid-row: 2;
+  margin: -3rem var(--space-4) 0;
+  width: auto;
+  padding: var(--space-8) var(--space-6) 0;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+}
+.property__copy h2 { margin: 0; }
+/* From 960px the photo spans three rows and the panel sits in the middle
+   one, so the photo always stands a fixed step above and below the panel,
+   whatever its height. A fixed photo shape left a sliver at some widths. */
+@media (min-width: 960px) {
+  .property__layout {
+    --property-overhang: var(--space-16);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: var(--property-overhang) auto var(--property-overhang);
+  }
+  .property__photo {
+    grid-column: 1 / 9;
+    grid-row: 1 / 4;
+    /* No height of its own, so the panel's copy sets the rows. */
+    height: 0;
+    min-height: 100%;
+    aspect-ratio: auto;
+  }
+  .property__copy {
+    grid-column: 7 / 13;
+    grid-row: 2;
+    margin: 0;
+    padding: var(--space-12) var(--space-10);
+  }
+}

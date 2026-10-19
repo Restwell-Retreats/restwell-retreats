@@ -384,7 +384,7 @@ get_template_part(
 			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php echo esc_html( $story_specialists_btn1_label ); ?></a>
 			  <?php endif; ?>
 			  <?php if ( '' !== $story_specialists_btn2_label ) : ?>
-			  <a class="btn btn-outline-teal" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $story_specialists_btn2_label ); ?></a>
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php echo esc_html( $story_specialists_btn2_label ); ?></a>
 			  <?php endif; ?>
 			</div>
 		  </div>

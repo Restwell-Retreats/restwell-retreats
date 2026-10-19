@@ -73,6 +73,8 @@ $property_cta_url   = function_exists( 'restwell_page_content_text' )
 // Until then no photo on the site showed anyone staying here.
 $property_image_url = restwell_theme_image_url( 'journey/restwell-first-guests.webp' );
 $property_image_alt = 'Restwell’s first guests outside the conservatory, one in a wheelchair';
+$property_image_w   = 1200;
+$property_image_h   = 1600;
 if ( $home_id > 0 && function_exists( 'restwell_page_content_meta_or_default' ) ) {
 	$property_image_id = absint( restwell_page_content_meta_or_default( $home_id, 'property_image_id' ) );
 	if ( $property_image_id > 0 ) {
@@ -82,6 +84,8 @@ if ( $home_id > 0 && function_exists( 'restwell_page_content_meta_or_default' ) 
 		$src    = wp_get_attachment_image_src( $property_image_id, $picked );
 		if ( $src && ! empty( $src[0] ) ) {
 			$property_image_url = $src[0];
+			$property_image_w   = (int) $src[1];
+			$property_image_h   = (int) $src[2];
 			$alt                = trim( (string) get_post_meta( $property_image_id, '_wp_attachment_image_alt', true ) );
 			if ( '' !== $alt ) {
 				$property_image_alt = $alt;
@@ -271,12 +275,14 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	<?php
 	// At a glance (19 Oct 2026): four real photos, each with a label, rising
 	// over the bottom edge of the hero. It replaced icons in circles. Facts as
-	// in inc/property-facts.php; the gallery below uses different shots.
+	// in inc/property-facts.php; the gallery below uses different shots. Keep
+	// the titles to one line and the four sub-lines the same length, so the
+	// labels sit level across the row.
 	$home_glance = array(
-		array( 'bungalow/BD1-1-LS.jpg', 2400, 1500, __( 'Two bedrooms', 'restwell-retreats' ), __( 'Sleeps up to five, with a sofa bed in the conservatory', 'restwell-retreats' ) ),
-		array( 'bungalow/FD-1-LS.jpg', 2400, 1500, __( 'Step-free front door', 'restwell-retreats' ), __( '965mm clear, off a level driveway for two cars', 'restwell-retreats' ) ),
-		array( 'bungalow/WR-1-LS.jpg', 2400, 1500, __( 'Level-access wet room', 'restwell-retreats' ), __( 'Shower chair, grab rails and a basin that rises and falls', 'restwell-retreats' ) ),
-		array( 'bungalow/H-1-LS.jpg', 1920, 1200, __( 'Ceiling track hoist', 'restwell-retreats' ), __( 'Rated to 180kg, over the profiling bed', 'restwell-retreats' ) ),
+		array( 'bungalow/BD1-1-LS.jpg', 2400, 1500, __( 'Two bedrooms', 'restwell-retreats' ), __( 'Sleeps five, with a conservatory sofa bed', 'restwell-retreats' ) ),
+		array( 'bungalow/FD-1-LS.jpg', 2400, 1500, __( 'Step-free entry', 'restwell-retreats' ), __( 'A 965mm front door off a level driveway', 'restwell-retreats' ) ),
+		array( 'bungalow/WR-1-LS.jpg', 2400, 1500, __( 'Wet room', 'restwell-retreats' ), __( 'Level access, a shower chair and grab rails', 'restwell-retreats' ) ),
+		array( 'bungalow/H-1-LS.jpg', 1920, 1200, __( 'Ceiling hoist', 'restwell-retreats' ), __( 'Rated to 180kg, over the profiling bed', 'restwell-retreats' ) ),
 	);
 	?>
 	<section class="facts-strip band-subtle" aria-label="<?php esc_attr_e( 'The bungalow at a glance', 'restwell-retreats' ); ?>">
@@ -295,6 +301,13 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 	  </div>
 	</section>
 
+	<?php
+	// The bungalow (19 Oct 2026): the first-guests photo large on the left,
+	// with a white panel overlapping its right edge that holds the words and
+	// links. The copy comes first in the markup so it is read first; the grid
+	// puts the photo on the left from 960px and above the panel on phones.
+	// One button and one backup link, as in every section.
+	?>
 	<section class="property section-y" id="property" aria-labelledby="property-h">
 	  <div class="container">
 		<div class="property__layout">
@@ -308,13 +321,10 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			<?php endforeach; ?>
 			<div class="property__cta-row">
 			  <a class="btn btn-outline-teal" href="<?php echo esc_url( $property_cta_url ); ?>"><?php echo esc_html( $property_cta_label ); ?></a>
-			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a>
 			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>"><?php esc_html_e( 'Prices and dates', 'restwell-retreats' ); ?></a>
 			</div>
 		  </div>
-		  <div class="property__media-wrap">
-			<img class="property__media" src="<?php echo esc_url( $property_image_url ); ?>" alt="<?php echo esc_attr( $property_image_alt ); ?>" width="640" height="480" loading="lazy" decoding="async" />
-		  </div>
+		  <img class="property__photo" src="<?php echo esc_url( $property_image_url ); ?>" alt="<?php echo esc_attr( $property_image_alt ); ?>" width="<?php echo (int) $property_image_w; ?>" height="<?php echo (int) $property_image_h; ?>" sizes="(min-width: 960px) 760px, 100vw" loading="lazy" decoding="async" />
 		</div>
 	  </div>
 	</section>

@@ -25,10 +25,6 @@ $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 	)
 	: 'Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.';
 
-$wif_defaults = function_exists( 'restwell_get_who_its_for_page_defaults' )
-	? restwell_get_who_its_for_page_defaults()
-	: array();
-
 $wif_audience_heading = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_wif_id, 'wif_audience_heading', 'Who Restwell is built for' )
 	: 'Who Restwell is built for';
@@ -69,26 +65,6 @@ $wif_default_commissioners_bullets = function_exists( 'restwell_get_property_fac
 		'We support direct payments, personal health budgets and CHC.',
 	);
 
-$wif_resolve_url = static function ( $key, $fallback ) use ( $restwell_wif_id, $wif_defaults ) {
-	if ( function_exists( 'restwell_post_meta_url' ) && ! empty( $wif_defaults ) ) {
-		$url = restwell_post_meta_url( $restwell_wif_id, $key, $wif_defaults );
-		if ( is_string( $url ) && '' !== $url ) {
-			return $url;
-		}
-	}
-	$raw = function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_wif_id, $key, $fallback )
-		: $fallback;
-	$raw = trim( (string) $raw );
-	if ( '' === $raw ) {
-		$raw = $fallback;
-	}
-	if ( preg_match( '#^https?://#i', $raw ) ) {
-		return $raw;
-	}
-	return home_url( $raw );
-};
-
 $wif_personas = array(
 	array(
 		'icon'             => 'house',
@@ -108,10 +84,6 @@ $wif_personas = array(
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_family_detail_bullets', $wif_default_family_bullets )
 			: $wif_default_family_bullets,
-		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_family_inline_cta_label', 'Door widths and the hoist' )
-			: 'Door widths and the hoist',
-		'inline_cta_url'   => $wif_resolve_url( 'wif_family_inline_cta_url', '/accessibility/' ),
 	),
 	array(
 		'icon'             => 'users',
@@ -131,10 +103,6 @@ $wif_personas = array(
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_carers_detail_bullets', $wif_default_carers_bullets )
 			: $wif_default_carers_bullets,
-		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_carers_inline_cta_label', 'Ask a suitability question' )
-			: 'Ask a suitability question',
-		'inline_cta_url'   => $wif_resolve_url( 'wif_carers_inline_cta_url', '/enquire/' ),
 	),
 	array(
 		'icon'             => 'clipboard-check',
@@ -154,10 +122,6 @@ $wif_personas = array(
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_ot_detail_bullets', $wif_default_ot_bullets )
 			: $wif_default_ot_bullets,
-		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_ot_inline_cta_label', 'Door widths and the hoist' )
-			: 'Door widths and the hoist',
-		'inline_cta_url'   => $wif_resolve_url( 'wif_ot_inline_cta_url', '/accessibility/' ),
 	),
 	array(
 		'icon'             => 'building-2',
@@ -177,10 +141,6 @@ $wif_personas = array(
 		'bullets'          => function_exists( 'restwell_wif_bullet_list' )
 			? restwell_wif_bullet_list( $restwell_wif_id, 'wif_commissioners_detail_bullets', $wif_default_commissioners_bullets )
 			: $wif_default_commissioners_bullets,
-		'inline_cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_commissioners_inline_cta_label', 'Enquire about a funded stay' )
-			: 'Enquire about a funded stay',
-		'inline_cta_url'   => $wif_resolve_url( 'wif_commissioners_inline_cta_url', '/enquire/' ),
 	),
 );
 
@@ -286,30 +246,18 @@ $wif_funding_routes = array(
 			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_la_title', 'Local authority & direct payments' )
 			: 'Local authority & direct payments',
 		'bullets'   => $wif_fund_la_bullets,
-		'cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_la_cta_label', 'Direct payments guide' )
-			: 'Direct payments guide',
-		'cta_url'   => $wif_resolve_url( 'wif_fund_la_cta_url', '/direct-payment-holiday-accommodation/' ),
 	),
 	array(
 		'title'     => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_phb_title', 'Personal health budget' )
 			: 'Personal health budget',
 		'bullets'   => $wif_fund_phb_bullets,
-		'cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_phb_cta_label', 'How NHS funding usually works' )
-			: 'How NHS funding usually works',
-		'cta_url'   => $wif_resolve_url( 'wif_fund_phb_cta_url', '/funding-and-support/' ),
 	),
 	array(
 		'title'     => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_private_title', 'Private / self-funded' )
 			: 'Private / self-funded',
 		'bullets'   => $wif_fund_private_bullets,
-		'cta_label' => function_exists( 'restwell_page_content_text' )
-			? restwell_page_content_text( $restwell_wif_id, 'wif_fund_private_cta_label', 'Ask about your dates' )
-			: 'Ask about your dates',
-		'cta_url'   => $wif_resolve_url( 'wif_fund_private_cta_url', '/enquire/' ),
 	),
 );
 ?>
@@ -379,9 +327,6 @@ get_template_part(
 					<li><?php echo esc_html( $bullet ); ?></li>
 					<?php endforeach; ?>
 				</ul>
-				<?php endif; ?>
-				<?php if ( '' !== trim( (string) $persona['inline_cta_label'] ) ) : ?>
-				<p class="persona-list__cta"><a class="text-link" href="<?php echo esc_url( $persona['inline_cta_url'] ); ?>"><?php echo esc_html( $persona['inline_cta_label'] ); ?></a></p>
 				<?php endif; ?>
 			  </div>
 			</li>
@@ -487,9 +432,6 @@ get_template_part(
 				<li><?php echo esc_html( $bullet ); ?></li>
 				<?php endforeach; ?>
 			  </ul>
-			  <?php endif; ?>
-				<?php if ( '' !== trim( (string) $route['cta_label'] ) ) : ?>
-			  <p class="persona-list__cta"><a class="text-link" href="<?php echo esc_url( $route['cta_url'] ); ?>"><?php echo esc_html( $route['cta_label'] ); ?></a></p>
 			  <?php endif; ?>
 			</div>
 		  </li>

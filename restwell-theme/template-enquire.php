@@ -266,9 +266,7 @@ get_template_part(
 			<p><strong><?php esc_html_e( 'Phone', 'restwell-retreats' ); ?></strong><br /><a href="tel:<?php echo esc_attr( $phone_tel ); ?>"><?php echo esc_html( $phone_number ); ?></a></p>
 			<p><strong><?php esc_html_e( 'Email', 'restwell-retreats' ); ?></strong><br /><a href="mailto:<?php echo esc_attr( $public_email ); ?>"><?php echo esc_html( $public_email ); ?></a></p>
 			<p><strong><?php esc_html_e( 'Where', 'restwell-retreats' ); ?></strong><br />Whitstable, Kent</p>
-			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & support', 'restwell-retreats' ); ?></a></p>
-			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>"><?php esc_html_e( 'Who it’s for', 'restwell-retreats' ); ?></a></p>
-			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'See the adapted bungalow', 'restwell-retreats' ); ?></a></p>
+			<?php // Two links at most beside the form (19 Oct 2026); the rest are in the menu. ?>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'pricing' ) ); ?>"><?php esc_html_e( 'Pricing & dates', 'restwell-retreats' ); ?></a></p>
 			<p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'faq' ) ); ?>"><?php esc_html_e( 'Common questions', 'restwell-retreats' ); ?></a></p>
 		</aside>

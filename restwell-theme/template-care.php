@@ -290,7 +290,6 @@ $care_day_photos = array(
 			<p class="lede"><?php echo esc_html( $care_own_lede ); ?></p>
 			<?php endif; ?>
 		  </header>
-		  <p><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'who-its-for' ) ); ?>"><?php esc_html_e( 'Who the house suits', 'restwell-retreats' ); ?></a></p>
 		  <div class="care-pro" id="for-professionals">
 			<h3><?php echo esc_html( $care_pro_heading ); ?></h3>
 			<?php if ( '' !== $care_pro_lede ) : ?>

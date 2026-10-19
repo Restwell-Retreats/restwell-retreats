@@ -364,23 +364,15 @@ function restwell_get_who_its_for_field_definitions() {
 		),
 		'Families detail' => array(
 			'wif_family_detail_bullets'   => restwell_field( __( 'Families detail bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_family_inline_cta_label' => restwell_field( __( 'Families inline CTA label', 'restwell-retreats' ) ),
-			'wif_family_inline_cta_url'   => restwell_field( __( 'Families inline CTA URL (path)', 'restwell-retreats' ) ),
 		),
 		'Carers detail' => array(
 			'wif_carers_detail_bullets'   => restwell_field( __( 'Carers detail bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_carers_inline_cta_label' => restwell_field( __( 'Carers inline CTA label', 'restwell-retreats' ) ),
-			'wif_carers_inline_cta_url'   => restwell_field( __( 'Carers inline CTA URL (path)', 'restwell-retreats' ) ),
 		),
 		'OT detail' => array(
 			'wif_ot_detail_bullets'   => restwell_field( __( 'OT detail bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_ot_inline_cta_label' => restwell_field( __( 'OT inline CTA label', 'restwell-retreats' ) ),
-			'wif_ot_inline_cta_url'   => restwell_field( __( 'OT inline CTA URL (path)', 'restwell-retreats' ) ),
 		),
 		'Commissioners detail' => array(
 			'wif_commissioners_detail_bullets'   => restwell_field( __( 'Commissioners detail bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_commissioners_inline_cta_label' => restwell_field( __( 'Commissioners inline CTA label', 'restwell-retreats' ) ),
-			'wif_commissioners_inline_cta_url'   => restwell_field( __( 'Commissioners inline CTA URL (path)', 'restwell-retreats' ) ),
 		),
 		'Photos intro' => array(
 			'wif_visual_intro' => restwell_field( __( 'Intro under "Accessibility you can see" (visitor-facing)', 'restwell-retreats' ), 'textarea' ),
@@ -398,16 +390,10 @@ function restwell_get_who_its_for_field_definitions() {
 			'wif_funding_body'           => restwell_field( __( 'Funding intro paragraph', 'restwell-retreats' ), 'textarea' ),
 			'wif_fund_la_title'          => restwell_field( __( 'Route 1 title (local authority / DP)', 'restwell-retreats' ) ),
 			'wif_fund_la_bullets'        => restwell_field( __( 'Route 1 bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_fund_la_cta_label'      => restwell_field( __( 'Route 1 link label', 'restwell-retreats' ) ),
-			'wif_fund_la_cta_url'        => restwell_field( __( 'Route 1 link URL (path)', 'restwell-retreats' ) ),
 			'wif_fund_phb_title'         => restwell_field( __( 'Route 2 title (PHB)', 'restwell-retreats' ) ),
 			'wif_fund_phb_bullets'       => restwell_field( __( 'Route 2 bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_fund_phb_cta_label'     => restwell_field( __( 'Route 2 link label', 'restwell-retreats' ) ),
-			'wif_fund_phb_cta_url'       => restwell_field( __( 'Route 2 link URL (path)', 'restwell-retreats' ) ),
 			'wif_fund_private_title'     => restwell_field( __( 'Route 3 title (private)', 'restwell-retreats' ) ),
 			'wif_fund_private_bullets'   => restwell_field( __( 'Route 3 bullets (one per line)', 'restwell-retreats' ), 'textarea' ),
-			'wif_fund_private_cta_label' => restwell_field( __( 'Route 3 link label', 'restwell-retreats' ) ),
-			'wif_fund_private_cta_url'   => restwell_field( __( 'Route 3 link URL (path)', 'restwell-retreats' ) ),
 		),
 		'CTA' => array(
 			'wif_cta_heading'         => restwell_field( __( 'CTA heading', 'restwell-retreats' ) ),

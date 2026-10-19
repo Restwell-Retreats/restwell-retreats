@@ -677,26 +677,18 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_family_title' => 'Guests and families',
 		'wif_family_body'  => 'The hoist and the wet room are already fitted, and every measurement is published. It’s a private house, so your routines run on your own time rather than a hotel’s.',
 		'wif_family_detail_bullets'   => "A ceiling track hoist across the whole bedroom, two profiling beds and a level wet room.\nEvery door width and safe working load published before you book.\nA private, self-catering house, so you keep your own routines.",
-		'wif_family_inline_cta_label' => 'Door widths and the hoist',
-		'wif_family_inline_cta_url'   => '/accessibility/',
 
 		'wif_carers_title' => 'Carers and support workers',
 		'wif_carers_body'  => 'There’s a separate bedroom for a carer or support worker, and room to help with transfers and personal care. If you look after someone, you can ask your council for a carer’s assessment.',
 		'wif_carers_detail_bullets'   => "A separate bedroom for the support worker or carer.\nA level-access wet room with space to help with personal care.\nA legal right to a carer’s assessment under the Care Act 2014.",
-		'wif_carers_inline_cta_label' => 'Ask a suitability question',
-		'wif_carers_inline_cta_url'   => '/enquire/',
 
 		'wif_ot_title' => 'Occupational therapists',
 		'wif_ot_body'  => 'Door widths, hoist details and wet room measurements are all published. If you need one we haven’t listed, ask and we’ll go and measure it.',
 		'wif_ot_detail_bullets'   => 'You’re welcome to talk a referral through with us before anyone commits to a booking.',
-		'wif_ot_inline_cta_label' => 'Door widths and the hoist',
-		'wif_ot_inline_cta_url'   => '/accessibility/',
 
 		'wif_commissioners_title' => 'Commissioners & social care',
 		'wif_commissioners_body'  => 'A stay here can form part of a Care Act short break. We can supply the paperwork for direct payments, personal health budgets or CHC.',
 		'wif_commissioners_detail_bullets'   => "A short break in a private adapted house can be part of a care and support plan under the Care Act 2014.\nWe can send you the house details, the measurements and Continuity’s CQC rating.\nWe can work with direct payments, personal health budgets and CHC funding.",
-		'wif_commissioners_inline_cta_label' => 'Enquire about a funded stay',
-		'wif_commissioners_inline_cta_url'   => '/enquire/',
 
 		'wif_visual_intro' => 'All three are in the bungalow before you arrive, so there’s nothing to hire for the week.',
 
@@ -709,18 +701,12 @@ function restwell_get_who_its_for_page_defaults() {
 
 		'wif_fund_la_title'     => 'Local authority & direct payments',
 		'wif_fund_la_bullets'   => "It starts with an assessment of your care needs, and unpaid carers can ask for their own assessment too.\nWith direct payments, you hold the money and choose who provides the support.\nWhether a direct payment covers the stay is up to your council, so ask before you book.",
-		'wif_fund_la_cta_label' => 'Direct payments guide',
-		'wif_fund_la_cta_url'   => '/direct-payment-holiday-accommodation/',
 
 		'wif_fund_phb_title'     => 'Personal health budget',
 		'wif_fund_phb_bullets'   => "For people found eligible for NHS Continuing Healthcare.\nYour ICB or continuing healthcare team handles the application.\nA stay in a private adapted house can be written into the plan where it meets the person’s needs.",
-		'wif_fund_phb_cta_label' => 'How NHS funding usually works',
-		'wif_fund_phb_cta_url'   => '/funding-and-support/',
 
 		'wif_fund_private_title'     => 'Private / self-funded',
 		'wif_fund_private_bullets'   => "You get the same access information and straight answers as funded guests.\nWe can send paperwork for your insurer or employer if you need it.\nWe’ll tell you plainly if the bungalow isn’t the right fit.",
-		'wif_fund_private_cta_label' => 'Ask about your dates',
-		'wif_fund_private_cta_url'   => '/enquire/',
 
 		'wif_cta_heading'         => 'Tell us who’s coming and what you use',
 		'wif_cta_body'            => 'We’ll tell you plainly whether the bungalow fits, and where it doesn’t.',
