@@ -133,7 +133,7 @@ function restwell_get_faq_page_default_pairs() {
 		),
 		array(
 			'q'   => 'Can we use direct payments?',
-			'a'   => 'Some guests do, either for the stay or for a PA’s time. The rules vary from area to area, so it’s best to start with your own care team. Our <a href="/direct-payment-holiday-accommodation/">guide to direct payments</a> explains more.',
+			'a'   => 'Sometimes. A direct payment has to meet the needs in your care and support plan. That usually means care while you’re away, like a PA’s hours. Some councils also cover a PA’s travel and room. Whether it can go towards the stay itself is up to your council, so ask your social worker before you book. Our <a href="/direct-payment-holiday-accommodation/">guide to direct payments</a> explains more.',
 			'cat' => 'funding',
 		),
 		array(

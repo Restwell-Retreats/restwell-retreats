@@ -98,7 +98,7 @@ function restwell_get_blog_index_lede() {
 	}
 
 	return __(
-		'Guides about accessible travel written from one adapted bungalow in Whitstable: the Kent coast in a wheelchair, how funding for a break usually works, and how to read an access statement so a listing can’t catch you out.',
+		'Our guides are written from one adapted bungalow in Whitstable. They cover days out on the Kent coast, how to pay for a break, and how to check an access statement before you book.',
 		'restwell-retreats'
 	);
 }

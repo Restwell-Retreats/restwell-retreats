@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 85;
+const RESTWELL_SCHEMA_VERSION = 86;
 
 
 /**
@@ -3086,6 +3086,143 @@ function restwell_migrate_batch2_copy_v85() {
 }
 
 /**
+ * 19 Oct 2026, blog index readability, as approved by Ellie: each post summary
+ * rewritten as one plain sentence or two (the index read at Flesch 52), a
+ * shorter blog intro and meta description, and the FAQ's direct payments
+ * answer corrected to match the funding guidance (they usually pay for care,
+ * and whether they cover the stay is up to the council). Each value is
+ * replaced only while it still equals the shipped seed, so wp-admin edits stay.
+ */
+function restwell_migrate_blog_summaries_v86() {
+	if ( get_option( 'restwell_blog_summaries_v86', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_blog_summaries_v86', '1', false );
+
+	$normalise = static function ( $text ) {
+		return trim( str_replace( array( "\r\n", "\r" ), "\n", (string) $text ) );
+	};
+
+	$excerpts = array(
+		'fatigue-friendly-whitstable-coastal-day' => array(
+			'Plan a manageable outing with places to pause, a route that suits you, and an easy way back.',
+			'How to plan a day by the sea with places to rest, a route that suits you and an easy way home.',
+		),
+		'how-to-read-holiday-cottage-access-statement' => array(
+			'Measurements that matter, hoist proof, and the red-flag phrases that should stop you booking.',
+			'The sizes to check, the hoist details to ask for, and the words in a listing that should make you think twice.',
+		),
+		'holiday-backup-plan-care-worker-change' => array(
+			'What to arrange in case a carer falls ill mid-break: backup carers, contingency notes, and when cutting a trip short beats unsafe nights.',
+			'What to do if a carer falls ill during your break, from backup cover to knowing when it’s safer to come home early.',
+		),
+		'quieter-times-whitstable-low-crowd-access' => array(
+			'Weekday patterns, festival pitfalls, and why parking turnover matters as much as tide times for low-energy travellers.',
+			'When Whitstable is at its quietest, which events to plan around, and why parking can matter as much as the tide.',
+		),
+		'changing-places-toilets-kent-coast-days-out' => array(
+			'Why Changing Places matter, how standard accessible loos differ, and how to map toilet stops before you commit miles of promenade.',
+			'Where to find Changing Places and accessible toilets on the Kent coast, and how to plan your stops before a long walk by the sea.',
+		),
+		'accessible-eating-out-whitstable-kent' => array(
+			'Step-free routes, toilet reality, quieter tables, and why harbour weekends punish wheelchair circulation.',
+			'Places to eat with step-free access and an accessible toilet, how to get a quieter table, and why the harbour gets so busy at weekends.',
+		),
+		'personal-budget-short-break-care-act' => array(
+			'What a direct payment will and won\'t pay for on a short break (PA hours, transport, accommodation) and how to keep the paperwork clean for your council.',
+			'What a direct payment can and can’t cover on a short break, such as PA hours and a PA’s travel. It also shows how to keep your council’s paperwork tidy.',
+		),
+		'commissioner-checklist-accessible-respite-stay' => array(
+			'The evidence a funding panel expects before approving nights away: hoist paperwork, sleep-in safeguarding, and insurance certificates.',
+			'The proof a funding panel usually wants before it agrees to nights away, from hoist paperwork to sleep-in plans and insurance.',
+		),
+		'travel-insurance-disability-uk-self-catering' => array(
+			'Equipment limits, pre-existing conditions, cancellation clauses, and broker questions. Practical guidance, not legal advice.',
+			'What to ask an insurer about your kit, your health and cancelling before a break in the UK. This is practical help, not legal advice.',
+		),
+		'accessible-train-travel-whitstable-kent' => array(
+			'Passenger Assist, platform gaps, onward taxis, and why seaside rail hops still need backup plans when buses replace trains.',
+			'How Passenger Assist works, what to know about platform gaps and taxis, and why it’s worth having a backup plan if buses replace the trains.',
+		),
+		'hire-mobility-scooter-equipment-uk-holiday' => array(
+			'Scooters, profiling beds, and shower chairs: how to match hire stock to door widths, insurance small-print, delivery slots, and handover photos before you sign.',
+			'How to hire a scooter, profiling bed or shower chair for your trip. It covers door widths, insurance and delivery, so you know what to check before you sign.',
+		),
+		'chc-respite-holiday-accommodation-uk' => array(
+			'What NHS Continuing Healthcare can and cannot pay for on a break, how to split care invoices from cottage rent, and the paperwork panels expect before they sign off.',
+			'What NHS Continuing Healthcare can and can’t pay for on a break. It covers how the care and the rent are billed, and what a panel needs to see.',
+		),
+		'accessible-parking-whitstable-tankerton' => array(
+			'Blue Badge basics, where seaside crowds pinch space, and how to pair parking with level promenade walks, without pretending every bay is always empty.',
+			'Blue Badge basics, where parking gets tight by the sea, and how to park close to the level seafront path. We won’t pretend a space is always free.',
+		),
+		'what-to-pack-accessible-self-catering-uk' => array(
+			'A room-by-room packing list for hoist users, continence care, medication routines, and kitchen access, plus what to verify with the owner before you zip the case.',
+			'A room-by-room packing list for hoist users, continence care, medicines and the kitchen, and what to check with the owner before you go.',
+		),
+		'carers-respite-holiday-guide' => array(
+			'A practical guide for unpaid carers: what you\'re entitled to under the Care Act, how to get a carer\'s assessment in Kent, the funding routes available, and what makes a supported break actually restful.',
+			'A guide for unpaid carers who need a break. It covers your rights under the Care Act and getting a carer’s assessment in Kent, and it explains how a break is paid for.',
+		),
+		'how-to-choose-accessible-self-catering-holiday' => array(
+			'The word "accessible" on a property listing can mean almost anything. A practical checklist covering what to ask before booking, from door widths and hoist specifications to what red flags look like in listings.',
+			'The word accessible on a listing can mean almost anything. This checklist shows what to ask before you book, from door widths and hoists to the warning signs.',
+		),
+		'revitalise-alternatives-accessible-holidays' => array(
+			'Revitalise closed its holiday centres in November 2024 after 60 years. Here\'s what happened, what Revitalise now offers, and where to find accessible holidays in the UK.',
+			'Revitalise closed its holiday centres in November 2024 after 60 years. Here’s what happened, what Revitalise offers now, and where else to find accessible holidays in the UK.',
+		),
+		'direct-payment-holiday-accommodation' => array(
+			'Direct payments fund care, not accommodation, but that distinction matters. A plain-English guide to what direct payments can cover, how personal health budgets work, and what to discuss with your social worker before booking.',
+			'Direct payments are mainly for care rather than the cost of a holiday, though some councils allow more. This guide explains what they can cover, how personal health budgets work, and what to ask your social worker.',
+		),
+		'accessible-beaches-coastal-walks-kent' => array(
+			'Level promenades, shingle realities, and where to plan a seaside day if you use a wheelchair or mobility equipment, covering Whitstable, Herne Bay, Broadstairs, and Margate.',
+			'A guide to level promenades and shingle beaches if you use a wheelchair or mobility equipment, covering Whitstable, Herne Bay, Broadstairs and Margate.',
+		),
+	);
+	foreach ( $excerpts as $slug => $pair ) {
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( ! $post || $normalise( $post->post_excerpt ) !== $normalise( $pair[0] ) ) {
+			continue;
+		}
+		wp_update_post(
+			array(
+				'ID'           => (int) $post->ID,
+				'post_excerpt' => wp_slash( $pair[1] ),
+			)
+		);
+	}
+
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $blog_id > 0 && $normalise( get_post_field( 'post_excerpt', $blog_id ) ) === $normalise( 'Guides about accessible travel written from one adapted bungalow in Whitstable: the Kent coast in a wheelchair, how funding for a break usually works, and how to read an access statement so a listing can’t catch you out.' ) ) {
+		wp_update_post(
+			array(
+				'ID'           => $blog_id,
+				'post_excerpt' => wp_slash( 'Our guides are written from one adapted bungalow in Whitstable. They cover days out on the Kent coast, how to pay for a break, and how to check an access statement before you book.' ),
+			)
+		);
+	}
+
+	restwell_replace_stale_page_copy(
+		array(
+			'blog' => array(
+				'meta_description' => array(
+					'Guides written from one adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.',
+					'Guides written from one adapted bungalow in Whitstable: Kent coast days out, how to pay for a break, and how to check an access statement before you book.',
+				),
+			),
+			'faq'  => array(
+				'faq_13_a' => array(
+					'Some guests do, either for the stay or for a PA’s time. The rules vary from area to area, so it’s best to start with your own care team. Our <a href="/direct-payment-holiday-accommodation/">guide to direct payments</a> explains more.',
+					'Sometimes. A direct payment has to meet the needs in your care and support plan. That usually means care while you’re away, like a PA’s hours. Some councils also cover a PA’s travel and room. Whether it can go towards the stay itself is up to your council, so ask your social worker before you book. Our <a href="/direct-payment-holiday-accommodation/">guide to direct payments</a> explains more.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3206,6 +3343,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_dedupe_home_blog_v83',
 		'restwell_batch1_copy_v84',
 		'restwell_batch2_copy_v85',
+		'restwell_blog_summaries_v86',
 	);
 }
 
@@ -3362,6 +3500,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch1_copy_v84', 122 );
 	add_action( 'init', 'restwell_migrate_batch2_copy_v85', 128 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch2_copy_v85', 123 );
+	add_action( 'init', 'restwell_migrate_blog_summaries_v86', 129 );
+	add_action( 'after_switch_theme', 'restwell_migrate_blog_summaries_v86', 124 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

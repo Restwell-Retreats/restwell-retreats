@@ -35,7 +35,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'accessible-beaches-coastal-walks-kent',
 			'title'            => 'A guide to accessible beaches and coastal walks in Kent',
-			'excerpt'          => 'Level promenades, shingle realities, and where to plan a seaside day if you use a wheelchair or mobility equipment, covering Whitstable, Herne Bay, Broadstairs, and Margate.',
+			'excerpt'          => 'A guide to level promenades and shingle beaches if you use a wheelchair or mobility equipment, covering Whitstable, Herne Bay, Broadstairs and Margate.',
 			'meta_title'       => 'Accessible beaches and coastal walks in Kent',
 			'meta_description' => 'Accessible beaches Kent: level promenades, Beach Within Reach, Herne Bay, Viking Bay, Margate. Plan a seaside day with realistic access notes.',
 			'content'          => restwell_get_blog_post_beaches_kent_html(),
@@ -44,7 +44,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'direct-payment-holiday-accommodation',
 			'title'            => 'How to use your direct payment for a holiday',
-			'excerpt'          => 'Direct payments fund care, not accommodation, but that distinction matters. A plain-English guide to what direct payments can cover, how personal health budgets work, and what to discuss with your social worker before booking.',
+			'excerpt'          => 'Direct payments are mainly for care rather than the cost of a holiday, though some councils allow more. This guide explains what they can cover, how personal health budgets work, and what to ask your social worker.',
 			'meta_title'       => 'Using direct payments for a holiday: what they cover',
 			'meta_description' => 'Direct payment for holiday stays: what counts as care vs accommodation, personal budgets, short breaks, and questions for your social worker.',
 			'content'          => restwell_get_blog_post_direct_payments_html(),
@@ -53,7 +53,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'revitalise-alternatives-accessible-holidays',
 			'title'            => 'What happened to Revitalise, and where to find accessible holidays now',
-			'excerpt'          => "Revitalise closed its holiday centres in November 2024 after 60 years. Here's what happened, what Revitalise now offers, and where to find accessible holidays in the UK.",
+			'excerpt'          => 'Revitalise closed its holiday centres in November 2024 after 60 years. Here’s what happened, what Revitalise offers now, and where else to find accessible holidays in the UK.',
 			'meta_title'       => 'What happened to Revitalise, and where to go now',
 			'meta_description' => 'Revitalise closed its holiday centres in 2024: why, what the charity funds now, and where to find accessible UK holidays and respite alternatives.',
 			'content'          => restwell_get_blog_post_revitalise_html(),
@@ -62,7 +62,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'how-to-choose-accessible-self-catering-holiday',
 			'title'            => 'How to choose an accessible self-catering holiday property',
-			'excerpt'          => 'The word "accessible" on a property listing can mean almost anything. A practical checklist covering what to ask before booking, from door widths and hoist specifications to what red flags look like in listings.',
+			'excerpt'          => 'The word accessible on a listing can mean almost anything. This checklist shows what to ask before you book, from door widths and hoists to the warning signs.',
 			'meta_title'       => 'How to choose an accessible self-catering holiday',
 			'meta_description' => 'Choose an accessible self-catering holiday: verify hoist specs, door widths, wet rooms, and red flags in listings before you pay a deposit.',
 			'content'          => restwell_get_blog_post_self_catering_checklist_html(),
@@ -71,7 +71,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'carers-respite-holiday-guide',
 			'title'            => 'Carers taking holidays: respite rights, funding, and how to plan a break that works',
-			'excerpt'          => "A practical guide for unpaid carers: what you're entitled to under the Care Act, how to get a carer's assessment in Kent, the funding routes available, and what makes a supported break actually restful.",
+			'excerpt'          => 'A guide for unpaid carers who need a break. It covers your rights under the Care Act and getting a carer’s assessment in Kent, and it explains how a break is paid for.',
 			'meta_title'       => 'Carer’s assessments and your right to a respite break',
 			'meta_description' => 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.',
 			'content'          => restwell_get_blog_post_carers_respite_html(),
@@ -80,7 +80,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'what-to-pack-accessible-self-catering-uk',
 			'title'            => 'What to pack for an accessible self-catering break in the UK',
-			'excerpt'          => 'A room-by-room packing list for hoist users, continence care, medication routines, and kitchen access, plus what to verify with the owner before you zip the case.',
+			'excerpt'          => 'A room-by-room packing list for hoist users, continence care, medicines and the kitchen, and what to check with the owner before you go.',
 			'meta_title'       => 'What to pack for an accessible self-catering break',
 			'meta_description' => 'What to pack for an accessible self-catering UK break: meds, continence, hoist extras, kitchen aids, and what to confirm with the owner before you travel.',
 			'content'          => restwell_get_blog_post_pack_accessible_self_catering_html(),
@@ -89,7 +89,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'accessible-parking-whitstable-tankerton',
 			'title'            => 'Accessible parking and drop-off around Whitstable and Tankerton',
-			'excerpt'          => 'Blue Badge basics, where seaside crowds pinch space, and how to pair parking with level promenade walks, without pretending every bay is always empty.',
+			'excerpt'          => 'Blue Badge basics, where parking gets tight by the sea, and how to park close to the level seafront path. We won’t pretend a space is always free.',
 			'meta_title'       => 'Accessible parking in Whitstable and Tankerton',
 			'meta_description' => 'Accessible parking and drop-off near Whitstable and Tankerton: Blue Badge basics, promenade access, timing tides and crowds, and links to Kent guides.',
 			'content'          => restwell_get_blog_post_accessible_parking_whitstable_html(),
@@ -98,7 +98,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'chc-respite-holiday-accommodation-uk',
 			'title'            => 'CHC, respite, and holiday accommodation: plain English for families and commissioners',
-			'excerpt'          => 'What NHS Continuing Healthcare can and cannot pay for on a break, how to split care invoices from cottage rent, and the paperwork panels expect before they sign off.',
+			'excerpt'          => 'What NHS Continuing Healthcare can and can’t pay for on a break. It covers how the care and the rent are billed, and what a panel needs to see.',
 			'meta_title'       => 'CHC funding and respite holiday accommodation',
 			'meta_description' => 'CHC respite holiday accommodation explained: NHS continuing healthcare versus lodging costs, paperwork panels expect, and funding lines for supported breaks.',
 			'content'          => restwell_get_blog_post_chc_respite_holiday_accommodation_html(),
@@ -107,7 +107,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'hire-mobility-scooter-equipment-uk-holiday',
 			'title'            => 'Hiring mobility equipment for a UK self-catering holiday',
-			'excerpt'          => 'Scooters, profiling beds, and shower chairs: how to match hire stock to door widths, insurance small-print, delivery slots, and handover photos before you sign.',
+			'excerpt'          => 'How to hire a scooter, profiling bed or shower chair for your trip. It covers door widths, insurance and delivery, so you know what to check before you sign.',
 			'meta_title'       => 'Hiring mobility equipment for a UK holiday',
 			'meta_description' => 'Hire mobility scooters, shower chairs, and beds for a UK self-catering holiday: measurements, insurance, delivery slots, and what to photograph on handover.',
 			'content'          => restwell_get_blog_post_hire_mobility_equipment_uk_html(),
@@ -116,7 +116,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'accessible-train-travel-whitstable-kent',
 			'title'            => 'Accessible train travel to Whitstable and around Kent',
-			'excerpt'          => 'Passenger Assist, platform gaps, onward taxis, and why seaside rail hops still need backup plans when buses replace trains.',
+			'excerpt'          => 'How Passenger Assist works, what to know about platform gaps and taxis, and why it’s worth having a backup plan if buses replace the trains.',
 			'meta_title'       => 'Accessible train travel to Whitstable and Kent',
 			'meta_description' => 'Accessible train travel to Whitstable and around Kent: Passenger Assist, platform gaps, connections, and pairing rail with local parking or taxi backup.',
 			'content'          => restwell_get_blog_post_accessible_train_whitstable_kent_html(),
@@ -125,7 +125,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'travel-insurance-disability-uk-self-catering',
 			'title'            => 'Travel insurance, disability, and UK self-catering breaks',
-			'excerpt'          => 'Equipment limits, pre-existing conditions, cancellation clauses, and broker questions. Practical guidance, not legal advice.',
+			'excerpt'          => 'What to ask an insurer about your kit, your health and cancelling before a break in the UK. This is practical help, not legal advice.',
 			'meta_title'       => 'Travel insurance for disabled travellers in the UK',
 			'meta_description' => 'Travel insurance and disability on UK self-catering breaks: mobility equipment limits, pre-existing conditions, cancellation triggers, and broker questions.',
 			'content'          => restwell_get_blog_post_travel_insurance_disability_uk_html(),
@@ -134,7 +134,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'commissioner-checklist-accessible-respite-stay',
 			'title'            => 'Commissioner checklist: evidencing an accessible respite stay',
-			'excerpt'          => 'The evidence a funding panel expects before approving nights away: hoist paperwork, sleep-in safeguarding, and insurance certificates.',
+			'excerpt'          => 'The proof a funding panel usually wants before it agrees to nights away, from hoist paperwork to sleep-in plans and insurance.',
 			'meta_title'       => 'A commissioner’s checklist for an accessible respite stay',
 			'meta_description' => 'Commissioner checklist for accessible respite stays: hoist paperwork, safeguarding sleep-ins, insurance certificates, and audit-ready evidence before approving nights.',
 			'content'          => restwell_get_blog_post_commissioner_accessible_respite_html(),
@@ -143,7 +143,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'personal-budget-short-break-care-act',
 			'title'            => 'Personal budgets and short breaks under the Care Act',
-			'excerpt'          => "What a direct payment will and won't pay for on a short break (PA hours, transport, accommodation) and how to keep the paperwork clean for your council.",
+			'excerpt'          => 'What a direct payment can and can’t cover on a short break, such as PA hours and a PA’s travel. It also shows how to keep your council’s paperwork tidy.',
 			'meta_title'       => 'Using a personal budget for a short break',
 			'meta_description' => 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.',
 			'content'          => restwell_get_blog_post_personal_budget_short_break_html(),
@@ -152,7 +152,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'accessible-eating-out-whitstable-kent',
 			'title'            => 'Accessible eating out near Whitstable and along the Kent coast',
-			'excerpt'          => 'Step-free routes, toilet reality, quieter tables, and why harbour weekends punish wheelchair circulation.',
+			'excerpt'          => 'Places to eat with step-free access and an accessible toilet, how to get a quieter table, and why the harbour gets so busy at weekends.',
 			'meta_title'       => 'Accessible places to eat in Whitstable and Kent',
 			'meta_description' => 'Accessible eating out near Whitstable and the Kent coast: step-free entries, toilet routes, quieter tables, and harbour crowding tactics.',
 			'content'          => restwell_get_blog_post_accessible_eating_out_whitstable_html(),
@@ -161,7 +161,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'changing-places-toilets-kent-coast-days-out',
 			'title'            => 'Changing Places and accessible toilets for Kent coast days out',
-			'excerpt'          => 'Why Changing Places matter, how standard accessible loos differ, and how to map toilet stops before you commit miles of promenade.',
+			'excerpt'          => 'Where to find Changing Places and accessible toilets on the Kent coast, and how to plan your stops before a long walk by the sea.',
 			'meta_title'       => 'Changing Places toilets for Kent coast days out',
 			'meta_description' => 'Changing Places and accessible toilets for Kent coast days out: how CP differs from standard loos, mapping stops, and pairing with beach plans.',
 			'content'          => restwell_get_blog_post_changing_places_kent_coast_html(),
@@ -170,7 +170,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'quieter-times-whitstable-low-crowd-access',
 			'title'            => 'Quieter times to visit Whitstable if you need space and calm',
-			'excerpt'          => 'Weekday patterns, festival pitfalls, and why parking turnover matters as much as tide times for low-energy travellers.',
+			'excerpt'          => 'When Whitstable is at its quietest, which events to plan around, and why parking can matter as much as the tide.',
 			'meta_title'       => 'When Whitstable is quieter: a guide to low-crowd days',
 			'meta_description' => 'Quieter times to visit Whitstable for accessible travellers: weekday patterns, festival pitfalls, parking turnover, and fatigue-friendly pacing.',
 			'content'          => restwell_get_blog_post_quieter_whitstable_visit_html(),
@@ -179,7 +179,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'holiday-backup-plan-care-worker-change',
 			'title'            => 'Backup plans when care arrangements change on holiday',
-			'excerpt'          => 'What to arrange in case a carer falls ill mid-break: backup carers, contingency notes, and when cutting a trip short beats unsafe nights.',
+			'excerpt'          => 'What to do if a carer falls ill during your break, from backup cover to knowing when it’s safer to come home early.',
 			'meta_title'       => 'A holiday backup plan if your care worker changes',
 			'meta_description' => 'Holiday backup plans when care workers change or cancel: contingency cards, agency tiers, budgets for emergency cover, and safe escalation.',
 			'content'          => restwell_get_blog_post_holiday_backup_care_plan_html(),
@@ -188,7 +188,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'how-to-read-holiday-cottage-access-statement',
 			'title'            => 'How to read a holiday cottage access statement before you book',
-			'excerpt'          => 'Measurements that matter, hoist proof, and the red-flag phrases that should stop you booking.',
+			'excerpt'          => 'The sizes to check, the hoist details to ask for, and the words in a listing that should make you think twice.',
 			'meta_title'       => 'How to read a holiday cottage access statement',
 			'meta_description' => 'How to read a holiday cottage access statement: measurements that matter, hoist proof, red-flag phrases, and questions OTs and families should ask.',
 			'content'          => restwell_get_blog_post_read_access_statement_html(),
@@ -197,7 +197,7 @@ function restwell_seed_priority_blog_posts( array &$result, bool $force = false 
 		array(
 			'slug'             => 'fatigue-friendly-whitstable-coastal-day',
 			'title'            => 'Fatigue-friendly coastal days around Whitstable',
-			'excerpt'          => 'Plan a manageable outing with places to pause, a route that suits you, and an easy way back.',
+			'excerpt'          => 'How to plan a day by the sea with places to rest, a route that suits you and an easy way home.',
 			'meta_title'       => 'A fatigue-friendly day out on the Whitstable coast',
 			'meta_description' => 'Plan a fatigue-friendly day around Whitstable, with practical checks for routes, seating, toilets, weather and the journey back.',
 			'content'          => restwell_get_blog_post_fatigue_friendly_coastal_day_html(),
