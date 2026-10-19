@@ -10214,11 +10214,11 @@ p.care-how__note > .text-link,
   text-underline-offset: 0.35em;
 }
 .door-check__units button:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
-.door-check__hint { margin: 0; font-size: var(--text-sm); line-height: var(--leading-snug); color: var(--body-secondary); }
+.door-check__hint { margin: 0; font-size: var(--text-md); line-height: var(--leading-snug); color: var(--body-secondary); }
 
 /* Typical chairs: four plain words in one row; the chosen one is underlined. */
 .door-check__presets { margin-top: var(--space-8); }
-.door-check__presets-title { margin: 0; font-size: var(--text-sm); color: var(--body-secondary); }
+.door-check__presets-title { margin: 0; font-size: var(--text-md); color: var(--body-secondary); }
 .door-check__chips { display: flex; flex-wrap: wrap; gap: 0 var(--space-6); margin-top: var(--space-1); }
 .door-check__chip {
   min-height: 2.75rem;
@@ -10308,14 +10308,14 @@ p.care-how__note > .text-link,
   white-space: nowrap;
   transition: width 0.15s ease, background-color var(--duration-fast, 0.15s) ease;
 }
-.door-check__door-width { margin: var(--space-3) 0 0; font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--muted-grey); }
+.door-check__door-width { margin: var(--space-3) 0 0; font-size: var(--text-md); font-variant-numeric: tabular-nums; color: var(--muted-grey); }
 .fit-bar--tight .door-check__chair { background: var(--warm-gold-text); }
 .fit-bar--tight .door-check__result { color: var(--warm-gold-text); }
 .fit-bar--no .door-check__chair { background: var(--error-red); }
 .fit-bar--no .door-check__result { color: var(--error-red); }
 .fit-bar--no .door-check__jamb { background: var(--error-red); }
 /* The guide note and the two standards, once, under the card. */
-.door-check__foot { margin: var(--space-5) 0 0; max-width: var(--measure-text); font-size: var(--text-sm); color: var(--body-secondary); }
+.door-check__foot { margin: var(--space-5) 0 0; max-width: var(--measure-text); font-size: var(--text-md); color: var(--body-secondary); }
 @media (prefers-reduced-motion: reduce) {
   .door-check__chair, .door-check__chip { transition: none; }
 }
