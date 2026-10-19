@@ -225,6 +225,7 @@ function restwell_get_pricing_field_definitions() {
 	$faq = array(
 		'pricing_faq_label'   => restwell_field( __( 'FAQ section eyebrow', 'restwell-retreats' ) ),
 		'pricing_faq_heading' => restwell_field( __( 'FAQ section heading (h2)', 'restwell-retreats' ) ),
+		'pricing_faq_intro'   => restwell_field( __( 'FAQ section intro (lede)', 'restwell-retreats' ), 'textarea' ),
 	);
 	for ( $i = 1; $i <= 5; $i++ ) {
 		$faq[ "pricing_faq_{$i}_q" ] = restwell_field( sprintf( /* translators: %d: FAQ number */ __( 'Question %d', 'restwell-retreats' ), $i ) );

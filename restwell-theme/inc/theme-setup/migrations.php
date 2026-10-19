@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 86;
+const RESTWELL_SCHEMA_VERSION = 87;
 
 
 /**
@@ -3167,6 +3167,28 @@ function restwell_migrate_pricing_faq_v86() {
 }
 
 /**
+ * 19 Oct 2026: the Pricing FAQ eyebrow and heading now read their wp-admin
+ * fields. Those still held the July seeds, "FAQ" and "Common questions about
+ * pricing", so they move to the "Money questions" and "Questions about
+ * prices" the page has shown since Batch 2. Same rule as v85: a stored value
+ * is replaced only while it still equals the old seed.
+ */
+function restwell_migrate_pricing_faq_heading_v87() {
+	if ( get_option( 'restwell_pricing_faq_heading_v87', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_pricing_faq_heading_v87', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'pricing' => array(
+				'pricing_faq_label'   => array( 'FAQ', 'Money questions' ),
+				'pricing_faq_heading' => array( 'Common questions about pricing', 'Questions about prices' ),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3288,6 +3310,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch1_copy_v84',
 		'restwell_batch2_copy_v85',
 		'restwell_pricing_faq_v86',
+		'restwell_pricing_faq_heading_v87',
 	);
 }
 
@@ -3446,6 +3469,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch2_copy_v85', 123 );
 	add_action( 'init', 'restwell_migrate_pricing_faq_v86', 129 );
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v86', 124 );
+	add_action( 'init', 'restwell_migrate_pricing_faq_heading_v87', 130 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_heading_v87', 125 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

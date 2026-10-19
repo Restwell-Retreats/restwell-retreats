@@ -93,6 +93,12 @@ $pricing_care_rates_intro   = $pricing_txt(
 	'pricing_care_rates_intro',
 	__( 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.', 'restwell-retreats' )
 );
+$pricing_faq_label   = $pricing_txt( 'pricing_faq_label', __( 'Money questions', 'restwell-retreats' ) );
+$pricing_faq_heading = $pricing_txt( 'pricing_faq_heading', __( 'Questions about prices', 'restwell-retreats' ) );
+$pricing_faq_intro   = $pricing_txt(
+	'pricing_faq_intro',
+	__( 'What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.', 'restwell-retreats' )
+);
 
 /**
  * Turn a phrase inside already-escaped copy into an internal text link.
@@ -394,9 +400,13 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">
-			<p class="eyebrow">Money questions</p>
-			<h2 id="faq-h">Questions about prices</h2>
-			<p class="lede">What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.</p>
+			<?php if ( '' !== $pricing_faq_label ) : ?>
+			<p class="eyebrow"><?php echo esc_html( $pricing_faq_label ); ?></p>
+			<?php endif; ?>
+			<h2 id="faq-h"><?php echo esc_html( $pricing_faq_heading ); ?></h2>
+			<?php if ( '' !== $pricing_faq_intro ) : ?>
+			<p class="lede"><?php echo esc_html( $pricing_faq_intro ); ?></p>
+			<?php endif; ?>
 		  </header>
 		  <?php
 			$pricing_faq_items = array();
