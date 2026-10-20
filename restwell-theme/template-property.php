@@ -225,45 +225,46 @@ get_template_part(
 		  <?php endif; ?>
 		  <h2><?php echo esc_html( $prop_gallery_heading ); ?></h2>
 		</header>
-		<ul class="gallery-grid" role="list" aria-label="Property photos">
+		<?php // A mosaic (20 Oct 2026): the garden leads large, the rest sit round it. ?>
+		<ul class="gallery-grid gallery-grid--mosaic" role="list" aria-label="Property photos">
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Level-access wet room shower with the tilt-in-space shower chair and a grab rail">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="0" aria-label="View full size: Enclosed garden and level patio">
+			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-1-LS.jpg' ) ); ?>" alt="Enclosed garden and level patio" width="640" height="480" loading="lazy" decoding="async" />
+			</button>
+		  </li>
+		  <li>
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Level-access wet room shower with the tilt-in-space shower chair and a grab rail">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/wet-room-shower.png' ) ); ?>" alt="Level-access wet room shower with the tilt-in-space shower chair and a grab rail" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="1" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Accessible bedroom with ceiling track and mobile hoist">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-3-LS.jpg' ) ); ?>" alt="Accessible bedroom with ceiling track and mobile hoist" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="2" aria-label="View full size: Second double bedroom">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="3" aria-label="View full size: Second double bedroom">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD1-1-LS.jpg' ) ); ?>" alt="Second double bedroom" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="3" aria-label="View full size: Kitchen with wheel-under worksurface">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="4" aria-label="View full size: Kitchen with wheel-under worksurface">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with wheel-under worksurface" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="4" aria-label="View full size: Open-plan living room with wide walkways">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="5" aria-label="View full size: Open-plan living room with wide walkways">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/living-room-2.png' ) ); ?>" alt="Open-plan living room with wide walkways" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="5" aria-label="View full size: Rise-and-recline armchair in the living room">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="6" aria-label="View full size: Rise-and-recline armchair in the living room">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/RAR-1-LS.jpg' ) ); ?>" alt="Rise-and-recline armchair in the living room" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="6" aria-label="View full size: Conservatory doors opening toward the living space">
+			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="7" aria-label="View full size: Conservatory doors opening toward the living space">
 			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/conservatory-doors.png' ) ); ?>" alt="Conservatory doors opening toward the living space" width="640" height="480" loading="lazy" decoding="async" />
-			</button>
-		  </li>
-		  <li>
-			<button type="button" class="gallery__open" data-gallery-open data-gallery-index="7" aria-label="View full size: Enclosed garden and level patio">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-1-LS.jpg' ) ); ?>" alt="Enclosed garden and level patio" width="640" height="480" loading="lazy" decoding="async" />
 			</button>
 		  </li>
 		  <li>
@@ -277,38 +278,45 @@ get_template_part(
 
 
 	<section class="section-y band-white" id="location" aria-labelledby="location-h">
-	  <div class="container split split--fill">
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Location</p>
+	  <div class="container">
+		<?php // Home's overlapping panel (20 Oct 2026), mirrored: the seafront photo on the right. ?>
+		<div class="property__layout property__layout--flip">
+		  <div class="property__copy">
 			<h2 id="location-h"><?php echo esc_html( $prop_location_heading ); ?></h2>
-			<?php if ( ! empty( $prop_location_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_location_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_location_paras, 1 ) as $prop_location_para ) :
-				?>
-		  <p class="lede"><?php echo esc_html( $prop_location_para ); ?></p>
-				<?php
-			endforeach;
-			?>
-		  <p class="lede">Our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a> covers where to eat, where to park and which places have an accessible loo.</p>
-		</div>
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-1-LS.jpg' ) ); ?>" alt="Tankerton promenade and Whitstable seafront" width="900" height="675" loading="lazy" />
+			<?php foreach ( $prop_location_paras as $prop_location_para ) : ?>
+			<p class="lede"><?php echo esc_html( $prop_location_para ); ?></p>
+			<?php endforeach; ?>
+			<p class="lede">Our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ); ?>">Whitstable guide</a> covers where to eat, where to park and which places have an accessible loo.</p>
+		  </div>
+		  <img class="property__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-1-LS.jpg' ) ); ?>" alt="Tankerton promenade and Whitstable seafront" width="2400" height="1500" sizes="(min-width: 960px) 760px, 100vw" loading="lazy" decoding="async" />
 		</div>
 	  </div>
 	</section>
 
-	<section class="section-y section-y--slim band-subtle care-pointer" id="care" aria-labelledby="care-h">
+	<?php
+	// Optional care (20 Oct 2026): Home's teal card with Keelie and Nikki, laid
+	// out wide, in place of two small round faces. Photos published with consent.
+	$prop_care_team = array(
+		array( 'journey/keelie-varney.webp', 1500, 'Keelie Varney' ),
+		array( 'journey/nikki-mackay.webp', 1429, 'Nikki Mackay' ),
+	);
+	?>
+	<section class="section-y band-subtle" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="care-pointer__card">
-		  <?php get_template_part( 'template-parts/care-faces' ); ?>
-		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
-		  <h2 id="care-h"><?php echo esc_html( $prop_care_heading ); ?></h2>
-		  <p class="lede"><?php echo esc_html( $prop_care_body ); ?></p>
-		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></a>
+		<div class="care-choice care-choice--continuity care-choice--wide">
+		  <div class="care-choice__team">
+			<?php foreach ( $prop_care_team as $prop_care_person ) : ?>
+			<figure>
+			  <img src="<?php echo esc_url( restwell_theme_image_url( $prop_care_person[0] ) ); ?>" alt="" width="<?php echo (int) $prop_care_person[1]; ?>" height="2000" sizes="(min-width: 900px) 220px, 42vw" loading="lazy" decoding="async" />
+			  <figcaption><?php echo esc_html( $prop_care_person[2] ); ?></figcaption>
+			</figure>
+			<?php endforeach; ?>
+		  </div>
+		  <div class="care-choice__text">
+			<h2 id="care-h"><?php echo esc_html( $prop_care_heading ); ?></h2>
+			<p><?php echo esc_html( $prop_care_body ); ?></p>
+			<a class="care-choice__link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?> <span aria-hidden="true">&rarr;</span></a>
+		  </div>
 		</div>
 	  </div>
 	</section>

@@ -6797,8 +6797,8 @@ body.page-template-template-accessibility-php .scroll-top {
 .property__copy {
   display: flex;
   flex-direction: column;
-  gap: var(--property-copy-gap);
-  padding-top: var(--property-copy-pt);
+  gap: var(--property-copy-gap, var(--space-5));
+  padding-top: var(--property-copy-pt, 0);
   width: 100%;
   max-width: none;
 }
@@ -10880,6 +10880,7 @@ p.care-how__note > .text-link,
 @media (min-width: 900px) {
   .care-choice__text { padding: var(--space-8); }
 }
+.care-choice h2,
 .care-choice h3 {
   margin: 0 0 var(--space-3);
   font-size: clamp(1.4rem, 1.1rem + 0.8vw, 1.85rem);
@@ -10937,7 +10938,7 @@ p.care-how__note > .text-link,
    card's spare room falls below its words rather than between them. */
 @media (min-width: 960px) {
   @supports (grid-template-rows: subgrid) {
-    .care-choice {
+    .care-choices > .care-choice {
       display: grid;
       grid-row: span 4;
       grid-template-rows: subgrid;
@@ -10946,15 +10947,15 @@ p.care-how__note > .text-link,
       justify-content: normal;
     }
     .care-choice--own { min-height: 0; }
-    .care-choice__team { grid-row: 1; }
-    .care-choice__text {
+    .care-choices .care-choice__team { grid-row: 1; }
+    .care-choices .care-choice__text {
       display: grid;
       grid-row: 2 / 5;
       grid-template-rows: subgrid;
       align-content: start;
     }
-    .care-choice__text > * { align-self: start; }
-    .care-choice__text > .care-choice__link { justify-self: start; }
+    .care-choices .care-choice__text > * { align-self: start; }
+    .care-choices .care-choice__text > .care-choice__link { justify-self: start; }
   }
 }
 
@@ -11125,4 +11126,40 @@ p.care-how__note > .text-link,
   }
   .room-tour__tabs [role="tab"][aria-selected="true"] { background: var(--deep-teal); color: var(--white); }
   .room-tour__tabs [role="tab"]:not([aria-selected="true"]):hover { background: color-mix(in srgb, var(--deep-teal) 6%, transparent); }
+}
+
+/* The Property, location (20 Oct 2026): Home's overlapping panel, mirrored,
+   so the seafront photo sits on the right. */
+@media (min-width: 960px) {
+  .property__layout--flip .property__photo { grid-column: 5 / 13; }
+  .property__layout--flip .property__copy { grid-column: 1 / 7; }
+}
+
+/* The Property, photos (20 Oct 2026): a mosaic. The garden leads full width
+   on phones; from 900px it takes two columns and two rows, the other eight
+   sit round it. The viewer still opens on whichever photo you click. */
+.gallery-grid--mosaic li:first-child { grid-column: 1 / -1; }
+.gallery-grid--mosaic img { border-radius: var(--radius-lg); }
+@media (min-width: 900px) {
+  .gallery-grid--mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 13rem;
+    gap: var(--space-4);
+  }
+  .gallery-grid--mosaic li:first-child { grid-column: span 2; grid-row: span 2; }
+  .gallery-grid--mosaic .gallery__open,
+  .gallery-grid--mosaic img { height: 100%; }
+  .gallery-grid--mosaic img { aspect-ratio: auto; }
+}
+
+/* The Property, optional care (20 Oct 2026): Home's teal care card on its
+   own, laid out wide: Keelie and Nikki on the left, the words on the right. */
+@media (min-width: 900px) {
+  .care-choice--wide {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .care-choice--wide .care-choice__team { padding-bottom: var(--space-8); }
 }
