@@ -53,7 +53,6 @@ if ( 'Full-room' === $acc_stat_3_value ) {
 		$acc_stat_3_label = 'Ceiling hoist, safe working load';
 	}
 }
-$acc_statement_label   = __( 'Access statement', 'restwell-retreats' );
 $acc_statement_heading = __( 'The house in numbers', 'restwell-retreats' );
 $acc_statement_body    = __( 'We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who’s been asked to sign off a stay on the strength of three photographs. If there’s a measurement we haven’t published, ring us and we’ll go and take it properly.', 'restwell-retreats' );
 
@@ -67,7 +66,6 @@ $acc_host_email = function_exists( 'restwell_get_public_enquiry_email' )
 	? restwell_get_public_enquiry_email()
 	: 'hello@restwellretreats.co.uk';
 
-$acc_dest_label   = $acc_txt( 'acc_dest_label', 'Whitstable' );
 $acc_dest_heading = $acc_txt( 'acc_dest_heading', 'Getting around Whitstable' );
 $acc_dest_intro   = $acc_txt(
 	'acc_dest_intro',
@@ -226,13 +224,13 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	</nav>
 
 	<section class="section-y band-subtle" id="statement" aria-labelledby="statement-h">
-	  <div class="container acc-intro">
-		<header class="section-head section-head--tight acc-intro__head">
-		  <p class="eyebrow"><?php echo esc_html( $acc_statement_label ); ?></p>
-		  <h2 id="statement-h"><?php echo esc_html( $acc_statement_heading ); ?></h2>
-		  <p class="lede"><?php echo esc_html( $acc_statement_body ); ?></p>
-		</header>
+	  <div class="container">
 		<?php
+		// The house in numbers (20 Oct 2026): a typed index after a luxury
+		// listing site on Dribbble, each item's name on the left and a large
+		// light number on the right, with the front door beside it. Each label
+		// splits at its comma into a name and a note ("Front door" / "clear
+		// opening"), so the copy stays one editable field.
 		$acc_figure_kses = array(
 			'span' => array(
 				'class' => true,
@@ -244,14 +242,27 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			array( $acc_stat_3_value, $acc_stat_3_label ),
 		);
 		?>
-		<dl class="acc-figures">
-		  <?php foreach ( $acc_figures as $acc_figure ) : ?>
-		  <div class="acc-figures__row">
-			<dt><?php echo esc_html( $acc_figure[1] ); ?></dt>
-			<dd><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_figure[0] ), $acc_figure_kses ); ?></dd>
+		<div class="acc-index">
+		  <div class="acc-index__copy">
+			<h2 id="statement-h"><?php echo esc_html( $acc_statement_heading ); ?></h2>
+			<p class="lede"><?php echo esc_html( $acc_statement_body ); ?></p>
+			<dl class="acc-index__list">
+			  <?php foreach ( $acc_figures as $acc_figure ) : ?>
+					<?php $acc_figure_parts = array_map( 'trim', explode( ',', (string) $acc_figure[1], 2 ) ); ?>
+			  <div class="acc-index__row">
+				<dt>
+				  <span class="acc-index__name"><?php echo esc_html( $acc_figure_parts[0] ); ?></span>
+					<?php if ( isset( $acc_figure_parts[1] ) && '' !== $acc_figure_parts[1] ) : ?>
+				  <span class="acc-index__note"><?php echo esc_html( ucfirst( $acc_figure_parts[1] ) ); ?></span>
+					<?php endif; ?>
+				</dt>
+				<dd><?php echo wp_kses( restwell_format_acc_figure_value( (string) $acc_figure[0] ), $acc_figure_kses ); ?></dd>
+			  </div>
+			  <?php endforeach; ?>
+			</dl>
 		  </div>
-		  <?php endforeach; ?>
-		</dl>
+		  <img class="acc-index__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/FD-1-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 960px) 460px, 100vw" loading="lazy" decoding="async" />
+		</div>
 	  </div>
 	</section>
 
@@ -610,47 +621,58 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 
 	<section class="section-y band-subtle" id="destination" aria-labelledby="destination-h">
 	  <div class="container">
-		  <header class="section-head section-head--tight">
-			<?php if ( '' !== $acc_dest_label ) : ?>
-			<p class="eyebrow"><?php echo esc_html( $acc_dest_label ); ?></p>
-			<?php endif; ?>
+		<?php
+		/*
+		 * Getting around (20 Oct 2026): Home's overlapping panel, mirrored, over
+		 * a guest on Harbour Beach. The good and the challenges are a pair, so
+		 * they sit as two tabs in the panel ([data-tabs] in shared.js; without
+		 * it both lists show). The reality is the conclusion, a line under them
+		 * with the guide linked, not a third box of equal weight.
+		 */
+		$acc_dest_pair    = array_slice( $acc_dest_items, 0, 2 );
+		$acc_dest_reality = isset( $acc_dest_items[2] ) ? $acc_dest_items[2] : null;
+		?>
+		<div class="property__layout property__layout--flip">
+		  <div class="property__copy acc-dest" data-tabs>
 			<h2 id="destination-h"><?php echo esc_html( $acc_dest_heading ); ?></h2>
 			<?php if ( '' !== $acc_dest_intro ) : ?>
 			<p class="lede"><?php echo esc_html( $acc_dest_intro ); ?></p>
 			<?php endif; ?>
-		  </header>
-		  <?php
-			/*
-			 * The good and the challenges are a pair — set them as one so the
-			 * balance is the point. The reality is the conclusion drawn from
-			 * them, not a third column of equal weight; as three matching
-			 * columns the verdict read like another category.
-			 */
-			$acc_dest_pair    = array_slice( $acc_dest_items, 0, 2 );
-			$acc_dest_reality = isset( $acc_dest_items[2] ) ? $acc_dest_items[2] : null;
-			?>
-		  <div class="acc-dest__pair">
+			<div class="acc-dest__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Getting around Whitstable', 'restwell-retreats' ); ?>" hidden>
+			  <?php foreach ( $acc_dest_pair as $acc_dest_i => $acc_dest_item ) : ?>
+			  <button type="button" role="tab" id="dest-tab-<?php echo (int) $acc_dest_i; ?>" aria-controls="dest-<?php echo 0 === $acc_dest_i ? 'good' : 'challenges'; ?>" aria-selected="<?php echo 0 === $acc_dest_i ? 'true' : 'false'; ?>"<?php echo 0 === $acc_dest_i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( $acc_dest_item['dt'] ); ?></button>
+			  <?php endforeach; ?>
+			</div>
 			<?php foreach ( $acc_dest_pair as $acc_dest_i => $acc_dest_item ) : ?>
 				<?php
 				// Short lines read faster than a paragraph; the copy is unchanged, just split at sentence ends.
 				$acc_dest_lines = preg_split( '/(?<=[.!?])\s+/', trim( (string) $acc_dest_item['dd'] ), -1, PREG_SPLIT_NO_EMPTY );
 				?>
-			<article class="acc-dest__panel <?php echo 0 === $acc_dest_i ? 'acc-dest__panel--good' : 'acc-dest__panel--watch'; ?>">
-			  <h3 class="acc-dest__panel-title"><span class="acc-dest__mark" aria-hidden="true"></span><?php echo esc_html( $acc_dest_item['dt'] ); ?></h3>
+			<div class="acc-dest__panel acc-dest__panel--<?php echo 0 === $acc_dest_i ? 'good' : 'watch'; ?>" id="dest-<?php echo 0 === $acc_dest_i ? 'good' : 'challenges'; ?>">
+			  <h3 class="acc-dest__panel-title"><?php echo esc_html( $acc_dest_item['dt'] ); ?></h3>
 			  <ul class="acc-dest__lines" role="list">
 				<?php foreach ( $acc_dest_lines as $acc_dest_line ) : ?>
 				<li><?php echo esc_html( $acc_dest_line ); ?></li>
 				<?php endforeach; ?>
 			  </ul>
-			</article>
+			</div>
 			<?php endforeach; ?>
-		  </div>
 			<?php if ( null !== $acc_dest_reality ) : ?>
-		  <div class="acc-dest__verdict">
-			<p class="acc-dest__verdict-label"><?php echo esc_html( $acc_dest_reality['dt'] ); ?></p>
-			<p class="acc-dest__verdict-body"><?php echo esc_html( $acc_dest_reality['dd'] ); ?></p>
-		  </div>
+			<p class="acc-dest__more">
+				<?php
+				echo wp_kses_post(
+					str_replace(
+						esc_html__( 'Whitstable guide', 'restwell-retreats' ),
+						'<a class="text-link" href="' . esc_url( restwell_nav_resolve_page_url( 'whitstable-area-guide' ) ) . '">' . esc_html__( 'Whitstable guide', 'restwell-retreats' ) . '</a>',
+						esc_html( $acc_dest_reality['dd'] )
+					)
+				);
+				?>
+			</p>
 			<?php endif; ?>
+		  </div>
+		  <img class="property__photo acc-dest__photo" src="<?php echo esc_url( restwell_theme_image_url( 'journey/guest-harbour-beach.jpg' ) ); ?>" alt="<?php esc_attr_e( 'A guest in a powered wheelchair and a companion on the firm Harbour Beach by the lifeboat station', 'restwell-retreats' ); ?>" width="1620" height="1012" sizes="(min-width: 960px) 760px, 100vw" loading="lazy" decoding="async" />
+		</div>
 	  </div>
 	</section>
 	<?php

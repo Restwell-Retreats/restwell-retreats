@@ -8653,60 +8653,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   }
 }
 
-/* =========================================================================
-   Access statement (/accessibility/), 5 Oct 2026 redesign: a technical
-   document, not a wall of tables. Numbers beside the essay; the fit check in
-   its own band; the register as a chapter index (desktop) beside chapters of
-   spec cards, each card's figures in a two-column key grid.
-   ========================================================================= */
-.acc-intro {
-  display: grid;
-  gap: var(--space-10);
-}
-@media (min-width: 960px) {
-  .acc-intro {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: var(--space-16);
-    align-items: center;
-  }
-}
-.acc-intro__head { margin: 0; }
-.acc-figures {
-  margin: 0;
-  padding: var(--space-2) var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
-}
-.acc-figures__row {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-5) 0;
-}
-.acc-figures__row + .acc-figures__row {
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.acc-figures dd {
-  order: -1;
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 1.7rem + 1.8vw, 3rem);
-  font-variant-numeric: lining-nums;
-  line-height: 1;
-  color: var(--deep-teal);
-}
-.acc-figures .stat__unit {
-  margin-left: var(--space-1);
-  font-size: 0.5em;
-  letter-spacing: 0.02em;
-}
-.acc-figures dt {
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
-}
-
 .acc-reg__tour .text-link { display: inline; min-height: 0; padding: 0; }
 .acc-reg__tour {
   max-width: 34rem; /* rem, not the em-based measure: at this small size that capped it at 490px */
@@ -9028,124 +8974,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 }
 .acc-register .acc-room { background: color-mix(in srgb, var(--bg-subtle) 55%, var(--white)); }
 
-/* Tablet: the three figures sit in one row, not a tall stacked card. */
-@media (min-width: 600px) and (max-width: 959px) {
-  .acc-figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: var(--space-2) var(--space-4); }
-  .acc-figures__row { padding: var(--space-4); }
-  .acc-figures__row + .acc-figures__row { border-top: 0; border-left: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent); }
-}
-
-/* Whitstable: the good and the challenges as a pair, then the verdict drawn
-   from them as one conclusion line, not a third tile. */
-/* Destination (redesign 8 Oct 2026): two panels with their own marker and
-   accent instead of two identical numbered cards, lines instead of a
-   paragraph, and the reality as a summary card rather than a bare row. */
-.acc-dest__pair {
-  display: grid;
-  gap: var(--space-5);
-  grid-template-columns: minmax(0, 1fr);
-}
-@media (min-width: 760px) {
-  .acc-dest__pair { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
-}
-.acc-dest__panel {
-  --dest-accent: var(--deep-teal);
-  padding: var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
-}
-.acc-dest__panel--watch { --dest-accent: var(--warm-gold); }
-.acc-dest__panel-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin: 0 0 var(--space-4);
-  font-size: var(--text-2xl);
-}
-/* Bare glyphs, no tinted discs (15 Oct 2026). */
-.acc-dest__mark {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  color: var(--deep-teal);
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  line-height: 1;
-}
-.acc-dest__panel--good .acc-dest__mark::before { content: "\2713"; }
-.acc-dest__panel--watch .acc-dest__mark::before { content: "!"; }
-.acc-dest__panel--watch .acc-dest__mark { color: var(--warm-gold-text); }
-.acc-dest__lines { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-4); }
-/* Each line carries its panel's marker (a tick, or a small gold dot for the
-   things to plan around), so the lists read as two kinds of fact at a glance
-   instead of eight hairline-divided rows of text. */
-.acc-dest__lines li {
-  position: relative;
-  padding: 0 0 0 var(--space-6);
-  color: var(--body-secondary);
-  font-size: var(--text-lg);
-  line-height: 1.55;
-}
-.acc-dest__lines li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.3em;
-  width: 1.05rem;
-  height: 1.05rem;
-  border-radius: 50%;
-}
-.acc-dest__panel--good .acc-dest__lines li::before {
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231b4d5c' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 80% no-repeat;
-}
-.acc-dest__panel--watch .acc-dest__lines li::before {
-  background: radial-gradient(circle, var(--warm-gold) 0 0.2rem, transparent 0.21rem);
-}
-/* The reality is the conclusion drawn from the two panels above, so it is the
-   one dark block in the section: centred, balanced, in the display face. As a
-   third white box with ragged left-aligned text it read as another category. */
-.acc-dest__verdict {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-  margin-top: var(--space-6);
-  padding: var(--space-10) var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--deep-teal);
-  text-align: center;
-}
-/* Phones: the verdict runs to nine lines, and a centred paragraph that long
-   loses its left edge. Centre it only where it fits in three or four lines. */
-@media (max-width: 767px) {
-  .acc-dest__verdict { align-items: flex-start; text-align: left; }
-  .acc-dest__verdict-body { text-align: left; }
-}
-.acc-dest__verdict-label {
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--type-eyebrow-weight);
-  color: var(--warm-gold-hero);
-  text-align: center;
-}
-.acc-dest__verdict-body {
-  margin: 0;
-  max-width: 44rem;
-  color: var(--white);
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  line-height: 1.5;
-  text-align: center;
-  text-wrap: balance;
-}
-@media (min-width: 900px) {
-  .acc-dest__verdict { padding-block: var(--space-12); }
-  .acc-dest__verdict-body { font-size: var(--text-2xl); line-height: 1.45; }
-}
-
 @media print {
   .subnav,
   .acc-fit,
@@ -9169,7 +8997,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   .hero__content p {
     color: var(--deep-teal) !important;
   }
-  .acc-figures,
+  
   .acc-kit__item,
   .acc-callout {
     box-shadow: none !important;
@@ -9402,7 +9230,8 @@ p.care-how__note > .text-link,
 .payment-steps__body p > .text-link,
 .persona-list__item p > .text-link,
 .faq-item__panel p > .text-link,
-.room-tour__card p:not(.room-tour__link) > .text-link {
+.room-tour__card p:not(.room-tour__link) > .text-link,
+p.acc-dest__more > .text-link {
   display: inline;
   min-height: 0;
 }
@@ -9467,15 +9296,6 @@ p.care-how__note > .text-link,
 /* "What we can't promise" as its own short section: the contact line joins
    the intro column. */
 .acc-limits .acc-limits__contact { margin: var(--space-3) 0 0; max-width: var(--measure-text); color: var(--body-secondary); }
-.acc-dest__pair { column-gap: var(--space-10); }
-.acc-dest__panel {
-  padding: var(--space-6) 0 0;
-  border: 0;
-  border-top: 1px solid var(--rule);
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-}
 
 /* =========================================================================
    Section audit fixes (12 Oct 2026): every section of every page checked at
@@ -9706,25 +9526,6 @@ p.care-how__note > .text-link,
 /* Article point cards: an odd count reads as a list, one per row under its
    rule. In the 713px article column three points wrapped 2 + 1. */
 .post-cards:has(> .post-card:last-child:nth-child(odd)) { grid-template-columns: minmax(0, 1fr); }
-
-/* Accessibility, "The house in numbers": the three figures are the page's
-   signature, so they stand open at display size under fine rules rather than
-   in a small white card. */
-.acc-figures {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  box-shadow: none;
-}
-.acc-figures dd { font-size: clamp(2.75rem, 2rem + 2.4vw, 4rem); }
-.acc-figures dt { font-size: var(--text-md); }
-.acc-figures__row + .acc-figures__row { border-top-color: var(--rule); }
-@media (min-width: 600px) and (max-width: 959px) {
-  .acc-figures { padding: 0; }
-  .acc-figures__row:first-child { padding-left: 0; }
-  .acc-figures__row + .acc-figures__row { border-left-color: var(--rule); }
-}
 
 /* Our Story: the office team beside the host copy, a small round portrait and
    a name each. */
@@ -11162,4 +10963,101 @@ p.care-how__note > .text-link,
     gap: var(--space-4);
   }
   .care-choice--wide .care-choice__team { padding-bottom: var(--space-8); }
+}
+
+/* Accessibility, getting around Whitstable (20 Oct 2026): Home's overlapping
+   panel over a guest on Harbour Beach. The good and the challenges are two
+   tabs inside the panel; without script both lists show under their titles.
+   The reality is a closing line with the guide linked. */
+.acc-dest__photo { object-position: 60% 50%; }
+.acc-dest__tabs {
+  display: flex;
+  gap: var(--space-6);
+  border-bottom: 1px solid var(--rule);
+}
+.acc-dest__tabs[hidden] { display: none; }
+.acc-dest__tabs [role="tab"] {
+  margin: 0 0 -1px;
+  padding: 0 0 var(--space-3);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--deep-teal);
+  cursor: pointer;
+}
+.acc-dest__tabs [role="tab"][aria-selected="true"] { border-bottom-color: var(--deep-teal); }
+.acc-dest__tabs [role="tab"]:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
+.acc-dest__panel[hidden] { display: none; }
+.acc-dest__panel:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 4px; }
+.acc-dest__panel-title { margin: 0 0 var(--space-3); font-size: var(--type-h3); }
+.is-tabbed .acc-dest__panel-title { display: none; }
+.acc-dest__lines { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.acc-dest__lines li {
+  position: relative;
+  padding-left: 1.4em;
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--body-secondary);
+}
+.acc-dest__lines li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: var(--deep-teal);
+}
+.acc-dest__panel--watch .acc-dest__lines li::before { background: var(--warm-gold); }
+.property__copy .acc-dest__more { margin: 0; font-size: var(--text-md); line-height: 1.6; color: var(--body-secondary); }
+
+/* Accessibility, the house in numbers (20 Oct 2026): a typed index after a
+   luxury listing on Dribbble. Each item's name and note on the left, a large
+   light number on the right, rows split by hairlines, and the front door
+   beside the list from 960px (above it on phones). */
+.acc-index { display: grid; gap: var(--space-8); }
+@media (min-width: 960px) {
+  .acc-index { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-12); align-items: stretch; }
+}
+.acc-index__copy h2 { margin: 0 0 var(--space-5); }
+.acc-index__copy .lede { margin: 0 0 var(--space-10); max-width: min(100%, 36rem); }
+.acc-index__list { margin: 0; border-top: 1px solid var(--rule); }
+.acc-index__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-1);
+  border-bottom: 1px solid var(--rule);
+}
+.acc-index__row dt { display: flex; flex-direction: column; gap: 2px; }
+.acc-index__name { font-family: var(--font-serif); font-size: var(--text-2xl); line-height: 1.2; color: var(--deep-teal); }
+.acc-index__note { font-size: var(--text-sm); color: var(--muted-grey); }
+.acc-index__row dd { margin: 0; white-space: nowrap; font-family: var(--font-serif); color: var(--deep-teal); }
+.acc-index__row .stat__amount {
+  font-size: clamp(2.75rem, 2rem + 2.4vw, 4rem);
+  font-weight: var(--weight-regular);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.acc-index__row .stat__unit {
+  margin-left: 0.1em;
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.75rem);
+  font-weight: var(--weight-regular);
+  color: var(--muted-grey);
+}
+.acc-index__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+  object-position: 50% 45%;
+  border-radius: var(--radius-lg);
+}
+@media (max-width: 959px) {
+  .acc-index__photo { order: -1; height: auto; min-height: 0; aspect-ratio: 4 / 3; }
 }
