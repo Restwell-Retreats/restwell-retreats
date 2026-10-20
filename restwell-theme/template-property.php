@@ -150,12 +150,7 @@ get_template_part(
 	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#rooms">Bedrooms</a></li>
-		  <li><a href="#wetroom">Wet room</a></li>
-		  <li><a href="#living">Living</a></li>
-		  <li><a href="#kitchen">Kitchen</a></li>
-		  <li><a href="#conservatory">Conservatory</a></li>
-		  <li><a href="#garden">Outside</a></li>
+		  <li><a href="#rooms">Rooms</a></li>
 		  <li><a href="#photos">Photos</a></li>
 		  <li><a href="#location">Location</a></li>
 		  <li><a href="#care">Care</a></li>
@@ -163,168 +158,66 @@ get_template_part(
 	  </div>
 	</nav>
 
-	<section class="section-y band-white" id="rooms" aria-labelledby="rooms-h">
-	  <div class="container split split--media-first split--fill">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="Accessible bedroom with two profiling beds and coastal bedding" width="900" height="675" loading="lazy" decoding="async" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Bedrooms</p>
-			<h2 id="rooms-h"><?php echo esc_html( $prop_bedrooms_heading ); ?></h2>
-			<?php if ( ! empty( $prop_bedrooms_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_bedrooms_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_bedrooms_paras, 1 ) as $prop_bedrooms_para ) :
-				?>
-		  <p class="lede"><?php echo esc_html( $prop_bedrooms_para ); ?></p>
-				<?php
-			endforeach;
-			?>
-		  <p><a class="text-link text-link--standalone" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">Door widths and the hoist</a></p>
-		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-subtle" id="wetroom" aria-labelledby="wetroom-h">
-	  <div class="container split split--flip split--media-first split--fill">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-1-LS.jpg' ) ); ?>" alt="Level-access wet room with grab rails" width="900" height="675" loading="lazy" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Wet room</p>
-			<h2 id="wetroom-h"><?php echo esc_html( $prop_wetroom_heading ); ?></h2>
-			<?php if ( ! empty( $prop_wetroom_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_wetroom_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_wetroom_paras, 1 ) as $prop_wetroom_para ) :
-				?>
-		  <p class="lede">
-					<?php
-					// The spec belongs to /accessibility/: link the phrase that points there.
-					echo wp_kses_post(
-						str_replace(
-							esc_html__( 'makes, models and safe working loads', 'restwell-retreats' ),
-							'<a class="text-link" href="' . esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ) . '">' . esc_html__( 'makes, models and safe working loads', 'restwell-retreats' ) . '</a>',
-							esc_html( $prop_wetroom_para )
-						)
-					);
-					?>
-		  </p>
-				<?php
-			endforeach;
-			?>
-		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-white" id="living" aria-labelledby="living-h">
-	  <div class="container split split--media-first split--fill">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="Open-plan living room with rise-and-recline chair and wide walkways" width="900" height="675" loading="lazy" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Living room</p>
-			<h2 id="living-h"><?php echo esc_html( $prop_living_heading ); ?></h2>
-			<?php if ( ! empty( $prop_living_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_living_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_living_paras, 1 ) as $prop_living_para ) :
-				?>
-		  <p class="lede"><?php echo esc_html( $prop_living_para ); ?></p>
-				<?php
-			endforeach;
-			// WiFi is listed in the LodgingBusiness amenities, so it has to be on the
-			// page too (audit I17). Wording is verbatim from copy-overwrites/the-property.md.
-			if ( false === stripos( implode( ' ', $prop_living_paras ), 'wifi' ) ) :
-				?>
-		  <p class="lede"><?php esc_html_e( 'There’s free high-speed WiFi throughout, which matters more than people admit when someone in the party needs to keep an eye on work or a hospital app.', 'restwell-retreats' ); ?></p>
-			<?php endif; ?>
+	<?php
+	// Room by room (20 Oct 2026): one section with the rooms as tabs, a large
+	// photo and a white card over its corner, in place of six identical
+	// photo-and-text rows. Uses the [data-tabs] script in shared.js: without
+	// it every room is shown in turn. Each panel keeps its old id, so links to
+	// #wetroom or #garden still open that room.
+	$prop_wetroom_link = static function ( $para ) {
+		// The spec belongs to /accessibility/: link the phrase that points there.
+		return str_replace(
+			esc_html__( 'makes, models and safe working loads', 'restwell-retreats' ),
+			'<a class="text-link" href="' . esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ) . '">' . esc_html__( 'makes, models and safe working loads', 'restwell-retreats' ) . '</a>',
+			esc_html( $para )
+		);
+	};
+	// WiFi is listed in the LodgingBusiness amenities, so it has to be on the
+	// page too (audit I17). Wording is verbatim from copy-overwrites/the-property.md.
+	if ( false === stripos( implode( ' ', $prop_living_paras ), 'wifi' ) ) {
+		$prop_living_paras[] = __( 'There’s free high-speed WiFi throughout, which matters more than people admit when someone in the party needs to keep an eye on work or a hospital app.', 'restwell-retreats' );
+	}
+	$prop_rooms = array(
+		array( 'bedrooms', __( 'Bedrooms', 'restwell-retreats' ), $prop_bedrooms_heading, $prop_bedrooms_paras, 'bungalow/BD2-2-LS.jpg', 2400, 1500, 'Accessible bedroom with two profiling beds and coastal bedding' ),
+		array( 'wetroom', __( 'Wet room', 'restwell-retreats' ), $prop_wetroom_heading, $prop_wetroom_paras, 'bungalow/WR-1-LS.jpg', 2400, 1500, 'Level-access wet room with grab rails' ),
+		array( 'living', __( 'Living room', 'restwell-retreats' ), $prop_living_heading, $prop_living_paras, 'bungalow/LR-1-LS.jpg', 2400, 1500, 'Open-plan living room with rise-and-recline chair and wide walkways' ),
+		array( 'kitchen', __( 'Kitchen', 'restwell-retreats' ), $prop_kitchen_heading, $prop_kitchen_paras, 'bungalow/KT-1-LS.jpg', 2400, 1500, 'Kitchen with lowered wheel-under worksurface' ),
+		array( 'conservatory', __( 'Conservatory', 'restwell-retreats' ), $prop_conservatory_heading, $prop_conservatory_paras, 'bungalow/SB-1-LS.jpg', 6000, 3750, 'The conservatory: the sofa bed under the windows on level wood flooring' ),
+		array( 'garden', __( 'Outside', 'restwell-retreats' ), $prop_garden_heading, $prop_garden_paras, 'journey/guest-garden-path.jpg', 1125, 1500, 'A guest in a powered wheelchair on the level resin path through the enclosed garden' ),
+	);
+	?>
+	<section class="section-y band-white" id="rooms" aria-label="<?php esc_attr_e( 'Room by room', 'restwell-retreats' ); ?>">
+	  <div class="container">
+		<div class="room-tour" data-tabs>
+		  <div class="room-tour__nav">
+			<p class="room-tour__intro"><?php esc_html_e( 'Everything is on one level. Choose a room to see what’s in it.', 'restwell-retreats' ); ?></p>
+			<div class="room-tour__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Rooms', 'restwell-retreats' ); ?>" hidden>
+			  <?php foreach ( $prop_rooms as $prop_room_i => $prop_room ) : ?>
+			  <button type="button" role="tab" id="room-tab-<?php echo esc_attr( $prop_room[0] ); ?>" aria-controls="<?php echo esc_attr( $prop_room[0] ); ?>" aria-selected="<?php echo 0 === $prop_room_i ? 'true' : 'false'; ?>"<?php echo 0 === $prop_room_i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( $prop_room[1] ); ?></button>
+			  <?php endforeach; ?>
+			</div>
+		  </div>
+		  <div class="room-tour__panels">
+			<?php foreach ( $prop_rooms as $prop_room ) : ?>
+			<article class="room-tour__panel room-tour__panel--<?php echo esc_attr( $prop_room[0] ); ?>" id="<?php echo esc_attr( $prop_room[0] ); ?>">
+			  <img class="room-tour__photo" src="<?php echo esc_url( restwell_theme_image_url( $prop_room[4] ) ); ?>" alt="<?php echo esc_attr( $prop_room[7] ); ?>" width="<?php echo (int) $prop_room[5]; ?>" height="<?php echo (int) $prop_room[6]; ?>" sizes="(min-width: 1200px) 860px, 100vw" loading="lazy" decoding="async" />
+			  <div class="room-tour__card">
+				<h2><?php echo esc_html( $prop_room[2] ); ?></h2>
+				<?php foreach ( $prop_room[3] as $prop_room_para ) : ?>
+				<p><?php echo 'wetroom' === $prop_room[0] ? wp_kses_post( $prop_wetroom_link( $prop_room_para ) ) : esc_html( $prop_room_para ); ?></p>
+				<?php endforeach; ?>
+				<?php if ( 'bedrooms' === $prop_room[0] ) : ?>
+				<p class="room-tour__link"><a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Door widths and the hoist', 'restwell-retreats' ); ?></a></p>
+				<?php endif; ?>
+			  </div>
+			</article>
+			<?php endforeach; ?>
+		  </div>
 		</div>
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="kitchen" aria-labelledby="kitchen-h">
-	  <div class="container split split--flip split--media-first split--fill">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/KT-1-LS.jpg' ) ); ?>" alt="Kitchen with lowered wheel-under worksurface" width="900" height="675" loading="lazy" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Kitchen</p>
-			<h2 id="kitchen-h"><?php echo esc_html( $prop_kitchen_heading ); ?></h2>
-			<?php if ( ! empty( $prop_kitchen_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_kitchen_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_kitchen_paras, 1 ) as $prop_kitchen_para ) :
-				?>
-		  <p class="lede"><?php echo esc_html( $prop_kitchen_para ); ?></p>
-				<?php
-			endforeach;
-			?>
-		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-white" id="conservatory" aria-labelledby="conservatory-h">
-	  <div class="container split split--media-first split--fill">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/SB-1-LS.jpg' ) ); ?>" alt="The conservatory: the sofa bed under the windows on level wood flooring" width="2400" height="1500" loading="lazy" decoding="async" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Conservatory</p>
-			<h2 id="conservatory-h"><?php echo esc_html( $prop_conservatory_heading ); ?></h2>
-			<?php if ( ! empty( $prop_conservatory_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_conservatory_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_conservatory_paras, 1 ) as $prop_conservatory_para ) :
-				?>
-		  <p class="lede"><?php echo esc_html( $prop_conservatory_para ); ?></p>
-				<?php
-			endforeach;
-			?>
-		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-subtle" id="garden" aria-labelledby="garden-h">
-	  <div class="container split split--flip split--media-first split--fill">
-		<div class="split__media">
-		  <img class="media-guest-garden" src="<?php echo esc_url( restwell_theme_image_url( 'journey/guest-garden-path.jpg' ) ); ?>" alt="A guest in a powered wheelchair on the level resin path through the enclosed garden" width="1125" height="1500" loading="lazy" decoding="async" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<p class="eyebrow">Outside</p>
-			<h2 id="garden-h"><?php echo esc_html( $prop_garden_heading ); ?></h2>
-			<?php if ( ! empty( $prop_garden_paras[0] ) ) : ?>
-			<p class="lede"><?php echo esc_html( $prop_garden_paras[0] ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <?php
-			foreach ( array_slice( $prop_garden_paras, 1 ) as $prop_garden_para ) :
-				?>
-		  <p class="lede"><?php echo esc_html( $prop_garden_para ); ?></p>
-				<?php
-			endforeach;
-			?>
-		</div>
-	  </div>
-	</section>
-
-	<section class="section-y band-white" id="photos" data-gallery>
+	<section class="section-y band-subtle" id="photos" data-gallery>
 	  <div class="container">
 		<header class="section-head section-head--tight">
 		  <?php if ( '' !== $prop_gallery_label ) : ?>
@@ -383,7 +276,7 @@ get_template_part(
 	</section>
 
 
-	<section class="section-y band-subtle" id="location" aria-labelledby="location-h">
+	<section class="section-y band-white" id="location" aria-labelledby="location-h">
 	  <div class="container split split--fill">
 		<div>
 		  <header class="section-head section-head--tight">
@@ -408,7 +301,7 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--slim band-white care-pointer" id="care" aria-labelledby="care-h">
+	<section class="section-y section-y--slim band-subtle care-pointer" id="care" aria-labelledby="care-h">
 	  <div class="container">
 		<div class="care-pointer__card">
 		  <?php get_template_part( 'template-parts/care-faces' ); ?>

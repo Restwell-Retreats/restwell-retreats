@@ -9401,7 +9401,8 @@ p.care-how__note > .text-link,
 .care-index dd > .text-link,
 .payment-steps__body p > .text-link,
 .persona-list__item p > .text-link,
-.faq-item__panel p > .text-link {
+.faq-item__panel p > .text-link,
+.room-tour__card p:not(.room-tour__link) > .text-link {
   display: inline;
   min-height: 0;
 }
@@ -9757,7 +9758,6 @@ p.care-how__note > .text-link,
 
 /* Guest photos (portrait phone shots) in landscape slots: keep the guest and
    the garden beyond in frame rather than the floor. */
-.split__media img.media-guest-garden { object-position: 50% 40%; }
 
 /* Icons: one Lucide set (inc/icons.php) on a 24px grid at a 1.75 stroke. The
    containers below size them; this is the default, at zero specificity so any
@@ -11006,4 +11006,123 @@ p.care-how__note > .text-link,
     margin: 0;
     padding: var(--space-12) var(--space-10);
   }
+}
+
+/* The Property, room by room (20 Oct 2026): the rooms as tabs beside one
+   large photo, with the room's words on a white card over the photo's
+   corner (as on Home's bungalow panel). The tab list is hidden until
+   shared.js [data-tabs] runs; without it every room shows in turn.
+   Phones: tabs scroll sideways and the card sits under the photo, rising
+   over its foot. From 700px the card overlaps the photo's lower right.
+   From 1200px the rooms list sits down the left. */
+.room-tour {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+}
+.room-tour__intro { margin: 0 0 var(--space-4); font-size: var(--text-md); color: var(--muted-grey); }
+.room-tour__tabs {
+  display: flex;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--rule);
+}
+.room-tour__tabs[hidden] { display: none; }
+.room-tour__tabs [role="tab"] {
+  flex: none;
+  margin: 0 0 -1px;
+  padding: var(--space-2) 0 var(--space-3);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: none;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--deep-teal);
+  cursor: pointer;
+}
+.room-tour__tabs [role="tab"][aria-selected="true"] { border-bottom-color: var(--deep-teal); }
+.room-tour__tabs [role="tab"]:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
+.room-tour__panels { display: grid; gap: var(--space-12); }
+.room-tour__panel { display: grid; }
+.room-tour__panel[hidden] { display: none; }
+.room-tour__panel:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 4px; border-radius: var(--radius-lg); }
+.room-tour__photo {
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+.room-tour__panel--garden .room-tour__photo { object-position: 50% 60%; }
+.room-tour__card {
+  position: relative;
+  grid-row: 2;
+  margin: -3rem var(--space-4) 0;
+  padding: var(--space-6) var(--space-5) 0;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+}
+.room-tour__card h2 {
+  margin: 0 0 var(--space-4);
+  font-size: clamp(1.5rem, 1.1rem + 1vw, 2.1rem);
+}
+.room-tour__card p {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+.room-tour__card p:last-child { margin-bottom: 0; }
+/* The photo shows at least 12rem above the card, the card hangs 3rem below
+   the photo, and the photo's height follows the card's, so a long room
+   (the garden) never covers its own picture. The 26rem floor fits the
+   longest card, so the photo stays the same height as you switch rooms. */
+@media (min-width: 700px) {
+  .room-tour__panel {
+    grid-template-columns: minmax(0, 1fr) min(30rem, 62%);
+    grid-template-rows: 12rem minmax(26rem, auto) 3rem;
+  }
+  .room-tour__photo {
+    grid-column: 1 / -1;
+    grid-row: 1 / 3;
+    height: 0;
+    min-height: 100%;
+    aspect-ratio: auto;
+  }
+  .room-tour__card {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    align-self: end;
+    margin: 0;
+    padding: var(--space-8);
+  }
+}
+@media (min-width: 1200px) {
+  .room-tour {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    gap: var(--space-10);
+    align-items: start;
+  }
+  .room-tour__tabs {
+    flex-direction: column;
+    gap: var(--space-1);
+    overflow: visible;
+    border-bottom: 0;
+  }
+  .room-tour__tabs [role="tab"] {
+    margin: 0;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 0;
+    border-radius: var(--radius);
+    font-size: var(--text-xl);
+    text-align: left;
+  }
+  .room-tour__tabs [role="tab"][aria-selected="true"] { background: var(--deep-teal); color: var(--white); }
+  .room-tour__tabs [role="tab"]:not([aria-selected="true"]):hover { background: color-mix(in srgb, var(--deep-teal) 6%, transparent); }
 }
