@@ -39,8 +39,7 @@ A private, single-storey bungalow a short walk from the sea, with a level wet ro
 **One primary ask.** Everything else is quieter.
 
 - Primary: Enquire → `/enquire/`
-- Secondary: Look inside the bungalow → `/the-property/`
-- Beneath the primary: We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure the house fits.
+- Secondary: Look inside → `/the-property/`
 
 No em dashes in on-page copy. Continuity depth stays on `/optional-care/`. Hero keeps the searchable care claim, but never imply care is free or bundled into the bungalow rate: say care is optional and Continuity quote for it. Never say care is invoiced, quoted or arranged “separately” (corrected by the owner, 13 Oct 2026).
 
@@ -54,7 +53,7 @@ It sits on a quiet residential street in Whitstable, about ten minutes from the 
 
 Inside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.
 
-Have a proper look round the rooms → `/the-property/`
+See the rooms → `/the-property/`
 Door widths and the hoist → `/accessibility/`
 Prices and dates → `/pricing/`
 
@@ -79,7 +78,7 @@ How you handle care on holiday is up to you, and most guests do one of two thing
 - **Bring your own support.** Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.
 - **Add care from Continuity.** Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.
 
-What home care here actually looks like → `/optional-care/`
+How home care works → `/optional-care/`
 
 (Never imply Continuity hours are included in the bungalow rate, and never say care is charged or quoted “separately”.)
 

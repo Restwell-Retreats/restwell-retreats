@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 90;
+const RESTWELL_SCHEMA_VERSION = 91;
 
 
 /**
@@ -3657,6 +3657,30 @@ function restwell_migrate_pricing_faq_heading_v90() {
 }
 
 /**
+ * Home call-to-action labels, shorter (19 Oct 2026): the owner asked for
+ * shorter buttons. "Look inside the bungalow" (hero and closing band),
+ * "Have a proper look round the rooms" (the bungalow section) and "What home
+ * care here actually looks like" (the care card). Same rule as
+ * v85: a stored value is replaced only while it still equals the old seed.
+ */
+function restwell_migrate_home_cta_labels_v91() {
+	if ( get_option( 'restwell_home_cta_labels_v91', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_home_cta_labels_v91', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'home' => array(
+				'hero_cta_secondary_label' => array( 'Look inside the bungalow', 'Look inside' ),
+				'cta_secondary_label'      => array( 'Look inside the bungalow', 'Look inside' ),
+				'property_cta_label'       => array( 'Have a proper look round the rooms', 'See the rooms' ),
+				'home_care_cta_label'      => array( 'What home care here actually looks like', 'How home care works' ),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3782,6 +3806,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch4_copy_v88',
 		'restwell_pricing_faq_v89',
 		'restwell_pricing_faq_heading_v90',
+		'restwell_home_cta_labels_v91',
 	);
 }
 
@@ -3948,6 +3973,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89', 127 );
 	add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90', 133 );
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_heading_v90', 128 );
+	add_action( 'init', 'restwell_migrate_home_cta_labels_v91', 134 );
+	add_action( 'after_switch_theme', 'restwell_migrate_home_cta_labels_v91', 129 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

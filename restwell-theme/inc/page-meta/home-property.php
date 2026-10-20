@@ -24,7 +24,6 @@ function restwell_get_front_page_field_definitions() {
 			'hero_cta_primary_url'     => restwell_field( __( 'Hero primary button URL', 'restwell-retreats' ) ),
 			'hero_cta_secondary_label' => restwell_field( __( 'Hero secondary button label', 'restwell-retreats' ) ),
 			'hero_cta_secondary_url'   => restwell_field( __( 'Hero secondary button URL', 'restwell-retreats' ) ),
-			'hero_cta_reassurance'     => restwell_field( __( 'Optional line under hero buttons (response time & no obligation). Empty = use theme default; clear the field and save to hide.', 'restwell-retreats' ), 'textarea' ),
 		),
 		'Partners' => array(
 			'home_partners_label'    => restwell_field( __( 'Section label (optional)', 'restwell-retreats' ) ),

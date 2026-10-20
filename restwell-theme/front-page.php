@@ -37,19 +37,11 @@ $hero_cta_primary_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'hero_cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) )
 	: restwell_nav_resolve_page_url( 'enquire' );
 $hero_cta_secondary_label = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'hero_cta_secondary_label', __( 'Look inside the bungalow', 'restwell-retreats' ) )
-	: __( 'Look inside the bungalow', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'hero_cta_secondary_label', __( 'Look inside', 'restwell-retreats' ) )
+	: __( 'Look inside', 'restwell-retreats' );
 $hero_cta_secondary_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'hero_cta_secondary_url', restwell_nav_resolve_page_url( 'the-property' ) )
 	: restwell_nav_resolve_page_url( 'the-property' );
-$hero_cta_note = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text(
-		$home_id,
-		'hero_cta_reassurance',
-		__( 'We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure the house fits.', 'restwell-retreats' )
-	)
-	: __( 'We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure the house fits.', 'restwell-retreats' );
-
 $property_label   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_label', __( 'The bungalow', 'restwell-retreats' ) )
 	: __( 'The bungalow', 'restwell-retreats' );
@@ -64,8 +56,8 @@ $property_body    = function_exists( 'restwell_page_content_text' )
 	)
 	: __( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.", 'restwell-retreats' );
 $property_cta_label = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'property_cta_label', __( 'Have a proper look round the rooms', 'restwell-retreats' ) )
-	: __( 'Have a proper look round the rooms', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'property_cta_label', __( 'See the rooms', 'restwell-retreats' ) )
+	: __( 'See the rooms', 'restwell-retreats' );
 $property_cta_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_cta_url', restwell_nav_resolve_page_url( 'the-property' ) )
 	: restwell_nav_resolve_page_url( 'the-property' );
@@ -175,8 +167,8 @@ $mid_cta_primary_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) )
 	: restwell_nav_resolve_page_url( 'enquire' );
 $mid_cta_secondary_label = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'cta_secondary_label', __( 'Look inside the bungalow', 'restwell-retreats' ) )
-	: __( 'Look inside the bungalow', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'cta_secondary_label', __( 'Look inside', 'restwell-retreats' ) )
+	: __( 'Look inside', 'restwell-retreats' );
 $mid_cta_secondary_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'cta_secondary_url', restwell_nav_resolve_page_url( 'the-property' ) )
 	: restwell_nav_resolve_page_url( 'the-property' );
@@ -214,8 +206,8 @@ $home_care_note      = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_note', __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' ) )
 	: __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' );
 $home_care_cta_label = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'home_care_cta_label', __( 'What home care here actually looks like', 'restwell-retreats' ) )
-	: __( 'What home care here actually looks like', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'home_care_cta_label', __( 'How home care works', 'restwell-retreats' ) )
+	: __( 'How home care works', 'restwell-retreats' );
 $home_care_cta_url   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_cta_url', restwell_nav_resolve_page_url( 'optional-care' ) )
 	: restwell_nav_resolve_page_url( 'optional-care' );
@@ -265,9 +257,6 @@ $testimonials = function_exists( 'restwell_get_homepage_testimonials' )
 			<a class="btn btn-gold" href="<?php echo esc_url( $hero_cta_primary_url ); ?>"><?php echo esc_html( $hero_cta_primary_label ); ?></a>
 			<a class="btn btn-outline-light" href="<?php echo esc_url( $hero_cta_secondary_url ); ?>"><?php echo esc_html( $hero_cta_secondary_label ); ?></a>
 		  </div>
-		  <?php if ( '' !== trim( (string) $hero_cta_note ) ) : ?>
-		  <p class="hero__note"><?php echo esc_html( $hero_cta_note ); ?></p>
-		  <?php endif; ?>
 		</div>
 	  </div>
 	</section>
