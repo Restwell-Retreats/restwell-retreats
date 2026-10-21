@@ -233,39 +233,34 @@ get_template_part(
 
 	<section class="section-y band-white" id="payment" aria-labelledby="payment-h">
 	  <div class="container">
-		<header class="section-head">
-		  <?php if ( '' !== $pricing_payment_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $pricing_payment_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="payment-h"><?php echo esc_html( $pricing_payment_heading ); ?></h2>
-		  <?php if ( '' !== $pricing_payment_intro ) : ?>
-		  <p class="lede"><?php echo wp_kses_post( $pricing_link_phrase( esc_html( $pricing_payment_intro ), 'Funding & Support', restwell_nav_resolve_page_url( 'resources' ) ) ); ?></p>
-		  <?php endif; ?>
-		</header>
-		<ol class="payment-steps">
-		  <li class="payment-steps__item">
-			<span class="payment-steps__index" aria-hidden="true">01</span>
-			<div class="payment-steps__body">
-			  <h3><?php echo esc_html( sprintf( /* translators: %d: deposit percentage */ __( '%d%% deposit', 'restwell-retreats' ), (int) $timeline['deposit_percent'] ) ); ?></h3>
-			  <p><?php echo esc_html( __( 'Once we’ve talked it through and you’re happy the house fits, the deposit holds your dates and takes them off the calendar.', 'restwell-retreats' ) ); ?></p>
-			</div>
-		  </li>
-		  <li class="payment-steps__item">
-			<span class="payment-steps__index" aria-hidden="true">02</span>
-			<div class="payment-steps__body">
-			  <h3>Balance before arrival</h3>
-			  <p><?php echo esc_html( sprintf( /* translators: %s: balance due timing, e.g. "no later than one week before you arrive" */ __( 'You pay the rest %s.', 'restwell-retreats' ), $timeline['balance_due_clause_you'] ) ); ?></p>
-			</div>
-		  </li>
-		  <li class="payment-steps__item">
-			<span class="payment-steps__index" aria-hidden="true">03</span>
-			<div class="payment-steps__body">
-			  <h3>No extras</h3>
-			  <p>There’s no damage deposit and no cleaning fee to pay at the end of your stay.</p>
-			</div>
-		  </li>
-		</ol>
-		<p class="payment-note">If your plans change, our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'terms-and-conditions' ) ); ?>">terms and cancellation policy</a> explain what happens next.</p>
+		<?php // How payment works (21 Oct 2026): Home's overlapping panel, the three steps on a white panel over a photo of the house. ?>
+		<div class="property__layout">
+		  <div class="property__copy">
+			<?php if ( '' !== $pricing_payment_label ) : ?>
+			<p class="eyebrow"><?php echo esc_html( $pricing_payment_label ); ?></p>
+			<?php endif; ?>
+			<h2 id="payment-h"><?php echo esc_html( $pricing_payment_heading ); ?></h2>
+			<?php if ( '' !== $pricing_payment_intro ) : ?>
+			<p class="lede"><?php echo wp_kses_post( $pricing_link_phrase( esc_html( $pricing_payment_intro ), 'Funding & Support', restwell_nav_resolve_page_url( 'resources' ) ) ); ?></p>
+			<?php endif; ?>
+			<ol class="pay-steps">
+			  <li>
+				<h3><?php echo esc_html( sprintf( /* translators: %d: deposit percentage */ __( '%d%% deposit', 'restwell-retreats' ), (int) $timeline['deposit_percent'] ) ); ?></h3>
+				<p><?php echo esc_html( __( 'Once we’ve talked it through and you’re happy the house fits, the deposit holds your dates and takes them off the calendar.', 'restwell-retreats' ) ); ?></p>
+			  </li>
+			  <li>
+				<h3>Balance before arrival</h3>
+				<p><?php echo esc_html( sprintf( /* translators: %s: balance due timing, e.g. "no later than one week before you arrive" */ __( 'You pay the rest %s.', 'restwell-retreats' ), $timeline['balance_due_clause_you'] ) ); ?></p>
+			  </li>
+			  <li>
+				<h3>No extras</h3>
+				<p>There’s no damage deposit and no cleaning fee to pay at the end of your stay.</p>
+			  </li>
+			</ol>
+			<p class="pay-note">If your plans change, our <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'terms-and-conditions' ) ); ?>">terms and cancellation policy</a> explain what happens next.</p>
+		  </div>
+		  <img class="property__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="" width="1920" height="1200" sizes="(min-width: 960px) 760px, 100vw" loading="lazy" decoding="async" />
+		</div>
 	  </div>
 	</section>
 

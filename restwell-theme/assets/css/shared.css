@@ -66,7 +66,7 @@
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 1.85rem;
-  /* Step numerals (.process-list, .payment-steps). Was 1.75rem, smaller than
+  /* Step numerals (.process-list). Was 1.75rem, smaller than
      the 3xl step below it, so the two step lists drew different-sized figures. */
   --step-figure-size: 2.75rem;
   --step-figure-size-lg: 3.75rem;
@@ -688,8 +688,7 @@ html.admin-bar .subnav ~ section[id] {
 .stat-row + .section-head,
 .blog-featured + .card-grid,
 .blog-meta + .prose,
-.prose + .blog-meta,
-.payment-steps + .payment-note {
+.prose + .blog-meta {
   margin-top: var(--section-stack-gap);
 }
 
@@ -5202,93 +5201,6 @@ button.availability__cell:focus-visible .availability__date {
 }
 
 /*
- * Payment steps — editorial sequence, drawn exactly like .process-list (care,
- * pricing). Large faded serif numerals over a hairline; no circles. Phone:
- * index | copy with a rule between steps. Desktop: three columns, each under
- * its own rule.
- */
-.payment-steps {
-  --payment-step-gap: var(--space-6);
-  --payment-item-gap: var(--space-5);
-  --payment-index-font: var(--step-figure-size);
-  --payment-title-size: var(--type-h3);
-  --payment-body-size: var(--type-body-size);
-  display: grid;
-  gap: var(--payment-step-gap);
-  align-items: start;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: none;
-}
-.payment-steps__item {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--payment-item-gap);
-  align-items: start;
-  align-content: start;
-  margin: 0;
-  padding: 0;
-}
-.payment-steps__item + .payment-steps__item {
-  padding-top: var(--payment-step-gap);
-  border-top: 1px solid var(--driftwood);
-}
-@media (min-width: 960px) {
-  .payment-steps {
-    --payment-step-gap: var(--space-8);
-    --payment-index-font: var(--step-figure-size-lg);
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .payment-steps__item,
-  .payment-steps__item + .payment-steps__item {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--space-3);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--driftwood);
-  }
-}
-.payment-steps__index {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: var(--payment-index-font);
-  font-weight: var(--weight-regular);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  line-height: 0.85;
-  /* Decorative (aria-hidden), the same 68% gold as .process-list__index. */
-  color: color-mix(in srgb, var(--warm-gold-text) 68%, var(--white));
-  user-select: none;
-}
-.payment-steps__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3); /* same title→text step as .process-list */
-  min-width: 0;
-  padding-top: var(--space-1);
-}
-.payment-steps__body h3 {
-  margin: 0;
-  font-size: var(--payment-title-size);
-  line-height: var(--leading-tight);
-  color: var(--deep-teal);
-}
-.payment-steps__body p {
-  max-width: var(--measure-text);
-  margin: 0;
-  color: var(--muted-grey);
-  font-size: var(--payment-body-size);
-  line-height: var(--type-body-leading);
-}
-.payment-note {
-  margin: 0;
-  max-width: 40rem;
-  color: var(--muted-grey);
-  font-size: var(--type-ui-size);
-  line-height: var(--leading-body);
-}
-
-/*
  * Process — head above, then photo | vertical timeline (inspo: marker + rail).
  * Spacing: head → content via .section-head (--section-after-head).
  * Timeline needs more air than card grids — step/layout gaps sit above --grid-gap.
@@ -9217,7 +9129,6 @@ p > .text-link:only-child,
    stay inline under WCAG 2.5.8's inline exception. */
 p.lede > .text-link,
 .section-head p > .text-link,
-p.payment-note > .text-link,
 p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
 p.blog-cluster-links__part > .text-link,
@@ -9227,11 +9138,11 @@ p.care-cqc__note > .text-link,
 p.care-how__note > .text-link,
 .care-route__stop p > .text-link,
 .care-index dd > .text-link,
-.payment-steps__body p > .text-link,
 .persona-list__item p > .text-link,
 .faq-item__panel p > .text-link,
 .room-tour__card p:not(.room-tour__link) > .text-link,
-p.acc-dest__more > .text-link {
+p.acc-dest__more > .text-link,
+p.pay-note > .text-link {
   display: inline;
   min-height: 0;
 }
@@ -10433,27 +10344,21 @@ p.acc-dest__more > .text-link {
    template). A step's small label (a date, "Start here") sits under its
    title.
    ========================================================================= */
-.process-list__index,
-.payment-steps__index { display: none; }
-.process-list,
-.payment-steps {
+.process-list__index { display: none; }
+.process-list {
   position: relative;
   padding-top: var(--space-6);
   border-top: 1px solid var(--rule);
 }
 .process-list > li,
-.process-list > li + li,
-.payment-steps__item,
-.payment-steps__item + .payment-steps__item {
+.process-list > li + li {
   display: block;
   position: relative;
   padding: 0;
   border: 0;
 }
-.process-list h3,
-.payment-steps__body h3 { line-height: 1.2; }
-.process-list__body,
-.payment-steps__body { padding-top: 0; }
+.process-list h3 { line-height: 1.2; }
+.process-list__body { padding-top: 0; }
 .process-list h3 { order: 1; }
 .process-list__meta {
   order: 2;
@@ -11061,3 +10966,11 @@ p.acc-dest__more > .text-link {
 @media (max-width: 959px) {
   .acc-index__photo { order: -1; height: auto; min-height: 0; aspect-ratio: 4 / 3; }
 }
+
+/* Pricing, how payment works (21 Oct 2026): Home's overlapping panel, the
+   three steps listed between hairlines on the white panel. */
+.pay-steps { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.pay-steps li { padding: var(--space-4) 0; border-bottom: 1px solid var(--rule); }
+.pay-steps h3 { margin: 0 0 var(--space-1); font-size: var(--type-h3); }
+.pay-steps p { margin: 0; font-size: var(--text-md); line-height: 1.55; color: var(--body-secondary); }
+.property__copy .pay-note { margin: 0; font-size: var(--text-md); line-height: 1.6; color: var(--body-secondary); }
