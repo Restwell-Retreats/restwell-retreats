@@ -3108,187 +3108,6 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   border-bottom: 0;
 }
 
-/*
- * Optional care guide rates — overnight as two packages, hourly as a
- * labeled list, then Continuity + caveats as one stacked band.
- */
-.care-rates {
-  --care-rates-gap: var(--space-8);
-  --care-night-gap: var(--space-4);
-  --care-card-pad: var(--panel-pad);
-  --care-card-gap: var(--space-4);
-  --care-list-pad-y: var(--space-4);
-  --care-list-gap: var(--space-4);
-  --care-aside-pad: var(--panel-pad);
-  --care-aside-gap: var(--space-5);
-  --care-subhead-mb: var(--space-4);
-  --care-price-size: var(--text-3xl);
-  --care-hourly-price-size: var(--text-xl);
-  --care-brand-h: 1.65rem; /* Continuity / CQC lockup height, not the spacing scale */
-  --care-ccs-max: 10rem; /* lockup intrinsic width cap */
-  --care-cqc-max: 5.5rem;
-  display: grid;
-  gap: var(--care-rates-gap);
-  width: 100%;
-  min-width: 0;
-}
-.lede + .care-rates { margin-top: var(--space-6); } /* the OVERNIGHT label sat 16px under the intro */
-.care-rates__subhead {
-  margin: 0 0 var(--care-subhead-mb);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--type-eyebrow-weight);
-  color: var(--muted-grey);
-}
-.care-rates__night-grid {
-  display: grid;
-  gap: var(--care-night-gap);
-  grid-template-columns: minmax(0, 1fr);
-}
-.care-rates__hourly {
-  min-width: 0;
-  padding: var(--care-card-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
-}
-.care-rate-card {
-  display: grid;
-  gap: var(--care-card-gap);
-  min-width: 0;
-  padding: var(--care-card-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid var(--card-line);
-  box-shadow: var(--card-shadow);
-}
-.care-rate-card__title {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: var(--type-h3);
-  font-weight: var(--type-title-weight);
-  color: var(--deep-teal);
-  line-height: var(--leading-tight);
-}
-.care-rate-card__lead {
-  display: grid;
-  gap: var(--space-1);
-  margin: 0;
-}
-.care-rate-card__price {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.3em; /* em: keep “From” glued to the figure */
-  font-family: var(--font-serif);
-  font-size: var(--care-price-size);
-  font-weight: var(--type-title-weight);
-  color: var(--deep-teal);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  line-height: var(--leading-tight);
-}
-.care-rate-card__from {
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0;
-  color: var(--muted-grey);
-}
-.care-rate-card__unit {
-  font-size: var(--type-meta-size);
-  color: var(--muted-grey);
-}
-.care-rate-card__split {
-  display: grid;
-  gap: var(--space-3);
-  margin: 0;
-  padding-top: var(--space-4);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.care-rate-card__split > div {
-  min-width: 0;
-}
-.care-rate-card__split dt,
-.care-rate-list__prices dt {
-  margin: 0 0 0.15em; /* em: keep label glued to its figure */
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--muted-grey);
-}
-.care-rate-card__split dd {
-  margin: 0;
-  color: var(--deep-teal);
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
-  overflow-wrap: break-word;
-}
-.care-rate-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.care-rate-list__item {
-  display: grid;
-  gap: var(--care-list-gap);
-  padding-block: var(--care-list-pad-y);
-  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.care-rate-list__item:first-child {
-  padding-top: 0;
-}
-.care-rate-list__item:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-.care-rate-list__copy {
-  min-width: 0;
-}
-.care-rate-list__name {
-  margin: 0;
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  color: var(--deep-teal);
-  line-height: var(--leading-snug);
-  overflow-wrap: break-word;
-}
-.care-rate-list__unit {
-  margin: 0.15em 0 0; /* em: unit sits under the name */
-  font-size: var(--type-meta-size);
-  color: var(--muted-grey);
-}
-.care-rate-list__prices {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-3);
-  margin: 0;
-  min-width: 0;
-}
-.care-rate-list__prices dd {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: var(--care-hourly-price-size);
-  font-weight: var(--type-title-weight);
-  color: var(--deep-teal);
-  font-variant-numeric: tabular-nums;
-  line-height: var(--leading-tight);
-}
-.care-rate-list__prices dd.is-na {
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-regular);
-  color: var(--muted-grey);
-}
-.care-rates__aside {
-  display: grid;
-  gap: var(--care-aside-gap);
-  justify-items: start;
-  padding: var(--care-aside-pad);
-  border-radius: var(--radius-lg);
-  background: color-mix(in srgb, var(--deep-teal) 3%, var(--white));
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
 .care-rates__brands.care__brand {
   gap: var(--space-3) var(--space-4);
   justify-content: flex-start;
@@ -3303,76 +3122,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   height: var(--care-brand-h);
   max-width: min(100%, var(--care-cqc-max));
 }
-.care-rates__notes {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  max-width: 42rem;
-  color: var(--muted-grey);
-  font-size: var(--type-meta-size);
-  line-height: var(--leading-snug);
-  overflow-wrap: break-word;
-}
-.care-rates__notes li {
-  position: relative;
-  margin: 0;
-  padding: 0 0 var(--space-3) 1.1em; /* em: hanging tick aligned to type */
-}
-.care-rates__notes li:last-child {
-  padding-bottom: 0;
-}
-.care-rates__notes li::before {
-  content: "";
-  position: absolute;
-  top: 0.55em; /* em: optically centre on first line */
-  left: 0;
-  width: 0.4em;
-  height: 1px;
-  background: color-mix(in srgb, var(--deep-teal) 45%, transparent);
-}
-.care-rates__ctas {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3) var(--space-5);
-  width: 100%;
-}
-@media (max-width: 639px) {
-  .care-rates__ctas {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .care-rates__ctas .btn {
-    width: 100%;
-    justify-content: center;
-  }
-  .care-rates__ctas .text-link {
-    text-align: center;
-  }
-}
-@media (min-width: 768px) {
-  .care-rates {
-    --care-rates-gap: var(--space-10);
-    --care-night-gap: var(--space-5);
-    --care-list-pad-y: var(--space-5);
-    --care-aside-gap: var(--space-6);
-  }
-  .care-rates__night-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-  .care-rate-list__item {
-    grid-template-columns: minmax(0, 1.2fr) minmax(12rem, 1fr);
-    align-items: center;
-  }
-}
-@media (min-width: 1024px) {
-  .care-rates {
-    --care-hourly-price-size: var(--text-2xl);
-    --care-brand-h: 1.85rem; /* Continuity / CQC lockup height, not the spacing scale */
-    --care-ccs-max: 11rem;
-    --care-cqc-max: 6rem;
-  }
-}
+
 /*
  * Detail columns after key figures.
  * Mobile: one continuous hairline stack (no orphan gap / narrow centred column).
@@ -8909,7 +8659,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   .hero__content p {
     color: var(--deep-teal) !important;
   }
-  
+
   .acc-kit__item,
   .acc-callout {
     box-shadow: none !important;
@@ -8942,7 +8692,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
    readable line length (legal pages and posts ran ~88 characters, audit I42). */
 .prose > :where(p, ul, ol, h2, h3, h4, blockquote),
 .rates-follow,
-.care-rates__notes,
 .persona-list__item p,
 .acc-limits__contact,
 .acc-chapter__lede,
@@ -9005,52 +8754,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 .rating-card .btn { align-self: stretch; justify-content: center; text-align: center; }
 @media (min-width: 900px) {
   .cqc-split { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-12); }
-}
-
-/* Care rates aside (Continuity): identity, then the terms as a two-up grid of
-   white tiles each with a short label, then a footer row with the review date
-   on the left and the actions on the right. */
-.care-rates__aside { gap: var(--space-5); justify-items: stretch; }
-.care-rates__aside > .care-rates__brands { justify-self: start; }
-.care-rates__notes {
-  display: grid;
-  gap: var(--space-3);
-  max-width: none;
-  color: var(--body-secondary);
-  font-size: var(--text-md);
-  line-height: var(--leading-snug);
-}
-.care-rates__notes li,
-.care-rates__notes li:last-child {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius);
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.care-rates__notes li::before { display: none; }
-.care-rates__note-label {
-  color: var(--deep-teal);
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  font-weight: var(--type-title-weight);
-  line-height: 1.2;
-}
-.care-rates__foot {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.care-rates__review { margin: 0; color: var(--muted-grey); font-size: var(--text-sm); }
-@media (min-width: 720px) {
-  .care-rates__notes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .care-rates__foot { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4) var(--space-6); }
-  .care-rates__foot .care-rates__ctas { width: auto; flex-wrap: wrap; }
-  .care-rates__foot .btn { white-space: nowrap; }
 }
 
 /* Bigger tap targets for text links that sit in tight rows (breadcrumb, related
@@ -9250,18 +8953,6 @@ p.pay-note > .text-link {
   :is(.container.split, .container > .split):not(.split--fill):not(.split--cover) > .split__media img {
     max-height: min(34rem, 75vh);
   }
-}
-
-/* Pricing, Continuity terms: open notes under rules, not white tiles inside
-   the grey panel. */
-.care-rates__notes { column-gap: var(--space-8); row-gap: var(--space-5); }
-.care-rates__notes li,
-.care-rates__notes li:last-child {
-  padding: var(--space-4) 0 0;
-  border: 0;
-  border-top: 1px solid var(--rule);
-  border-radius: 0;
-  background: none;
 }
 
 /* Articles: the "how others read it" points and the do / avoid lists are open
@@ -10974,3 +10665,88 @@ p.pay-note > .text-link {
 .pay-steps h3 { margin: 0 0 var(--space-1); font-size: var(--type-h3); }
 .pay-steps p { margin: 0; font-size: var(--text-md); line-height: 1.55; color: var(--body-secondary); }
 .property__copy .pay-note { margin: 0; font-size: var(--text-md); line-height: 1.6; color: var(--body-secondary); }
+
+/* Pricing, care guide rates (21 Oct 2026): the typed index the
+   Accessibility numbers use, with two headline prices (the lowest weekday
+   rates), one line on what costs more, and every rate and note behind "See
+   every rate". The hoist photo and the Continuity and CQC marks sit beside
+   it from 960px, above it on phones. */
+.care-index { display: grid; gap: var(--space-8); }
+@media (min-width: 960px) {
+  .care-index { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-12); align-items: start; }
+}
+.care-index__copy .section-head { margin-bottom: var(--space-8); }
+.care-index__list { margin: 0; border-top: 1px solid var(--rule); }
+.care-index__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-1);
+  border-bottom: 1px solid var(--rule);
+}
+.care-index__row dt { display: flex; flex-direction: column; gap: 2px; }
+.care-index__name { font-family: var(--font-serif); font-size: var(--text-2xl); line-height: 1.2; color: var(--deep-teal); }
+.care-index__note { font-size: var(--text-sm); color: var(--muted-grey); }
+.care-index__row dd {
+  margin: 0;
+  white-space: nowrap;
+  text-align: right;
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 1.8rem + 1.6vw, 3rem);
+  line-height: 1;
+  color: var(--deep-teal);
+}
+.care-index__from,
+.care-index__unit { display: block; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--muted-grey); }
+.care-index__from { margin-bottom: 4px; }
+.care-index__unit { margin-top: 4px; }
+.care-index__line { margin: var(--space-5) 0 0; max-width: min(100%, 36rem); font-size: var(--text-md); color: var(--body-secondary); }
+.care-index__all { margin-top: var(--space-4); }
+.care-index__all summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 2.75rem;
+  list-style: none;
+  cursor: pointer;
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--deep-teal) 40%, transparent);
+  text-underline-offset: 0.2em;
+}
+.care-index__all summary::-webkit-details-marker { display: none; }
+.care-index__all summary::after { content: "+"; text-decoration: none; }
+.care-index__all[open] summary::after { content: "\2212"; }
+.care-index__all summary:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
+.care-index__group { margin: var(--space-5) 0 var(--space-2); font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--muted-grey); }
+.care-index__all-body dl { margin: 0; }
+.care-index__all-body dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--rule);
+}
+.care-index__all-body dt { font-family: var(--font-serif); font-size: var(--text-lg); color: var(--deep-teal); }
+.care-index__all-body dt span { display: block; margin-top: 2px; font-family: var(--font-sans); font-size: var(--text-sm); line-height: 1.5; color: var(--muted-grey); }
+.care-index__all-body dd { margin: 0; white-space: nowrap; font-family: var(--font-serif); font-size: var(--text-lg); color: var(--deep-teal); }
+.care-index__all-body dd span { font-family: var(--font-sans); font-size: var(--text-sm); color: var(--muted-grey); }
+.care-index__review { margin: var(--space-4) 0 0; font-size: var(--text-sm); color: var(--muted-grey); }
+.care-index__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-5); margin-top: var(--space-6); }
+.care-index__media { margin: 0; }
+.care-index__media > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+.care-index__media .care-rates__brands { margin-top: var(--space-4); }
+@media (max-width: 959px) {
+  .care-index__media { order: -1; }
+  .care-index__media > img { aspect-ratio: 16 / 10; }
+}

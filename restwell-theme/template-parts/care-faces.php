@@ -1,8 +1,9 @@
 <?php
 /**
- * Keelie and Nikki's portraits for the optional-care band: the people who
- * answer the phone about care (photos published with consent, 13 Oct 2026).
- * Decorative here; their names are on Our Story.
+ * Keelie and Nikki's portraits for the optional-care band, two of the office
+ * team (photos published with consent, 13 Oct 2026). Decorative here; their
+ * names are on Our Story. Don't caption them as the people who take care
+ * calls: others in the office answer too (owner, 21 Oct 2026).
  *
  * @package Restwell_Retreats
  */

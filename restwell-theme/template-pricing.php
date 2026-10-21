@@ -266,19 +266,9 @@ get_template_part(
 
 	<section class="section-y band-subtle" id="care-rates" aria-labelledby="care-rates-h">
 	  <div class="container">
-		<header class="section-head section-head--tight">
-		  <?php if ( '' !== $pricing_care_rates_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $pricing_care_rates_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="care-rates-h"><?php echo esc_html( $pricing_care_rates_heading ); ?></h2>
-		  <?php if ( '' !== $pricing_care_rates_intro ) : ?>
-		  <p class="lede"><?php echo esc_html( $pricing_care_rates_intro ); ?></p>
-		  <?php endif; ?>
-		</header>
-		<div class="care-rates">
 <?php
-$care_nights  = array();
-$care_hourly  = array();
+$care_nights = array();
+$care_hourly = array();
 foreach ( $pricing['care']['rows'] as $_care_row ) {
 	if ( isset( $_care_row['unit'] ) && 'night' === $_care_row['unit'] ) {
 		$care_nights[] = $_care_row;
@@ -286,68 +276,98 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 		$care_hourly[] = $_care_row;
 	}
 }
+// The two headline prices are the lowest weekday rates, so they stay true when the rates are reviewed.
+$care_from_hour  = empty( $care_hourly ) ? 0 : min( wp_list_pluck( $care_hourly, 'weekday_from' ) );
+$care_from_night = empty( $care_nights ) ? 0 : min( wp_list_pluck( $care_nights, 'weekday_from' ) );
 ?>
-<?php if ( ! empty( $care_nights ) ) : ?>
-		  <div class="care-rates__nights">
-			<h3 class="care-rates__subhead" id="care-nights-h"><?php esc_html_e( 'Overnight', 'restwell-retreats' ); ?></h3>
-			<div class="care-rates__night-grid">
-	<?php foreach ( $care_nights as $_care_row ) : ?>
-			  <article class="care-rate-card" aria-labelledby="care-rate-<?php echo esc_attr( sanitize_html_class( $_care_row['key'] ) ); ?>">
-				<h4 id="care-rate-<?php echo esc_attr( sanitize_html_class( $_care_row['key'] ) ); ?>" class="care-rate-card__title"><?php echo esc_html( $_care_row['type_short'] ); ?></h4>
-				<p class="care-rate-card__lead">
-				  <span class="care-rate-card__price">
-					<span class="care-rate-card__from"><?php esc_html_e( 'From', 'restwell-retreats' ); ?></span>
-					<?php echo esc_html( restwell_format_gbp( $_care_row['weekday_from'], 2 ) ); ?>
-				  </span>
-				  <span class="care-rate-card__unit"><?php esc_html_e( 'per night', 'restwell-retreats' ); ?></span>
-				</p>
-				<dl class="care-rate-card__split">
+		<?php
+		// Care guide rates (21 Oct 2026): two headline prices as a typed index
+		// (like the Accessibility numbers), one line on what costs more, and
+		// every rate and note behind "See every rate". The full list was a
+		// 1,750px wall of figures. The hoist photo sits beside it.
+		?>
+		<div class="care-index">
+		  <div class="care-index__copy">
+			<header class="section-head section-head--tight">
+			  <?php if ( '' !== $pricing_care_rates_label ) : ?>
+			  <p class="eyebrow"><?php echo esc_html( $pricing_care_rates_label ); ?></p>
+			  <?php endif; ?>
+			  <h2 id="care-rates-h"><?php echo esc_html( $pricing_care_rates_heading ); ?></h2>
+			  <?php if ( '' !== $pricing_care_rates_intro ) : ?>
+			  <p class="lede"><?php echo esc_html( $pricing_care_rates_intro ); ?></p>
+			  <?php endif; ?>
+			</header>
+			<dl class="care-index__list">
+			  <?php if ( ! empty( $care_hourly ) ) : ?>
+			  <div class="care-index__row">
+				<dt><span class="care-index__name"><?php esc_html_e( 'Hourly care', 'restwell-retreats' ); ?></span><span class="care-index__note"><?php esc_html_e( 'Personal, domestic and complex care', 'restwell-retreats' ); ?></span></dt>
+				<dd><span class="care-index__from"><?php esc_html_e( 'from', 'restwell-retreats' ); ?></span><?php echo esc_html( restwell_format_gbp( $care_from_hour, 2 ) ); ?><span class="care-index__unit"><?php esc_html_e( 'an hour', 'restwell-retreats' ); ?></span></dd>
+			  </div>
+			  <?php endif; ?>
+			  <?php if ( ! empty( $care_nights ) ) : ?>
+			  <div class="care-index__row">
+				<dt><span class="care-index__name"><?php esc_html_e( 'Overnight care', 'restwell-retreats' ); ?></span><span class="care-index__note"><?php esc_html_e( 'A sleep-in or a waking night', 'restwell-retreats' ); ?></span></dt>
+				<dd><span class="care-index__from"><?php esc_html_e( 'from', 'restwell-retreats' ); ?></span><?php echo esc_html( restwell_format_gbp( $care_from_night, 2 ) ); ?><span class="care-index__unit"><?php esc_html_e( 'a night', 'restwell-retreats' ); ?></span></dd>
+			  </div>
+			  <?php endif; ?>
+			</dl>
+			<p class="care-index__line"><?php esc_html_e( 'Weekends, complex care and bank holidays cost more, and Continuity will give you a quote.', 'restwell-retreats' ); ?></p>
+			<details class="care-index__all">
+			  <summary><?php esc_html_e( 'See every rate', 'restwell-retreats' ); ?></summary>
+			  <div class="care-index__all-body">
+				<?php if ( ! empty( $care_nights ) ) : ?>
+				<p class="care-index__group"><?php esc_html_e( 'Overnight, per night', 'restwell-retreats' ); ?></p>
+				<dl>
+					<?php foreach ( $care_nights as $_care_row ) : ?>
 				  <div>
-					<dt><?php esc_html_e( 'From, weekday', 'restwell-retreats' ); ?></dt>
-					<dd><?php echo esc_html( $_care_row['weekday_display'] ); ?></dd>
-				  </div>
-				  <div>
-					<dt><?php esc_html_e( 'From, weekend', 'restwell-retreats' ); ?></dt>
-					<dd><?php echo esc_html( $_care_row['weekend_display'] ); ?></dd>
-				  </div>
-				</dl>
-			  </article>
-	<?php endforeach; ?>
-			</div>
-		  </div>
-<?php endif; ?>
-<?php if ( ! empty( $care_hourly ) ) : ?>
-		  <div class="care-rates__hourly">
-			<h3 class="care-rates__subhead" id="care-hourly-h"><?php esc_html_e( 'Hourly support', 'restwell-retreats' ); ?></h3>
-			<ul class="care-rate-list">
-	<?php foreach ( $care_hourly as $_care_row ) : ?>
-			  <li class="care-rate-list__item">
-				<div class="care-rate-list__copy">
-				  <h4 class="care-rate-list__name"><?php echo esc_html( $_care_row['type_short'] ); ?></h4>
-				  <p class="care-rate-list__unit"><?php esc_html_e( 'Per hour', 'restwell-retreats' ); ?></p>
-				</div>
-				<dl class="care-rate-list__prices">
-				  <div>
-					<dt><?php esc_html_e( 'From, weekday', 'restwell-retreats' ); ?></dt>
+					<dt><?php echo esc_html( $_care_row['type_short'] ); ?><span><?php echo esc_html( sprintf( /* translators: 1: weekday rates, 2: weekend rates */ __( 'Weekday from %1$s. Weekend from %2$s.', 'restwell-retreats' ), $_care_row['weekday_display'], $_care_row['weekend_display'] ) ); ?></span></dt>
 					<dd><?php echo esc_html( restwell_format_gbp( $_care_row['weekday_from'], 2 ) ); ?></dd>
 				  </div>
-				  <div>
-					<dt><?php esc_html_e( 'From, weekend', 'restwell-retreats' ); ?></dt>
-					<dd<?php echo null === $_care_row['weekend_from'] ? ' class="is-na"' : ''; ?>>
-		<?php if ( null === $_care_row['weekend_from'] ) : ?>
-						<?php echo esc_html__( 'Not available at weekends', 'restwell-retreats' ); ?>
-		<?php else : ?>
-						<?php echo esc_html( restwell_format_gbp( $_care_row['weekend_from'], 2 ) ); ?>
-		<?php endif; ?>
-					</dd>
-				  </div>
+					<?php endforeach; ?>
 				</dl>
-			  </li>
-	<?php endforeach; ?>
-			</ul>
+				<?php endif; ?>
+				<?php if ( ! empty( $care_hourly ) ) : ?>
+				<p class="care-index__group"><?php esc_html_e( 'Hourly, weekday and weekend', 'restwell-retreats' ); ?></p>
+				<dl>
+					<?php foreach ( $care_hourly as $_care_row ) : ?>
+				  <div>
+					<dt><?php echo esc_html( $_care_row['type_short'] ); ?></dt>
+					<dd><?php echo esc_html( restwell_format_gbp( $_care_row['weekday_from'], 2 ) ); ?> <span>/ <?php echo null === $_care_row['weekend_from'] ? esc_html__( 'weekdays only', 'restwell-retreats' ) : esc_html( restwell_format_gbp( $_care_row['weekend_from'], 2 ) ); ?></span></dd>
+				  </div>
+					<?php endforeach; ?>
+				</dl>
+				<?php endif; ?>
+				<p class="care-index__group"><?php esc_html_e( 'Good to know', 'restwell-retreats' ); ?></p>
+				<dl>
+					<?php
+					foreach ( $pricing['care']['notes'] as $_care_note ) :
+						// A short label above each note so the terms can be scanned; unmatched notes just have none.
+						$_care_label = '';
+						if ( false !== stripos( $_care_note, 'one-off' ) ) {
+							$_care_label = __( 'Set-up fee', 'restwell-retreats' );
+						} elseif ( false !== stripos( $_care_note, 'escort' ) ) {
+							$_care_label = __( 'Escort outings', 'restwell-retreats' );
+						} elseif ( false !== stripos( $_care_note, 'bank holiday' ) ) {
+							$_care_label = __( 'Bank holidays', 'restwell-retreats' );
+						} elseif ( false !== stripos( $_care_note, 'optional' ) ) {
+							$_care_label = __( 'How it is quoted', 'restwell-retreats' );
+						}
+						?>
+				  <div class="care-index__note-row">
+					<dt><?php echo esc_html( $_care_label ); ?><span><?php echo esc_html( $_care_note ); ?></span></dt>
+				  </div>
+					<?php endforeach; ?>
+				</dl>
+				<p class="care-index__review"><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></p>
+			  </div>
+			</details>
+			<div class="care-index__ctas">
+			  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
+			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
+			</div>
 		  </div>
-<?php endif; ?>
-		  <div class="care-rates__aside">
+		  <figure class="care-index__media">
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The ceiling track hoist over the profiling bed', 'restwell-retreats' ); ?>" width="2400" height="1500" sizes="(min-width: 960px) 430px, 100vw" loading="lazy" decoding="async" />
 			<div class="care-rates__brands care__brand" aria-label="Sister company and CQC rating">
 			  <a class="care__brand-link care__brand-link--ccs" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Continuity of Care Services (opens in a new tab)">
 				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/continuity-of-care-services-long.png' ) ); ?>" sizes="200px" width="405" height="69" loading="lazy" decoding="async" />
@@ -356,37 +376,7 @@ foreach ( $pricing['care']['rows'] as $_care_row ) {
 				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'partners/cqc-rating-good.jpg' ) ); ?>" sizes="72px" width="710" height="399" loading="lazy" decoding="async" />
 			  </a>
 			</div>
-			<ul class="care-rates__notes">
-			  <?php
-				foreach ( $pricing['care']['notes'] as $_care_note ) :
-					// A short label above each note so the terms can be scanned; unmatched notes just have none.
-					$_care_label = '';
-					if ( false !== stripos( $_care_note, 'one-off' ) ) {
-						$_care_label = __( 'Set-up fee', 'restwell-retreats' );
-					} elseif ( false !== stripos( $_care_note, 'escort' ) ) {
-						$_care_label = __( 'Escort outings', 'restwell-retreats' );
-					} elseif ( false !== stripos( $_care_note, 'bank holiday' ) ) {
-						$_care_label = __( 'Bank holidays', 'restwell-retreats' );
-					} elseif ( false !== stripos( $_care_note, 'optional' ) ) {
-						$_care_label = __( 'How it is quoted', 'restwell-retreats' );
-					}
-					?>
-			  <li>
-					<?php if ( '' !== $_care_label ) : ?>
-				<span class="care-rates__note-label"><?php echo esc_html( $_care_label ); ?></span>
-				<?php endif; ?>
-					<?php echo esc_html( $_care_note ); ?>
-			  </li>
-			  <?php endforeach; ?>
-			</ul>
-			<div class="care-rates__foot">
-			  <p class="care-rates__review"><?php echo esc_html( sprintf( /* translators: %s: next review date */ __( 'Next review: %s.', 'restwell-retreats' ), $pricing['care']['valid_label'] ) ); ?></p>
-			  <div class="care-rates__ctas">
-				<a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>">Enquire about care</a>
-				<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>">How optional care works</a>
-			  </div>
-			</div>
-		  </div>
+		  </figure>
 		</div>
 	  </div>
 	</section>
