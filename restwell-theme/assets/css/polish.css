@@ -32,8 +32,7 @@
 .faq-item.is-open { border-bottom-color: color-mix(in srgb, var(--deep-teal) 28%, transparent); }
 .faq-item__trigger:hover { color: var(--warm-gold-text); }
 
-/* A calm, consistent contact card and deliberate form footer. */
-.sidebar-card { background: var(--bg-subtle); }
+/* A deliberate form footer. (The contact card is teal since 21 Oct 2026; see shared.css.) */
 .form-actions { padding-top: var(--space-3); }
 .field-error { line-height: var(--leading-snug); }
 .field input:focus-visible, .field select:focus-visible, .field textarea:focus-visible {

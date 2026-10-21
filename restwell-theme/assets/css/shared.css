@@ -524,7 +524,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .band-teal :focus-visible,
 .testimonials :focus-visible,
 .site-footer :focus-visible,
-.faq-ask :focus-visible {
+.faq-ask :focus-visible,
+.sidebar-card :focus-visible {
   outline-color: var(--warm-gold-hero);
 }
 /* The plain FAQ hero is light, so it keeps the dark ring. */
@@ -3314,28 +3315,33 @@ body:has(.subnav) {
     top: var(--sidebar-sticky-top);
   }
 }
+/* Talk to us (Enquire, 21 Oct 2026): Home's teal card, like FAQ's "Ask us
+   directly". Phone and email in white, the two page links in light gold. It
+   was a flat grey panel. */
 .sidebar-card {
   padding: var(--panel-pad);
   border-radius: var(--radius-lg);
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
+  background: var(--deep-teal);
+  color: var(--white);
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
-.sidebar-card h2, .sidebar-card h3 { margin: 0; }
+.sidebar-card h2, .sidebar-card h3 { margin: 0; color: var(--white); }
 .sidebar-card p {
   margin: 0;
-  color: var(--muted-grey);
+  color: rgb(255 255 255 / 0.82);
   line-height: 1.6;
 }
 .sidebar-card a:not(.btn) {
-  color: var(--deep-teal);
+  color: var(--white);
+  text-decoration-color: rgb(255 255 255 / 0.5);
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   min-height: var(--tap-target, 2.75rem);
 }
+.sidebar-card a.text-link { color: var(--warm-gold-hero); text-decoration-color: currentColor; }
 
 /*
  * Contact list — interactive rows (tel / mailto / outbound).
