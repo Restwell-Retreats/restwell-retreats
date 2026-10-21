@@ -578,7 +578,7 @@ function restwell_get_pricing_page_defaults() {
 		'pricing_hero_cta_promise' => 'No deposit until you’ve decided the house fits.',
 		'pricing_rates_label'   => 'Bungalow rates',
 		'pricing_rates_heading' => 'Weekly and nightly rates',
-		'pricing_rates_intro'   => 'You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.',
+		'pricing_rates_intro'   => 'You book the whole bungalow, for up to five people. Weekend nights cost a little more than midweek nights, and you can stay for just one night.',
 		'pricing_payment_label'   => 'Deposits and balance',
 		'pricing_payment_heading' => 'How payment works',
 		'pricing_payment_intro'   => 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works.',

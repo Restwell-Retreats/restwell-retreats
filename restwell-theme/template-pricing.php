@@ -79,7 +79,7 @@ $pricing_rates_label   = $pricing_txt( 'pricing_rates_label', __( 'Bungalow rate
 $pricing_rates_heading = $pricing_txt( 'pricing_rates_heading', __( 'Weekly and nightly rates', 'restwell-retreats' ) );
 $pricing_rates_intro   = $pricing_txt(
 	'pricing_rates_intro',
-	__( 'You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.', 'restwell-retreats' )
+	__( 'You book the whole bungalow, for up to five people. Weekend nights cost a little more than midweek nights, and you can stay for just one night.', 'restwell-retreats' )
 );
 $pricing_payment_label   = $pricing_txt( 'pricing_payment_label', __( 'Deposits and balance', 'restwell-retreats' ) );
 $pricing_payment_heading = $pricing_txt( 'pricing_payment_heading', __( 'How payment works', 'restwell-retreats' ) );

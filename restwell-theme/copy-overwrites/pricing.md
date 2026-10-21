@@ -22,7 +22,7 @@ Here are the weekly and nightly rates, the nights that are free and how the depo
 
 H2: Weekly and nightly rates
 
-You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.
+You book the whole bungalow, for up to five people. Weekend nights cost a little more than midweek nights, and you can stay for just one night.
 
 The rates table, example stays and peak dates print from `restwell_get_pricing()`.
 

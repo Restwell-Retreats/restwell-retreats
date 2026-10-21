@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 91;
+const RESTWELL_SCHEMA_VERSION = 92;
 
 
 /**
@@ -3681,6 +3681,29 @@ function restwell_migrate_home_cta_labels_v91() {
 }
 
 /**
+ * Pricing rates intro, shorter (21 Oct 2026): the owner asked for a shorter
+ * line. The day ranges are already in the rates, and care has its own
+ * section further down the page. Same rule as v85: a stored value is replaced
+ * only while it still equals the old seed.
+ */
+function restwell_migrate_pricing_rates_intro_v92() {
+	if ( get_option( 'restwell_pricing_rates_intro_v92', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_pricing_rates_intro_v92', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'pricing' => array(
+				'pricing_rates_intro' => array(
+					'You book the whole bungalow, which sleeps up to five. Weekend nights (Friday to Sunday) cost a little more than midweek nights (Monday to Thursday), and the minimum stay is one night. Care from Continuity is optional, and they’ll give you a quote for it.',
+					'You book the whole bungalow, for up to five people. Weekend nights cost a little more than midweek nights, and you can stay for just one night.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3807,6 +3830,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_pricing_faq_v89',
 		'restwell_pricing_faq_heading_v90',
 		'restwell_home_cta_labels_v91',
+		'restwell_pricing_rates_intro_v92',
 	);
 }
 
@@ -3975,6 +3999,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_heading_v90', 128 );
 	add_action( 'init', 'restwell_migrate_home_cta_labels_v91', 134 );
 	add_action( 'after_switch_theme', 'restwell_migrate_home_cta_labels_v91', 129 );
+	add_action( 'init', 'restwell_migrate_pricing_rates_intro_v92', 135 );
+	add_action( 'after_switch_theme', 'restwell_migrate_pricing_rates_intro_v92', 130 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
