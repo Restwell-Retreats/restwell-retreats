@@ -864,19 +864,16 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_host_label'   => 'Who runs both',
 		'story_host_heading' => 'Victoria Walker',
-		'story_host_lede'    => 'Victoria owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.',
+		'story_host_lede'    => 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.',
 
 		'story_companies_label'     => 'Who does what',
 		'story_companies_heading'   => 'Two companies, one conversation',
-		'story_companies_lede'      => 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.',
+		'story_companies_lede'      => 'Restwell runs the bungalow. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.',
 		'story_companies_1_title'   => 'Restwell',
 		'story_companies_1_body'    => 'The bungalow is a private adapted house in Whitstable. It isn’t a care home or a respite centre.',
 		'story_companies_2_title'   => 'Continuity of Care Services',
 		'story_companies_2_body'    => 'Home care during your stay is optional, and always from Continuity’s own team.',
-		'story_companies_3_title'   => 'One place to start',
-		'story_companies_3_body'    => 'Ask about the bungalow and any care in the same call, to the same office.',
 		'story_companies_note'      => 'Restwell is not a registered care provider. Continuity of Care Services is.',
-		'story_companies_cqc_label' => 'Read Continuity’s CQC profile',
 
 		'story_shaped_label'   => 'Shaped with guests',
 		'story_shaped_heading' => 'Planned with disabled people before it opened',

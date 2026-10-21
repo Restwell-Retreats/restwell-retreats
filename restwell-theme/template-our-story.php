@@ -32,13 +32,6 @@ $restwell_story_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_story_id, 'story_label', '' )
 	: '';
 
-$restwell_host_phone = function_exists( 'restwell_get_public_phone_number' )
-	? restwell_get_public_phone_number()
-	: '01622 809881';
-$restwell_host_tel   = function_exists( 'restwell_get_public_phone_tel' )
-	? restwell_get_public_phone_tel()
-	: '01622809881';
-
 $story_txt = static function ( $key, $fallback ) use ( $restwell_story_id ) {
 	return function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_story_id, $key, $fallback )
@@ -66,11 +59,11 @@ $story_month_3_body  = $story_txt( 'story_month_3_body', 'Once the work was fini
 
 $story_host_label   = $story_txt( 'story_host_label', 'Who runs both' );
 $story_host_heading = $story_txt( 'story_host_heading', 'Victoria Walker' );
-$story_host_lede    = $story_txt( 'story_host_lede', 'Victoria owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.' );
+$story_host_lede    = $story_txt( 'story_host_lede', 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.' );
 
 $story_companies_label   = $story_txt( 'story_companies_label', 'Who does what' );
 $story_companies_heading = $story_txt( 'story_companies_heading', 'Two companies, one conversation' );
-$story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.' );
+$story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell runs the bungalow. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.' );
 $story_companies_items   = array(
 	array(
 		'title' => $story_txt( 'story_companies_1_title', 'Restwell' ),
@@ -80,13 +73,8 @@ $story_companies_items   = array(
 		'title' => $story_txt( 'story_companies_2_title', 'Continuity of Care Services' ),
 		'body'  => $story_txt( 'story_companies_2_body', 'Home care during your stay is optional, and always from Continuity’s own team.' ),
 	),
-	array(
-		'title' => $story_txt( 'story_companies_3_title', 'One place to start' ),
-		'body'  => $story_txt( 'story_companies_3_body', 'Ask about the bungalow and any care in the same call, to the same office.' ),
-	),
 );
-$story_companies_note      = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider. Continuity of Care Services is.' );
-$story_companies_cqc_label = $story_txt( 'story_companies_cqc_label', 'Read Continuity’s CQC profile' );
+$story_companies_note = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider. Continuity of Care Services is.' );
 
 $story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped with guests' );
 $story_shaped_heading = $story_txt( 'story_shaped_heading', 'Planned with disabled people before it opened' );
@@ -251,9 +239,11 @@ get_template_part(
 	  </div>
 	</section>
 
+	<?php // Who runs both (21 Oct 2026): Victoria's full-length portrait in the first of the page's three columns, her words across the other two. It was another half-and-half split, the third in a row. ?>
 	<section class="section-y band-white" id="host" aria-labelledby="host-h">
-	  <div class="container split split--fill">
-		<div>
+	  <div class="container story-host">
+		<img class="story-host__photo" src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker-full.webp' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker.webp' ) ); ?>" width="1620" height="1859" sizes="(min-width: 1200px) 352px, (min-width: 768px) 30vw, 100vw" loading="lazy" decoding="async" data-reveal />
+		<div class="story-host__copy">
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $story_host_label ) : ?>
 			<p class="eyebrow"><?php echo esc_html( $story_host_label ); ?></p>
@@ -279,22 +269,20 @@ get_template_part(
 			</ul>
 		  </header>
 		</div>
-		<div class="split__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker.webp' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker.webp' ) ); ?>" width="1600" height="1200" loading="lazy" decoding="async" />
-		</div>
 	  </div>
 	</section>
 
 	<?php
-	// Who does what (11 Oct 2026): the two companies as one paired panel, and
-	// "one place to start" as the dark statement under it. It was three
-	// same-weight cards in a row, with the conclusion posing as a third company.
+	// Who does what (21 Oct 2026): Home's photo card for Restwell beside a white
+	// card for Continuity, its logo and CQC badge loose (no boxes round them)
+	// with the registration note under them. No call to action of its own: the
+	// closing band below carries Enquire. It was a paired panel with four links
+	// and a dark "one place to start" bar.
 	$story_co_restwell = $story_companies_items[0];
 	$story_co_care     = $story_companies_items[1];
-	$story_co_start    = $story_companies_items[2];
 	$story_co_cqc_url  = 'https://www.cqc.org.uk/location/1-2624556588';
 	?>
-	<section class="section-y band-subtle companies" id="companies" aria-labelledby="companies-h">
+	<section class="section-y band-subtle" id="companies" aria-labelledby="companies-h">
 	  <div class="container">
 		<header class="section-head">
 		  <?php if ( '' !== $story_companies_label ) : ?>
@@ -305,45 +293,34 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $story_companies_lede ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<div class="companies__pair">
-		  <div class="companies__side">
-			<h3><?php echo esc_html( $story_co_restwell['title'] ); ?></h3>
-			<p><?php echo esc_html( $story_co_restwell['body'] ); ?></p>
-			<div class="sister-band__badges">
-			  <span class="sister-band__badge"><img src="<?php echo esc_url( restwell_theme_image_url( 'long_logo.png' ) ); ?>" alt="" sizes="180px" width="2588" height="403" loading="lazy" decoding="async" /></span>
+		<ul class="company-cards" role="list">
+		  <li class="care-choice care-choice--own">
+			<img class="care-choice__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-1-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 960px) 640px, 100vw" loading="lazy" decoding="async" />
+			<div class="care-choice__text">
+			  <h3><?php echo esc_html( $story_co_restwell['title'] ); ?></h3>
+			  <p><?php echo esc_html( $story_co_restwell['body'] ); ?></p>
 			</div>
-			<a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>"><?php esc_html_e( 'Tour the property', 'restwell-retreats' ); ?></a>
-		  </div>
-		  <span class="companies__join" aria-hidden="true"></span>
-		  <div class="companies__side">
-			<h3><?php echo esc_html( $story_co_care['title'] ); ?></h3>
-			<p><?php echo esc_html( $story_co_care['body'] ); ?></p>
-			<div class="sister-band__badges" aria-label="<?php esc_attr_e( 'Sister company and CQC rating', 'restwell-retreats' ); ?>">
-			  <a class="sister-band__badge" href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
-				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="" sizes="180px" width="405" height="69" loading="lazy" decoding="async" />
-			  </a>
-			  <a class="sister-band__badge sister-band__badge--cqc" href="<?php echo esc_url( $story_co_cqc_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php esc_attr_e( 'CQC rating Good, Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>">
-				<img src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="" sizes="80px" width="710" height="399" loading="lazy" decoding="async" />
-			  </a>
+		  </li>
+		  <li class="company-card">
+			<div class="company-card__marks">
+			  <div class="company-card__logos">
+				<a href="https://www.continuitycareservices.co.uk/" target="_blank" rel="noopener noreferrer">
+				  <img class="company-card__logo" src="<?php echo esc_url( restwell_theme_image_url( 'partners/continuity-of-care-services-long.png' ) ); ?>" alt="<?php esc_attr_e( 'Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>" width="405" height="69" loading="lazy" decoding="async" />
+				</a>
+				<a href="<?php echo esc_url( $story_co_cqc_url ); ?>" target="_blank" rel="noopener noreferrer">
+				  <img class="company-card__cqc" src="<?php echo esc_url( restwell_theme_image_url( 'partners/cqc-rating-good.jpg' ) ); ?>" alt="<?php esc_attr_e( 'CQC rating Good, Continuity of Care Services (opens in a new tab)', 'restwell-retreats' ); ?>" width="710" height="399" loading="lazy" decoding="async" />
+				</a>
+			  </div>
+			  <?php if ( '' !== $story_companies_note ) : ?>
+			  <p class="company-card__note"><?php echo esc_html( $story_companies_note ); ?></p>
+			  <?php endif; ?>
 			</div>
-			<?php if ( '' !== $story_companies_note ) : ?>
-			<p class="companies__note"><?php echo esc_html( $story_companies_note ); ?></p>
-			<?php endif; ?>
-			<?php if ( '' !== $story_companies_cqc_label ) : ?>
-			<a class="text-link" href="<?php echo esc_url( $story_co_cqc_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $story_companies_cqc_label ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
-			<?php endif; ?>
-		  </div>
-		</div>
-		<div class="companies__start">
-		  <div class="companies__start-text">
-			<h3><?php echo esc_html( $story_co_start['title'] ); ?></h3>
-			<p><?php echo esc_html( $story_co_start['body'] ); ?></p>
-		  </div>
-		  <div class="companies__start-actions">
-			<a class="companies__phone" href="<?php echo esc_url( 'tel:' . $restwell_host_tel ); ?>"><?php echo esc_html( $restwell_host_phone ); ?></a>
-			<a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Enquire', 'restwell-retreats' ); ?></a>
-		  </div>
-		</div>
+			<div class="care-choice__text">
+			  <h3><?php echo esc_html( $story_co_care['title'] ); ?></h3>
+			  <p><?php echo esc_html( $story_co_care['body'] ); ?></p>
+			</div>
+		  </li>
+		</ul>
 	  </div>
 	</section>
 

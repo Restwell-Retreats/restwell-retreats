@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 92;
+const RESTWELL_SCHEMA_VERSION = 93;
 
 
 /**
@@ -3704,6 +3704,34 @@ function restwell_migrate_pricing_rates_intro_v92() {
 }
 
 /**
+ * Our Story, plainer words (21 Oct 2026): the two-company redesign cut the
+ * page's shortest sentences and left it at Flesch 69.6, under the 70 aim.
+ * "Accommodation" becomes "the bungalow" and "is accountable for" becomes
+ * "answers for". Same rule as v85: a stored value is replaced only while it
+ * still equals the old seed.
+ */
+function restwell_migrate_our_story_plain_words_v93() {
+	if ( get_option( 'restwell_our_story_plain_words_v93', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_our_story_plain_words_v93', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'our-story' => array(
+				'story_host_lede'      => array(
+					'Victoria owns Restwell and is Continuity’s registered manager, so one person is accountable for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.',
+					'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.',
+				),
+				'story_companies_lede' => array(
+					'Restwell provides the accommodation. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.',
+					'Restwell runs the bungalow. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3831,6 +3859,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_pricing_faq_heading_v90',
 		'restwell_home_cta_labels_v91',
 		'restwell_pricing_rates_intro_v92',
+		'restwell_our_story_plain_words_v93',
 	);
 }
 
@@ -4001,6 +4030,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_home_cta_labels_v91', 129 );
 	add_action( 'init', 'restwell_migrate_pricing_rates_intro_v92', 135 );
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_rates_intro_v92', 130 );
+	add_action( 'init', 'restwell_migrate_our_story_plain_words_v93', 136 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_plain_words_v93', 131 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

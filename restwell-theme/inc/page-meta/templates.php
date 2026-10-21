@@ -614,10 +614,7 @@ function restwell_get_our_story_field_definitions() {
 			'story_companies_1_body'     => restwell_field( __( 'Item 1 body', 'restwell-retreats' ), 'textarea' ),
 			'story_companies_2_title'    => restwell_field( __( 'Item 2 title', 'restwell-retreats' ) ),
 			'story_companies_2_body'     => restwell_field( __( 'Item 2 body', 'restwell-retreats' ), 'textarea' ),
-			'story_companies_3_title'    => restwell_field( __( 'Item 3 title', 'restwell-retreats' ) ),
-			'story_companies_3_body'     => restwell_field( __( 'Item 3 body (phone link stays in the template)', 'restwell-retreats' ), 'textarea' ),
 			'story_companies_note'       => restwell_field( __( 'Trust note', 'restwell-retreats' ), 'textarea' ),
-			'story_companies_cqc_label'  => restwell_field( __( 'CQC profile link label', 'restwell-retreats' ) ),
 		),
 		'Shaped' => array(
 			'story_shaped_label'   => restwell_field( __( 'Section eyebrow label', 'restwell-retreats' ) ),

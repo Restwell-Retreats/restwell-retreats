@@ -523,8 +523,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .mid-cta :focus-visible,
 .band-teal :focus-visible,
 .testimonials :focus-visible,
-.site-footer :focus-visible,
-.companies__start :focus-visible {
+.site-footer :focus-visible {
   outline-color: var(--warm-gold-hero);
 }
 /* The plain FAQ hero is light, so it keeps the dark ring. */
@@ -5145,92 +5144,6 @@ button.availability__cell:focus-visible .availability__date {
   }
   .process-list__index {
     font-size: var(--process-figure-size);
-  }
-}
-
-/* Who does what (Our Story, 11 Oct 2026): Restwell and Continuity as two
-   halves of one panel, joined by an ampersand on the divider, and the shared
-   phone line as the dark statement beneath. Replaces three equal cards whose
-   third was the conclusion, not a third company. */
-.companies__pair {
-  display: grid;
-  border: 1px solid var(--card-line);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-}
-.companies__side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--panel-pad);
-}
-.companies__side > * { margin: 0; }
-.companies__side h3 { font-size: var(--type-title-lg); color: var(--deep-teal); }
-.companies__side > p { max-width: var(--measure-text); color: var(--body-secondary); }
-.companies__side .sister-band__badges { margin-block: var(--space-2); }
-.companies__side .text-link { margin-top: auto; }
-.companies__note { font-size: var(--text-sm); color: var(--muted-grey); }
-.companies__join {
-  position: relative;
-  height: 1px;
-  background: var(--card-line);
-}
-.companies__join::before {
-  content: "&";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: grid;
-  place-items: center;
-  width: var(--space-12);
-  height: var(--space-12);
-  transform: translate(-50%, -50%);
-  border: 1px solid var(--card-line);
-  border-radius: 50%;
-  background: var(--bg-subtle);
-  font-family: var(--font-serif);
-  font-size: var(--text-2xl);
-  font-style: italic;
-  line-height: 1;
-  color: var(--warm-gold-text);
-}
-.companies__start {
-  display: grid;
-  gap: var(--space-5);
-  margin-top: var(--grid-gap);
-  padding: var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--deep-teal);
-  color: var(--white);
-}
-.companies__start h3 { margin: 0 0 var(--space-2); font-size: var(--type-title-lg); color: var(--white); }
-.companies__start p { margin: 0; color: rgba(255, 255, 255, 0.86); }
-.companies__start-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4) var(--space-6);
-}
-.companies__phone {
-  font-family: var(--font-serif);
-  font-size: var(--type-title-lg);
-  color: var(--warm-gold-hero);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
-}
-.companies__phone:hover { color: var(--white); }
-.companies__start :focus-visible { outline-color: var(--warm-gold-hero); }
-@media (min-width: 768px) {
-  .companies__pair { grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); }
-  .companies__side { padding: var(--space-10); }
-  .companies__join { height: auto; }
-  .companies__start {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: var(--space-12);
-    padding: var(--space-8) var(--space-10);
   }
 }
 
@@ -10768,3 +10681,105 @@ p.pay-note > .text-link {
 }
 .step-photos h3 { margin: 0 0 var(--space-2); font-size: var(--type-h3); }
 .step-photos p { margin: 0; font-size: var(--text-md); line-height: 1.6; color: var(--body-secondary); }
+
+/* Our Story, who runs both (21 Oct 2026): Victoria's full-length portrait in
+   the first of the page's three columns, her words across the other two. */
+.story-host { display: grid; gap: var(--space-8); }
+.story-host__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 60% 30%;
+  border-radius: var(--radius-lg);
+}
+@media (min-width: 768px) {
+  .story-host {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--space-8);
+    align-items: center;
+  }
+  .story-host__copy { grid-column: 2 / 4; }
+}
+
+/* Our Story, who does what (21 Oct 2026): Home's photo card for Restwell
+   beside a white card for Continuity, its logo and CQC badge loose with the
+   registration note under them. From 960px the cards share three rows through
+   subgrid (marks, heading, words), so both headings start on one line and the
+   photo card's words sit at its foot. */
+.company-cards {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.company-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--card-shadow);
+}
+.company-card__marks { padding: var(--space-6) var(--space-6) 0; }
+.company-card__logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.company-card__logos a { display: block; }
+.company-card__logo { display: block; width: 11rem; height: auto; }
+.company-card__cqc { display: block; width: 5.5rem; height: auto; border-radius: 4px; }
+.company-card__note {
+  max-width: 24rem;
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--muted-grey);
+}
+.company-card h3 {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.4rem, 1.1rem + 0.8vw, 1.85rem);
+  font-weight: var(--type-display-weight);
+  line-height: 1.2;
+  color: var(--deep-teal);
+}
+.company-card .care-choice__text p {
+  max-width: 32rem;
+  margin: 0;
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+@media (min-width: 900px) {
+  .company-card__marks { padding: var(--space-8) var(--space-8) 0; }
+}
+@media (min-width: 960px) {
+  .company-cards {
+    grid-template-columns: 7fr 5fr;
+    grid-template-rows: minmax(14rem, auto) auto auto;
+    gap: 0 var(--space-5);
+  }
+  @supports (grid-template-rows: subgrid) {
+    .company-cards > li {
+      display: grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      row-gap: 0;
+      justify-content: normal;
+      min-height: 0;
+    }
+    .company-card__marks { grid-row: 1; align-self: start; }
+    .company-cards .care-choice__text {
+      display: grid;
+      grid-row: 2 / 4;
+      grid-template-rows: subgrid;
+      align-content: start;
+    }
+    .company-cards .care-choice__text > * { align-self: start; }
+  }
+}
