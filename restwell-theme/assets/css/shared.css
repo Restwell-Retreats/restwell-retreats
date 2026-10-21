@@ -10750,3 +10750,21 @@ p.pay-note > .text-link {
   .care-index__media { order: -1; }
   .care-index__media > img { aspect-ratio: 16 / 10; }
 }
+
+/* How It Works, enquire / confirm / arrive (21 Oct 2026): a photo per step,
+   three across on the page grid from 768px, stacked on phones. */
+.step-photos { display: grid; gap: var(--space-8); margin: var(--space-10) 0 0; padding: 0; list-style: none; }
+@media (min-width: 768px) {
+  .step-photos { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-8); }
+}
+.step-photos img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-lg);
+}
+.step-photos h3 { margin: 0 0 var(--space-2); font-size: var(--type-h3); }
+.step-photos p { margin: 0; font-size: var(--text-md); line-height: 1.6; color: var(--body-secondary); }

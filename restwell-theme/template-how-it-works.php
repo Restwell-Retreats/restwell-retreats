@@ -129,13 +129,6 @@ if ( empty( $hiw_steps ) ) {
 	);
 }
 
-$hiw_care_label   = $restwell_hiw_prefer_live(
-	function_exists( 'restwell_page_content_text' )
-		? restwell_page_content_text( $restwell_hiw_id, 'hiw_care_cta_label', 'Optional care' )
-		: 'Optional care',
-	'Optional care',
-	array( 'CARE SUPPORT' )
-);
 $hiw_care_heading = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_hiw_id, 'hiw_care_cta_heading', 'Adding care to your stay' )
@@ -333,10 +326,19 @@ get_template_part(
 	</nav>
 
 	<?php // One composition: heading, intro and the three steps in one column, the photo beside them (was a photo row with the steps bolted on underneath). ?>
-	<section class="section-y band-white process process--story" id="process" aria-labelledby="process-h">
-	  <div class="container process__layout">
-		<div class="process__main">
-		  <header class="section-head process__head">
+	<?php
+	// Enquire, confirm, arrive (21 Oct 2026): a photo per step, three across on
+	// the page grid. The house for the enquiry, the bedroom set up for you,
+	// the front door for arrival.
+	$hiw_step_photos = array(
+		array( 'bungalow/EX-1-LS.jpg', 1920, 1200 ),
+		array( 'bungalow/BD2-2-LS.jpg', 2400, 1500 ),
+		array( 'bungalow/FD-1-LS.jpg', 2400, 1500 ),
+	);
+	?>
+	<section class="section-y band-white" id="process" aria-labelledby="process-h">
+	  <div class="container">
+		<header class="section-head">
 		  <?php if ( '' !== $hiw_steps_label ) : ?>
 		  <p class="eyebrow"><?php echo esc_html( $hiw_steps_label ); ?></p>
 		  <?php endif; ?>
@@ -344,26 +346,22 @@ get_template_part(
 		  <?php if ( '' !== $hiw_steps_intro ) : ?>
 		  <p class="lede"><?php echo esc_html( $hiw_steps_intro ); ?></p>
 		  <?php endif; ?>
-		  </header>
-		  <ol class="process-list">
-			<?php foreach ( $hiw_steps as $step_i => $step ) : ?>
-			<li>
-			  <span class="process-list__index" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $step_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-			  <div class="process-list__body">
+		</header>
+		<ol class="step-photos">
+		  <?php foreach ( $hiw_steps as $step_i => $step ) : ?>
+		  <li>
+				<?php if ( isset( $hiw_step_photos[ $step_i ] ) ) : ?>
+			<img src="<?php echo esc_url( restwell_theme_image_url( $hiw_step_photos[ $step_i ][0] ) ); ?>" alt="" width="<?php echo (int) $hiw_step_photos[ $step_i ][1]; ?>" height="<?php echo (int) $hiw_step_photos[ $step_i ][2]; ?>" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
+			<?php endif; ?>
 				<?php if ( '' !== $step['title'] ) : ?>
-				<h3><?php echo esc_html( $step['title'] ); ?></h3>
-				<?php endif; ?>
+			<h3><?php echo esc_html( $step['title'] ); ?></h3>
+			<?php endif; ?>
 				<?php if ( '' !== $step['body'] ) : ?>
-				<p><?php echo esc_html( $step['body'] ); ?></p>
-				<?php endif; ?>
-			  </div>
-			</li>
-			<?php endforeach; ?>
-		  </ol>
-		</div>
-		<figure class="process__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-2-LS.jpg' ) ); ?>" alt="The open-plan living room, with doors out to the garden at the far end" width="1920" height="1200" loading="lazy" />
-		</figure>
+			<p><?php echo esc_html( $step['body'] ); ?></p>
+			<?php endif; ?>
+		  </li>
+		  <?php endforeach; ?>
+		</ol>
 	  </div>
 	</section>
 
@@ -409,20 +407,34 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--slim band-white care-pointer" id="care" aria-labelledby="care-h">
+	<?php
+	// Adding care (21 Oct 2026): the teal card The Property uses, Keelie and
+	// Nikki named under their photos (no role claim: others answer care calls).
+	$hiw_care_team = array(
+		array( 'journey/keelie-varney.webp', 1500, 'Keelie Varney' ),
+		array( 'journey/nikki-mackay.webp', 1429, 'Nikki Mackay' ),
+	);
+	?>
+	<section class="section-y band-white" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="care-pointer__card">
-		  <?php get_template_part( 'template-parts/care-faces' ); ?>
-		  <?php if ( '' !== $hiw_care_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $hiw_care_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="care-h"><?php echo esc_html( $hiw_care_heading ); ?></h2>
-		  <?php if ( '' !== $hiw_care_body ) : ?>
-		  <p class="lede"><?php echo esc_html( $hiw_care_body ); ?></p>
-		  <?php endif; ?>
-		  <?php if ( '' !== $hiw_care_btn && '' !== $hiw_care_url ) : ?>
-		  <a class="text-link" href="<?php echo esc_url( $hiw_care_url ); ?>"><?php echo esc_html( $hiw_care_btn ); ?><?php restwell_the_icon( 'arrow-right' ); ?></a>
-		  <?php endif; ?>
+		<div class="care-choice care-choice--continuity care-choice--wide">
+		  <div class="care-choice__team">
+			<?php foreach ( $hiw_care_team as $hiw_care_person ) : ?>
+			<figure>
+			  <img src="<?php echo esc_url( restwell_theme_image_url( $hiw_care_person[0] ) ); ?>" alt="" width="<?php echo (int) $hiw_care_person[1]; ?>" height="2000" sizes="(min-width: 900px) 220px, 42vw" loading="lazy" decoding="async" />
+			  <figcaption><?php echo esc_html( $hiw_care_person[2] ); ?></figcaption>
+			</figure>
+			<?php endforeach; ?>
+		  </div>
+		  <div class="care-choice__text">
+			<h2 id="care-h"><?php echo esc_html( $hiw_care_heading ); ?></h2>
+			<?php if ( '' !== $hiw_care_body ) : ?>
+			<p><?php echo esc_html( $hiw_care_body ); ?></p>
+			<?php endif; ?>
+			<?php if ( '' !== $hiw_care_btn && '' !== $hiw_care_url ) : ?>
+			<a class="care-choice__link" href="<?php echo esc_url( $hiw_care_url ); ?>"><?php echo esc_html( $hiw_care_btn ); ?> <span aria-hidden="true">&rarr;</span></a>
+			<?php endif; ?>
+		  </div>
 		</div>
 	  </div>
 	</section>
