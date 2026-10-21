@@ -48,7 +48,9 @@ get_template_part(
 			),
 		),
 		'post_id'    => (int) get_queried_object_id(),
-		'variant'    => 'plain',
+		// A photo like the other inside pages (21 Oct 2026); it was the one plain band.
+		'image_url'  => restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-4-LS.jpg' ),
+		'image_alt'  => __( 'Beach huts along the green Tankerton slopes above the sea', 'restwell-retreats' ),
 	)
 );
 ?>

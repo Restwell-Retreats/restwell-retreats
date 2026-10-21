@@ -523,7 +523,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .mid-cta :focus-visible,
 .band-teal :focus-visible,
 .testimonials :focus-visible,
-.site-footer :focus-visible {
+.site-footer :focus-visible,
+.faq-ask :focus-visible {
   outline-color: var(--warm-gold-hero);
 }
 /* The plain FAQ hero is light, so it keeps the dark ring. */
@@ -1660,12 +1661,14 @@ body.nav-open { overflow: hidden; }
   width: 100%;
   min-width: 0;
 }
+/* Ask us directly (21 Oct 2026): Home's teal card, white fields and the gold
+   button. It was a flat grey panel. On teal the focus ring and a ticked box
+   take the light gold (deep teal would vanish), and field errors a pale red. */
 .faq-ask {
   padding: var(--faq-aside-pad);
   border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--card-line);
+  background: var(--deep-teal);
+  color: var(--white);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -1673,12 +1676,24 @@ body.nav-open { overflow: hidden; }
 .faq-ask .section-head {
   margin: 0;
 }
+.faq-ask h2 { color: var(--white); }
 .faq-ask .section-head p:last-child {
   margin: 0;
-  color: var(--muted-grey);
+  color: rgb(255 255 255 / 0.82);
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
 }
+.faq-ask [role="status"] { color: var(--white); }
+.faq-ask .field label { color: var(--white); }
+.faq-ask .field input:where(:not([type="checkbox"]):not([type="radio"])),
+.faq-ask .field textarea { border-color: transparent; }
+.faq-ask .field input:focus-visible,
+.faq-ask .field textarea:focus-visible,
+.faq-ask .field.is-invalid input:focus-visible,
+.faq-ask .field.is-invalid textarea:focus-visible { outline-color: var(--warm-gold-hero); }
+.faq-ask .field input[type="checkbox"] { accent-color: var(--warm-gold-hero); }
+.faq-ask .field-error { color: #ffcdc6; }
+.faq-ask .text-link { color: var(--warm-gold-hero); text-decoration-color: currentColor; }
 .faq-page__aside {
   /* Clears sticky site header when the ask form pins on desktop */
   --faq-aside-sticky-top: calc(var(--header-offset) + var(--space-4));
@@ -4272,6 +4287,9 @@ body:has(.subnav) {
   -webkit-mask-image: linear-gradient(to right, black calc(100% - 2rem), transparent 100%);
 }
 .pill-tabs::-webkit-scrollbar { display: none; }
+/* Full width on phones, so the row scrolls (21 Oct 2026). Flex let every
+   filter shrink to its 44px minimum and "The house" ran into "Booking". */
+.pill-tabs > * { flex: none; }
 @media (min-width: 640px) {
   .pill-tabs {
     flex-wrap: wrap;
