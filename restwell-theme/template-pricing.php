@@ -163,67 +163,66 @@ get_template_part(
 		  <p class="lede"><?php echo esc_html( $pricing_rates_intro ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<div class="rates-block">
-		  <div class="rates-panel">
-			<table class="data-table data-table--rates">
-			  <caption class="sr-only">Bungalow rates by stay type and season</caption>
+		<?php
+		// Rates (22 Oct 2026, owner's pick after eight rounds): the living room
+		// wide across the page, then off-peak and peak as two columns under it.
+		// Example stays and the peak dates sit behind one tap, like the care rates.
+		$rate_seasons = array(
+			'off_peak' => array( __( 'Off-peak', 'restwell-retreats' ), __( 'Most of the year', 'restwell-retreats' ) ),
+			'peak'     => array( __( 'Peak', 'restwell-retreats' ), __( 'School holidays', 'restwell-retreats' ) ),
+		);
+		?>
+		<img class="season-rates__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'bungalow/LR-1-LS.jpg' ) ); ?>" width="2400" height="1500" sizes="(min-width: 1200px) 1120px, 100vw" loading="lazy" decoding="async" />
+		<div class="season-rates">
+		  <?php foreach ( $rate_seasons as $season_key => $season_text ) : ?>
+		  <div class="season-rates__col">
+			<h3><?php echo esc_html( $season_text[0] ); ?></h3>
+			<p class="season-rates__when"><?php echo esc_html( $season_text[1] ); ?></p>
+			<dl>
+				<?php foreach ( $rate_rows as $rate_row ) : ?>
+			  <div>
+				<dt><?php echo esc_html( $rate_row['label'] ); ?><span><?php echo esc_html( trim( $rate_row['hint'], '()' ) ); ?></span></dt>
+				<dd><?php echo esc_html( restwell_format_gbp( $seasons[ $season_key ][ $rate_row['field'] ] ) ); ?></dd>
+			  </div>
+				<?php endforeach; ?>
+			</dl>
+		  </div>
+		  <?php endforeach; ?>
+		</div>
+		<details class="season-rates__more">
+		  <summary><?php esc_html_e( 'See example stays and peak dates', 'restwell-retreats' ); ?></summary>
+		  <div class="season-rates__extra">
+			<table class="season-rates__table">
+			  <caption><?php esc_html_e( 'Example stays', 'restwell-retreats' ); ?></caption>
 			  <thead>
 				<tr>
-				  <th scope="col">Stay type</th>
-				  <th scope="col">Off-peak</th>
-				  <th scope="col">Peak</th>
+				  <th scope="col"><span class="sr-only"><?php esc_html_e( 'Stay', 'restwell-retreats' ); ?></span></th>
+				  <th scope="col"><?php esc_html_e( 'Off-peak', 'restwell-retreats' ); ?></th>
+				  <th scope="col"><?php esc_html_e( 'Peak', 'restwell-retreats' ); ?></th>
 				</tr>
 			  </thead>
 			  <tbody>
-<?php foreach ( $rate_rows as $rate_row ) : ?>
+				<?php foreach ( $example_stays as $stay ) : ?>
 				<tr>
-				  <th scope="row"><?php echo esc_html( $rate_row['label'] ); ?> <span class="data-table__hint"><?php echo esc_html( $rate_row['hint'] ); ?></span></th>
-				  <td class="is-price" data-label="Off-peak"><?php echo esc_html( restwell_format_gbp( $seasons['off_peak'][ $rate_row['field'] ] ) ); ?></td>
-				  <td class="is-price" data-label="Peak"><?php echo esc_html( restwell_format_gbp( $seasons['peak'][ $rate_row['field'] ] ) ); ?></td>
+				  <th scope="row"><?php echo esc_html( $stay['name'] ); ?> <span><?php echo esc_html( trim( $stay['meta'], '()' ) ); ?></span></th>
+					<?php foreach ( array( 'off_peak', 'peak' ) as $season_key ) : ?>
+				  <td><?php echo esc_html( restwell_format_gbp( ( $stay['weekend_count'] * $seasons[ $season_key ]['weekend_night'] ) + ( $stay['midweek_count'] * $seasons[ $season_key ]['midweek_night'] ) ) ); ?></td>
+					<?php endforeach; ?>
 				</tr>
-<?php endforeach; ?>
+				<?php endforeach; ?>
 			  </tbody>
 			</table>
-			<div class="rates-examples">
-			  <div class="rates-examples__head">
-				<h3 class="rates-examples__title">Example stays</h3>
-				<p class="rates-examples__cols" aria-hidden="true"><span>Off-peak</span><span>Peak</span></p>
-			  </div>
-			  <ul class="rates-examples__list">
-<?php foreach ( $example_stays as $stay ) : ?>
-				<li>
-				  <div class="rates-examples__copy">
-					<span class="rates-examples__name"><?php echo esc_html( $stay['name'] ); ?></span>
-					<span class="rates-examples__meta"><?php echo esc_html( $stay['meta'] ); ?></span>
-				  </div>
-				  <span class="rates-examples__prices">
-	<?php foreach ( array( 'off_peak', 'peak' ) as $_season_key ) : ?>
-					<span class="is-price" data-label="<?php echo esc_attr( 'off_peak' === $_season_key ? 'Off-peak' : 'Peak' ); ?>"><?php echo esc_html( restwell_format_gbp( ( $stay['weekend_count'] * $seasons[ $_season_key ]['weekend_night'] ) + ( $stay['midweek_count'] * $seasons[ $_season_key ]['midweek_night'] ) ) ); ?></span>
-<?php endforeach; ?>
-				  </span>
-				</li>
-<?php endforeach; ?>
+			<div class="season-rates__dates">
+			  <h3 id="peak-dates-h"><?php esc_html_e( 'Peak season dates', 'restwell-retreats' ); ?></h3>
+			  <ul>
+				<?php foreach ( restwell_get_peak_ranges_display() as $peak_range ) : ?>
+				<li><span><?php echo esc_html( $peak_range['label'] ); ?></span> <?php echo esc_html( $peak_range['range'] ); ?></li>
+				<?php endforeach; ?>
 			  </ul>
+			  <p><?php esc_html_e( 'All other dates are off-peak.', 'restwell-retreats' ); ?></p>
 			</div>
 		  </div>
-		  <p class="rates-follow">If you’d like to see the rooms first, <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'the-property' ) ); ?>">have a look round the bungalow</a>. The <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>">door widths and the full equipment list</a> are on the Accessibility page.</p>
-		  <details class="peak-dates" data-peak-dates>
-			<summary class="peak-dates__summary">
-			  <h3 id="peak-dates-h" class="peak-dates__summary-title">Peak season dates</h3>
-			  <span class="peak-dates__summary-hint">All other dates are off-peak.</span>
-			  <span class="peak-dates__summary-action">
-				<span class="peak-dates__action-open">Show dates</span>
-				<span class="peak-dates__action-close">Hide dates</span>
-				<span class="peak-dates__action-chevron" aria-hidden="true"></span>
-			  </span>
-			</summary>
-			<ul class="peak-dates__list">
-<?php foreach ( restwell_get_peak_ranges_display() as $_peak ) : ?>
-			  <li><span class="peak-dates__label"><?php echo esc_html( $_peak['label'] ); ?></span><span class="peak-dates__range"><?php echo esc_html( $_peak['range'] ); ?></span></li>
-<?php endforeach; ?>
-			</ul>
-		  </details>
-		</div>
+		</details>
 	  </div>
 	</section>
 

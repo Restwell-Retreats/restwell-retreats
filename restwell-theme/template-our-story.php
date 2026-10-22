@@ -45,17 +45,17 @@ $story_origin_body    = $story_txt( 'story_origin_body', 'Somebody would travel 
 
 $story_month_label   = $story_txt( 'story_month_label', 'The build' );
 $story_month_heading = $story_txt( 'story_month_heading', 'How the bungalow was built' );
-$story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three specialist teams brought the bungalow together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust walked the bedroom and wet room. We changed what they flagged, down to the profiling bed.' );
+$story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three specialist teams brought it together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.' );
 $story_month_1_meta  = $story_txt( 'story_month_1_meta', 'Early March' );
 $story_month_1_title = $story_txt( 'story_month_1_title', 'We got the keys' );
-$story_month_1_body  = $story_txt( 'story_month_1_body', 'The bungalow needed more than a lick of paint.' );
+$story_month_1_body  = $story_txt( 'story_month_1_body', 'It needed more than a lick of paint.' );
 $story_month_2_meta  = $story_txt( 'story_month_2_meta', 'During the build' );
 $story_month_2_title = $story_txt( 'story_month_2_title', 'The specialists arrived' );
-$story_month_2_body_default = 'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends did the rest.';
+$story_month_2_body_default = 'Care Spaces and Thor Carpentry built the bedroom and wet room.';
 $story_month_2_body  = $story_txt( 'story_month_2_body', $story_month_2_body_default );
 $story_month_3_meta  = $story_txt( 'story_month_3_meta', 'Four weeks later' );
-$story_month_3_title = $story_txt( 'story_month_3_title', 'The bungalow was ready' );
-$story_month_3_body  = $story_txt( 'story_month_3_body', 'Once the work was finished, we measured everything and wrote the numbers down.' );
+$story_month_3_title = $story_txt( 'story_month_3_title', 'It was ready' );
+$story_month_3_body  = $story_txt( 'story_month_3_body', 'We measured everything and wrote it down.' );
 
 $story_host_label   = $story_txt( 'story_host_label', 'Who runs both' );
 $story_host_heading = $story_txt( 'story_host_heading', 'Victoria Walker' );
@@ -168,74 +168,47 @@ get_template_part(
 	  </div>
 	</section>
 
-	<?php // One composition: the heading, intro and the month's three dates in one column, the finished house beside them. It was a photo row with the steps bolted on underneath, which read as two sections. ?>
-	<section class="section-y band-subtle process process--story" id="month" aria-labelledby="month-h">
-	  <div class="container process__layout">
-		<div class="process__main">
-		  <header class="section-head process__head">
-		  <?php if ( '' !== $story_month_label ) : ?>
-		  <p class="eyebrow"><?php echo esc_html( $story_month_label ); ?></p>
-		  <?php endif; ?>
-		  <h2 id="month-h"><?php echo esc_html( $story_month_heading ); ?></h2>
-		  <?php if ( '' !== $story_month_lede ) : ?>
-		  <p class="lede"><?php echo esc_html( $story_month_lede ); ?></p>
-		  <?php endif; ?>
-		  </header>
-		  <ol class="process-list">
-			<li>
-			  <span class="process-list__index" aria-hidden="true">01</span>
-			  <div class="process-list__body">
-				<?php if ( '' !== $story_month_1_meta ) : ?>
-				<p class="process-list__meta"><?php echo esc_html( $story_month_1_meta ); ?></p>
-				<?php endif; ?>
-				<?php if ( '' !== $story_month_1_title ) : ?>
-				<h3><?php echo esc_html( $story_month_1_title ); ?></h3>
-				<?php endif; ?>
-				<?php if ( '' !== $story_month_1_body ) : ?>
-				<p><?php echo esc_html( $story_month_1_body ); ?></p>
-				<?php endif; ?>
-			  </div>
-			</li>
-			<li>
-			  <span class="process-list__index" aria-hidden="true">02</span>
-			  <div class="process-list__body">
-				<?php if ( '' !== $story_month_2_meta ) : ?>
-				<p class="process-list__meta"><?php echo esc_html( $story_month_2_meta ); ?></p>
-				<?php endif; ?>
-				<?php if ( '' !== $story_month_2_title ) : ?>
-				<h3><?php echo esc_html( $story_month_2_title ); ?></h3>
-				<?php endif; ?>
-				<?php if ( $story_month_2_body === $story_month_2_body_default ) : ?>
-				<p>
-					<?php esc_html_e( 'The accessible bedroom and wet room were built by', 'restwell-retreats' ); ?>
-					<a class="text-link" href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer">Care Spaces by Wealden Rehab<span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a>
-					<?php esc_html_e( 'and', 'restwell-retreats' ); ?>
-					<a class="text-link" href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"><?php esc_html_e( ' (opens in new tab)', 'restwell-retreats' ); ?></span></a><?php esc_html_e( ', with the occupational therapists’ advice. Family and friends did the rest.', 'restwell-retreats' ); ?>
-				</p>
-				<?php elseif ( '' !== $story_month_2_body ) : ?>
-				<p><?php echo esc_html( $story_month_2_body ); ?></p>
-				<?php endif; ?>
-			  </div>
-			</li>
-			<li>
-			  <span class="process-list__index" aria-hidden="true">03</span>
-			  <div class="process-list__body">
-				<?php if ( '' !== $story_month_3_meta ) : ?>
-				<p class="process-list__meta"><?php echo esc_html( $story_month_3_meta ); ?></p>
-				<?php endif; ?>
-				<?php if ( '' !== $story_month_3_title ) : ?>
-				<h3><?php echo esc_html( $story_month_3_title ); ?></h3>
-				<?php endif; ?>
-				<?php if ( '' !== $story_month_3_body ) : ?>
-				<p><?php echo esc_html( $story_month_3_body ); ?></p>
-				<?php endif; ?>
-			  </div>
-			</li>
-		  </ol>
+	<?php
+	// How the bungalow was built (22 Oct 2026, owner's pick after five rounds):
+	// the teal card from Funding & Support, the month in white on the left and
+	// the finished house on the right; on phones the photo leads.
+	$story_month_steps = array(
+		array( $story_month_1_meta, $story_month_1_title, $story_month_1_body ),
+		array( $story_month_2_meta, $story_month_2_title, $story_month_2_body ),
+		array( $story_month_3_meta, $story_month_3_title, $story_month_3_body ),
+	);
+	?>
+	<section class="section-y band-subtle" id="month" aria-labelledby="month-h">
+	  <div class="container">
+		<div class="build-card">
+		  <div class="build-card__words">
+			<h2 id="month-h"><?php echo esc_html( $story_month_heading ); ?></h2>
+			<?php if ( '' !== $story_month_lede ) : ?>
+			<p class="build-card__lede"><?php echo esc_html( $story_month_lede ); ?></p>
+			<?php endif; ?>
+			<ol class="build-card__steps">
+			  <?php foreach ( $story_month_steps as $story_month_i => $story_month_step ) : ?>
+					<?php
+					if ( '' === $story_month_step[1] ) {
+						continue;
+					}
+					?>
+			  <li>
+					<?php if ( '' !== $story_month_step[0] ) : ?>
+					<p class="build-card__when"><?php echo esc_html( $story_month_step[0] ); ?></p>
+					<?php endif; ?>
+					<h3><?php echo esc_html( $story_month_step[1] ); ?></h3>
+					<?php if ( 1 === $story_month_i && $story_month_2_body === $story_month_2_body_default ) : ?>
+					<p><a href="https://www.carespaces.co.uk/" target="_blank" rel="noopener noreferrer">Care Spaces<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a> <?php esc_html_e( 'and', 'restwell-retreats' ); ?> <a href="https://thorcarpenter.co.uk/" target="_blank" rel="noopener noreferrer">Thor Carpentry<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a> <?php esc_html_e( 'built the bedroom and wet room.', 'restwell-retreats' ); ?></p>
+					<?php elseif ( '' !== $story_month_step[2] ) : ?>
+					<p><?php echo esc_html( $story_month_step[2] ); ?></p>
+					<?php endif; ?>
+			  </li>
+			  <?php endforeach; ?>
+			</ol>
+		  </div>
+		  <img class="build-card__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The adapted bungalow as it is now, with hanging baskets under the windows', 'restwell-retreats' ); ?>" width="1920" height="1200" sizes="(min-width: 900px) 460px, 100vw" loading="lazy" decoding="async" />
 		</div>
-		<figure class="process__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EX-1-LS.jpg' ) ); ?>" alt="The adapted bungalow as it is now, with a level driveway and front garden" width="1600" height="1000" loading="lazy" />
-		</figure>
 	  </div>
 	</section>
 

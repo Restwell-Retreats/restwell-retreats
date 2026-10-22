@@ -28,7 +28,11 @@ Somebody would travel for three hours, only to find a doorway they couldn’t ge
 
 ## How the bungalow was built
 
-Family, friends and three specialist teams helped bring the bungalow together. Occupational therapists from Kent Community Health NHS Trust came to the house before anyone stayed. They walked the bedroom and wet room and told us how we could improve it. The profiling bed we had in needed to be a different one, so we changed it.
+Family, friends and three specialist teams brought it together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.
+
+- Early March, we got the keys. It needed more than a lick of paint.
+- During the build, the specialists arrived. Care Spaces and Thor Carpentry built the bedroom and wet room.
+- Four weeks later, it was ready. We measured everything and wrote it down.
 
 ## Two companies, and why that matters to you
 

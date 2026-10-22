@@ -66,10 +66,6 @@
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 1.85rem;
-  /* Step numerals (.process-list). Was 1.75rem, smaller than
-     the 3xl step below it, so the two step lists drew different-sized figures. */
-  --step-figure-size: 2.75rem;
-  --step-figure-size-lg: 3.75rem;
 
   /* 2. Leading + weight */
   --leading-tight: 1.2;
@@ -849,7 +845,6 @@ blockquote:not(.pull-quote__text),
 .faq-item__panel,
 .faq-cta__text,
 .testimonial-card__quote,
-.process-list__body > p,
 .info-card p,
 .path-card p,
 .download-panel p,
@@ -2765,7 +2760,6 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
    * are unaffected: at 375px these are already well under 60vh.
    */
   .split__media img,
-  .process__media img,
   .media-card img {
     /* Safety net for short viewports, e.g. a phone held landscape. */
     max-height: 60vh;
@@ -3676,56 +3670,7 @@ body:has(.subnav) {
   color: var(--muted-grey);
   font-size: var(--text-sm);
 }
-/* Inside .rates-panel the panel owns the chrome — table is flush */
-.rates-panel .data-table--rates {
-  border-collapse: collapse;
-}
 
-/* Rates / care tables — prices as the visual anchor, not muted body grey */
-.data-table--rates {
-  /* Spacing tokens */
-  --rates-card-mb: var(--space-4);
-  --rates-card-pad: var(--panel-pad);
-  --rates-card-col-gap: var(--space-6);
-  --rates-card-row-gap: var(--space-3);
-  --rates-row-title-pb: var(--space-3);
-  --rates-cell-gap: var(--space-1);
-  --rates-cell-pad-y: var(--space-4);
-  --rates-cell-pad-x: var(--space-5);
-  /* Type tokens — remap at layout / lg, never sprinkle font-size in media */
-  --rates-price-size: var(--text-2xl);
-  --rates-row-title-size: var(--type-ui-size);
-  --rates-col-label-size: var(--text-sm);
-  --rates-head-size: var(--type-meta-size);
-  --rates-hint-size: var(--type-meta-size);
-  width: 100%;
-}
-@media (min-width: 700px) {
-  .data-table--rates {
-    --rates-price-size: var(--text-xl);
-    --rates-row-title-size: var(--text-base);
-  }
-}
-@media (min-width: 768px) {
-  .data-table--rates {
-    --rates-cell-pad-y: var(--space-5);
-  }
-}
-@media (min-width: 1024px) {
-  .data-table--rates {
-    --rates-cell-pad-x: var(--space-6);
-    --rates-price-size: var(--text-2xl);
-  }
-}
-.data-table--rates th[scope="row"] {
-  font-size: var(--rates-row-title-size);
-  font-weight: var(--weight-semibold);
-  color: var(--deep-teal);
-  background: transparent;
-  white-space: normal;
-  line-height: var(--leading-snug);
-}
-.data-table--rates .is-price,
 .data-table .is-price {
   font-family: var(--font-serif);
   font-weight: var(--type-title-weight);
@@ -3736,18 +3681,7 @@ body:has(.subnav) {
   letter-spacing: -0.01em;
   line-height: var(--leading-tight);
 }
-.data-table__hint {
-  display: inline;
-  font-family: var(--font-sans);
-  font-weight: var(--weight-regular);
-  font-size: var(--rates-hint-size, var(--type-meta-size));
-  color: var(--muted-grey);
-  white-space: nowrap;
-}
-.data-table--rates tbody tr:last-child th,
-.data-table--rates tbody tr:last-child td {
-  border-bottom: 0;
-}
+
 /* Unavailable weekend care: same scale as the row label, not a price. */
 .data-table .is-price--na {
   font-family: var(--font-sans);
@@ -3755,477 +3689,6 @@ body:has(.subnav) {
   font-size: var(--type-meta-size);
   color: var(--muted-grey);
   white-space: normal;
-}
-
-/*
- * Phone: stack each stay type as its own block so labels aren’t clipped
- * by a three-column squeeze. Desktop keeps the comparison table.
- */
-@media (max-width: 699px) {
-  .data-table--rates thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-  .data-table--rates,
-  .data-table--rates tbody {
-    display: block;
-    width: 100%;
-  }
-  .data-table--rates tr {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: var(--rates-card-col-gap);
-    row-gap: var(--rates-card-row-gap);
-    margin: 0 0 var(--rates-card-mb);
-    padding: var(--rates-card-pad);
-    background: var(--white);
-    border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-    border-radius: var(--radius);
-  }
-  .data-table--rates tr:last-child { margin-bottom: 0; }
-  .data-table--rates th[scope="row"] {
-    grid-column: 1 / -1;
-    padding: 0 0 var(--rates-row-title-pb);
-    border: 0;
-  }
-  .data-table--rates td {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--rates-cell-gap);
-    padding: 0;
-    border: 0;
-    min-width: 0;
-  }
-  .data-table--rates td::before {
-    content: attr(data-label);
-    font-family: var(--font-sans);
-    font-size: var(--rates-col-label-size);
-    font-weight: var(--type-eyebrow-weight);
-    color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
-  }
-  /* Inside the unified panel: row dividers, not nested mini-cards */
-  .rates-panel .data-table--rates tr {
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-    box-shadow: none;
-    /* Same gutter as examples + peak — standardised panel pad */
-    padding: var(--space-5);
-    column-gap: var(--space-6);
-  }
-  .rates-panel .data-table--rates tr:last-child {
-    border-bottom: 0;
-  }
-}
-@media (min-width: 700px) {
-  .data-table--rates {
-    table-layout: fixed;
-  }
-  .data-table--rates th,
-  .data-table--rates td {
-    padding: var(--rates-cell-pad-y) var(--rates-cell-pad-x);
-    vertical-align: middle;
-  }
-  .data-table--rates thead th {
-    font-size: var(--rates-head-size);
-    font-weight: var(--type-eyebrow-weight);
-    color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
-    background: color-mix(in srgb, var(--deep-teal) 3%, var(--white));
-  }
-  .data-table--rates thead th:first-child {
-    width: 42%;
-    font-size: var(--rates-row-title-size);
-    font-weight: var(--weight-semibold);
-    letter-spacing: 0;
-    text-transform: none;
-    color: var(--deep-teal);
-  }
-  .data-table--rates thead th:not(:first-child) {
-    width: 29%;
-    text-align: right;
-  }
-  .data-table--rates tbody td {
-    text-align: right;
-  }
-  .rates-panel .data-table--rates {
-    --rates-price-size: var(--text-xl);
-    --rates-cell-pad-x: var(--space-4);
-  }
-}
-/*
- * Rates block — tariff panel + follow links + peak disclosure.
- * Section-head sits above (shared --section-after-head), same as payment / care.
- */
-.rates-block {
-  --rates-block-gap: var(--section-after-head);
-  display: grid;
-  gap: var(--rates-block-gap);
-  width: 100%;
-  /* Stop open peak dates from expanding past the container */
-  min-width: 0;
-}
-.rates-block > * {
-  min-width: 0;
-  max-width: 100%;
-}
-.rates-panel {
-  overflow: hidden;
-  border-radius: var(--radius);
-  border: 1px solid var(--card-line);
-  background: var(--card-bg);
-  box-shadow: var(--card-shadow);
-}
-.rates-panel .data-table--rates thead th {
-  background: color-mix(in srgb, var(--deep-teal) 3.5%, var(--white));
-}
-@media (min-width: 700px) {
-  .rates-panel .data-table--rates th,
-  .rates-panel .data-table--rates td {
-    padding-inline: var(--space-5);
-  }
-  .rates-panel .data-table--rates thead th:last-child,
-  .rates-panel .data-table--rates tbody td:last-child {
-    padding-inline-end: var(--space-6);
-  }
-  .rates-panel .data-table--rates thead th:first-child,
-  .rates-panel .data-table--rates tbody th[scope="row"] {
-    padding-inline-start: var(--space-6);
-  }
-}
-.rates-follow {
-  margin: 0;
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
-}
-
-/* Peak season dates — disclosure. Clear control, not a second primary CTA:
-   teal border + outline action chip (gold reserved for Enquire). */
-.peak-dates {
-  --peak-list-mt: var(--space-3);
-  --peak-item-pad-y: var(--space-2);
-  --peak-item-gap: var(--space-3);
-  --peak-item-size: var(--text-sm);
-  --peak-label-size: var(--type-meta-size);
-  --peak-title-size: var(--text-lg);
-  margin: 0;
-  padding: 0;
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 25%, transparent);
-  box-shadow: var(--card-shadow);
-}
-.peak-dates__summary {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "title action"
-    "hint action";
-  column-gap: var(--space-4);
-  row-gap: 0.2rem;
-  align-items: center;
-  cursor: pointer;
-  list-style: none;
-  padding: var(--space-4) var(--space-5);
-  border-radius: calc(var(--radius-lg) - 1px);
-  transition: background-color 160ms ease;
-}
-@media (hover: hover) {
-  .peak-dates__summary:hover { background: color-mix(in srgb, var(--deep-teal) 4%, var(--white)); }
-}
-/* ≤430: stack the action under the copy so it doesn't collide with .scroll-top (fixed BR). */
-@media (max-width: 430px) {
-  .peak-dates__summary {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "title"
-      "hint"
-      "action";
-    row-gap: var(--space-3);
-  }
-  .peak-dates__summary-action {
-    justify-self: start;
-  }
-}
-.peak-dates__summary:focus { outline: none; }
-.peak-dates__summary:focus-visible {
-  outline: 3px solid var(--deep-teal);
-  outline-offset: 2px;
-}
-.peak-dates__summary::-webkit-details-marker { display: none; }
-.peak-dates__summary::marker { content: ""; }
-/* Outline chip — interactive affordance without competing with Enquire gold. */
-.peak-dates__summary-action {
-  grid-area: action;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-4);
-  min-height: 2.75rem;
-  border-radius: var(--radius-control, 0.65rem);
-  background: color-mix(in srgb, var(--deep-teal) 6%, var(--white));
-  color: var(--deep-teal);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 28%, transparent);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-tight);
-  white-space: nowrap;
-}
-@media (hover: hover) {
-  .peak-dates__summary:hover .peak-dates__summary-action,
-  .peak-dates__summary:focus-visible .peak-dates__summary-action {
-    background: color-mix(in srgb, var(--deep-teal) 10%, var(--white));
-    border-color: color-mix(in srgb, var(--deep-teal) 42%, transparent);
-  }
-}
-.peak-dates .peak-dates__action-open { display: inline; }
-.peak-dates .peak-dates__action-close { display: none; }
-.peak-dates[open] .peak-dates__action-open { display: none; }
-.peak-dates[open] .peak-dates__action-close { display: inline; }
-.peak-dates__action-chevron {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-right: 2.5px solid currentColor;
-  border-bottom: 2.5px solid currentColor;
-  transform: rotate(45deg);
-  transition: transform 160ms ease;
-  flex-shrink: 0;
-}
-.peak-dates[open] > .peak-dates__summary .peak-dates__action-chevron {
-  transform: rotate(-135deg);
-}
-.peak-dates[open] {
-  border-color: color-mix(in srgb, var(--deep-teal) 45%, transparent);
-}
-.peak-dates__summary-title {
-  grid-area: title;
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: var(--peak-title-size);
-  font-weight: var(--type-title-weight);
-  line-height: var(--leading-tight);
-  letter-spacing: -0.015em;
-  color: var(--deep-teal);
-}
-.peak-dates__summary-hint {
-  grid-area: hint;
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
-}
-.peak-dates__list {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  padding: var(--space-2) var(--space-5) var(--space-4);
-  list-style: none;
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  min-width: 0;
-}
-.peak-dates__list li {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  padding-block: var(--peak-item-pad-y);
-  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
-  color: var(--deep-teal);
-  font-size: var(--peak-item-size);
-  font-variant-numeric: tabular-nums;
-  line-height: var(--leading-snug);
-  min-width: 0;
-}
-.peak-dates__list li:last-child { border-bottom: 0; }
-.peak-dates__label {
-  min-width: 0;
-  font-size: var(--peak-label-size);
-  font-weight: var(--type-eyebrow-weight);
-  color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
-}
-.peak-dates__range {
-  min-width: 0;
-  color: var(--deep-teal);
-  white-space: normal;
-}
-/* Open list is long on phones (7 seasons) — tighten via token remap. */
-@media (max-width: 639px) {
-  .peak-dates {
-    /* Justification: open disclosure was 533px / 844vh (~63%); keep rows scannable, cut dead pad. */
-    --peak-item-pad-y: var(--space-1);
-  }
-  .peak-dates__list {
-    padding-block: var(--space-1) var(--space-3);
-  }
-}
-@media (min-width: 640px) {
-  .peak-dates__list {
-    /* minmax(0,1fr) — critical: default 1fr min-content was stretching the rates table */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-6);
-  }
-  .peak-dates__range {
-    white-space: nowrap;
-  }
-  .peak-dates__list li:nth-last-child(2):nth-child(odd) {
-    border-bottom: 0;
-  }
-  /* 7 seasons → orphan on last row; span full width so it doesn’t float half-empty. */
-  .peak-dates__list li:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-}
-
-/* Examples — inside the rates panel; same 1fr/1fr price columns as mobile tariff */
-.rates-examples {
-  --rates-examples-pad: var(--space-5);
-  --rates-examples-item-pad-y: var(--space-4);
-  --rates-examples-title-size: var(--text-sm);
-  --rates-examples-name-size: var(--type-ui-size);
-  --rates-examples-meta-size: var(--type-meta-size);
-  --rates-examples-price-size: var(--text-xl);
-  --rates-examples-col-gap: var(--space-6);
-  padding: var(--rates-examples-pad);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-  background: color-mix(in srgb, var(--deep-teal) 2%, var(--white));
-}
-@media (min-width: 700px) {
-  .rates-examples {
-    --rates-examples-pad: var(--space-5) var(--space-6);
-    --rates-examples-item-pad-y: var(--space-3);
-    --rates-examples-name-size: var(--text-sm);
-    --rates-examples-price-size: var(--text-lg);
-  }
-}
-.rates-examples__head {
-  display: grid;
-  gap: var(--space-2);
-  margin-bottom: var(--space-1);
-}
-.rates-examples__title {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--rates-examples-title-size);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-tight);
-  color: var(--deep-teal);
-}
-.rates-examples__cols {
-  display: none;
-  margin: 0;
-}
-.rates-examples__cols span {
-  font-size: var(--text-sm);
-  font-weight: var(--type-eyebrow-weight);
-  color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
-}
-.rates-examples__list {
-  display: grid;
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.rates-examples__list li {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: var(--rates-examples-col-gap);
-  row-gap: var(--space-2);
-  padding-block: var(--rates-examples-item-pad-y);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
-  min-width: 0;
-}
-.rates-examples__list li:first-child {
-  border-top: 0;
-}
-.rates-examples__copy {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: var(--space-2);
-  min-width: 0;
-}
-.rates-examples__name {
-  font-weight: var(--weight-semibold);
-  color: var(--deep-teal);
-  font-size: var(--rates-examples-name-size);
-  line-height: var(--leading-snug);
-}
-.rates-examples__meta {
-  color: var(--muted-grey);
-  font-size: var(--rates-examples-meta-size);
-  line-height: var(--leading-snug);
-}
-.rates-examples__prices {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: var(--rates-examples-col-gap);
-}
-.rates-examples .is-price {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-1);
-  font-family: var(--font-serif);
-  font-weight: var(--type-title-weight);
-  font-size: var(--rates-examples-price-size);
-  color: var(--deep-teal);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-  line-height: var(--leading-tight);
-}
-.rates-examples .is-price::before {
-  content: attr(data-label);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--type-eyebrow-weight);
-  color: color-mix(in srgb, var(--muted-grey) 92%, transparent);
-}
-/* Desktop: side-by-side row matching tariff column proportions */
-@media (min-width: 700px) {
-  .rates-examples__head {
-    grid-template-columns: 42% 58%;
-    align-items: baseline;
-    gap: 0;
-    margin-bottom: var(--space-2);
-  }
-  .rates-examples__cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .rates-examples__cols span {
-    text-align: right;
-  }
-  .rates-examples__list li {
-    grid-template-columns: 42% 58%;
-    column-gap: 0;
-    row-gap: 0;
-    align-items: baseline;
-  }
-  .rates-examples__copy {
-    grid-column: auto;
-  }
-  .rates-examples__prices {
-    grid-column: auto;
-  }
-  .rates-examples .is-price {
-    align-items: flex-end;
-    text-align: right;
-    gap: 0;
-  }
-  .rates-examples .is-price::before {
-    content: none;
-  }
 }
 
 .lede + p:has(.btn) { margin-top: var(--space-5); }
@@ -4940,223 +4403,6 @@ button.availability__cell:focus-visible .availability__date {
 }
 .availability__enquiry .form-step > .btn {
   margin-top: var(--space-3);
-}
-
-/*
- * Process — head above, then photo | vertical timeline (inspo: marker + rail).
- * Spacing: head → content via .section-head (--section-after-head).
- * Timeline needs more air than card grids — step/layout gaps sit above --grid-gap.
- * Use .process on the section (id may be #process, #next, etc.).
- */
-.process {
-  --process-media-radius: var(--radius-lg);
-  --process-layout-gap: var(--space-8);
-  --process-step-gap: var(--space-6);
-  --process-body-gap: var(--space-3);
-  --process-item-gap: var(--space-5);
-  --process-marker: 2.5rem;
-  --process-figure-size: var(--step-figure-size);
-  --process-rail: color-mix(in srgb, var(--deep-teal) 16%, transparent);
-  --process-marker-bg: var(--soft-sand);
-  --process-marker-fg: var(--deep-teal);
-  /* Head → photo/timeline: one step above the shared after-head (was cramped) */
-  --process-after-head: var(--space-10);
-}
-.process__head {
-  max-width: var(--rw-readable);
-  /* Same head → content step as every other section head (was 48px at
-     desktop against 32px elsewhere). */
-  margin-bottom: var(--section-after-head);
-}
-/* A steps head straight in the container (Who it's for) takes the full rail,
-   so at desktop it splits title | intro like the other section heads instead
-   of squeezing the title into a 38rem box. */
-@media (min-width: 1024px) {
-  .container > .process__head:has(> .lede) { max-width: none; }
-}
-.process__layout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--process-layout-gap);
-}
-/* Heading and lede lead the steps in one column, so the intro belongs to the
-   list under it instead of floating above a photo and a list. */
-.process__main {
-  order: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-  min-width: 0;
-}
-.process__main .process__head { margin-bottom: 0; max-width: none; }
-/* Intro row: heading and lede beside a photo, level; the steps run across the
-   full width underneath. A portrait photo stretched to the height of a column
-   of steps was a thin slice of blank wall. */
-.process__intro { margin-bottom: var(--process-after-head); }
-.process__intro .process__head { margin: 0; max-width: none; }
-.process__intro .process__head .lede { max-width: none; }
-.process__main .process__head .lede { max-width: none; }
-.process__media {
-  order: 2;
-  margin: 0;
-  border-radius: var(--process-media-radius);
-  overflow: hidden;
-  background: var(--driftwood);
-}
-.process__media img {
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  object-position: center 40%;
-  border-radius: 0;
-  display: block;
-}
-
-/* Tablet band: see the note by .split__media img. A 4/5 at ~770px wide is over
-   960px tall, so letterbox it once the layout has stacked but is still wide. */
-@media (min-width: 600px) and (max-width: 899px) {
-  .process__media img {
-    aspect-ratio: 3 / 2;
-  }
-}
-
-.process-list {
-  --process-rail-x: calc(var(--process-marker) / 2);
-  order: 1;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--process-step-gap);
-  position: relative;
-  min-width: 0;
-}
-.process-list > li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--process-item-gap);
-  align-items: start;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  position: relative;
-  z-index: 1;
-}
-.process-list > li + li {
-  border-top: 1px solid var(--driftwood);
-  padding-top: var(--process-step-gap);
-}
-/*
- * Margin figure, not a badge. The old rounded tile plus connector read as a
- * progress stepper - status vocabulary for a section that has no status. The
- * numeral is decorative texture (aria-hidden); sequence comes from the <ol>.
- */
-.process-list__index {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: var(--process-figure-size);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  line-height: 0.85;
-  /* Decorative, but still 3:1 or better (68% of the text gold) so it passes as large text. */
-  color: color-mix(in srgb, var(--warm-gold-text) 68%, var(--white));
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
-  user-select: none;
-}
-.process-list__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--process-body-gap);
-  min-width: 0;
-  padding-top: var(--space-1);
-}
-.process-list h3 {
-  margin: 0;
-  order: 1;
-  font-size: var(--type-h3);
-  color: var(--deep-teal);
-  line-height: var(--leading-tight);
-}
-.process-list__meta {
-  margin: 0;
-  order: 0;
-  font-size: var(--type-meta-size);
-  font-weight: var(--type-eyebrow-weight);
-  line-height: var(--leading-snug);
-  color: var(--warm-gold-text);
-}
-.process-list__body > p:not(.process-list__meta) {
-  margin: 0;
-  order: 2;
-  color: var(--muted-grey);
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-leading);
-  max-width: var(--rw-readable);
-}
-@media (min-width: 900px) {
-  .process {
-    --process-layout-gap: var(--space-12);
-    --process-step-gap: var(--space-8);
-    --process-body-gap: var(--space-3);
-    --process-item-gap: var(--space-5);
-    --process-marker: 2.75rem;
-    --process-figure-size: var(--step-figure-size-lg);
-    --process-after-head: var(--space-12);
-  }
-  .process__layout {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    align-items: start;
-    gap: var(--process-layout-gap);
-  }
-  .process__media,
-  .process__main,
-  .process-list {
-    order: unset;
-  }
-  .process__media {
-    position: relative;
-    /* Match timeline height; don’t center steps (that pulled 01 under the lede) */
-    align-self: stretch;
-    min-height: 28rem;
-  }
-  .process__media img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;
-    object-fit: cover;
-    object-position: center 40%;
-  }
-  .process-list {
-    align-self: start;
-  }
-  .process-list__index {
-    font-size: var(--process-figure-size);
-  }
-}
-
-/* Steps beside a photo (Our Story "The build", How it works). Heading, intro
-   and steps share one column, and the photo is their full-height partner,
-   running off the page on the right like the room rows. Before, the photo sat
-   in a row with the heading and the steps ran underneath, which read as two
-   sections stacked in one band. */
-.process--story .process__main { gap: var(--section-after-head); }
-@media (min-width: 900px) {
-  .process--story { overflow-x: clip; }
-  .process--story .process__layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-16);
-  }
-  .process--story .process__media {
-    margin: 0 calc(-1 * var(--bleed)) 0 0;
-    border-radius: 0;
-    min-height: 32rem;
-  }
 }
 
 /*
@@ -7913,8 +7159,7 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
    go horizontal (photo left, text right) instead of three tall cards. */
 @media (min-width: 600px) and (max-width: 899px) {
   .split__media img,
-  .split--fill .split__media img,
-  .process__media img { aspect-ratio: 16 / 9; height: auto; }
+  .split--fill .split__media img { aspect-ratio: 16 / 9; height: auto; }
   /* One card per row here: the three-column layout starts at 800px and the
      two collided between 800 and 899px (thirds, stretched photos, sideways
      scroll). */
@@ -8019,32 +7264,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 }
 
 .persona-list--cards .persona-list__item > div > p:last-child:not(.persona-list__cta) { margin-top: 0; }
-
-/* Steps without a photo: one full-width list below 960px (the 900px
-   photo + steps grid otherwise left the steps in half the page). */
-@media (min-width: 900px) and (max-width: 959px) {
-  .process__layout:not(:has(.process__media)) { display: block; }
-}
-/* From 960px they run across the page in three columns (narrower, three
-   columns crushed each step to a few words a line). */
-@media (min-width: 960px) {
-  .process__layout:not(:has(.process__media)) { display: block; }
-  .process__layout:not(:has(.process__media)) .process-list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-8);
-  }
-  .process__layout:not(:has(.process__media)) .process-list > li {
-    grid-template-columns: minmax(0, 1fr);
-    /* The list grid stretches every li to the tallest, and a stretched li
-       spreads its spare height between its rows, so a longer step pushed its
-       own eyebrow and heading up. Pack the rows to the top instead. */
-    align-content: start;
-    row-gap: var(--space-3);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--driftwood);
-  }
-}
 
 .acc-reg__tour .text-link { display: inline; min-height: 0; padding: 0; }
 .acc-reg__tour {
@@ -8422,7 +7641,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 /* Tables and figures may use the full prose column; running text keeps a
    readable line length (legal pages and posts ran ~88 characters, audit I42). */
 .prose > :where(p, ul, ol, h2, h3, h4, blockquote),
-.rates-follow,
 .persona-list__item p,
 .acc-limits__contact,
 .acc-chapter__lede,
@@ -8908,16 +8126,14 @@ p.pay-note > .text-link {
    1024px split take the full column instead of a 608px box. */
 .container > .section-head .lede,
 .section-head .lede { text-wrap: pretty; }
-.container > .process__head,
+
 .container > .section-head { max-width: none; }
-.container > .section-head > h2,
-.container > .process__head > h2 { max-width: 20em; }
+.container > .section-head > h2 { max-width: 20em; }
 /* One intro width on every section (owner, 14 Oct 2026): 36rem, about 70
    characters, whatever the heading's length. Matching each intro to its
    heading was tried first: a short heading left a tall, narrow intro, and a
    40rem floor ran the intro past it. Heroes and the closing band share it. */
 .container > .section-head:not(.section-head--center) > .lede,
-.section-head.process__head > .lede,
 .hero .hero__text > p:not(.eyebrow),
 .mid-cta .mid-cta__inner > p {
   max-width: min(100%, 36rem);
@@ -8927,7 +8143,6 @@ p.pay-note > .text-link {
    The centred closing band keeps balance (no lone last word). */
 @media (max-width: 599px) {
   .container > .section-head > h2,
-  .section-head.process__head > h2,
   .hero__text > h1 { text-wrap: pretty; }
 }
 
@@ -9642,43 +8857,6 @@ p.pay-note > .text-link {
    property tour, which read as a floor plan's legend. */
 .eyebrow { display: none; }
 .page-template-template-property .split .section-head > .eyebrow { display: block; }
-
-/* =========================================================================
-   Step lists (19 Oct 2026). Every sequence on the site (How It Works, Our
-   Story's month, Who It's For's next steps, Pricing's payment steps,
-   Optional care) is drawn the same way: one long hairline above the list,
-   then each step's title and text. No dots, no connecting line, no gold
-   last stop, no numerals (owner, 14 Oct: "one long rule or none", a rule
-   rather than numerals; 15 Oct: the dot-and-line route read as a
-   template). A step's small label (a date, "Start here") sits under its
-   title.
-   ========================================================================= */
-.process-list__index { display: none; }
-.process-list {
-  position: relative;
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--rule);
-}
-.process-list > li,
-.process-list > li + li {
-  display: block;
-  position: relative;
-  padding: 0;
-  border: 0;
-}
-.process-list h3 { line-height: 1.2; }
-.process-list__body { padding-top: 0; }
-.process-list h3 { order: 1; }
-.process-list__meta {
-  order: 2;
-  margin-top: calc(-1 * var(--space-2));
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--muted-grey);
-}
-.process-list__body > p:not(.process-list__meta) { order: 3; }
 
 /* What we can't promise (15 Oct 2026): the copy on the left, the way to reach
    us as a panel on the right with the phone number set large. It was one
@@ -10625,3 +9803,93 @@ p.pay-note > .text-link {
 .eat-near__list h3 a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 .eat-near__list p { margin: 0; color: var(--body-secondary); }
 .eat-near__list p span { font-weight: var(--weight-semibold); color: var(--warm-gold-text); }
+
+/* Our Story, how the bungalow was built (22 Oct 2026): the teal card from
+   Funding & Support, the month in white on the left and the finished house
+   on the right; on phones the photo leads. */
+.build-card {
+  display: grid;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--deep-teal);
+  color: var(--white);
+}
+.build-card__words { padding: var(--space-8) var(--space-6); }
+.build-card__photo {
+  order: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 16rem;
+  object-fit: cover;
+  object-position: 40% 50%;
+}
+@media (min-width: 900px) {
+  .build-card { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .build-card__words { padding: var(--space-12) var(--space-10); }
+  .build-card__photo { order: 0; }
+}
+.build-card h2 { margin: 0; color: var(--white); }
+.build-card__lede { margin: var(--space-4) 0 0; line-height: 1.6; color: rgb(255 255 255 / 0.84); }
+.build-card__steps { margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+.build-card__steps li { padding: var(--space-4) 0; border-top: 1px solid rgb(255 255 255 / 0.18); }
+.build-card__when { margin: 0 0 2px; font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--warm-gold-hero); }
+.build-card__steps h3 { margin: 0 0 var(--space-1); font-size: var(--text-xl); color: var(--white); }
+.build-card__steps p:last-child { margin: 0; color: rgb(255 255 255 / 0.84); }
+.build-card a { color: var(--warm-gold-hero); text-underline-offset: 0.2em; }
+.build-card :focus-visible { outline-color: var(--warm-gold-hero); }
+
+/* Pricing, rates (22 Oct 2026, owner's pick after eight rounds): the living
+   room wide, then off-peak and peak as two columns under it. Example stays
+   and the peak dates sit behind one tap, like the care rates. */
+.season-rates__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: 50% 60%;
+  margin-top: var(--space-10);
+  border-radius: var(--radius-lg);
+}
+@media (min-width: 768px) { .season-rates__photo { aspect-ratio: 21 / 8; } }
+.season-rates { display: grid; gap: var(--space-8); margin-top: var(--space-8); }
+@media (min-width: 768px) { .season-rates { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-12); } }
+.season-rates__col h3 { margin: 0; font-size: var(--text-3xl); }
+.season-rates__when { margin: var(--space-1) 0 var(--space-4); font-size: var(--text-sm); color: var(--muted-grey); }
+.season-rates__col dl { margin: 0; border-top: 1px solid var(--rule); }
+.season-rates__col dl div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.season-rates__col dt { font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.season-rates__col dt span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--muted-grey); }
+.season-rates__col dd { margin: 0; font-family: var(--font-serif); font-size: var(--text-2xl); color: var(--deep-teal); white-space: nowrap; }
+.season-rates__more { margin-top: var(--space-6); }
+.season-rates__more summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  cursor: pointer;
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.season-rates__extra { display: grid; gap: var(--space-8); margin-top: var(--space-4); }
+@media (min-width: 768px) { .season-rates__extra { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-12); } }
+.season-rates__table { width: 100%; border-collapse: collapse; }
+.season-rates__table caption,
+.season-rates__dates h3 { margin: 0 0 var(--space-3); text-align: left; font-family: var(--font-serif); font-size: var(--text-xl); color: var(--deep-teal); }
+.season-rates__table thead th { padding: 0 0 var(--space-2); font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--muted-grey); text-align: right; }
+.season-rates__table tbody th { padding: var(--space-2) 0; text-align: left; font-weight: var(--weight-semibold); color: var(--deep-teal); border-top: 1px solid var(--rule); }
+.season-rates__table tbody th span { font-weight: 400; font-size: var(--text-sm); color: var(--muted-grey); }
+.season-rates__table td { padding: var(--space-2) 0 var(--space-2) var(--space-6); text-align: right; font-family: var(--font-serif); color: var(--deep-teal); border-top: 1px solid var(--rule); white-space: nowrap; }
+.season-rates__dates ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.season-rates__dates li { padding: var(--space-2) 0; border-bottom: 1px solid var(--rule); color: var(--body-secondary); }
+.season-rates__dates li span { font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.season-rates__dates p { margin: var(--space-3) 0 0; font-size: var(--text-sm); color: var(--muted-grey); }

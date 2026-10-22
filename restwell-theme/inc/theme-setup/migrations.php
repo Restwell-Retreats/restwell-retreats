@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 93;
+const RESTWELL_SCHEMA_VERSION = 94;
 
 
 /**
@@ -3732,6 +3732,45 @@ function restwell_migrate_our_story_plain_words_v93() {
 }
 
 /**
+ * Our Story, how the bungalow was built (22 Oct 2026): the owner picked the
+ * teal card with shorter words. The intro loses its last sentence and each
+ * date gets one short line. Same rule as v85: a stored value is replaced
+ * only while it still equals the old seed.
+ */
+function restwell_migrate_our_story_build_card_v94() {
+	if ( get_option( 'restwell_our_story_build_card_v94', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_our_story_build_card_v94', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'our-story' => array(
+				'story_month_lede'    => array(
+					'Family, friends and three specialist teams brought the bungalow together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust walked the bedroom and wet room. We changed what they flagged, down to the profiling bed.',
+					'Family, friends and three specialist teams brought it together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.',
+				),
+				'story_month_1_body'  => array(
+					'The bungalow needed more than a lick of paint.',
+					'It needed more than a lick of paint.',
+				),
+				'story_month_2_body'  => array(
+					'The accessible bedroom and wet room were built by Care Spaces by Wealden Rehab and Thor Carpentry, with the occupational therapists’ advice. Family and friends did the rest.',
+					'Care Spaces and Thor Carpentry built the bedroom and wet room.',
+				),
+				'story_month_3_title' => array(
+					'The bungalow was ready',
+					'It was ready',
+				),
+				'story_month_3_body'  => array(
+					'Once the work was finished, we measured everything and wrote the numbers down.',
+					'We measured everything and wrote it down.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3860,6 +3899,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_home_cta_labels_v91',
 		'restwell_pricing_rates_intro_v92',
 		'restwell_our_story_plain_words_v93',
+		'restwell_our_story_build_card_v94',
 	);
 }
 
@@ -4032,6 +4072,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_pricing_rates_intro_v92', 130 );
 	add_action( 'init', 'restwell_migrate_our_story_plain_words_v93', 136 );
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_plain_words_v93', 131 );
+	add_action( 'init', 'restwell_migrate_our_story_build_card_v94', 137 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_build_card_v94', 132 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
