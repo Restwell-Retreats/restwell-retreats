@@ -7348,55 +7348,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   gap: var(--space-5);
   padding: 0 var(--panel-pad) var(--panel-pad);
 }
-.acc-room__intro {
-  display: grid;
-  gap: var(--space-5);
-  align-items: start;
-  padding-top: var(--space-5);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
-}
-@media (min-width: 768px) {
-  .acc-room__intro:has(.acc-chapter__photo) { grid-template-columns: minmax(0, 1fr) 16rem; }
-}
-.acc-room .acc-chapter__lede { margin: 0; }
-@media (min-width: 900px) {
-  /* Spec cards run from three rows to fifteen, so a grid either leaves a void
-     under the short ones or stretches them into empty boxes. Packed columns
-     fill the space: each card drops under the one above it. */
-  .acc-room .acc-kit {
-    display: block;
-    column-count: 2;
-    column-gap: var(--space-4);
-  }
-  .acc-room .acc-kit > * {
-    break-inside: avoid;
-    margin-bottom: var(--space-4);
-  }
-  /* Two cards are a pair: stretch them level rather than pack them. */
-  .acc-room .acc-kit:has(> :nth-child(2):last-child) {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-  }
-  .acc-room .acc-kit:has(> :nth-child(2):last-child) > * { margin-bottom: 0; }
-}
-.acc-room .acc-kit__item { background: color-mix(in srgb, var(--bg-subtle) 60%, var(--white)); }
-.acc-room .acc-kit__specs { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
-.acc-room .acc-kit__specs div {
-  flex-direction: row;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 6%, transparent);
-}
-.acc-room .acc-kit__specs div:last-child { border-bottom: 0; padding-bottom: 0; }
-.acc-room .acc-kit__specs dt { flex: 0 0 38%; padding-top: var(--space-1); }
-.acc-room .acc-kit__specs dd { flex: 1 1 auto; text-align: left; }
-@media (max-width: 479px) {
-  /* Nested cards leave ~240px; a 38% label column squeezed values into 4–5 line slivers. */
-  .acc-room .acc-kit__specs div { flex-direction: column; gap: 0; }
-  .acc-room .acc-kit__specs dt { flex: 0 0 auto; padding-top: 0; }
-}
 
 .acc-callout {
   display: grid;
@@ -7442,153 +7393,8 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   font-style: italic;
 }
 
-.acc-chapter {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
-}
-.acc-chapter__no {
-  margin: 0 0 var(--space-2);
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  color: var(--warm-gold-text);
-}
-.acc-chapter h3 { font-size: var(--text-3xl); }
-.acc-chapter__lede {
-  margin: var(--space-3) 0 0;
-  color: var(--body-secondary);
-}
-.acc-chapter__photo { margin: 0; }
-.acc-chapter__photo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-}
-
-.acc-kit {
-  display: grid;
-  gap: var(--space-4);
-}
-.acc-kit__item {
-  padding: var(--space-5) var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
-}
-.acc-kit__item--compact { padding-block: var(--space-4); }
-.acc-kit__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-4);
-}
-.acc-kit__head h4 {
-  margin: 0;
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  font-weight: var(--type-title-weight);
-  line-height: var(--leading-snug);
-  color: var(--deep-teal);
-}
-.acc-kit__where {
-  margin: var(--space-1) 0 0;
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
-}
-.acc-kit__figure {
-  display: flex;
-  flex: 0 0 auto;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-1);
-  margin: 0;
-  text-align: right;
-}
-.acc-kit__figure-value {
-  font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  line-height: 1.1;
-  color: var(--deep-teal);
-  white-space: nowrap;
-}
-.acc-kit__figure-label { font-size: var(--text-2xs); color: var(--muted-grey); }
-/* Narrow phones: the figure drops under the name instead of pushing the card
-   wider than the screen. */
-@media (max-width: 479px) {
-  .acc-kit__head { flex-direction: column; gap: var(--space-2); }
-  .acc-kit__figure { flex-direction: row; align-items: baseline; gap: var(--space-2); text-align: left; }
-}
-.acc-kit__specs {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
-  gap: var(--space-4) var(--space-6);
-  margin: var(--space-5) 0 0;
-  padding-top: var(--space-5);
-  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
-}
-.acc-kit__specs div {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  min-width: 0;
-}
-.acc-kit__specs dt {
-  color: var(--muted-grey);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-}
-.acc-kit__specs dd {
-  margin: 0;
-  color: var(--deep-teal);
-  font-size: var(--text-md);
-  line-height: var(--leading-snug);
-}
-.acc-kit__note {
-  margin: var(--space-4) 0 0;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius);
-  background: var(--tint-cool);
-  color: var(--body-secondary);
-  font-size: var(--text-sm);
-}
-
-.acc-chapter--limits {
-  gap: 0;
-  padding: var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.acc-chapter--limits h3 { font-size: var(--type-title-lg); }
 .acc-limits__contact { margin: var(--space-4) 0 0; }
-@media (min-width: 900px) {
-  .acc-chapter--limits {
-    display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    column-gap: var(--space-12);
-    align-items: stretch;
-  }
-  .acc-chapter--limits h3 { grid-column: 1; }
-  .acc-chapter--limits .acc-chapter__lede { grid-column: 1; margin-top: var(--space-3); }
-  .acc-chapter--limits .acc-limits__contact {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: center;
-    margin: 0;
-    padding: var(--space-6);
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--deep-teal) 5%, var(--white));
-    color: var(--deep-teal);
-    font-size: var(--text-lg);
-    line-height: var(--leading-snug);
-  }
-}
+
 .acc-register .acc-room { background: color-mix(in srgb, var(--bg-subtle) 55%, var(--white)); }
 
 @media print {
@@ -7615,17 +7421,14 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
     color: var(--deep-teal) !important;
   }
 
-  .acc-kit__item,
+  
   .acc-callout {
     box-shadow: none !important;
     border: 1px solid #ccc !important;
   }
-  .acc-kit__item,
-  .acc-room__intro {
-    break-inside: avoid;
-  }
+  
   .acc-room { border: 0 !important; }
-  .acc-chapter__photo img { max-width: 14rem; }
+  
   .faq-item__panel,
   .faq-item__panel[hidden] {
     display: block !important;
@@ -7648,8 +7451,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 .prose > :where(p, ul, ol, h2, h3, h4, blockquote),
 .persona-list__item p,
 .acc-limits__contact,
-.acc-chapter__lede,
-.acc-kit__note,
 .acc-callout p,
 .care__note,
 .split > div > :where(p, .lede) {
@@ -7755,19 +7556,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 }
 .acc-register .acc-room__summary { padding-inline: 0; }
 .acc-register .acc-room__body { padding: 0 0 var(--space-6); }
-.acc-register .acc-room__intro { border-top: 0; padding-top: 0; }
-@media (min-width: 768px) {
-  .acc-register .acc-room__intro:has(.acc-chapter__photo) {
-    grid-template-columns: 9rem minmax(0, 1fr);
-    gap: var(--space-5);
-    align-items: center;
-  }
-  .acc-register .acc-room__intro .acc-chapter__photo { order: -1; }
-}
-.acc-register .acc-kit__item {
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 12%, transparent);
-}
 
 /* A text link that stands alone (the only thing in its paragraph, or a flex
    item in a card footer) is a tap target in its own right, not an inline link
@@ -9759,19 +9547,47 @@ label .text-link {
 .guide-feature__list img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
 .guide-feature__list a:hover span { text-decoration: underline; text-underline-offset: 0.2em; }
 
-/* Whitstable, travel times (22 Oct 2026): three large figures, a short line
-   under each, no rules between them. */
-.travel-times { display: grid; gap: var(--space-5); margin: 0; }
-@media (min-width: 640px) { .travel-times { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-8); } }
-.travel-times div { display: flex; flex-direction: column-reverse; gap: 2px; }
-.travel-times dd {
+/* Whitstable, travel times (22 Oct 2026, owner's pick): the times as rows in
+   the teal card, the label left in gold and the time right, beside the
+   promenade at sunset. 7:5 from 768px; the photo under the card on phones. */
+.travel-card { display: grid; gap: var(--space-4); }
+.travel-card__times {
+  display: grid;
+  margin: 0;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--deep-teal);
+}
+.travel-card__times > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-4) 0;
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+.travel-card__times > div:first-child { border-top: 0; }
+.travel-card__times dt { font-size: var(--text-md); color: var(--warm-gold-hero); }
+.travel-card__times dd {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 1.4rem + 1.6vw, 2.9rem);
-  line-height: 1.05;
-  color: var(--deep-teal);
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--white);
+  white-space: nowrap;
 }
-.travel-times dt { font-size: var(--text-md); color: var(--muted-grey); }
+.travel-card__photo {
+  display: block;
+  width: 100%;
+  height: 14rem;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+@media (min-width: 768px) {
+  .travel-card { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); }
+  .travel-card__times { padding: var(--space-6) var(--space-8); }
+  .travel-card__photo { height: 100%; min-height: 16rem; }
+}
 
 /* Whitstable, getting around (22 Oct 2026): three short white cards rising
    over the beach-path photo; each links to its full guide. */
@@ -9945,4 +9761,133 @@ label .text-link {
   height: 0.4rem;
   border-radius: 50%;
   background: var(--warm-gold);
+}
+
+/* Accessibility, the kit room by room (22 Oct 2026, owner's pick from three
+   Dribbble-led options): inside each room, the room's words, then a tab per
+   item and the room photo beside one spec sheet. The tab list ships hidden
+   (shared.js [data-tabs]), so without script every sheet shows in turn under
+   a rule. Labels and values share one baseline in two columns. */
+/* The tab row's full width is its minimum; without this the room grew past
+   the register on phones instead of letting the row scroll. */
+.acc-room { min-width: 0; }
+/* One rule across the body under the summary, not a short one over the words. */
+.acc-room__body::before {
+  content: "";
+  border-top: 1px solid color-mix(in srgb, var(--deep-teal) 8%, transparent);
+}
+.acc-room__lede {
+  margin: 0;
+  max-width: 36rem;
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+.kit-tabs__list {
+  display: flex;
+  gap: var(--space-6);
+  margin: 0 0 var(--space-6);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--rule);
+  scrollbar-width: none;
+}
+.kit-tabs__list [role="tab"] {
+  flex: none;
+  margin: 0 0 -1px;
+  padding: 0 0 var(--space-3);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--muted-grey);
+  cursor: pointer;
+}
+.kit-tabs__list [role="tab"][aria-selected="true"] { color: var(--deep-teal); border-bottom-color: var(--deep-teal); }
+.kit-tabs__list [role="tab"]:hover { color: var(--deep-teal); }
+.kit-tabs__list [role="tab"]:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 2px; }
+/* Phones scroll the row sideways; from 768px the tabs wrap, since a mouse
+   can't easily scroll a row and the wet room's six didn't fit at 1024px. */
+@media (min-width: 768px) {
+  .kit-tabs__list { flex-wrap: wrap; row-gap: var(--space-3); overflow-x: visible; }
+}
+.kit-tabs__layout { display: grid; gap: var(--space-6); }
+.kit-tabs__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+@media (min-width: 900px) {
+  .kit-tabs__layout:has(> .kit-tabs__photo) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-10);
+    align-items: start;
+  }
+}
+.kit-tabs__panels { display: grid; gap: var(--space-8); }
+.kit-sheet + .kit-sheet { padding-top: var(--space-8); border-top: 1px solid var(--rule); }
+.is-tabbed .kit-sheet { padding-top: 0; border-top: 0; }
+.kit-sheet:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 4px; }
+.kit-sheet__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+.kit-sheet__head h4 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--type-title-weight);
+  line-height: 1.25;
+  color: var(--deep-teal);
+}
+.kit-sheet__where { margin: var(--space-1) 0 0; font-size: var(--text-sm); color: var(--muted-grey); }
+.kit-sheet__figure {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin: 0;
+  text-align: right;
+}
+.kit-sheet__figure-value {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: 1;
+  color: var(--deep-teal);
+  white-space: nowrap;
+}
+.kit-sheet__figure-label { font-size: var(--text-xs); color: var(--muted-grey); }
+.kit-sheet__specs { margin: 0; }
+.kit-sheet__specs > div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--rule);
+  font-size: var(--text-md);
+  line-height: 1.5;
+}
+.kit-sheet__specs dt { font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.kit-sheet__specs dd { margin: 0; color: var(--body-secondary); }
+.kit-sheet__note {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius);
+  background: var(--tint-cool);
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--body-secondary);
+}
+.kit-sheet__specs + .kit-sheet__note { margin-top: var(--space-4); }
+@media (max-width: 479px) {
+  .kit-sheet__head { flex-direction: column; gap: var(--space-2); }
+  .kit-sheet__figure { flex-direction: row; align-items: baseline; gap: var(--space-2); text-align: left; }
+  .kit-sheet__specs > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
 }

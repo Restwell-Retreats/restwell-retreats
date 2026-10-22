@@ -120,14 +120,15 @@ get_template_part(
 	  </div>
 	</nav>
 
-	<?php // Travel times (22 Oct 2026): three large figures with a short line under each, no rules between. ?>
+	<?php // Travel times (22 Oct 2026, owner's pick from three Dribbble-led options): the times as rows in the teal card, beside the promenade at sunset. ?>
 	<section class="section-y section-y--compact band-white" aria-label="Travel times">
-	  <div class="container">
-		<dl class="travel-times">
-		  <div><dt>from London by car</dt><dd>~90 min</dd></div>
-		  <div><dt>by direct train</dt><dd>75–90 min</dd></div>
-		  <div><dt>walk to the sea</dt><dd>10 min</dd></div>
+	  <div class="container travel-card">
+		<dl class="travel-card__times">
+		  <div><dt>From London by car</dt><dd>~90 min</dd></div>
+		  <div><dt>By direct train</dt><dd>75–90 min</dd></div>
+		  <div><dt>Walk to the sea</dt><dd>10 min</dd></div>
 		</dl>
+		<img class="travel-card__photo" src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-promenade-golden-hour.jpg' ) ); ?>" alt="" width="1600" height="1200" sizes="(min-width: 768px) 460px, 100vw" loading="lazy" decoding="async" />
 	  </div>
 	</section>
 

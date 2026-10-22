@@ -495,59 +495,76 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					<span class="acc-room__chevron" aria-hidden="true"></span>
 				  </summary>
 				  <div class="acc-room__body">
-					<div class="acc-room__intro">
-					  <?php if ( '' !== $acc_glede ) : ?>
-					  <p class="acc-chapter__lede"><?php echo esc_html( $acc_glede ); ?></p>
-					  <?php endif; ?>
-					  <?php if ( '' !== $acc_pack_image ) : ?>
-					  <figure class="acc-chapter__photo">
-						<img src="<?php echo esc_url( restwell_theme_image_url( $acc_pack_image ) ); ?>" alt="<?php echo esc_attr( $acc_pack_alt ); ?>" width="800" height="600" sizes="(max-width: 767px) 100vw, 16rem" loading="lazy" decoding="async" />
-					  </figure>
-					  <?php endif; ?>
-					</div>
-					<div class="acc-kit">
-					<?php foreach ( $acc_group_items as $acc_equip_item ) : ?>
-						<?php
-						$acc_item_compact  = ! empty( $acc_equip_item['compact'] );
-						$acc_item_figure   = isset( $acc_equip_item['figure'] ) ? (string) $acc_equip_item['figure'] : '';
-						$acc_item_flabel   = isset( $acc_equip_item['figure_label'] ) ? (string) $acc_equip_item['figure_label'] : '';
-						$acc_item_where    = isset( $acc_equip_item['where'] ) ? (string) $acc_equip_item['where'] : '';
-						$acc_item_note     = isset( $acc_equip_item['note'] ) ? (string) $acc_equip_item['note'] : '';
-						$acc_item_specs    = isset( $acc_equip_item['specs'] ) && is_array( $acc_equip_item['specs'] ) ? $acc_equip_item['specs'] : array();
-						$acc_figure_metric = '' !== $acc_item_figure && (bool) preg_match( '/\d/', $acc_item_figure );
-						?>
-					<article class="acc-kit__item<?php echo $acc_item_compact ? ' acc-kit__item--compact' : ''; ?>">
-					  <header class="acc-kit__head">
-						<div>
-						  <h4><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
-						  <?php if ( '' !== $acc_item_where ) : ?>
-						  <p class="acc-kit__where"><?php echo esc_html( $acc_item_where ); ?></p>
-						  <?php endif; ?>
-						</div>
-						<?php if ( $acc_figure_metric ) : ?>
-						<p class="acc-kit__figure">
-						  <span class="acc-kit__figure-value"><?php echo esc_html( preg_replace( '/(\d)\s+(?=[a-z°])/u', "$1\u{202F}", $acc_item_figure ) ); ?></span>
-							<?php if ( '' !== $acc_item_flabel ) : ?>
-						  <span class="acc-kit__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
-						  <?php endif; ?>
-						</p>
-						<?php endif; ?>
-					  </header>
-						<?php if ( ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
-					  <dl class="acc-kit__specs">
-							<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
-						<div>
-						  <dt><?php echo esc_html( $acc_equip_label ); ?></dt>
-						  <dd><?php echo esc_html( $acc_equip_value ); ?></dd>
-						</div>
+					<?php
+					/*
+					 * The kit as tabs (22 Oct 2026, owner's pick from three
+					 * Dribbble-led options): the room photo beside one item's
+					 * spec sheet, a tab per item. The tab list ships hidden, so
+					 * without script every sheet shows in turn. One item, no tabs.
+					 */
+					$acc_kit_tabbed = count( $acc_group_items ) > 1;
+					?>
+					<?php if ( '' !== $acc_glede ) : ?>
+					<p class="acc-room__lede"><?php echo esc_html( $acc_glede ); ?></p>
+					<?php endif; ?>
+					<div class="kit-tabs"<?php echo $acc_kit_tabbed ? ' data-tabs' : ''; ?>>
+						<?php if ( $acc_kit_tabbed ) : ?>
+					  <div class="kit-tabs__list" role="tablist" aria-label="<?php echo esc_attr( $acc_gtitle ); ?>" hidden>
+							<?php foreach ( $acc_group_items as $acc_kit_i => $acc_kit_item ) : ?>
+								<?php $acc_kit_tab = explode( ':', (string) $acc_kit_item['name'] ); ?>
+						<button type="button" role="tab" id="kit-<?php echo esc_attr( $acc_gid . '-tab-' . $acc_kit_i ); ?>" aria-controls="kit-<?php echo esc_attr( $acc_gid . '-' . $acc_kit_i ); ?>" aria-selected="<?php echo 0 === $acc_kit_i ? 'true' : 'false'; ?>"<?php echo 0 === $acc_kit_i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( trim( $acc_kit_tab[0] ) ); ?></button>
 						<?php endforeach; ?>
-					  </dl>
+					  </div>
 					  <?php endif; ?>
-						<?php if ( '' !== $acc_item_note ) : ?>
-					  <p class="acc-kit__note"><?php echo esc_html( $acc_item_note ); ?></p>
-					  <?php endif; ?>
-					</article>
-					<?php endforeach; ?>
+					  <div class="kit-tabs__layout">
+						<?php if ( '' !== $acc_pack_image ) : ?>
+						<img class="kit-tabs__photo" src="<?php echo esc_url( restwell_theme_image_url( $acc_pack_image ) ); ?>" alt="<?php echo esc_attr( $acc_pack_alt ); ?>" width="800" height="600" sizes="(max-width: 899px) 100vw, 26rem" loading="lazy" decoding="async" />
+						<?php endif; ?>
+						<div class="kit-tabs__panels">
+						<?php foreach ( $acc_group_items as $acc_kit_i => $acc_equip_item ) : ?>
+							<?php
+							$acc_item_compact  = ! empty( $acc_equip_item['compact'] );
+							$acc_item_figure   = isset( $acc_equip_item['figure'] ) ? (string) $acc_equip_item['figure'] : '';
+							$acc_item_flabel   = isset( $acc_equip_item['figure_label'] ) ? (string) $acc_equip_item['figure_label'] : '';
+							$acc_item_where    = isset( $acc_equip_item['where'] ) ? (string) $acc_equip_item['where'] : '';
+							$acc_item_note     = isset( $acc_equip_item['note'] ) ? (string) $acc_equip_item['note'] : '';
+							$acc_item_specs    = isset( $acc_equip_item['specs'] ) && is_array( $acc_equip_item['specs'] ) ? $acc_equip_item['specs'] : array();
+							$acc_figure_metric = '' !== $acc_item_figure && (bool) preg_match( '/\d/', $acc_item_figure );
+							?>
+						<section class="kit-sheet" id="kit-<?php echo esc_attr( $acc_gid . '-' . $acc_kit_i ); ?>">
+						  <header class="kit-sheet__head">
+							<div>
+							  <h4><?php echo esc_html( $acc_equip_item['name'] ); ?></h4>
+							  <?php if ( '' !== $acc_item_where ) : ?>
+							  <p class="kit-sheet__where"><?php echo esc_html( $acc_item_where ); ?></p>
+							  <?php endif; ?>
+							</div>
+							<?php if ( $acc_figure_metric ) : ?>
+							<p class="kit-sheet__figure">
+							  <span class="kit-sheet__figure-value"><?php echo esc_html( preg_replace( '/(\d)\s+(?=[a-z°])/u', "$1\u{202F}", $acc_item_figure ) ); ?></span>
+								<?php if ( '' !== $acc_item_flabel ) : ?>
+							  <span class="kit-sheet__figure-label"><?php echo esc_html( $acc_item_flabel ); ?></span>
+							  <?php endif; ?>
+							</p>
+							<?php endif; ?>
+						  </header>
+							<?php if ( ! $acc_item_compact && ! empty( $acc_item_specs ) ) : ?>
+						  <dl class="kit-sheet__specs">
+								<?php foreach ( $acc_item_specs as $acc_equip_label => $acc_equip_value ) : ?>
+							<div>
+							  <dt><?php echo esc_html( $acc_equip_label ); ?></dt>
+							  <dd><?php echo esc_html( $acc_equip_value ); ?></dd>
+							</div>
+							<?php endforeach; ?>
+						  </dl>
+						  <?php endif; ?>
+							<?php if ( '' !== $acc_item_note ) : ?>
+						  <p class="kit-sheet__note"><?php echo esc_html( $acc_item_note ); ?></p>
+						  <?php endif; ?>
+						</section>
+						<?php endforeach; ?>
+						</div>
+					  </div>
 					</div>
 
 					<?php if ( 'transfers' === $acc_gid ) : ?>
