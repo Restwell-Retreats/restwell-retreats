@@ -177,7 +177,8 @@ $care_day_photos = array(
 		  <p class="lede"><?php echo esc_html( $care_day_lede ); ?></p>
 		  <?php endif; ?>
 		</header>
-		<ul class="card-grid card-grid--3" role="list">
+		<?php // Who It's For's kit cards (22 Oct 2026): morning large, the day and the night beside it. It was three cards in a row. ?>
+		<ul class="kit-cards" role="list">
 		  <?php foreach ( $care_day as $care_day_i => $care_moment ) : ?>
 				<?php
 				if ( '' === trim( $care_moment['time'] ) || empty( $care_day_photos[ $care_day_i ] ) ) {
@@ -185,12 +186,12 @@ $care_day_photos = array(
 				}
 				$care_photo = $care_day_photos[ $care_day_i ];
 				?>
-		  <li>
-			<article class="media-card">
-			  <img src="<?php echo esc_url( restwell_theme_image_url( $care_photo[0] ) ); ?>" alt="<?php echo esc_attr( $care_photo[1] ); ?>" width="640" height="480" loading="lazy" decoding="async" />
+		  <li class="care-choice care-choice--own">
+			<img class="care-choice__photo" src="<?php echo esc_url( restwell_theme_image_url( $care_photo[0] ) ); ?>" alt="<?php echo esc_attr( $care_photo[1] ); ?>" width="2400" height="1500" sizes="(min-width: 768px) 720px, 100vw" loading="lazy" decoding="async" />
+			<div class="care-choice__text">
 			  <h3><?php echo esc_html( $care_moment['time'] ); ?></h3>
 			  <p><?php echo esc_html( $care_moment['body'] ); ?></p>
-			</article>
+			</div>
 		  </li>
 		  <?php endforeach; ?>
 		</ul>
@@ -244,63 +245,62 @@ $care_day_photos = array(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle process process--story" id="how-care-works" aria-labelledby="how-care-works-h">
-	  <div class="container process__layout">
-		<div class="process__main">
-		  <header class="section-head process__head">
+	<section class="section-y band-subtle" id="how-care-works" aria-labelledby="how-care-works-h">
+	  <div class="container">
+		<?php // Asking for care (22 Oct 2026): Pricing's payment panel, the three steps on a white panel over the patio. It was a list beside a photo. ?>
+		<div class="property__layout">
+		  <div class="property__copy">
 			<h2 id="how-care-works-h"><?php echo esc_html( $care_how_heading ); ?></h2>
 			<?php if ( '' !== $care_how_lede ) : ?>
 			<p class="lede"><?php echo esc_html( $care_how_lede ); ?></p>
 			<?php endif; ?>
-		  </header>
-		  <ol class="process-list">
-			<?php foreach ( $care_how_steps as $care_step_i => $care_how_step ) : ?>
-				<?php
-				if ( '' === trim( $care_how_step['title'] ) ) {
-					continue;
-				}
-				?>
-			<li>
-			  <span class="process-list__index" aria-hidden="true"><?php echo esc_html( str_pad( (string) ( $care_step_i + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-			  <div class="process-list__body">
-				<h3><?php echo esc_html( $care_how_step['title'] ); ?></h3>
-				<?php if ( '' !== $care_how_step['body'] ) : ?>
-				<p><?php echo esc_html( $care_how_step['body'] ); ?></p>
-				<?php endif; ?>
-			  </div>
-			</li>
-			<?php endforeach; ?>
-		  </ol>
+			<ol class="pay-steps">
+			  <?php foreach ( $care_how_steps as $care_how_step ) : ?>
+					<?php
+					if ( '' === trim( $care_how_step['title'] ) ) {
+						continue;
+					}
+					?>
+			  <li>
+					<h3><?php echo esc_html( $care_how_step['title'] ); ?></h3>
+					<?php if ( '' !== $care_how_step['body'] ) : ?>
+					<p><?php echo esc_html( $care_how_step['body'] ); ?></p>
+					<?php endif; ?>
+			  </li>
+			  <?php endforeach; ?>
+			</ol>
+		  </div>
+		  <img class="property__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-2-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The level patio and garden behind the bungalow', 'restwell-retreats' ); ?>" width="1920" height="1200" sizes="(min-width: 960px) 760px, 100vw" loading="lazy" decoding="async" />
 		</div>
-		<figure class="process__media" data-reveal>
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/PT-2-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The level patio and garden behind the bungalow', 'restwell-retreats' ); ?>" width="1920" height="1200" loading="lazy" />
-		</figure>
 	  </div>
 	</section>
 
 	<section class="section-y band-white" id="bring-your-own-carer" aria-labelledby="own-carer-h">
-	  <div class="container split split--fill">
-		<div class="split__media">
-		  <img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/SB-1-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The conservatory, with the sofa bed made up as a sofa', 'restwell-retreats' ); ?>" width="2400" height="1500" loading="lazy" decoding="async" />
-		</div>
-		<div>
-		  <header class="section-head section-head--tight">
-			<h2 id="own-carer-h"><?php echo esc_html( $care_own_heading ); ?></h2>
-			<?php if ( '' !== $care_own_lede ) : ?>
-			<p class="lede"><?php echo esc_html( $care_own_lede ); ?></p>
-			<?php endif; ?>
-		  </header>
-		  <div class="care-pro" id="for-professionals">
-			<h3><?php echo esc_html( $care_pro_heading ); ?></h3>
-			<?php if ( '' !== $care_pro_lede ) : ?>
-			<p><?php echo esc_html( $care_pro_lede ); ?></p>
-			<?php endif; ?>
-			<p class="care-pro__links">
-			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Accessibility', 'restwell-retreats' ); ?></a>
-			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & Support', 'restwell-retreats' ); ?></a>
-			</p>
-		  </div>
-		</div>
+	  <div class="container">
+		<?php // Bringing your own carer (22 Oct 2026): Home's photo card beside the teal card, both cards' words at the foot. It was a photo beside text. ?>
+		<ul class="care-choices care-choices--foot" role="list">
+		  <li class="care-choice care-choice--own">
+			<img class="care-choice__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/SB-1-LS.jpg' ) ); ?>" alt="<?php esc_attr_e( 'The conservatory, with the sofa bed made up as a sofa', 'restwell-retreats' ); ?>" width="2400" height="1500" sizes="(min-width: 960px) 660px, 100vw" loading="lazy" decoding="async" />
+			<div class="care-choice__text">
+			  <h2 id="own-carer-h"><?php echo esc_html( $care_own_heading ); ?></h2>
+			  <?php if ( '' !== $care_own_lede ) : ?>
+			  <p><?php echo esc_html( $care_own_lede ); ?></p>
+			  <?php endif; ?>
+			</div>
+		  </li>
+		  <li class="care-choice care-choice--continuity" id="for-professionals">
+			<div class="care-choice__text">
+			  <h3><?php echo esc_html( $care_pro_heading ); ?></h3>
+			  <?php if ( '' !== $care_pro_lede ) : ?>
+			  <p><?php echo esc_html( $care_pro_lede ); ?></p>
+			  <?php endif; ?>
+			  <p class="care-choice__links">
+				<a class="care-choice__link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'accessibility' ) ); ?>"><?php esc_html_e( 'Accessibility', 'restwell-retreats' ); ?></a>
+				<a class="care-choice__link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'resources' ) ); ?>"><?php esc_html_e( 'Funding & Support', 'restwell-retreats' ); ?></a>
+			  </p>
+			</div>
+		  </li>
+		</ul>
 	  </div>
 	</section>
 
