@@ -8337,7 +8337,9 @@ p.pay-note > .text-link {
 .fit-bar--no .door-check__result { color: var(--error-red); }
 .fit-bar--no .door-check__jamb { background: var(--error-red); }
 /* The guide note and the two standards, once, under the card. */
-.door-check__foot { margin: var(--space-5) 0 0; max-width: var(--measure-text); font-size: var(--text-md); color: var(--body-secondary); }
+/* Full width under the card (22 Oct 2026): at the 38rem measure it stopped
+   at no edge the card has. */
+.door-check__foot { margin: var(--space-5) 0 0; max-width: none; font-size: var(--text-md); color: var(--body-secondary); }
 @media (prefers-reduced-motion: reduce) {
   .door-check__chair, .door-check__chip { transition: none; }
 }
@@ -8416,7 +8418,7 @@ p.pay-note > .text-link {
   white-space: nowrap;
 }
 .acc-glance__facts dt {
-  max-width: 14em;
+  max-width: 20em;
   font-size: var(--text-xs);
   line-height: var(--leading-snug);
   color: var(--muted-grey);
@@ -9137,6 +9139,15 @@ p.pay-note > .text-link {
     }
     .care-choices .care-choice__text > * { align-self: start; }
     .care-choices .care-choice__text > .care-choice__link { justify-self: start; }
+    /* The photo card's words sit on its foot, over the darkened gradient
+       (22 Oct 2026): on the shared rows they stopped level with the teal
+       card's heading and floated mid-photo. */
+    .care-choices .care-choice--own .care-choice__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      grid-row: 1 / 5;
+    }
   }
 }
 
@@ -9554,8 +9565,9 @@ p.pay-note > .text-link {
 .step-photos h3 { margin: 0 0 var(--space-2); font-size: var(--type-h3); }
 .step-photos p { margin: 0; font-size: var(--text-md); line-height: 1.6; color: var(--body-secondary); }
 
-/* Our Story, who runs both (21 Oct 2026): Victoria's full-length portrait in
-   the first of the page's three columns, her words across the other two. */
+/* Our Story, who runs both (21 Oct 2026): Victoria's full-length portrait
+   beside her words. 22 Oct: 5:7 with a wide gap, so the words fill their
+   column instead of leaving the right third empty. */
 .story-host { display: grid; gap: var(--space-8); }
 .story-host__photo {
   display: block;
@@ -9568,11 +9580,10 @@ p.pay-note > .text-link {
 }
 @media (min-width: 768px) {
   .story-host {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: var(--space-8);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(var(--space-10), 6vw, var(--space-20));
     align-items: center;
   }
-  .story-host__copy { grid-column: 2 / 4; }
 }
 
 /* Our Story, who does what (21 Oct 2026): Home's photo card for Restwell

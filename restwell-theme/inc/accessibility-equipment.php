@@ -143,6 +143,7 @@ function restwell_accessibility_equipment() {
 			'figure'        => '40°',
 			'figure_label'  => __( 'Tilt-in-space', 'restwell-retreats' ),
 			'specs'         => array(
+				__( 'Safe working load', 'restwell-retreats' ) => __( '185 kg / 29 st', 'restwell-retreats' ),
 				__( 'Tilt-in-space', 'restwell-retreats' )    => __( '40°, with tilt-assist pedal', 'restwell-retreats' ),
 				__( 'Seat height', 'restwell-retreats' )      => __( '560 mm', 'restwell-retreats' ),
 				__( 'Backrest', 'restwell-retreats' )         => __( 'AdjustaBack, 50 cm, with flip-up armrests', 'restwell-retreats' ),
@@ -216,9 +217,10 @@ function restwell_accessibility_equipment() {
 }
 
 /**
- * Rooms (chapters) the equipment is grouped under.
+ * Rooms (chapters) the equipment is grouped under. `facts`, when set, are the
+ * figures on the room's glance card in place of the first three item figures.
  *
- * @return array<string, array{title: string, lede: string}>
+ * @return array<string, array{title: string, lede: string, facts?: array<int, array{value: string, label: string}>}>
  */
 function restwell_accessibility_equipment_groups() {
 	return array(
@@ -232,7 +234,19 @@ function restwell_accessibility_equipment_groups() {
 		),
 		'wet-room'   => array(
 			'title' => __( 'Wet room', 'restwell-retreats' ),
-			'lede'  => __( 'The wet room is level from the door to the shower, with no lip at the entrance, and it was designed with Care Spaces.', 'restwell-retreats' ),
+			'lede'  => __( 'The wet room is level from the door to the shower, with no lip at the entrance, and it was designed with Care Spaces. Inside there’s a tilting shower chair, a toilet that washes and dries, and a basin you can raise or lower.', 'restwell-retreats' ),
+			// The shower chair's two figures (22 Oct 2026, owner's pick): the
+			// thermostatic valve and the stool's rating read as the chair's.
+			'facts' => array(
+				array(
+					'value' => '40°',
+					'label' => __( 'Shower chair tilt', 'restwell-retreats' ),
+				),
+				array(
+					'value' => '185 kg',
+					'label' => __( 'Shower chair safe working load', 'restwell-retreats' ),
+				),
+			),
 		),
 		'kitchen'    => array(
 			'title' => __( 'Kitchen', 'restwell-retreats' ),

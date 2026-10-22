@@ -366,7 +366,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		<header class="section-head section-head--tight">
 		  <p class="eyebrow"><?php esc_html_e( 'Equipment', 'restwell-retreats' ); ?></p>
 		  <h2 id="equipment-h"><?php esc_html_e( 'The kit, room by room', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Every piece of equipment is named by make and model, with safe working loads and clearances taken from the makers’ own spec sheets. The headlines are below, the full details are one tap away, and you can download the lot as a PDF to file with a risk assessment.', 'restwell-retreats' ); ?></p>
+		  <p class="lede"><?php esc_html_e( 'Each piece of kit is listed by make and model, using the makers’ own figures. You can download the full list as a PDF for a risk assessment.', 'restwell-retreats' ); ?></p>
 		</header>
 
 
@@ -384,7 +384,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 				}
 				$acc_gl_image = '';
 				$acc_gl_alt   = '';
-				$acc_gl_facts = array();
+				$acc_gl_facts = isset( $acc_gmeta['facts'] ) ? (array) $acc_gmeta['facts'] : array();
+				$acc_gl_fixed = ! empty( $acc_gl_facts );
 				foreach ( $acc_grouped[ $acc_gid ] as $acc_gl_item ) {
 					if ( '' === $acc_gl_image && ! empty( $acc_gl_item['image'] ) ) {
 						$acc_gl_image = (string) $acc_gl_item['image'];
@@ -396,7 +397,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 						$acc_gl_figure = (string) $acc_gl_item['glance_figure'];
 						$acc_gl_item['figure_label'] = isset( $acc_gl_item['glance_label'] ) ? (string) $acc_gl_item['glance_label'] : '';
 					}
-					if ( '' !== $acc_gl_figure && count( $acc_gl_facts ) < 3 && ! in_array( $acc_gl_figure, array_column( $acc_gl_facts, 'value' ), true ) ) {
+					if ( ! $acc_gl_fixed && '' !== $acc_gl_figure && count( $acc_gl_facts ) < 3 && ! in_array( $acc_gl_figure, array_column( $acc_gl_facts, 'value' ), true ) ) {
 						$acc_gl_facts[] = array(
 							'value' => $acc_gl_figure,
 							'label' => isset( $acc_gl_item['figure_label'] ) ? (string) $acc_gl_item['figure_label'] : '',
