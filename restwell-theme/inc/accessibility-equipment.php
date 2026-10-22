@@ -231,6 +231,17 @@ function restwell_accessibility_equipment_groups() {
 		'transfers'  => array(
 			'title' => __( 'Beds and hoists', 'restwell-retreats' ),
 			'lede'  => __( 'The accessible bedroom has a ceiling track hoist that covers the whole room, and we set it up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
+			// Named, so two bare "safe working load" figures don't read as one item's.
+			'facts' => array(
+				array(
+					'value' => '180 kg',
+					'label' => __( 'Ceiling hoist safe working load', 'restwell-retreats' ),
+				),
+				array(
+					'value' => '185 kg',
+					'label' => __( 'Standing aid safe working load', 'restwell-retreats' ),
+				),
+			),
 		),
 		'wet-room'   => array(
 			'title' => __( 'Wet room', 'restwell-retreats' ),

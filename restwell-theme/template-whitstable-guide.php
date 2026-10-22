@@ -65,7 +65,7 @@ $wg_eating_heading = $wg_txt( 'wg_eating_heading', 'Pubs and restaurants near th
 $wg_towns_heading = $wg_txt( 'wg_towns_heading', 'Wildwood, Dreamland and Canterbury' );
 $wg_towns_body    = $wg_txt(
 	'wg_towns_body',
-	'Check each venue’s site for scooter hire, companion tickets and parking for your dates.'
+	'Check each venue for scooter hire, companion tickets and parking.'
 );
 
 $wg_stop_1_src = $wg_spot_src( 1, 'stock/restwell-whitstable-beach-huts.webp' );
@@ -132,7 +132,7 @@ get_template_part(
 	</section>
 
 	<section class="section-y band-subtle" id="promenade" aria-labelledby="promenade-h">
-	  <div class="container split">
+	  <div class="container split split--fill">
 		<div>
 		  <header class="section-head section-head--tight">
 			<p class="eyebrow">Coastal walk</p>
@@ -242,22 +242,22 @@ get_template_part(
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_1_src ); ?>" alt="<?php echo esc_attr( $wg_stop_1_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://whitstablecastle.co.uk/" target="_blank" rel="noopener noreferrer">Whitstable Castle &amp; Gardens<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Promenade stop</p>
-			<p>Paved grounds and the Orangery Tearooms, which has an accessible loo. It’s a level stop halfway along the promenade.</p>
-			<p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a class="text-link" href="tel:01227281726">Call 01227 281726</a></p>
+			<p>Paved paths, an accessible loo and the Wynn Ellis Tearoom. It’s a level stop halfway along the promenade. The car park is free for three hours if you register your car, with Blue Badge bays by the entrance.</p>
+			<p class="place-list__actions"><a href="https://whitstablecastle.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Whitstable+Castle+and+Gardens" class="text-link" target="_blank" rel="noopener noreferrer">Directions<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_2_src ); ?>" alt="<?php echo esc_attr( $wg_stop_2_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.canterbury.co.uk/whitstable-harbour/" target="_blank" rel="noopener noreferrer">Whitstable Harbour<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Town &amp; seafood</p>
 			<p>It’s a working oyster port. South Quay Shed has a lift to a quieter upper floor, and the ground can be uneven, so take it steady when it’s busy.</p>
-			<p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
+			<p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Directions<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_3_src ); ?>" alt="<?php echo esc_attr( $wg_stop_3_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.thepubonthebeach.co.uk/" target="_blank" rel="noopener noreferrer">The Old Neptune<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Beach pub</p>
 			<p>This pub sits on the shingle. The terrace is on firm ground and is the realistic option, because the floors inside slope and there’s no step-free entrance.</p>
-			<p class="place-list__actions"><a href="https://www.thepubonthebeach.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://maps.google.com/?q=The+Old+Neptune+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Map<span class="sr-only"> (opens in new tab)</span></a></p>
+			<p class="place-list__actions"><a href="https://www.thepubonthebeach.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=The+Old+Neptune+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Directions<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		</div>
 	  </div>
@@ -300,19 +300,19 @@ get_template_part(
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-kent-woodland-paved-path.jpg' ) ); ?>" alt="Paved woodland path near the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>About 30 minutes. The woodland paths are mostly accessible, and scooters can be booked ahead on 01227 209621.</p>
+			<p>About 30 minutes by car. Most of the woodland paths take wheelchairs and scooters, though they get muddy after rain. Book a scooter ahead on 01227 209621, as they go quickly.</p>
 			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.dreamland.co.uk/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Dreamland, Margate<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>Dreamland accepts the Nimbus Access Card and runs an Essential Companion scheme, and there’s accessible parking nearby. Some rides have their own transfer rules, so check the access guide before you go.</p>
+			<p>About 30 minutes by car. There are accessible toilets throughout, but no wheelchairs to hire. Apply through Nimbus at least a week ahead for an Essential Companion wristband.</p>
 			<p class="place-list__actions"><a href="https://www.dreamland.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Dreamland website<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' ) ); ?>" alt="Historic stone ruins in Canterbury" width="640" height="480" loading="lazy" />
 			<h3><a href="https://www.canterbury-cathedral.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Canterbury<span class="sr-only"> (opens in new tab)</span></a></h3>
-			<p>About 20 minutes by car. The Cathedral Welcome Centre lends wheelchairs. The riverside and Westgate Gardens are smoother than the cobbles.</p>
+			<p>About 20 minutes by car. The Cathedral’s Welcome Centre lends free wheelchairs, and most of the Cathedral is step-free. The riverside paths and Westgate Gardens are smoother than the cobbles.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury-cathedral.org/visit/" class="text-link" target="_blank" rel="noopener noreferrer">Cathedral visit info<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		</ul>

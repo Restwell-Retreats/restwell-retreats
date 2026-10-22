@@ -459,7 +459,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					$acc_heading_id  = 'equip-' . $acc_gid . '-h';
 					$acc_pack_image  = '';
 					$acc_pack_alt    = '';
-					$acc_pack_facts  = array();
+					$acc_pack_facts  = isset( $acc_gmeta['facts'] ) ? (array) $acc_gmeta['facts'] : array();
+					$acc_pack_fixed  = ! empty( $acc_pack_facts );
 					foreach ( $acc_group_items as $acc_pack_item ) {
 						if ( '' === $acc_pack_image && ! empty( $acc_pack_item['image'] ) ) {
 							$acc_pack_image = (string) $acc_pack_item['image'];
@@ -473,7 +474,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 						if ( in_array( $acc_pack_figure, array_column( $acc_pack_facts, 'value' ), true ) ) {
 							continue;
 						}
-						if ( '' !== $acc_pack_figure && preg_match( '/\d/', $acc_pack_figure ) && count( $acc_pack_facts ) < 3 ) {
+						if ( ! $acc_pack_fixed && '' !== $acc_pack_figure && preg_match( '/\d/', $acc_pack_figure ) && count( $acc_pack_facts ) < 3 ) {
 							$acc_pack_facts[] = array(
 								'value' => $acc_pack_figure,
 								'label' => isset( $acc_pack_item['figure_label'] ) ? (string) $acc_pack_item['figure_label'] : '',
@@ -644,6 +645,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			  <button type="button" role="tab" id="dest-tab-<?php echo (int) $acc_dest_i; ?>" aria-controls="dest-<?php echo 0 === $acc_dest_i ? 'good' : 'challenges'; ?>" aria-selected="<?php echo 0 === $acc_dest_i ? 'true' : 'false'; ?>"<?php echo 0 === $acc_dest_i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( $acc_dest_item['dt'] ); ?></button>
 			  <?php endforeach; ?>
 			</div>
+			<div class="acc-dest__panels">
 			<?php foreach ( $acc_dest_pair as $acc_dest_i => $acc_dest_item ) : ?>
 				<?php
 				// Short lines read faster than a paragraph; the copy is unchanged, just split at sentence ends.
@@ -658,6 +660,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 			  </ul>
 			</div>
 			<?php endforeach; ?>
+			</div>
 			<?php if ( null !== $acc_dest_reality ) : ?>
 			<p class="acc-dest__more">
 				<?php

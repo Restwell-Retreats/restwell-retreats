@@ -667,7 +667,7 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_hero_image_id' => 0,
 
 		'wif_audience_heading' => 'Who Restwell is built for',
-		'wif_audience_intro'   => 'Families, carers, occupational therapists and commissioners all work from the same published door widths and equipment list. That way you can decide whether the bungalow fits before anyone travels.',
+		'wif_audience_intro'   => 'Everyone works from the same door widths and kit list, so you can check the bungalow fits before anyone travels.',
 
 		'wif_nav_family_label'        => "I'm a guest or family",
 		'wif_nav_carers_label'        => "I'm a carer",
@@ -729,7 +729,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_about_heading' => 'Tankerton promenade',
 		'wg_about_body'    => 'About two miles of paved path runs from Tankerton Slopes towards the castle and harbour. The slopes down to the shingle are steep, so stay on the promenade for the level route.',
 		'wg_towns_heading' => 'Wildwood, Dreamland and Canterbury',
-		'wg_towns_body'    => 'Check each venue’s site for scooter hire, companion tickets and parking for your dates.',
+		'wg_towns_body'    => 'Check each venue for scooter hire, companion tickets and parking.',
 		'wg_spotlight_image_1_id' => 0,
 		'wg_spotlight_image_1_caption' => 'Colourful beach huts along the Whitstable seafront',
 		'wg_spotlight_image_2_id' => 0,

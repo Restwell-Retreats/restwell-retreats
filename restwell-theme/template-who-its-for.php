@@ -32,9 +32,9 @@ $wif_audience_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,
 		'wif_audience_intro',
-		'Families, carers, occupational therapists and commissioners all work from the same published door widths and equipment list. That way you can decide whether the bungalow fits before anyone travels.'
+		'Everyone works from the same door widths and kit list, so you can check the bungalow fits before anyone travels.'
 	)
-	: 'Families, carers, occupational therapists and commissioners all work from the same published door widths and equipment list. That way you can decide whether the bungalow fits before anyone travels.';
+	: 'Everyone works from the same door widths and kit list, so you can check the bungalow fits before anyone travels.';
 
 $wif_default_family_bullets = function_exists( 'restwell_get_property_facts_persona_bullets' )
 	? restwell_get_property_facts_persona_bullets( 'family' )

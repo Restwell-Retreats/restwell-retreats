@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 94;
+const RESTWELL_SCHEMA_VERSION = 95;
 
 
 /**
@@ -3771,6 +3771,35 @@ function restwell_migrate_our_story_build_card_v94() {
 }
 
 /**
+ * Shorter intros (22 Oct 2026, owner's notes): Who It's For's audience intro
+ * ran to three lines at the intro width, and the Whitstable days-out intro
+ * left three words on a second line. Same rule as v85: a stored value is
+ * replaced only while it still equals the old seed.
+ */
+function restwell_migrate_short_intros_v95() {
+	if ( get_option( 'restwell_short_intros_v95', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_short_intros_v95', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'who-its-for'           => array(
+				'wif_audience_intro' => array(
+					'Families, carers, occupational therapists and commissioners all work from the same published door widths and equipment list. That way you can decide whether the bungalow fits before anyone travels.',
+					'Everyone works from the same door widths and kit list, so you can check the bungalow fits before anyone travels.',
+				),
+			),
+			'whitstable-area-guide' => array(
+				'wg_towns_body' => array(
+					'Check each venue’s site for scooter hire, companion tickets and parking for your dates.',
+					'Check each venue for scooter hire, companion tickets and parking.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3900,6 +3929,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_pricing_rates_intro_v92',
 		'restwell_our_story_plain_words_v93',
 		'restwell_our_story_build_card_v94',
+		'restwell_short_intros_v95',
 	);
 }
 
@@ -4074,6 +4104,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_plain_words_v93', 131 );
 	add_action( 'init', 'restwell_migrate_our_story_build_card_v94', 137 );
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_build_card_v94', 132 );
+	add_action( 'init', 'restwell_migrate_short_intros_v95', 138 );
+	add_action( 'after_switch_theme', 'restwell_migrate_short_intros_v95', 133 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
