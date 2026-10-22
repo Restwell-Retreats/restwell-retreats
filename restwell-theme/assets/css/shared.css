@@ -7798,7 +7798,9 @@ p.care-how__note > .text-link,
 .faq-item__panel p > .text-link,
 .room-tour__card p:not(.room-tour__link) > .text-link,
 p.acc-dest__more > .text-link,
-p.pay-note > .text-link {
+p.pay-note > .text-link,
+.step-photos p > .text-link,
+label .text-link {
   display: inline;
   min-height: 0;
 }
