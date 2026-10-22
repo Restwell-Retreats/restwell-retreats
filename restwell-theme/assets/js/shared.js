@@ -5,6 +5,20 @@
 (function () {
   'use strict';
 
+  /* ---------- Scrollbar width ----------
+   * 100vw includes the scrollbar gutter (html reserves it with
+   * scrollbar-gutter: stable), so photos that bleed to the page edge
+   * (--bleed) overshot it by half the gutter. Expose the gutter's width so
+   * the CSS can take it off; without script the sections still clip. The
+   * body's width is the real layout width either way.
+   */
+  function setScrollbarWidth() {
+    var bar = window.innerWidth - document.body.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-w', Math.max(0, bar) + 'px');
+  }
+  setScrollbarWidth();
+  window.addEventListener('resize', setScrollbarWidth, { passive: true });
+
   /* ---------- Gallery lightbox ----------
    * Supports multiple [data-gallery] roots on one page (e.g. room tours +
    * equipment gallery). Slides are scoped to the gallery that opened.

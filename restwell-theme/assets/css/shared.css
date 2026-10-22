@@ -304,9 +304,10 @@
   /* Widths / measures — match live theme page rail (input.css --rw-max-page) */
   --rw-max-page: 1200px;
   /* Distance from the content rail to the viewport edge, for photos that
-     bleed off the page. Sections that use it clip overflow-x, because 100vw
-     includes a classic scrollbar. */
-  --bleed: calc(max(0px, (100vw - var(--rw-max-page)) / 2) + var(--rw-gutter-x));
+     bleed off the page. 100vw includes a classic scrollbar, so shared.js
+     sets --scrollbar-w and it comes off here (22 Oct 2026); the sections
+     still clip overflow-x for the moment before the script runs. */
+  --bleed: calc(max(0px, (100vw - var(--scrollbar-w, 0px) - var(--rw-max-page)) / 2) + var(--rw-gutter-x));
   --rw-readable: min(38rem, 100%);
   --rw-measure-faq: min(40rem, 100%);
   --rw-measure-care: min(38rem, 100%);
