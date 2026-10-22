@@ -686,7 +686,6 @@ html.admin-bar .subnav ~ section[id] {
 .comparison-list + p,
 .comparison-list + .link-stack,
 .comparison-list + .download-panel,
-.stat-row + .section-head,
 .blog-featured + .card-grid,
 .blog-meta + .prose,
 .prose + .blog-meta {
@@ -2603,8 +2602,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 /* Links inside running text stay inline: the 44px tap-target box on
    .text-link stretched the line spacing mid-sentence. */
 .persona-list__item p .text-link,
-.comparison-list__item dd .text-link,
-.route-list .text-link {
+.comparison-list__item dd .text-link {
   display: inline;
   min-height: 0;
 }
@@ -2875,19 +2873,6 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   .checklist--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* Walk times / key figures — open stack, no card chrome.
-   Dividers only between items — outer top/bottom borders floated in section
-   padding and read as stray hairlines (esp. after a subnav).
-   Grid targets the <dl>: .stat children live there, not on .stat-row. */
-.stat-row {
-  --stat-row-gap: 0;
-  --stat-pad-y: var(--space-4);
-}
-.stat-row dl {
-  margin: 0;
-  display: grid;
-  gap: var(--stat-row-gap);
-}
 .stat {
   padding: var(--stat-pad-y) 0;
   border-bottom: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
@@ -2898,13 +2883,8 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 /* HTML is <dt> then <dd>; lead with the figure on every breakpoint. */
 .stat__value { order: -1; }
 @media (min-width: 700px) {
-  .stat-row {
-    --stat-row-gap: var(--space-6);
-    --stat-pad-y: var(--space-5);
-  }
-  .stat-row dl {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  
+  
   .stat {
     border-bottom: 0;
   }
@@ -2923,7 +2903,7 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 /* Phone: value + label on one row so the journey strip isn’t three mini-sections. */
 @media (max-width: 699px) {
-  .stat-row { --stat-pad-y: var(--space-3); }
+  
   .stat {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -2939,21 +2919,9 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
     font-size: var(--text-sm);
     line-height: 1.4;
   }
-  /* Phrase + sentence stats (funding page) — the journey-time row layout
-     squeezes a full clause into a remnant column. Stack instead. */
-  .stat-row--prose .stat {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-  .stat-row--prose .stat__value {
-    font-size: var(--text-xl);
-    white-space: normal;
-  }
-  .stat-row--prose .stat__label {
-    font-size: var(--text-base);
-    line-height: 1.5;
-  }
+  
+  
+  
 }
 .width-guide {
   --width-guide-gap: var(--space-5);
@@ -7535,145 +7503,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   background: color-mix(in srgb, var(--warm-gold) 12%, var(--white));
 }
 
-/* Venue cards: three equal cards across the page, in walking order from the
-   house. The links are pinned to the foot so every card ends level whatever the
-   length of its note; a slim banner photo sits above them. */
-.place-list--venues {
-  max-width: none;
-  margin-top: var(--section-stack-gap);
-}
-.place-list--venues .place-list__item,
-.place-list--venues .place-list__item:first-child,
-.place-list--venues .place-list__item:last-child {
-  padding: var(--panel-pad);
-  border: 1px solid var(--card-line);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  box-shadow: var(--card-shadow);
-  box-shadow: none;
-}
-.place-list--venues .place-list__title { font-size: var(--type-h3); }
-.place-list--venues .place-list__actions { margin-top: auto; padding-top: var(--space-3); }
-.eat-banner { margin: 0 0 var(--space-6); }
-.eat-banner img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 21 / 7;
-  object-fit: cover;
-  object-position: center 62%;
-  border-radius: var(--radius-lg);
-  background: var(--driftwood);
-}
-@media (max-width: 639px) {
-  .eat-banner img { aspect-ratio: 16 / 9; }
-}
-
-/* Route list: stops on a dashed line, the key stop highlighted. */
-.route-split { display: grid; gap: var(--space-8); align-items: start; }
-@media (min-width: 900px) {
-  .route-split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--space-16); }
-}
-.route-split .section-head { margin: 0; }
-/* Accessible toilets (13 Oct 2026): the stops on a drawn route, like a line
-   map, in one white card. A dot per stop on a thin teal line; Changing Places
-   is the gold stop with its label over the name. (Was a numbered list between
-   hairlines with a pill tag.) */
-.route-list {
-  --route-dot: 0.875rem;
-  --route-gap: var(--space-6);
-  --route-tag-h: calc(var(--text-2xs) * 1.4 + var(--space-1));
-  display: grid;
-  gap: var(--route-gap);
-  margin: 0;
-  padding: var(--space-8) var(--panel-pad);
-  list-style: none;
-  border: 1px solid var(--card-line);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-}
-.route-list__stop {
-  position: relative;
-  display: block;
-  padding-left: calc(var(--route-dot) + var(--space-5));
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  line-height: var(--leading-snug);
-  color: var(--deep-teal);
-  text-wrap: pretty;
-}
-.route-list__stop::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  top: 0.35em;
-  left: 0;
-  width: var(--route-dot);
-  height: var(--route-dot);
-  border-radius: 50%;
-  background: var(--white);
-  box-shadow: inset 0 0 0 2px var(--deep-teal);
-}
-/* The line runs from this stop's dot to the next one's. */
-.route-list__stop:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: calc(0.35em + var(--route-dot));
-  bottom: calc(-1 * var(--route-gap) - 0.35em);
-  left: calc(var(--route-dot) / 2 - 1px);
-  width: 2px;
-  background: color-mix(in srgb, var(--deep-teal) 22%, transparent);
-}
-.route-list__stop--key { font-weight: var(--type-title-weight); }
-.route-list__stop--key::before {
-  background: var(--warm-gold);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--warm-gold) 24%, transparent);
-}
-/* Its dot drops to the name's first line, under the label. */
-.route-list__stop--key::before { top: calc(var(--route-tag-h) + 0.35em); }
-.route-list__stop--key:not(:last-child)::after { top: calc(var(--route-tag-h) + 0.35em + var(--route-dot)); }
-.route-list__stop:has(+ .route-list__stop--key)::after { bottom: calc(-1 * var(--route-gap) - var(--route-tag-h) - 0.35em); }
-.route-list__tag {
-  display: block;
-  margin-bottom: var(--space-1);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  line-height: 1.4;
-  color: var(--warm-gold-text);
-}
-
-/* Parking (13 Oct 2026, owner's pick): the four places to park as stops,
-   easiest first, the name and its tag on one line and a note under it. The
-   harbour stop, where you must register first, is the gold one. */
-.route-list--parking .route-list__stop { color: var(--deep-teal); }
-.route-list__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-1) var(--space-4);
-  margin: 0;
-}
-.route-list__name { font-weight: var(--type-title-weight); }
-.route-list--parking .route-list__tag { margin: 0; color: var(--deep-teal); }
-.route-list__note,
-.route-list__links {
-  margin: var(--space-2) 0 0;
-  max-width: var(--measure-text);
-  font-family: var(--font-sans);
-  font-size: var(--text-md);
-  line-height: var(--leading-snug);
-  color: var(--body-secondary);
-}
-.route-list__links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-5); }
-.route-list__links .text-link { display: inline-flex; min-height: var(--tap-target, 2.75rem); align-items: center; gap: var(--space-1); }
-.route-list__links .text-link .icon { width: 1em; height: 1em; }
-.route-list__stop--warn::before {
-  background: var(--warm-gold);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--warm-gold) 24%, transparent);
-}
-.route-list__stop--warn .route-list__tag { color: var(--warm-gold-text); }
-
 /* Plain hero (FAQ), 5 Oct 2026: a light band under the solid header,
    dark text, a faint gold wave motif on the right. The dark teal version read
    as a second header. */
@@ -8737,7 +8566,6 @@ p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
 p.blog-cluster-links__part > .text-link,
 p.door-check__foot > .text-link,
-.trio__item p > .text-link,
 p.care-cqc__note > .text-link,
 p.care-how__note > .text-link,
 .care-route__stop p > .text-link,
@@ -8770,9 +8598,6 @@ p.pay-note > .text-link {
 .band-subtle .comparison-list__item:not(.funding-route *),
 .comparison-list--features .comparison-list__item,
 .place-list__item,
-.place-list--venues .place-list__item,
-.place-list--venues .place-list__item:first-child,
-.place-list--venues .place-list__item:last-child,
 .info-card:not(a):not(#directory *) {
   padding: 0;
   border: 0;
@@ -8785,8 +8610,7 @@ p.pay-note > .text-link {
    and space alone separates these. */
 
 .comparison-list__item:not(.funding-route *)::before { top: 0; left: 0; }
-.place-list__item:hover,
-.place-list--venues .place-list__item:hover {
+.place-list__item:hover {
   border-color: var(--rule);
   transform: none;
   box-shadow: none;
@@ -9885,23 +9709,6 @@ p.pay-note > .text-link {
 }
 .acc-limits__layout > .acc-limits__contact a:focus-visible { outline-color: var(--warm-gold-hero); }
 
-/* Three short items side by side under a fine rule (15 Oct 2026). Getting
-   around on the Whitstable guide was three rows of about 270px for three lines
-   of text; this is the same content at a third of the height. */
-.trio {
-  display: grid;
-  gap: var(--space-8);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-@media (min-width: 768px) {
-  .trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-10); }
-}
-.trio__item { padding-top: var(--space-5); border-top: 1px solid var(--rule); }
-.trio__item h3 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); line-height: var(--leading-snug); }
-.trio__item p { margin: 0; font-size: var(--text-md); line-height: var(--leading-lede); color: var(--body-secondary); }
-
 /* Marks without discs on the blog (15 Oct 2026): the do/avoid ticks and
    crosses and the category tag lose their fills and pill, like the register
    and the destination lists. */
@@ -10743,3 +10550,77 @@ p.pay-note > .text-link {
 }
 .guide-feature__list img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
 .guide-feature__list a:hover span { text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* Whitstable, travel times (22 Oct 2026): three large figures, a short line
+   under each, no rules between them. */
+.travel-times { display: grid; gap: var(--space-5); margin: 0; }
+@media (min-width: 640px) { .travel-times { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-8); } }
+.travel-times div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.travel-times dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 1.4rem + 1.6vw, 2.9rem);
+  line-height: 1.05;
+  color: var(--deep-teal);
+}
+.travel-times dt { font-size: var(--text-md); color: var(--muted-grey); }
+
+/* Whitstable, getting around (22 Oct 2026): three short white cards rising
+   over the beach-path photo; each links to its full guide. */
+.around { display: grid; margin-top: var(--space-10); }
+.around__photo {
+  display: block;
+  width: 100%;
+  height: 22rem;
+  object-fit: cover;
+  object-position: 50% 70%;
+  border-radius: var(--radius-lg);
+}
+.around__cards {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  margin: -6rem var(--space-4) 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 768px) {
+  .around__photo { height: 26rem; }
+  .around__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); margin: -9rem var(--space-8) 0; }
+}
+.around__cards > li {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: 0 12px 32px rgb(9 26 32 / 0.12);
+  scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
+}
+.around__cards h3 { margin: 0 0 var(--space-3); font-size: var(--text-2xl); }
+.around__cards ul { display: grid; gap: var(--space-2); margin: 0 0 var(--space-4); padding: 0; list-style: none; }
+.around__cards ul li { font-size: var(--text-md); line-height: 1.45; color: var(--body-secondary); }
+.around__cards strong { font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.around__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.75rem;
+  margin-top: auto;
+  font-weight: var(--weight-semibold);
+  color: var(--deep-teal);
+}
+
+/* Whitstable, pubs and restaurants (22 Oct 2026): the harbour photo beside
+   three short rows. */
+.eat-near { display: grid; gap: var(--space-8); align-items: center; }
+@media (min-width: 900px) { .eat-near { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-10); } }
+.eat-near__photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-lg); }
+.eat-near h2 { margin: 0 0 var(--space-6); }
+.eat-near__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.eat-near__list li { padding: var(--space-4) 0; border-bottom: 1px solid var(--rule); }
+.eat-near__list h3 { margin: 0 0 var(--space-1); font-size: var(--text-2xl); }
+.eat-near__list h3 a { color: var(--deep-teal); text-decoration: none; }
+.eat-near__list h3 a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.eat-near__list p { margin: 0; color: var(--body-secondary); }
+.eat-near__list p span { font-weight: var(--weight-semibold); color: var(--warm-gold-text); }
