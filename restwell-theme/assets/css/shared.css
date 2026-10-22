@@ -9697,39 +9697,42 @@ p.pay-note > .text-link {
   display: grid;
   gap: var(--space-6);
 }
+/* Inside a tab (22 Oct 2026, owner's pick from M-Design's tabs): each route
+   is a deep-teal card, its words on the left in white and its photo on the
+   right; on phones the photo leads. It was open text on the white band (and
+   on 13 Oct white cards in a grey panel were rejected). */
 .funding-route {
   display: grid;
-  gap: var(--space-8);
   min-width: 0;
-  padding: var(--space-6) 0 0;
+  margin-top: var(--space-6);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--deep-teal);
+  color: var(--white);
   scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4));
 }
 .funding-route[hidden] { display: none; }
 .funding-route:focus-visible { outline: 3px solid var(--deep-teal); outline-offset: 3px; }
-/* Inside a tab: the title with what the route is under it, then the two
-   lists side by side, then the source and the contacts on one line. Open on
-   the white band: no panel and no boxes inside it (owner, 13 Oct 2026: the
-   description beside the title and the white cards in a grey panel were
-   rejected). */
-@media (min-width: 900px) {
-  .funding-route {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "copy copy"
-      "split split"
-      "source foot";
-    column-gap: var(--space-12);
-    row-gap: var(--space-10);
-  }
-  .funding-route__copy { grid-area: copy; }
-  .funding-route .cover-prose { grid-area: split; }
-  .funding-route .cover-split__source { grid-area: source; align-self: center; }
-  .funding-route__foot { grid-area: foot; align-self: center; justify-content: flex-end; }
+.funding-route__words { display: grid; gap: var(--space-6); padding: var(--space-8) var(--space-6); }
+.funding-route__photo {
+  order: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 16rem;
+  object-fit: cover;
 }
+@media (min-width: 900px) {
+  .funding-route { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .funding-route__words { padding: var(--space-12) var(--space-10); }
+  .funding-route__photo { order: 0; }
+}
+.funding-route :focus-visible { outline-color: var(--warm-gold-hero); }
 .funding-route__copy > * { margin: 0; }
 /* The tab names the route, so the panel's own eyebrow goes once tabbed. */
 .is-tabbed .funding-route__copy .eyebrow { display: none; }
 .funding-route__copy h3 {
+  color: var(--white);
   font-size: var(--text-3xl);
   line-height: var(--leading-tight);
   text-wrap: balance;
@@ -9740,77 +9743,34 @@ p.pay-note > .text-link {
   max-width: 46rem;
   font-size: var(--text-lg);
   line-height: var(--leading-lede);
-  color: var(--body-secondary);
+  color: rgb(255 255 255 / 0.84);
 }
-.cover-prose { display: grid; gap: var(--space-5); }
-@media (min-width: 900px) {
-  .cover-prose { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-12); }
-}
+.cover-prose { display: grid; gap: var(--space-4); }
 .cover-prose p {
   margin: 0;
   max-width: var(--measure-text);
   font-size: var(--text-lg);
   line-height: var(--leading-lede);
-  color: var(--body-secondary);
+  color: rgb(255 255 255 / 0.84);
 }
-.cover-prose strong { font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.cover-prose strong { font-weight: var(--weight-semibold); color: var(--white); }
 .cover-split__source {
   margin: 0;
   max-width: var(--measure-text);
   font-size: var(--text-sm);
   line-height: var(--leading-body);
-  color: var(--muted-grey);
+  color: rgb(255 255 255 / 0.7);
 }
-.cover-split__source a { color: var(--deep-teal); font-weight: var(--weight-semibold); }
+.cover-split__source a { color: var(--warm-gold-hero); font-weight: var(--weight-semibold); }
 .funding-route__foot {
+  justify-content: flex-start;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-1) var(--space-5);
 }
-.funding-route__foot p { margin: 0; color: var(--deep-teal); font-weight: var(--weight-semibold); }
-.funding-route__foot a { color: var(--deep-teal); }
-
-/* What we send: the three documents as index rows (13 Oct 2026), the name on
-   the left and what's in it on the right, one hairline between rows; a row
-   of three icon cards was one of the "AI tells". */
-.send-docs {
-  display: grid;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.send-docs__item {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-6) 0;
-}
-.send-docs__item + .send-docs__item { border-top: 1px solid var(--rule); }
-.send-docs__item:first-child { padding-top: 0; }
-.send-docs__item:last-child { padding-bottom: 0; }
-.send-docs__icon { display: none; }
-.send-docs__item h3 { margin: 0; font-size: var(--text-2xl); line-height: var(--leading-snug); }
-.send-docs__item p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
-@media (min-width: 900px) {
-  .send-docs__item {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-16);
-    align-items: baseline;
-    padding-block: var(--space-8);
-  }
-}
-.send-docs__next {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4) var(--space-8);
-  margin-top: var(--space-12);
-}
-.send-docs__next p { margin: 0; max-width: var(--measure-text); color: var(--body-secondary); }
-@media (max-width: 599px) {
-  .send-docs__next .btn { width: 100%; }
-}
+.funding-route__foot p { margin: 0; color: var(--white); font-weight: var(--weight-semibold); }
+.funding-route__foot a { color: var(--warm-gold-hero); }
 
 /* =========================================================================
    No icon tiles (13 Oct 2026). A line icon sitting in a tinted disc or
@@ -10751,3 +10711,35 @@ p.pay-note > .text-link {
   }
   .care-choices--foot .care-choice__text { display: block; grid-row: auto; }
 }
+.property__action { margin: var(--space-6) 0 0; }
+
+/* Further reading (22 Oct 2026): the first guide as Home's photo card, the
+   rest beside it as a list with a thumbnail each. Funding and Whitstable. */
+.guide-feature { display: grid; gap: var(--space-5); margin-top: var(--space-10); }
+@media (min-width: 900px) {
+  .guide-feature { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: stretch; }
+}
+.guide-feature__lead { min-height: 24rem; text-decoration: none; }
+.guide-feature__lead .care-choice__text { display: flex; flex-direction: column; align-items: flex-start; }
+.guide-feature__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 1.05rem + 0.8vw, 1.8rem);
+  line-height: 1.25;
+  color: var(--white);
+}
+.guide-feature__list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.guide-feature__list li { border-bottom: 1px solid var(--rule); }
+.guide-feature__list a {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.35;
+  color: var(--deep-teal);
+  text-decoration: none;
+}
+.guide-feature__list img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); }
+.guide-feature__list a:hover span { text-decoration: underline; text-underline-offset: 0.2em; }

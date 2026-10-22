@@ -122,6 +122,7 @@ get_template_part(
 		  <p class="lede">This is the usual pattern for each route, but your own coordinator has the last word.</p>
 		</header>
 
+		<?php // M-Design's tabs over a deep-teal card (22 Oct 2026): each route's words in white, its photo on the right. It was open text on the white band. ?>
 		<div class="funding-tabs" data-tabs>
 		<div class="funding-tabs__list" role="tablist" aria-label="<?php esc_attr_e( 'Funding routes', 'restwell-retreats' ); ?>" hidden>
 		  <button type="button" role="tab" id="route-tab-1" aria-controls="local-authority" aria-selected="true"><?php esc_html_e( 'Care Act', 'restwell-retreats' ); ?></button>
@@ -130,58 +131,67 @@ get_template_part(
 		</div>
 		<div class="funding-routes">
 		  <article class="funding-route" id="local-authority">
-			<div class="funding-route__copy">
-			  <p class="eyebrow">Care Act</p>
-			  <h3>Direct payments and personal budgets</h3>
-			  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils are told not to restrict direct payments unreasonably, but each one sets its own rules. Whether the bungalow rent is covered depends on what’s written in the plan, so it’s worth asking before you book.</p>
+			<div class="funding-route__words">
+				<div class="funding-route__copy">
+				  <p class="eyebrow">Care Act</p>
+				  <h3>Direct payments and personal budgets</h3>
+				  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils are told not to restrict direct payments unreasonably, but each one sets its own rules. Whether the bungalow rent is covered depends on what’s written in the plan, so it’s worth asking before you book.</p>
+				</div>
+				<div class="cover-prose">
+				  <p><strong>Usually covers</strong> assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</p>
+				  <p><strong>Usually doesn’t cover</strong> travel, food or holiday extras, or the rent unless the support plan names it. A long stay in a care home has different rules.</p>
+				</div>
+				<p class="cover-split__source">That’s from the <a href="https://www.legislation.gov.uk/ukpga/2014/23/part/1/crossheading/direct-payments/enacted" target="_blank" rel="noopener noreferrer">Care Act 2014<span class="sr-only"> (opens in new tab)</span></a> and how councils write their handbooks. If you live in Kent, start with the number below.</p>
+				<div class="funding-route__foot">
+				  <p>Kent residents: <a href="tel:03000416161">03000 41 61 61</a></p>
+				  <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) ) : ?>
+					<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Direct payments guide', 'restwell-retreats' ); ?></a>
+				  <?php endif; ?>
+				</div>
 			</div>
-			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</p>
-			  <p><strong>Usually doesn’t cover</strong> travel, food or holiday extras, or the rent unless the support plan names it. A long stay in a care home has different rules.</p>
-			</div>
-			<p class="cover-split__source">That’s from the <a href="https://www.legislation.gov.uk/ukpga/2014/23/part/1/crossheading/direct-payments/enacted" target="_blank" rel="noopener noreferrer">Care Act 2014<span class="sr-only"> (opens in new tab)</span></a> and how councils write their handbooks. If you live in Kent, start with the number below.</p>
-			<div class="funding-route__foot">
-			  <p>Kent residents: <a href="tel:03000416161">03000 41 61 61</a></p>
-			  <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) ) : ?>
-				<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Direct payments guide', 'restwell-retreats' ); ?></a>
-			  <?php endif; ?>
-			</div>
+			<img class="funding-route__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-6-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 900px) 460px, 100vw" loading="lazy" decoding="async" />
 		  </article>
 
 		  <article class="funding-route" id="nhs">
-			<div class="funding-route__copy">
-			  <p class="eyebrow">NHS</p>
-			  <h3><?php echo esc_html( $res_chc_heading ); ?></h3>
-			  <p><?php echo esc_html( $res_chc_body ); ?></p>
+			<div class="funding-route__words">
+				<div class="funding-route__copy">
+				  <p class="eyebrow">NHS</p>
+				  <h3><?php echo esc_html( $res_chc_heading ); ?></h3>
+				  <p><?php echo esc_html( $res_chc_body ); ?></p>
+				</div>
+				<div class="cover-prose">
+				  <p><strong>Usually covers</strong> the care hours you already have, if the team says they continue. Also a personal health budget, if you’re CHC-eligible and take one, and care away from hospital in a place that works for you.</p>
+				  <p><strong>Usually doesn’t cover</strong> the holiday itself (travel, food, the Restwell rent) or extra hours just because you’re away from home. There’s no scheme where the NHS pays for the holiday.</p>
+				</div>
+				<p class="cover-split__source">That’s from the <a href="https://www.gov.uk/government/publications/nhs-continuing-healthcare-and-nhs-funded-nursing-care-public-information-leaflet/public-information-leaflet-nhs-continuing-healthcare-and-nhs-funded-nursing-care--2" target="_blank" rel="noopener noreferrer">GOV.UK CHC leaflet<span class="sr-only"> (opens in new tab)</span></a> and how ICBs write holiday-support policies. In Kent, Kent &amp; Medway ICB decides.</p>
+				<div class="funding-route__foot">
+				  <p>Kent &amp; Medway ICB: <a href="mailto:chc@kmicb.nhs.uk">chc@kmicb.nhs.uk</a></p>
+				  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How Continuity care is arranged', 'restwell-retreats' ); ?></a>
+				</div>
 			</div>
-			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> the care hours you already have, if the team says they continue. Also a personal health budget, if you’re CHC-eligible and take one, and care away from hospital in a place that works for you.</p>
-			  <p><strong>Usually doesn’t cover</strong> the holiday itself (travel, food, the Restwell rent) or extra hours just because you’re away from home. There’s no scheme where the NHS pays for the holiday.</p>
-			</div>
-			<p class="cover-split__source">That’s from the <a href="https://www.gov.uk/government/publications/nhs-continuing-healthcare-and-nhs-funded-nursing-care-public-information-leaflet/public-information-leaflet-nhs-continuing-healthcare-and-nhs-funded-nursing-care--2" target="_blank" rel="noopener noreferrer">GOV.UK CHC leaflet<span class="sr-only"> (opens in new tab)</span></a> and how ICBs write holiday-support policies. In Kent, Kent &amp; Medway ICB decides.</p>
-			<div class="funding-route__foot">
-			  <p>Kent &amp; Medway ICB: <a href="mailto:chc@kmicb.nhs.uk">chc@kmicb.nhs.uk</a></p>
-			  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How Continuity care is arranged', 'restwell-retreats' ); ?></a>
-			</div>
+			<img class="funding-route__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WR-2-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 900px) 460px, 100vw" loading="lazy" decoding="async" />
 		  </article>
 
 		  <article class="funding-route" id="private">
-			<div class="funding-route__copy">
-			  <p class="eyebrow">Grants and self-pay</p>
-			  <h3>Charity awards, or you pay Restwell</h3>
-			  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
+			<div class="funding-route__words">
+				<div class="funding-route__copy">
+				  <p class="eyebrow">Grants and self-pay</p>
+				  <h3>Charity awards, or you pay Restwell</h3>
+				  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
+				</div>
+				<div class="cover-prose">
+				  <p><strong>Usually covers</strong> a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</p>
+				  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, days out and travel aren’t covered either, unless the letter names them.</p>
+				</div>
+				<p class="cover-split__source">Revitalise closed its centres in 2024 and now awards grants toward a break of your choice. Ask us for a quote if you need a provisional booking to apply.</p>
+				<div class="funding-route__foot">
+				  <p><a class="text-link" href="#directory"><?php esc_html_e( 'Grant and advice sites', 'restwell-retreats' ); ?></a></p>
+				  <?php if ( ! empty( $restwell_guide_urls['carers-respite-holiday-guide'] ) ) : ?>
+					<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['carers-respite-holiday-guide'] ); ?>"><?php esc_html_e( 'Carer assessment guide', 'restwell-retreats' ); ?></a>
+				  <?php endif; ?>
+				</div>
 			</div>
-			<div class="cover-prose">
-			  <p><strong>Usually covers</strong> a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</p>
-			  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, days out and travel aren’t covered either, unless the letter names them.</p>
-			</div>
-			<p class="cover-split__source">Revitalise closed its centres in 2024 and now awards grants toward a break of your choice. Ask us for a quote if you need a provisional booking to apply.</p>
-			<div class="funding-route__foot">
-			  <p><a class="text-link" href="#directory"><?php esc_html_e( 'Grant and advice sites', 'restwell-retreats' ); ?></a></p>
-			  <?php if ( ! empty( $restwell_guide_urls['carers-respite-holiday-guide'] ) ) : ?>
-				<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['carers-respite-holiday-guide'] ); ?>"><?php esc_html_e( 'Carer assessment guide', 'restwell-retreats' ); ?></a>
-			  <?php endif; ?>
-			</div>
+			<img class="funding-route__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/WHIT-SEAFRONT-1-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 900px) 460px, 100vw" loading="lazy" decoding="async" />
 		  </article>
 		</div>
 		</div>
@@ -275,42 +285,41 @@ get_template_part(
 
 	<section class="section-y band-white" id="help" aria-labelledby="help-h">
 	  <div class="container">
-		<header class="section-head">
-		  <p class="eyebrow">What we send</p>
-		  <h2 id="help-h">We’ll send what they usually ask for</h2>
-		  <p class="lede">Tell us the dates and who’s funding the stay. Continuity can quote care on the same call if you want it.</p>
-		</header>
 		<?php
+		// What we send (22 Oct 2026): Pricing's payment panel, mirrored, the three
+		// documents on a white panel over the bedroom. It was text rows with icons.
 		$res_send_docs = array(
 			array(
-				'icon'  => 'receipt-text',
 				'title' => __( 'Written quote at published rates', 'restwell-retreats' ),
 				'body'  => __( 'Your nights and the guide total, at the rates on our pricing page.', 'restwell-retreats' ),
 			),
 			array(
-				'icon'  => 'clipboard-list',
 				'title' => __( 'Access statement and equipment list', 'restwell-retreats' ),
 				'body'  => __( 'Every measurement and piece of kit, as a PDF for an OT or a funding panel.', 'restwell-retreats' ),
 			),
 			array(
-				'icon'  => 'files',
 				'title' => __( 'A care quote from Continuity, if you want care', 'restwell-retreats' ),
 				'body'  => __( 'Hours and rates from Continuity, the CQC-registered care provider.', 'restwell-retreats' ),
 			),
 		);
 		?>
-		<ol class="send-docs" role="list">
-			<?php foreach ( $res_send_docs as $res_send_doc ) : ?>
-		  <li class="send-docs__item">
-			<span class="send-docs__icon" aria-hidden="true"><?php restwell_the_icon( $res_send_doc['icon'] ); ?></span>
-			<h3><?php echo esc_html( $res_send_doc['title'] ); ?></h3>
-			<p><?php echo esc_html( $res_send_doc['body'] ); ?></p>
-		  </li>
-			<?php endforeach; ?>
-		</ol>
-		<div class="send-docs__next">
-		  <p>Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
-		  <a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Ask for the paperwork', 'restwell-retreats' ); ?></a>
+		<div class="property__layout property__layout--flip">
+		  <div class="property__copy">
+			<p class="eyebrow">What we send</p>
+			<h2 id="help-h">We’ll send what they usually ask for</h2>
+			<p class="lede">Tell us the dates and who’s funding the stay. Continuity can quote care on the same call if you want it.</p>
+			<ol class="pay-steps">
+			  <?php foreach ( $res_send_docs as $res_send_doc ) : ?>
+			  <li>
+				<h3><?php echo esc_html( $res_send_doc['title'] ); ?></h3>
+				<p><?php echo esc_html( $res_send_doc['body'] ); ?></p>
+			  </li>
+			  <?php endforeach; ?>
+			</ol>
+			<p class="pay-note">Dates, access needs, and who to invoice. We’ll wait until the stay is agreed before anyone pays a deposit.</p>
+			<p class="property__action"><a class="btn btn-gold" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'enquire' ) ); ?>"><?php esc_html_e( 'Ask for the paperwork', 'restwell-retreats' ); ?></a></p>
+		  </div>
+		  <img class="property__photo" src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/BD2-2-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 960px) 760px, 100vw" loading="lazy" decoding="async" />
 		</div>
 	  </div>
 	</section>

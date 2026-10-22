@@ -41,24 +41,50 @@ if ( empty( $guide_posts ) && empty( $siblings ) && empty( $conversion ) ) {
 			<?php endif; ?>
 		</header>
 
-		<?php if ( ! empty( $guide_posts ) ) : ?>
-			<ul class="link-list link-list--cards">
-				<?php foreach ( $guide_posts as $guide_post ) : ?>
-					<?php
-					if ( ! $guide_post instanceof WP_Post ) {
-						continue;
-					}
-					$guide_url   = get_permalink( $guide_post );
-					$guide_title = get_the_title( $guide_post );
-					if ( ! $guide_url || $guide_title === '' ) {
-						continue;
-					}
-					?>
-					<li>
-						<a href="<?php echo esc_url( $guide_url ); ?>"><?php echo esc_html( $guide_title ); ?></a>
-					</li>
+		<?php
+		// The first guide as Home's photo card, the rest listed beside it with a
+		// thumbnail each (22 Oct 2026). It was a two-column list of links.
+		$guide_items = array();
+		foreach ( $guide_posts as $guide_post ) {
+			if ( ! $guide_post instanceof WP_Post ) {
+				continue;
+			}
+			$guide_url   = get_permalink( $guide_post );
+			$guide_title = get_the_title( $guide_post );
+			if ( ! $guide_url || '' === $guide_title ) {
+				continue;
+			}
+			$guide_thumb   = function_exists( 'restwell_get_post_card_thumb' ) ? restwell_get_post_card_thumb( $guide_post->ID, 'large' ) : array( '', '' );
+			$guide_items[] = array( $guide_url, $guide_title, (string) $guide_thumb[0] );
+		}
+		$guide_lead = array_shift( $guide_items );
+		?>
+		<?php if ( $guide_lead ) : ?>
+		<div class="guide-feature">
+			<a class="care-choice care-choice--own guide-feature__lead" href="<?php echo esc_url( $guide_lead[0] ); ?>">
+				<?php if ( '' !== $guide_lead[2] ) : ?>
+				<img class="care-choice__photo" src="<?php echo esc_url( $guide_lead[2] ); ?>" alt="" loading="lazy" decoding="async" />
+				<?php endif; ?>
+				<span class="care-choice__text">
+					<span class="guide-feature__title"><?php echo esc_html( $guide_lead[1] ); ?></span>
+					<span class="care-choice__link"><?php esc_html_e( 'Read the guide', 'restwell-retreats' ); ?> <span aria-hidden="true">&rarr;</span></span>
+				</span>
+			</a>
+			<?php if ( $guide_items ) : ?>
+			<ul class="guide-feature__list" role="list">
+				<?php foreach ( $guide_items as $guide_item ) : ?>
+				<li>
+					<a href="<?php echo esc_url( $guide_item[0] ); ?>">
+						<?php if ( '' !== $guide_item[2] ) : ?>
+						<img src="<?php echo esc_url( $guide_item[2] ); ?>" alt="" width="88" height="88" loading="lazy" decoding="async" />
+						<?php endif; ?>
+						<span><?php echo esc_html( $guide_item[1] ); ?></span>
+					</a>
+				</li>
 				<?php endforeach; ?>
 			</ul>
+			<?php endif; ?>
+		</div>
 		<?php endif; ?>
 
 		<?php if ( $category_url !== '' && $category_name !== '' ) : ?>
