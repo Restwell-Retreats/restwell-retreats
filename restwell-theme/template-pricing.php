@@ -34,28 +34,6 @@ $rate_rows = array(
 		'field' => 'midweek_night',
 	),
 );
-
-// Example stays priced from the same season data: weekend/midnight split per stay.
-$example_stays = array(
-	array(
-		'name'          => __( 'Weekend', 'restwell-retreats' ),
-		'meta'          => __( '(Fri–Sun, 3 nights)', 'restwell-retreats' ),
-		'weekend_count' => 3,
-		'midweek_count' => 0,
-	),
-	array(
-		'name'          => __( 'Midweek', 'restwell-retreats' ),
-		'meta'          => __( '(Mon–Thu, 4 nights)', 'restwell-retreats' ),
-		'weekend_count' => 0,
-		'midweek_count' => 4,
-	),
-	array(
-		'name'          => __( 'Long weekend', 'restwell-retreats' ),
-		'meta'          => __( '(Fri–Mon, 4 nights)', 'restwell-retreats' ),
-		'weekend_count' => 3,
-		'midweek_count' => 1,
-	),
-);
 ?>
 
 
@@ -189,37 +167,37 @@ get_template_part(
 		  </div>
 		  <?php endforeach; ?>
 		</div>
-		<?php // The same disclosure as the care rates' "See every rate" (22 Oct 2026). ?>
-		<details class="care-index__all season-rates__more">
-		  <summary><?php esc_html_e( 'See example stays and peak dates', 'restwell-retreats' ); ?></summary>
-		  <div class="care-index__all-body">
-			<p class="care-index__group"><?php esc_html_e( 'Example stays, off-peak / peak', 'restwell-retreats' ); ?></p>
+		<?php
+		// Peak dates (22 Oct 2026, owner's pick): grouped by the year they start,
+		// one year under each season column so the section stays balanced.
+		// The example stays were dropped.
+		$peak_by_year = array();
+		foreach ( restwell_get_peak_ranges_display() as $peak_range ) {
+			$peak_by_year[ $peak_range['year'] ][] = $peak_range;
+		}
+		?>
+		<?php if ( $peak_by_year ) : ?>
+		<div class="peak-years" id="peak-dates">
+			<?php foreach ( $peak_by_year as $peak_year => $peak_ranges ) : ?>
+		  <div>
+			<h3>
+				<?php
+				/* translators: %s: a year, e.g. 2026 */
+				echo esc_html( sprintf( __( 'Peak dates, %s', 'restwell-retreats' ), $peak_year ) );
+				?>
+			</h3>
 			<dl>
-			  <?php foreach ( $example_stays as $stay ) : ?>
-					<?php
-					$stay_prices = array();
-					foreach ( array( 'off_peak', 'peak' ) as $season_key ) {
-						$stay_prices[] = restwell_format_gbp( ( $stay['weekend_count'] * $seasons[ $season_key ]['weekend_night'] ) + ( $stay['midweek_count'] * $seasons[ $season_key ]['midweek_night'] ) );
-					}
-					?>
-			  <div>
-				<dt><?php echo esc_html( $stay['name'] ); ?><span><?php echo esc_html( trim( $stay['meta'], '()' ) ); ?></span></dt>
-				<dd><?php echo esc_html( $stay_prices[0] ); ?> <span>/ <?php echo esc_html( $stay_prices[1] ); ?></span></dd>
-			  </div>
-			  <?php endforeach; ?>
-			</dl>
-			<p class="care-index__group" id="peak-dates-h"><?php esc_html_e( 'Peak season dates', 'restwell-retreats' ); ?></p>
-			<dl>
-			  <?php foreach ( restwell_get_peak_ranges_display() as $peak_range ) : ?>
+				<?php foreach ( $peak_ranges as $peak_range ) : ?>
 			  <div>
 				<dt><?php echo esc_html( $peak_range['label'] ); ?></dt>
-				<dd><span><?php echo esc_html( $peak_range['range'] ); ?></span></dd>
+				<dd><?php echo esc_html( $peak_range['range'] ); ?></dd>
 			  </div>
-			  <?php endforeach; ?>
+				<?php endforeach; ?>
 			</dl>
-			<p class="care-index__review"><?php esc_html_e( 'All other dates are off-peak.', 'restwell-retreats' ); ?></p>
 		  </div>
-		</details>
+			<?php endforeach; ?>
+		</div>
+		<?php endif; ?>
 	  </div>
 	</section>
 

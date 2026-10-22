@@ -432,9 +432,10 @@ function restwell_get_peak_season_labels_sentence(): string {
 }
 
 /**
- * Peak ranges formatted for the Pricing page list (short name + date range).
+ * Peak ranges formatted for the Pricing page list (short name + date range),
+ * with the year each range starts in so the page can group them.
  *
- * @return array<int, array{label: string, range: string}>
+ * @return array<int, array{label: string, range: string, year: string}>
  */
 function restwell_get_peak_ranges_display(): array {
 	$ranges = array();
@@ -443,6 +444,7 @@ function restwell_get_peak_ranges_display(): array {
 		$ranges[] = array(
 			'label' => $label,
 			'range' => restwell_format_peak_date_range( $range['start'], $range['end'] ),
+			'year'  => substr( (string) $range['start'], 0, 4 ),
 		);
 	}
 	return $ranges;

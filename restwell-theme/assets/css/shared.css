@@ -9869,8 +9869,19 @@ p.pay-note > .text-link {
 .season-rates__col dt { font-weight: var(--weight-semibold); color: var(--deep-teal); }
 .season-rates__col dt span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--muted-grey); }
 .season-rates__col dd { margin: 0; font-family: var(--font-serif); font-size: var(--text-2xl); color: var(--deep-teal); white-space: nowrap; }
-/* The disclosure is the care rates' one; here it lines up with the off-peak
-   column, and the peak date ranges read at body size. */
-.season-rates__more { margin-top: var(--space-6); }
-@media (min-width: 768px) { .season-rates__more .care-index__all-body { max-width: calc((100% - var(--space-12)) / 2); } }
-.season-rates__more dd > span:only-child { font-size: var(--text-md); color: var(--body-secondary); }
+/* Peak dates (22 Oct 2026, owner's pick): grouped by the year they start,
+   one year under each season column so the section stays balanced. */
+.peak-years { display: grid; gap: var(--space-6); margin-top: var(--space-10); scroll-margin-top: calc(var(--header-offset) + var(--subnav-h) + var(--space-4)); }
+@media (min-width: 768px) { .peak-years { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-12); } }
+.peak-years h3 { margin: 0 0 var(--space-3); font-size: var(--text-xl); }
+.peak-years dl { margin: 0; }
+.peak-years dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--rule);
+}
+.peak-years dt { font-weight: var(--weight-semibold); color: var(--deep-teal); }
+.peak-years dd { margin: 0; color: var(--body-secondary); white-space: nowrap; }
