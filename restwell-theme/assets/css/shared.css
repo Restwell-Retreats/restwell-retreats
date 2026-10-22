@@ -9869,27 +9869,8 @@ p.pay-note > .text-link {
 .season-rates__col dt { font-weight: var(--weight-semibold); color: var(--deep-teal); }
 .season-rates__col dt span { display: block; font-weight: 400; font-size: var(--text-sm); color: var(--muted-grey); }
 .season-rates__col dd { margin: 0; font-family: var(--font-serif); font-size: var(--text-2xl); color: var(--deep-teal); white-space: nowrap; }
+/* The disclosure is the care rates' one; here it lines up with the off-peak
+   column, and the peak date ranges read at body size. */
 .season-rates__more { margin-top: var(--space-6); }
-.season-rates__more summary {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  cursor: pointer;
-  font-weight: var(--weight-semibold);
-  color: var(--deep-teal);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-.season-rates__extra { display: grid; gap: var(--space-8); margin-top: var(--space-4); }
-@media (min-width: 768px) { .season-rates__extra { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-12); } }
-.season-rates__table { width: 100%; border-collapse: collapse; }
-.season-rates__table caption,
-.season-rates__dates h3 { margin: 0 0 var(--space-3); text-align: left; font-family: var(--font-serif); font-size: var(--text-xl); color: var(--deep-teal); }
-.season-rates__table thead th { padding: 0 0 var(--space-2); font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--muted-grey); text-align: right; }
-.season-rates__table tbody th { padding: var(--space-2) 0; text-align: left; font-weight: var(--weight-semibold); color: var(--deep-teal); border-top: 1px solid var(--rule); }
-.season-rates__table tbody th span { font-weight: 400; font-size: var(--text-sm); color: var(--muted-grey); }
-.season-rates__table td { padding: var(--space-2) 0 var(--space-2) var(--space-6); text-align: right; font-family: var(--font-serif); color: var(--deep-teal); border-top: 1px solid var(--rule); white-space: nowrap; }
-.season-rates__dates ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
-.season-rates__dates li { padding: var(--space-2) 0; border-bottom: 1px solid var(--rule); color: var(--body-secondary); }
-.season-rates__dates li span { font-weight: var(--weight-semibold); color: var(--deep-teal); }
-.season-rates__dates p { margin: var(--space-3) 0 0; font-size: var(--text-sm); color: var(--muted-grey); }
+@media (min-width: 768px) { .season-rates__more .care-index__all-body { max-width: calc((100% - var(--space-12)) / 2); } }
+.season-rates__more dd > span:only-child { font-size: var(--text-md); color: var(--body-secondary); }
