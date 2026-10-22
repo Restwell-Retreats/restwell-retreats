@@ -8067,37 +8067,6 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   .faq-item__panel > * { max-width: var(--measure-text); }
 }
 
-/* Optional care pointer (5 Oct 2026): replaces the dark teal care bands on
-   the property, how-it-works and who-it's-for pages. A light card: copy on the
-   left, the link on the right from tablet up. */
-.care-pointer__card {
-  display: grid;
-  gap: var(--space-3);
-  padding: var(--panel-pad);
-  border-radius: var(--radius-lg);
-  background: var(--card-bg);
-  box-shadow: var(--card-shadow);
-}
-.care-pointer__card > * { margin: 0; }
-/* On a subtle band the sand tint barely separates from the wash, so the card
-   goes white with a hairline, the same recipe as the other cards. */
-.band-subtle.care-pointer .care-pointer__card {
-  background: var(--white);
-  border: 1px solid color-mix(in srgb, var(--deep-teal) 10%, transparent);
-}
-.care-pointer__card h2 { font-size: var(--text-3xl); }
-.care-pointer__card .lede { max-width: var(--measure-text); color: var(--body-secondary); }
-@media (min-width: 768px) {
-  .care-pointer__card {
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: var(--space-10);
-    align-items: end;
-    padding: var(--space-8) var(--space-10);
-  }
-  .care-pointer__card > :not(.text-link) { grid-column: 1; }
-  .care-pointer__card > .text-link { grid-column: 2; grid-row: 1 / span 3; align-self: center; white-space: nowrap; }
-}
-
 /* Our Story specialists: a normal light section (was a dark teal band). */
 .specialists__copy { display: flex; flex-direction: column; gap: var(--space-4); }
 .specialists__copy > * { margin: 0; }
@@ -8106,13 +8075,8 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
 
 /* Two neighbouring sections on the same background read as one: drop the
    second one's top padding so the gap is one section's worth, not two. */
-.section-y.band-white + .section-y.band-white:not(.care-pointer),
+.section-y.band-white + .section-y.band-white,
 .section-y.band-subtle + .section-y.band-subtle { padding-top: 0; }
-/* The care card is self-contained, so it keeps a normal gap after it. */
-.section-y.care-pointer + .section-y.band-white { padding-top: var(--section-y); }
-/* ...and the same the other way round: a white section's own bottom padding is
-   already the gap above the card, so the card doesn't add a second one. */
-.section-y.band-white + .section-y.band-white.care-pointer { padding-top: 0; }
 
 /* Tablet (600-899px), visual pass 5 Oct 2026. Stacked photos take a wide
    crop so a column of near-square images doesn't fill each screen; route stops
@@ -8869,20 +8833,6 @@ p.pay-note > .text-link {
   .hero.hero--interior { --hero-pad-top-extra: var(--space-14); }
 }
 
-/* Optional-care pointer: one open row in a slim band, not a grey box adrift
-   in a full-height section. */
-.care-pointer__card,
-.band-subtle.care-pointer .care-pointer__card {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-}
-@media (min-width: 768px) {
-  .care-pointer__card,
-  .band-subtle.care-pointer .care-pointer__card { padding: 0; }
-}
-
 /* Splits whose photo bleeds but does not fill the copy height: cap the photo,
    or at 1920 a 4:3 crop of half the viewport stood 700px tall beside a few
    lines of text. */
@@ -9125,47 +9075,6 @@ p.pay-note > .text-link {
 .acc-callout--quiet .acc-callout__icon { color: var(--deep-teal); }
 .acc-callout__icon .icon { display: block; width: 100%; height: 100%; }
 
-/* Optional care band (13 Oct 2026, owner's pick): Keelie and Nikki's faces
-   beside one column of copy, so the band reads as "ask us", not as a stray
-   link. Two earlier layouts (link far right; two halves) were rejected. */
-.care-pointer__card { display: grid; gap: var(--space-3); }
-.care-pointer__card > * { margin: 0; }
-.care-faces { display: flex; }
-.care-faces__photo {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  border: 3px solid var(--white);
-  object-fit: cover;
-  object-position: 50% 28%;
-  box-shadow: 0 1px 3px rgba(12, 35, 42, 0.12);
-}
-.care-faces__photo + .care-faces__photo { margin-left: -0.9rem; }
-.band-subtle .care-faces__photo { border-color: var(--bg-subtle); }
-.care-pointer__card > .lede { max-width: var(--measure-text); color: var(--body-secondary); }
-.care-pointer__card > .text-link { justify-self: start; gap: var(--space-2); white-space: normal; }
-.care-pointer__card > .text-link .icon {
-  width: 1.1em;
-  height: 1.1em;
-  transition: transform var(--duration-fast, 0.15s) ease;
-}
-.care-pointer__card > .text-link:hover .icon { transform: translateX(0.2rem); }
-@media (min-width: 768px) {
-  .care-pointer__card {
-    grid-template-columns: auto minmax(0, 1fr);
-    column-gap: var(--space-8);
-    row-gap: var(--space-3);
-    align-items: start;
-  }
-  .care-pointer__card > .care-faces { grid-column: 1; grid-row: 1 / span 4; padding-top: var(--space-1); }
-  .care-pointer__card > :not(.care-faces) { grid-column: 2; }
-  .care-pointer__card > .text-link { grid-row: auto; align-self: start; }
-  .care-faces__photo { width: 5rem; height: 5rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .care-pointer__card > .text-link .icon { transition: none; }
-}
-
 /* Measure and leading (13 Oct 2026). Section intros were balanced, so a
    two-line intro broke at ~40 characters in a 70-character column, and set at
    1.7 leading, looser than body copy, under 1.1 headings: short, gappy lines
@@ -9173,8 +9082,7 @@ p.pay-note > .text-link {
    (pretty only avoids a lone last word) at 1.55, and heads stacked below the
    1024px split take the full column instead of a 608px box. */
 .container > .section-head .lede,
-.section-head .lede,
-.care-pointer__card .lede { text-wrap: pretty; }
+.section-head .lede { text-wrap: pretty; }
 .container > .process__head,
 .container > .section-head { max-width: none; }
 .container > .section-head > h2,
@@ -10403,7 +10311,8 @@ p.pay-note > .text-link {
   border-radius: var(--radius-lg);
   background: var(--white);
 }
-.room-tour__card h2 {
+.room-tour__card h2,
+.room-tour__card h3 {
   margin: 0 0 var(--space-4);
   font-size: clamp(1.5rem, 1.1rem + 1vw, 2.1rem);
 }
@@ -10806,4 +10715,34 @@ p.pay-note > .text-link {
     }
     .company-cards .care-choice__text > * { align-self: start; }
   }
+}
+
+/* Who It's For, who Restwell is built for (21 Oct 2026): The Property's room
+   tabs, one group per tab, with the group's checklist in the card. */
+.room-tour--groups { margin-top: var(--space-10); }
+.room-tour__card .checklist { margin: var(--space-4) 0 0; }
+
+/* Who It's For, the kit (21 Oct 2026): Home's photo cards, the wet room large
+   across two columns and the hoist and kitchen stacked in the third. The
+   smaller cards carry a deeper scrim: their words reach the bright ceiling. */
+.kit-cards {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-10) 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+.kit-cards .care-choice--own { min-height: 20rem; }
+.kit-cards .care-choice h3 { font-size: clamp(1.25rem, 1rem + 0.6vw, 1.6rem); }
+.kit-cards > li:not(:first-child)::after {
+  background: linear-gradient(to top, rgb(10 32 39 / 0.94) 0%, rgb(10 32 39 / 0.78) 55%, rgb(10 32 39 / 0.4) 100%);
+}
+@media (min-width: 768px) {
+  .kit-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(17rem, auto));
+    gap: var(--space-5) var(--space-8);
+  }
+  .kit-cards > li:first-child { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .kit-cards .care-choice--own { min-height: 0; }
 }

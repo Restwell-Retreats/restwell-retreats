@@ -144,6 +144,14 @@ $wif_personas = array(
 	),
 );
 
+// One photo and panel id per group for the tabs (21 Oct 2026), in $wif_personas order.
+$wif_persona_tabs = array(
+	array( 'families', 'journey/guest-harbour-beach.jpg', 1620, 1012, __( 'A guest in a powered wheelchair and a companion on Harbour Beach, Whitstable', 'restwell-retreats' ) ),
+	array( 'carers', 'bungalow/BD1-2-LS.jpg', 2400, 1500, __( 'The second double bedroom, for a carer or support worker', 'restwell-retreats' ) ),
+	array( 'ot', 'bungalow/BD2-6-LS.jpg', 2400, 1500, __( 'The ceiling track hoist over the profiling bed', 'restwell-retreats' ) ),
+	array( 'commissioners', 'bungalow/EX-1-LS.jpg', 2400, 1500, __( 'The adapted bungalow in Whitstable from the drive', 'restwell-retreats' ) ),
+);
+
 $wif_visual_intro = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,
@@ -163,8 +171,8 @@ $wif_kit_cards = array(
 		'slot_index'   => 0,
 	),
 	array(
-		'fallback_src' => 'bungalow/BD2-6-LS.jpg',
-		'fallback_alt' => 'Amico ceiling track hoist over the bed',
+		'fallback_src' => 'bungalow/H-1-LS.jpg',
+		'fallback_alt' => 'Amico GoLift 400 ceiling hoist on the bedroom track',
 		'title'        => function_exists( 'restwell_page_content_text' )
 			? restwell_page_content_text( $restwell_wif_id, 'wif_section_image_2_caption', 'Ceiling track hoist' )
 			: 'Ceiling track hoist',
@@ -307,31 +315,41 @@ get_template_part(
 			<h2 id="situations-h"><?php echo esc_html( $wif_audience_heading ); ?></h2>
 			<p class="lede"><?php echo esc_html( $wif_audience_intro ); ?></p>
 		  </header>
-		  <ul class="persona-list persona-list--cards persona-list--index" role="list">
-			<?php foreach ( $wif_personas as $persona ) : ?>
-			<li class="persona-list__item">
-			  <span class="icon-circle" aria-hidden="true"><?php restwell_the_icon( $persona['icon'] ); ?></span>
-			  <div>
-				<h3><?php echo esc_html( $persona['title'] ); ?></h3>
-				<?php
-				$body_paras = function_exists( 'restwell_wif_split_body_paragraphs' )
-					? restwell_wif_split_body_paragraphs( $persona['body'] )
-					: array( $persona['body'] );
-				foreach ( $body_paras as $para ) :
-					?>
-				<p><?php echo esc_html( $para ); ?></p>
+		  <?php // The Property's room tabs (21 Oct 2026): one group per tab, a photo each. It was four long text rows. ?>
+		  <div class="room-tour room-tour--groups" data-tabs>
+			<div class="room-tour__nav">
+			  <div class="room-tour__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Who it’s for', 'restwell-retreats' ); ?>" hidden>
+				<?php foreach ( $wif_personas as $wif_i => $persona ) : ?>
+				<button type="button" role="tab" id="wif-tab-<?php echo esc_attr( $wif_persona_tabs[ $wif_i ][0] ); ?>" aria-controls="wif-<?php echo esc_attr( $wif_persona_tabs[ $wif_i ][0] ); ?>" aria-selected="<?php echo 0 === $wif_i ? 'true' : 'false'; ?>"<?php echo 0 === $wif_i ? '' : ' tabindex="-1"'; ?>><?php echo esc_html( $persona['title'] ); ?></button>
 				<?php endforeach; ?>
-				<?php if ( ! empty( $persona['bullets'] ) ) : ?>
-				<ul class="checklist">
-					<?php foreach ( $persona['bullets'] as $bullet ) : ?>
-					<li><?php echo esc_html( $bullet ); ?></li>
-					<?php endforeach; ?>
-				</ul>
-				<?php endif; ?>
 			  </div>
-			</li>
-			<?php endforeach; ?>
-		  </ul>
+			</div>
+			<div class="room-tour__panels">
+			  <?php foreach ( $wif_personas as $wif_i => $persona ) : ?>
+			  <article class="room-tour__panel" id="wif-<?php echo esc_attr( $wif_persona_tabs[ $wif_i ][0] ); ?>">
+				<img class="room-tour__photo" src="<?php echo esc_url( restwell_theme_image_url( $wif_persona_tabs[ $wif_i ][1] ) ); ?>" alt="<?php echo esc_attr( $wif_persona_tabs[ $wif_i ][4] ); ?>" width="<?php echo (int) $wif_persona_tabs[ $wif_i ][2]; ?>" height="<?php echo (int) $wif_persona_tabs[ $wif_i ][3]; ?>" sizes="(min-width: 1200px) 860px, 100vw" loading="lazy" decoding="async" />
+				<div class="room-tour__card">
+				  <h3><?php echo esc_html( $persona['title'] ); ?></h3>
+					<?php
+					$body_paras = function_exists( 'restwell_wif_split_body_paragraphs' )
+						? restwell_wif_split_body_paragraphs( $persona['body'] )
+						: array( $persona['body'] );
+					foreach ( $body_paras as $para ) :
+						?>
+				  <p><?php echo esc_html( $para ); ?></p>
+					<?php endforeach; ?>
+					<?php if ( ! empty( $persona['bullets'] ) ) : ?>
+				  <ul class="checklist">
+						<?php foreach ( $persona['bullets'] as $bullet ) : ?>
+					<li><?php echo esc_html( $bullet ); ?></li>
+						<?php endforeach; ?>
+				  </ul>
+				  <?php endif; ?>
+				</div>
+			  </article>
+			  <?php endforeach; ?>
+			</div>
+		  </div>
 	  </div>
 	</section>
 
@@ -342,48 +360,34 @@ get_template_part(
 		  <h2 id="access-h">Wet room, hoist and kitchen already fitted</h2>
 		  <p class="lede"><?php echo esc_html( $wif_visual_intro ); ?></p>
 		</header>
-		<ul class="card-grid card-grid--3" role="list">
+		<?php // Home's photo cards (21 Oct 2026): the wet room large, the hoist and kitchen beside it. It was three cards in a row. ?>
+		<ul class="kit-cards" role="list">
 		  <?php foreach ( $wif_kit_cards as $kit_card ) : ?>
 				<?php
-				$slot       = $wif_gallery_slots[ $kit_card['slot_index'] ] ?? array();
-				$slot_id    = (int) ( $slot['id'] ?? 0 );
-				$slot_alt   = trim( (string) ( $slot['caption'] ?? '' ) );
-				$img_alt    = '' !== $slot_alt ? $slot_alt : $kit_card['fallback_alt'];
-				$kit_body   = $kit_card['body'];
+				$slot     = $wif_gallery_slots[ $kit_card['slot_index'] ] ?? array();
+				$slot_id  = (int) ( $slot['id'] ?? 0 );
+				$slot_alt = trim( (string) ( $slot['caption'] ?? '' ) );
+				$img_alt  = '' !== $slot_alt ? $slot_alt : $kit_card['fallback_alt'];
 				?>
-		  <li>
-			<article class="media-card">
+		  <li class="care-choice care-choice--own">
 				<?php if ( $slot_id > 0 && function_exists( 'restwell_get_property_attachment_image' ) ) : ?>
 					<?php
 					echo restwell_get_property_attachment_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper returns escaped HTML.
 						$slot_id,
 						'grid',
 						array(
-							'alt' => $img_alt,
+							'alt'   => $img_alt,
+							'class' => 'care-choice__photo',
 						)
 					);
 					?>
-			  <?php elseif ( $slot_id > 0 ) : ?>
-				  <?php
-					echo wp_get_attachment_image(
-						$slot_id,
-						'large',
-						false,
-						array(
-							'alt'      => $img_alt,
-							'loading'  => 'lazy',
-							'decoding' => 'async',
-							'width'    => 640,
-							'height'   => 480,
-						)
-					);
-					?>
-			  <?php else : ?>
-			  <img src="<?php echo esc_url( restwell_theme_image_url( $kit_card['fallback_src'] ) ); ?>" alt="<?php echo esc_attr( $kit_card['fallback_alt'] ); ?>" width="640" height="480" loading="lazy" />
-			  <?php endif; ?>
+			<?php else : ?>
+			<img class="care-choice__photo" src="<?php echo esc_url( restwell_theme_image_url( $kit_card['fallback_src'] ) ); ?>" alt="<?php echo esc_attr( $kit_card['fallback_alt'] ); ?>" width="2400" height="1500" sizes="(min-width: 768px) 720px, 100vw" loading="lazy" decoding="async" />
+			<?php endif; ?>
+			<div class="care-choice__text">
 			  <h3><?php echo esc_html( $kit_card['title'] ); ?></h3>
-			  <p><?php echo esc_html( $kit_body ); ?></p>
-			</article>
+			  <p><?php echo esc_html( $kit_card['body'] ); ?></p>
+			</div>
 		  </li>
 		  <?php endforeach; ?>
 		</ul>
@@ -402,14 +406,30 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y section-y--slim band-subtle care-pointer" id="care" aria-labelledby="care-h">
+	<?php
+	// Optional home care (21 Oct 2026): the teal card The Property and How It
+	// Works use, Keelie and Nikki by name only. It was small round faces.
+	$wif_care_team = array(
+		array( 'journey/keelie-varney.webp', 1500, 'Keelie Varney' ),
+		array( 'journey/nikki-mackay.webp', 1429, 'Nikki Mackay' ),
+	);
+	?>
+	<section class="section-y band-subtle" id="care" aria-labelledby="care-h">
 	  <div class="container">
-		<div class="care-pointer__card">
-		  <?php get_template_part( 'template-parts/care-faces' ); ?>
-		  <p class="eyebrow"><?php esc_html_e( 'Optional care', 'restwell-retreats' ); ?></p>
-		  <h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'Some groups bring their own carers, and some ask our sister company, Continuity, to cover a few visits or the nights. If you’d like their help, mention it when you enquire and they’ll give you a quote.', 'restwell-retreats' ); ?></p>
-		  <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></a>
+		<div class="care-choice care-choice--continuity care-choice--wide">
+		  <div class="care-choice__team">
+			<?php foreach ( $wif_care_team as $wif_care_person ) : ?>
+			<figure>
+			  <img src="<?php echo esc_url( restwell_theme_image_url( $wif_care_person[0] ) ); ?>" alt="" width="<?php echo (int) $wif_care_person[1]; ?>" height="2000" sizes="(min-width: 900px) 220px, 42vw" loading="lazy" decoding="async" />
+			  <figcaption><?php echo esc_html( $wif_care_person[2] ); ?></figcaption>
+			</figure>
+			<?php endforeach; ?>
+		  </div>
+		  <div class="care-choice__text">
+			<h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
+			<p><?php esc_html_e( 'Some groups bring their own carers, and some ask our sister company, Continuity, to cover a few visits or the nights. If you’d like their help, mention it when you enquire and they’ll give you a quote.', 'restwell-retreats' ); ?></p>
+			<a class="care-choice__link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?> <span aria-hidden="true">&rarr;</span></a>
+		  </div>
 		</div>
 	  </div>
 	</section>
@@ -441,41 +461,31 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle process" id="next" aria-labelledby="next-h">
+	<?php // What happens when you get in touch? (21 Oct 2026): How It Works' photo per step. ?>
+	<section class="section-y band-subtle" id="next" aria-labelledby="next-h">
 	  <div class="container">
-		<header class="section-head process__head">
+		<header class="section-head">
 		  <p class="eyebrow">Next steps</p>
 		  <h2 id="next-h">What happens when you get in touch?</h2>
 		  <p class="lede">Tell us as much or as little as you like, and we’ll do the working out at our end.</p>
 		</header>
-		<div class="process__layout">
-		  <ol class="process-list">
-			<li>
-			  <span class="process-list__index" aria-hidden="true">01</span>
-			  <div class="process-list__body">
-				<h3>Tell us what you need</h3>
-				<p class="process-list__meta">Start here</p>
-				<p>Tell us your dates, who’s coming, the chair or hoist you use, who’s paying and whether you’d like care from Continuity. There’s no deposit to pay and no sales call.</p>
-			  </div>
-			</li>
-			<li>
-			  <span class="process-list__index" aria-hidden="true">02</span>
-			  <div class="process-list__body">
-				<h3>We check it fits</h3>
-				<p class="process-list__meta">We reply</p>
-				<p>We compare what you’ve told us with our door widths and kit, and say plainly if Restwell isn’t the right house.</p>
-			  </div>
-			</li>
-			<li>
-			  <span class="process-list__index" aria-hidden="true">03</span>
-			  <div class="process-list__body">
-				<h3>Reserve your dates</h3>
-				<p class="process-list__meta">When you’re ready</p>
-				<p>Once we’ve agreed the bungalow fits, a 50% deposit holds your dates. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'how-it-works' ) ); ?>">How booking works</a> covers the rest, from the balance to arrival day.</p>
-			  </div>
-			</li>
-		  </ol>
-		</div>
+		<ol class="step-photos">
+		  <li>
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
+			<h3>Tell us what you need</h3>
+			<p>Tell us your dates, who’s coming, the chair or hoist you use, who’s paying and whether you’d like care from Continuity. There’s no deposit to pay and no sales call.</p>
+		  </li>
+		  <li>
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EQU-2-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
+			<h3>We check it fits</h3>
+			<p>We compare what you’ve told us with our door widths and kit, and say plainly if Restwell isn’t the right house.</p>
+		  </li>
+		  <li>
+			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-2-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
+			<h3>Reserve your dates</h3>
+			<p>Once we’ve agreed the bungalow fits, a 50% deposit holds your dates. <a class="text-link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'how-it-works' ) ); ?>">How booking works</a> covers the rest, from the balance to arrival day.</p>
+		  </li>
+		</ol>
 	  </div>
 	</section>
 	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
