@@ -2778,7 +2778,12 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   :is(.container.split, .container > .split).split--flip > .split__media:last-child { margin-left: calc(-1 * var(--bleed)); }
   :is(.container.split, .container > .split):not(.split--flip) > .split__media:last-child,
   :is(.container.split, .container > .split).split--flip > .split__media:first-child { margin-right: calc(-1 * var(--bleed)); }
-  :is(.container.split, .container > .split) > .split__media img { border-radius: 0; }
+  /* Rounded on the text side only (22 Oct 2026, owner's pick): the edge that
+     runs off the page stays square, so the photo still reads as bleeding. */
+  :is(.container.split, .container > .split):not(.split--flip) > .split__media:first-child img,
+  :is(.container.split, .container > .split).split--flip > .split__media:last-child img { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  :is(.container.split, .container > .split):not(.split--flip) > .split__media:last-child img,
+  :is(.container.split, .container > .split).split--flip > .split__media:first-child img { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
 }
 @media (min-width: 900px) {
   /* Equal halves. At 1.05/0.95 whichever child came first took the wider
