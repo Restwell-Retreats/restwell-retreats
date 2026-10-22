@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 95;
+const RESTWELL_SCHEMA_VERSION = 96;
 
 
 /**
@@ -3800,6 +3800,33 @@ function restwell_migrate_short_intros_v95() {
 }
 
 /**
+ * Optional Care, shorter hero and day intro (22 Oct 2026, owner's notes): the
+ * hero ran to four lines, and the day intro left three words on a second
+ * line. Same rule as v85: a stored value is replaced only while it still
+ * equals the old seed.
+ */
+function restwell_migrate_care_intros_v96() {
+	if ( get_option( 'restwell_care_intros_v96', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_care_intros_v96', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'optional-care' => array(
+				'care_intro'    => array(
+					'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.',
+					'Our sister company, Continuity of Care Services, can come in while you’re here if you ask. Tell us what you need and we’ll check who’s free.',
+				),
+				'care_day_lede' => array(
+					'Tell us what a normal day looks like at home, and Continuity will plan the help around it.',
+					'Tell us what a normal day looks like, and Continuity will plan around it.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3930,6 +3957,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_our_story_plain_words_v93',
 		'restwell_our_story_build_card_v94',
 		'restwell_short_intros_v95',
+		'restwell_care_intros_v96',
 	);
 }
 
@@ -4106,6 +4134,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_build_card_v94', 132 );
 	add_action( 'init', 'restwell_migrate_short_intros_v95', 138 );
 	add_action( 'after_switch_theme', 'restwell_migrate_short_intros_v95', 133 );
+	add_action( 'init', 'restwell_migrate_care_intros_v96', 139 );
+	add_action( 'after_switch_theme', 'restwell_migrate_care_intros_v96', 134 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

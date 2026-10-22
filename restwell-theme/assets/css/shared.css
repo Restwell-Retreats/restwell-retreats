@@ -9514,7 +9514,12 @@ label .text-link {
   }
   .care-choices--foot .care-choice__text { display: block; grid-row: auto; }
 }
-.property__action { margin: var(--space-6) 0 0; }
+/* Funding, what we send (22 Oct 2026, owner's note "spacing uneven"): every
+   block in the panel one step apart. The button's own 24px margin on top of
+   the panel gap left it 44px below the note, so the note read as part of the
+   list and the button sat on its own. */
+#help .property__copy { --property-copy-gap: var(--space-6); }
+.property__action { margin: 0; }
 
 /* Further reading (22 Oct 2026): the first guide as Home's photo card, the
    rest beside it as a list with a thumbnail each. Funding and Whitstable. */

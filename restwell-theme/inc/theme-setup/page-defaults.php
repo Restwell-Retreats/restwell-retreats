@@ -766,10 +766,10 @@ function restwell_get_care_page_defaults() {
 	return array(
 		'care_label'   => 'Optional care',
 		'care_heading' => 'Optional home care during your stay',
-		'care_intro'   => 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.',
+		'care_intro'   => 'Our sister company, Continuity of Care Services, can come in while you’re here if you ask. Tell us what you need and we’ll check who’s free.',
 
 		'care_day_heading' => 'Morning, daytime and overnight help',
-		'care_day_lede' => 'Tell us what a normal day looks like at home, and Continuity will plan the help around it.',
+		'care_day_lede' => 'Tell us what a normal day looks like, and Continuity will plan around it.',
 		'care_day_1_time' => 'Morning',
 		'care_day_1_body' => 'Help getting up, washed and dressed at the time you’d get up at home. The shower chair is already in the wet room.',
 		'care_day_2_time' => 'In the day',

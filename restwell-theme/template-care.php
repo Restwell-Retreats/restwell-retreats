@@ -21,9 +21,9 @@ $restwell_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_care_id,
 		'care_intro',
-		'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.'
+		'Our sister company, Continuity of Care Services, can come in while you’re here if you ask. Tell us what you need and we’ll check who’s free.'
 	)
-	: 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here, but only if you ask. How much help they can give depends on what you need and who’s free, so we’ll talk it through with you first.';
+	: 'Our sister company, Continuity of Care Services, can come in while you’re here if you ask. Tell us what you need and we’ll check who’s free.';
 $restwell_care_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_care_id, 'care_label', '' )
 	: '';
@@ -35,7 +35,7 @@ $care_txt = static function ( $key, $fallback ) use ( $restwell_care_id ) {
 };
 
 $care_day_heading = $care_txt( 'care_day_heading', 'Morning, daytime and overnight help' );
-$care_day_lede = $care_txt( 'care_day_lede', 'Tell us what a normal day looks like at home, and Continuity will plan the help around it.' );
+$care_day_lede = $care_txt( 'care_day_lede', 'Tell us what a normal day looks like, and Continuity will plan around it.' );
 $care_who_heading = $care_txt( 'care_who_heading', 'Rated Good by the Care Quality Commission' );
 $care_who_lede = $care_txt( 'care_who_lede', 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.' );
 $care_cqc_link_label = $care_txt( 'care_cqc_link_label', 'Read the CQC inspection profile' );
