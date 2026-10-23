@@ -26,9 +26,9 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_subheading',
-		'A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.'
+		'A private, single-storey bungalow in Kent, a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.'
 	)
-	: 'A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.';
+	: 'A private, single-storey bungalow in Kent, a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.';
 
 $hero_cta_primary_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'hero_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )

@@ -65,7 +65,7 @@ function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
 		'hero_heading'             => 'Accessible holidays in Whitstable',
-		'hero_subheading'          => 'A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.',
+		'hero_subheading'          => 'A private, single-storey bungalow in Kent, a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'Enquire',
 		'hero_cta_primary_url'     => '/enquire/',
@@ -205,7 +205,7 @@ function restwell_get_property_page_defaults() {
 
 		'prop_hero_label'               => 'The bungalow',
 		'prop_hero_heading'             => 'Inside the accessible bungalow, room by room',
-		'prop_hero_subtitle'            => 'Here’s a walk round Restwell, room by room. It’s a single-storey adapted bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.',
+		'prop_hero_subtitle'            => 'Here’s a walk round Restwell, room by room. It’s a single-storey accessible holiday bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -465,7 +465,7 @@ function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
 		'acc_heading' => 'The wet room, the hoists, and every measurement',
-		'acc_intro'   => 'This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable. Check it against your own needs before you book.',
+		'acc_intro'   => 'This is the full access statement for Restwell, our adapted holiday bungalow in Whitstable with a wet room and hoists. Check it against your own needs before you book.',
 
 		'acc_stat_1_label' => 'Front door, clear opening',
 		'acc_stat_1_value' => '965mm',
@@ -663,7 +663,7 @@ function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'         => 'Who it is for',
 		'wif_heading'       => 'Is this the right house for your group?',
-		'wif_intro'         => 'Restwell is a private holiday home for disabled adults, their families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.',
+		'wif_intro'         => 'Restwell is a private holiday home for disabled adults, their carers, families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.',
 		'wif_hero_image_id' => 0,
 
 		'wif_audience_heading' => 'Who Restwell is built for',
@@ -766,7 +766,7 @@ function restwell_get_care_page_defaults() {
 	return array(
 		'care_label'   => 'Optional care',
 		'care_heading' => 'Optional home care during your stay',
-		'care_intro'   => 'Our sister company, Continuity of Care Services, can come in while you’re here if you ask. Tell us what you need and we’ll check who’s free.',
+		'care_intro'   => 'If you’d like a holiday with care provided, our sister company, Continuity of Care Services, can come in while you’re here. Tell us what you need and we’ll check who’s free.',
 
 		'care_day_heading' => 'Morning, daytime and overnight help',
 		'care_day_lede' => 'Tell us what a normal day looks like, and Continuity will plan around it.',

@@ -318,6 +318,14 @@ Batches A and B should be live **before early January 2027**, when holiday searc
 
 **Batch B done (23 Oct 2026).** The section 4 titles, metas and H1s are in, and so are the H2 fixes. "Optional home care" is now worded three ways (Home, The Property, Who It's For), and "The house in numbers" and the "… FAQ" headings are renamed. Every main page now has no sentence over 20 words and no paragraph over three sentences or 45 words. The exceptions are guest quotes (kept word for word), spec lines in the equipment register and card labels. Rendered Flesch: Home 74.6, The Property 77.5, How It Works 85.1, Accessibility 78.8, Who It's For 73.7, Our Story 72.4, Optional Care 72.4, Funding 72.0 (73.2 without the four guide links only the local site has), Pricing 80.6, FAQ 80.4, Enquire 93.7, Whitstable 75.7. The blog index scores 77.0 for its intro and the five kept guides' excerpts. Who It's For names learning disabilities alongside everyone else and links to the Revitalise guide. Whitstable answers its question under the H1 and links to the Kent beaches guide. Funding's direct payments link now reads as the question. The route cards say "bungalow" rather than "rent", and the Ombudsman has its full name. Migration v99 moves 86 stored fields and the blog intro, each only while it still holds a known older value.
 
+**Batch B SEO pass (23 Oct 2026).** Each page was checked for its section 1 primary in the title, H1, meta and opening lines, and against the linking map, the schema plan and the head tags. Canonicals, Open Graph tags and JSON-LD were already valid on all 13 pages. Fixed:
+- **Home → Accessibility:** this link was missing from the body. The "Will a wheelchair actually fit?" answer now links "wet room and hoist measurements".
+- **Intros:** Home now says Kent, and The Property says "accessible holiday bungalow". Who It's For names carers again, Optional Care opens with "a holiday with care provided", and Accessibility mentions the wet room and hoists. Funding's intro was left alone because the change cost it its 72.
+- **Focus keyphrases:** the admin keyphrases now match the section 1 primaries.
+- **Schema:** The Property has a `House` node (2 bedrooms, up to 5 guests, its amenities), and the amenities moved off the Service, where schema.org doesn't allow them. Optional Care's provider carries Continuity's CQC location ID and links to its CQC page.
+
+Migration v100 moves the intros and keyphrases (15 fields).
+
 ---
 
 ## Sources

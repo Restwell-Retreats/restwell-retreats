@@ -155,4 +155,27 @@ class SeoOnpageEeatTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringNotContainsString( 'fully accessible', $php );
 		$this->assertStringNotContainsString( 'fully-accessible', $php );
 	}
+
+	public function test_blueprint_schema_additions() {
+		// The Property: the bungalow as a House with its bedrooms and guest numbers.
+		$lodging = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo/jsonld-lodging.php' );
+		$this->assertStringContainsString( "'@type'            => 'House',", $lodging );
+		$this->assertStringContainsString( "'numberOfBedrooms' => 2,", $lodging );
+		$this->assertStringContainsString( "'maxValue' => 5,", $lodging );
+		// Optional Care: Continuity named by its CQC location, never as MedicalBusiness.
+		$pages = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo/jsonld-pages.php' );
+		$this->assertStringContainsString( "'propertyID' => 'CQC location ID',", $pages );
+		$this->assertStringContainsString( "'value'      => '1-2624556588',", $pages );
+		$this->assertStringNotContainsString( 'MedicalBusiness', $pages . $lodging );
+	}
+
+	public function test_home_links_to_the_accessibility_hub_and_keyphrases_match_the_blueprint() {
+		$faq = (string) file_get_contents( dirname( __DIR__ ) . '/inc/homepage-faq.php' );
+		$this->assertStringContainsString( "restwell_nav_resolve_page_url( 'accessibility' )", $faq );
+		$this->assertStringContainsString( "'wet room and hoist measurements'", $faq );
+		$seed = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo-content-seed-meta.php' );
+		foreach ( array( 'accessible holiday cottages kent', 'disabled holiday cottage with wet room and hoists', 'holidays for disabled adults and carers', 'holidays with care provided', 'funding and grants for disabled holidays', 'is whitstable wheelchair friendly' ) as $kp ) {
+			$this->assertStringContainsString( "'focus_keyphrase'  => '" . $kp . "',", $seed );
+		}
+	}
 }

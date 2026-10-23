@@ -219,9 +219,15 @@ function restwell_output_jsonld_care_service() {
 			'url'         => $url,
 			'description' => $desc,
 			'provider'    => array(
-				'@type' => 'Organization',
-				'name'  => 'Continuity of Care Services',
-				'url'   => 'https://www.continuitycareservices.co.uk/',
+				'@type'      => 'Organization',
+				'name'       => 'Continuity of Care Services',
+				'url'        => 'https://www.continuitycareservices.co.uk/',
+				'sameAs'     => 'https://www.cqc.org.uk/location/1-2624556588',
+				'identifier' => array(
+					'@type'      => 'PropertyValue',
+					'propertyID' => 'CQC location ID',
+					'value'      => '1-2624556588',
+				),
 			),
 			'areaServed'  => array(
 				'@type' => 'Place',

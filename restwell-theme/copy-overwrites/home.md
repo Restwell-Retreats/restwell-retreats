@@ -24,7 +24,7 @@ Accessible holidays in Whitstable
 
 ## Opening paragraph (print directly under the H1, before the welcome)
 
-A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.
+A private, single-storey bungalow in Kent, a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.
 
 ## Hero proof line
 
@@ -32,7 +32,7 @@ One named Google review, or a rating and review count, inside the first screen. 
 
 ## Intro (`hero_subheading`)
 
-A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.
+A private, single-storey bungalow in Kent, a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.
 
 ## Hero CTAs
 

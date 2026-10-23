@@ -49,7 +49,7 @@ $prop_paras = static function ( $text ) {
 $restwell_prop_heading = $prop_heading( 'prop_hero_heading', 'Inside the accessible bungalow, room by room' );
 $restwell_prop_intro   = $prop_txt(
 	'prop_hero_subtitle',
-	'Here’s a walk round Restwell, room by room. It’s a single-storey adapted bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.'
+	'Here’s a walk round Restwell, room by room. It’s a single-storey accessible holiday bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.'
 );
 
 $prop_bedrooms_heading = $prop_heading( 'prop_bedrooms_section_heading', 'Two bedrooms and a sofa bed, for up to five' );

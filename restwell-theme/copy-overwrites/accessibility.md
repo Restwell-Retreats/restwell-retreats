@@ -18,7 +18,7 @@ The wet room, the hoists, and every measurement
 
 ## Intro (`acc_intro`)
 
-This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable. Check it against your own needs before you book.
+This is the full access statement for Restwell, our adapted holiday bungalow in Whitstable with a wet room and hoists. Check it against your own needs before you book.
 
 ## The house in numbers
 

@@ -373,7 +373,6 @@ function restwell_output_jsonld_accommodation_service() {
 			__( 'Accessible travel', 'restwell-retreats' ),
 			__( 'Self-catering holiday', 'restwell-retreats' ),
 		),
-		'amenityFeature' => $amenities,
 	);
 
 	if ( ! empty( $image_urls ) ) {
@@ -383,4 +382,32 @@ function restwell_output_jsonld_accommodation_service() {
 	$schema = restwell_jsonld_with_same_as( $schema );
 
 	restwell_print_jsonld( $schema );
+
+	// The bungalow itself (SEO blueprint, 23 Oct 2026). Bedrooms, guest numbers
+	// and amenities belong on an Accommodation, not on the Service above.
+	$house = array(
+		'@context'         => 'https://schema.org',
+		'@type'            => 'House',
+		'@id'              => trailingslashit( $permalink ) . '#house',
+		'name'             => __( 'Restwell, an accessible holiday bungalow in Whitstable', 'restwell-retreats' ),
+		'url'              => $permalink,
+		'numberOfBedrooms' => 2,
+		'occupancy'        => array(
+			'@type'    => 'QuantitativeValue',
+			'maxValue' => 5,
+			'unitText' => __( 'guests', 'restwell-retreats' ),
+		),
+		'petsAllowed'      => true,
+		'amenityFeature'   => $amenities,
+		'address'          => array(
+			'@type'           => 'PostalAddress',
+			'addressLocality' => 'Whitstable',
+			'addressRegion'   => 'Kent',
+			'addressCountry'  => 'GB',
+		),
+	);
+	if ( ! empty( $image_urls ) ) {
+		$house['image'] = count( $image_urls ) === 1 ? $image_urls[0] : $image_urls;
+	}
+	restwell_print_jsonld( $house );
 }

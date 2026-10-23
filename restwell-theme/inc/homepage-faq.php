@@ -30,11 +30,13 @@ function restwell_get_homepage_faq_defaults(): array {
 	);
 	$q1_html = '<p>' . esc_html( $q1_text ) . '</p>';
 
-	$q2_text = __(
-		'The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. Every measurement is on the Accessibility page, flattering or not, so you can check your own chair first.',
-		'restwell-retreats'
-	);
-	$q2_html = '<p>' . esc_html( $q2_text ) . '</p>';
+	$q2_lead = __( 'The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. The', 'restwell-retreats' );
+	$q2_link = __( 'wet room and hoist measurements', 'restwell-retreats' );
+	$q2_tail = __( 'are published too, flattering or not, so you can check your own kit first.', 'restwell-retreats' );
+	$q2_text = $q2_lead . ' ' . $q2_link . ' ' . $q2_tail;
+	// Home's one in-body link to the Accessibility hub (blueprint linking map).
+	$q2_url  = function_exists( 'restwell_nav_resolve_page_url' ) ? restwell_nav_resolve_page_url( 'accessibility' ) : home_url( '/accessibility/' );
+	$q2_html = '<p>' . esc_html( $q2_lead ) . ' <a class="text-link" href="' . esc_url( $q2_url ) . '">' . esc_html( $q2_link ) . '</a> ' . esc_html( $q2_tail ) . '</p>';
 
 	$q3_text = __(
 		'Yes, Continuity of Care Services can come in while you’re staying. They’ll give you a quote once you’ve talked through what you need. Just mention it when you enquire, or ring us on 01622 809881.',

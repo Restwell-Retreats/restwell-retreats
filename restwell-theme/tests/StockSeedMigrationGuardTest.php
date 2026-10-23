@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 99;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 100;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -65,6 +65,21 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_a_posts_v97',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_page_copy_batch_b_v99',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_page_copy_batch_b_v99',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_page_seo_batch_b_v100',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_page_seo_batch_b_v100',", $source );
+	}
+
+	public function test_batch_b_seo_pass_only_replaces_the_shipped_values() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_page_seo_batch_b_v100' );
+		$this->assertStringContainsString( 'restwell_replace_stale_page_copy( $changes );', $body );
+		$this->assertStringContainsString( "update_option( 'restwell_page_seo_batch_b_v100', '1'", $body );
+		$this->assertStringContainsString( "'focus_keyphrase' => array( 'accessible holiday cottages by the sea', 'accessible holiday cottages kent' ),", $body );
+		// The new intros are what a fresh install seeds.
+		$defaults = (string) file_get_contents( dirname( __DIR__ ) . '/inc/theme-setup/page-defaults.php' );
+		foreach ( array( 'a private holiday home for disabled adults, their carers, families and friends.', 'If you’d like a holiday with care provided,', 'our adapted holiday bungalow in Whitstable with a wet room and hoists.' ) as $line ) {
+			$this->assertStringContainsString( $line, $body );
+			$this->assertStringContainsString( $line, $defaults );
+		}
 	}
 
 	public function test_batch_b_copy_only_replaces_known_old_values() {
