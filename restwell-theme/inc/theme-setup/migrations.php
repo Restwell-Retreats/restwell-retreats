@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 101;
+const RESTWELL_SCHEMA_VERSION = 102;
 
 
 /**
@@ -4763,6 +4763,188 @@ function restwell_migrate_legal_plain_english_v101() {
 }
 
 /**
+ * Catch-up (23 Oct 2026). The October migrations each swap a field only while
+ * it holds the exact wording they expect, so a site whose fields came from an
+ * older seed, a different route through the migrations or a pasted brief can
+ * be left showing September copy. A rehearsal on a September database left 74
+ * fields behind. This brings every page field to the current seed while its
+ * stored text is any wording the theme has ever shipped (seed-history.php);
+ * text typed in wp-admin matches no fingerprint and is kept. Photos and their
+ * captions and alt text are left alone so they keep matching each other.
+ */
+function restwell_migrate_seed_catch_up_v102() {
+	if ( get_option( 'restwell_seed_catch_up_v102', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_seed_catch_up_v102', '1', false );
+
+	$history = require __DIR__ . '/seed-history.php';
+	if ( ! is_array( $history ) ) {
+		return;
+	}
+	$fingerprint = static function ( $text ) {
+		return substr( md5( trim( str_replace( array( "\r\n", "\r" ), "\n", (string) $text ) ) ), 0, 16 );
+	};
+	$is_ours     = static function ( $key, $stored, $target ) use ( $history, $fingerprint ) {
+		return $fingerprint( $stored ) === $fingerprint( $target )
+			|| ( isset( $history[ $key ] ) && in_array( $fingerprint( $stored ), $history[ $key ], true ) );
+	};
+	$catch_up    = static function ( $page_id, array $targets ) use ( $history, $fingerprint, $is_ours ) {
+		foreach ( $targets as $key => $target ) {
+			if ( ! is_string( $target ) || ! isset( $history[ $key ] ) || ! metadata_exists( 'post', $page_id, $key ) ) {
+				continue;
+			}
+			$stored = (string) get_post_meta( $page_id, $key, true );
+			if ( '' === trim( $stored ) || $fingerprint( $stored ) === $fingerprint( $target ) || ! $is_ours( $key, $stored, $target ) ) {
+				continue;
+			}
+			// A question and its answer move together: if either was edited by
+			// hand, leave both, so an answer never sits under the wrong question.
+			if ( preg_match( '/^(.+_\d+)_(q|a)$/', $key, $m ) ) {
+				$partner = $m[1] . '_' . ( 'q' === $m[2] ? 'a' : 'q' );
+				$theirs  = (string) get_post_meta( $page_id, $partner, true );
+				if ( isset( $targets[ $partner ] ) && '' !== trim( $theirs ) && ! $is_ours( $partner, $theirs, (string) $targets[ $partner ] ) ) {
+					continue;
+				}
+			}
+			update_post_meta( $page_id, $key, wp_slash( $target ) );
+		}
+	};
+
+	// Page fields: the current seed for each template.
+	$templates = array(
+		'template-property.php'             => 'restwell_get_property_page_defaults',
+		'template-how-it-works.php'         => 'restwell_get_how_it_works_page_defaults',
+		'template-accessibility.php'        => 'restwell_get_accessibility_page_defaults',
+		'template-who-its-for.php'          => 'restwell_get_who_its_for_page_defaults',
+		'template-whitstable-guide.php'     => 'restwell_get_whitstable_guide_page_defaults',
+		'template-faq.php'                  => 'restwell_get_faq_page_defaults',
+		'template-enquire.php'              => 'restwell_get_enquire_page_defaults',
+		'template-pricing.php'              => 'restwell_get_pricing_page_defaults',
+		'template-resources.php'            => 'restwell_get_resources_page_defaults',
+		'template-our-story.php'            => 'restwell_get_our_story_page_defaults',
+		'template-care.php'                 => 'restwell_get_care_page_defaults',
+		'template-privacy-policy.php'       => 'restwell_get_privacy_policy_page_defaults',
+		'template-terms-and-conditions.php' => 'restwell_get_terms_conditions_page_defaults',
+		'template-accessibility-policy.php' => 'restwell_get_accessibility_policy_page_defaults',
+	);
+	foreach ( $templates as $template => $defaults_fn ) {
+		if ( ! function_exists( $defaults_fn ) ) {
+			continue;
+		}
+		$ids = get_posts(
+			array(
+				'post_type'      => 'page',
+				'post_status'    => array( 'publish', 'draft', 'private' ),
+				'meta_key'       => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+				'meta_value'     => $template, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
+			)
+		);
+		foreach ( $ids as $page_id ) {
+			$catch_up( (int) $page_id, (array) call_user_func( $defaults_fn ) );
+		}
+	}
+	$front = (int) get_option( 'page_on_front', 0 );
+	if ( $front > 0 && function_exists( 'restwell_get_theme_setup_defaults' ) ) {
+		$catch_up( $front, (array) restwell_get_theme_setup_defaults() );
+	}
+
+	// Titles, metas and keyphrases as the October batches left them.
+	$seo = array(
+		'home' => array(
+			'meta_title' => 'Accessible holiday cottage in Whitstable, Kent, sleeps five',
+			'meta_description' => 'A private bungalow by the sea in Whitstable, Kent, with a level wet room and ceiling hoist fitted. It sleeps five, and our sister company can add care.',
+			'focus_keyphrase' => 'accessible holiday cottages kent',
+		),
+		'the-property' => array(
+			'meta_title' => 'Inside the accessible holiday bungalow in Whitstable',
+			'meta_description' => 'A room-by-room look round the bungalow: two bedrooms, a level-access wet room, a kitchen you can wheel under and a level garden. It sleeps up to five.',
+			'focus_keyphrase' => 'accessible holiday bungalow',
+		),
+		'how-it-works' => array(
+			'meta_title' => 'How to book a stay at Restwell, step by step',
+			'meta_description' => 'From your first message to the front door: how we check the bungalow fits, when the deposit is due and what happens when you arrive on the day.',
+			'focus_keyphrase' => 'how to book a stay at restwell',
+		),
+		'accessibility' => array(
+			'meta_title' => 'A disabled holiday cottage with a wet room and hoist',
+			'meta_description' => 'Exact access details: a 965mm front door, 926mm inside doors, and hoists rated to 180kg. There’s also a profiling bed and a level wet room.',
+			'focus_keyphrase' => 'disabled holiday cottage with wet room and hoists',
+		),
+		'who-its-for' => array(
+			'meta_title' => 'Holidays for disabled adults and their carers',
+			'meta_description' => 'A private adapted bungalow in Whitstable for disabled adults, their families and carers, in groups of up to five. Check the measurements before you book.',
+			'focus_keyphrase' => 'holidays for disabled adults and carers',
+		),
+		'our-story' => array(
+			'meta_title' => 'Why we built Restwell, and who Continuity are',
+			'meta_description' => 'Why we built Restwell, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.',
+			'focus_keyphrase' => 'restwell retreats',
+		),
+		'optional-care' => array(
+			'meta_title' => 'A holiday with care provided in Whitstable, if you want it',
+			'meta_description' => 'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Ask on the same enquiry as the house, or call 01622 809881.',
+			'focus_keyphrase' => 'holidays with care provided',
+		),
+		'funding-and-support' => array(
+			'meta_title' => 'Funding and grants for a disabled holiday',
+			'meta_description' => 'Holiday grants for disabled adults and carers, plus council and NHS funding. Here’s what each covers, and the paperwork we can send your funder.',
+			'focus_keyphrase' => 'funding and grants for disabled holidays',
+		),
+		'pricing' => array(
+			'meta_title' => 'Accessible holiday prices for the Whitstable bungalow',
+			'meta_description' => 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, and you can book a single night. The access equipment is included in the price.',
+			'focus_keyphrase' => 'restwell retreats prices',
+		),
+		'faq' => array(
+			'meta_title' => 'Restwell FAQ: the questions guests ask before booking',
+			'meta_description' => 'Straight answers to what people ask before booking, from door widths and hoists to home care, prices and who can pay, each linked to the page with more.',
+			'focus_keyphrase' => 'restwell faq',
+		),
+		'enquire' => array(
+			'meta_title' => 'Contact Restwell about a stay in Whitstable',
+			'meta_description' => 'Call 01622 809881, email or use the form to ask about dates, access or care. We aim to reply within 48 hours, and there’s no deposit until it fits.',
+			'focus_keyphrase' => 'contact restwell retreats',
+		),
+		'whitstable-area-guide' => array(
+			'meta_title' => 'Is Whitstable wheelchair friendly? A local access guide',
+			'meta_description' => 'In parts, and we’ll tell you which. Tankerton’s promenade is level, the harbour is step-free with a Changing Places toilet, and the main beach is shingle.',
+			'focus_keyphrase' => 'is whitstable wheelchair friendly',
+		),
+		'blog' => array(
+			'meta_title' => 'Accessible travel guides from a Whitstable bungalow',
+			'meta_description' => 'Guides written from one adapted bungalow in Whitstable: Kent coast days out, how to pay for a break, and how to check an access statement before you book.',
+			'focus_keyphrase' => 'accessible travel guides',
+		),
+		'privacy-policy' => array(
+			'meta_title' => 'Restwell Retreats privacy policy',
+			'meta_description' => 'What we collect when you enquire or book, and how long we keep it. We also cover cookies and your rights under UK GDPR.',
+			'focus_keyphrase' => 'restwell retreats privacy policy',
+		),
+		'terms-and-conditions' => array(
+			'meta_title' => 'Restwell Retreats booking terms and conditions',
+			'meta_description' => 'The terms for booking the bungalow: deposits, cancelling and changing dates. They also cover guest numbers, the access kit and what happens if we cancel.',
+			'focus_keyphrase' => 'restwell retreats terms and conditions',
+		),
+		'accessibility-policy' => array(
+			'meta_title' => 'Restwell Retreats website accessibility statement',
+			'meta_description' => 'How we build and test this website against WCAG 2.2 AA, and the gaps we know about. Ask for any page in a format that suits you.',
+			'focus_keyphrase' => 'restwell retreats website accessibility statement',
+		),
+	);
+	if ( function_exists( 'restwell_page_id_for_stock_slug' ) ) {
+		foreach ( $seo as $slug => $targets ) {
+			$page_id = restwell_page_id_for_stock_slug( $slug );
+			if ( $page_id > 0 ) {
+				$catch_up( $page_id, $targets );
+			}
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -4899,6 +5081,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_page_copy_batch_b_v99',
 		'restwell_page_seo_batch_b_v100',
 		'restwell_legal_plain_english_v101',
+		'restwell_seed_catch_up_v102',
 	);
 }
 
@@ -5087,6 +5270,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_page_seo_batch_b_v100', 138 );
 	add_action( 'init', 'restwell_migrate_legal_plain_english_v101', 144 );
 	add_action( 'after_switch_theme', 'restwell_migrate_legal_plain_english_v101', 139 );
+	add_action( 'init', 'restwell_migrate_seed_catch_up_v102', 145 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seed_catch_up_v102', 140 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
