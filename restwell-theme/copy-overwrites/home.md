@@ -12,11 +12,11 @@
 
 ## Title
 
-Accessible holiday cottage in Whitstable, sleeps five
+Accessible holiday cottage in Whitstable, Kent, sleeps five
 
 ## Meta description
 
-A private bungalow in Whitstable with a level wet room and ceiling hoist. It sleeps five, and you can add home care from our sister company if you’d like.
+A private bungalow by the sea in Whitstable, Kent, with a level wet room and ceiling hoist fitted. It sleeps five, and our sister company can add care.
 
 ## H1 (`hero_heading`)
 
@@ -24,7 +24,7 @@ Accessible holidays in Whitstable
 
 ## Opening paragraph (print directly under the H1, before the welcome)
 
-A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.
+A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.
 
 ## Hero proof line
 
@@ -32,7 +32,7 @@ One named Google review, or a rating and review count, inside the first screen. 
 
 ## Intro (`hero_subheading`)
 
-A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.
+A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.
 
 ## Hero CTAs
 
@@ -51,7 +51,7 @@ H2: A private bungalow that sleeps five
 
 It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.
 
-Inside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.
+Inside there are two bedrooms and a double sofa bed in the conservatory, so up to five can stay. You can book from a single night, and we’ll set the bedroom up for you. We’ll send the address once your stay is confirmed.
 
 See the rooms → `/the-property/`
 Door widths and the hoist → `/accessibility/`
@@ -71,12 +71,12 @@ H2: Living room, bedroom and wet room
 
 ## Optional home care
 
-H2: Optional home care
+H2: Home care from our sister company
 
 How you handle care on holiday is up to you, and most guests do one of two things.
 
-- **Bring your own support.** Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.
-- **Add care from Continuity.** Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.
+- **Bring your own support.** Plenty of guests bring their own carer or PA, or manage the way they do at home. The second bedroom gives a carer somewhere proper to sleep.
+- **Add care from Continuity.** Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC. We share an office and a phone number, so one call covers the house and the care.
 
 How home care works → `/optional-care/`
 
@@ -87,13 +87,13 @@ How home care works → `/optional-care/`
 H2: Common questions before booking
 
 1. **Is Restwell a care home?**
-   No. It’s a private bungalow you rent as a holiday, so the whole house is yours and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity, can arrange it.
+   No, it’s a private bungalow you rent as a holiday. The whole house is yours, and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity, can arrange it.
 
 2. **Will a wheelchair actually fit?**
-   The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. Every measurement is on the Accessibility page, including the ones that aren’t flattering, so you can check your own chair before you book.
+   The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. Every measurement is on the Accessibility page, flattering or not, so you can check your own chair first.
 
 3. **Can we add home care?**
-   Yes. Continuity of Care Services can come in while you’re staying, and they’ll give you a quote once you’ve talked through what you need. Just mention it when you enquire, or ring us on 01622 809881.
+   Yes, Continuity of Care Services can come in while you’re staying. They’ll give you a quote once you’ve talked through what you need. Just mention it when you enquire, or ring us on 01622 809881.
 
 ## CTA
 

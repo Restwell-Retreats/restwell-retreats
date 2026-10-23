@@ -16,7 +16,7 @@ Ask us about a stay
 
 ## Intro (`enq_intro`)
 
-Tell us your dates and what you need from the house, and ask about care on the same form if you’d like it. We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure it fits.
+Tell us your dates and what you need from the house. You can ask about care on the same form, too. We aim to reply within 48 hours, and there’s no deposit until you’re sure it fits.
 
 ## Form
 

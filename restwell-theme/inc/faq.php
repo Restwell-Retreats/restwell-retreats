@@ -241,12 +241,12 @@ function restwell_get_how_it_works_faq_defaults(): array {
 		),
 		array(
 			'q'   => __( 'How can I pay?', 'restwell-retreats' ),
-			'a'   => __( 'You can pay by bank transfer or card, and we can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on <a href="/pricing/#payment">Prices and dates</a>, and <a href="/funding-and-support/">Funding and support</a> explains the paperwork.', 'restwell-retreats' ),
+			'a'   => __( 'You can pay by bank transfer or card. We can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on <a href="/pricing/#payment">Prices and dates</a>, and <a href="/funding-and-support/">Funding and support</a> explains the paperwork.', 'restwell-retreats' ),
 			'cat' => 'funding',
 		),
 		array(
 			'q'   => __( 'Can a council, case manager or NHS team book for me?', 'restwell-retreats' ),
-			'a'   => __( 'Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order, and the deposit and balance follow the same timings as any other stay.', 'restwell-retreats' ),
+			'a'   => __( 'Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order. The deposit and balance follow the same timings as any other stay.', 'restwell-retreats' ),
 			'cat' => 'funding',
 		),
 	);

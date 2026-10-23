@@ -65,7 +65,7 @@ function restwell_get_theme_setup_defaults() {
 	$defaults = array(
 		'hero_eyebrow'             => 'Restwell Retreats',
 		'hero_heading'             => 'Accessible holidays in Whitstable',
-		'hero_subheading'          => 'A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.',
+		'hero_subheading'          => 'A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.',
 		'hero_spec_heading'        => '',
 		'hero_cta_primary_label'   => 'Enquire',
 		'hero_cta_primary_url'     => '/enquire/',
@@ -131,7 +131,7 @@ function restwell_get_theme_setup_defaults() {
 
 		'property_label'      => 'The bungalow',
 		'property_heading'   => 'A private bungalow that sleeps five',
-		'property_body'      => "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.",
+		'property_body'      => "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five can stay. You can book from a single night, and we’ll set the bedroom up for you. We’ll send the address once your stay is confirmed.",
 		'property_cta_label' => 'See the rooms',
 		'property_cta_url'   => '/the-property/',
 		'property_image_id'  => 0,
@@ -164,12 +164,12 @@ function restwell_get_theme_setup_defaults() {
 		'home_comparison_row4_other'     => 'None or limited',
 
 		'home_care_label'       => 'Home care on holiday',
-		'home_care_heading'     => 'Optional home care',
+		'home_care_heading'     => 'Home care from our sister company',
 		'home_care_intro'       => 'How you handle care on holiday is up to you, and most guests do one of two things.',
 		'home_care_item1_title' => 'Bring your own support',
-		'home_care_item1_body'  => 'Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.',
+		'home_care_item1_body'  => 'Plenty of guests bring their own carer or PA, or manage the way they do at home. The second bedroom gives a carer somewhere proper to sleep.',
 		'home_care_item2_title' => 'Add care from Continuity',
-		'home_care_item2_body'  => 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.',
+		'home_care_item2_body'  => 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC. We share an office and a phone number, so one call covers the house and the care.',
 		'home_care_note'        => 'Ring 01622 809881 if that’s easier than a form.',
 		'home_care_cta_label'   => 'How home care works',
 		'home_care_cta_url'     => '/optional-care/',
@@ -204,8 +204,8 @@ function restwell_get_property_page_defaults() {
 		'prop_address_postcode' => 'CT5 2RQ',
 
 		'prop_hero_label'               => 'The bungalow',
-		'prop_hero_heading'             => 'Inside the bungalow, room by room',
-		'prop_hero_subtitle'            => 'Here’s a walk round Restwell, room by room. It’s a single-storey adapted bungalow on a quiet street in Whitstable, with two bedrooms and space for up to five people.',
+		'prop_hero_heading'             => 'Inside the accessible bungalow, room by room',
+		'prop_hero_subtitle'            => 'Here’s a walk round Restwell, room by room. It’s a single-storey adapted bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -219,31 +219,31 @@ function restwell_get_property_page_defaults() {
 		'prop_bungalow_image_id' => 0,
 
 		'prop_bedrooms_section_heading' => 'Two bedrooms and a sofa bed, for up to five',
-		'prop_bedrooms_section_body'    => "The accessible bedroom has a ceiling track hoist that covers the whole room, and we set it up with one or two profiling beds, depending on what you tell us when you book. If you’d like the furniture moved to match the way things are at home, just say, and it’ll be ready when you arrive.\n\nThe second bedroom next door has a double bed, and the conservatory has a double sofa bed, so up to five people can stay. The hoists, the standing aid and the profiling beds are all included in the price.",
+		'prop_bedrooms_section_body'    => "The accessible bedroom has a ceiling track hoist that covers the whole room. We set it up with one or two profiling beds, depending on what you tell us when you book.\n\nIf you’d like the furniture arranged like your room at home, just say, and we’ll have it ready.\n\nThe second bedroom next door has a double bed. The conservatory has a double sofa bed, so up to five people can stay. The hoists, the standing aid and the profiling beds are all included in the price.",
 
 		'prop_wetroom_heading' => 'Level-access wet room',
-		'prop_wetroom_body'    => "The wet room is step-free from the door to the shower. It has grab rails, a shower stool and a tilt-in-space shower chair, a basin that swings round and moves up and down to the height you need, and a wash-and-dry toilet.\n\nIt’s all fitted already, so there’s nothing to hire or set up before you arrive. If you’d like the makes, models and safe working loads, you’ll find them on the Accessibility page.",
+		'prop_wetroom_body'    => "The wet room is step-free from the door to the shower. It has grab rails, a shower stool and a tilt-in-space shower chair. There’s also a wash-and-dry toilet, and a basin that swings round and moves up and down.\n\nIt’s all fitted already, so there’s nothing to hire or set up before you arrive. You’ll find the makes, models and safe working loads on the Accessibility page.",
 
 		'prop_living_heading' => 'Open-plan living room',
-		'prop_living_body'    => "The living room is open-plan, with a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. There’s room for wheelchairs, carers and family to get past each other.\n\nWe keep the floor between the sofa and the armchair clear so a wheelchair can turn. There’s free high-speed WiFi throughout, which matters more than people admit when someone needs to keep an eye on work or a hospital app.",
+		'prop_living_body'    => "The living room is open-plan, with a rise-and-recline armchair, a sofa with pull-out footrests and a TV with Netflix. There’s room for wheelchairs, carers and family to get past each other.\n\nWe keep the floor between the sofa and the armchair clear, so a wheelchair can turn. There’s free high-speed WiFi throughout. That matters more than people admit if you need to keep an eye on work or a hospital app.",
 
 		'prop_kitchen_heading' => 'Kitchen with a wheel-under worktop',
-		'prop_kitchen_body'    => "The kitchen has a lowered worktop you can wheel under, an oven with a door that slides away underneath, a microwave, a fridge and a dishwasher. You’ll also find plates, pans, cutlery and the cooking basics.\n\nThe hob is gas rather than induction, which is worth knowing when you plan what to cook.",
+		'prop_kitchen_body'    => "The kitchen has a lowered worktop you can wheel under, and an oven whose door slides away underneath. There’s also a microwave, a fridge and a dishwasher, plus plates, pans, cutlery and the cooking basics.\n\nThe hob is gas rather than induction, which is worth knowing when you plan what to cook.",
 
 		'prop_conservatory_heading' => 'Conservatory with level access to the patio',
-		'prop_conservatory_body'    => "The conservatory has a fold-out table to eat at and a double sofa bed, and its doors open out level onto the patio.\n\nThe laundry cupboards are in here too, with a washing machine and a tumble dryer.",
+		'prop_conservatory_body'    => "The conservatory has a fold-out table to eat at and a double sofa bed. Its doors open out level onto the patio.\n\nThe laundry cupboards are in here too, with a washing machine and a tumble dryer.",
 
 		'prop_garden_heading' => 'Level patio, enclosed garden, and private driveway',
-		'prop_garden_body'    => "French doors open onto a level patio, with a non-slip ramp over the threshold. The garden is fully enclosed, with outdoor seating, a barbecue and fairy lights.\n\nDogs are welcome, and we just ask you to let us know before you arrive so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars, and we’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, for use around the house or on days out.",
+		'prop_garden_body'    => "French doors open onto a level patio, with a non-slip ramp over the threshold. The garden is fully enclosed, with outdoor seating, a barbecue and fairy lights.\n\nDogs are welcome. Please let us know before you arrive, so we can do a quick risk assessment.\n\nAt the front there’s a level, resin-bound driveway with space for two cars. We’ve tested it with two wheelchair-accessible vehicles. Portable ramps are kept in the outdoor box by the front door, for the house or for days out.",
 
 		'prop_throughout_heading' => 'Wide doorways, step-free throughout',
 		'prop_throughout_body'    => 'The bungalow is on one level with wide doorways (926 mm and 965 mm clear widths) and step-free routes from the porch through to the patio. Full door and transfer measurements are on the accessibility page if you need them before booking.',
 
-		'prop_care_heading' => 'Optional home care',
-		'prop_care_body'    => 'If someone in your group needs help with personal care, our sister company, Continuity, can come into the bungalow, and they’ll quote once you’ve talked through what’s needed. Plenty of guests bring their own carer instead, and the second bedroom is there for them.',
+		'prop_care_heading' => 'Care in the bungalow, if you need it',
+		'prop_care_body'    => 'If someone in your group needs help with personal care, our sister company, Continuity, can come into the bungalow. They’ll give you a quote once you’ve talked through what’s needed. Plenty of guests bring their own carer, and the second bedroom is there for them.',
 
 		'prop_location_heading' => 'On a quiet street, ten minutes from the seafront',
-		'prop_location_body'    => "The bungalow is on a quiet residential street, a short walk from The Plough pub and about ten minutes on foot from the seafront. Down there, the wide, paved promenade gives you a step-free route along the coast.\n\nThe beach is shingle, so the paved promenade is the step-free way along the seafront.",
+		'prop_location_body'    => "The bungalow is on a quiet residential street, a short walk from The Plough pub. The seafront is about ten minutes away on foot.\n\nThe beach there is shingle, but the wide, paved promenade gives you a step-free route along the coast.",
 		'prop_location_image_id' => 0,
 
 		'prop_tour_living_image_id'        => 0,
@@ -381,7 +381,7 @@ function restwell_get_property_page_defaults() {
 		'prop_nearby_cta_url'     => '/enquire/',
 
 		'prop_cta_heading' => 'See if the bungalow fits your group',
-		'prop_cta_body'    => 'Tell us your dates, who’s coming and any access or equipment needs, and we’ll come back with availability and an honest answer on whether the house will work for you.',
+		'prop_cta_body'    => 'Tell us your dates, who’s coming and any access or equipment needs. We’ll come back with availability and an honest answer on whether the house will work for you.',
 		'prop_cta_btn'     => 'Enquire',
 		'prop_cta_url'     => '/enquire/',
 		'prop_cta_promise' => 'We reply within 48 hours. No booking commitment.',
@@ -395,15 +395,15 @@ function restwell_get_how_it_works_page_defaults() {
 	$defaults = array(
 		'hiw_label'   => 'How it works',
 		'hiw_heading' => 'How booking a stay works',
-		'hiw_intro'   => 'There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.',
+		'hiw_intro'   => 'There’s no online checkout. You tell us your dates and what you need, and we check the house will work for you. Only then do you pay a deposit.',
 
 		'hiw_steps_label'   => 'How it works',
 		'hiw_steps_heading' => 'Enquire, confirm, arrive',
 		'hiw_steps_intro'   => 'There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.',
 		'hiw_step1_title'   => 'Enquire',
-		'hiw_step1_body'    => 'Send us your dates, who’s coming and anything that would help the house work for you, like how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
+		'hiw_step1_body'    => 'Send us your dates, who’s coming and anything that would help the house work for you. That could be how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
 		'hiw_step2_title'   => 'Confirm',
-		'hiw_step2_body'    => 'Once we’ve agreed the house fits, a 50% deposit holds your dates and the rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.',
+		'hiw_step2_body'    => 'Once we’ve agreed the house fits, a 50% deposit holds your dates. The rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.',
 		'hiw_step3_title'   => 'Arrive',
 		'hiw_step3_body'    => 'Check-in is from 3pm, and you let yourselves in with a key safe. We send the code and the address with your confirmation, and we never put them on the website.',
 		'hiw_step4_title'   => '',
@@ -451,9 +451,9 @@ function restwell_get_how_it_works_page_defaults() {
 		'hiw_faq_2_q'     => 'When can care be added?',
 		'hiw_faq_2_a'     => 'It’s best to mention it in your first message, even if your dates aren’t fixed yet. We don’t publish a lead time, because it depends on what you need and who’s free that week. We’ll give you a straight answer as soon as we can.',
 		'hiw_faq_3_q'     => 'How can I pay?',
-		'hiw_faq_3_a'     => 'You can pay by bank transfer or card, and we can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on <a href="/pricing/#payment">Prices and dates</a>, and <a href="/funding-and-support/">Funding and support</a> explains the paperwork.',
+		'hiw_faq_3_a'     => 'You can pay by bank transfer or card. We can also invoice a council, the NHS or a grant body directly. The deposit and balance are set out on <a href="/pricing/#payment">Prices and dates</a>, and <a href="/funding-and-support/">Funding and support</a> explains the paperwork.',
 		'hiw_faq_4_q'     => 'Can a council, case manager or NHS team book for me?',
-		'hiw_faq_4_a'     => 'Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order, and the deposit and balance follow the same timings as any other stay.',
+		'hiw_faq_4_a'     => 'Yes, and funded bookings are very welcome. A funder can confirm the booking with a purchase order. The deposit and balance follow the same timings as any other stay.',
 	);
 	return $defaults;
 }
@@ -465,7 +465,7 @@ function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
 		'acc_heading' => 'The wet room, the hoists, and every measurement',
-		'acc_intro'   => 'This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable, so you can check it against your own needs before you book.',
+		'acc_intro'   => 'This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable. Check it against your own needs before you book.',
 
 		'acc_stat_1_label' => 'Front door, clear opening',
 		'acc_stat_1_value' => '965mm',
@@ -477,7 +477,7 @@ function restwell_get_accessibility_page_defaults() {
 		'acc_fit_label'         => 'Door clearances',
 		'acc_fit_heading'       => 'Compare your chair width to our doorways',
 		'acc_fit_intro'         => 'Type in your chair’s width and see the clearance at each doorway before you enquire.',
-		'acc_fit_note'          => 'This is a guide only. Aim for at least 50mm of clearance where you can, and we’re happy to talk your measurements through before you book.',
+		'acc_fit_note'          => 'This is a guide only, so aim for at least 50mm of clearance where you can. We’re happy to talk your measurements through before you book.',
 
 		'acc_dest_label'             => 'Whitstable',
 		'acc_dest_heading'           => 'Getting around Whitstable',
@@ -487,23 +487,23 @@ function restwell_get_accessibility_page_defaults() {
 		'acc_dest_challenge_heading' => 'The challenges',
 		'acc_dest_challenge_body'    => 'Harbour Street and the old town have narrow pavements that get crowded at weekends and in summer. Some shops and cafes have a step at the door and no ramp. The ground around the harbour and the fish market can be uneven. Weekday mornings are the easiest time to visit.',
 		'acc_dest_reality_heading'   => 'The reality',
-		'acc_dest_reality_body'      => 'Our Whitstable guide lists the routes, cafes and accessible toilets we know work, and we send the same notes in your welcome pack.',
+		'acc_dest_reality_body'      => 'Our Whitstable guide lists the routes, cafes and accessible toilets we know work. We send the same notes in your welcome pack.',
 
 		'acc_faq_label'   => 'Equipment & access',
-		'acc_faq_heading' => 'Access FAQ',
+		'acc_faq_heading' => 'Questions about access',
 		'acc_faq_intro'   => 'The questions people ask most about the hoists, the beds and what wheelchair friendly should really mean.',
 
 		'acc_faq_1_q' => 'Do you provide hoist slings?',
-		'acc_faq_1_a' => 'No. Please bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar, and the note above the equipment register explains why we can’t supply one.',
+		'acc_faq_1_a' => 'No, please bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we can’t supply one.',
 		'acc_faq_2_q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'acc_faq_2_a' => 'It’s fixed to the ceiling and moves a person in a sling along a rail, so it takes up no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into place. Ours covers the whole of the accessible bedroom, and the details are in the equipment register above.',
+		'acc_faq_2_a' => 'It’s fixed to the ceiling and moves a person in a sling along a rail. Unlike a mobile hoist, it takes up no floor space and needs no turning circle. Ours covers the whole accessible bedroom, and its details are in the register above.',
 		'acc_faq_3_q' => 'Why does a profiling bed matter in an accessible bedroom?',
-		'acc_faq_3_a' => 'It helps with positioning, pressure care and safer transfers, and it sets a working height that protects the back of whoever is giving care. A fixed divan gives you none of that, and a mobile hoist often can’t get its legs under one. We have two profiling beds, and the accessible bedroom takes one or both.',
+		'acc_faq_3_a' => 'It helps with positioning, pressure care and safer transfers, and it protects the carer’s back. A fixed divan gives you none of that, and a mobile hoist often can’t get under one. We have two profiling beds, and the accessible bedroom takes one or both.',
 		'acc_faq_4_q' => 'What should wheelchair friendly actually mean?',
-		'acc_faq_4_a' => 'It should mean published numbers you can check against your own chair and your own kit, like clear door openings, step-free routes, safe working loads and turning circles. If a listing says wheelchair friendly but won’t give you a measurement when you ask, that tells you what you need to know. Everything we have is on this page.',
+		'acc_faq_4_a' => 'It should mean published numbers you can check against your own chair and kit. Look for clear door openings, step-free routes, safe working loads and turning circles. If a listing says wheelchair friendly but can’t give you a measurement, that tells you enough.',
 
 		'acc_cta_heading' => 'Ask about your equipment and clearances',
-		'acc_cta_body'    => 'If you’ve a question about door widths, hoist limits, the wet room or care, ask us and we’ll give you a clear answer.',
+		'acc_cta_body'    => 'If you’ve a question about door widths, hoist limits, the wet room or care, just ask. We’ll give you a clear answer.',
 		'acc_cta_btn'     => 'Enquire',
 		'acc_cta_url'     => '/enquire/',
 	);
@@ -547,7 +547,7 @@ function restwell_get_enquire_page_defaults() {
 	return array(
 		'enq_label'   => 'Get in touch',
 		'enq_heading' => 'Ask us about a stay',
-		'enq_intro'   => 'Tell us your dates and what you need from the house, and ask about care on the same form if you’d like it. We aim to reply within 48 hours, and there’s no deposit to pay until we’ve talked it through and you’re sure it fits.',
+		'enq_intro'   => 'Tell us your dates and what you need from the house. You can ask about care on the same form, too. We aim to reply within 48 hours, and there’s no deposit until you’re sure it fits.',
 
 		'enq_form_heading'        => 'Tell us about your stay',
 		'enq_success_heading'     => 'We’ve got your enquiry',
@@ -581,7 +581,7 @@ function restwell_get_pricing_page_defaults() {
 		'pricing_rates_intro'   => 'You book the whole bungalow, for up to five people. Weekend nights cost a little more than midweek nights, and you can stay for just one night.',
 		'pricing_payment_label'   => 'Deposits and balance',
 		'pricing_payment_heading' => 'How payment works',
-		'pricing_payment_intro'   => 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works.',
+		'pricing_payment_intro'   => 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same. Funding & Support explains how the invoice works.',
 		'pricing_care_rates_label'   => 'Guide rates',
 		'pricing_care_rates_heading' => 'Guide rates for optional care',
 		'pricing_care_rates_intro'   => 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.',
@@ -612,7 +612,7 @@ function restwell_get_pricing_page_defaults() {
 function restwell_get_resources_page_defaults() {
 	return array(
 		'res_label'   => 'Funding & support',
-		'res_heading' => 'Funding an accessible holiday',
+		'res_heading' => 'Grants and funding for your accessible holiday',
 		'res_intro'   => 'A stay can be paid for by you, a council, the NHS or a grant body. Here’s how each route usually works, and what to ask before you book.',
 
 		'res_grants_heading' => 'Grants and key contacts',
@@ -622,13 +622,13 @@ function restwell_get_resources_page_defaults() {
 		'res_chc_body'    => 'Continuing Healthcare is there to pay for your care, not the holiday itself. Some teams will keep paying your usual hours while you’re away, if they agree it in writing. The bungalow rent is rarely part of that.',
 
 		'res_complaints_heading' => 'What if my funding application is refused?',
-		'res_complaints_body'    => 'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.',
+		'res_complaints_body'    => 'You can ask for a review, and Scope and Beacon can advise. For a council decision, ask your council first, then the Local Government and Social Care Ombudsman. For NHS Continuing Healthcare, use your ICB’s appeals process, then the Parliamentary and Health Service Ombudsman.',
 
 		'res_contacts_heading' => 'Who to call',
 		'res_contacts_body'    => '',
 
 		'res_cta_heading' => 'Send us your dates and who to invoice',
-		'res_cta_body'    => 'We’ll reply with a bungalow quote at the published rates, the access statement, and Continuity care on the same thread if you asked for it. Just let us know the dates.',
+		'res_cta_body'    => 'We’ll reply with a bungalow quote at the published rates and the access statement. If you asked about care, Continuity’s quote comes on the same thread. Just let us know the dates.',
 		'res_cta_btn'     => 'Enquire',
 		'res_cta_url'     => '/enquire/',
 	);
@@ -663,7 +663,7 @@ function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'         => 'Who it is for',
 		'wif_heading'       => 'Is this the right house for your group?',
-		'wif_intro'         => 'Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.',
+		'wif_intro'         => 'Restwell is a private holiday home for disabled adults, their families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.',
 		'wif_hero_image_id' => 0,
 
 		'wif_audience_heading' => 'Who Restwell is built for',
@@ -684,11 +684,11 @@ function restwell_get_who_its_for_page_defaults() {
 
 		'wif_ot_title' => 'Occupational therapists',
 		'wif_ot_body'  => 'Door widths, hoist details and wet room measurements are all published. If you need one we haven’t listed, ask and we’ll go and measure it.',
-		'wif_ot_detail_bullets'   => 'You’re welcome to talk a referral through with us before anyone commits to a booking.',
+		'wif_ot_detail_bullets'   => 'You’re welcome to talk a referral through with us before anyone books.',
 
 		'wif_commissioners_title' => 'Commissioners & social care',
 		'wif_commissioners_body'  => 'A stay here can form part of a Care Act short break. We can supply the paperwork for direct payments, personal health budgets or CHC.',
-		'wif_commissioners_detail_bullets'   => "A short break in a private adapted house can be part of a care and support plan under the Care Act 2014.\nWe can send you the house details, the measurements and Continuity’s CQC rating.\nWe can work with direct payments, personal health budgets and CHC funding.",
+		'wif_commissioners_detail_bullets'   => "A care and support plan under the Care Act 2014 can include a short break in an adapted house.\nWe can send you the house details, the measurements and Continuity’s CQC rating.\nWe can work with direct payments, personal health budgets and CHC funding.",
 
 		'wif_visual_intro' => 'All three are in the bungalow before you arrive, so there’s nothing to hire for the week.',
 
@@ -703,10 +703,10 @@ function restwell_get_who_its_for_page_defaults() {
 		'wif_fund_la_bullets'   => "It starts with an assessment of your care needs, and unpaid carers can ask for their own assessment too.\nWith direct payments, you hold the money and choose who provides the support.\nWhether a direct payment covers the stay is up to your council, so ask before you book.",
 
 		'wif_fund_phb_title'     => 'Personal health budget',
-		'wif_fund_phb_bullets'   => "For people found eligible for NHS Continuing Healthcare.\nYour ICB or continuing healthcare team handles the application.\nA stay in a private adapted house can be written into the plan where it meets the person’s needs.",
+		'wif_fund_phb_bullets'   => "For people who qualify for NHS Continuing Healthcare.\nYour ICB or CHC team deals with the forms.\nA stay in a private adapted house can be written into the plan where it meets the person’s needs.",
 
 		'wif_fund_private_title'     => 'Private / self-funded',
-		'wif_fund_private_bullets'   => "You get the same access information and straight answers as funded guests.\nWe can send paperwork for your insurer or employer if you need it.\nWe’ll tell you plainly if the bungalow isn’t the right fit.",
+		'wif_fund_private_bullets'   => "You get the same access details and straight answers as funded guests.\nWe can send paperwork for your insurer or employer if you need it.\nWe’ll tell you plainly if the bungalow isn’t the right fit.",
 
 		'wif_cta_heading'         => 'Tell us who’s coming and what you use',
 		'wif_cta_body'            => 'We’ll tell you plainly whether the bungalow fits, and where it doesn’t.',
@@ -723,8 +723,8 @@ function restwell_get_who_its_for_page_defaults() {
 function restwell_get_whitstable_guide_page_defaults() {
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
-		'wg_heading'       => 'Accessible days out in Whitstable and Tankerton',
-		'wg_intro'         => 'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.',
+		'wg_heading'       => 'Is Whitstable wheelchair friendly?',
+		'wg_intro'         => 'Parts of it are. Tankerton’s promenade and the harbour are level and step-free, but the beach is shingle and some older streets are uneven. Here are the routes we know well, and where to eat.',
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'Tankerton promenade',
 		'wg_about_body'    => 'About two miles of paved path runs from Tankerton Slopes towards the castle and harbour. The slopes down to the shingle are steep, so stay on the promenade for the level route.',
@@ -747,7 +747,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_related_intro'           => 'Longer guides on parking, trains, eating out, beaches and the quieter times to visit.',
 		'wg_eating_heading'          => 'Pubs and restaurants near the house',
 		'wg_cta_heading'         => 'Ask for route notes for your party',
-		'wg_cta_body'            => 'Tell us your chair size and how far you like to go in a day, and we’ll point you to the routes that suit.',
+		'wg_cta_body'            => 'Tell us your chair size and how far you like to go in a day. We’ll point you to the routes that suit.',
 		'wg_cta_primary_label'   => 'Enquire',
 		'wg_cta_primary_url'       => '/enquire/',
 		'wg_cta_secondary_label'   => 'See the bungalow',
@@ -771,16 +771,16 @@ function restwell_get_care_page_defaults() {
 		'care_day_heading' => 'Morning, daytime and overnight help',
 		'care_day_lede' => 'Tell us what a normal day looks like, and Continuity will plan around it.',
 		'care_day_1_time' => 'Morning',
-		'care_day_1_body' => 'Help getting up, washed and dressed at the time you’d get up at home. The shower chair is already in the wet room.',
+		'care_day_1_body' => 'Someone can help you get up, washed and dressed at the time you’d get up at home. The shower chair is already in the wet room.',
 		'care_day_2_time' => 'In the day',
-		'care_day_2_body' => 'Someone to come along the promenade or into town, or a few hours of cover so the usual carer can have some time off.',
+		'care_day_2_body' => 'Someone can come with you along the promenade or into town. They can also cover a few hours, so you and your usual carer get time to yourselves.',
 		'care_day_3_time' => 'Overnight',
-		'care_day_3_body' => 'A sleep-in, or a waking night if someone needs help during the night, so the person who usually cares can get some sleep.',
+		'care_day_3_body' => 'A carer can sleep in, or stay awake if you need help during the night. That way, everyone gets a proper night’s sleep.',
 		'care_who_heading' => 'Rated Good by the Care Quality Commission',
 		'care_who_lede' => 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.',
 
 		'care_own_heading' => 'Bringing your own carer',
-		'care_own_lede'    => 'Plenty of guests do. They can have the second double bedroom or the sofa bed in the conservatory, use the hoist and shower chair, and park on the drive.',
+		'care_own_lede'    => 'Plenty of guests do. They can have the second double bedroom or the conservatory sofa bed. They can use the hoist and shower chair, and park on the drive.',
 
 		'care_how_heading'     => 'Asking for care',
 		'care_how_lede'        => 'Mention it on the same enquiry as the house, and nothing is booked until you say yes.',
@@ -794,21 +794,21 @@ function restwell_get_care_page_defaults() {
 		'care_cqc_link_label' => 'Read the CQC inspection profile',
 
 		'care_pro_heading' => 'For OTs, case managers and commissioners',
-		'care_pro_lede'    => 'Door widths and equipment are published, and Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
+		'care_pro_lede'    => 'Door widths and equipment are all published. Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
 
 		'care_faq_label'   => 'Care questions',
-		'care_faq_heading' => 'Optional care FAQ',
+		'care_faq_heading' => 'Questions about care',
 		'care_faq_intro'   => 'The questions people ask most before they mention care.',
 		'care_faq_1_q'     => 'Do I have to book care?',
 		'care_faq_1_a'     => 'No. Plenty of guests book the house as a self-catering holiday and don’t need any extra support. Care from Continuity is there if you’d like it.',
 		'care_faq_2_q'     => 'Is Restwell a care home?',
-		'care_faq_2_a'     => 'No. Restwell is a private holiday bungalow. Continuity of Care Services, our sister company, is the CQC-registered provider if you’d like professional care during your stay.',
+		'care_faq_2_a'     => 'No. Restwell is a private holiday home, not a care service. Any care during your stay comes from our sister company, Continuity of Care Services, which is registered with the CQC.',
 		'care_faq_3_q'     => 'Do I need to book care on its own?',
 		'care_faq_3_a'     => 'No. Just mention it when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so the house and the care can start in one conversation.',
 		'care_faq_4_q'     => 'Can I bring my own carers?',
 		'care_faq_4_a'     => 'Yes. A carer can have the second bedroom, and there’s space to help with transfers and personal care. Tell us who’s coming when you enquire, and we’ll set the rooms up to suit.',
 		'care_faq_5_q'     => 'Where do I see guide rates?',
-		'care_faq_5_a'     => 'On Pricing & dates. They’re Continuity’s guide rates, and Continuity give you a quote once the hours and tasks are agreed.',
+		'care_faq_5_a'     => 'You’ll find them on the Pricing page. Continuity will give you a quote once the hours and tasks are agreed.',
 
 		'care_cta_heading'         => 'Tell us what you need, and we’ll work it out with you',
 		'care_cta_body'            => 'Ring 01622 809881 or send us a note, and we’ll talk through what would help.',
@@ -833,11 +833,11 @@ function restwell_get_our_story_page_defaults() {
 		'story_origin_label'   => 'The gap',
 		'story_origin_heading' => 'How Restwell started',
 		'story_origin_lede'    => 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.',
-		'story_origin_body'    => 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, flattering or not. Guests can check the bungalow will work for them before they set off. They can arrange optional care through the same office.',
+		'story_origin_body'    => 'People would travel three hours, only to find a door they couldn’t get through. So we bought a bungalow in Whitstable, adapted it properly and published every measurement. Now guests can check the fit first, and ask about care through the same office.',
 
 		'story_month_label'   => 'The build',
 		'story_month_heading' => 'How the bungalow was built',
-		'story_month_lede'    => 'Family, friends and three specialist teams brought it together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.',
+		'story_month_lede'    => 'Family, friends and three teams of experts got it ready in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.',
 		'story_month_1_meta'  => 'Early March',
 		'story_month_1_title' => 'We got the keys',
 		'story_month_1_body'  => 'It needed more than a lick of paint.',
@@ -856,10 +856,10 @@ function restwell_get_our_story_page_defaults() {
 		'story_companies_heading'   => 'Two companies, one conversation',
 		'story_companies_lede'      => 'Restwell runs the bungalow. Continuity of Care Services provides the optional care. They quote for it once you’ve talked through what you need.',
 		'story_companies_1_title'   => 'Restwell',
-		'story_companies_1_body'    => 'The bungalow is a private adapted house in Whitstable. It isn’t a care home or a respite centre.',
+		'story_companies_1_body'    => 'It’s a private holiday home in Whitstable, not a care home or a respite centre.',
 		'story_companies_2_title'   => 'Continuity of Care Services',
-		'story_companies_2_body'    => 'Home care during your stay is optional, and always from Continuity’s own team.',
-		'story_companies_note'      => 'Restwell is not a registered care provider. Continuity of Care Services is.',
+		'story_companies_2_body'    => 'Care while you stay is up to you. If you want it, it comes from Continuity’s own team.',
+		'story_companies_note'      => 'Restwell is not a registered care provider, but Continuity of Care Services is.',
 
 		'story_shaped_label'   => 'Shaped with guests',
 		'story_shaped_heading' => 'Planned with disabled people before it opened',
@@ -867,16 +867,16 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_specialists_label'      => 'Check the details for yourself',
 		'story_specialists_heading'    => 'Every measurement is published',
-		'story_specialists_lede'       => 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and limits with your own chair or hoist before you book. If you’re unsure, please ask.',
+		'story_specialists_lede'       => 'Every measurement is on the Accessibility page, good or bad. Check the doors and spaces against your own chair or hoist before you book. If you’re not sure, just ask.',
 		'story_specialists_btn1_label' => 'Door widths and the hoist',
 		'story_specialists_btn2_label' => 'Tour the property',
 
 		'story_next_label'   => 'What we’re trying to do',
 		'story_next_heading' => 'What we hold ourselves to',
-		'story_next_lede'    => 'We publish every measurement. We say what the house can’t do as clearly as what it can. You can arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.',
+		'story_next_lede'    => 'We publish every measurement. We say what the house can’t do as clearly as what it can. You can plan a week away, and the support to enjoy it, in one call. Nobody should have to explain their needs four times to four different people.',
 
 		'story_cta_heading'         => 'See what that means inside the bungalow',
-		'story_cta_body'            => 'You can check door widths, hoist details, and photographs of each room before you contact us. Compare them with what you need, and ask about anything that isn’t clear.',
+		'story_cta_body'            => 'You can check door widths, hoist details and photos of each room before you get in touch. Compare them with what you need, and ask about anything that isn’t clear.',
 		'story_cta_primary_label'   => 'Enquire',
 		'story_cta_primary_url'     => '/enquire/',
 		'story_cta_secondary_label' => 'Tour the property',

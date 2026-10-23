@@ -6,18 +6,18 @@ The write-toward column is what a page should be *about*. It is not the title, a
 
 | slug | write toward | shipped title (28 Aug) |
 | --- | --- | --- |
-| home | accessible holiday cottages by the sea | Accessible holiday cottage in Whitstable, sleeps five |
+| home | accessible holiday cottages by the sea | Accessible holiday cottage in Whitstable, Kent, sleeps five |
 | the-property | accessible holiday bungalow | Look inside the accessible holiday bungalow |
 | accessibility | disabled holiday cottages with wet room | A disabled holiday cottage with a wet room and hoist |
 | how-it-works | how a restwell stay is booked | Booking a stay, from first email to front door |
 | who-its-for | holidays for disabled adults and carers | Holidays for disabled adults and their carers |
 | pricing | accessible holiday prices | Prices for the bungalow, and what’s included |
-| whitstable-area-guide | whitstable accessible days out | Accessible days out in Whitstable and Tankerton |
+| whitstable-area-guide | whitstable accessible days out | Is Whitstable wheelchair friendly? A local access guide |
 | enquire | contact restwell | Ask us anything about a stay at Restwell |
 | faq | restwell faq | The questions guests ask us before booking |
-| resources | funding an accessible holiday | Funding an accessible holiday, and who we invoice |
-| blog | accessible travel | Accessible travel notes from one bungalow |
-| optional-care | adding home care during a self-catering stay | Home care in the bungalow, if you’d like it |
+| resources | funding an accessible holiday | Funding and grants for a disabled holiday |
+| blog | accessible travel | Accessible travel guides from a Whitstable bungalow |
+| optional-care | adding home care during a self-catering stay | A holiday with care provided in Whitstable, if you want it |
 | guest-guide | restwell guest guide (noindex) | Restwell guest guide for confirmed stays |
 | our-story | restwell our story | Why we built Restwell, and who Continuity are |
 

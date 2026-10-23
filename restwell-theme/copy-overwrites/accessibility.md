@@ -10,7 +10,7 @@ A disabled holiday cottage with a wet room and hoist
 
 ## Meta description
 
-The full access statement: a 965mm front door, 926mm internal doors, a ceiling hoist rated to 180kg, a level wet room and a tilt-in-space shower chair.
+Exact access details: a 965mm front door, 926mm inside doors, and hoists rated to 180kg. There’s also a profiling bed and a level wet room.
 
 ## H1 (`acc_heading`)
 
@@ -18,13 +18,13 @@ The wet room, the hoists, and every measurement
 
 ## Intro (`acc_intro`)
 
-This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable, so you can check it against your own needs before you book.
+This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable. Check it against your own needs before you book.
 
 ## The house in numbers
 
 H2: The house in numbers
 
-We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who’s been asked to sign off a stay on the strength of three photographs. If there’s a measurement we haven’t published, ring us and we’ll go and take it properly.
+We publish makes, models and safe working loads for a reason. Maybe you’ve been told a place was accessible, then found out in the doorway with your coat still on. If we haven’t published a measurement you need, ring us and we’ll measure it.
 
 ## Getting in
 
@@ -72,7 +72,7 @@ There’s a bin in the wet room for continence products, and it’s emptied betw
 
 **Slings.** Slings are prescribed for each person and fitted to them and to the hoist, so we can’t safely supply them. Both hoists here take loop-style slings on a two-point spreader bar, so please bring the sling the person already uses.
 
-**Bringing your own hoist.** The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. If you’re bringing your own hoist, check its leg height and turning circle against those figures, and tell us what you’re bringing so we can set the room up for it.
+**Bringing your own hoist.** The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. Check your own hoist against those figures, and tell us you’re bringing it so we can set the room up.
 
 ## The kitchen, living space and garden
 
@@ -105,13 +105,13 @@ Whitstable is an old seaside town, so some parts are easier to get around than o
 - **The good:** Tankerton promenade is a long, level, surfaced path along the seafront, and it’s the route most of our guests use. There’s free Blue Badge parking along Marine Parade. There are accessible toilets along the promenade, and a Changing Places toilet at the harbour. The streets around the bungalow are level and paved, with dropped kerbs.
 - **The challenges:** Harbour Street and the old town have narrow pavements that get crowded at weekends and in summer. Some shops and cafes have a step at the door and no ramp. The ground around the harbour and the fish market can be uneven. Weekday mornings are the easiest time to visit.
 
-Our Whitstable guide lists the routes, cafes and accessible toilets we know work, and we send the same notes in your welcome pack. “Whitstable guide” → `/whitstable-area-guide/`
+Our Whitstable guide lists the routes, cafes and accessible toilets we know work. We send the same notes in your welcome pack. “Whitstable guide” → `/whitstable-area-guide/`
 
 ## CTA
 
 H2: Ask about your equipment and clearances
 
-If you’ve a question about door widths, hoist limits, the wet room or care, ask us and we’ll give you a clear answer. → `/enquire/`
+If you’ve a question about door widths, hoist limits, the wet room or care, just ask. We’ll give you a clear answer. → `/enquire/`
 
 ## Not published, because it isn’t confirmed yet
 

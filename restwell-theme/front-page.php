@@ -26,9 +26,9 @@ $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'hero_subheading',
-		'A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.'
+		'A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.'
 	)
-	: 'A private, single-storey bungalow a short walk from the sea, with a level wet room and a ceiling track hoist already fitted. Home care from our sister company is there if you’d like it.';
+	: 'A private, single-storey bungalow a short walk from the sea. The level wet room and ceiling track hoist are already fitted. Home care from our sister company is there if you’d like it.';
 
 $hero_cta_primary_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'hero_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
@@ -52,9 +52,9 @@ $property_body    = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'property_body',
-		__( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.", 'restwell-retreats' )
+		__( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five can stay. You can book from a single night, and we’ll set the bedroom up for you. We’ll send the address once your stay is confirmed.", 'restwell-retreats' )
 	)
-	: __( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five people can stay. You can book from a single night, and we’ll set the bedroom up around what you tell us before you arrive. We’ll send the address and directions once your stay is confirmed.", 'restwell-retreats' );
+	: __( "It sits on a quiet residential street in Whitstable, about ten minutes from the seafront. The driveway is private and level. It takes two cars, including an adapted vehicle, and the front door is straight ahead when you park.\n\nInside there are two bedrooms and a double sofa bed in the conservatory, so up to five can stay. You can book from a single night, and we’ll set the bedroom up for you. We’ll send the address once your stay is confirmed.", 'restwell-retreats' );
 $property_cta_label = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'property_cta_label', __( 'See the rooms', 'restwell-retreats' ) )
 	: __( 'See the rooms', 'restwell-retreats' );
@@ -177,8 +177,8 @@ $home_care_label   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_label', '' )
 	: '';
 $home_care_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'home_care_heading', __( 'Optional home care', 'restwell-retreats' ) )
-	: __( 'Optional home care', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'home_care_heading', __( 'Home care from our sister company', 'restwell-retreats' ) )
+	: __( 'Home care from our sister company', 'restwell-retreats' );
 $home_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
@@ -190,8 +190,8 @@ $home_care_item1_title = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_item1_title', __( 'Bring your own support', 'restwell-retreats' ) )
 	: __( 'Bring your own support', 'restwell-retreats' );
 $home_care_item1_body  = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'home_care_item1_body', __( 'Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.', 'restwell-retreats' ) )
-	: __( 'Plenty of guests bring their own carer or PA, or simply manage the way they do at home, and the second bedroom gives a carer somewhere proper to sleep.', 'restwell-retreats' );
+	? restwell_page_content_text( $home_id, 'home_care_item1_body', __( 'Plenty of guests bring their own carer or PA, or manage the way they do at home. The second bedroom gives a carer somewhere proper to sleep.', 'restwell-retreats' ) )
+	: __( 'Plenty of guests bring their own carer or PA, or manage the way they do at home. The second bedroom gives a carer somewhere proper to sleep.', 'restwell-retreats' );
 $home_care_item2_title = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_item2_title', __( 'Add care from Continuity', 'restwell-retreats' ) )
 	: __( 'Add care from Continuity', 'restwell-retreats' );
@@ -199,9 +199,9 @@ $home_care_item2_body  = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,
 		'home_care_item2_body',
-		__( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.', 'restwell-retreats' )
+		__( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC. We share an office and a phone number, so one call covers the house and the care.', 'restwell-retreats' )
 	)
-	: __( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC, and because we share an office and a phone number, one call covers the house and the care.', 'restwell-retreats' );
+	: __( 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. They’re rated Good by the CQC. We share an office and a phone number, so one call covers the house and the care.', 'restwell-retreats' );
 $home_care_note      = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $home_id, 'home_care_note', __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' ) )
 	: __( 'Ring 01622 809881 if that’s easier than a form.', 'restwell-retreats' );

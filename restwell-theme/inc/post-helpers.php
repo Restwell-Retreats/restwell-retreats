@@ -78,7 +78,7 @@ function restwell_get_blog_index_heading() {
 		}
 	}
 
-	return __( 'Notes for planning a trip', 'restwell-retreats' );
+	return __( 'Guides for planning an accessible break', 'restwell-retreats' );
 }
 
 /**
@@ -98,7 +98,7 @@ function restwell_get_blog_index_lede() {
 	}
 
 	return __(
-		'Our guides are written from one adapted bungalow in Whitstable. They cover days out on the Kent coast, how to pay for a break, and how to check an access statement before you book.',
+		'Our guides are written from one adapted bungalow in Whitstable. They cover Kent coast days out, paying for a break, and checking an access statement.',
 		'restwell-retreats'
 	);
 }

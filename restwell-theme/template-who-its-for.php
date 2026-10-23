@@ -21,7 +21,7 @@ $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,
 		'wif_intro',
-		'Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.'
+		'Restwell is a private holiday home for disabled adults, their families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.'
 	)
 	: 'Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.';
 
@@ -230,8 +230,8 @@ $wif_fund_phb_bullets = function_exists( 'restwell_wif_bullet_list' )
 		$restwell_wif_id,
 		'wif_fund_phb_bullets',
 		array(
-			'For people found eligible for NHS Continuing Healthcare.',
-			'Your ICB or continuing healthcare team handles the application.',
+			'For people who qualify for NHS Continuing Healthcare.',
+			'Your ICB or CHC team deals with the forms.',
 			'A stay in a private adapted house can be written into the plan where it meets the person’s needs.',
 		)
 	)
@@ -241,7 +241,7 @@ $wif_fund_private_bullets = function_exists( 'restwell_wif_bullet_list' )
 		$restwell_wif_id,
 		'wif_fund_private_bullets',
 		array(
-			'You get the same access information and straight answers as funded guests.',
+			'You get the same access details and straight answers as funded guests.',
 			'We can send paperwork for your insurer or employer if you need it.',
 			'We’ll tell you plainly if the bungalow isn’t the right fit.',
 		)
@@ -426,8 +426,8 @@ get_template_part(
 			<?php endforeach; ?>
 		  </div>
 		  <div class="care-choice__text">
-			<h2 id="care-h"><?php esc_html_e( 'Optional home care', 'restwell-retreats' ); ?></h2>
-			<p><?php esc_html_e( 'Some groups bring their own carers, and some ask our sister company, Continuity, to cover a few visits or the nights. If you’d like their help, mention it when you enquire and they’ll give you a quote.', 'restwell-retreats' ); ?></p>
+			<h2 id="care-h"><?php esc_html_e( 'If someone in your group needs care', 'restwell-retreats' ); ?></h2>
+			<p><?php esc_html_e( 'Some groups bring their own carers. Others ask our sister company, Continuity, to cover a few visits or the nights. If you’d like their help, mention it when you enquire and they’ll give you a quote.', 'restwell-retreats' ); ?></p>
 			<a class="care-choice__link" href="<?php echo esc_url( restwell_nav_resolve_page_url( 'optional-care' ) ); ?>"><?php esc_html_e( 'How optional care works', 'restwell-retreats' ); ?> <span aria-hidden="true">&rarr;</span></a>
 		  </div>
 		</div>
@@ -473,12 +473,12 @@ get_template_part(
 		  <li>
 			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/LR-1-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
 			<h3>Tell us what you need</h3>
-			<p>Tell us your dates, who’s coming, the chair or hoist you use, who’s paying and whether you’d like care from Continuity. There’s no deposit to pay and no sales call.</p>
+			<p>Tell us your dates, who’s coming and the chair or hoist you use. Say who’s paying, and whether you’d like care from Continuity. There’s no deposit to pay and no sales call.</p>
 		  </li>
 		  <li>
 			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/EQU-2-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
 			<h3>We check it fits</h3>
-			<p>We compare what you’ve told us with our door widths and kit, and say plainly if Restwell isn’t the right house.</p>
+			<p>We compare what you’ve told us with our door widths and kit. If Restwell isn’t the right house, we’ll say so plainly.</p>
 		  </li>
 		  <li>
 			<img src="<?php echo esc_url( restwell_theme_image_url( 'bungalow/GRDEN-2-LS.jpg' ) ); ?>" alt="" width="2400" height="1500" sizes="(min-width: 768px) 360px, 100vw" loading="lazy" decoding="async" />
@@ -504,7 +504,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q1-a" role="region" aria-labelledby="wif-q1">
-				<p>Start by checking our published measurements against the person’s equipment. Then plan staffing for the day and the night, with a backup if someone falls ill. After that, work out who pays for the stay and who pays for the care, and get the equipment confirmed in writing. Fix your dates once that’s clear, along with medicines and transport.</p>
+				<p>Start by checking our measurements against the person’s equipment. Then plan staffing for the day and night, with a backup if someone falls ill. After that, sort out who pays for the stay and the care, and fix your dates.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -513,7 +513,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q2-a" role="region" aria-labelledby="wif-q2" hidden>
-				<p>Our access statement is the place to start, because it has the door widths and the hoist details. Then arrange your carers or ask Continuity, check your slings and prescriptions, and agree a backup in case a carer is ill. When you have a rough plan, send us your dates and we’ll check it with you.</p>
+				<p>Start with our access statement, which has the door widths and hoist details. Then arrange your carers or ask Continuity, and agree a backup if a carer is ill. When you have a plan, send us your dates, and we’ll check it with you.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -522,7 +522,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q3-a" role="region" aria-labelledby="wif-q3" hidden>
-				<p>Get the access details confirmed in writing, and pack the things the house won’t have, like slings, medicines, chargers and anything that makes you comfortable. Share the care plan with whoever is covering the stay, and keep our number and your care provider’s number to hand.</p>
+				<p>Get the access details confirmed in writing, and pack what the house won’t have, like slings, medicines and chargers. Share the care plan with whoever is covering the stay. Keep our number and your care provider’s to hand.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -531,7 +531,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q4-a" role="region" aria-labelledby="wif-q4" hidden>
-				<p>It helps to make five short lists: access needs, medical needs, the care rota and backup, documents, and the everyday things that make you comfortable. Check each one against our published equipment list, so you don’t pack anything we already have.</p>
+				<p>It helps to make five short lists. Cover access needs, medical needs, the care rota and backup, documents, and home comforts. Check each one against our published equipment list, so you don’t pack anything we already have.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -541,6 +541,13 @@ get_template_part(
 			  </button>
 			  <div class="faq-item__panel" id="wif-q5-a" role="region" aria-labelledby="wif-q5" hidden>
 				<p>Yes, as long as the door widths, the overnight staffing and the transfers all work before you travel. Start with the measurements and the care rota rather than the photos. This page and our access statement will help you check the fit before you enquire.</p>
+				<?php
+				// Revitalise guests still search for the old centres; the guide says where people go now.
+				$restwell_revitalise_post = get_page_by_path( 'revitalise-alternatives-accessible-holidays', OBJECT, 'post' );
+				if ( $restwell_revitalise_post instanceof WP_Post && 'publish' === $restwell_revitalise_post->post_status ) :
+					?>
+				<p>If you used to book with Revitalise, our guide to <a class="text-link" href="<?php echo esc_url( get_permalink( $restwell_revitalise_post ) ); ?>">what happened to Revitalise holidays</a> covers where people go now.</p>
+				<?php endif; ?>
 			  </div>
 			</div>
 			</div>
@@ -551,7 +558,8 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q6-a" role="region" aria-labelledby="wif-q6" hidden>
-				<p>Neither is better in every case. A private cottage suits people who bring their own carers or have visiting care, with the right equipment for transfers. A respite placement suits people who need nursing or clinical support on site. Restwell, with optional care from Continuity, fits the first case, and it isn’t a substitute for residential care when that’s clinically needed.</p>
+				<p>Neither is better in every case. A private cottage suits people who bring their own carers or have visiting care. A respite placement suits people who need nursing or clinical support on site.</p>
+				<p>Restwell, with optional care from Continuity, fits the first case. It isn’t a substitute for residential care when that’s clinically needed.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -560,7 +568,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="wif-q9-a" role="region" aria-labelledby="wif-q9" hidden>
-				<p>Respite usually means planned time off for a carer, or care that carries on under a funding plan. An accessible holiday is a place a disabled person can stay and get around. Many stays here are both, but the funding paperwork asks different questions about each.</p>
+				<p>Respite usually means planned time off for a carer, or care that carries on under a funding plan. An accessible holiday is a place a disabled person can stay and get around. Many stays here are both, but funders ask different questions about each.</p>
 			  </div>
 			</div>
 			</div>

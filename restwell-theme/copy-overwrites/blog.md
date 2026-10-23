@@ -4,7 +4,7 @@
 
 ## Title
 
-Accessible travel notes from one bungalow
+Accessible travel guides from a Whitstable bungalow
 
 ## Meta description
 
@@ -16,7 +16,7 @@ Notes for planning a trip
 
 ## Opening paragraph (print directly under the H1)
 
-Our guides are written from one adapted bungalow in Whitstable. They cover days out on the Kent coast, how to pay for a break, and how to check an access statement before you book.
+Our guides are written from one adapted bungalow in Whitstable. They cover Kent coast days out, paying for a break, and checking an access statement.
 
 ## Intro
 

@@ -208,7 +208,7 @@ function restwell_accessibility_equipment() {
 			'image'         => 'bungalow/KT-1-LS.jpg',
 			'image_alt'     => __( 'Kitchen with seated-height worktops and a NEFF Slide and Hide oven', 'restwell-retreats' ),
 			'specs'         => array(
-				__( 'Oven', 'restwell-retreats' )   => __( 'NEFF Slide & Hide: the door tucks away underneath, so you are not reaching across a hot open door from a seated position', 'restwell-retreats' ),
+				__( 'Oven', 'restwell-retreats' )   => __( 'NEFF Slide & Hide: the door tucks away underneath, so you never reach across a hot open door', 'restwell-retreats' ),
 				__( 'Hob', 'restwell-retreats' )    => __( 'Gas, not induction: no electromagnetic field from the cooktop, which many guests with pacemakers prefer', 'restwell-retreats' ),
 				__( 'Storage', 'restwell-retreats' ) => __( 'Microwave and accessible storage at lower levels', 'restwell-retreats' ),
 			),
@@ -226,11 +226,11 @@ function restwell_accessibility_equipment_groups() {
 	return array(
 		'getting-in' => array(
 			'title' => __( 'Getting in', 'restwell-retreats' ),
-			'lede'  => __( 'The driveway is resin-bound and level, with room for two cars including an adapted vehicle, and there’s no step up into the house from where you park.', 'restwell-retreats' ),
+			'lede'  => __( 'The driveway is resin-bound and level, with room for two cars including an adapted vehicle. There’s no step up into the house from where you park.', 'restwell-retreats' ),
 		),
 		'transfers'  => array(
 			'title' => __( 'Beds and hoists', 'restwell-retreats' ),
-			'lede'  => __( 'The accessible bedroom has a ceiling track hoist that covers the whole room, and we set it up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
+			'lede'  => __( 'The accessible bedroom has a ceiling track hoist that covers the whole room. We set it up with one or two profiling beds, depending on what you need.', 'restwell-retreats' ),
 			// Named, so two bare "safe working load" figures don't read as one item's.
 			'facts' => array(
 				array(
@@ -245,7 +245,7 @@ function restwell_accessibility_equipment_groups() {
 		),
 		'wet-room'   => array(
 			'title' => __( 'Wet room', 'restwell-retreats' ),
-			'lede'  => __( 'The wet room is level from the door to the shower, with no lip at the entrance, and it was designed with Care Spaces. Inside there’s a tilting shower chair, a toilet that washes and dries, and a basin you can raise or lower.', 'restwell-retreats' ),
+			'lede'  => __( 'The wet room is level from the door to the shower, with no lip at the entrance. It was designed with Care Spaces. Inside there’s a tilting shower chair, a toilet that washes and dries, and a basin you can raise or lower.', 'restwell-retreats' ),
 			// The shower chair's two figures (22 Oct 2026, owner's pick): the
 			// thermostatic valve and the stool's rating read as the chair's.
 			'facts' => array(
@@ -261,7 +261,7 @@ function restwell_accessibility_equipment_groups() {
 		),
 		'kitchen'    => array(
 			'title' => __( 'Kitchen', 'restwell-retreats' ),
-			'lede'  => __( 'The worktop is low enough to use from a seat, the living room has a rise-and-recline chair, and the rear French doors give a 1720mm opening onto the patio.', 'restwell-retreats' ),
+			'lede'  => __( 'The worktop is low enough to use from a seat, and the living room has a rise-and-recline chair. The rear French doors give a 1720mm opening onto the patio.', 'restwell-retreats' ),
 		),
 	);
 }

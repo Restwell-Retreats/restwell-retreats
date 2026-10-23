@@ -26,8 +26,8 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'how a restwell stay is booked',
 		),
 		'home'                  => array(
-			'meta_title'       => 'Accessible holiday cottage in Whitstable, sleeps five',
-			'meta_description' => 'One private bungalow by the sea, with the wet room and ceiling hoist already fitted. The whole house is yours, and home care can be arranged if you’d like it.',
+			'meta_title'       => 'Accessible holiday cottage in Whitstable, Kent, sleeps five',
+			'meta_description' => 'A private bungalow by the sea in Whitstable, Kent, with a level wet room and ceiling hoist fitted. It sleeps five, and our sister company can add care.',
 			'focus_keyphrase'  => 'accessible holiday cottages by the sea',
 		),
 		'the-property'          => array(
@@ -37,7 +37,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'accessibility'         => array(
 			'meta_title'       => 'A disabled holiday cottage with a wet room and hoist',
-			'meta_description' => 'The access statement in full: a 965mm front door, 926mm inside, a ceiling hoist rated to 180kg, a height-adjustable basin and a tilt-in-space shower chair.',
+			'meta_description' => 'Exact access details: a 965mm front door, 926mm inside doors, and hoists rated to 180kg. There’s also a profiling bed and a level wet room.',
 			'focus_keyphrase'  => 'disabled holiday cottages with wet room',
 		),
 		'who-its-for'           => array(
@@ -51,8 +51,8 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible holiday prices',
 		),
 		'whitstable-area-guide' => array(
-			'meta_title'       => 'Accessible days out in Whitstable and Tankerton',
-			'meta_description' => 'Which bits of Whitstable work in a wheelchair: Tankerton promenade is level, the harbour beach is shingle, and we name the venues with an accessible loo.',
+			'meta_title'       => 'Is Whitstable wheelchair friendly? A local access guide',
+			'meta_description' => 'In parts, and we’ll tell you which. Tankerton’s promenade is level, the harbour is step-free with a Changing Places toilet, and the main beach is shingle.',
 			'focus_keyphrase'  => 'whitstable accessible days out',
 		),
 		'enquire'               => array(
@@ -66,12 +66,12 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'restwell faq',
 		),
 		'resources'             => array(
-			'meta_title'       => 'Funding an accessible holiday, and who we invoice',
-			'meta_description' => 'We can invoice you, a council, the NHS or a grant body, and the bungalow rate is the same either way. What we can’t do is promise your package will cover it.',
+			'meta_title'       => 'Funding and grants for a disabled holiday',
+			'meta_description' => 'Holiday grants for disabled adults and carers, plus council and NHS funding. Here’s what each covers, and the paperwork we can send your funder.',
 			'focus_keyphrase'  => 'funding an accessible holiday',
 		),
 		'blog'                  => array(
-			'meta_title'       => 'Accessible travel notes from one bungalow',
+			'meta_title'       => 'Accessible travel guides from a Whitstable bungalow',
 			'meta_description' => 'Guides written from one adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.',
 			'focus_keyphrase'  => 'accessible travel',
 		),
@@ -81,7 +81,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'restwell our story',
 		),
 		'optional-care'         => array(
-			'meta_title'       => 'Home care in the bungalow, if you’d like it',
+			'meta_title'       => 'A holiday with care provided in Whitstable, if you want it',
 			'meta_description' => 'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Same conversation as the house. Ring 01622 809881 or send us a note.',
 			'focus_keyphrase'  => 'adding home care during a self-catering stay',
 		),

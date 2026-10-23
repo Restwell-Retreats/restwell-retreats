@@ -489,12 +489,12 @@ function restwell_get_pricing_faq_defaults(): array {
 	return array(
 		array(
 			'q'   => 'Is care included in the bungalow price?',
-			'a'   => 'No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.',
+			'a'   => 'No, the bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.',
 			'cat' => 'care',
 		),
 		array(
 			'q'   => 'Are there extra charges for equipment?',
-			'a'   => 'The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.',
+			'a'   => 'The hoists, the profiling beds and the wet room equipment are all included. Anything specialist that isn’t on our list costs extra to hire, so tell us when you enquire. Please bring your own slings, because a sling needs to fit the person using it.',
 			'cat' => 'booking',
 		),
 		array(

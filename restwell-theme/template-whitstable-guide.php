@@ -37,14 +37,14 @@ $wg_spot_src = static function ( $n, $fallback_path ) use ( $restwell_wg_id ) {
 		: '';
 };
 
-$restwell_wg_heading = $wg_txt( 'wg_heading', 'Accessible days out in Whitstable and Tankerton' );
+$restwell_wg_heading = $wg_txt( 'wg_heading', 'Is Whitstable wheelchair friendly?' );
 // Pages seeded before the 9 Oct 2026 rewrite still hold the old H1 in meta.
 if ( 'What a day out from the bungalow is actually like' === $restwell_wg_heading ) {
-	$restwell_wg_heading = 'Accessible days out in Whitstable and Tankerton';
+	$restwell_wg_heading = 'Is Whitstable wheelchair friendly?';
 }
 $restwell_wg_intro   = $wg_txt(
 	'wg_intro',
-	'What we know about getting around Whitstable and Tankerton: the level routes, the ones that aren’t, and where to eat.'
+	'Parts of it are. Tankerton’s promenade and the harbour are level and step-free, but the beach is shingle and some older streets are uneven. Here are the routes we know well, and where to eat.'
 );
 
 $wg_about_heading = $wg_txt( 'wg_about_heading', 'Tankerton promenade' );
@@ -250,14 +250,14 @@ get_template_part(
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_2_src ); ?>" alt="<?php echo esc_attr( $wg_stop_2_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.canterbury.co.uk/whitstable-harbour/" target="_blank" rel="noopener noreferrer">Whitstable Harbour<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Town &amp; seafood</p>
-			<p>It’s a working oyster port. South Quay Shed has a lift to a quieter upper floor, and the ground can be uneven, so take it steady when it’s busy.</p>
+			<p>It’s a working oyster port. South Quay Shed has a lift to a quieter upper floor. The ground can be uneven, so take it steady when it’s busy.</p>
 			<p class="place-list__actions"><a href="https://www.canterbury.co.uk/whitstable-harbour/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Whitstable+Harbour" class="text-link" target="_blank" rel="noopener noreferrer">Directions<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		  <article class="place-list__item">
 					   <img class="place-list__thumb" src="<?php echo esc_url( $wg_stop_3_src ); ?>" alt="<?php echo esc_attr( $wg_stop_3_alt ); ?>" width="640" height="400" loading="lazy" decoding="async" />
 			<h3 class="place-list__title"><a href="https://www.thepubonthebeach.co.uk/" target="_blank" rel="noopener noreferrer">The Old Neptune<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p class="place-list__meta">Beach pub</p>
-			<p>This pub sits on the shingle. The terrace is on firm ground and is the realistic option, because the floors inside slope and there’s no step-free entrance.</p>
+			<p>This pub sits on the shingle. The terrace is on firm ground and is the realistic option. Inside, the floors slope and there’s no step-free entrance.</p>
 			<p class="place-list__actions"><a href="https://www.thepubonthebeach.co.uk/" class="text-link" target="_blank" rel="noopener noreferrer">Website<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=The+Old+Neptune+Whitstable" class="text-link" target="_blank" rel="noopener noreferrer">Directions<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article>
 		</div>
@@ -324,7 +324,7 @@ get_template_part(
 		<div class="faq__layout">
 		  <header class="faq__intro">
 			<p class="eyebrow">Local access</p>
-			<h2 id="faq-h">Whitstable &amp; coast FAQ</h2>
+			<h2 id="faq-h">Questions about Whitstable and the coast</h2>
 			<p class="lede">Answers about Tankerton promenade, Blue Badge parking and what the shingle beach can and can’t do.</p>
 		  </header>
 		  <div class="faq-list faq-list--split" data-faq-accordion>
@@ -335,7 +335,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q1-a" role="region" aria-labelledby="whit-q1">
-				<p>Yes, with some planning, as long as you stick to the paved routes. Tankerton’s level promenade works well, but loose shingle and some of the older streets don’t. Plan your parking and toilet stops first, and bring a RADAR key for the Changing Places toilet at the harbour.</p>
+				<p>Yes, with some planning, if you stick to the paved routes. Tankerton’s level promenade works well, but loose shingle and some of the older streets don’t. Plan your parking and toilet stops, and bring a RADAR key for the Changing Places toilet at the harbour.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -344,7 +344,8 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q2-a" role="region" aria-labelledby="whit-q2" hidden>
-				<p>It’s a compact seaside town with a harbour and plenty of independent shops, and the surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route, and JoJo’s on Tankerton promenade is about twenty minutes in all. Stay on the paved path, because the grassy slopes above it are steep, and keep off the shingle beach, which isn’t a wheelchair surface.</p>
+				<p>It’s a compact seaside town with a harbour and plenty of independent shops, and the surfaces vary. From Restwell, the seafront is about ten minutes on a flat paved route. JoJo’s on Tankerton promenade is about twenty minutes in all.</p>
+				<p>Stay on the paved path, because the grassy slopes above it are steep. Keep off the shingle beach, which isn’t a wheelchair surface.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -353,7 +354,12 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q4-a" role="region" aria-labelledby="whit-q4" hidden>
-				<p>Paved promenades are a better bet than shingle or steep slipways. Tankerton’s promenade, near Restwell, is the stretch we use most, and our guide to accessible beaches covers the rest of the Kent coast.</p>
+				<?php $restwell_beaches_post = get_page_by_path( 'accessible-beaches-coastal-walks-kent', OBJECT, 'post' ); ?>
+				<p>Paved promenades are a better bet than shingle or steep slipways. Tankerton’s promenade, near Restwell, is the stretch we use most.
+				<?php if ( $restwell_beaches_post instanceof WP_Post && 'publish' === $restwell_beaches_post->post_status ) : ?>
+					Our guide to <a class="text-link" href="<?php echo esc_url( get_permalink( $restwell_beaches_post ) ); ?>">accessible beaches and coastal walks across Kent</a> covers the rest of the coast.
+				<?php endif; ?>
+				</p>
 			  </div>
 			</div>
 			</div>
@@ -382,7 +388,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="whit-q7-a" role="region" aria-labelledby="whit-q7" hidden>
-				<p>Look for a private adapted base, level routes you know about, quieter times if crowds are hard, and an indoor backup plan for bad weather. Restwell is that kind of base on the Kent coast, with optional care from Continuity if you need it.</p>
+				<p>Look for a private adapted base and level routes you know about. Pick quieter times if crowds are hard, and have an indoor plan for bad weather. Restwell is that kind of base, with optional care from Continuity if you need it.</p>
 			  </div>
 			</div>
 			</div>
@@ -395,7 +401,7 @@ get_template_part(
 	$mid_cta_heading = $wg_txt( 'wg_cta_heading', __( 'Ask for route notes for your party', 'restwell-retreats' ) );
 	$mid_cta_intro   = $wg_txt(
 		'wg_cta_body',
-		__( 'Tell us your chair size and how far you like to go in a day, and we’ll point you to the routes that suit.', 'restwell-retreats' )
+		__( 'Tell us your chair size and how far you like to go in a day. We’ll point you to the routes that suit.', 'restwell-retreats' )
 	);
 	$mid_cta_primary_label = $wg_txt( 'wg_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) );
 	$mid_cta_primary_url   = $wg_txt( 'wg_cta_primary_url', restwell_nav_resolve_page_url( 'enquire' ) );

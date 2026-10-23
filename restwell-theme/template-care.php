@@ -42,9 +42,9 @@ $care_cqc_link_label = $care_txt( 'care_cqc_link_label', 'Read the CQC inspectio
 $care_how_heading = $care_txt( 'care_how_heading', 'Asking for care' );
 $care_how_lede = $care_txt( 'care_how_lede', 'Mention it on the same enquiry as the house, and nothing is booked until you say yes.' );
 $care_own_heading = $care_txt( 'care_own_heading', 'Bringing your own carer' );
-$care_own_lede = $care_txt( 'care_own_lede', 'Plenty of guests do. They can have the second double bedroom or the sofa bed in the conservatory, use the hoist and shower chair, and park on the drive.' );
+$care_own_lede = $care_txt( 'care_own_lede', 'Plenty of guests do. They can have the second double bedroom or the conservatory sofa bed. They can use the hoist and shower chair, and park on the drive.' );
 $care_pro_heading = $care_txt( 'care_pro_heading', 'For OTs, case managers and commissioners' );
-$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths and equipment are published, and Continuity confirm the care plan and the cost once the hours and tasks are agreed.' );
+$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths and equipment are all published. Continuity confirm the care plan and the cost once the hours and tasks are agreed.' );
 $care_day = array();
 for ( $care_day_i = 1; $care_day_i <= 3; $care_day_i++ ) {
 	$care_day[] = array(
@@ -61,7 +61,7 @@ for ( $care_step_i = 1; $care_step_i <= 3; $care_step_i++ ) {
 }
 
 $care_faq_label   = $care_txt( 'care_faq_label', 'Care questions' );
-$care_faq_heading = $care_txt( 'care_faq_heading', 'Optional care FAQ' );
+$care_faq_heading = $care_txt( 'care_faq_heading', 'Questions about care' );
 $care_faq_intro   = $care_txt( 'care_faq_intro', 'The questions people ask most before they mention care.' );
 $care_faq_live    = array(
 	1 => array(
@@ -82,7 +82,7 @@ $care_faq_live    = array(
 	),
 	5 => array(
 		'q' => 'Where do I see guide rates?',
-		'a' => 'On Pricing & dates. They’re Continuity’s guide rates, and Continuity give you a quote once the hours and tasks are agreed.',
+		'a' => 'You’ll find them on the Pricing page. Continuity will give you a quote once the hours and tasks are agreed.',
 	),
 );
 $care_faq_items = array();

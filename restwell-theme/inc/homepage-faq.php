@@ -25,19 +25,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function restwell_get_homepage_faq_defaults(): array {
 	$q1_text = __(
-		'No. It’s a private bungalow you rent as a holiday, so the whole house is yours and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity, can arrange it.',
+		'No, it’s a private bungalow you rent as a holiday. The whole house is yours, and there are no staff on site. If you’d like home care while you’re here, our sister company, Continuity, can arrange it.',
 		'restwell-retreats'
 	);
 	$q1_html = '<p>' . esc_html( $q1_text ) . '</p>';
 
 	$q2_text = __(
-		'The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. Every measurement is on the Accessibility page, including the ones that aren’t flattering, so you can check your own chair before you book.',
+		'The bungalow is on one level and step-free throughout. The front door has a 965mm clear opening and the doors inside are 926mm. Every measurement is on the Accessibility page, flattering or not, so you can check your own chair first.',
 		'restwell-retreats'
 	);
 	$q2_html = '<p>' . esc_html( $q2_text ) . '</p>';
 
 	$q3_text = __(
-		'Yes. Continuity of Care Services can come in while you’re staying, and they’ll give you a quote once you’ve talked through what you need. Just mention it when you enquire, or ring us on 01622 809881.',
+		'Yes, Continuity of Care Services can come in while you’re staying. They’ll give you a quote once you’ve talked through what you need. Just mention it when you enquire, or ring us on 01622 809881.',
 		'restwell-retreats'
 	);
 	$q3_html = '<p>' . esc_html( $q3_text ) . '</p>';

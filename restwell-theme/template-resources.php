@@ -41,7 +41,7 @@ $res_txt = static function ( $key, $fallback ) use ( $restwell_res_id ) {
 		: $fallback;
 };
 
-$restwell_res_heading = $res_txt( 'res_heading', 'Funding an accessible holiday' );
+$restwell_res_heading = $res_txt( 'res_heading', 'Grants and funding for your accessible holiday' );
 $restwell_res_intro   = $res_txt(
 	'res_intro',
 	'A stay can be paid for by you, a council, the NHS or a grant body. Here’s how each route usually works, and what to ask before you book.'
@@ -68,10 +68,10 @@ $res_contacts_body    = $res_txt( 'res_contacts_body', '' );
 
 $res_complaints_body = $res_txt(
 	'res_complaints_body',
-	'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.'
+	'You can ask for a review, and Scope and Beacon can advise. For a council decision, ask your council first, then the Local Government and Social Care Ombudsman. For NHS Continuing Healthcare, use your ICB’s appeals process, then the Parliamentary and Health Service Ombudsman.'
 );
 if ( false !== strpos( (string) $res_complaints_body, '<' ) ) {
-	$res_complaints_body = 'You can ask for a review. For a council decision, go to your council first (Kent County Council if they funded the assessment), then the Local Government Ombudsman. For NHS CHC, follow the ICB appeals process, then the Parliamentary and Health Service Ombudsman. Scope and Beacon can advise either way, and we’re happy to resend the paperwork.';
+	$res_complaints_body = 'You can ask for a review, and Scope and Beacon can advise. For a council decision, ask your council first, then the Local Government and Social Care Ombudsman. For NHS Continuing Healthcare, use your ICB’s appeals process, then the Parliamentary and Health Service Ombudsman.';
 }
 
 get_template_part(
@@ -135,17 +135,17 @@ get_template_part(
 				<div class="funding-route__copy">
 				  <p class="eyebrow">Care Act</p>
 				  <h3>Direct payments and personal budgets</h3>
-				  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils are told not to restrict direct payments unreasonably, but each one sets its own rules. Whether the bungalow rent is covered depends on what’s written in the plan, so it’s worth asking before you book.</p>
+				  <p>If a short break would meet needs in your support plan, a direct payment can usually help. Councils shouldn’t limit direct payments without good reason, but each sets its own rules. Whether it covers the bungalow depends on your plan, so ask before you book.</p>
 				</div>
 				<div class="cover-prose">
-				  <p><strong>Usually covers</strong> assessed care hours during the break and replacement care so an unpaid carer can rest. It covers the bungalow if it’s written into the plan.</p>
-				  <p><strong>Usually doesn’t cover</strong> travel, food or holiday extras, or the rent unless the support plan names it. A long stay in a care home has different rules.</p>
+				  <p><strong>Usually covers</strong> the care hours in your plan while you’re away, and cover for a family carer’s own break. It only covers the bungalow if the plan names it.</p>
+				  <p><strong>Usually doesn’t cover</strong> travel, food or days out, or the bungalow unless your support plan names it. A long stay in a care home has different rules.</p>
 				</div>
 				<p class="cover-split__source">That’s from the <a href="https://www.legislation.gov.uk/ukpga/2014/23/part/1/crossheading/direct-payments/enacted" target="_blank" rel="noopener noreferrer">Care Act 2014<span class="sr-only"> (opens in new tab)</span></a> and how councils write their handbooks. If you live in Kent, start with the number below.</p>
 				<div class="funding-route__foot">
 				  <p>Kent residents: <a href="tel:03000416161">03000 41 61 61</a></p>
 				  <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) ) : ?>
-					<a class="text-link text-link--on-dark" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Direct payments guide', 'restwell-retreats' ); ?></a>
+					<a class="text-link text-link--on-dark" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Can I use direct payments for a holiday?', 'restwell-retreats' ); ?></a>
 				  <?php endif; ?>
 				</div>
 			</div>
@@ -160,8 +160,8 @@ get_template_part(
 				  <p><?php echo esc_html( $res_chc_body ); ?></p>
 				</div>
 				<div class="cover-prose">
-				  <p><strong>Usually covers</strong> the care hours you already have, if the team says they continue. Also a personal health budget, if you’re CHC-eligible and take one, and care away from hospital in a place that works for you.</p>
-				  <p><strong>Usually doesn’t cover</strong> the holiday itself (travel, food, the Restwell rent) or extra hours just because you’re away from home. There’s no scheme where the NHS pays for the holiday.</p>
+				  <p><strong>Usually covers</strong> the care hours you already have, if your CHC team agrees they can continue while you’re away. A personal health budget, if you have one, can also pay for care in a place that suits you.</p>
+				  <p><strong>Usually doesn’t cover</strong> the holiday itself, like travel, food or the bungalow. Nor does it add hours just because you’re away.</p>
 				</div>
 				<p class="cover-split__source">That’s from the <a href="https://www.gov.uk/government/publications/nhs-continuing-healthcare-and-nhs-funded-nursing-care-public-information-leaflet/public-information-leaflet-nhs-continuing-healthcare-and-nhs-funded-nursing-care--2" target="_blank" rel="noopener noreferrer">GOV.UK CHC leaflet<span class="sr-only"> (opens in new tab)</span></a> and how ICBs write holiday-support policies. In Kent, Kent &amp; Medway ICB decides.</p>
 				<div class="funding-route__foot">
@@ -180,8 +180,8 @@ get_template_part(
 				  <p>You can book and pay Restwell yourselves, or put a charity award toward the stay. Grants are usually a contribution rather than the whole week, so read the letter before you lock the dates.</p>
 				</div>
 				<div class="cover-prose">
-				  <p><strong>Usually covers</strong> a grant toward the holiday itself, typically £500 from Revitalise. Respite Association pay for a cover carer instead, around £450 on average.</p>
-				  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the letter says so. Respite Association pay for the cover carer, not the house. Food, days out and travel aren’t covered either, unless the letter names them.</p>
+				  <p><strong>Usually covers</strong> part of the holiday, like a Revitalise grant of about £500. The Respite Association pays for a cover carer instead, at about £450 on average.</p>
+				  <p><strong>Usually doesn’t cover</strong> the whole stay, unless the grant letter says so. The Respite Association pays for the cover carer, not the bungalow. Food, days out and travel aren’t covered either.</p>
 				</div>
 				<p class="cover-split__source">Revitalise closed its centres in 2024 and now awards grants toward a break of your choice. Ask us for a quote if you need a provisional booking to apply.</p>
 				<div class="funding-route__foot">
@@ -271,7 +271,7 @@ get_template_part(
 			<li class="contact-list__item">
 			  <div class="contact-list__org">
 				<h3>Continuity of Care Services</h3>
-				<p>Sister company. Same number as Restwell, wherever you live</p>
+				<p>Our sister company, on the same number as Restwell wherever you live</p>
 			  </div>
 			  <p class="contact-list__action"><a href="tel:01622809881">01622 809881</a></p>
 			</li>
@@ -299,7 +299,7 @@ get_template_part(
 			),
 			array(
 				'title' => __( 'A care quote from Continuity, if you want care', 'restwell-retreats' ),
-				'body'  => __( 'Hours and rates from Continuity, the CQC-registered care provider.', 'restwell-retreats' ),
+				'body'  => __( 'Continuity’s hours and rates, if you’d like care while you stay.', 'restwell-retreats' ),
 			),
 		);
 		?>
@@ -329,7 +329,7 @@ get_template_part(
 		<div class="faq__layout">
 		  <header class="faq__intro">
 			<p class="eyebrow">Common questions</p>
-			<h2 id="faq-h">Funding FAQ</h2>
+			<h2 id="faq-h">Questions about funding</h2>
 			<p class="lede">It’s worth getting the yes in writing before anyone pays a deposit. We’ll send the quote and the access statement; the decision sits with your coordinator.</p>
 		  </header>
 		  <div class="faq-list" data-faq-accordion>
@@ -339,7 +339,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="res-q1-a" role="region" aria-labelledby="res-q1">
-				<p>It can cover the care hours you’re already assessed for, if your CHC team agrees in writing. It doesn’t pay for the holiday itself, so the bungalow, travel and food are usually yours unless a panel says otherwise. Ask them which costs they’ll take, then tell us who to invoice.</p>
+				<p>It can cover the care hours you’re already assessed for, if your CHC team agrees in writing. It doesn’t pay for the bungalow, travel or food, unless a panel says otherwise. Ask which costs they’ll take, then tell us who to invoice.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -375,7 +375,7 @@ get_template_part(
 				<span class="faq-item__icon" aria-hidden="true"></span>
 			  </button>
 			  <div class="faq-item__panel" id="res-q5-a" role="region" aria-labelledby="res-q5" hidden>
-				<p>Speak to your CHC coordinator and ask which hours continue away from home. Enquire with Restwell, and Continuity can quote the care on the same call. We’ll send the access statement.</p>
+				<p>Ask your CHC coordinator which hours carry on while you’re away. When you enquire, Continuity can quote for the care on the same call. We’ll send the access statement.</p>
 			  </div>
 			</div>
 			<div class="faq-item">
@@ -408,7 +408,7 @@ if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
 	$mid_cta_heading = $res_txt( 'res_cta_heading', __( 'Send us your dates and who to invoice.', 'restwell-retreats' ) );
 	$mid_cta_intro   = $res_txt(
 		'res_cta_body',
-		__( 'We’ll reply with a bungalow quote at the published rates, the access statement, and Continuity care on the same thread if you asked for it. Just let us know the dates.', 'restwell-retreats' )
+		__( 'We’ll reply with a bungalow quote at the published rates and the access statement. If you asked about care, Continuity’s quote comes on the same thread. Just let us know the dates.', 'restwell-retreats' )
 	);
 	$mid_cta_primary_label = $res_txt( 'res_cta_btn', __( 'Enquire', 'restwell-retreats' ) );
 	$mid_cta_primary_url   = $res_txt( 'res_cta_url', restwell_nav_resolve_page_url( 'enquire' ) );

@@ -6,19 +6,19 @@
 
 ## Title
 
-Accessible days out in Whitstable and Tankerton
+Is Whitstable wheelchair friendly? A local access guide
 
 ## Meta description
 
-Which bits of Whitstable work in a wheelchair: Tankerton promenade is level, the harbour beach is shingle, and we name the venues with an accessible loo.
+In parts, and we’ll tell you which. Tankerton’s promenade is level, the harbour is step-free with a Changing Places toilet, and the main beach is shingle.
 
 ## H1 (`wg_heading`)
 
-Accessible days out in Whitstable and Tankerton
+Is Whitstable wheelchair friendly?
 
 ## Opening paragraph (print directly under the H1)
 
-Tankerton promenade is the level route with the sea view, and the harbour beach is shingle, which isn’t a wheelchair surface. Most of the food and drink here is in old buildings, so access varies genuinely from door to door. Below is what we know about the places we go to ourselves.
+Parts of it are. Tankerton’s promenade and the harbour are level and step-free, but the beach is shingle and some older streets are uneven. Here are the routes we know well, and where to eat.
 
 ## Intro (`wg_intro`)
 

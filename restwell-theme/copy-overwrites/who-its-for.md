@@ -18,7 +18,7 @@ Is this the right house for your group?
 
 ## Intro (`wif_intro`)
 
-Restwell is built for disabled adults, their families and the people who care for them, in groups of up to five. It’s a holiday let you have to yourselves, not a care home or a respite centre.
+Restwell is a private holiday home for disabled adults, their families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.
 
 ## If you’re coming as a guest or a family
 

@@ -36,9 +36,9 @@ Calendar enquiry note: Your dates are already filled in. Add your details and we
 
 H2: How payment works
 
-You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works. (“Funding & Support” → `/funding-and-support/`)
+You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same. Funding & Support explains how the invoice works. (“Funding & Support” → `/funding-and-support/`)
 
-1. **50% deposit.** Once we’ve talked it through and you’re happy the house fits, the deposit holds your dates and takes them off the calendar.
+1. **50% deposit.** Once you’re happy the house fits, the deposit holds your dates and takes them off the calendar.
 2. **Balance before arrival.** You pay the rest no later than one week before you arrive.
 3. **No extras.** There’s no damage deposit and no cleaning fee to pay at the end of your stay.
 
@@ -59,10 +59,10 @@ H2: Questions about prices
 What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.
 
 1. **Is care included in the bungalow price?**
-   No. The bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.
+   No, the bungalow price covers the house and the access equipment that’s already there. Care from Continuity is optional, and they’ll give you a quote once you’ve talked through what you need. Their guide rates are above.
 
 2. **Are there extra charges for equipment?**
-   The hoists, the profiling beds and the wet room equipment are all included. If you need something specialist that isn’t on our list, there’s a charge to hire it, so let us know when you enquire. Please bring your own slings, because a sling needs to fit the person using it.
+   The hoists, the profiling beds and the wet room equipment are all included. Anything specialist that isn’t on our list costs extra to hire, so tell us when you enquire. Please bring your own slings, because a sling needs to fit the person using it.
 
 3. **Does the price change if a council or the NHS pays?**
    No. The price is the same whoever pays, and the only thing that changes is who we send the invoice to. Funding & Support explains how that works.

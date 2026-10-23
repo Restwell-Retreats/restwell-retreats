@@ -41,11 +41,11 @@ $story_txt = static function ( $key, $fallback ) use ( $restwell_story_id ) {
 $story_origin_label   = $story_txt( 'story_origin_label', 'The gap' );
 $story_origin_heading = $story_txt( 'story_origin_heading', 'How Restwell started' );
 $story_origin_lede    = $story_txt( 'story_origin_lede', 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.' );
-$story_origin_body    = $story_txt( 'story_origin_body', 'Somebody would travel for three hours, only to find a doorway they couldn’t get through. So we bought a bungalow in Whitstable that needed a lot of work, and we adapted it properly. Then we measured everything and published the details, flattering or not. Guests can check the bungalow will work for them before they set off. They can arrange optional care through the same office.' );
+$story_origin_body    = $story_txt( 'story_origin_body', 'People would travel three hours, only to find a door they couldn’t get through. So we bought a bungalow in Whitstable, adapted it properly and published every measurement. Now guests can check the fit first, and ask about care through the same office.' );
 
 $story_month_label   = $story_txt( 'story_month_label', 'The build' );
 $story_month_heading = $story_txt( 'story_month_heading', 'How the bungalow was built' );
-$story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three specialist teams brought it together in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.' );
+$story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three teams of experts got it ready in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.' );
 $story_month_1_meta  = $story_txt( 'story_month_1_meta', 'Early March' );
 $story_month_1_title = $story_txt( 'story_month_1_title', 'We got the keys' );
 $story_month_1_body  = $story_txt( 'story_month_1_body', 'It needed more than a lick of paint.' );
@@ -67,14 +67,14 @@ $story_companies_lede    = $story_txt( 'story_companies_lede', 'Restwell runs th
 $story_companies_items   = array(
 	array(
 		'title' => $story_txt( 'story_companies_1_title', 'Restwell' ),
-		'body'  => $story_txt( 'story_companies_1_body', 'The bungalow is a private adapted house in Whitstable. It isn’t a care home or a respite centre.' ),
+		'body'  => $story_txt( 'story_companies_1_body', 'It’s a private holiday home in Whitstable, not a care home or a respite centre.' ),
 	),
 	array(
 		'title' => $story_txt( 'story_companies_2_title', 'Continuity of Care Services' ),
-		'body'  => $story_txt( 'story_companies_2_body', 'Home care during your stay is optional, and always from Continuity’s own team.' ),
+		'body'  => $story_txt( 'story_companies_2_body', 'Care while you stay is up to you. If you want it, it comes from Continuity’s own team.' ),
 	),
 );
-$story_companies_note = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider. Continuity of Care Services is.' );
+$story_companies_note = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider, but Continuity of Care Services is.' );
 
 $story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped with guests' );
 $story_shaped_heading = $story_txt( 'story_shaped_heading', 'Planned with disabled people before it opened' );
@@ -82,13 +82,13 @@ $story_shaped_lede    = $story_txt( 'story_shaped_lede', 'People with muscular d
 
 $story_specialists_label      = $story_txt( 'story_specialists_label', 'Check the details for yourself' );
 $story_specialists_heading    = $story_txt( 'story_specialists_heading', 'Every measurement is published' );
-$story_specialists_lede       = $story_txt( 'story_specialists_lede', 'Every measurement is on the Accessibility page, flattering or not. Compare the door widths, spaces and limits with your own chair or hoist before you book. If you’re unsure, please ask.' );
+$story_specialists_lede       = $story_txt( 'story_specialists_lede', 'Every measurement is on the Accessibility page, good or bad. Check the doors and spaces against your own chair or hoist before you book. If you’re not sure, just ask.' );
 $story_specialists_btn1_label = $story_txt( 'story_specialists_btn1_label', 'Door widths and the hoist' );
 $story_specialists_btn2_label = $story_txt( 'story_specialists_btn2_label', 'Tour the property' );
 
 $story_next_label   = $story_txt( 'story_next_label', 'What we’re trying to do' );
 $story_next_heading = $story_txt( 'story_next_heading', 'What we hold ourselves to' );
-$story_next_lede    = $story_txt( 'story_next_lede', 'We publish every measurement. We say what the house can’t do as clearly as what it can. You can arrange a week away, and the support to enjoy it, in one conversation. Nobody should have to explain their situation four times to four different people.' );
+$story_next_lede    = $story_txt( 'story_next_lede', 'We publish every measurement. We say what the house can’t do as clearly as what it can. You can plan a week away, and the support to enjoy it, in one call. Nobody should have to explain their needs four times to four different people.' );
 ?>
 
 
@@ -408,9 +408,9 @@ get_template_part(
 		? restwell_page_content_text(
 			$restwell_story_id,
 			'story_cta_body',
-			__( 'You can check door widths, hoist details, and photographs of each room before you contact us. Compare them with what you need, and ask about anything that isn’t clear.', 'restwell-retreats' )
+			__( 'You can check door widths, hoist details and photos of each room before you get in touch. Compare them with what you need, and ask about anything that isn’t clear.', 'restwell-retreats' )
 		)
-		: __( 'You can check door widths, hoist details, and photographs of each room before you contact us. Compare them with what you need, and ask about anything that isn’t clear.', 'restwell-retreats' );
+		: __( 'You can check door widths, hoist details and photos of each room before you get in touch. Compare them with what you need, and ask about anything that isn’t clear.', 'restwell-retreats' );
 	$story_mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_story_id, 'story_cta_primary_label', __( 'Enquire', 'restwell-retreats' ) )
 		: __( 'Enquire', 'restwell-retreats' );

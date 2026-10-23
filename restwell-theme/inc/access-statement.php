@@ -62,7 +62,7 @@ function restwell_access_statement_notes() {
 		),
 		'own-hoist' => array(
 			'title' => __( 'Bringing your own mobile hoist', 'restwell-retreats' ),
-			'body'  => __( 'The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. If you’re bringing your own hoist, check its leg height and turning circle against those figures, and tell us what you’re bringing so we can set the room up for it.', 'restwell-retreats' ),
+			'body'  => __( 'The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. Check your own hoist against those figures, and tell us you’re bringing it so we can set the room up.', 'restwell-retreats' ),
 		),
 		'limits' => array(
 			'title' => __( 'What we can’t promise', 'restwell-retreats' ),

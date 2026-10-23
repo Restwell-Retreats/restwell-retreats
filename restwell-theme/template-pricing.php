@@ -63,7 +63,7 @@ $pricing_payment_label   = $pricing_txt( 'pricing_payment_label', __( 'Deposits 
 $pricing_payment_heading = $pricing_txt( 'pricing_payment_heading', __( 'How payment works', 'restwell-retreats' ) );
 $pricing_payment_intro   = $pricing_txt(
 	'pricing_payment_intro',
-	__( 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same, and Funding & Support explains how the invoice works.', 'restwell-retreats' )
+	__( 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same. Funding & Support explains how the invoice works.', 'restwell-retreats' )
 );
 $pricing_care_rates_label   = $pricing_txt( 'pricing_care_rates_label', __( 'Guide rates', 'restwell-retreats' ) );
 $pricing_care_rates_heading = $pricing_txt( 'pricing_care_rates_heading', __( 'Guide rates for optional care', 'restwell-retreats' ) );
@@ -220,7 +220,7 @@ get_template_part(
 			<ol class="pay-steps">
 			  <li>
 				<h3><?php echo esc_html( sprintf( /* translators: %d: deposit percentage */ __( '%d%% deposit', 'restwell-retreats' ), (int) $timeline['deposit_percent'] ) ); ?></h3>
-				<p><?php echo esc_html( __( 'Once we’ve talked it through and you’re happy the house fits, the deposit holds your dates and takes them off the calendar.', 'restwell-retreats' ) ); ?></p>
+				<p><?php echo esc_html( __( 'Once you’re happy the house fits, the deposit holds your dates and takes them off the calendar.', 'restwell-retreats' ) ); ?></p>
 			  </li>
 			  <li>
 				<h3>Balance before arrival</h3>

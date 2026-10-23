@@ -1837,6 +1837,7 @@ body.nav-open { overflow: hidden; }
 .faq-item.is-open .faq-item__panel { display: block; }
 .faq-item__panel[hidden] { display: none; }
 .faq-item__panel p { margin: 0; }
+.faq-item__panel p + p { margin-top: var(--space-3); }
 
 /* Outside the list so we don’t stack last-item border + CTA border. */
 .faq-cta {

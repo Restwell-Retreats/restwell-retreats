@@ -6,7 +6,7 @@
 
 ## Title
 
-Home care in the bungalow, if you’d like it
+A holiday with care provided in Whitstable, if you want it
 
 ## Meta description
 

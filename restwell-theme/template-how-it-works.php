@@ -21,9 +21,9 @@ $restwell_hiw_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,
 		'hiw_intro',
-		'There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.'
+		'There’s no online checkout. You tell us your dates and what you need, and we check the house will work for you. Only then do you pay a deposit.'
 	)
-	: 'There’s no online checkout. You tell us your dates and what you need, we check the house will work for you, and only then do you pay a deposit.';
+	: 'There’s no online checkout. You tell us your dates and what you need, and we check the house will work for you. Only then do you pay a deposit.';
 $restwell_hiw_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_hiw_id, 'hiw_label', '' )
 	: '';
@@ -70,12 +70,12 @@ $hiw_steps_intro   = $restwell_hiw_prefer_live(
 $hiw_step_live = array(
 	1 => array(
 		'title' => 'Enquire',
-		'body'  => 'Send us your dates, who’s coming and anything that would help the house work for you, like how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
+		'body'  => 'Send us your dates, who’s coming and anything that would help the house work for you. That could be how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
 		'stale' => array( 'Tell us your dates and what you need. Nothing to pay at this stage.' ),
 	),
 	2 => array(
 		'title' => 'Confirm',
-		'body'  => 'Once we’ve agreed the house fits, a 50% deposit holds your dates and the rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.',
+		'body'  => 'Once we’ve agreed the house fits, a 50% deposit holds your dates. The rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.',
 		'stale' => array( 'We set the house up around you. A 50% deposit reserves the dates.' ),
 	),
 	3 => array(

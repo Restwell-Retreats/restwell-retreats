@@ -23,7 +23,7 @@ $acc_txt = static function ( $key, $fallback ) use ( $restwell_acc_id ) {
 
 $restwell_acc_label   = $acc_txt( 'acc_label', 'Accessibility' );
 $restwell_acc_heading = $acc_txt( 'acc_heading', 'The wet room, the hoists, and every measurement' );
-$restwell_acc_hero_lede = 'This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable, so you can check it against your own needs before you book.';
+$restwell_acc_hero_lede = 'This is the full access statement for Restwell, our single-storey adapted bungalow in Whitstable. Check it against your own needs before you book.';
 $restwell_acc_intro     = $acc_txt(
 	'acc_intro',
 	$restwell_acc_hero_lede
@@ -53,8 +53,8 @@ if ( 'Full-room' === $acc_stat_3_value ) {
 		$acc_stat_3_label = 'Ceiling hoist, safe working load';
 	}
 }
-$acc_statement_heading = __( 'The house in numbers', 'restwell-retreats' );
-$acc_statement_body    = __( 'We publish makes, models and safe working loads because we know who reads this page. Somebody has told you a place was accessible before, and it wasn’t, and you found out standing in a doorway with your coat still on. Or you’re an occupational therapist who’s been asked to sign off a stay on the strength of three photographs. If there’s a measurement we haven’t published, ring us and we’ll go and take it properly.', 'restwell-retreats' );
+$acc_statement_heading = __( 'Exact measurements, so you can check the fit', 'restwell-retreats' );
+$acc_statement_body    = __( 'We publish makes, models and safe working loads for a reason. Maybe you’ve been told a place was accessible, then found out in the doorway with your coat still on. If we haven’t published a measurement you need, ring us and we’ll measure it.', 'restwell-retreats' );
 
 $acc_host_phone = function_exists( 'restwell_get_public_phone_number' )
 	? restwell_get_public_phone_number()
@@ -90,13 +90,13 @@ $acc_dest_items   = array(
 		'dt' => $acc_txt( 'acc_dest_reality_heading', 'The reality' ),
 		'dd' => $acc_txt(
 			'acc_dest_reality_body',
-			'Our Whitstable guide lists the routes, cafes and accessible toilets we know work, and we send the same notes in your welcome pack.'
+			'Our Whitstable guide lists the routes, cafes and accessible toilets we know work. We send the same notes in your welcome pack.'
 		),
 	),
 );
 
 $acc_faq_label   = $acc_txt( 'acc_faq_label', 'Equipment & access' );
-$acc_faq_heading = $acc_txt( 'acc_faq_heading', 'Access FAQ' );
+$acc_faq_heading = $acc_txt( 'acc_faq_heading', 'Questions about access' );
 $acc_faq_intro   = $acc_txt(
 	'acc_faq_intro',
 	'The questions people ask most about the hoists, the beds and what wheelchair friendly should really mean.'
@@ -104,19 +104,19 @@ $acc_faq_intro   = $acc_txt(
 $acc_faq_live    = array(
 	1 => array(
 		'q' => 'Do you provide hoist slings?',
-		'a' => 'No. Please bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar, and the note above the equipment register explains why we can’t supply one.',
+		'a' => 'No, please bring the sling the person already uses. Both hoists take loop-style slings on a two-point spreader bar. The note above the equipment register explains why we can’t supply one.',
 	),
 	2 => array(
 		'q' => 'What is a ceiling track hoist in holiday accommodation?',
-		'a' => 'It’s fixed to the ceiling and moves a person in a sling along a rail, so it takes up no floor space and needs no turning circle, unlike a mobile hoist, which has to be wheeled into place. Ours covers the whole of the accessible bedroom, and the details are in the equipment register above.',
+		'a' => 'It’s fixed to the ceiling and moves a person in a sling along a rail. Unlike a mobile hoist, it takes up no floor space and needs no turning circle. Ours covers the whole accessible bedroom, and its details are in the register above.',
 	),
 	3 => array(
 		'q' => 'Why does a profiling bed matter in an accessible bedroom?',
-		'a' => 'It helps with positioning, pressure care and safer transfers, and it sets a working height that protects the back of whoever is giving care. A fixed divan gives you none of that, and a mobile hoist often can’t get its legs under one. We have two profiling beds, and the accessible bedroom takes one or both.',
+		'a' => 'It helps with positioning, pressure care and safer transfers, and it protects the carer’s back. A fixed divan gives you none of that, and a mobile hoist often can’t get under one. We have two profiling beds, and the accessible bedroom takes one or both.',
 	),
 	4 => array(
 		'q' => 'What should wheelchair friendly actually mean?',
-		'a' => 'It should mean published numbers you can check against your own chair and your own kit, like clear door openings, step-free routes, safe working loads and turning circles. If a listing says wheelchair friendly but won’t give you a measurement when you ask, that tells you what you need to know. Everything we have is on this page.',
+		'a' => 'It should mean published numbers you can check against your own chair and kit. Look for clear door openings, step-free routes, safe working loads and turning circles. If a listing says wheelchair friendly but can’t give you a measurement, that tells you enough.',
 	),
 );
 $acc_faq_items = array();
@@ -144,7 +144,7 @@ $acc_fit_intro         = $acc_txt(
 );
 $acc_fit_note          = $acc_txt(
 	'acc_fit_note',
-	'This is a guide only. Aim for at least 50mm of clearance where you can, and we’re happy to talk your measurements through before you book.'
+	'This is a guide only, so aim for at least 50mm of clearance where you can. We’re happy to talk your measurements through before you book.'
 );
 
 /**
@@ -572,7 +572,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 					<span class="acc-callout__icon" aria-hidden="true"><?php restwell_the_icon( 'info' ); ?></span>
 					<div>
 					  <p class="acc-callout__title"><?php esc_html_e( 'Bringing your own mobile hoist', 'restwell-retreats' ); ?></p>
-					  <p><?php esc_html_e( 'The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. If you’re bringing your own hoist, check its leg height and turning circle against those figures, and tell us what you’re bringing so we can set the room up for it.', 'restwell-retreats' ); ?></p>
+					  <p><?php esc_html_e( 'The bed lowers to 220mm. The Oxford Midi’s legs stand 100mm high with 25mm of ground clearance, and it turns in 1235mm. Check your own hoist against those figures, and tell us you’re bringing it so we can set the room up.', 'restwell-retreats' ); ?></p>
 					</div>
 					</aside>
 					<?php endif; ?>
@@ -593,7 +593,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		  <span class="acc-download__icon" aria-hidden="true"><?php restwell_the_icon( 'file-text' ); ?></span>
 		  <div class="acc-download__text">
 			<p class="acc-download__title" id="acc-download-h"><?php esc_html_e( 'Download the full access statement', 'restwell-retreats' ); ?></p>
-			<p><?php esc_html_e( 'Every measurement and piece of kit on one printable sheet that works with screen readers, for occupational therapists, case managers and funding panels.', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'Every measurement and piece of kit on one printable sheet, for an OT, a case manager or a funding panel. It works with screen readers.', 'restwell-retreats' ); ?></p>
 		  </div>
 		  <a class="btn btn-gold acc-download__btn" href="<?php echo esc_url( $acc_pdf_url ); ?>" download data-analytics-event="access_statement_download">
 			<?php restwell_the_icon( 'download' ); ?>
@@ -745,7 +745,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		  <?php endif; ?>
 		  <div class="acc-guide__body">
 			<p class="eyebrow"><?php esc_html_e( 'Comparing other cottages?', 'restwell-retreats' ); ?></p>
-			<h3 id="access-guide-h"><a href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php esc_html_e( 'How to read any access statement', 'restwell-retreats' ); ?></a></h3>
+			<h3 id="access-guide-h"><a href="<?php echo esc_url( $restwell_access_guide_url ); ?>"><?php esc_html_e( 'Will your wheelchair fit? How to check any listing', 'restwell-retreats' ); ?></a></h3>
 			<p><?php esc_html_e( 'This page is Restwell’s own statement. For a general checklist of measurements, red flags and questions for an OT, read our guide.', 'restwell-retreats' ); ?></p>
 			<span class="acc-guide__more" aria-hidden="true"><?php esc_html_e( 'Read the guide', 'restwell-retreats' ); ?><?php restwell_the_icon( 'arrow-right' ); ?></span>
 		  </div>
@@ -762,9 +762,9 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		? restwell_page_content_text(
 			$restwell_acc_id,
 			'acc_cta_body',
-			__( 'If you’ve a question about door widths, hoist limits, the wet room or care, ask us and we’ll give you a clear answer.', 'restwell-retreats' )
+			__( 'If you’ve a question about door widths, hoist limits, the wet room or care, just ask. We’ll give you a clear answer.', 'restwell-retreats' )
 		)
-		: __( 'If you’ve a question about door widths, hoist limits, the wet room or care, ask us and we’ll give you a clear answer.', 'restwell-retreats' );
+		: __( 'If you’ve a question about door widths, hoist limits, the wet room or care, just ask. We’ll give you a clear answer.', 'restwell-retreats' );
 	$mid_cta_primary_label = function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_acc_id, 'acc_cta_btn', __( 'Enquire', 'restwell-retreats' ) )
 		: __( 'Enquire', 'restwell-retreats' );

@@ -6,15 +6,15 @@
 
 ## Title
 
-Funding an accessible holiday
+Funding and grants for a disabled holiday
 
 ## Meta description
 
-How a break at Restwell can be paid for: direct payments, NHS Continuing Healthcare, charity grants or paying yourself, and the paperwork we can send.
+Holiday grants for disabled adults and carers, plus council and NHS funding. Here’s what each covers, and the paperwork we can send your funder.
 
 ## H1 (`res_heading`)
 
-Funding an accessible holiday
+Grants and funding for your accessible holiday
 
 ## Intro (`res_intro`)
 
