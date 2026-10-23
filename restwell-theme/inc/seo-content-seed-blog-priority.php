@@ -20,7 +20,7 @@ function restwell_get_priority_blog_post_articles(): array {
 		array(
 			'slug'             => 'accessible-beaches-coastal-walks-kent',
 			'title'            => 'Accessible beaches and level coastal walks in Kent',
-			'excerpt'          => 'Which Kent beaches and sea walks work on wheels, where the shingle stops you, and where to borrow a beach wheelchair in Thanet.',
+			'excerpt'          => 'Some Kent beaches and sea walks work well on wheels, and some don’t. Here’s where to go, and where to borrow a beach wheelchair in Thanet.',
 			'meta_title'       => 'Accessible beaches and coastal walks in Kent',
 			'meta_description' => 'Which Kent beaches work with a wheelchair: the level promenades, where shingle stops you, and where to borrow a beach wheelchair in Thanet.',
 			'content'          => restwell_get_blog_post_beaches_kent_html(),
@@ -29,16 +29,16 @@ function restwell_get_priority_blog_post_articles(): array {
 		array(
 			'slug'             => 'direct-payment-holiday-accommodation',
 			'title'            => 'Can I use direct payments for a holiday?',
-			'excerpt'          => 'What a direct payment can pay for on a break, who decides, and what to ask your council before you book anything.',
+			'excerpt'          => 'This guide explains what a direct payment can pay for on a break, who decides, and what to ask first.',
 			'meta_title'       => 'Can I use direct payments for a holiday? A UK guide',
-			'meta_description' => 'Usually not for the holiday itself, but often for the care you need while you’re away. What councils allow, what they won’t, and what to ask first.',
+			'meta_description' => 'A direct payment rarely covers the holiday itself, but it can often pay for your care while you’re away. Here’s what councils allow, and what to ask.',
 			'content'          => restwell_get_blog_post_direct_payments_html(),
 			'category_slug'    => 'funding-care',
 		),
 		array(
 			'slug'             => 'revitalise-alternatives-accessible-holidays',
 			'title'            => 'What happened to Revitalise holidays, and where to go now',
-			'excerpt'          => 'Where to find a break with care now the Revitalise centres have closed, and what the charity still funds.',
+			'excerpt'          => 'Here’s where to find a break with care now that the Revitalise centres have closed.',
 			'meta_title'       => 'Revitalise holidays: what happened, and where to go now',
 			'meta_description' => 'Revitalise closed its holiday centres in November 2024 and now gives respite grants. Here’s what changed, and where to find a break with care now.',
 			'content'          => restwell_get_blog_post_revitalise_html(),
@@ -47,7 +47,7 @@ function restwell_get_priority_blog_post_articles(): array {
 		array(
 			'slug'             => 'how-to-choose-accessible-self-catering-holiday',
 			'title'            => 'How to choose an accessible holiday cottage: a checklist before you pay',
-			'excerpt'          => 'The word accessible can mean almost anything on a listing. This checklist covers what to ask before you pay, from door widths and hoists to care and cancelling.',
+			'excerpt'          => 'The word “accessible” can mean almost anything on a listing. This checklist covers what to ask before you pay, from door widths and hoists to care and cancellation terms.',
 			'meta_title'       => 'How to choose an accessible holiday cottage: a checklist',
 			'meta_description' => 'A checklist for choosing an accessible holiday cottage: the kit, the beds, parking, care nearby and the cancellation terms, checked before you pay.',
 			'content'          => restwell_get_blog_post_self_catering_checklist_html(),
@@ -173,7 +173,7 @@ function restwell_get_priority_blog_post_articles(): array {
 		array(
 			'slug'             => 'how-to-read-holiday-cottage-access-statement',
 			'title'            => 'Will my wheelchair fit? How to read a holiday cottage access statement',
-			'excerpt'          => 'How to check door widths, turning space, beds and hoists against your own chair, and what to ask when an access statement leaves gaps.',
+			'excerpt'          => 'Here’s how to check a cottage’s doors, beds and hoists against your own chair. It also covers what to ask when details are missing.',
 			'meta_title'       => 'Will my wheelchair fit? Reading an access statement',
 			'meta_description' => 'Door widths, turning space, hoist clearance and bed heights explained, with the questions to ask when a cottage’s access statement leaves gaps.',
 			'content'          => restwell_get_blog_post_read_access_statement_html(),
@@ -323,53 +323,53 @@ function restwell_get_blog_post_beaches_kent_html() {
 	$whitstable = esc_url( home_url( '/whitstable-area-guide/' ) );
 	$home       = esc_url( home_url( '/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Most of the Kent coast is shingle, which is hard going on wheels. So plan your day around the level promenades and the few sandy bays. In Thanet, you can also borrow a beach wheelchair at Minnis Bay, Westbrook Bay and Viking Bay.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Most of the Kent coast is shingle, which is hard going on wheels. Plan your day around the level promenades and the few sandy bays. In Thanet, you can also borrow a beach wheelchair at Minnis Bay, Westbrook Bay and Viking Bay.</p></blockquote>
 
 <h2>Which beaches in Kent are wheelchair accessible?</h2>
-<p>The easiest seaside days in Kent are on the promenades, not the beaches. The paths from Whitstable to Herne Bay, and the seafronts in Thanet, are level and paved. For sand, head to Thanet's bays, where a few have beach wheelchairs to borrow.</p>
-<p>Most of the north Kent beaches are shingle, and loose stones can stop a wheelchair or a frame. So plan on a level path by the sea, with a café and a toilet on the way.</p>
+<p>The easiest seaside days in Kent are spent on the promenades rather than the beaches. The paths from Whitstable to Herne Bay, and the seafronts in Thanet, are level and paved. For sand, head to Thanet's bays, some of which lend beach wheelchairs.</p>
+<p>Most north Kent beaches are shingle, and loose stones can stop a wheelchair or a walking frame. A level path by the sea, with a café and a toilet along the way, usually makes a better day.</p>
 
 <h2>Which Kent seaside town is best for wheelchair users?</h2>
-<p>There isn't one winner, because it depends on what you want from the day. For a long, level walk by the sea, try Herne Bay or the path from Tankerton. For getting onto sand, Thanet's bays are the best bet.</p>
+<p>There isn't one winner, because it depends on what you want from the day. For a long, level walk by the sea, try Herne Bay or the path from Tankerton. If you want to get onto the sand, Thanet's bays are your best bet.</p>
 <ul>
 <li><strong>A long, level seafront:</strong> Herne Bay, or the promenade from Tankerton towards Herne Bay.</li>
 <li><strong>Sand and a beach wheelchair:</strong> Minnis Bay, Westbrook Bay or Viking Bay.</li>
-<li><strong>A harbour, shops and food:</strong> Whitstable, which is step-free at the harbour.</li>
-<li><strong>Somewhere new to stroll:</strong> Folkestone Harbour Arm, which is mostly ramped.</li>
+<li><strong>A harbour, shops and food:</strong> Whitstable, where the harbour is step-free.</li>
+<li><strong>Somewhere new to explore:</strong> Folkestone Harbour Arm, which is mostly ramped.</li>
 </ul>
 
 <h2>Whitstable and Tankerton</h2>
-<p>About two miles of paved path runs along the top of Tankerton Slopes towards the castle and the harbour. The grass slopes down to the beach are steep, so stay on the path for the level route. The beach itself is shingle.</p>
-<p>Whitstable Harbour is step-free, and there's a Changing Places toilet there, run by Canterbury City Council. The town's older streets are narrower, with some uneven paving. We've written up <a href=\"{$whitstable}\">our guide to getting around Whitstable on wheels</a>, with the routes we know well.</p>
-<p>At low tide you'll see The Street, a ridge of shingle running out to sea from Tankerton. It looks tempting, but it's loose stone and not a route for wheels.</p>
+<p>About two miles of paved path runs along the top of Tankerton Slopes towards the castle and the harbour. The grass slopes down to the beach are steep, so stay on the path for a level route. The beach itself is shingle.</p>
+<p>Whitstable Harbour is step-free, and it has a Changing Places toilet run by Canterbury City Council. The town's older streets are narrower, with some uneven paving. Our <a href=\"{$whitstable}\">guide to getting around Whitstable on wheels</a> covers the routes we know well.</p>
+<p>At low tide, you'll see The Street, a ridge of shingle running out to sea from Tankerton. It looks tempting, but it's loose stone and no place for wheels.</p>
 
 <h2>Herne Bay and Reculver</h2>
-<p>The Oyster Bay Trail runs about eight miles from Whitstable to Reculver, through Herne Bay. It's mostly a flat path along the sea wall, shared with cyclists. In Herne Bay it joins a traffic-calmed seafront road with a 20mph limit.</p>
-<p>About nine tenths of the trail is paved, and the rest is loose surface. So check the stretch you plan to use before you set off.</p>
-<p>Herne Bay's seafront is wide and level, with cafés along the way. There's a Changing Places toilet at Sainsbury's in the town.</p>
-<p>At the far end, Reculver Country Park has a visitor centre, a café and a Changing Places toilet. The council opened it in 2022. It's a good place to turn round if you're walking or wheeling the trail.</p>
+<p>The Oyster Bay Trail runs for about eight miles from Whitstable to Reculver, passing through Herne Bay. Most of it is a flat path along the sea wall, shared with cyclists. In Herne Bay, it joins a traffic-calmed seafront road with a 20mph limit.</p>
+<p>Most of the trail is paved, but about a tenth of it has a loose surface. Check the stretch you plan to use before you set off.</p>
+<p>Herne Bay's seafront is wide and level, with cafés along the way. There's a Changing Places toilet at the Sainsbury's in the town.</p>
+<p>At the far end, Reculver Country Park has a visitor centre and a café. Its Changing Places toilet opened in 2022. It's a good place to turn back if you're following the trail.</p>
 
-<h2>Minnis Bay, Westgate and Margate</h2>
-<p>Minnis Bay in Birchington has a sandy beach and a promenade, with nine disabled bays in its car park. It's also one of the beaches with a beach wheelchair to borrow.</p>
-<p>Westbrook Bay in Margate has a beach wheelchair too, and five disabled bays at Barnes Car Park. Margate's Main Sands are close by, with the old town and the seafront beyond.</p>
+<h2>Minnis Bay and Margate</h2>
+<p>Minnis Bay in Birchington has a sandy beach, a promenade and nine disabled bays in its car park. It's also one of the beaches where you can borrow a beach wheelchair.</p>
+<p>Westbrook Bay in Margate also lends a beach wheelchair, and Barnes Car Park nearby has five disabled bays. Margate's Main Sands are close by, with the old town and the seafront beyond.</p>
 <p>Margate has two Changing Places toilets. One is at the station, on platform 1, and opens with a RADAR key. The other is at Thanet Gateway Plus in Cecil Square.</p>
 
 <h2>Broadstairs and Viking Bay</h2>
-<p>Viking Bay is a sandy bay in the middle of Broadstairs. A lift runs down from the promenade in the summer season, and a wooden boardwalk crosses part of the sand. The bay has two beach wheelchairs to borrow.</p>
-<p>The lift has closed for repairs in some years, so check it's running before you go. When the Pavilion is open, you can also reach the boardwalk through its gardens.</p>
-<p>Broadstairs is hilly away from the bay. If you'd rather avoid slopes, Joss Bay has four disabled bays in its car park.</p>
+<p>Viking Bay is a sandy bay in the middle of Broadstairs, with two beach wheelchairs to borrow. In summer, a lift runs from the promenade down to the beach. A wooden boardwalk also crosses part of the sand.</p>
+<p>The lift has been closed for repairs in some years, so check that it's running before you go. When the Pavilion is open, you can also reach the boardwalk through its gardens.</p>
+<p>Away from the bay, Broadstairs is hilly, so it helps to park as close as you can. Joss Bay, just up the coast, has four disabled bays in its car park.</p>
 
 <h2>Folkestone Harbour Arm</h2>
-<p>Folkestone Harbour Arm is a long, old harbour wall with food stalls and views back to the town. Ramps and slopes reach most of the site, and there are accessible toilets and Blue Badge bays.</p>
-<p>The harbour team doesn't suggest the boardwalk for wheelchairs or scooters, so keep to the main route. It's further from Whitstable, at under an hour by car, so it works best as a day trip.</p>
+<p>Folkestone Harbour Arm is a long, historic harbour wall with food stalls and views back over the town. Ramps and slopes give access to most of the site, and there are accessible toilets and Blue Badge bays.</p>
+<p>The harbour team doesn't recommend the boardwalk for wheelchairs or scooters, so keep to the main route. It's under an hour's drive from Whitstable, so it works well as a day trip.</p>
 
 <h2>Can you take a wheelchair onto sand or shingle?</h2>
-<p>A standard wheelchair sinks into soft sand and gets stuck in shingle. A beach wheelchair has wide balloon tyres, so someone can push you across the sand. In Thanet you can borrow one through a scheme called Beach Within Reach.</p>
-<p>The chairs are run by the Bay Inspectors at Your Leisure. You can book on the Your Leisure website or app, or by calling 03333 660661. The chairs are kept at Minnis Bay, Westbrook Bay and Viking Bay.</p>
-<p>You'll need to be able to transfer into the chair without a hoist, and you'll need someone to push. If that doesn't suit you, a level promenade is the better plan.</p>
+<p>A standard wheelchair sinks into soft sand and gets stuck in shingle. A beach wheelchair has wide balloon tyres, so someone can push you across the sand. In Thanet, you can borrow one through a scheme called Beach Within Reach.</p>
+<p>The scheme is run by Your Leisure's Bay Inspectors, who keep chairs at Minnis Bay, Westbrook Bay and Viking Bay. You can book one on the Your Leisure website or app, or by calling 03333 660661.</p>
+<p>You'll need to be able to transfer into the chair without a hoist, and you'll need someone to push you. If that doesn't suit you, a level promenade is the better choice.</p>
 
 <h2>Where are the Changing Places toilets on the Kent coast?</h2>
-<p>A Changing Places toilet has a hoist, an adult-sized changing bench and more room than a standard accessible toilet. On this stretch of coast there are several, though opening times vary. Check the Changing Places map before you set off.</p>
+<p>A Changing Places toilet has a hoist, an adult-sized changing bench and more room than a standard accessible toilet. There are several along this stretch of coast, though their opening times vary. Check the Changing Places map before you set off.</p>
 <ul>
 <li><strong>Whitstable:</strong> at the harbour.</li>
 <li><strong>Herne Bay:</strong> at Sainsbury's.</li>
@@ -379,38 +379,38 @@ function restwell_get_blog_post_beaches_kent_html() {
 </ul>
 
 <h2>When is the best time to go?</h2>
-<p>Weekday mornings outside the school holidays are the quietest, with more space on the paths and in the car parks. Summer brings the lifts and the longest opening hours. Whatever the month, check the tide, because high tide covers much of the sand.</p>
-<p>Spring and early autumn are a good middle ground. The weather is milder, the crowds are smaller, and most cafés are open. Winter can be lovely on a calm day, but expect fewer toilets and shorter hours.</p>
+<p>Weekday mornings outside the school holidays are the quietest, with more room on the paths and in car parks. In summer, the lifts run, and opening hours are at their longest. Whatever the month, check the tide, because high tide covers much of the sand.</p>
+<p>Spring and early autumn are a good compromise. The weather is milder, the crowds are smaller, and most cafés are open. Winter can be lovely on a calm day, but expect fewer open toilets and shorter hours.</p>
 
 <h2>Practical steps before you go</h2>
 <ul>
-<li>Check the tide times. At high tide, some bays have little or no sand left.</li>
+<li>Check the tide times, because at high tide some bays have little or no sand left.</li>
 <li>Book a beach wheelchair a few days ahead, especially for a summer weekend.</li>
-<li>Get a RADAR key if you don't have one. Margate's visitor centre sells them.</li>
-<li>Check the Blue Badge rules for each council, as they differ between towns.</li>
-<li>Check that lifts and toilets are open, especially outside the summer season.</li>
+<li>Get a RADAR key if you don't have one. Margate's visitor information centre sells them.</li>
+<li>Check each council's Blue Badge rules, because they differ from town to town.</li>
+<li>Check that the lifts and toilets are open, especially outside the summer season.</li>
 </ul>
 
 <h2>Common mistakes on a coast day out</h2>
 <ul>
-<li>Trusting a Blue Flag to mean the beach suits wheels. It's about the water, not the surface.</li>
-<li>Heading out onto shingle at low tide without knowing how loose it is.</li>
-<li>Assuming lifts and beach wheelchairs run all year.</li>
+<li>Assuming a Blue Flag means the beach suits wheels. The award is about the water, not the surface.</li>
+<li>Heading out onto the shingle at low tide without knowing how loose it is.</li>
+<li>Assuming that lifts and beach wheelchairs are available all year.</li>
 <li>Leaving parking to chance on a hot weekend.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
 <h3>How do people in wheelchairs go to the beach?</h3>
-<p>Most use a level promenade beside the beach, or a boardwalk or mat where there is one. To get onto sand, many borrow a beach wheelchair with wide tyres, pushed by a friend or carer.</p>
+<p>Most use a level promenade beside the beach, or a boardwalk or mat where there is one. To get onto the sand, many borrow a beach wheelchair with wide tyres, pushed by a friend or carer.</p>
 <h3>Can I use a wheelchair on beach sand?</h3>
 <p>A standard chair will usually sink in soft sand. Wet, firm sand near the water is easier, but it changes with the tide. A beach wheelchair is the safer choice.</p>
 <h3>Do I need to book a beach wheelchair in Thanet?</h3>
-<p>It's best to. There are only one or two chairs at each beach. Book through Your Leisure on 03333 660661, or on their website or app.</p>
+<p>Yes, it's best to book, because there are only one or two chairs at each beach. You can book through Your Leisure on 03333 660661, or on its website or app.</p>
 <h3>Is Tankerton promenade suitable for a powerchair?</h3>
-<p>Yes. The path along the top of Tankerton Slopes is paved and level. Use the paths from Marine Parade to reach it, not the grass.</p>
+<p>Yes. The path along the top of Tankerton Slopes is paved and level. Use the paths from Marine Parade to reach it, rather than crossing the grass.</p>
 
 <h2>Closing</h2>
-<p>Whitstable makes a good base for all of these. Thanet and Folkestone are close enough for a day trip. If you need somewhere to stay, see <a href=\"{$home}\">our accessible holiday cottage in Whitstable</a>, ten minutes from the seafront.</p>";
+<p>Whitstable makes a good base for all of these, and Thanet and Folkestone are close enough for a day trip. If you need somewhere to stay, see <a href=\"{$home}\">our accessible holiday cottage in Whitstable</a>, which is ten minutes from the seafront.</p>";
 }
 
 /**
@@ -421,55 +421,55 @@ function restwell_get_blog_post_direct_payments_html() {
 	$care    = esc_url( home_url( '/optional-care/' ) );
 	$enquire = esc_url( home_url( '/enquire/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Usually not for the holiday itself, but often for the care you need while you're away. A direct payment pays for the needs in your care and support plan, such as your PA's hours. The rent is usually yours to pay.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> A direct payment usually won't pay for the holiday itself. However, it can often pay for the care you need while you're away, such as your PA's hours. You'll usually pay for the room yourself.</p></blockquote>
 
 <h2>Do direct payments cover holiday costs?</h2>
-<p>Not usually for the holiday itself, because a direct payment has to meet the needs in your support plan. So it can often pay for care while you're away, such as your PA's hours. The cottage, hotel or travel is usually yours.</p>
-<p>The rule comes from the Care Act 2014. A direct payment lets you arrange your own care, in place of care the council would arrange. The money follows your needs, not where you happen to be that week.</p>
-<p>So don't ask \"will they pay for my holiday?\" Ask \"will they pay for my care while I'm away?\" For the rest of the cost, we've set out <a href=\"{$funding}\">grants and other ways to fund a disabled holiday</a>.</p>
+<p>Usually, they don't, because a direct payment has to meet the needs in your care and support plan. That means it can often pay for your care while you're away, such as your PA's hours. You'll normally pay for the room and travel yourself.</p>
+<p>The rule comes from the Care Act 2014. A direct payment lets you arrange your own care, instead of the council arranging it for you. The money follows your needs, not where you happen to be that week.</p>
+<p>So the question for your council isn't whether it will pay for your holiday. It's whether it will pay for your care while you're away. For the other costs, see our guide to <a href=\"{$funding}\">grants and other ways to fund a disabled holiday</a>.</p>
 
 <h2>What can direct payments pay for while you're away?</h2>
-<p>They can pay for the care and support in your plan, wherever you are. For most people, that means a PA's wages for their usual hours. Some councils also agree to a PA's travel and room, or extra hours for the trip.</p>
+<p>They can pay for the care and support in your plan, wherever you are. For most people, that means a PA's wages for their usual hours. Some councils also agree to pay a PA's travel and room, or for extra hours during the trip.</p>
 <ul>
 <li><strong>Your PA's hours:</strong> the hours in your plan can usually go with you.</li>
 <li><strong>An agency where you're staying:</strong> you can often pay a registered care agency near your holiday base.</li>
-<li><strong>Your PA's travel and room:</strong> some councils say yes, some only in special cases, and some say no.</li>
-<li><strong>A short respite stay:</strong> many councils list short breaks and respite as a use.</li>
+<li><strong>Your PA's travel and room:</strong> some councils agree, some agree only in special cases, and some refuse.</li>
+<li><strong>A short respite stay:</strong> many councils allow direct payments to be used for short breaks and respite.</li>
 </ul>
-<p>What it usually won't cover is the cost of the holiday itself. That means your own travel, your room, your food and your days out. Councils also rule out things like alcohol, tobacco and gambling.</p>
+<p>What they don't normally cover is the cost of the holiday itself. That means your own travel, your room, your food and your days out. Councils also rule out things like alcohol, tobacco and gambling.</p>
 
 <h2>Who decides what's allowed?</h2>
-<p>Your council decides, using your care and support plan. The national guidance doesn't set a rule for holidays, so each council writes its own policy. That's why two people in different areas can get different answers to the same question.</p>
-<p>Croydon's October 2025 policy is one example. It allows a short care home stay of up to four weeks in a row. On a trip abroad, though, you pay your PA's travel and room unless there's an exceptional reason.</p>
-<p>Other councils draw the line in other places. So read your own council's direct payments policy, or ask your social worker for it. You'll usually find it by searching your council's name and \"direct payments policy\".</p>
+<p>Your council decides, based on your care and support plan. The national guidance doesn't set a rule for holidays, so each council writes its own policy. That's why two people in different areas can get different answers to the same question.</p>
+<p>Croydon's October 2025 policy is one example. It lets you use a direct payment for a care home stay of up to four weeks in a row. For a trip abroad, though, you pay your PA's travel and room yourself, unless there's an exceptional reason.</p>
+<p>Other councils draw the line elsewhere. Read your own council's direct payments policy, or ask your social worker for a copy. You can usually find it by searching for your council's name and \"direct payments policy\".</p>
 
 <h2>What should you ask your social worker?</h2>
-<p>Ask about the care, not the holiday. Say where you'd like to go, for how long, and what help you'll need each day. Then ask which of those costs your direct payment can cover, and get the answer in writing.</p>
+<p>Ask about the care, not the holiday. Explain where you'd like to go, for how long, and what help you'll need each day. Then ask which of the costs your direct payment can cover, and get the answer in writing.</p>
 <ul>
 <li>Can my PA's hours go with me, and can I add hours for the trip?</li>
-<li>Can you pay my PA's travel, or their room?</li>
-<li>Can I pay a care agency near where I'm staying?</li>
-<li>Is there a short breaks budget I can ask for this year?</li>
+<li>Can my direct payment cover my PA's travel or their room?</li>
+<li>Can I use it to pay a care agency near where I'm staying?</li>
+<li>Is there a short breaks budget I can apply for this year?</li>
 <li>What paperwork do you need from me, and by when?</li>
 </ul>
 
 <h2>Can a family carer use a direct payment for a break?</h2>
-<p>Yes, a family carer can ask for their own assessment. If they have needs the council must meet, it can arrange care for you while they take a break. It can also fund that care through a direct payment.</p>
-<p>That care might happen at home, or it might come with you on a holiday you take together. Ask the council what it would fund before you book anything, because the rules for carers vary too.</p>
+<p>Yes, a family carer can ask the council for their own assessment. If they have needs that the council must meet, it can arrange care for you while they take a break. It can also fund that care through a direct payment.</p>
+<p>That care might take place at home, or on a holiday you take together. Ask the council what it would fund before you book anything, because the rules for carers vary as well.</p>
 
 <h2>What about NHS Continuing Healthcare?</h2>
-<p>If you get NHS Continuing Healthcare, the NHS pays for your care, not the council. You have the right to a personal health budget, which can be paid as a direct payment. It has to meet the needs in your NHS care plan.</p>
-<p>That usually means the care you need while you're away, just as with a council direct payment. Some areas also rule out respite breaks from health budgets, so the answer depends on your local NHS. Ask your CHC team or care co-ordinator first.</p>
+<p>If you get NHS Continuing Healthcare, the NHS pays for your care, not the council. You have the right to a personal health budget, which can be paid to you as a direct payment. It has to meet the needs in your NHS care plan.</p>
+<p>On holiday, that usually means paying for the care you need, just as a council direct payment would. Some areas don't allow health budgets to be used for respite breaks. Check with your CHC team or care co-ordinator first.</p>
 
 <h2>What is an individual service fund?</h2>
-<p>An individual service fund, or ISF, is your care budget held by a provider you choose. The provider arranges your support with you, so you don't employ anyone yourself. It suits people who want choice without being an employer.</p>
-<p>The same rule applies, though. An ISF pays for the support in your plan. Whether that support can travel with you is still up to your council and the provider.</p>
+<p>An individual service fund, or ISF, is your care budget, held by a provider you choose. The provider arranges your support with you, so you don't have to employ anyone. It suits people who want a say in their care without becoming an employer.</p>
+<p>The same rule applies, though: an ISF pays only for the support in your plan. Whether that support can travel with you is up to your council and the provider.</p>
 
 <h2>Practical steps before you book</h2>
 <ul>
 <li>Find your council's direct payments policy and look for anything on holidays, travel or respite.</li>
-<li>Write down the care you'll need each day you're away, in hours.</li>
-<li>Ask whether your PA's travel and room can be paid, and get the answer in writing.</li>
+<li>Write down how many hours of care you'll need on each day of the trip.</li>
+<li>Ask whether your PA's travel and room can be paid for, and get the answer in writing.</li>
 <li>Get a written quote for the stay, and a quote for any care you'll book there.</li>
 <li>Wait for the council to agree before you pay a deposit.</li>
 </ul>
@@ -477,29 +477,29 @@ function restwell_get_blog_post_direct_payments_html() {
 <h2>Common mistakes to avoid</h2>
 <ul>
 <li>Paying for the room from your direct payment account without written agreement.</li>
-<li>Asking for \"a holiday\" when what you need is care while you're away.</li>
-<li>Assuming last year's answer still stands. Policies and plans change.</li>
-<li>Leaving the request until a few weeks before you go.</li>
+<li>Asking the council to fund \"a holiday\" when what you need is care while you're away.</li>
+<li>Assuming last year's answer still stands, when policies and plans change.</li>
+<li>Leaving your request until a few weeks before you go.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
 <h3>What can you not use direct payments for?</h3>
-<p>Anything that isn't in your care and support plan. Most councils also rule out alcohol, tobacco, gambling and everyday living costs, such as your own food and rent. Your council's policy will have the full list.</p>
+<p>You can't use them for anything that isn't in your care and support plan. Most councils also rule out alcohol, tobacco, gambling and everyday living costs, such as your food and rent. Your council's policy will have the full list.</p>
 <h3>Can my PA come on holiday with me?</h3>
-<p>Yes, if your plan covers the hours. Their wages can usually come from your direct payment. Whether their travel and room can be paid is up to your council, so ask first.</p>
+<p>Yes, as long as your plan covers the hours. Their wages can usually come from your direct payment. Whether their travel and room can be paid for is up to your council, so ask first.</p>
 <h3>Can direct payments pay for respite?</h3>
-<p>Often, yes. Many councils let you use them for short breaks, such as a short stay in a care home. A holiday cottage is a different question, and the answer depends on your council and your plan.</p>
+<p>Often, yes. Many councils let you use them for short breaks, such as a short stay in a care home. A holiday cottage is a different matter, and the answer depends on your council and your plan.</p>
 <h3>Can I use direct payments for care abroad?</h3>
-<p>Sometimes. Some councils agree, as long as the care meets your plan and the agency is properly regulated. Many won't pay a PA's travel abroad unless there's a strong reason.</p>
+<p>Sometimes. Some councils agree, as long as the care meets your plan and the agency is properly regulated. Many won't pay for a PA's travel abroad unless there's a strong reason.</p>
 <h3>What happens if I spend it on the wrong thing?</h3>
 <p>The council can ask for the money back. Keep every receipt and invoice, and get any unusual spending agreed in writing first.</p>
 
 <h2>How guests at Restwell use direct payments</h2>
-<p>Restwell is a private, adapted bungalow in Whitstable, and many guests bring their own PA. Often the direct payment covers the PA's hours. The bungalow is paid for another way, such as savings or a grant.</p>
-<p>Other guests ask about <a href=\"{$care}\">booking care from Continuity during your stay</a>. Continuity of Care Services is our sister company. They'll talk through what you need and give you a quote, which you can show your council.</p>
+<p>Restwell is a private, adapted bungalow in Whitstable, and many of our guests bring their own PA. Their direct payment often covers the PA's hours. They pay for the bungalow another way, such as from savings or with a grant.</p>
+<p>Other guests book care from Continuity of Care Services, our sister company. Continuity talks through what's needed and gives a quote, which you can show your council. Read more about <a href=\"{$care}\">booking care from Continuity during your stay</a>.</p>
 
 <h2>Closing</h2>
-<p>If it helps, we can send a written quote for the bungalow to take to your council. <a href=\"{$enquire}\">Ask us for a quote for your funder</a>, and tell us the dates you have in mind.</p>";
+<p>If it helps, we can send you a written quote for the bungalow to show your council. <a href=\"{$enquire}\">Ask us for a quote for your funder</a>, and tell us the dates you have in mind.</p>";
 }
 
 /**
@@ -511,66 +511,66 @@ function restwell_get_blog_post_revitalise_html() {
 	$enquire = esc_url( home_url( '/enquire/' ) );
 	$who     = esc_url( home_url( '/who-its-for/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Revitalise closed its holiday centres in November 2024, after more than 60 years. The charity now gives grants towards breaks, typically about £500 a person. The main options today are group trips with care, activity centres, and self-catering stays with care added.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Revitalise closed its holiday centres in November 2024, after more than 60 years. The charity now gives grants towards breaks, usually of about £500 a person. Today, the main options are group trips with care, activity centres, and self-catering stays with care added.</p></blockquote>
 
 <h2>What happened to Revitalise holidays?</h2>
-<p>Revitalise closed its last two holiday centres in November 2024. They were Sandpipers in Southport and Jubilee Lodge in Chigwell, Essex. The charity said rising costs, and less respite funding from councils and grant-makers, left it with no other option.</p>
-<p>For many guests and families, it was a real loss. The centres offered a break with care on site, day and night, in a place built for it.</p>
+<p>Revitalise closed its last two holiday centres in November 2024. They were Sandpipers in Southport and Jubilee Lodge in Chigwell, Essex. The charity said that rising costs, and less respite funding from councils and grant-makers, left it with no other option.</p>
+<p>For many guests and their families, it was a real loss. The centres offered a break with care on site, day and night, in a place built for the purpose.</p>
 
 <h2>What was Revitalise?</h2>
-<p>Revitalise began in 1963 as the Winged Fellowship Trust. It ran holiday centres where disabled adults could stay with care on hand, alone or with a family carer. Each stay had trips, meals and company built in.</p>
-<p>It also ran a third centre, Netley Waterside House near Southampton. That one closed earlier, in 2020, and has since been sold.</p>
+<p>Revitalise began in 1963 as the Winged Fellowship Trust. It ran holiday centres where disabled adults could stay with care on hand, alone or with a family carer. Trips, meals and company were part of every stay.</p>
+<p>It also ran a third centre, Netley Waterside House near Southampton. That centre closed earlier, in 2020, and has since been sold.</p>
 
 <h2>Why did the centres close?</h2>
-<p>Running a centre with care around the clock costs a great deal. Revitalise said its costs kept rising while the money for respite fell, from councils and from grant-makers. In the end, it couldn't keep the centres open.</p>
-<p>The same pressures are felt across adult social care. So it's unlikely another charity will open centres on the same model soon, though nothing rules it out.</p>
+<p>Running a centre with care around the clock is very expensive. Revitalise said that its costs kept rising while respite funding from councils and grant-makers fell. In the end, it couldn't keep the centres open.</p>
+<p>The same pressures affect the whole of adult social care, so another charity is unlikely to open similar centres soon.</p>
 
 <h2>Does Revitalise still help with holidays?</h2>
-<p>Yes, Revitalise now gives grants instead of running centres. Disabled adults and carers aged 18 and over can apply for help towards a break in the UK or abroad. The usual grant is about £500 a person, and it can be more in exceptional cases.</p>
+<p>Yes, Revitalise now gives grants instead of running centres. Disabled adults and carers aged 18 and over can apply for help towards a break in the UK or abroad. The usual grant is about £500 a person.</p>
 <ul>
-<li><strong>Breaks and holidays:</strong> typically £500 a person. If you travel with a carer, both of you can be considered.</li>
-<li><strong>A break at home:</strong> up to £100 towards care at home, so a family carer can take a break.</li>
+<li><strong>Breaks and holidays:</strong> usually about £500 a person, and sometimes more. If you travel with a carer, you can both be considered.</li>
+<li><strong>A break at home:</strong> up to £100 towards care at home, so that a family carer can take a break.</li>
 <li><strong>Day trips and activities:</strong> up to £100 each, towards things like tickets, travel, meals or care.</li>
 </ul>
-<p>You can apply online, on a paper form, or by phone on set days. There's a limit on grants each month, and people who haven't had one in the last year come first.</p>
+<p>You can apply online, on a paper form, or by phone on set days. Only a set number of grants is given each month. People who haven't had one in the last year come first.</p>
 
 <h2>Where can you go now instead?</h2>
-<p>No single place does everything Revitalise did, but there are good options. The right one depends on how much care you need, and who you'd like to go with. It also depends on how much you'd like to plan yourself.</p>
+<p>No single place offers everything Revitalise did, but there are good options. The right one depends on how much care you need and who you'd like to go with. It also depends on how much of the planning you want to do yourself.</p>
 <h3>Group holidays with care</h3>
-<p>Some companies run trips in the UK and abroad with care staff travelling with the group. Limitless Travel is one example. It's the closest thing to the old centres, with company and care built in.</p>
+<p>Some companies run trips in the UK and abroad, with care staff travelling with the group. Limitless Travel is one example. This is the closest thing to the old centres, with company and care built in.</p>
 <h3>Activity centres</h3>
-<p>The Calvert Trust runs centres in the Lake District, Kielder and Exmoor. They offer outdoor activities for disabled people, with places to stay on site. The Lake District centre opens 50 weeks of the year.</p>
+<p>The Calvert Trust runs centres in the Lake District, Kielder and Exmoor. They offer outdoor activities for disabled people, with somewhere to stay on site. The Lake District centre is open 50 weeks a year.</p>
 <h3>Self-catering with your own carer</h3>
-<p>An adapted cottage gives you a whole place to yourselves. You bring your own carer, PA or family, and set your own routine. It works best when the house already has the kit you need.</p>
+<p>An adapted cottage gives you a whole house to yourselves. You bring your own carer, PA or family, and set your own routine. It works best when the house already has the equipment you need.</p>
 <h3>Self-catering with care added</h3>
-<p>Some adapted holiday homes can arrange care from a local care company during your stay. You get the privacy of a house, with help in the morning, the day or overnight. You'll get a quote for the care first.</p>
+<p>Some adapted holiday homes can arrange care from a local care company during your stay. You get the privacy of a house, with help in the morning, during the day or overnight. You'll be given a quote for the care first.</p>
 <h3>A hotel with an accessible room</h3>
-<p>Many hotels have an accessible room, and a few have a hoist. You can book a local care agency to visit you, though it takes more planning. Ask for the room's measurements before you book.</p>
+<p>Many hotels have an accessible room, and a few have a hoist. You can book a local care agency to visit you, though this takes more planning. Ask for the room's measurements before you book.</p>
 
 <h2>How is a self-catering break different?</h2>
-<p>A self-catering break is your own holiday, in your own space. There's no timetable, no shared dining room and no one else's routine. The trade-off is that you plan more yourself, from the kit to the care.</p>
-<p>So check the details before you book. Look for exact door widths, the type of hoist and bed, and how the bathroom works. If you need care, ask early how it's arranged and what it costs.</p>
+<p>A self-catering break is your own holiday, in your own space. There's no timetable, no shared dining room and nobody else's routine to fit around. The trade-off is that you do more of the planning, from the equipment to the care.</p>
+<p>That's why it's worth checking the details before you book. Look for exact door widths, the type of hoist and bed, and how the bathroom works. If you need care, ask early how it's arranged and what it costs.</p>
 
 <h2>How can you pay for a break now?</h2>
-<p>Most people mix a few sources, such as a Revitalise grant or help from another charity like the 3H Foundation. If the council pays for your care, a direct payment may cover it while you're away. It rarely pays for the stay itself.</p>
-<p>A family carer can also ask the council for a carer's assessment. That can lead to support for a break. We've gathered more on <a href=\"{$funding}\">ways to fund an accessible holiday</a>, including grants and council funding.</p>
+<p>Most people combine a few sources, such as a Revitalise grant or help from another charity like the 3H Foundation. If the council pays for your care, a direct payment may cover that care while you're away. It rarely pays for the stay itself.</p>
+<p>A family carer can also ask the council for a carer's assessment, which can lead to support for a break. Our funding page covers <a href=\"{$funding}\">ways to fund an accessible holiday</a>, from grants to council funding.</p>
 
 <h2>Frequently asked questions</h2>
 <h3>Why did Revitalise close its centres?</h3>
-<p>Rising costs and less respite funding from councils and grant-makers. The charity still exists and now gives grants towards breaks.</p>
+<p>It closed them because of rising costs and less respite funding from councils and grant-makers. The charity still exists, and it now gives grants towards breaks.</p>
 <h3>Are the Revitalise centres reopening?</h3>
-<p>No reopening has been announced. Revitalise now focuses on grants, so it's worth checking their website for any news.</p>
+<p>No reopening has been announced. Revitalise now focuses on grants, so it's worth checking its website for any news.</p>
 <h3>How much is a Revitalise grant?</h3>
-<p>Usually about £500 a person for a break or holiday. Grants for a break at home, a day trip or an activity are usually up to £100.</p>
+<p>It's usually about £500 a person for a break or holiday. Grants for a break at home, a day trip or an activity are usually up to £100.</p>
 <h3>Can people on PIP get a free holiday?</h3>
-<p>There's no free holiday scheme for people on PIP. Some charities ask about benefits like PIP when you apply for a grant, so mention it if you get it.</p>
+<p>There's no free holiday scheme for people on PIP. However, some charities ask about benefits such as PIP, so mention it when you apply for a grant.</p>
 
 <h2>Where Restwell fits</h2>
-<p>Restwell is a private adapted bungalow in Whitstable, with a ceiling hoist, a profiling bed and a level-access wet room. It's a holiday home, not a care centre, so it feels different from Revitalise. You can see <a href=\"{$who}\">who the Whitstable bungalow suits</a> before you decide.</p>
+<p>Restwell is a private, adapted bungalow in Whitstable, with a ceiling hoist, a profiling bed and a level-access wet room. It's a holiday home, not a care centre, so it feels quite different from Revitalise. Before you decide, see <a href=\"{$who}\">who the Whitstable bungalow suits</a>.</p>
 <p>Many guests bring their own carer or PA. Others add care from Continuity of Care Services, our sister company, which is rated Good by the Care Quality Commission. If that sounds useful, read about <a href=\"{$care}\">a self-catering break with care provided</a>.</p>
 
 <h2>Closing</h2>
-<p>Not sure what would suit you now? We're happy to talk it through. <a href=\"{$enquire}\">Ask us whether the bungalow would suit you</a>, and we'll give you a straight answer.</p>";
+<p>If you're not sure what would suit you now, we're happy to talk it through. <a href=\"{$enquire}\">Ask us whether the bungalow would suit you</a>, and we'll give you a straight answer.</p>";
 }
 
 /**
@@ -582,14 +582,14 @@ function restwell_get_blog_post_self_catering_checklist_html() {
 	$accessibility = esc_url( home_url( '/accessibility/' ) );
 	$property      = esc_url( home_url( '/the-property/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Don't trust the word accessible on its own. Ask for door measurements, the make of the hoist and bed, and photos of the bathroom. Then check parking, care nearby and the cancellation terms, and get every answer in writing before you pay a deposit.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Don't rely on the word \"accessible\" on its own. Ask for the door measurements, the make of the hoist and bed, and photos of the bathroom. Then check the parking, care nearby and cancellation terms, and get the answers in writing before you pay.</p></blockquote>
 
 <h2>Where can I find cottages with disabled access?</h2>
-<p>Start with the specialist agencies and directories, which let you filter for things like a wet room or a hoist. Euan's Guide has reviews from disabled visitors. Some adapted houses also have their own websites, often with far more detail than an agency listing.</p>
-<p>Treat every filter as a shortlist, not a promise. One owner's \"accessible\" can mean a grab rail, and another's a ceiling hoist. The checklist below helps you find out which you're looking at.</p>
+<p>Start with the specialist agencies and directories, which let you filter for a wet room or a hoist. Euan's Guide has reviews written by disabled visitors. Some adapted houses also have their own websites, often with far more detail than an agency listing.</p>
+<p>Treat the results of any filter as a shortlist, not a promise. One owner's \"accessible\" can mean a grab rail, while another's means a ceiling hoist. The checklist below helps you find out which you're looking at.</p>
 
 <h2>What should an accessible holiday cottage have?</h2>
-<p>That depends on you, so start with your own needs, not the listing. Write down how you get in and out of bed, how you wash, and what kit you use at home. Then look for a cottage that matches, item by item.</p>
+<p>That depends on you, so start with your own needs rather than the listing. Write down how you get in and out of bed, how you wash, and what equipment you use at home. Then look for a cottage that matches, item by item.</p>
 <p>For many guests, the essentials come down to a short list.</p>
 <ul>
 <li>A step-free route from the car to the front door.</li>
@@ -597,7 +597,7 @@ function restwell_get_blog_post_self_catering_checklist_html() {
 <li>A level-access shower or wet room, with grab rails.</li>
 <li>A bed you can get in and out of, with space beside it.</li>
 <li>A hoist, if you use one, and room to use it.</li>
-<li>Space for a carer or PA to sleep, if one is coming.</li>
+<li>Somewhere for a carer or PA to sleep, if one is coming.</li>
 </ul>
 
 <h2>Arriving and getting in</h2>
@@ -605,87 +605,87 @@ function restwell_get_blog_post_self_catering_checklist_html() {
 <ul>
 <li>Is the parking level and firm, and is there room for a side or rear ramp?</li>
 <li>Is the route to the door step-free, or are there slopes, gravel or kerbs?</li>
-<li>Is there a lip at the front door? How high is it?</li>
-<li>Is there somewhere to park close by if the drive is full?</li>
+<li>Is there a lip at the front door, and how high is it?</li>
+<li>Is there somewhere else to park nearby if the drive is full?</li>
 </ul>
 
 <h2>Doors, rooms and turning space</h2>
-<p>Ask for the clear opening of each door, in millimetres. That's the gap you can actually pass through, which is narrower than the door itself. We've explained <a href=\"{$statement}\">how to check door widths against your own chair</a>, if you'd like to measure yours.</p>
+<p>Ask for the clear opening of each door, in millimetres. That's the gap you can actually pass through, and it's narrower than the door itself. Our guide explains <a href=\"{$statement}\">how to check door widths against your own chair</a>.</p>
 <ul>
-<li>What's the clear opening of the front door and each inside door?</li>
-<li>Are all the rooms on one level, with no steps or thresholds between them?</li>
-<li>Is there space to turn your chair in the bedroom and bathroom? Building guidance for wheelchair homes uses a 1500mm circle.</li>
+<li>What's the clear opening of the front door and of each inside door?</li>
+<li>Are all the rooms on one level, with no steps or raised thresholds between them?</li>
+<li>Is there space to turn your chair in the bedroom and bathroom? Building guidance for wheelchair users' homes allows a 1500mm turning circle.</li>
 </ul>
 
 <h2>The bathroom</h2>
-<p>The bathroom is where most listings fall short, so ask the most questions here. A photo of the whole room, taken from the door, tells you more than any description.</p>
+<p>The bathroom is where most listings fall short, so this is where to ask the most questions. A photo of the whole room, taken from the doorway, tells you more than any description.</p>
 <ul>
 <li>Is the shower level, with no step or tray edge to cross?</li>
 <li>Where are the grab rails, and are there rails on both sides of the toilet?</li>
-<li>What shower seat is there: a stool, a chair, or a tilting chair?</li>
-<li>Can you reach the basin from a seat, and can it move up and down?</li>
+<li>What shower seat is there: a stool, a chair or a tilting chair?</li>
+<li>Can you reach the basin from a seat, and can it be raised or lowered?</li>
 <li>Is there an alarm cord, and who does it alert?</li>
 </ul>
 
 <h2>The bedroom, beds and hoists</h2>
-<p>Ask for the make and model of the bed and the hoist. With those, you or your OT can look up the details, such as safe working loads and heights. If the owner can't name them, that tells you something too.</p>
+<p>Ask for the make and model of the bed and the hoist. With those, you or your OT can look up details such as safe working loads and heights. If the owner can't name them, that tells you something too.</p>
 <ul>
-<li>Is it a profiling bed? How low and how high does it go?</li>
+<li>Is it a profiling bed, and how low and how high does it go?</li>
 <li>Is there space on both sides of the bed for transfers and for a carer?</li>
-<li>Is there a ceiling hoist, a mobile hoist, or both? Which rooms does each reach?</li>
+<li>Is there a ceiling hoist, a mobile hoist or both, and which rooms does each one reach?</li>
 <li>What's the hoist's safe working load, and when was it last examined?</li>
-<li>Do you need to bring your own sling? (Usually yes, because a sling must fit you.)</li>
+<li>Do you need to bring your own sling? You usually do, because a sling has to fit the person using it.</li>
 </ul>
 <p>Under the LOLER rules, hoists used at work to lift people need a thorough examination every six months. Many owners follow the same timetable, so ask for the date of the last one.</p>
 
 <h2>The kitchen and living space</h2>
 <ul>
-<li>Can you use the worktop, hob and oven from a seat?</li>
+<li>Can you use the worktop, hob and oven from a seated position?</li>
 <li>Are the living room, bedroom and bathroom all on the same level?</li>
 <li>Can you reach the light switches, sockets and heating controls?</li>
-<li>Is there a chair or sofa you can get in and out of easily?</li>
+<li>Is there a chair or sofa that you can get in and out of easily?</li>
 </ul>
 
 <h2>Care and support while you stay</h2>
-<p>If you need care, decide how it will work before you book the house. You might bring a PA or family member, or book a local care agency. Some houses can arrange care for you.</p>
-<p>If you're booking an agency, ask how much notice it needs and what it will cost. Agencies near holiday areas can get busy in summer, so ask early.</p>
+<p>If you need care, decide how it will work before you book the house. You might bring a PA or a family member, or book a local care agency. Some houses can also arrange care for you.</p>
+<p>If you're booking an agency, ask how much notice it needs and what it will cost. Agencies in holiday areas can be busy in summer, so ask early.</p>
 
 <h2>Booking terms and paperwork</h2>
-<p>Read the cancellation terms with your health in mind. Plans can change at short notice, so it matters what happens to your deposit. Travel insurance that covers your condition and your kit is worth a look too.</p>
+<p>Read the cancellation terms with your health in mind. Plans can change at short notice, so check what happens to your deposit if you have to cancel. It's also worth finding travel insurance that covers your condition and your equipment.</p>
 <p>If someone else is paying, such as a council or the NHS, ask the owner for a written quote. Most funders want one before they agree to anything.</p>
 
 <h2>Practical steps before you pay</h2>
 <ul>
-<li>Send the owner your questions by email, so the answers are in writing.</li>
+<li>Email the owner your questions, so that you have the answers in writing.</li>
 <li>Ask for photos of the bathroom, the bedroom and the route from the car.</li>
-<li>Check the door widths against your own chair, at its widest point.</li>
-<li>Show the details to your OT or carer if you use one.</li>
-<li>Check the cancellation terms and your insurance.</li>
-<li>Pay the deposit only when you're happy the house will work.</li>
+<li>Check the door widths against your own chair, measured at its widest point.</li>
+<li>Show the details to your OT or carer, if you have one.</li>
+<li>Check the cancellation terms and your travel insurance.</li>
+<li>Pay the deposit only when you're happy that the house will work for you.</li>
 </ul>
 
 <h2>Red flags in a listing</h2>
 <ul>
 <li>\"Wheelchair friendly\" with no measurements anywhere.</li>
 <li>Photos that never show the whole bathroom.</li>
-<li>A hoist mentioned with no make, model or safe working load.</li>
+<li>A hoist that's mentioned without a make, model or safe working load.</li>
 <li>Vague answers to direct questions, or no answer at all.</li>
-<li>Pressure to pay before your questions are answered.</li>
+<li>Pressure to pay before your questions have been answered.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
 <h3>Which measurement matters most?</h3>
-<p>For most wheelchair users, the clear opening of the doors. If your chair can't get through the bathroom door, nothing else in the house matters.</p>
+<p>For most wheelchair users, it's the clear opening of the doors. If your chair can't get through the bathroom door, nothing else in the house matters.</p>
 <h3>Can I trust the accessible filter on booking sites?</h3>
-<p>Use it to build a shortlist. Then check the details with the owner, because filters rely on what owners tick.</p>
+<p>Use it to build a shortlist, then check the details with the owner. Filters only show what owners have ticked.</p>
 <h3>What is a wet room for a disabled person?</h3>
 <p>It's a bathroom where the shower floor is level with the rest of the room. You can wheel straight in, with no tray or step to cross.</p>
 <h3>Should I bring my own equipment?</h3>
-<p>Bring anything personal to you, like your sling and your own chair. Ask the owner what's already there before you hire anything else.</p>
+<p>Bring anything that's personal to you, such as your sling and your own chair. Ask the owner what's already there before you hire anything else.</p>
 
 <h2>How Restwell answers these questions</h2>
-<p>We've tried to answer every question on this list before you have to ask it. You can check <a href=\"{$accessibility}\">a cottage with a wet room, ceiling hoist and profiling bed</a>. The makes, models and measurements are all set out.</p>
-<p>For the feel of the house, take <a href=\"{$property}\">a room-by-room look round our bungalow</a>. If something isn't covered, ask us and we'll measure it.</p>
+<p>We've tried to answer every question on this list before you need to ask it. You'll find the makes, models and measurements in <a href=\"{$accessibility}\">our details of the wet room, ceiling hoist and profiling bed</a>.</p>
+<p>For a feel of the house, take <a href=\"{$property}\">a room-by-room look round our bungalow</a>. If something isn't covered, ask us and we'll measure it.</p>
 
 <h2>Closing</h2>
 <p>A good owner won't mind how many questions you ask. If you'd like to ask us yours, <a href=\"{$enquire}\">send us your questions about the bungalow</a>.</p>";

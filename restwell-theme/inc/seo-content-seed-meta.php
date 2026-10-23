@@ -97,7 +97,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'direct-payment-holiday-accommodation'     => array(
 			'meta_title'       => 'Can I use direct payments for a holiday? A UK guide' . $name,
-			'meta_description' => 'Usually not for the holiday itself, but often for the care you need while you’re away. What councils allow, what they won’t, and what to ask first.',
+			'meta_description' => 'A direct payment rarely covers the holiday itself, but it can often pay for your care while you’re away. Here’s what councils allow, and what to ask.',
 			'focus_keyphrase'  => 'can I use direct payments for a holiday',
 		),
 		'revitalise-alternatives-accessible-holidays' => array(

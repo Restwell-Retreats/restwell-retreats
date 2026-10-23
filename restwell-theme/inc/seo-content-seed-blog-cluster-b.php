@@ -305,79 +305,79 @@ function restwell_get_blog_post_read_access_statement_html() {
 	$enquire       = esc_url( home_url( '/enquire/' ) );
 	$accessibility = esc_url( home_url( '/accessibility/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Measure your own chair first, at its widest point. Then compare it with the clear opening of each door, not the size of the door itself. Check the turning space, bed height and hoist too, and ask the owner for anything missing.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Measure your own chair first, at its widest point. Then compare it with the clear opening of each door, not the size of the door itself. Check the turning space, bed height and hoist too, and ask the owner for anything that's missing.</p></blockquote>
 
 <h2>Can a wheelchair fit through a 900mm door?</h2>
-<p>Usually, yes, but check what the 900mm means. If it's the clear opening, most wheelchairs will fit with room to spare. If it's the door itself, the frame and the open door make the usable gap smaller.</p>
-<p>The gap you can use is called the clear opening. Building guidance in England treats a standard 826mm door as giving a clear opening of 775mm. So always ask for the clear opening, in millimetres, and compare it with your chair.</p>
+<p>Usually, yes, but check what the 900mm refers to. If it's the clear opening, most wheelchairs will fit with room to spare. If it's the width of the door itself, the frame and the open door leave a narrower gap.</p>
+<p>The gap you can actually use is called the clear opening. Building guidance in England treats a standard 826mm door as giving a clear opening of 775mm. That's why it's worth asking for the clear opening in millimetres and comparing it with your chair.</p>
 
 <h2>How wide should a door be for a wheelchair?</h2>
-<p>For homes built for wheelchair users, the building guidance asks for at least 850mm of clear opening at every door. In everyday homes, an inside door can be as narrow as 750mm, depending on the hallway. A holiday cottage could be either, so ask.</p>
-<p>The width of the hallway matters too. Turning through a narrow door from a narrow hall is much harder than going straight in. So if a door is tight, ask how wide the hall is in front of it.</p>
+<p>For homes built for wheelchair users, the building guidance asks for at least 850mm of clear opening at every door. In ordinary homes, an inside door can be as narrow as 750mm, depending on the hallway. A holiday cottage could be either, so ask.</p>
+<p>The width of the hallway matters too. Turning through a narrow door from a narrow hall is much harder than going straight in. If a door is tight, ask how wide the hall is in front of it.</p>
 
 <h2>How do I measure my wheelchair?</h2>
-<p>Measure across the widest point, which is usually the wheels or the push rims. If you push yourself, leave room for your hands. Measure the length too, from the back of the chair to the front of the footplates, because that affects turning.</p>
-<p>Write the numbers down and keep them on your phone. Then you can check them against any listing in a minute. To see how it works, you can compare them with <a href=\"{$accessibility}\">our own door widths, hoist ratings and bed heights</a>.</p>
+<p>Measure across the widest point, which is usually the wheels or the push rims. If you propel yourself, leave room for your hands. Measure the length too, from the back of the chair to the front of the footplates, because it affects turning.</p>
+<p>Write the measurements down and keep them on your phone, so you can check any listing in a minute. To try it, compare them with <a href=\"{$accessibility}\">our own door widths, hoist ratings and bed heights</a>.</p>
 
 <h2>What is an access statement?</h2>
-<p>An access statement is a written guide to how easy a place is to get to, into and around. It should give real measurements, not just words like \"accessible\". VisitEngland now calls them accessibility guides, but many owners still use the older name.</p>
-<p>There's no single legal format for a holiday let. VisitEngland recommends a detailed guide made by AccessAble, whose surveyors visit and measure. Many owners write their own, though, so the quality varies a lot.</p>
+<p>An access statement is a written guide to how easy a place is to reach, enter and move around. It should give real measurements, not just words like \"accessible\". VisitEngland now calls these documents accessibility guides, but many owners still use the older name.</p>
+<p>There's no single legal format for a holiday let. VisitEngland recommends a detailed guide produced by AccessAble, whose surveyors visit and measure. However, many owners write their own, so the quality varies a lot.</p>
 
 <h2>What should an access statement tell you?</h2>
-<p>A good one takes you from the car park to the bed, with a number at each step. If a section is missing, that's a question to ask the owner. Don't assume it's fine just because it isn't mentioned.</p>
+<p>A good one takes you from the car park to the bed, with a measurement at each stage. If a section is missing, that's a question to ask the owner. Don't assume something is fine just because it isn't mentioned.</p>
 <ul>
 <li><strong>Getting there:</strong> where you park, the surface, and any slopes, steps or kerbs.</li>
 <li><strong>Doors:</strong> the clear opening of every door, and any lip at the threshold.</li>
-<li><strong>Turning space:</strong> room to turn in the bedroom and bathroom. Building guidance for wheelchair homes uses a 1500mm circle.</li>
-<li><strong>The bathroom:</strong> a level shower, where the rails are, and what you'd sit on.</li>
-<li><strong>The bed:</strong> its lowest and highest height, and the space beside it. Wheelchair homes allow 1000mm.</li>
-<li><strong>The hoist:</strong> the type, make and model, its safe working load, and which rooms it reaches.</li>
-<li><strong>Photos:</strong> of whole rooms, taken from the door, not just close-ups.</li>
+<li><strong>Turning space:</strong> room to turn in the bedroom and bathroom. Building guidance for wheelchair users' homes allows a 1500mm turning circle.</li>
+<li><strong>The bathroom:</strong> whether the shower is level, where the rails are, and what you'd sit on.</li>
+<li><strong>The bed:</strong> its lowest and highest heights, and the space beside it. The same guidance allows 1000mm.</li>
+<li><strong>The hoist:</strong> its type, make and model, its safe working load, and which rooms it reaches.</li>
+<li><strong>Photos:</strong> whole rooms, taken from the doorway, not just close-ups.</li>
 </ul>
 
 <h2>How do I check a hoist will work for me?</h2>
-<p>Start with the safe working load, which needs to be above your weight. Then check where it reaches, because a ceiling hoist only works under its track. A mobile hoist can move between rooms, if the floors and doors allow it.</p>
-<p>With a mobile hoist, the legs need to fit under the bed. So compare the height of the hoist's legs with the space under the bed at its lowest. Check the hoist can turn in the room, too.</p>
-<p>Ask when the hoist was last examined. Under the LOLER rules, hoists used at work to lift people need a check every six months. And plan to bring your own sling, because it has to fit you.</p>
+<p>Start with the safe working load, which needs to be higher than your weight. Then check where the hoist reaches, because a ceiling hoist only works under its track. A mobile hoist can move between rooms if the floors and doors allow it.</p>
+<p>With a mobile hoist, the legs need to fit under the bed. Compare the height of the hoist's legs with the space under the bed at its lowest setting. Check that the hoist can turn in the room, too.</p>
+<p>Ask when the hoist was last examined. Under the LOLER rules, hoists used at work to lift people need a thorough examination every six months. You should also plan to bring your own sling, because it has to fit you.</p>
 
 <h2>Our own figures, as an example</h2>
-<p>Here's how our bungalow in Whitstable reads against that list. The front door has a clear opening of 965mm, and the inside doors give 926mm. There are no internal steps.</p>
-<p>The profiling bed's platform goes from 220mm up to 800mm. Our mobile hoist's legs stand 100mm high, with 25mm of ground clearance, and it turns in 1235mm. Both hoists have a safe working load of 180kg and are examined every six months.</p>
-<p>If you're bringing your own hoist, compare its leg height and turning space with those numbers. That's the kind of check every listing should let you make.</p>
+<p>Here's how our bungalow in Whitstable measures up against that list. The front door has a clear opening of 965mm, and the inside doors have 926mm. There are no steps inside the bungalow.</p>
+<p>The profiling bed's platform adjusts from 220mm to 800mm high. Our mobile hoist's legs are 100mm high, with 25mm of ground clearance, and it turns in 1235mm. Both hoists have a safe working load of 180kg and are examined every six months.</p>
+<p>If you're bringing your own hoist, compare its leg height and turning space with those figures. Every listing should let you make that kind of check.</p>
 
 <h2>Red flags in an access statement</h2>
 <ul>
 <li>\"Wheelchair friendly\" or \"accessible\" with no measurements.</li>
-<li>Door widths without saying whether they're the clear opening.</li>
-<li>A hoist with no make, model or safe working load.</li>
+<li>Door widths that don't say whether they're the clear opening.</li>
+<li>A hoist without a make, model or safe working load.</li>
 <li>No photos of the whole bathroom.</li>
-<li>A statement that hasn't been updated in years.</li>
+<li>A statement that hasn't been updated for years.</li>
 </ul>
 
 <h2>What to ask when details are missing</h2>
-<p>Email the owner and ask for the exact numbers you need. Keep it short and specific, so it's easy to answer.</p>
+<p>Email the owner and ask for the exact measurements you need. Keep your email short and specific, so that it's easy to answer.</p>
 <ul>
-<li>What's the clear opening of the front door, the bedroom and the bathroom?</li>
+<li>What's the clear opening of the front door, the bedroom door and the bathroom door?</li>
 <li>Is there a step or lip at any door, and how high is it?</li>
-<li>What are the make and model of the bed and the hoist?</li>
-<li>How low does the bed go, and how much space is beside it?</li>
-<li>Could you send a photo of the bathroom, taken from the door?</li>
+<li>What make and model are the bed and the hoist?</li>
+<li>How low does the bed go, and how much space is there beside it?</li>
+<li>Could you send a photo of the bathroom, taken from the doorway?</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Can a wheelchair fit through a 27 inch door?</h3>
-<p>Possibly not. 27 inches is about 686mm, and the clear gap will be narrower still. That's too tight for many adult wheelchairs, so measure your chair to be sure.</p>
+<h3>Can a wheelchair fit through a 27-inch door?</h3>
+<p>Possibly not. Twenty-seven inches is about 686mm, and the clear opening will be narrower still. That's too tight for many adult wheelchairs, so measure your chair to be sure.</p>
 <h3>What is the minimum door width for wheelchair access?</h3>
-<p>Homes built for wheelchair users should give at least 850mm of clear opening at every door. Ordinary homes can have inside doors of 750mm, depending on the hall.</p>
+<p>Homes built for wheelchair users should have a clear opening of at least 850mm at every door. Ordinary homes can have inside doors with a clear opening of 750mm, depending on the hallway.</p>
 <h3>How much space do you need to turn a wheelchair?</h3>
-<p>Building guidance for wheelchair homes uses a 1500mm circle. Some chairs need less and some powerchairs need more, so try turning in a space at home and measure it.</p>
+<p>Building guidance for wheelchair users' homes allows a 1500mm turning circle. Some chairs need less and some powerchairs need more, so try turning in a space at home and measure it.</p>
 <h3>Is an access statement a legal requirement?</h3>
-<p>There's no single legal format for holiday lets. VisitEngland asks businesses in its quality scheme to publish their main access features online.</p>
+<p>Not as such, because there's no single legal format for holiday lets. However, VisitEngland asks the businesses in its quality scheme to publish their main access features online.</p>
 <h3>What's the difference between an access statement and an accessibility guide?</h3>
-<p>They're the same idea. VisitEngland now uses the name accessibility guide, while many owners still say access statement.</p>
+<p>They're the same thing. VisitEngland now uses the name \"accessibility guide\", while many owners still say \"access statement\".</p>
 
 <h2>Closing</h2>
-<p>If you'd like us to check the fit for you, <a href=\"{$enquire}\">send us your chair measurements</a>. We'll tell you honestly whether the bungalow will work.</p>";
+<p>If you'd like us to check the fit for you, <a href=\"{$enquire}\">send us your chair measurements</a>. We'll tell you honestly whether the bungalow will work for you.</p>";
 }
 
 /**
