@@ -145,7 +145,7 @@ get_template_part(
 				<div class="funding-route__foot">
 				  <p>Kent residents: <a href="tel:03000416161">03000 41 61 61</a></p>
 				  <?php if ( ! empty( $restwell_guide_urls['direct-payment-holiday-accommodation'] ) ) : ?>
-					<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Direct payments guide', 'restwell-retreats' ); ?></a>
+					<a class="text-link text-link--on-dark" href="<?php echo esc_url( $restwell_guide_urls['direct-payment-holiday-accommodation'] ); ?>"><?php esc_html_e( 'Direct payments guide', 'restwell-retreats' ); ?></a>
 				  <?php endif; ?>
 				</div>
 			</div>

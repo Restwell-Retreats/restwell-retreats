@@ -205,7 +205,8 @@ a.path-card:hover {
   transform: translateY(0);
   outline: 3px solid var(--deep-teal);
   outline-offset: 2px;
-  box-shadow: 0 10px 28px rgba(9, 26, 32, 0.14);
+  /* Same white halo as shared.css, or this later rule drops it. */
+  box-shadow: 0 0 0 7px var(--white), 0 10px 28px rgba(9, 26, 32, 0.14);
 }
 
 /* Header enquire chip matches the 2.75rem tap target used elsewhere. Drop

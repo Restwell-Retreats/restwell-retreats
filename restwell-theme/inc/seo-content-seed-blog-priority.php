@@ -410,7 +410,7 @@ function restwell_get_blog_post_beaches_kent_html() {
 <p>Yes. The path along the top of Tankerton Slopes is paved and level. Use the paths from Marine Parade to reach it, rather than crossing the grass.</p>
 
 <h2>Closing</h2>
-<p>Whitstable makes a good base for all of these, and Thanet and Folkestone are close enough for a day trip. If you need somewhere to stay, see <a href=\"{$home}\">our accessible holiday cottage in Whitstable</a>, which is ten minutes from the seafront.</p>";
+<p>Whitstable makes a good base for all of these, and Thanet and Folkestone are close enough for a day trip. If you need somewhere to stay, see <a href=\"{$home}\">our accessible holiday home in Whitstable</a>, which is ten minutes from the seafront.</p>";
 }
 
 /**
@@ -421,33 +421,33 @@ function restwell_get_blog_post_direct_payments_html() {
 	$care    = esc_url( home_url( '/optional-care/' ) );
 	$enquire = esc_url( home_url( '/enquire/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> A direct payment usually won't pay for the holiday itself. However, it can often pay for the care you need while you're away, such as your PA's hours. You'll usually pay for the room yourself.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> A direct payment usually won't pay for the holiday itself. However, it can often pay for the care you need while you're away, such as your PA's hours. You'll usually pay for the holiday home yourself.</p></blockquote>
 
 <h2>Do direct payments cover holiday costs?</h2>
-<p>Usually, they don't, because a direct payment has to meet the needs in your care and support plan. That means it can often pay for your care while you're away, such as your PA's hours. You'll normally pay for the room and travel yourself.</p>
+<p>Usually, they don't, because a direct payment has to meet the needs in your care and support plan. That means it can often pay for your care while you're away, such as your PA's hours. You'll normally pay for the holiday home and travel yourself.</p>
 <p>The rule comes from the Care Act 2014. A direct payment lets you arrange your own care, instead of the council arranging it for you. The money follows your needs, not where you happen to be that week.</p>
 <p>So the question for your council isn't whether it will pay for your holiday. It's whether it will pay for your care while you're away. For the other costs, see our guide to <a href=\"{$funding}\">grants and other ways to fund a disabled holiday</a>.</p>
 
 <h2>What can direct payments pay for while you're away?</h2>
-<p>They can pay for the care and support in your plan, wherever you are. For most people, that means a PA's wages for their usual hours. Some councils also agree to pay a PA's travel and room, or for extra hours during the trip.</p>
+<p>They can pay for the care and support in your plan, wherever you are. For most people, that means a PA's wages for their usual hours. Some councils also agree to pay a PA's travel and accommodation costs, or for extra hours during the trip.</p>
 <ul>
 <li><strong>Your PA's hours:</strong> the hours in your plan can usually go with you.</li>
 <li><strong>An agency where you're staying:</strong> you can often pay a registered care agency near your holiday base.</li>
-<li><strong>Your PA's travel and room:</strong> some councils agree, some agree only in special cases, and some refuse.</li>
+<li><strong>Your PA's travel and accommodation:</strong> some councils agree, some agree only in special cases, and some refuse.</li>
 <li><strong>A short respite stay:</strong> many councils allow direct payments to be used for short breaks and respite.</li>
 </ul>
-<p>What they don't normally cover is the cost of the holiday itself. That means your own travel, your room, your food and your days out. Councils also rule out things like alcohol, tobacco and gambling.</p>
+<p>What they don't normally cover is the cost of the holiday itself. That means your own travel, the holiday home, your food and your days out. Councils also rule out things like alcohol, tobacco and gambling.</p>
 
 <h2>Who decides what's allowed?</h2>
 <p>Your council decides, based on your care and support plan. The national guidance doesn't set a rule for holidays, so each council writes its own policy. That's why two people in different areas can get different answers to the same question.</p>
-<p>Croydon's October 2025 policy is one example. It lets you use a direct payment for a care home stay of up to four weeks in a row. For a trip abroad, though, you pay your PA's travel and room yourself, unless there's an exceptional reason.</p>
+<p>Croydon's October 2025 policy is one example. It lets you use a direct payment for a care home stay of up to four weeks in a row. For a trip abroad, though, you pay your PA's travel and accommodation yourself, unless there's an exceptional reason.</p>
 <p>Other councils draw the line elsewhere. Read your own council's direct payments policy, or ask your social worker for a copy. You can usually find it by searching for your council's name and \"direct payments policy\".</p>
 
 <h2>What should you ask your social worker?</h2>
 <p>Ask about the care, not the holiday. Explain where you'd like to go, for how long, and what help you'll need each day. Then ask which of the costs your direct payment can cover, and get the answer in writing.</p>
 <ul>
 <li>Can my PA's hours go with me, and can I add hours for the trip?</li>
-<li>Can my direct payment cover my PA's travel or their room?</li>
+<li>Can my direct payment cover my PA's travel or accommodation?</li>
 <li>Can I use it to pay a care agency near where I'm staying?</li>
 <li>Is there a short breaks budget I can apply for this year?</li>
 <li>What paperwork do you need from me, and by when?</li>
@@ -469,14 +469,14 @@ function restwell_get_blog_post_direct_payments_html() {
 <ul>
 <li>Find your council's direct payments policy and look for anything on holidays, travel or respite.</li>
 <li>Write down how many hours of care you'll need on each day of the trip.</li>
-<li>Ask whether your PA's travel and room can be paid for, and get the answer in writing.</li>
+<li>Ask whether your PA's travel and accommodation can be paid for, and get the answer in writing.</li>
 <li>Get a written quote for the stay, and a quote for any care you'll book there.</li>
 <li>Wait for the council to agree before you pay a deposit.</li>
 </ul>
 
 <h2>Common mistakes to avoid</h2>
 <ul>
-<li>Paying for the room from your direct payment account without written agreement.</li>
+<li>Paying for the holiday home from your direct payment account without written agreement.</li>
 <li>Asking the council to fund \"a holiday\" when what you need is care while you're away.</li>
 <li>Assuming last year's answer still stands, when policies and plans change.</li>
 <li>Leaving your request until a few weeks before you go.</li>
@@ -484,11 +484,11 @@ function restwell_get_blog_post_direct_payments_html() {
 
 <h2>Frequently asked questions</h2>
 <h3>What can you not use direct payments for?</h3>
-<p>You can't use them for anything that isn't in your care and support plan. Most councils also rule out alcohol, tobacco, gambling and everyday living costs, such as your food and rent. Your council's policy will have the full list.</p>
+<p>You can't use them for anything that isn't in your care and support plan. Most councils also rule out alcohol, tobacco, gambling and everyday living costs, such as food and your rent at home. Your council's policy will have the full list.</p>
 <h3>Can my PA come on holiday with me?</h3>
-<p>Yes, as long as your plan covers the hours. Their wages can usually come from your direct payment. Whether their travel and room can be paid for is up to your council, so ask first.</p>
+<p>Yes, as long as your plan covers the hours. Their wages can usually come from your direct payment. Whether their travel and accommodation can be paid for is up to your council, so ask first.</p>
 <h3>Can direct payments pay for respite?</h3>
-<p>Often, yes. Many councils let you use them for short breaks, such as a short stay in a care home. A holiday cottage is a different matter, and the answer depends on your council and your plan.</p>
+<p>Often, yes. Many councils let you use them for short breaks, such as a short stay in a care home. A holiday home is a different matter, and the answer depends on your council and your plan.</p>
 <h3>Can I use direct payments for care abroad?</h3>
 <p>Sometimes. Some councils agree, as long as the care meets your plan and the agency is properly regulated. Many won't pay for a PA's travel abroad unless there's a strong reason.</p>
 <h3>What happens if I spend it on the wrong thing?</h3>
@@ -541,11 +541,9 @@ function restwell_get_blog_post_revitalise_html() {
 <h3>Activity centres</h3>
 <p>The Calvert Trust runs centres in the Lake District, Kielder and Exmoor. They offer outdoor activities for disabled people, with somewhere to stay on site. The Lake District centre is open 50 weeks a year.</p>
 <h3>Self-catering with your own carer</h3>
-<p>An adapted cottage gives you a whole house to yourselves. You bring your own carer, PA or family, and set your own routine. It works best when the house already has the equipment you need.</p>
+<p>An adapted holiday home gives you a whole house to yourselves. You bring your own carer, PA or family, and set your own routine. It works best when the house already has the equipment you need.</p>
 <h3>Self-catering with care added</h3>
 <p>Some adapted holiday homes can arrange care from a local care company during your stay. You get the privacy of a house, with help in the morning, during the day or overnight. You'll be given a quote for the care first.</p>
-<h3>A hotel with an accessible room</h3>
-<p>Many hotels have an accessible room, and a few have a hoist. You can book a local care agency to visit you, though this takes more planning. Ask for the room's measurements before you book.</p>
 
 <h2>How is a self-catering break different?</h2>
 <p>A self-catering break is your own holiday, in your own space. There's no timetable, no shared dining room and nobody else's routine to fit around. The trade-off is that you do more of the planning, from the equipment to the care.</p>

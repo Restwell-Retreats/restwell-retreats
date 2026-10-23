@@ -101,6 +101,19 @@ while ( have_posts() ) :
 			<?php echo $post_body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content output, restructured in restwell_enhance_post_html(). ?>
 		</div>
 		<?php
+		// The note dates the research to when the guide was last checked.
+		$note_updated = $modified > $published;
+		get_template_part(
+			'template-parts/post-research-note',
+			null,
+			array(
+				'date'     => $note_updated ? get_the_modified_date( RESTWELL_POST_DATE_FORMAT ) : get_the_date( RESTWELL_POST_DATE_FORMAT ),
+				'datetime' => $note_updated ? get_the_modified_date( DATE_W3C ) : get_the_date( DATE_W3C ),
+				'title'    => get_the_title(),
+			)
+		);
+		?>
+		<?php
 		if ( function_exists( 'restwell_render_post_cluster_links' ) ) {
 			restwell_render_post_cluster_links( $entry_id );
 		}

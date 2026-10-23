@@ -522,11 +522,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 .testimonials :focus-visible,
 .site-footer :focus-visible,
 .faq-ask :focus-visible,
-.sidebar-card :focus-visible {
+.sidebar-card :focus-visible,
+.acc-download :focus-visible,
+#directory .fund-directory > div:last-child :focus-visible {
   outline-color: var(--warm-gold-hero);
 }
 /* The plain FAQ hero is light, so it keeps the dark ring. */
 .hero.hero--plain :focus-visible { outline-color: var(--deep-teal); }
+/* Over photos (the header at the top of a page, photo heroes, photo bands) a
+   gold ring alone can land on a light patch of the picture: the header
+   Enquire button's ring all but vanished over the property hero's wooden
+   floor (23 Oct 2026). A deep-teal band either side keeps the ring at 6:1
+   whatever the photo shows. */
+.site-header :focus-visible,
+.hero:not(.hero--plain) :focus-visible,
+.mid-cta :focus-visible {
+  box-shadow: 0 0 0 7px var(--deep-teal);
+}
 
 /* In-page anchors clear the fixed header (+ optional concept banner). */
 section[id],
@@ -587,7 +599,9 @@ html.admin-bar .subnav ~ section[id] {
      only reaches ~1.9:1 — fails WCAG 1.4.11's 3:1 non-text minimum. */
   outline: 3px solid var(--deep-teal);
   outline-offset: 2px;
-  box-shadow: 0 10px 28px rgba(9, 26, 32, 0.14);
+  /* White halo under the ring: the pill opens over the teal header and dark
+     hero photos, where a teal ring alone measured 1:1. */
+  box-shadow: 0 0 0 7px var(--white), 0 10px 28px rgba(9, 26, 32, 0.14);
 }
 
 .container {
@@ -972,7 +986,9 @@ blockquote:not(.pull-quote__text),
   text-decoration-color: var(--warm-gold);
 }
 .text-link:focus-visible {
-  outline: 2px solid var(--deep-teal);
+  /* Offset only. Setting the colour here (it was deep-teal) came after the
+     dark-surface ring list near the top and beat it, so text links on teal
+     panels showed a teal ring on teal (1:1, found 23 Oct 2026). */
   outline-offset: 3px;
 }
 /* Links inside a sentence are exempt from the touch-target minimum, and an
@@ -2107,7 +2123,12 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 .breadcrumb a:hover,
 .breadcrumb a:focus-visible {
-  color: var(--warm-gold-hero);
+  /* White and underlined, not gold: over the brighter parts of a hero photo
+     gold fell to 4.2:1 on phones. White never drops below the resting text. */
+  color: var(--white);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 .breadcrumb__sep { opacity: 0.45; }
 .breadcrumb [aria-current="page"] {
@@ -2133,7 +2154,6 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
      the menu read as a breadcrumb. */
   margin-left: var(--space-6);
 }
-.nav a.is-active,
 .nav__dropdown a.is-active {
   color: var(--warm-gold-hero);
 }
@@ -2162,9 +2182,18 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   transform: translateY(-1px) rotate(45deg);
   opacity: 0.85;
 }
+/* Current page and the open menu: white text with a gold underline, not
+   gold text. Over a bright hero photo at the top of the page the scrim is too
+   light for gold (3.7:1 on Blog, 4.2:1 on Optional Care, 23 Oct 2026); white
+   passes there, and the underline means the marker isn't colour alone. */
+.nav a.is-active,
 .nav__item--has-dropdown > .nav__trigger[aria-expanded="true"],
 .nav__item--has-dropdown.is-current > .nav__trigger {
-  color: var(--warm-gold-hero);
+  color: var(--white);
+  text-decoration: underline;
+  text-decoration-color: var(--warm-gold-hero);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.45em;
 }
 .nav__dropdown {
   display: none;
@@ -6857,6 +6886,18 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
   line-height: 1.5;
   color: var(--deep-teal);
 }
+/* "About this guide" under every post (23 Oct 2026): the summary panel in a
+   quieter voice, since it's a note about the guide, not part of it. */
+.post-summary.post-note { margin: var(--space-10) 0 var(--space-8); }
+.post-summary.post-note h2.post-summary__label { font-family: var(--font-sans); line-height: 1.4; }
+.post-summary.post-note p:not(.post-summary__label) {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--body-secondary);
+}
+.post-summary.post-note p + p { margin-top: var(--space-3); }
+.post-summary.post-note time { white-space: nowrap; }
 
 .post-cards {
   display: grid;
@@ -7573,6 +7614,7 @@ p > .text-link:only-child,
    transport cards). These paragraphs are always running text, so their links
    stay inline under WCAG 2.5.8's inline exception. */
 p.lede > .text-link,
+.post-note p > .text-link,
 .section-head p > .text-link,
 p.field-hint > .text-link,
 p.acc-reg__tour > .text-link,
@@ -8608,6 +8650,10 @@ label .text-link {
 }
 .funding-route__foot p { margin: 0; color: var(--white); font-weight: var(--weight-semibold); }
 .funding-route__foot a { color: var(--warm-gold-hero); }
+/* The generic .text-link:hover is dark gold for light surfaces; on this teal
+   card it measured 1.15:1 (owner's screenshot, 23 Oct 2026). */
+.funding-route__foot a:hover,
+.funding-route__foot a:focus-visible { color: var(--white); text-decoration-color: var(--white); }
 
 /* =========================================================================
    No icon tiles (13 Oct 2026). A line icon sitting in a tinted disc or
