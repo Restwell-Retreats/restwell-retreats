@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 97;
+const RESTWELL_SCHEMA_VERSION = 98;
 
 
 /**
@@ -3934,6 +3934,86 @@ function restwell_migrate_batch_a_posts_v97() {
 }
 
 /**
+ * Publish the five kept guides where they don't exist yet (23 Oct 2026). The
+ * live site never ran Theme Setup, so it had no posts at all. Only these five
+ * are created (the other seeded guides stay off live), and a guide is skipped
+ * if a post with its slug exists in any state, trash included, so one that
+ * was deliberately removed isn't brought back.
+ */
+function restwell_migrate_publish_kept_guides_v98() {
+	if ( get_option( 'restwell_publish_kept_guides_v98', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_publish_kept_guides_v98', '1', false );
+
+	$keep    = array( 'accessible-beaches-coastal-walks-kent', 'direct-payment-holiday-accommodation', 'revitalise-alternatives-accessible-holidays', 'how-to-choose-accessible-self-catering-holiday', 'how-to-read-holiday-cottage-access-statement' );
+	$defs    = function_exists( 'restwell_get_blog_category_definitions' ) ? restwell_get_blog_category_definitions() : array();
+	$seo     = restwell_get_seo_meta_defaults_by_slug();
+	$admins  = get_users(
+		array(
+			'role'    => 'administrator',
+			'number'  => 1,
+			'orderby' => 'ID',
+			'fields'  => 'ID',
+		)
+	);
+	$author  = $admins ? (int) $admins[0] : 1;
+
+	foreach ( restwell_get_priority_blog_post_articles() as $article ) {
+		if ( ! in_array( $article['slug'], $keep, true ) ) {
+			continue;
+		}
+		$existing = get_posts(
+			array(
+				'name'           => $article['slug'],
+				'post_type'      => 'post',
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			)
+		);
+		if ( $existing ) {
+			continue;
+		}
+		$args = array(
+			'post_title'   => $article['title'],
+			'post_name'    => $article['slug'],
+			'post_status'  => 'publish',
+			'post_type'    => 'post',
+			'post_content' => wp_kses_post( $article['content'] ),
+			'post_excerpt' => $article['excerpt'],
+			'post_author'  => $author,
+		);
+		$slug = isset( $article['category_slug'] ) ? sanitize_title( $article['category_slug'] ) : '';
+		if ( $slug && isset( $defs[ $slug ] ) ) {
+			$term = term_exists( $slug, 'category' );
+			if ( ! $term ) {
+				$term = wp_insert_term(
+					$defs[ $slug ]['name'],
+					'category',
+					array(
+						'slug' => $slug,
+						'description' => $defs[ $slug ]['description'],
+					)
+				);
+			}
+			if ( $term && ! is_wp_error( $term ) ) {
+				$args['post_category'] = array( (int) ( is_array( $term ) ? $term['term_id'] : $term ) );
+			}
+		}
+		$post_id = wp_insert_post( wp_slash( $args ), true );
+		if ( is_wp_error( $post_id ) || ! $post_id ) {
+			continue;
+		}
+		update_post_meta( $post_id, 'meta_title', $article['meta_title'] );
+		update_post_meta( $post_id, 'meta_description', $article['meta_description'] );
+		if ( ! empty( $seo[ $article['slug'] ]['focus_keyphrase'] ) ) {
+			update_post_meta( $post_id, 'focus_keyphrase', $seo[ $article['slug'] ]['focus_keyphrase'] );
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -4066,6 +4146,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_short_intros_v95',
 		'restwell_care_intros_v96',
 		'restwell_batch_a_posts_v97',
+		'restwell_publish_kept_guides_v98',
 	);
 }
 
@@ -4246,6 +4327,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_care_intros_v96', 134 );
 	add_action( 'init', 'restwell_migrate_batch_a_posts_v97', 140 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_a_posts_v97', 135 );
+	add_action( 'init', 'restwell_migrate_publish_kept_guides_v98', 141 );
+	add_action( 'after_switch_theme', 'restwell_migrate_publish_kept_guides_v98', 136 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
