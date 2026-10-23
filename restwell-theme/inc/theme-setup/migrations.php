@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 96;
+const RESTWELL_SCHEMA_VERSION = 97;
 
 
 /**
@@ -3827,6 +3827,113 @@ function restwell_migrate_care_intros_v96() {
 }
 
 /**
+ * A post body's text, normalised for comparison: tags stripped, entities
+ * decoded, curly quotes straightened and whitespace collapsed. Two bodies with
+ * the same fingerprint read the same, whatever their links point to.
+ *
+ * @param string $html Post content.
+ * @return string md5 of the normalised text.
+ */
+function restwell_post_text_fingerprint( $html ) {
+	$text = html_entity_decode( wp_strip_all_tags( (string) $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+	$text = str_replace( array( "\u{2019}", "\u{2018}", "\u{201C}", "\u{201D}", "\r\n", "\r" ), array( "'", "'", '"', '"', "\n", "\n" ), $text );
+	return md5( trim( (string) preg_replace( '/\s+/u', ' ', $text ) ) );
+}
+
+/**
+ * Batch A (23 Oct 2026): the five kept guides rewritten to the October SEO
+ * blueprint (docs/seo-blueprint-2026-10-22.md), with new titles, excerpts and
+ * SEO meta. A body is replaced only while its text still matches the shipped
+ * seed (the fingerprints below), and each other field only while it still
+ * equals its old seeded value, so anything edited in wp-admin is kept.
+ */
+function restwell_migrate_batch_a_posts_v97() {
+	if ( get_option( 'restwell_batch_a_posts_v97', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_batch_a_posts_v97', '1', false );
+
+	$was = array(
+		'accessible-beaches-coastal-walks-kent'          => array(
+			'text'             => 'db923f3e7c095fc32e17d74507092911',
+			'title'            => 'A guide to accessible beaches and coastal walks in Kent',
+			'excerpt'          => 'A guide to level promenades and shingle beaches if you use a wheelchair or mobility equipment, covering Whitstable, Herne Bay, Broadstairs and Margate.',
+			'meta_title'       => 'Accessible beaches and coastal walks in Kent',
+			'meta_description' => 'Accessible beaches Kent: level promenades, Beach Within Reach, Herne Bay, Viking Bay, Margate. Plan a seaside day with realistic access notes.',
+			'focus_keyphrase'  => 'accessible beaches kent',
+		),
+		'direct-payment-holiday-accommodation'           => array(
+			'text'             => 'da6dbd43fd8b8b7d7f28508910d68b01',
+			'title'            => 'How to use your direct payment for a holiday',
+			'excerpt'          => 'Direct payments are mainly for care rather than the cost of a holiday, though some councils allow more. This guide explains what they can cover, how personal health budgets work, and what to ask your social worker.',
+			'meta_title'       => 'Using direct payments for a holiday: what they cover',
+			'meta_description' => 'Direct payment for holiday stays: what counts as care vs accommodation, personal budgets, short breaks, and questions for your social worker.',
+			'focus_keyphrase'  => 'direct payment for holiday',
+		),
+		'revitalise-alternatives-accessible-holidays'    => array(
+			'text'             => 'dbdf9afd9a64a35ecc0692404705b360',
+			'title'            => 'What happened to Revitalise, and where to find accessible holidays now',
+			'excerpt'          => 'Revitalise closed its holiday centres in November 2024 after 60 years. Here’s what happened, what Revitalise offers now, and where else to find accessible holidays in the UK.',
+			'meta_title'       => 'What happened to Revitalise, and where to go now',
+			'meta_description' => 'Revitalise closed its holiday centres in 2024: why, what the charity funds now, and where to find accessible UK holidays and respite alternatives.',
+			'focus_keyphrase'  => 'revitalise',
+		),
+		'how-to-choose-accessible-self-catering-holiday' => array(
+			'text'             => '423d4cce55c37c1f0fa9ca7955019319',
+			'title'            => 'How to choose an accessible self-catering holiday property',
+			'excerpt'          => 'The word accessible on a listing can mean almost anything. This checklist shows what to ask before you book, from door widths and hoists to the warning signs.',
+			'meta_title'       => 'How to choose an accessible self-catering holiday',
+			'meta_description' => 'Choose an accessible self-catering holiday: verify hoist specs, door widths, wet rooms, and red flags in listings before you pay a deposit.',
+			'focus_keyphrase'  => 'accessible self-catering holiday',
+		),
+		'how-to-read-holiday-cottage-access-statement'   => array(
+			'text'             => '22cb7f5a5f20e37e3a7c521ac5dafc0f',
+			'title'            => 'How to read a holiday cottage access statement before you book',
+			'excerpt'          => 'The sizes to check, the hoist details to ask for, and the words in a listing that should make you think twice.',
+			'meta_title'       => 'How to read a holiday cottage access statement',
+			'meta_description' => 'How to read a holiday cottage access statement: measurements that matter, hoist proof, red-flag phrases, and questions OTs and families should ask.',
+			'focus_keyphrase'  => 'holiday cottage access statement',
+		),
+	);
+
+	$articles = array();
+	foreach ( restwell_get_priority_blog_post_articles() as $article ) {
+		$articles[ $article['slug'] ] = $article;
+	}
+	$seo = restwell_get_seo_meta_defaults_by_slug();
+
+	foreach ( $was as $slug => $old ) {
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( ! $post || empty( $articles[ $slug ] ) ) {
+			continue;
+		}
+		$new    = $articles[ $slug ];
+		$update = array();
+		if ( restwell_post_text_fingerprint( $post->post_content ) === $old['text'] ) {
+			$update['post_content'] = wp_kses_post( $new['content'] );
+		}
+		if ( $post->post_title === $old['title'] ) {
+			$update['post_title'] = $new['title'];
+		}
+		if ( trim( $post->post_excerpt ) === $old['excerpt'] ) {
+			$update['post_excerpt'] = $new['excerpt'];
+		}
+		if ( $update ) {
+			$update['ID'] = (int) $post->ID;
+			wp_update_post( wp_slash( $update ) );
+		}
+		foreach ( array( 'meta_title', 'meta_description' ) as $key ) {
+			if ( (string) get_post_meta( $post->ID, $key, true ) === $old[ $key ] ) {
+				update_post_meta( $post->ID, $key, $new[ $key ] );
+			}
+		}
+		if ( (string) get_post_meta( $post->ID, 'focus_keyphrase', true ) === $old['focus_keyphrase'] && ! empty( $seo[ $slug ]['focus_keyphrase'] ) ) {
+			update_post_meta( $post->ID, 'focus_keyphrase', $seo[ $slug ]['focus_keyphrase'] );
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -3958,6 +4065,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_our_story_build_card_v94',
 		'restwell_short_intros_v95',
 		'restwell_care_intros_v96',
+		'restwell_batch_a_posts_v97',
 	);
 }
 
@@ -4136,6 +4244,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_short_intros_v95', 133 );
 	add_action( 'init', 'restwell_migrate_care_intros_v96', 139 );
 	add_action( 'after_switch_theme', 'restwell_migrate_care_intros_v96', 134 );
+	add_action( 'init', 'restwell_migrate_batch_a_posts_v97', 140 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_a_posts_v97', 135 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

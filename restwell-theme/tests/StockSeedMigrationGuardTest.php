@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 96;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 97;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -61,6 +61,21 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_short_intros_v95',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_care_intros_v96',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_care_intros_v96',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_batch_a_posts_v97',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_a_posts_v97',", $source );
+	}
+
+	public function test_batch_a_posts_only_replace_what_was_shipped() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_batch_a_posts_v97' );
+		// A body is swapped only while its text still matches the shipped seed.
+		$this->assertStringContainsString( 'restwell_post_text_fingerprint( $post->post_content ) === $old[\'text\']', $body );
+		// Every other field only while it still equals its old seeded value.
+		$this->assertStringContainsString( '$post->post_title === $old[\'title\']', $body );
+		$this->assertStringContainsString( 'trim( $post->post_excerpt ) === $old[\'excerpt\']', $body );
+		$this->assertStringContainsString( '(string) get_post_meta( $post->ID, $key, true ) === $old[ $key ]', $body );
+		// New values come from the same articles the seeder uses.
+		$this->assertStringContainsString( 'restwell_get_priority_blog_post_articles()', $body );
+		$this->assertStringContainsString( "update_option( 'restwell_batch_a_posts_v97', '1'", $body );
 	}
 
 	public function test_pricing_faq_heading_swap_only_replaces_the_july_seeds() {

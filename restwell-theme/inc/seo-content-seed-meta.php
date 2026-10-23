@@ -92,23 +92,23 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'accessible-beaches-coastal-walks-kent'    => array(
 			'meta_title'       => 'Accessible beaches and coastal walks in Kent' . $name,
-			'meta_description' => 'Accessible beaches Kent: level promenades, Beach Within Reach, Herne Bay, Viking Bay, Margate. Plan a seaside day with realistic access notes.',
+			'meta_description' => 'Which Kent beaches work with a wheelchair: the level promenades, where shingle stops you, and where to borrow a beach wheelchair in Thanet.',
 			'focus_keyphrase'  => 'accessible beaches kent',
 		),
 		'direct-payment-holiday-accommodation'     => array(
-			'meta_title'       => 'Using direct payments for a holiday: what they cover' . $name,
-			'meta_description' => 'Direct payment for holiday stays: what counts as care vs accommodation, personal budgets, short breaks, and questions for your social worker.',
-			'focus_keyphrase'  => 'direct payment for holiday',
+			'meta_title'       => 'Can I use direct payments for a holiday? A UK guide' . $name,
+			'meta_description' => 'Usually not for the holiday itself, but often for the care you need while you’re away. What councils allow, what they won’t, and what to ask first.',
+			'focus_keyphrase'  => 'can I use direct payments for a holiday',
 		),
 		'revitalise-alternatives-accessible-holidays' => array(
-			'meta_title'       => 'What happened to Revitalise, and where to go now' . $name,
-			'meta_description' => 'Revitalise closed its holiday centres in 2024: why, what the charity funds now, and where to find accessible UK holidays and respite alternatives.',
-			'focus_keyphrase'  => 'revitalise',
+			'meta_title'       => 'Revitalise holidays: what happened, and where to go now' . $name,
+			'meta_description' => 'Revitalise closed its holiday centres in November 2024 and now gives respite grants. Here’s what changed, and where to find a break with care now.',
+			'focus_keyphrase'  => 'revitalise holidays',
 		),
 		'how-to-choose-accessible-self-catering-holiday' => array(
-			'meta_title'       => 'How to choose an accessible self-catering holiday' . $name,
-			'meta_description' => 'Choose an accessible self-catering holiday: verify hoist specs, door widths, wet rooms, and red flags in listings before you pay a deposit.',
-			'focus_keyphrase'  => 'accessible self-catering holiday',
+			'meta_title'       => 'How to choose an accessible holiday cottage: a checklist' . $name,
+			'meta_description' => 'A checklist for choosing an accessible holiday cottage: the kit, the beds, parking, care nearby and the cancellation terms, checked before you pay.',
+			'focus_keyphrase'  => 'how to choose an accessible holiday cottage',
 		),
 		'carers-respite-holiday-guide'             => array(
 			'meta_title'       => 'Carer’s assessments and your right to a respite break' . $name,
@@ -176,9 +176,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'holiday backup plan care worker',
 		),
 		'how-to-read-holiday-cottage-access-statement' => array(
-			'meta_title'       => 'How to read a holiday cottage access statement' . $name,
-			'meta_description' => 'How to read a holiday cottage access statement: measurements that matter, hoist proof, red-flag phrases, and questions OTs and families should ask.',
-			'focus_keyphrase'  => 'holiday cottage access statement',
+			'meta_title'       => 'Will my wheelchair fit? Reading an access statement' . $name,
+			'meta_description' => 'Door widths, turning space, hoist clearance and bed heights explained, with the questions to ask when a cottage’s access statement leaves gaps.',
+			'focus_keyphrase'  => 'wheelchair door width',
 		),
 		'fatigue-friendly-whitstable-coastal-day' => array(
 			'meta_title'       => 'A fatigue-friendly day out on the Whitstable coast' . $name,

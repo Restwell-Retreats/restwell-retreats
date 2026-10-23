@@ -302,73 +302,82 @@ function restwell_get_blog_post_holiday_backup_care_plan_html() {
  * @return string
  */
 function restwell_get_blog_post_read_access_statement_html() {
-	$blog      = esc_url( home_url( '/blog/' ) );
-	$checklist = esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) );
-	$comm      = esc_url( home_url( '/commissioner-checklist-accessible-respite-stay/' ) );
-	$acc       = esc_url( home_url( '/accessibility/' ) );
-	$enq       = esc_url( home_url( '/enquire/' ) );
+	$enquire       = esc_url( home_url( '/enquire/' ) );
+	$accessibility = esc_url( home_url( '/accessibility/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> A serious access statement lists measurable facts: door widths, turning circles, hoist model, shower entry dimensions, and emergency contacts. Treat glossy adjectives as noise until numbers appear; ask owners to email missing rows before you transfer deposits.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Measure your own chair first, at its widest point. Then compare it with the clear opening of each door, not the size of the door itself. Check the turning space, bed height and hoist too, and ask the owner for anything missing.</p></blockquote>
+
+<h2>Can a wheelchair fit through a 900mm door?</h2>
+<p>Usually, yes, but check what the 900mm means. If it's the clear opening, most wheelchairs will fit with room to spare. If it's the door itself, the frame and the open door make the usable gap smaller.</p>
+<p>The gap you can use is called the clear opening. Building guidance in England treats a standard 826mm door as giving a clear opening of 775mm. So always ask for the clear opening, in millimetres, and compare it with your chair.</p>
+
+<h2>How wide should a door be for a wheelchair?</h2>
+<p>For homes built for wheelchair users, the building guidance asks for at least 850mm of clear opening at every door. In everyday homes, an inside door can be as narrow as 750mm, depending on the hallway. A holiday cottage could be either, so ask.</p>
+<p>The width of the hallway matters too. Turning through a narrow door from a narrow hall is much harder than going straight in. So if a door is tight, ask how wide the hall is in front of it.</p>
+
+<h2>How do I measure my wheelchair?</h2>
+<p>Measure across the widest point, which is usually the wheels or the push rims. If you push yourself, leave room for your hands. Measure the length too, from the back of the chair to the front of the footplates, because that affects turning.</p>
+<p>Write the numbers down and keep them on your phone. Then you can check them against any listing in a minute. To see how it works, you can compare them with <a href=\"{$accessibility}\">our own door widths, hoist ratings and bed heights</a>.</p>
 
 <h2>What is an access statement?</h2>
-<p>An access statement is a structured document describing how a property meets (or honestly fails) various access needs.</p>
+<p>An access statement is a written guide to how easy a place is to get to, into and around. It should give real measurements, not just words like \"accessible\". VisitEngland now calls them accessibility guides, but many owners still use the older name.</p>
+<p>There's no single legal format for a holiday let. VisitEngland recommends a detailed guide made by AccessAble, whose surveyors visit and measure. Many owners write their own, though, so the quality varies a lot.</p>
 
-<h2>A worked Restwell example</h2>
-<p>When you want millimetres rather than adjectives, read Restwell's published <a href=\"{$acc}\">access statement</a>: door widths, hoist, wet room, and parking on one page. Use that page as the benchmark when you score other holiday cottages. This guide stays general; Restwell's page is the property-specific example.</p>
-
-<h2>Why PDF puffery wastes everyone's time</h2>
-<p>Words like \"wheelchair friendly\" mean nothing at tribunal. Millimetres mean everything when commissioners audit.</p>
-
-<h2>Key sections to score</h2>
-<table>
-<caption>Highlight gaps in owner paperwork fast</caption>
-<thead><tr><th scope=\"col\">Section</th><th scope=\"col\">Green flag</th><th scope=\"col\">Red flag</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Approach</th><td>Gradient percentage</td><td>\"Some steps may apply\"</td></tr>
-<tr><th scope=\"row\">Bedroom</th><td>Hoist brand + SWL</td><td>Photo-only proof</td></tr>
-<tr><th scope=\"row\">Bathroom</th><td>Shower opening width</td><td>\"Spacious wet room\" only</td></tr>
-<tr><th scope=\"row\">Emergency</th><td>Named 24/7 contact</td><td>Email-only support</td></tr>
-</tbody>
-</table>
-
-<h2>How OTs read differently from families</h2>
-<h3>Transfer arcs</h3>
-<p>They overlay sling maps onto floor plans.</p>
-<h3>Infection</h3>
-<p>They ask how fabric corners clean.</p>
-<h3>Commissioning</h3>
-<p>They want parity with <a href=\"{$comm}\">panel checklists</a>.</p>
-
-<h2>Practical steps</h2>
+<h2>What should an access statement tell you?</h2>
+<p>A good one takes you from the car park to the bed, with a number at each step. If a section is missing, that's a question to ask the owner. Don't assume it's fine just because it isn't mentioned.</p>
 <ul>
-<li>Create a spreadsheet mirroring our <a href=\"{$checklist}\">booking checklist</a>.</li>
-<li>Request video walk-through when COVID-era excuses linger.</li>
-<li>Compare statements across three shortlisted cottages.</li>
-<li>Score other listings against Restwell's published <a href=\"{$acc}\">access statement</a> (the worked example).</li>
+<li><strong>Getting there:</strong> where you park, the surface, and any slopes, steps or kerbs.</li>
+<li><strong>Doors:</strong> the clear opening of every door, and any lip at the threshold.</li>
+<li><strong>Turning space:</strong> room to turn in the bedroom and bathroom. Building guidance for wheelchair homes uses a 1500mm circle.</li>
+<li><strong>The bathroom:</strong> a level shower, where the rails are, and what you'd sit on.</li>
+<li><strong>The bed:</strong> its lowest and highest height, and the space beside it. Wheelchair homes allow 1000mm.</li>
+<li><strong>The hoist:</strong> the type, make and model, its safe working load, and which rooms it reaches.</li>
+<li><strong>Photos:</strong> of whole rooms, taken from the door, not just close-ups.</li>
 </ul>
 
-<h2>Common mistakes</h2>
+<h2>How do I check a hoist will work for me?</h2>
+<p>Start with the safe working load, which needs to be above your weight. Then check where it reaches, because a ceiling hoist only works under its track. A mobile hoist can move between rooms, if the floors and doors allow it.</p>
+<p>With a mobile hoist, the legs need to fit under the bed. So compare the height of the hoist's legs with the space under the bed at its lowest. Check the hoist can turn in the room, too.</p>
+<p>Ask when the hoist was last examined. Under the LOLER rules, hoists used at work to lift people need a check every six months. And plan to bring your own sling, because it has to fit you.</p>
+
+<h2>Our own figures, as an example</h2>
+<p>Here's how our bungalow in Whitstable reads against that list. The front door has a clear opening of 965mm, and the inside doors give 926mm. There are no internal steps.</p>
+<p>The profiling bed's platform goes from 220mm up to 800mm. Our mobile hoist's legs stand 100mm high, with 25mm of ground clearance, and it turns in 1235mm. Both hoists have a safe working load of 180kg and are examined every six months.</p>
+<p>If you're bringing your own hoist, compare its leg height and turning space with those numbers. That's the kind of check every listing should let you make.</p>
+
+<h2>Red flags in an access statement</h2>
 <ul>
-<li>Accepting verbal promises on WhatsApp.</li>
-<li>Assuming new-build equals accessible.</li>
-<li>Ignoring outdoor lighting for evening transfers.</li>
-<li>Skipping fridge height notes for insulin users.</li>
+<li>\"Wheelchair friendly\" or \"accessible\" with no measurements.</li>
+<li>Door widths without saying whether they're the clear opening.</li>
+<li>A hoist with no make, model or safe working load.</li>
+<li>No photos of the whole bathroom.</li>
+<li>A statement that hasn't been updated in years.</li>
+</ul>
+
+<h2>What to ask when details are missing</h2>
+<p>Email the owner and ask for the exact numbers you need. Keep it short and specific, so it's easy to answer.</p>
+<ul>
+<li>What's the clear opening of the front door, the bedroom and the bathroom?</li>
+<li>Is there a step or lip at any door, and how high is it?</li>
+<li>What are the make and model of the bed and the hoist?</li>
+<li>How low does the bed go, and how much space is beside it?</li>
+<li>Could you send a photo of the bathroom, taken from the door?</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Is there a legal format?</h3>
-<p>No single statute; VisitEngland templates help consistency.</p>
-<h3>Can I demand CAD drawings?</h3>
-<p>Rarely; measured photos often suffice.</p>
-<h3>What if owners refuse detail?</h3>
-<p>Walk away before deposits burn.</p>
-<h3>Should schools use statements?</h3>
-<p>Residential trips should mirror same rigour.</p>
-<h3>Who verifies accuracy?</h3>
-<p>You, your OT, and sometimes insurers.</p>
+<h3>Can a wheelchair fit through a 27 inch door?</h3>
+<p>Possibly not. 27 inches is about 686mm, and the clear gap will be narrower still. That's too tight for many adult wheelchairs, so measure your chair to be sure.</p>
+<h3>What is the minimum door width for wheelchair access?</h3>
+<p>Homes built for wheelchair users should give at least 850mm of clear opening at every door. Ordinary homes can have inside doors of 750mm, depending on the hall.</p>
+<h3>How much space do you need to turn a wheelchair?</h3>
+<p>Building guidance for wheelchair homes uses a 1500mm circle. Some chairs need less and some powerchairs need more, so try turning in a space at home and measure it.</p>
+<h3>Is an access statement a legal requirement?</h3>
+<p>There's no single legal format for holiday lets. VisitEngland asks businesses in its quality scheme to publish their main access features online.</p>
+<h3>What's the difference between an access statement and an accessibility guide?</h3>
+<p>They're the same idea. VisitEngland now uses the name accessibility guide, while many owners still say access statement.</p>
 
 <h2>Closing</h2>
-<p>Statements exist to prevent tears. Start with Restwell's <a href=\"{$acc}\">access statement</a>, browse the <a href=\"{$blog}\">blog</a>, and <a href=\"{$enq}\">enquire</a> if you need anything clarified in writing.</p>";
+<p>If you'd like us to check the fit for you, <a href=\"{$enquire}\">send us your chair measurements</a>. We'll tell you honestly whether the bungalow will work.</p>";
 }
 
 /**
