@@ -3963,9 +3963,10 @@ function restwell_migrate_publish_kept_guides_v98() {
 		if ( ! in_array( $article['slug'], $keep, true ) ) {
 			continue;
 		}
+		// WordPress renames a binned post to "{slug}__trashed", so look for both.
 		$existing = get_posts(
 			array(
-				'name'           => $article['slug'],
+				'post_name__in'  => array( $article['slug'], $article['slug'] . '__trashed' ),
 				'post_type'      => 'post',
 				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
 				'posts_per_page' => 1,
