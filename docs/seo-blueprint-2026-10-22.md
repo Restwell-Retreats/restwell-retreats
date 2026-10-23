@@ -326,6 +326,15 @@ Batches A and B should be live **before early January 2027**, when holiday searc
 
 Migration v100 moves the intros and keyphrases (15 fields).
 
+**Batch C done (23 Oct 2026).** The three legal pages are rewritten in plain English with the section 4 titles, metas and H1s. Every term, number and legal basis is kept. No sentence runs over 20 words, and no paragraph is over three sentences or 45 words. Flesch went from Privacy 58.4 to 69.2, Terms 48.2 to 70.8, and the website accessibility statement 50.4 to 72.2. The UK GDPR article references, the named data processors, the ICO and the liability wording are what hold Privacy and Terms under 72, so they stay as written.
+
+Other changes:
+- **Terms:** "we" is now defined as the trading company. The "Assistance dogs" heading is now "Dogs", which matches what the clause always said. The liability clause now reads "the exceptions are where our negligence directly caused it, and anything else the law doesn't let us exclude", in place of "to the extent permitted by law".
+- **Accessibility statement:** it follows the gov.uk model (no enforcement section) and adds the Equality Act 2010 commitment. It also says what you can do on the site; each claim was checked (every form field has a label, and every main page reflows at 320px). It names the known gaps: screen reader testing isn't finished, and some links lead to other organisations' sites. The 320px check found that Pricing's peak-dates box scrolled sideways, so that was fixed.
+- **Versions and dates:** the privacy policy version moved to 2026-10-23, so new enquiries record the new wording. The Terms and accessibility statement dates moved to 23 October 2026.
+
+Migration v101 moves the H1s, intros, titles, metas and keyphrases. It drops a stored body only if it's still built from the September wording.
+
 ---
 
 ## Sources

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 100;
+const RESTWELL_SCHEMA_VERSION = 101;
 
 
 /**
@@ -4688,6 +4688,81 @@ function restwell_migrate_page_seo_batch_b_v100() {
 }
 
 /**
+ * Batch C (23 Oct 2026): the three legal pages in plain English, with the SEO
+ * blueprint's titles, metas and H1s (docs/seo-blueprint-2026-10-22.md). The
+ * bodies live in inc/theme-setup/legal-content.php; a stored copy is dropped
+ * only while it is still built from our September wording, as v55 and v64 did,
+ * so the new text shows. Other fields move only while they hold the shipped
+ * value, so anything edited in wp-admin is kept.
+ */
+function restwell_migrate_legal_plain_english_v101() {
+	if ( get_option( 'restwell_legal_plain_english_v101', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_legal_plain_english_v101', '1', false );
+
+	$bodies = array(
+		'privacy-policy'       => array( 'The data controller for personal information collected through this site is', 'That means we decide how your information is used' ),
+		'terms-and-conditions' => array( 'These terms apply when you book the adapted self-catering bungalow', 'In these terms, “we” and “us” mean' ),
+		'accessibility-policy' => array( 'Our accessibility target is the Web Content Accessibility Guidelines', 'What you can do on this site' ),
+	);
+	foreach ( $bodies as $slug => $markers ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( ! $page instanceof WP_Post ) {
+			continue;
+		}
+		$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+		if ( '' !== trim( $html ) && false !== strpos( $html, $markers[0] ) && false === strpos( $html, $markers[1] ) ) {
+			delete_post_meta( $page->ID, 'legal_body_html' );
+		}
+	}
+
+	restwell_replace_stale_page_copy(
+		array(
+			'privacy-policy'       => array(
+				'legal_heading'    => array( 'Privacy Policy', 'Privacy policy: how we look after your details' ),
+				'legal_intro'      => array(
+					'Who is responsible for your data, what we collect on enquiry, FAQ, booking and guest-guide records (including optional care notes), cookie choices, who we share data with, how long we keep records, and your UK GDPR rights (including contacting the ICO).',
+					'This explains what we collect when you contact us or book, and how long we keep it. It also sets out your rights under UK GDPR, including how to complain.',
+				),
+				'meta_title'       => array( 'Privacy Policy for Restwell Guests', 'Restwell Retreats privacy policy' ),
+				'meta_description' => array(
+					'Restwell privacy policy: what we collect on forms and bookings, cookies, retention periods, your rights under UK GDPR, and how to request changes or deletion.',
+					'What we collect when you enquire or book, and how long we keep it. We also cover cookies and your rights under UK GDPR.',
+				),
+				'focus_keyphrase'  => array( 'restwell privacy', 'restwell retreats privacy policy' ),
+			),
+			'terms-and-conditions' => array(
+				'legal_heading'    => array( 'Terms & Conditions', 'Terms and conditions for booking a stay' ),
+				'legal_intro'      => array(
+					'Booking confirmation, payment, cancellation terms, accessibility and exceptional circumstances, house rules, optional care via Continuity of Care Services, liability, and how we handle personal data and cookies.',
+					'These are the terms for booking the bungalow. They cover payment, cancelling, changing dates, the house rules and optional care.',
+				),
+				'meta_title'       => array( 'Restwell Terms: Booking & Payment Rules', 'Restwell Retreats booking terms and conditions' ),
+				'meta_description' => array(
+					'Restwell terms for bookings: deposits, cancellations, guest responsibilities, how we rely on published access details, and how disputes are handled in the UK.',
+					'The terms for booking the bungalow: deposits, cancelling and changing dates. They also cover guest numbers, the access kit and what happens if we cancel.',
+				),
+				'focus_keyphrase'  => array( 'restwell terms', 'restwell retreats terms and conditions' ),
+			),
+			'accessibility-policy' => array(
+				'legal_heading'    => array( 'Website accessibility statement', 'Accessibility statement for this website' ),
+				'legal_intro'      => array(
+					'WCAG-oriented testing, known limits of third-party embeds, and how to request alternative formats or report a barrier.',
+					'This statement covers how well this website works for disabled visitors. It also says what isn’t right yet, and how to tell us about a problem.',
+				),
+				'meta_title'       => array( 'Website Accessibility Statement', 'Restwell Retreats website accessibility statement' ),
+				'meta_description' => array(
+					'Restwell website accessibility statement: WCAG approach, how we test, third-party limits, known gaps, and how to request information in another format.',
+					'How we build and test this website against WCAG 2.2 AA, and the gaps we know about. Ask for any page in a format that suits you.',
+				),
+				'focus_keyphrase'  => array( 'restwell website accessibility', 'restwell retreats website accessibility statement' ),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -4823,6 +4898,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_publish_kept_guides_v98',
 		'restwell_page_copy_batch_b_v99',
 		'restwell_page_seo_batch_b_v100',
+		'restwell_legal_plain_english_v101',
 	);
 }
 
@@ -5009,6 +5085,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_page_copy_batch_b_v99', 137 );
 	add_action( 'init', 'restwell_migrate_page_seo_batch_b_v100', 143 );
 	add_action( 'after_switch_theme', 'restwell_migrate_page_seo_batch_b_v100', 138 );
+	add_action( 'init', 'restwell_migrate_legal_plain_english_v101', 144 );
+	add_action( 'after_switch_theme', 'restwell_migrate_legal_plain_english_v101', 139 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

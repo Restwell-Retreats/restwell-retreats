@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 100;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 101;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -67,6 +67,32 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_page_copy_batch_b_v99',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_page_seo_batch_b_v100',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_page_seo_batch_b_v100',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_legal_plain_english_v101',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_legal_plain_english_v101',", $source );
+	}
+
+	public function test_legal_pass_keeps_edits_and_matches_the_shipped_text() {
+		$body  = $this->function_body( $this->migrations(), 'restwell_migrate_legal_plain_english_v101' );
+		$legal = (string) file_get_contents( dirname( __DIR__ ) . '/inc/theme-setup/legal-content.php' );
+		$this->assertStringContainsString( "update_option( 'restwell_legal_plain_english_v101', '1'", $body );
+		$this->assertStringContainsString( 'restwell_replace_stale_page_copy(', $body );
+		// A stored body is dropped only while it holds the old text and not the new.
+		$this->assertStringContainsString( 'false !== strpos( $html, $markers[0] ) && false === strpos( $html, $markers[1] )', $body );
+		// Each "new" marker is in the shipped body, so a current copy is never dropped.
+		foreach ( array( 'That means we decide how your information is used', 'In these terms, “we” and “us” mean', 'What you can do on this site' ) as $marker ) {
+			$this->assertStringContainsString( $marker, $body );
+			$this->assertStringContainsString( $marker, $legal );
+		}
+		// New headings and intros are what a fresh install seeds.
+		foreach ( array( 'Privacy policy: how we look after your details', 'Terms and conditions for booking a stay', 'Accessibility statement for this website' ) as $h1 ) {
+			$this->assertStringContainsString( "'" . $h1 . "'", $body );
+			$this->assertStringContainsString( "'" . $h1 . "'", $legal );
+		}
+		$seo = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo-content-seed-meta.php' );
+		foreach ( array( 'Restwell Retreats privacy policy', 'Restwell Retreats booking terms and conditions', 'Restwell Retreats website accessibility statement' ) as $title ) {
+			$this->assertStringContainsString( "'" . $title . "'", $body );
+			$this->assertStringContainsString( "'" . $title . "'", $seo );
+		}
 	}
 
 	public function test_batch_b_seo_pass_only_replaces_the_shipped_values() {

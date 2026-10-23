@@ -186,19 +186,19 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'fatigue friendly whitstable coastal day',
 		),
 		'privacy-policy'        => array(
-			'meta_title'       => 'Privacy Policy for Restwell Guests',
-			'meta_description' => 'Restwell privacy policy: what we collect on forms and bookings, cookies, retention periods, your rights under UK GDPR, and how to request changes or deletion.',
-			'focus_keyphrase'  => 'restwell privacy',
+			'meta_title'       => 'Restwell Retreats privacy policy',
+			'meta_description' => 'What we collect when you enquire or book, and how long we keep it. We also cover cookies and your rights under UK GDPR.',
+			'focus_keyphrase'  => 'restwell retreats privacy policy',
 		),
 		'terms-and-conditions'  => array(
-			'meta_title'       => 'Restwell Terms: Booking & Payment Rules',
-			'meta_description' => 'Restwell terms for bookings: deposits, cancellations, guest responsibilities, how we rely on published access details, and how disputes are handled in the UK.',
-			'focus_keyphrase'  => 'restwell terms',
+			'meta_title'       => 'Restwell Retreats booking terms and conditions',
+			'meta_description' => 'The terms for booking the bungalow: deposits, cancelling and changing dates. They also cover guest numbers, the access kit and what happens if we cancel.',
+			'focus_keyphrase'  => 'restwell retreats terms and conditions',
 		),
 		'accessibility-policy'  => array(
-			'meta_title'       => 'Website Accessibility Statement',
-			'meta_description' => 'Restwell website accessibility statement: WCAG approach, how we test, third-party limits, known gaps, and how to request information in another format.',
-			'focus_keyphrase'  => 'restwell website accessibility',
+			'meta_title'       => 'Restwell Retreats website accessibility statement',
+			'meta_description' => 'How we build and test this website against WCAG 2.2 AA, and the gaps we know about. Ask for any page in a format that suits you.',
+			'focus_keyphrase'  => 'restwell retreats website accessibility statement',
 		),
 	);
 }

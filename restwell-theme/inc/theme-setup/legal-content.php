@@ -45,7 +45,7 @@ function restwell_get_public_site_host(): string {
  * @return string
  */
 function restwell_privacy_policy_version(): string {
-	return '2026-09-17';
+	return '2026-10-23';
 }
 
 /**
@@ -55,7 +55,7 @@ function restwell_privacy_policy_version(): string {
  * @return string
  */
 function restwell_terms_updated_label(): string {
-	return '17 September 2026';
+	return '23 October 2026';
 }
 
 /**
@@ -64,7 +64,7 @@ function restwell_terms_updated_label(): string {
  * @return string
  */
 function restwell_accessibility_statement_updated_label(): string {
-	return '17 September 2026';
+	return '23 October 2026';
 }
 
 /**
@@ -89,49 +89,62 @@ function restwell_get_privacy_policy_content(): string {
 	$mailto_href = esc_url( 'mailto:' . $email );
 
 	return '<h2>Who we are</h2>
-<p>' . $site . ' ("we", "us", "our") offers accessible holiday accommodation in Whitstable, Kent. This website is published at ' . esc_url( home_url( '/' ) ) . '.</p>
-<p>The data controller for personal information collected through this site is ' . $entity . '.</p>
-<p>Restwell is a private adapted holiday bungalow. We are not a care home, nursing home, NHS service, or registered respite centre. Optional care, if you later arrange it, is provided by Continuity of Care Services (CQC-regulated), not by Restwell.</p>
+<p>' . $site . ' (“we” or “us”) runs an accessible holiday bungalow in Whitstable, Kent. This website is ' . esc_url( home_url( '/' ) ) . '.</p>
+<p>The data controller is ' . $entity . '. That means we decide how your information is used, and we’re responsible for it.</p>
+<p>Restwell is a private holiday home. It isn’t a care home, a nursing home, an NHS service or a registered respite centre. If you arrange optional care, it comes from Continuity of Care Services, which the CQC regulates, not from Restwell.</p>
 
-<h2>What information we collect and why</h2>
-<p>When you use our enquiry form (including the date picker on Pricing) we collect your name, email address, phone number, and the message you send. We also keep any stay dates, guest numbers, funding notes, contact preferences, and, if you choose to tell us, how you heard about us. The legal basis is your consent, recorded when you tick the privacy box on the form. If you later book, we also use the same details to perform the contract for your stay (UK GDPR Article 6(1)(b)) and, where needed, our legitimate interests in running the holiday let (Article 6(1)(f)).</p>
-<p>If you send a question from the FAQ page we collect your name, email, phone number, and the question, with the same consent tick. We use that only to reply.</p>
-<p>If you opt in to marketing updates we store your name, email, and phone so we can send Restwell news. That box is unticked unless you choose it. The legal basis is consent (UK GDPR and PECR). You can unsubscribe from any marketing email.</p>
-<p>When a stay is confirmed we keep booking records (guest name, email, dates, payments we need for accounts) and, if we send the arrival guide, a guest-guide record so we can email a one-time access code. That processing is to perform the booking contract.</p>
+<h2>What we collect, and why</h2>
+<p>Our enquiry form, including the date picker on the Pricing page, asks for your name, email, phone number and message. We also keep any dates, guest numbers, funding notes and contact preferences, and how you found us if you say.</p>
+<p>We use these details with your consent, which you give by ticking the privacy box (UK GDPR Article 6(1)(a)). If you book, we use them to carry out our contract with you (Article 6(1)(b)).</p>
+<p>Where needed, we also rely on our legitimate interest in running the holiday let (Article 6(1)(f)).</p>
+<p>If you ask a question on the FAQ page, we collect your name, email, phone number and question. This uses the same consent tick, and we use it only to reply.</p>
+<p>If you sign up for our news, we keep your name, email and phone number to send it. That box stays unticked unless you tick it. The legal basis is your consent (UK GDPR and PECR), and you can unsubscribe from any marketing email.</p>
+<p>Once a stay is confirmed, we keep booking records: your name, email, dates and payments. If we send the arrival guide, we keep a record so we can email you a one-time access code. We do this to carry out the booking contract.</p>
 
-<h2>Care notes and other health information</h2>
-<p>Care requirements and accessibility needs on the enquiry form are optional. Those notes can include health information (special category data). We only store them if you tick the separate health-data box. The legal basis is your explicit consent (UK GDPR Article 9(2)(a)). We use the notes only to reply, to check the bungalow is likely to fit, and, if you later agree a stay with optional care in writing, to introduce Continuity of Care Services.</p>
-<p>Please put care and accessibility notes in the labelled boxes, not only in the general message. We treat those labelled fields as special category data. If your FAQ question includes health or care details, we use them only to reply, as set out when you tick the privacy box on that form.</p>
-<p>We do not use health notes for marketing. We do not send them to Google, Metricool, TikTok, or Mailchimp. We do not create medical records. Ticking the enquiry privacy box does not share your data with Continuity.</p>
+<h2>Care notes and health information</h2>
+<p>The care and accessibility boxes on the enquiry form are optional. What you write there can include health information, which the law calls special category data. We only store it if you tick the separate health-data box.</p>
+<p>The legal basis is your explicit consent (UK GDPR Article 9(2)(a)). We use these notes only to reply and to check the bungalow is likely to suit you. If you later agree in writing to a stay with care, we use them to introduce Continuity.</p>
+<p>Please put care and accessibility notes in the labelled boxes, not just in your general message. We treat what’s in those boxes as special category data. If your FAQ question includes health or care details, we use them only to reply.</p>
+<p>We never use health notes for marketing, and we don’t send them to Google, Metricool, TikTok or Mailchimp. We don’t create medical records. Ticking the privacy box on the enquiry form doesn’t share your details with Continuity.</p>
 
-<h2>Who we share data with</h2>
-<p>We do not sell your personal information. We share it only as follows:</p>
+<h2>Who we share it with</h2>
+<p>We never sell your personal information. We share it only with:</p>
 <ul>
-<li>Our website, email, and hosting providers, who process it on our instructions so the site and inbox work.</li>
-<li>Mailchimp (The Rocket Science Group / Intuit), only if you opt in to marketing updates.</li>
-<li>Google Analytics 4, Metricool, and TikTok Pixel, only if you accept analytics cookies. TikTok receives page views and that an enquiry was sent, not enquiry or FAQ form details.</li>
-<li>Continuity of Care Services, only if a stay with optional care is later agreed in writing.</li>
-<li>Insurers, accountants, or public authorities where the law requires it.</li>
+<li>The firms that run our website, email and hosting, who use it only as we tell them.</li>
+<li>Mailchimp (The Rocket Science Group, part of Intuit), only if you sign up for news.</li>
+<li>Google Analytics 4, Metricool and TikTok Pixel, only if you accept analytics cookies. TikTok learns when a page is viewed or an enquiry is sent, but not what you wrote on a form.</li>
+<li>Continuity, only if you later agree in writing to a stay with care.</li>
+<li>Insurers, accountants or public bodies, when the law says we must.</li>
 </ul>
 
-<h2>International transfers</h2>
-<p>Google, Mailchimp, Metricool, and TikTok may process data outside the UK, including in the United States. We only send analytics data after you accept analytics cookies, and marketing data after you opt in. If we cannot give the same UK-level protection, we will not use that tool for your data.</p>
+<h2>Sending data outside the UK</h2>
+<p>Google, Mailchimp, Metricool and TikTok may handle data outside the UK, including the US. They only get it after you accept analytics cookies or sign up for news. If a tool can’t protect it as well as UK law does, we won’t use that tool.</p>
 
 <h2>Cookies and analytics</h2>
-<p>Essential cookies keep the site working: remembering the cookie choice you make, security checks on forms, and a short session on the guest arrival guide (so a booked guest stays signed in after the email code).</p>
-<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool, and TikTok Pixel if configured) are optional. They are not set until you choose Accept analytics on the cookie banner, or later via Cookie settings in the footer. You can reject analytics and still use the site. Tracking scripts stay off until you consent, even if a service is configured later.</p>
-<p>If you accept analytics, TikTok Pixel records that a page on this site was viewed, and that an enquiry form was sent. We do not send names, email addresses, phone numbers, addresses, care notes, accessibility notes, or other form fields to TikTok.</p>
+<p>Essential cookies keep the site working. They remember your cookie choice and run security checks on our forms. After the email code, they also keep a booked guest signed in to the arrival guide for a while.</p>
+<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool and TikTok Pixel, if set up) are optional. None is set until you choose Accept analytics on the cookie banner.</p>
+<p>You can reject them and still use the whole site, or change your mind in Cookie settings in the footer. Tracking scripts stay off until you agree, even if we add a new service later.</p>
+<p>If you accept analytics, TikTok Pixel records when a page is viewed and when an enquiry form is sent. We never send it names, email addresses, phone numbers, addresses, care or accessibility notes, or other form fields.</p>
 
-<h2>How long we keep your data</h2>
-<p>We keep enquiry, FAQ, guest-guide, and booking-related records for up to three years so we can answer follow-up questions and meet insurance and accounting needs. We do not automatically wipe whole records after that time. Optional care and accessibility notes are blanked sooner: 12 months if the enquiry does not become a booking, or 90 days after the stay if it does.</p>
-<p>If you want records removed or corrected sooner, email us. We handle those requests ourselves; there is no self-service delete button on the site.</p>
+<h2>How long we keep it</h2>
+<p>We keep enquiry, FAQ, guest guide and booking records for up to three years. That lets us answer follow-up questions and meet our insurance and accounting needs. We don’t delete whole records automatically when that time is up.</p>
+<p>Care and accessibility notes are blanked sooner. That’s after 12 months if the enquiry doesn’t become a booking, or 90 days after the stay if it does.</p>
+<p>If you want your records corrected or removed sooner, email us. We handle these requests ourselves, as there’s no delete button on the site.</p>
 
 <h2>Your rights</h2>
-<p>Under UK GDPR you may: ask what data we hold about you; ask us to correct mistakes; ask us to delete or restrict use of your data where the law allows; object to some processing; withdraw consent (including health-data and marketing consent) without affecting the lawfulness of processing before you withdraw; and complain to the <a href="https://www.ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner\'s Office (ICO)<span class="sr-only"> (opens in new tab)</span></a>.</p>
-<p>To exercise these rights, email <a href="' . $mailto_href . '">' . esc_html( $email ) . '</a>. We will confirm it is you before we change or delete records. We aim to reply within one month.</p>
+<p>Under UK GDPR, you can:</p>
+<ul>
+<li>Ask what information we hold about you.</li>
+<li>Ask us to correct mistakes.</li>
+<li>Ask us to delete it, or limit how we use it, where the law allows.</li>
+<li>Object to some of the ways we use it.</li>
+<li>Withdraw your consent at any time, including for health notes and marketing. This doesn’t affect anything we did before you withdrew it.</li>
+<li>Complain to the <a href="https://www.ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner’s Office (ICO)<span class="sr-only"> (opens in new tab)</span></a>.</li>
+</ul>
+<p>To use any of these rights, email <a href="' . $mailto_href . '">' . esc_html( $email ) . '</a>. We’ll check it’s you before we change or delete anything, and we aim to reply within one month.</p>
 
 <h2>Changes to this policy</h2>
-<p>We may update this policy from time to time. The current version is always on this page (policy ' . esc_html( restwell_privacy_policy_version() ) . '). Last updated: ' . esc_html( restwell_privacy_policy_updated_label() ) . '.</p>';
+<p>We may update this policy from time to time, and the current version is always on this page. This is version ' . esc_html( restwell_privacy_policy_version() ) . ', last updated on ' . esc_html( restwell_privacy_policy_updated_label() ) . '.</p>';
 }
 
 /**
@@ -154,65 +167,69 @@ function restwell_get_terms_conditions_content(): string {
 	$check_in  = isset( $timeline['check_in'] ) ? esc_html( $timeline['check_in'] ) : '15:00';
 	$check_out = isset( $timeline['check_out'] ) ? esc_html( $timeline['check_out'] ) : '11:00';
 
-	return '<h2>The booking</h2>
-<p>These terms apply when you book the adapted self-catering bungalow in Whitstable, Kent, with ' . $entity . '. We send the full address with your booking confirmation. Your booking is confirmed when you receive written confirmation from us. Until that point, no contract exists and the dates are not reserved. All bookings are subject to availability.</p>
+	return '<h2>Your booking</h2>
+<p>These terms apply when you book our self-catering bungalow in Whitstable, Kent. In these terms, “we” and “us” mean ' . $entity . '. We send the full address with your booking confirmation.</p>
+<p>Your booking is confirmed only when we confirm it to you in writing. Until then there’s no contract, and the dates aren’t held for you. Every booking depends on the dates being free.</p>
 
-<h2>Accessibility requirements</h2>
-<p>We ask you to share your accessibility and equipment requirements at the time of booking so we can confirm the property is suitable for your needs. Requirements disclosed after written confirmation has been issued may not be possible to meet; we cannot guarantee changes to setup or equipment at short notice.</p>
+<h2>Your access needs</h2>
+<p>Please tell us your access and equipment needs when you book, so we can check the bungalow suits you. Needs we hear about after written confirmation may not be possible to meet. We can’t promise changes to the setup or equipment at short notice.</p>
 
 <h2>Payment</h2>
 <p>' . $payment_para . '</p>
 
-<h2>Cancellation by you</h2>
-<p>If you need to cancel, please contact us as soon as possible. Refunds are calculated as follows:</p>
+<h2>If you cancel</h2>
+<p>If you need to cancel, please tell us as soon as you can. Your refund depends on how long before arrival you cancel:</p>
 <ul>
-<li><strong>More than 30 days before arrival:</strong> full refund of all payments made.</li>
-<li><strong>14 to 30 days before arrival:</strong> 50 per cent refund of the total booking cost.</li>
-<li><strong>Fewer than 14 days before arrival:</strong> no refund will be issued.</li>
+<li><strong>More than 30 days before arrival:</strong> a full refund of everything you’ve paid.</li>
+<li><strong>14 to 30 days before arrival:</strong> a refund of 50% of the total booking cost.</li>
+<li><strong>Less than 14 days before arrival:</strong> no refund.</li>
 </ul>
-<p>We strongly recommend that all guests take out travel and cancellation insurance.</p>
+<p>We strongly advise everyone in your group to take out travel and cancellation insurance.</p>
 
-<h2>Accessibility and exceptional circumstances</h2>
-<p>We recognise that guests booking accessible accommodation may face unforeseen medical or care-related changes. Where cancellation results from serious illness, injury, or a care emergency, we may offer a partial refund or a free date change subject to availability. We may ask for reasonable supporting evidence, such as a letter from a doctor. Each situation is considered on its own merits.</p>
+<h2>Illness, injury and care emergencies</h2>
+<p>We know plans can change suddenly when someone needs care or access support. If you cancel because of serious illness, injury or a care emergency, we may offer a partial refund. Or we may offer a free date change, if other dates are free.</p>
+<p>We may ask for reasonable evidence, such as a letter from a doctor. We look at each case on its own merits.</p>
 
-<h2>Date changes</h2>
-<p>You may request a change of dates up to 14 days before arrival at no additional charge, subject to availability. Changes requested within 14 days of arrival may incur an administration fee.</p>
+<h2>Changing your dates</h2>
+<p>Up to 14 days before arrival, you can ask to change your dates at no extra charge. This depends on the new dates being free. Changes asked for within 14 days of arrival may carry an admin fee.</p>
 
-<h2>Early departure and no-shows</h2>
-<p>No refund is given for early departure or for failure to arrive without prior notice.</p>
+<h2>Leaving early or not arriving</h2>
+<p>We don’t give a refund if you leave early, or if you don’t arrive and haven’t told us beforehand.</p>
 
 <h2>If we cancel</h2>
-<p>In the event that we must cancel your booking, you will receive a full refund of all payments made, or the option to rebook on alternative dates.</p>
+<p>If we have to cancel your booking, you’ll get a full refund of everything you’ve paid. Or, if you prefer, you can rebook for other dates.</p>
 
 <h2>Check-in and check-out</h2>
-<p>Check-in is from ' . $check_in . '. Check-out is by ' . $check_out . '. If your accessibility requirements mean a different time would help, let us know when booking and we will accommodate where possible.</p>
+<p>Check-in is from ' . $check_in . ', and check-out is by ' . $check_out . '. If a different time would help because of your access needs, tell us when you book. We’ll fit in with you where we can.</p>
 
 <h2>Number of guests</h2>
-<p>The property has a maximum occupancy confirmed at the time of booking. This number must not be exceeded without prior written agreement.</p>
+<p>We confirm the most guests who can stay when you book. That number must not be exceeded without our written agreement first.</p>
 
-<h2>Accessibility equipment</h2>
-<p>The property includes a ceiling track hoist, profiling bed, wet room, and other accessibility features. Please use all equipment safely and only for its intended purpose. Report any fault or problem to us immediately so we can resolve it promptly. Equipment must be left in the condition and position in which it was found.</p>
+<h2>Access equipment</h2>
+<p>The bungalow has a ceiling track hoist, a profiling bed, a wet room and other access features. Please use all the equipment safely, and only for what it’s meant for.</p>
+<p>Tell us straight away about any fault or problem, so we can put it right quickly. Equipment must be left in the condition and position you found it in.</p>
 
-<h2>Assistance dogs</h2>
-<p>Dogs are allowed, subject to risk assessment and prior notice.</p>
+<h2>Dogs</h2>
+<p>Dogs are allowed, as long as you tell us beforehand and we’ve done a risk assessment.</p>
 
 <h2>Smoking and vaping</h2>
-<p>Smoking and vaping are not permitted inside the property. If you smoke, please do so outside and dispose of waste safely.</p>
+<p>Smoking and vaping aren’t allowed inside the bungalow. If you smoke, please do it outside and get rid of your waste safely.</p>
 
-<h2>Care of the property</h2>
-<p>Please take reasonable care of the bungalow and its contents. Report any breakages or damage as soon as they occur. Please leave the property in a tidy condition on departure: lights off, windows closed, doors locked, and used towels left in the bathroom.</p>
+<h2>Looking after the bungalow</h2>
+<p>Please take reasonable care of the bungalow and everything in it. Tell us about any breakage or damage as soon as it happens. When you leave, please leave it tidy: lights off, windows closed, doors locked and used towels in the bathroom.</p>
 
-<h2>Care support</h2>
-<p>Optional care can be arranged with Continuity of Care Services, a CQC-regulated provider. Their own terms and privacy notices apply to the care they deliver. ' . $entity . ' introduces that service only and takes no responsibility for the care provided.</p>
+<h2>Optional care</h2>
+<p>You can arrange optional care with Continuity of Care Services, which the CQC regulates. Their own terms and privacy notices apply to the care they give. We only introduce their service, and we take no responsibility for the care provided.</p>
 
 <h2>Liability</h2>
-<p>To the extent permitted by law, ' . $entity . ' is not liable for loss, injury, or damage to guests or their belongings during a stay, except where caused directly by our negligence. Guests are responsible for holding adequate travel, cancellation, and personal insurance.</p>
+<p>We aren’t liable for loss, injury or damage to guests or their belongings during a stay. The exceptions are where our negligence directly caused it, and anything else the law doesn’t let us exclude.</p>
+<p>It’s up to guests to have enough travel, cancellation and personal insurance.</p>
 
 <h2>Your data and cookies</h2>
-<p>We handle your personal information, including any care or accessibility notes you choose to share, in line with our <a href="' . $privacy . '">privacy policy</a>. Optional analytics and advertising measurement cookies stay off until you accept them. You can change that choice via Cookie settings in the footer.</p>
+<p>Our <a href="' . $privacy . '">privacy policy</a> explains how we look after your details, including any care or access notes you share. Optional cookies for analytics and advertising stay off until you accept them. You can change your choice in Cookie settings, in the footer.</p>
 
 <h2>Contact</h2>
-<p>Questions about these terms: use <a href="' . $enquire . '">our enquiry page</a> or email <a href="' . $mailto . '">' . esc_html( $email ) . '</a>.</p>
+<p>If you have a question about these terms, use <a href="' . $enquire . '">our enquiry page</a> or email <a href="' . $mailto . '">' . esc_html( $email ) . '</a>.</p>
 
 <p><em>Last updated: ' . esc_html( restwell_terms_updated_label() ) . '.</em></p>';
 }
@@ -229,22 +246,34 @@ function restwell_get_accessibility_policy_content(): string {
 	$mailto = esc_url( 'mailto:' . $email );
 
 	return '<h2>Our aim</h2>
-<p>We aim to make this website easy to use and understand for guests, families, carers, and professionals. Our accessibility target is the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA.</p>
+<p>We want this website to be easy to use for everyone, including guests, families, carers and professionals. We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA.</p>
+<p>This statement is about the website. For door widths, equipment and room layouts, see <a href="' . $acc . '">the bungalow’s access details</a>.</p>
+
+<h2>What you can do on this site</h2>
+<p>You should be able to:</p>
+<ul>
+<li>Move through every page with a keyboard, with a clear outline showing where you are.</li>
+<li>Skip straight to the main content from the top of each page.</li>
+<li>Zoom in to 400% without text running off the side of the screen.</li>
+<li>Read text and links that stand out from the background, even when you hover over them or move to them.</li>
+<li>Use forms with a clear label on every box.</li>
+</ul>
+
+<h2>What isn’t right yet</h2>
+<p>We haven’t yet tested every page with a screen reader, or with disabled people using their own set-ups. Until we have, we can’t say the site fully meets WCAG 2.2 AA.</p>
+<p>Some pages link to maps, a video and other organisations’ websites. We can’t control how accessible those are. If one of them stops you, tell us, and we’ll find another way to give you the information.</p>
 
 <h2>How we test</h2>
-<p>We review page structure, keyboard navigation, form labels, and layouts at different screen widths. These checks do not establish full WCAG conformance. Further testing with screen readers, browser zoom, and disabled users is needed. We fix issues we can control when we update the site.</p>
+<p>We check page structure, keyboard use, form labels and colour contrast, with testing software and by hand. We also check each page at phone, tablet and desktop widths. We fix the problems we can control whenever we update the site.</p>
 
-<h2>Property access information</h2>
-<p>Door widths, equipment, and room layout for the bungalow are on our <a href="' . $acc . '">accessibility specification</a> page. This statement is about the website, not the bricks-and-mortar property.</p>
+<h2>Our commitment under the Equality Act 2010</h2>
+<p>We make reasonable adjustments so disabled people aren’t at a disadvantage when they use our services. That includes this website.</p>
 
-<h2>Third-party content</h2>
-<p>Some pages include embedded maps, video, or links to other organisations. We cannot guarantee how accessible those services are. If something blocks you, tell us and we will try to provide an alternative where we can.</p>
+<h2>Tell us about a problem</h2>
+<p>If any part of this site doesn’t work for you, please tell us. If you need information in another format, just ask. Email <a href="' . $mailto . '">' . esc_html( $email ) . '</a> or use our <a href="' . $enq . '">enquiry form</a>, and we aim to reply within 48 hours.</p>
 
-<h2>Feedback and help</h2>
-<p>If any part of this site does not work for you, or you need information in another format, email <a href="' . $mailto . '">' . esc_html( $email ) . '</a> or use our <a href="' . $enq . '">enquiry form</a>. We aim to reply within 48 hours.</p>
-
-<h2>Formal complaints</h2>
-<p>If you are not satisfied with our response, the <a href="https://www.equalityhumanrights.com/en" target="_blank" rel="noopener noreferrer">Equality and Human Rights Commission (EHRC)<span class="sr-only"> (opens in new tab)</span></a> publishes guidance on accessibility rights in England, Scotland, and Wales.</p>
+<h2>If you’re not happy with our reply</h2>
+<p>The <a href="https://www.equalityhumanrights.com/en" target="_blank" rel="noopener noreferrer">Equality and Human Rights Commission (EHRC)<span class="sr-only"> (opens in new tab)</span></a> publishes guidance on rights in England, Scotland and Wales.</p>
 
 <p><em>Last updated: ' . esc_html( restwell_accessibility_statement_updated_label() ) . '.</em></p>';
 }
@@ -257,8 +286,8 @@ function restwell_get_accessibility_policy_content(): string {
 function restwell_get_privacy_policy_page_defaults() {
 	return array(
 		'legal_label'         => 'Your information',
-		'legal_heading'       => 'Privacy Policy',
-		'legal_intro'         => 'Who is responsible for your data, what we collect on enquiry, FAQ, booking and guest-guide records (including optional care notes), cookie choices, who we share data with, how long we keep records, and your UK GDPR rights (including contacting the ICO).',
+		'legal_heading'       => 'Privacy policy: how we look after your details',
+		'legal_intro'         => 'This explains what we collect when you contact us or book, and how long we keep it. It also sets out your rights under UK GDPR, including how to complain.',
 		'legal_hero_image_id' => 0,
 		'legal_body_html'     => '',
 	);
@@ -272,8 +301,8 @@ function restwell_get_privacy_policy_page_defaults() {
 function restwell_get_terms_conditions_page_defaults() {
 	return array(
 		'legal_label'         => 'Bookings',
-		'legal_heading'       => 'Terms & Conditions',
-		'legal_intro'         => 'Booking confirmation, payment, cancellation terms, accessibility and exceptional circumstances, house rules, optional care via Continuity of Care Services, liability, and how we handle personal data and cookies.',
+		'legal_heading'       => 'Terms and conditions for booking a stay',
+		'legal_intro'         => 'These are the terms for booking the bungalow. They cover payment, cancelling, changing dates, the house rules and optional care.',
 		'legal_hero_image_id' => 0,
 		'legal_body_html'     => '',
 	);
@@ -287,8 +316,8 @@ function restwell_get_terms_conditions_page_defaults() {
 function restwell_get_accessibility_policy_page_defaults() {
 	return array(
 		'legal_label'         => 'Digital access',
-		'legal_heading'       => 'Website accessibility statement',
-		'legal_intro'         => 'WCAG-oriented testing, known limits of third-party embeds, and how to request alternative formats or report a barrier.',
+		'legal_heading'       => 'Accessibility statement for this website',
+		'legal_intro'         => 'This statement covers how well this website works for disabled visitors. It also says what isn’t right yet, and how to tell us about a problem.',
 		'legal_hero_image_id' => 0,
 		'legal_body_html'     => '',
 	);
