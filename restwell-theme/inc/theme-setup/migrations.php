@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 103;
+const RESTWELL_SCHEMA_VERSION = 104;
 
 
 /**
@@ -5037,6 +5037,25 @@ function restwell_migrate_our_story_shaped_v103() {
 }
 
 /**
+ * Our Story, 24 Oct 2026 (2): "Built around what disabled people told us"
+ * still talked about guests rather than to them, in report words (transfer,
+ * kit, guesswork). Ellie picked the plain, warm version. Each field moves only
+ * while it holds one of the shipped versions.
+ */
+function restwell_migrate_our_story_shaped_v104() {
+	if ( get_option( 'restwell_our_story_shaped_v104', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_our_story_shaped_v104', '1', false );
+	foreach ( array( 'Built around what disabled people told us', 'Planned with disabled people before it opened', 'Designed with the people who’d actually stay' ) as $old ) {
+		restwell_replace_stale_page_copy( array( 'our-story' => array( 'story_shaped_heading' => array( $old, 'The people who’d stay here helped plan it' ) ) ) );
+	}
+	foreach ( array( 'Before we opened, we asked what helps during a transfer and what gets in the way. The layout and the kit came from the answers, not from guesswork.', 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.' ) as $old ) {
+		restwell_replace_stale_page_copy( array( 'our-story' => array( 'story_shaped_lede' => array( $old, 'Before we opened, we talked with people who’d be staying. They told us what makes getting in and out of bed or the shower easier, and what doesn’t. The bedroom and wet room are set up the way they asked.' ) ) ) );
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5175,6 +5194,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_legal_plain_english_v101',
 		'restwell_seed_catch_up_v102',
 		'restwell_our_story_shaped_v103',
+		'restwell_our_story_shaped_v104',
 	);
 }
 
@@ -5367,6 +5387,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_seed_catch_up_v102', 140 );
 	add_action( 'init', 'restwell_migrate_our_story_shaped_v103', 146 );
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_shaped_v103', 141 );
+	add_action( 'init', 'restwell_migrate_our_story_shaped_v104', 147 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_shaped_v104', 142 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

@@ -77,8 +77,8 @@ $story_companies_items   = array(
 $story_companies_note = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider, but Continuity of Care Services is.' );
 
 $story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped with guests' );
-$story_shaped_heading = $story_txt( 'story_shaped_heading', 'Built around what disabled people told us' );
-$story_shaped_lede    = $story_txt( 'story_shaped_lede', 'Before we opened, we asked what helps during a transfer and what gets in the way. The layout and the kit came from the answers, not from guesswork.' );
+$story_shaped_heading = $story_txt( 'story_shaped_heading', 'The people who’d stay here helped plan it' );
+$story_shaped_lede    = $story_txt( 'story_shaped_lede', 'Before we opened, we talked with people who’d be staying. They told us what makes getting in and out of bed or the shower easier, and what doesn’t. The bedroom and wet room are set up the way they asked.' );
 
 $story_specialists_label      = $story_txt( 'story_specialists_label', 'Check the details for yourself' );
 $story_specialists_heading    = $story_txt( 'story_specialists_heading', 'Every measurement is published' );
