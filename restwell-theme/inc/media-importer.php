@@ -332,12 +332,23 @@ function restwell_ajax_media_zip_chunk() {
 	$part = trailingslashit( $dir ) . 'restwell-media-' . $id . '.zip';
 	if ( 0 === $index ) {
 		wp_delete_file( $part );
+		// Pieces of uploads that never finished.
+		foreach ( (array) glob( trailingslashit( $dir ) . 'restwell-media-*.zip' ) as $stale ) {
+			if ( is_file( $stale ) && filemtime( $stale ) < time() - DAY_IN_SECONDS ) {
+				wp_delete_file( $stale );
+			}
+		}
 	}
 	clearstatcache( true, $part );
 	$have = file_exists( $part ) ? (int) filesize( $part ) : 0;
 	if ( $have !== $offset ) {
 		wp_delete_file( $part );
 		wp_send_json_error( array( 'message' => __( 'The upload was interrupted. Choose the zip and start again.', 'restwell-retreats' ) ), 409 );
+	}
+	// The media zip is about 70 MB; anything far bigger is not a release zip.
+	if ( $have + (int) filesize( $_FILES['chunk']['tmp_name'] ) > 400 * MB_IN_BYTES ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- a temp path from PHP, checked by is_uploaded_file().
+		wp_delete_file( $part );
+		wp_send_json_error( array( 'message' => __( 'That zip is far bigger than a photo release. Check you chose the restwell-theme-media zip.', 'restwell-retreats' ) ), 413 );
 	}
 	// phpcs:disable WordPress.WP.AlternativeFunctions -- appending binary pieces in order; WP_Filesystem has no append.
 	$in  = fopen( $_FILES['chunk']['tmp_name'], 'rb' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized

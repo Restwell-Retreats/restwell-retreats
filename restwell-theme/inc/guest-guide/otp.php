@@ -91,6 +91,7 @@ function restwell_send_guide_otp( $email ) {
 	$key  = 'restwell_guide_otp_' . md5( strtolower( trim( $email ) ) );
 
 	set_transient( $key, restwell_guide_otp_hash( $code ), 30 * MINUTE_IN_SECONDS );
+	delete_transient( $key . '_fails' );
 
 	$mail = restwell_email_otp( $email, $code );
 	if ( function_exists( 'restwell_wp_mail_with_retry' ) ) {
@@ -126,7 +127,8 @@ function restwell_guide_otp_mail_failed_message(): string {
  * Verify a submitted OTP code against the stored transient hash.
  *
  * Uses hash_equals() for timing-safe comparison. Deletes the transient on a
- * successful match to prevent reuse. Accepts legacy plaintext transients from
+ * successful match to prevent reuse, and after five wrong codes, so guesses
+ * spread across many IP addresses can't wear the per-IP limit down. Accepts legacy plaintext transients from
  * before hashed storage so in-flight codes still work after deploy.
  *
  * @param string $email Email address used when the OTP was generated.
@@ -151,10 +153,18 @@ function restwell_verify_guide_otp( $email, $code ) {
 	}
 
 	if ( ! $matched ) {
+		$fails = (int) get_transient( $key . '_fails' ) + 1;
+		if ( $fails >= 5 ) {
+			delete_transient( $key );
+			delete_transient( $key . '_fails' );
+		} else {
+			set_transient( $key . '_fails', $fails, 30 * MINUTE_IN_SECONDS );
+		}
 		return false;
 	}
 
 	delete_transient( $key );
+	delete_transient( $key . '_fails' );
 	return true;
 }
 

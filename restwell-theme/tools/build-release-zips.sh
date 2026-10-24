@@ -18,7 +18,8 @@
 # The theme zip leaves out everything the site doesn't run: internal notes and
 # audits (the server would serve those .md files to anyone), docs, briefs,
 # tests, build tools, mockups and the unused Phosphor icon font. It keeps
-# copy-overwrites/ (the migrations read it) and llms.txt (served at /llms.txt).
+# copy-overwrites/ (the migrations read it; its .htaccess keeps browsers out)
+# and llms.txt (served at /llms.txt).
 #
 # Usage:
 #   ./restwell-theme/tools/build-release-zips.sh            # zips land in the repo root
@@ -41,6 +42,8 @@ VERSION="$(sed -n 's/^Version:[[:space:]]*//p' "$THEME/style.css" | head -1)"
 
 rm -rf "$THEME/docs" "$THEME/seo-briefs" "$THEME/tests" "$THEME/tools" "$THEME/scripts" "$THEME/mockups" "$THEME/assets/fonts/phosphor"
 find "$THEME" -maxdepth 1 -type f \( -name '*.md' -o -name '.cursorrules' -o -name 'package.json' -o -name 'package-lock.json' -o -name 'phpunit.xml*' \) -delete
+# Internal notes anywhere else (inc/*.md); the copy briefs stay, behind their .htaccess.
+find "$THEME" -type f -name '*.md' ! -path "$THEME/copy-overwrites/*" -delete
 
 dropped=0
 while IFS= read -r -d '' master; do
