@@ -20,8 +20,8 @@ $hero_alt = ( $home_id > 0 && function_exists( 'restwell_page_hero_image_alt' ) 
 	: restwell_theme_image_alt( 'stock/restwell-whitstable-promenade-golden-hour.jpg' );
 
 $hero_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $home_id, 'hero_heading', 'Accessible holidays in Whitstable' )
-	: 'Accessible holidays in Whitstable';
+	? restwell_page_content_text( $home_id, 'hero_heading', 'Accessible holiday cottage in Kent' )
+	: 'Accessible holiday cottage in Kent';
 $hero_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$home_id,

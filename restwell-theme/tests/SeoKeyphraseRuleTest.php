@@ -21,6 +21,15 @@ class SeoKeyphraseRuleTest extends PHPUnit\Framework\TestCase {
 		$this->assertSame( array(), restwell_seo_keyphrase_missing_words( 'How to book a stay at Restwell', 'how to book a stay at restwell' ) );
 	}
 
+	public function test_heading_needs_topic_words_not_the_brand() {
+		// Brand words belong in the SEO title (Google: brand titles concisely), so the H1 check skips them.
+		$this->assertSame( array(), restwell_seo_keyphrase_missing_words( 'Prices: what a stay here costs', 'restwell retreats prices', array( 'restwell', 'retreats' ) ) );
+		$this->assertSame( array( 'prices' ), restwell_seo_keyphrase_missing_words( 'What a stay here costs', 'restwell retreats prices', array( 'restwell', 'retreats' ) ) );
+		$engine = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo-admin.php' );
+		$this->assertStringContainsString( "'id'    => 'kp_h1',", $engine );
+		$this->assertStringContainsString( "restwell_seo_duplicate_meta_titles( \$post, \$field )", $engine );
+	}
+
 	public function test_two_words_out_of_three_is_not_enough() {
 		// The old table rule passed any two words; "retreats" was missing from the Enquire title.
 		$this->assertSame( array( 'retreats' ), restwell_seo_keyphrase_missing_words( 'Contact Restwell about a stay in Whitstable', 'contact restwell retreats' ) );

@@ -15,8 +15,8 @@ get_header();
 
 $restwell_hiw_id      = (int) get_queried_object_id();
 $restwell_hiw_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'How booking a stay works' )
-	: 'How booking a stay works';
+	? restwell_page_content_text( $restwell_hiw_id, 'hiw_heading', 'How to book a stay' )
+	: 'How to book a stay';
 $restwell_hiw_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,

@@ -15,8 +15,8 @@ get_header();
 
 $restwell_care_id      = (int) get_queried_object_id();
 $restwell_care_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Optional home care during your stay' )
-	: 'Optional home care during your stay';
+	? restwell_page_content_text( $restwell_care_id, 'care_heading', 'Holidays with care provided, if you want it' )
+	: 'Holidays with care provided, if you want it';
 $restwell_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_care_id,

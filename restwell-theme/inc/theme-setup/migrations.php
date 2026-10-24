@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 110;
+const RESTWELL_SCHEMA_VERSION = 111;
 
 
 /**
@@ -5299,6 +5299,59 @@ function restwell_migrate_seo_keyphrase_words_v110() {
 }
 
 /**
+ * SEO best practice, 24 Oct 2026: each page's main heading (H1) now carries
+ * the topic words of its focus keyphrase, and the SEO checks test for it.
+ * Ellie chose "Accessible holiday cottage in Kent" for Home so the hero stays
+ * on two lines. Each heading changes only while it still holds the wording it
+ * replaces; the blog index and the door-widths guide follow their own source.
+ */
+function restwell_migrate_keyphrase_headings_v111() {
+	$flag = 'restwell_keyphrase_headings_v111';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	foreach (
+		array(
+			array( 'home' => array( 'hero_heading' => array( 'Accessible holidays in Whitstable', 'Accessible holiday cottage in Kent' ) ) ),
+			array( 'the-property' => array( 'prop_hero_heading' => array( 'Inside the accessible bungalow, room by room', 'Inside the accessible holiday bungalow, room by room' ) ) ),
+			array( 'how-it-works' => array( 'hiw_heading' => array( 'How booking a stay works', 'How to book a stay' ) ) ),
+			array( 'accessibility' => array( 'acc_heading' => array( 'The wet room, the hoists, and every measurement', 'A disabled holiday cottage with a wet room and hoists' ) ) ),
+			array( 'who-its-for' => array( 'wif_heading' => array( 'Is this the right house for your group?', 'Holidays for disabled adults, their carers and families' ) ) ),
+			array( 'faq' => array( 'faq_heading' => array( 'Questions people ask before they book', 'FAQ: the questions people ask before they book' ) ) ),
+			array( 'enquire' => array( 'enq_heading' => array( 'Ask us about a stay', 'Contact us about a stay' ) ) ),
+			array( 'pricing' => array( 'pricing_heading' => array( 'What a stay here costs', 'Prices: what a stay here costs' ) ) ),
+			array( 'funding-and-support' => array( 'res_heading' => array( 'Grants and funding for your accessible holiday', 'Grants and funding for disabled holidays' ) ) ),
+			array( 'optional-care' => array( 'care_heading' => array( 'Optional home care during your stay', 'Holidays with care provided, if you want it' ) ) ),
+		) as $restwell_v111_change
+	) {
+		restwell_replace_stale_page_copy( $restwell_v111_change );
+	}
+
+	// The blog index heading is the posts page's title unless that is "Blog".
+	$blog_id = (int) get_option( 'page_for_posts', 0 );
+	if ( $blog_id > 0 && 'Guides for planning an accessible break' === get_the_title( $blog_id ) ) {
+		wp_update_post(
+			array(
+				'ID'         => $blog_id,
+				'post_title' => wp_slash( 'Accessible travel guides for planning a break' ),
+			)
+		);
+	}
+
+	// The guide's H1 is its post title.
+	$guide = get_page_by_path( 'how-to-read-holiday-cottage-access-statement', OBJECT, 'post' );
+	if ( $guide instanceof WP_Post && 'Will my wheelchair fit? How to read a holiday cottage access statement' === $guide->post_title ) {
+		wp_update_post(
+			array(
+				'ID'         => (int) $guide->ID,
+				'post_title' => wp_slash( 'Will my wheelchair fit? Door widths and how to read an access statement' ),
+			)
+		);
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5444,6 +5497,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_funding_share_image_v108',
 		'restwell_who_its_for_funding_links_v109',
 		'restwell_seo_keyphrase_words_v110',
+		'restwell_keyphrase_headings_v111',
 	);
 }
 
@@ -5650,6 +5704,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_funding_links_v109', 147 );
 	add_action( 'init', 'restwell_migrate_seo_keyphrase_words_v110', 153 );
 	add_action( 'after_switch_theme', 'restwell_migrate_seo_keyphrase_words_v110', 148 );
+	add_action( 'init', 'restwell_migrate_keyphrase_headings_v111', 154 );
+	add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_headings_v111', 149 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

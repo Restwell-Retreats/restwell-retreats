@@ -487,6 +487,48 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		);
 	}
 
+	// 2b - the H1 carries the keyphrase's topic words. Brand words are left to
+	// the SEO title, where Google asks for the brand. Pages hidden from search
+	// (the guest guide) are skipped.
+	$hidden = (bool) get_post_meta( $post->ID, 'meta_noindex', true ) || 'page-guest-guide.php' === get_page_template_slug( $post );
+	if ( $kp !== '' && ! $hidden && function_exists( 'restwell_seo_page_h1' ) ) {
+		$h1         = restwell_seo_page_h1( $post );
+		$h1_missing = restwell_seo_keyphrase_missing_words( $h1, $focus_kp, array( 'restwell', 'retreats' ) );
+		$checks[]   = array(
+			'id'    => 'kp_h1',
+			'label' => $h1_missing
+				? sprintf(
+					/* translators: 1: page heading, 2: keyphrase words not found, comma separated. */
+					__( 'Page heading (H1) “%1$s” is missing keyphrase words: %2$s', 'restwell-retreats' ),
+					$h1,
+					implode( ', ', $h1_missing )
+				)
+				: __( 'Focus keyphrase in the page heading (H1)', 'restwell-retreats' ),
+			'state' => $h1_missing ? 'warn' : 'ok',
+		);
+	}
+
+	// 2c - each page's SEO title and description are its own.
+	if ( function_exists( 'restwell_seo_duplicate_meta_titles' ) ) {
+		foreach (
+			array(
+				/* translators: %s: titles of the other pages, comma separated. */
+				'meta_title'       => __( 'Same SEO title as: %s', 'restwell-retreats' ),
+				/* translators: %s: titles of the other pages, comma separated. */
+				'meta_description' => __( 'Same meta description as: %s', 'restwell-retreats' ),
+			) as $field => $label
+		) {
+			$same = restwell_seo_duplicate_meta_titles( $post, $field );
+			if ( $same ) {
+				$checks[] = array(
+					'id'    => 'dup_' . $field,
+					'label' => sprintf( $label, implode( ', ', $same ) ),
+					'state' => 'warn',
+				);
+			}
+		}
+	}
+
 	// 3 - title length (tips, not hard fails for 30–45).
 	if ( $title_len > 0 ) {
 		if ( $title_len >= 30 && $title_len <= 60 ) {

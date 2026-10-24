@@ -41,8 +41,8 @@ $rate_rows = array(
 <?php
 $restwell_pricing_id      = (int) get_queried_object_id();
 $restwell_pricing_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_pricing_id, 'pricing_heading', 'What a stay here costs' )
-	: 'What a stay here costs';
+	? restwell_page_content_text( $restwell_pricing_id, 'pricing_heading', 'Prices: what a stay here costs' )
+	: 'Prices: what a stay here costs';
 $restwell_pricing_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_pricing_id, 'pricing_intro', 'Here are the weekly and nightly rates, the nights that are free and how the deposit works. You can stay for one night or a whole week, and the access equipment is included.' )
 	: 'Here are the weekly and nightly rates, the nights that are free and how the deposit works. You can stay for one night or a whole week, and the access equipment is included.';

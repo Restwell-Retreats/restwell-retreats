@@ -14,7 +14,7 @@ A holiday with care provided, if you want it. Our sister company, Continuity of 
 
 ## H1 (`care_heading`)
 
-Optional home care during your stay
+Holidays with care provided, if you want it
 
 ## Intro (`care_intro`)
 

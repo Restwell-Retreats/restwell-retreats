@@ -12,7 +12,7 @@ Restwell Retreats prices: a week is £1,300 off-peak and £1,400 in peak season,
 
 ## H1 (`pricing_heading`)
 
-What a stay here costs
+Prices: what a stay here costs
 
 ## Intro (`pricing_intro`)
 

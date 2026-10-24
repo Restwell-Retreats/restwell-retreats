@@ -12,7 +12,7 @@ Contact Restwell Retreats on 01622 809881, by email or with the form. Ask about 
 
 ## H1 (`enq_heading`)
 
-Ask us about a stay
+Contact us about a stay
 
 ## Intro (`enq_intro`)
 

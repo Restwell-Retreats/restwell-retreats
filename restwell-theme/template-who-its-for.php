@@ -15,8 +15,8 @@ get_header();
 
 $restwell_wif_id      = (int) get_queried_object_id();
 $restwell_wif_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_wif_id, 'wif_heading', 'Is this the right house for your group?' )
-	: 'Is this the right house for your group?';
+	? restwell_page_content_text( $restwell_wif_id, 'wif_heading', 'Holidays for disabled adults, their carers and families' )
+	: 'Holidays for disabled adults, their carers and families';
 $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,

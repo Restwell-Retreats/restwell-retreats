@@ -22,7 +22,7 @@ $acc_txt = static function ( $key, $fallback ) use ( $restwell_acc_id ) {
 };
 
 $restwell_acc_label   = $acc_txt( 'acc_label', 'Accessibility' );
-$restwell_acc_heading = $acc_txt( 'acc_heading', 'The wet room, the hoists, and every measurement' );
+$restwell_acc_heading = $acc_txt( 'acc_heading', 'A disabled holiday cottage with a wet room and hoists' );
 $restwell_acc_hero_lede = 'This is the full access statement for Restwell, our adapted holiday bungalow in Whitstable with a wet room and hoists. Check it against your own needs before you book.';
 $restwell_acc_intro     = $acc_txt(
 	'acc_intro',

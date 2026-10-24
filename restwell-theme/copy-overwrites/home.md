@@ -20,7 +20,7 @@ An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet r
 
 ## H1 (`hero_heading`)
 
-Accessible holidays in Whitstable
+Accessible holiday cottage in Kent
 
 ## Opening paragraph (print directly under the H1, before the welcome)
 

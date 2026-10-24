@@ -14,7 +14,7 @@ Holiday grants for disabled adults and carers, plus council and NHS funding. Her
 
 ## H1 (`res_heading`)
 
-Grants and funding for your accessible holiday
+Grants and funding for disabled holidays
 
 ## Intro (`res_intro`)
 

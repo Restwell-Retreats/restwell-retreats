@@ -14,7 +14,7 @@ Our disabled holiday cottage in Whitstable has a 965mm front door, 926mm inside 
 
 ## H1 (`acc_heading`)
 
-The wet room, the hoists, and every measurement
+A disabled holiday cottage with a wet room and hoists
 
 ## Intro (`acc_intro`)
 

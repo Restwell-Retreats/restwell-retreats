@@ -41,7 +41,7 @@ $res_txt = static function ( $key, $fallback ) use ( $restwell_res_id ) {
 		: $fallback;
 };
 
-$restwell_res_heading = $res_txt( 'res_heading', 'Grants and funding for your accessible holiday' );
+$restwell_res_heading = $res_txt( 'res_heading', 'Grants and funding for disabled holidays' );
 $restwell_res_intro   = $res_txt(
 	'res_intro',
 	'A stay can be paid for by you, a council, the NHS or a grant body. Here’s how each route usually works, and what to ask before you book.'

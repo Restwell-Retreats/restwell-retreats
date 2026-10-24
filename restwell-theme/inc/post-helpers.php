@@ -78,7 +78,7 @@ function restwell_get_blog_index_heading() {
 		}
 	}
 
-	return __( 'Guides for planning an accessible break', 'restwell-retreats' );
+	return __( 'Accessible travel guides for planning a break', 'restwell-retreats' );
 }
 
 /**

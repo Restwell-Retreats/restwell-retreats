@@ -14,7 +14,7 @@ Book holidays for disabled adults and their carers in a private adapted bungalow
 
 ## H1 (`wif_heading`)
 
-Is this the right house for your group?
+Holidays for disabled adults, their carers and families
 
 ## Intro (`wif_intro`)
 

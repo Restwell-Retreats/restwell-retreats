@@ -12,7 +12,7 @@ Look round our accessible holiday bungalow, room by room. There are two bedrooms
 
 ## H1 (`prop_hero_heading`)
 
-Inside the accessible bungalow, room by room
+Inside the accessible holiday bungalow, room by room
 
 ## Intro (`prop_hero_subtitle`)
 

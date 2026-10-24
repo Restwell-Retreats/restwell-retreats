@@ -12,7 +12,7 @@ How to book a stay at Restwell, from your first message to the front door. We ch
 
 ## H1 (`hiw_heading`)
 
-How booking a stay works
+How to book a stay
 
 ## Intro (`hiw_intro`)
 

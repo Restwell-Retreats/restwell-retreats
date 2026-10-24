@@ -12,7 +12,7 @@ The Restwell FAQ answers what people ask before they book. It covers door widths
 
 ## H1 (`faq_heading`)
 
-Questions people ask before they book
+FAQ: the questions people ask before they book
 
 ## Intro (`faq_intro`)
 

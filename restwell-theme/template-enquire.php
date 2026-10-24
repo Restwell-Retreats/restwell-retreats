@@ -58,8 +58,8 @@ if ( '' === $public_email || ! is_email( $public_email ) ) {
 
 $restwell_enq_id      = (int) get_queried_object_id();
 $restwell_enq_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Ask us about a stay' )
-	: 'Ask us about a stay';
+	? restwell_page_content_text( $restwell_enq_id, 'enq_heading', 'Contact us about a stay' )
+	: 'Contact us about a stay';
 $restwell_enq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_enq_id,

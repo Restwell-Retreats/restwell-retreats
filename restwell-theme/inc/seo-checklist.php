@@ -99,11 +99,12 @@ function restwell_seo_checklist_build_summary_from_checks( array $checks, WP_Pos
  * SEO table and the page editor both use this, so they always agree (24 Oct
  * 2026: the table matched any two words, the editor only the exact phrase).
  *
- * @param string $text Title or description.
- * @param string $kp   Focus keyphrase.
+ * @param string   $text   Title, description or heading.
+ * @param string   $kp     Focus keyphrase.
+ * @param string[] $ignore Keyphrase words not to require (lowercase).
  * @return string[] Missing words as typed in the keyphrase; empty when all are there.
  */
-function restwell_seo_keyphrase_missing_words( string $text, string $kp ): array {
+function restwell_seo_keyphrase_missing_words( string $text, string $kp, array $ignore = array() ): array {
 	$stop  = array( 'a', 'an', 'and', 'the', 'of', 'to', 'in', 'on', 'for', 'with', 'at', 'by', 'from', 'or', 'is', 'are', 'be', 'can', 'i', 'my', 'your', 'our', 'you', 'it', 'its', 'do', 'does', 'how', 'what', 'when', 'where', 'which', 'who', 'why', 'this', 'that', 'about', 'into', 'as', 'if', 'we', 'us' );
 	$words = static function ( string $value ): array {
 		$value = strtolower( (string) preg_replace( '/[\x{2018}\x{2019}\x{2032}]/u', "'", $value ) );
@@ -125,7 +126,7 @@ function restwell_seo_keyphrase_missing_words( string $text, string $kp ): array
 	$have = array_map( $base, $words( $text ) );
 	$miss = array();
 	foreach ( $words( $kp ) as $word ) {
-		if ( ! in_array( $word, $stop, true ) && ! in_array( $base( $word ), $have, true ) ) {
+		if ( ! in_array( $word, $stop, true ) && ! in_array( $word, $ignore, true ) && ! in_array( $base( $word ), $have, true ) ) {
 			$miss[] = $word;
 		}
 	}
@@ -166,6 +167,65 @@ function restwell_seo_checklist_effective_meta( WP_Post $post ): array {
 		'meta_title'       => $title,
 		'meta_description' => $desc,
 	);
+}
+
+/**
+ * The H1 a page or post shows, for the keyphrase check.
+ *
+ * @param WP_Post $post Page or post.
+ * @return string
+ */
+function restwell_seo_page_h1( WP_Post $post ): string {
+	if ( 'post' === $post->post_type ) {
+		return (string) get_the_title( $post );
+	}
+	if ( (int) get_option( 'page_for_posts', 0 ) === (int) $post->ID && function_exists( 'restwell_get_blog_index_heading' ) ) {
+		return (string) restwell_get_blog_index_heading();
+	}
+	$key = function_exists( 'restwell_page_content_h1_meta_key' ) ? restwell_page_content_h1_meta_key( $post ) : '';
+	if ( '' !== $key && function_exists( 'restwell_page_content_meta_or_default' ) ) {
+		$h1 = trim( (string) restwell_page_content_meta_or_default( (int) $post->ID, $key ) );
+		if ( '' !== $h1 ) {
+			return $h1;
+		}
+	}
+	return (string) $post->post_title;
+}
+
+/**
+ * Other published pages and posts with the same effective SEO title or meta
+ * description. Google asks for a distinct title and description per page.
+ *
+ * @param WP_Post $post  Page or post.
+ * @param string  $field 'meta_title' or 'meta_description'.
+ * @return string[] Titles of the other pages.
+ */
+function restwell_seo_duplicate_meta_titles( WP_Post $post, string $field ): array {
+	static $index = null;
+	if ( null === $index ) {
+		$index = array();
+		$posts = get_posts(
+			array(
+				'post_type'   => array( 'page', 'post' ),
+				'post_status' => 'publish',
+				'numberposts' => 200,
+			)
+		);
+		foreach ( $posts as $other ) {
+			$meta = restwell_seo_checklist_effective_meta( $other );
+			foreach ( array( 'meta_title', 'meta_description' ) as $key ) {
+				$value = strtolower( trim( (string) $meta[ $key ] ) );
+				if ( '' !== $value ) {
+					$index[ $key ][ $value ][ (int) $other->ID ] = (string) get_the_title( $other );
+				}
+			}
+		}
+	}
+	$meta  = restwell_seo_checklist_effective_meta( $post );
+	$value = strtolower( trim( (string) $meta[ $field ] ) );
+	$same  = ( '' !== $value && isset( $index[ $field ][ $value ] ) ) ? $index[ $field ][ $value ] : array();
+	unset( $same[ (int) $post->ID ] );
+	return array_values( $same );
 }
 
 /**

@@ -15,8 +15,8 @@ get_header();
 
 $restwell_faq_id      = (int) get_queried_object_id();
 $restwell_faq_heading = function_exists( 'restwell_page_content_text' )
-	? restwell_page_content_text( $restwell_faq_id, 'faq_heading', 'Questions people ask before they book' )
-	: 'Questions people ask before they book';
+	? restwell_page_content_text( $restwell_faq_id, 'faq_heading', 'FAQ: the questions people ask before they book' )
+	: 'FAQ: the questions people ask before they book';
 $restwell_faq_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_faq_id,
