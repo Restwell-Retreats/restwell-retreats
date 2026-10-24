@@ -18,6 +18,8 @@
 		return;
 	}
 
+	// wp_localize_script passes numbers as strings.
+	var pieceBytes = parseInt( rwMediaImport.chunk, 10 ) || 4194304;
 	var input = form.querySelector( 'input[type="file"]' );
 	var button = form.querySelector( '[type="submit"]' );
 	var status = form.querySelector( '.restwell-media-zip__status' );
@@ -44,7 +46,7 @@
 	 * @returns {Promise<Object>} The server's result after the last piece.
 	 */
 	function sendPiece( file, id, index, total ) {
-		var size = rwMediaImport.chunk;
+		var size = pieceBytes;
 		var data = new FormData();
 		data.append( 'action', 'restwell_media_zip_chunk' );
 		data.append( 'nonce', rwMediaImport.nonce );
@@ -80,7 +82,7 @@
 		event.preventDefault();
 		button.disabled = true;
 
-		var total = Math.max( 1, Math.ceil( file.size / rwMediaImport.chunk ) );
+		var total = Math.max( 1, Math.ceil( file.size / pieceBytes ) );
 		sendPiece( file, uploadId(), 0, total )
 			.then( function ( result ) {
 				status.textContent = result.message;
