@@ -78,11 +78,15 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		// migrations must not mark themselves done until the photo is on disk.
 		foreach ( array( 'restwell_migrate_daylight_heroes_v75', 'restwell_migrate_care_copy_v78', 'restwell_migrate_our_story_hero_v82' ) as $fn ) {
 			$body  = $this->function_body( $this->migrations(), $fn );
-			$wait  = strpos( $body, "'' === restwell_theme_image_abs_path(" );
+			$wait  = strpos( $body, '! restwell_theme_photo_ready(' );
 			$mark  = strpos( $body, 'update_option(' );
 			$this->assertNotFalse( $wait, $fn . ' checks its photo' );
 			$this->assertLessThan( $mark, $wait, $fn . ' checks before marking itself done' );
+			// A failed sideload tries again later instead of staying marked done.
+			$this->assertStringContainsString( 'restwell_retry_photo_migration(', $body, $fn . ' retries a failed sideload' );
 		}
+		$retry = $this->function_body( $this->migrations(), 'restwell_retry_photo_migration' );
+		$this->assertStringContainsString( 'if ( $tries < 3 ) {', $retry );
 		$build = (string) file_get_contents( dirname( __DIR__ ) . '/tools/build-release-zips.sh' );
 		$this->assertStringContainsString( 'git -C "$REPO_ROOT" archive HEAD restwell-theme', $build );
 		$this->assertStringContainsString( 'grep -qxF "$rel" "$KEEP"', $build );

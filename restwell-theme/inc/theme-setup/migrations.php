@@ -1872,6 +1872,33 @@ function restwell_migrate_our_story_companies_dedupe_v74() {
 }
 
 /**
+ * Whether a theme photo is really on disk. In a two-zip deploy the images go
+ * up a few minutes after the theme, so the photo migrations wait for them.
+ *
+ * @param string $rel Path under assets/images/.
+ * @return bool
+ */
+function restwell_theme_photo_ready( $rel ) {
+	$path = get_template_directory() . '/assets/images/' . ltrim( (string) $rel, '/' );
+	clearstatcache( true, $path );
+	return is_readable( $path );
+}
+
+/**
+ * A photo swap whose sideload failed tries again on a later request, up to
+ * three times, rather than being marked done with nothing swapped.
+ *
+ * @param string $flag The migration's option flag.
+ */
+function restwell_retry_photo_migration( $flag ) {
+	$tries = (int) get_option( $flag . '_tries', 0 ) + 1;
+	update_option( $flag . '_tries', $tries, false );
+	if ( $tries < 3 ) {
+		delete_option( $flag );
+	}
+}
+
+/**
  * Daylight heroes for Who It's For and How It Works (13 Oct 2026). The dusk
  * beach-hut slope and the patterned bedroom went near-black under the hero
  * scrim; the garden shots from the photoshoot read as the house in the sun.
@@ -1884,7 +1911,7 @@ function restwell_migrate_daylight_heroes_v75() {
 	}
 	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
 	// live minutes before its images, and a swap skipped then never retries.
-	if ( function_exists( 'restwell_theme_image_abs_path' ) && ( '' === restwell_theme_image_abs_path( 'bungalow/GRDEN-3-LS.jpg' ) || '' === restwell_theme_image_abs_path( 'bungalow/GRDEN-4-LS.jpg' ) ) ) {
+	if ( ! restwell_theme_photo_ready( 'bungalow/GRDEN-3-LS.jpg' ) || ! restwell_theme_photo_ready( 'bungalow/GRDEN-4-LS.jpg' ) ) {
 		return;
 	}
 	// Mark first: a sideload timeout still leaves the theme-file fallback working.
@@ -1896,6 +1923,7 @@ function restwell_migrate_daylight_heroes_v75() {
 		'who-its-for'  => array( 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg', 'bungalow/GRDEN-3-LS.jpg' ),
 		'how-it-works' => array( 'bungalow/BD1-2-LS.jpg', 'bungalow/GRDEN-4-LS.jpg' ),
 	);
+	$retry = false;
 	foreach ( $swaps as $slug => $paths ) {
 		$page_id = restwell_page_id_for_stock_slug( $slug );
 		if ( $page_id < 1 ) {
@@ -1907,12 +1935,16 @@ function restwell_migrate_daylight_heroes_v75() {
 		}
 		$att_id = restwell_sideload_stock_image( $paths[1] );
 		if ( $att_id < 1 ) {
+			$retry = true;
 			continue;
 		}
 		set_post_thumbnail( $page_id, $att_id );
 		if ( function_exists( 'restwell_sync_page_hero_image_trio' ) ) {
 			restwell_sync_page_hero_image_trio( $page_id );
 		}
+	}
+	if ( $retry ) {
+		restwell_retry_photo_migration( 'restwell_daylight_heroes_v75' );
 	}
 }
 
@@ -2024,7 +2056,7 @@ function restwell_migrate_care_copy_v78() {
 	}
 	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
 	// live minutes before its images, and a swap skipped then never retries.
-	if ( function_exists( 'restwell_theme_image_abs_path' ) && ( '' === restwell_theme_image_abs_path( 'bungalow/BD2-2-LS.jpg' ) ) ) {
+	if ( ! restwell_theme_photo_ready( 'bungalow/BD2-2-LS.jpg' ) ) {
 		return;
 	}
 	update_option( 'restwell_care_copy_v78', '1', false );
@@ -2214,11 +2246,13 @@ function restwell_migrate_care_copy_v78() {
 		return;
 	}
 	$att_id = restwell_sideload_stock_image( 'bungalow/BD2-2-LS.jpg' );
-	if ( $att_id > 0 ) {
-		set_post_thumbnail( $page_id, $att_id );
-		if ( function_exists( 'restwell_sync_page_hero_image_trio' ) ) {
-			restwell_sync_page_hero_image_trio( $page_id );
-		}
+	if ( $att_id < 1 ) {
+		restwell_retry_photo_migration( 'restwell_care_copy_v78' );
+		return;
+	}
+	set_post_thumbnail( $page_id, $att_id );
+	if ( function_exists( 'restwell_sync_page_hero_image_trio' ) ) {
+		restwell_sync_page_hero_image_trio( $page_id );
 	}
 }
 
@@ -2509,7 +2543,7 @@ function restwell_migrate_our_story_hero_v82() {
 	}
 	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
 	// live minutes before its images, and a swap skipped then never retries.
-	if ( function_exists( 'restwell_theme_image_abs_path' ) && ( '' === restwell_theme_image_abs_path( 'bungalow/accessible-holiday-whitstable.png' ) ) ) {
+	if ( ! restwell_theme_photo_ready( 'bungalow/accessible-holiday-whitstable.png' ) ) {
 		return;
 	}
 	update_option( 'restwell_our_story_hero_v82', '1', false );
@@ -2538,6 +2572,7 @@ function restwell_migrate_our_story_hero_v82() {
 	}
 	$att_id = restwell_sideload_stock_image( 'bungalow/accessible-holiday-whitstable.png' );
 	if ( $att_id < 1 ) {
+		restwell_retry_photo_migration( 'restwell_our_story_hero_v82' );
 		return;
 	}
 	set_post_thumbnail( $page_id, $att_id );
