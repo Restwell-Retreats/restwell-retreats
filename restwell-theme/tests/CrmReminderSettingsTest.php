@@ -65,9 +65,15 @@ class CrmReminderSettingsTest extends PHPUnit\Framework\TestCase {
 	}
 
 	public function test_defaults_match_constants() {
-		$this->assertTrue( restwell_crm_reminder_is_enabled() );
+		// Off until someone ticks it in Settings.
+		$this->assertFalse( restwell_crm_reminder_is_enabled() );
 		$this->assertSame( 18, restwell_crm_reminder_stale_hours() );
 		$this->assertSame( 24, restwell_crm_reminder_repeat_hours() );
+	}
+
+	public function test_ticking_the_setting_turns_reminders_on() {
+		update_option( 'restwell_crm_reminder_enabled', '1' );
+		$this->assertTrue( restwell_crm_reminder_is_enabled() );
 	}
 
 	public function test_options_override_defaults() {

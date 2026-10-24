@@ -11,6 +11,12 @@ class MailHtmlMimeTest extends PHPUnit\Framework\TestCase {
 		restwell_mail_current_is_html( false );
 	}
 
+	public function test_sender_name_is_the_site_not_wordpress() {
+		$this->assertSame( 'Restwell Retreats', restwell_mail_from_name( 'WordPress' ) );
+		// A name someone set on purpose is left alone.
+		$this->assertSame( 'Restwell bookings', restwell_mail_from_name( 'Restwell bookings' ) );
+	}
+
 	public function test_doctype_document_is_html() {
 		$this->assertTrue(
 			restwell_mail_message_is_html( "<!DOCTYPE html>\n<html><body><p>Hi</p></body></html>" )

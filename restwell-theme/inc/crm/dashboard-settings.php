@@ -144,7 +144,7 @@ function restwell_crm_dashboard_render_settings() {
 									<?php
 									$reminder_enabled = function_exists( 'restwell_crm_reminder_is_enabled' )
 										? restwell_crm_reminder_is_enabled()
-										: true;
+										: false;
 									$reminder_stale   = function_exists( 'restwell_crm_reminder_stale_hours' )
 										? restwell_crm_reminder_stale_hours()
 										: 18;
@@ -193,7 +193,7 @@ function restwell_crm_dashboard_render_settings() {
 										<span><?php esc_html_e( 'hours', 'restwell-retreats' ); ?></span>
 									</p>
 									<p class="description">
-										<?php esc_html_e( 'Checked once an hour. Changing the enquiry out of New stops further reminders. Values must be between 1 and 168 hours.', 'restwell-retreats' ); ?>
+										<?php esc_html_e( 'Off unless ticked. When on, it checks once an hour, and moving the enquiry out of New stops further reminders. Values must be between 1 and 168 hours.', 'restwell-retreats' ); ?>
 									</p>
 								</td>
 							</tr>

@@ -86,6 +86,25 @@ function restwell_phpmailer_smtp_init( $phpmailer ) {
 add_action( 'phpmailer_init', 'restwell_phpmailer_smtp_init' );
 
 /**
+ * Send as the site name ("Restwell Retreats"), not WordPress's default
+ * "WordPress", which guests and the shared inbox saw as the sender.
+ *
+ * Only the default is replaced, so a name set elsewhere still wins, and
+ * RESTWELL_SMTP_FROM_NAME overrides it in restwell_phpmailer_smtp_init().
+ *
+ * @param string $name Sender name.
+ * @return string
+ */
+function restwell_mail_from_name( $name ) {
+	if ( 'WordPress' !== (string) $name ) {
+		return $name;
+	}
+	$site = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
+	return '' !== $site ? $site : 'Restwell Retreats';
+}
+add_filter( 'wp_mail_from_name', 'restwell_mail_from_name' );
+
+/**
  * Whether a mail body is HTML we authored.
  *
  * Outlook shows tags when a HTML document is sent as text/plain. That happens

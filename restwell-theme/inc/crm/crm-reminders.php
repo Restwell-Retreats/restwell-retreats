@@ -65,10 +65,14 @@ function restwell_crm_reminder_clamp_hours( int $hours ): int {
 /**
  * Whether stale-enquiry reminder mail is switched on.
  *
+ * Off unless ticked in Restwell → Dashboard → Settings (24 Oct 2026): the
+ * team answers enquiries from the shared inbox and rarely moves them out of
+ * New in the CRM, so a reminder per enquiry every day was just noise.
+ *
  * @return bool
  */
 function restwell_crm_reminder_is_enabled(): bool {
-	$stored = get_option( 'restwell_crm_reminder_enabled', '1' );
+	$stored = get_option( 'restwell_crm_reminder_enabled', '0' );
 	$on     = '0' !== (string) $stored && '' !== (string) $stored && false !== $stored;
 	return (bool) apply_filters( 'restwell_crm_reminder_enabled', $on );
 }
