@@ -384,21 +384,13 @@ function restwell_crm_handle_save_settings() {
 		? sanitize_text_field( wp_unslash( $_POST['restwell_mailchimp_api_key'] ) )
 		: '';
 	$mailchimp_api_key = preg_replace( '/[^A-Za-z0-9\-]/', '', trim( $mailchimp_api_key ) );
-	$mailchimp_key_blocked = false;
-	$is_production         = function_exists( 'wp_get_environment_type' ) && 'production' === wp_get_environment_type();
-	if ( ! $is_production && function_exists( 'restwell_is_production_environment' ) ) {
-		$is_production = restwell_is_production_environment();
-	}
 
 	// ICS feed URL is managed on Restwell → Availability (restwell_crm_handle_save_availability).
 
-	// Prefer RESTWELL_MAILCHIMP_API_KEY in wp-config; option is fallback only and must not autoload.
-	// Never persist the key in wp_options when WP_ENVIRONMENT_TYPE is production.
-	if ( $is_production ) {
-		if ( '' !== $mailchimp_api_key || ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
-			$mailchimp_key_blocked = true;
-		}
-	} elseif ( '' !== $mailchimp_api_key ) {
+	// RESTWELL_MAILCHIMP_API_KEY in wp-config still wins when it is defined. Otherwise
+	// the key is saved here, not autoloaded, so the owner can manage it from admin
+	// (24 Oct 2026: production refused to store it, and wp-config is out of reach).
+	if ( '' !== $mailchimp_api_key ) {
 		update_option( 'restwell_mailchimp_api_key', $mailchimp_api_key, false );
 	} elseif ( ! empty( $_POST['restwell_mailchimp_api_key_clear'] ) ) {
 		update_option( 'restwell_mailchimp_api_key', '', false );
@@ -434,9 +426,6 @@ function restwell_crm_handle_save_settings() {
 		'page'           => 'restwell-crm',
 		'settings_saved' => '1',
 	);
-	if ( ! empty( $mailchimp_key_blocked ) ) {
-		$redirect_args['mailchimp_key_blocked'] = '1';
-	}
 	wp_safe_redirect(
 		add_query_arg(
 			$redirect_args,

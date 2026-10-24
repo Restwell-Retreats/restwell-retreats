@@ -4,8 +4,9 @@
 #
 #   restwell-theme-<version>.zip         the theme without assets/images
 #                                        (WP Admin → Appearance → Themes → Upload)
-#   restwell-theme-media-<version>.zip   restwell-theme/assets/images, unzipped
-#                                        inside wp-content/themes/ on the server
+#   restwell-theme-media-<version>.zip   restwell-theme/assets/images
+#                                        (WP Admin → Media → Restwell Media Import,
+#                                        or unzip inside wp-content/themes/)
 #
 # The media zip carries the optimised images only. Every photo master in
 # bungalow/, stock/ and journey/ that has an Opt WebP is left out: the site

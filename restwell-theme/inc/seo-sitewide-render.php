@@ -150,7 +150,6 @@ function restwell_seo_sitewide_render_business_card( $issues ) {
 function restwell_seo_sitewide_render_verification_card( $issues ) {
 	$bing_from_constant = defined( 'RESTWELL_BING_WEBMASTER_API_KEY' ) && '' !== (string) RESTWELL_BING_WEBMASTER_API_KEY;
 	$bing_key_stored    = (string) get_option( 'restwell_bing_webmaster_api_key', '' );
-	$bing_prod_locked   = function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment();
 	$bing_key_masked    = '';
 	if ( '' !== $bing_key_stored ) {
 		$bing_key_masked = '************' . substr( $bing_key_stored, -4 );
@@ -203,7 +202,7 @@ function restwell_seo_sitewide_render_verification_card( $issues ) {
 								value=""
 								autocomplete="new-password"
 								placeholder="<?php echo esc_attr( $bing_key_masked ); ?>"
-								<?php disabled( $bing_from_constant || $bing_prod_locked ); ?>
+								<?php disabled( $bing_from_constant ); ?>
 							/>
 							<span class="<?php echo esc_attr( $bing_badge_class ); ?>" aria-live="polite"><?php echo esc_html( $bing_badge_text ); ?></span>
 						</div>
@@ -211,14 +210,12 @@ function restwell_seo_sitewide_render_verification_card( $issues ) {
 							<?php
 							if ( $bing_from_constant ) {
 								esc_html_e( 'RESTWELL_BING_WEBMASTER_API_KEY is set in wp-config.php (or the environment). This field is unused while that constant is defined.', 'restwell-retreats' );
-							} elseif ( $bing_prod_locked ) {
-								esc_html_e( 'Production will not store this key in the database. Define RESTWELL_BING_WEBMASTER_API_KEY in wp-config.php.', 'restwell-retreats' );
 							} else {
-								esc_html_e( 'Settings → API Access in Bing Webmaster Tools. REST JSON only (SOAP/POX retired 31 Aug 2026). Leave blank to keep an existing key.', 'restwell-retreats' );
+								esc_html_e( 'Find it in Bing Webmaster Tools under Settings → API Access. It is saved privately and only its last four characters are shown. Leave blank to keep the saved key.', 'restwell-retreats' );
 							}
 							?>
 						</p>
-						<?php if ( ! $bing_from_constant && ! $bing_prod_locked ) : ?>
+						<?php if ( ! $bing_from_constant ) : ?>
 							<p class="rw-seo-field__hint">
 								<label>
 									<input type="checkbox" name="restwell_bing_webmaster_api_key_clear" value="1" />
@@ -455,7 +452,6 @@ function restwell_seo_sitewide_render_page() {
 	}
 
 	$updated          = isset( $_GET['updated'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$bing_key_blocked = isset( $_GET['bing_key_blocked'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$sitemap = home_url( '/wp-sitemap.xml' );
 	$llms    = home_url( '/llms.txt' );
 
@@ -518,9 +514,6 @@ function restwell_seo_sitewide_render_page() {
 
 		<?php if ( $updated ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Site-wide SEO settings saved.', 'restwell-retreats' ); ?></p></div>
-		<?php endif; ?>
-		<?php if ( $bing_key_blocked ) : ?>
-			<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'The Bing Webmaster API key was not saved. On production it must live in RESTWELL_BING_WEBMASTER_API_KEY (wp-config or the environment), not in the database.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
 
 		<?php restwell_seo_sitewide_render_checklist( $issues, $counts ); ?>

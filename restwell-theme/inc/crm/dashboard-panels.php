@@ -17,9 +17,6 @@ function restwell_crm_dashboard_render_notices() {
 		<?php if ( isset( $_GET['settings_saved'] ) && absint( wp_unslash( $_GET['settings_saved'] ) ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Settings saved.', 'restwell-retreats' ); ?></p></div>
 		<?php endif; ?>
-		<?php if ( isset( $_GET['mailchimp_key_blocked'] ) && absint( wp_unslash( $_GET['mailchimp_key_blocked'] ) ) ) : ?>
-			<div class="notice notice-warning is-dismissible"><p><?php esc_html_e( 'The Mailchimp API key was not saved. On production it must live in RESTWELL_MAILCHIMP_API_KEY (wp-config or the environment), not in the database.', 'restwell-retreats' ); ?></p></div>
-		<?php endif; ?>
 		<?php
 		$smtp_test = isset( $_GET['smtp_test'] ) ? sanitize_key( wp_unslash( $_GET['smtp_test'] ) ) : '';
 		if ( 'ok' === $smtp_test ) :

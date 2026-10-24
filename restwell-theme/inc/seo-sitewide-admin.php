@@ -97,15 +97,11 @@ function restwell_seo_sitewide_handle_save() {
 		}
 	}
 	$bing_from_constant = defined( 'RESTWELL_BING_WEBMASTER_API_KEY' ) && '' !== (string) RESTWELL_BING_WEBMASTER_API_KEY;
-	$bing_prod_locked   = function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment();
-	$bing_key_blocked   = false;
-	if ( $bing_from_constant || $bing_prod_locked ) {
-		if ( '' !== $bing_api_key || $bing_api_clear ) {
-			$bing_key_blocked = $bing_prod_locked && ! $bing_from_constant;
-		}
-	} elseif ( '' !== $bing_api_key ) {
+	// The wp-config constant still wins; otherwise the key is saved here (not
+	// autoloaded) so it can be managed from admin.
+	if ( ! $bing_from_constant && '' !== $bing_api_key ) {
 		update_option( 'restwell_bing_webmaster_api_key', $bing_api_key, false );
-	} elseif ( $bing_api_clear ) {
+	} elseif ( ! $bing_from_constant && $bing_api_clear ) {
 		update_option( 'restwell_bing_webmaster_api_key', '', false );
 	}
 
@@ -192,9 +188,6 @@ function restwell_seo_sitewide_handle_save() {
 		'page'    => 'restwell-seo-sitewide',
 		'updated' => '1',
 	);
-	if ( ! empty( $bing_key_blocked ) ) {
-		$redirect_args['bing_key_blocked'] = '1';
-	}
 	wp_safe_redirect(
 		add_query_arg(
 			$redirect_args,

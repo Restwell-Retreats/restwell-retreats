@@ -207,9 +207,9 @@ It builds from `HEAD` (never the working tree) and writes two zips to the repo r
 | Zip | What's in it | Where it goes |
 |---|---|---|
 | `restwell-theme-<version>.zip` | The theme without `assets/images` | WP Admin → Appearance → Themes → Add New Theme → Upload → **Replace active with uploaded** |
-| `restwell-theme-media-<version>.zip` | `restwell-theme/assets/images` | Hosting file manager: upload into `wp-content/themes/` and extract, so it lands in `restwell-theme/assets/images` |
+| `restwell-theme-media-<version>.zip` | `restwell-theme/assets/images` | WP Admin → Media → Restwell Media Import → **Upload photos** (sent in small pieces, so the host's upload limit doesn't matter). Or, with the hosting file manager, upload into `wp-content/themes/` and extract |
 
-Upload the theme first, then the media straight away: replacing the theme removes the old images folder. Until the media is extracted, pages show no photos. The migrations that set hero photos wait for their files and run on the first page load after the media arrives, copying the Opt WebP into the Media Library.
+Upload the theme first, then the media straight away: replacing the theme removes the old images folder, and the photo upload screen comes with the new theme. Until the media is in, pages show no photos. The migrations that set hero photos wait for their files and run on the first page load after the media arrives, copying the Opt WebP into the Media Library.
 
 The theme zip holds only what the site runs: no internal notes, docs, briefs, tests, build tools or mockups (the server would serve those files to anyone who guessed the address).
 

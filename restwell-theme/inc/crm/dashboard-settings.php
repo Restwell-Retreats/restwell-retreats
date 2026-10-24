@@ -250,7 +250,6 @@ function restwell_crm_dashboard_render_settings() {
 								<?php
 								$mailchimp_from_constant = defined( 'RESTWELL_MAILCHIMP_API_KEY' ) && '' !== (string) RESTWELL_MAILCHIMP_API_KEY;
 								$mailchimp_key_stored    = (string) get_option( 'restwell_mailchimp_api_key', '' );
-								$mailchimp_prod_locked   = function_exists( 'restwell_is_production_environment' ) && restwell_is_production_environment();
 								// Never echo the raw key — masked placeholder only when an option is stored.
 								$mailchimp_key_masked = '';
 								if ( '' !== $mailchimp_key_stored ) {
@@ -278,7 +277,7 @@ function restwell_crm_dashboard_render_settings() {
 										class="regular-text"
 										autocomplete="new-password"
 										placeholder="<?php echo esc_attr( $mailchimp_key_masked ); ?>"
-										<?php disabled( $mailchimp_from_constant || $mailchimp_prod_locked ); ?>
+										<?php disabled( $mailchimp_from_constant ); ?>
 									/>
 									<span class="<?php echo esc_attr( $mailchimp_badge_class ); ?>" aria-live="polite">
 										<?php echo esc_html( $mailchimp_badge_text ); ?>
@@ -288,14 +287,12 @@ function restwell_crm_dashboard_render_settings() {
 									<?php
 									if ( $mailchimp_from_constant ) {
 										esc_html_e( 'RESTWELL_MAILCHIMP_API_KEY is set in wp-config.php (or the environment). The option field is unused while that constant is defined.', 'restwell-retreats' );
-									} elseif ( $mailchimp_prod_locked ) {
-										esc_html_e( 'Production will not store this key in the database. Define RESTWELL_MAILCHIMP_API_KEY in wp-config.php (or the environment).', 'restwell-retreats' );
 									} else {
-										esc_html_e( 'Preferred: define RESTWELL_MAILCHIMP_API_KEY in wp-config.php (mirrors SMTP constants). This non-autoloaded option is a fallback only. Leave blank to keep an existing key; enter a new key to replace it.', 'restwell-retreats' );
+										esc_html_e( 'Paste the key from Mailchimp (Profile → Extras → API keys). It is saved privately and only its last four characters are shown. Leave blank to keep the saved key; paste a new one to replace it.', 'restwell-retreats' );
 									}
 									?>
 								</p>
-								<?php if ( ! $mailchimp_from_constant && ! $mailchimp_prod_locked ) : ?>
+								<?php if ( ! $mailchimp_from_constant ) : ?>
 								<p class="description">
 									<label>
 										<input type="checkbox" name="restwell_mailchimp_api_key_clear" value="1" />
