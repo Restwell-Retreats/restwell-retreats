@@ -6,7 +6,7 @@
 
 ## Title
 
-Why we built Restwell, and who Continuity are
+Why we built Restwell Retreats, and who Continuity are
 
 ## Meta description
 

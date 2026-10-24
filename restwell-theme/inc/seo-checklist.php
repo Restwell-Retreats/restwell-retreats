@@ -202,6 +202,8 @@ function restwell_seo_checklist_summarize_post_list( WP_Post $post ): array {
 	$has_og    = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
 	$has_site_og = ! $has_og && function_exists( 'restwell_get_default_og_image_url_for_request' )
 		? (bool) restwell_get_default_og_image_url_for_request( $post->ID )
+			// Posts share their blog-card fallback photo (see restwell_output_social_meta()).
+			|| ( 'post' === $post->post_type && function_exists( 'restwell_get_post_fallback_image' ) && '' !== (string) restwell_get_post_fallback_image( $post->ID ) )
 		: false;
 	$defaults  = function_exists( 'restwell_get_seo_default_meta_for_post_id' )
 		? restwell_get_seo_default_meta_for_post_id( $post->ID )

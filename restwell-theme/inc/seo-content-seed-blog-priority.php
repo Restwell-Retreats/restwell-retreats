@@ -174,7 +174,7 @@ function restwell_get_priority_blog_post_articles(): array {
 			'slug'             => 'how-to-read-holiday-cottage-access-statement',
 			'title'            => 'Will my wheelchair fit? How to read a holiday cottage access statement',
 			'excerpt'          => 'Here’s how to check a cottage’s doors, beds and hoists against your own chair. It also covers what to ask when details are missing.',
-			'meta_title'       => 'Will my wheelchair fit? Reading an access statement',
+			'meta_title'       => 'Will my wheelchair fit? Door widths and access statements',
 			'meta_description' => 'Door widths, turning space, hoist clearance and bed heights explained, with the questions to ask when a cottage’s access statement leaves gaps.',
 			'content'          => restwell_get_blog_post_read_access_statement_html(),
 			'category_slug'    => 'accessible-holidays',

@@ -46,7 +46,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'holidays for disabled adults and carers',
 		),
 		'pricing'               => array(
-			'meta_title'       => 'Prices for the bungalow, and what’s included',
+			'meta_title'       => 'Accessible holiday prices at Restwell, Whitstable',
 			'meta_description' => 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all the access equipment included. The rate is the same whoever pays the invoice.',
 			'focus_keyphrase'  => 'restwell retreats prices',
 		),
@@ -76,7 +76,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible travel guides',
 		),
 		'our-story'             => array(
-			'meta_title'       => 'Why we built Restwell, and who Continuity are',
+			'meta_title'       => 'Why we built Restwell Retreats, and who Continuity are',
 			'meta_description' => 'Restwell is a private adapted bungalow in Whitstable. Continuity of Care Services is our sister company for home care. Two companies, one family, one phone.',
 			'focus_keyphrase'  => 'restwell retreats',
 		),
@@ -176,7 +176,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'holiday backup plan care worker',
 		),
 		'how-to-read-holiday-cottage-access-statement' => array(
-			'meta_title'       => 'Will my wheelchair fit? Reading an access statement' . $name,
+			'meta_title'       => 'Will my wheelchair fit? Door widths and access statements' . $name,
 			'meta_description' => 'Door widths, turning space, hoist clearance and bed heights explained, with the questions to ask when a cottage’s access statement leaves gaps.',
 			'focus_keyphrase'  => 'wheelchair door width',
 		),

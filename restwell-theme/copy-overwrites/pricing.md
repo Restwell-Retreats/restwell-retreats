@@ -4,7 +4,7 @@
 
 ## Title
 
-Accessible holiday prices for the Whitstable bungalow
+Accessible holiday prices at Restwell, Whitstable
 
 ## Meta description
 

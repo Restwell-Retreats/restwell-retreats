@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 104;
+const RESTWELL_SCHEMA_VERSION = 105;
 
 
 /**
@@ -4929,7 +4929,7 @@ function restwell_migrate_seed_catch_up_v102() {
 			'focus_keyphrase' => 'holidays for disabled adults and carers',
 		),
 		'our-story' => array(
-			'meta_title' => 'Why we built Restwell, and who Continuity are',
+			'meta_title' => 'Why we built Restwell Retreats, and who Continuity are',
 			'meta_description' => 'Why we built Restwell, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.',
 			'focus_keyphrase' => 'restwell retreats',
 		),
@@ -4944,7 +4944,7 @@ function restwell_migrate_seed_catch_up_v102() {
 			'focus_keyphrase' => 'funding and grants for disabled holidays',
 		),
 		'pricing' => array(
-			'meta_title' => 'Accessible holiday prices for the Whitstable bungalow',
+			'meta_title' => 'Accessible holiday prices at Restwell, Whitstable',
 			'meta_description' => 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, and you can book a single night. The access equipment is included in the price.',
 			'focus_keyphrase' => 'restwell retreats prices',
 		),
@@ -5052,6 +5052,28 @@ function restwell_migrate_our_story_shaped_v104() {
 	}
 	foreach ( array( 'Before we opened, we asked what helps during a transfer and what gets in the way. The layout and the kit came from the answers, not from guesswork.', 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.' ) as $old ) {
 		restwell_replace_stale_page_copy( array( 'our-story' => array( 'story_shaped_lede' => array( $old, 'Before we opened, we talked with people who’d be staying. They told us what makes getting in and out of bed or the shower easier, and what doesn’t. The bedroom and wet room are set up the way they asked.' ) ) ) );
+	}
+}
+
+/**
+ * SEO area check, 24 Oct 2026: three titles left out their focus keyphrase
+ * (Our Story, Pricing and the door-widths guide). Each title moves only while
+ * it still holds the shipped wording.
+ */
+function restwell_migrate_seo_titles_v105() {
+	if ( get_option( 'restwell_seo_titles_v105', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_seo_titles_v105', '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'our-story' => array( 'meta_title' => array( 'Why we built Restwell, and who Continuity are', 'Why we built Restwell Retreats, and who Continuity are' ) ),
+			'pricing'   => array( 'meta_title' => array( 'Accessible holiday prices for the Whitstable bungalow', 'Accessible holiday prices at Restwell, Whitstable' ) ),
+		)
+	);
+	$guide = get_page_by_path( 'how-to-read-holiday-cottage-access-statement', OBJECT, 'post' );
+	if ( $guide instanceof WP_Post && 'Will my wheelchair fit? Reading an access statement' === (string) get_post_meta( $guide->ID, 'meta_title', true ) ) {
+		update_post_meta( $guide->ID, 'meta_title', 'Will my wheelchair fit? Door widths and access statements' );
 	}
 }
 
@@ -5195,6 +5217,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_seed_catch_up_v102',
 		'restwell_our_story_shaped_v103',
 		'restwell_our_story_shaped_v104',
+		'restwell_seo_titles_v105',
 	);
 }
 
@@ -5389,6 +5412,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_shaped_v103', 141 );
 	add_action( 'init', 'restwell_migrate_our_story_shaped_v104', 147 );
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_shaped_v104', 142 );
+	add_action( 'init', 'restwell_migrate_seo_titles_v105', 148 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_v105', 143 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

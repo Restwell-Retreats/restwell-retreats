@@ -19,7 +19,7 @@ The write-toward column is what a page should be *about*. It is not the title, a
 | blog | accessible travel | Accessible travel guides from a Whitstable bungalow |
 | optional-care | adding home care during a self-catering stay | A holiday with care provided in Whitstable, if you want it |
 | guest-guide | restwell guest guide (noindex) | Restwell guest guide for confirmed stays |
-| our-story | restwell our story | Why we built Restwell, and who Continuity are |
+| our-story | restwell our story | Why we built Restwell Retreats, and who Continuity are |
 
 Every shipped title sits in the 40–60 character band. None of them uses the `keyphrase: item, item, item` formula that the previous set shared. That shape is what Google rewrites, because it looks like every directory listing on the page.
 
