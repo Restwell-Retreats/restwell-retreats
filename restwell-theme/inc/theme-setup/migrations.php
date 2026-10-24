@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 107;
+const RESTWELL_SCHEMA_VERSION = 108;
 
 
 /**
@@ -5193,6 +5193,39 @@ function restwell_migrate_guide_share_images_v107() {
 }
 
 /**
+ * SEO area tip, 24 Oct 2026: on a site upgraded from the September build the
+ * Funding page shares its seafront photo straight from the theme folder, so
+ * the SEO area flags it as having no image of its own. This copies the photo
+ * into the Media Library and sets it as the page's featured, hero and share
+ * image, as a fresh install does. The template always shows this photo as the
+ * hero, so the page looks the same.
+ */
+function restwell_migrate_funding_share_image_v108() {
+	$flag = 'restwell_funding_share_image_v108';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	$rel = 'bungalow/WHIT-SEAFRONT-4-LS.jpg';
+	if ( restwell_photo_migration_waiting( $flag, array( $rel ) ) ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	$page = get_page_by_path( 'funding-and-support' );
+	if ( ! $page instanceof WP_Post || has_post_thumbnail( $page->ID ) || get_post_meta( $page->ID, 'og_image_id', true ) || ! function_exists( 'restwell_sideload_stock_image' ) ) {
+		return;
+	}
+	$att_id = restwell_sideload_stock_image( $rel );
+	if ( $att_id < 1 ) {
+		restwell_retry_photo_migration( $flag );
+		return;
+	}
+	set_post_thumbnail( $page->ID, $att_id );
+	if ( function_exists( 'restwell_sync_page_hero_image_trio' ) ) {
+		restwell_sync_page_hero_image_trio( $page->ID );
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5335,6 +5368,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_seo_titles_v105',
 		'restwell_seo_meta_tips_v106',
 		'restwell_guide_share_images_v107',
+		'restwell_funding_share_image_v108',
 	);
 }
 
@@ -5535,6 +5569,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_seo_meta_tips_v106', 144 );
 	add_action( 'init', 'restwell_migrate_guide_share_images_v107', 150 );
 	add_action( 'after_switch_theme', 'restwell_migrate_guide_share_images_v107', 145 );
+	add_action( 'init', 'restwell_migrate_funding_share_image_v108', 151 );
+	add_action( 'after_switch_theme', 'restwell_migrate_funding_share_image_v108', 146 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
