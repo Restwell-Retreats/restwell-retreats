@@ -47,7 +47,8 @@ function restwell_render_media_importer_page() {
 		<h1><?php esc_html_e( 'Restwell Media Import', 'restwell-retreats' ); ?></h1>
 		<?php if ( current_user_can( 'install_themes' ) ) : ?>
 			<h2><?php esc_html_e( 'Photos from a theme release', 'restwell-retreats' ); ?></h2>
-			<p><?php esc_html_e( 'After uploading the theme zip, upload the media zip (restwell-theme-media-…zip) here. Its photos replace the ones in the theme folder, and the page photos update on the next page load.', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'After uploading the theme zip, upload the media zip (restwell-theme-media-…zip) here. Its photos go into the theme folder, where the website’s pages use them, and the page photos update on the next page load.', 'restwell-retreats' ); ?></p>
+			<p><?php esc_html_e( 'They won’t appear in Media → Library. The library only holds photos you upload yourself, plus the few the site copies in for page headers and share images.', 'restwell-retreats' ); ?></p>
 			<?php if ( is_wp_error( $zip_result ) ) : ?>
 				<div class="notice notice-error"><p><?php echo esc_html( $zip_result->get_error_message() ); ?></p></div>
 			<?php elseif ( is_array( $zip_result ) ) : ?>
@@ -281,7 +282,7 @@ function restwell_media_import_photo_zip( $zip ) {
 function restwell_media_zip_result_message( array $result ) {
 	return sprintf(
 		/* translators: 1: number of photos copied, 2: number of files left out. */
-		__( 'Done: %1$d photos copied into the theme (%2$d other files left out). The page photos update on the next page load.', 'restwell-retreats' ),
+		__( 'Done: %1$d photos copied into the theme (%2$d other files left out). The website uses them from the next page load; they won’t appear in Media → Library.', 'restwell-retreats' ),
 		(int) $result['copied'],
 		(int) $result['skipped']
 	);
