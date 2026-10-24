@@ -81,7 +81,7 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		// migrations must not mark themselves done until the photo is on disk.
 		foreach ( array( 'restwell_migrate_daylight_heroes_v75', 'restwell_migrate_care_copy_v78', 'restwell_migrate_our_story_hero_v82' ) as $fn ) {
 			$body  = $this->function_body( $this->migrations(), $fn );
-			$wait  = strpos( $body, '! restwell_theme_photo_ready(' );
+			$wait  = strpos( $body, 'restwell_photo_migration_waiting(' );
 			$mark  = strpos( $body, 'update_option(' );
 			$this->assertNotFalse( $wait, $fn . ' checks its photo' );
 			$this->assertLessThan( $mark, $wait, $fn . ' checks before marking itself done' );
@@ -89,7 +89,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 			$this->assertStringContainsString( 'restwell_retry_photo_migration(', $body, $fn . ' retries a failed sideload' );
 		}
 		$retry = $this->function_body( $this->migrations(), 'restwell_retry_photo_migration' );
-		$this->assertStringContainsString( 'if ( $tries < 3 ) {', $retry );
+		$this->assertStringContainsString( 'if ( $tries < 6 ) {', $retry );
+		$this->assertStringContainsString( 'update_option( $flag . \'_next\', time() + 10 * MINUTE_IN_SECONDS, false );', $retry );
+		$ready = $this->function_body( $this->migrations(), 'restwell_theme_photo_ready' );
+		$this->assertStringContainsString( 'false !== @getimagesize( $path )', $ready );
 		$build = (string) file_get_contents( dirname( __DIR__ ) . '/tools/build-release-zips.sh' );
 		$this->assertStringContainsString( 'git -C "$REPO_ROOT" archive HEAD restwell-theme', $build );
 		$this->assertStringContainsString( 'grep -qxF "$rel" "$KEEP"', $build );

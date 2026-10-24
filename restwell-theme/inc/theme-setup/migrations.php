@@ -1881,19 +1881,42 @@ function restwell_migrate_our_story_companies_dedupe_v74() {
 function restwell_theme_photo_ready( $rel ) {
 	$path = get_template_directory() . '/assets/images/' . ltrim( (string) $rel, '/' );
 	clearstatcache( true, $path );
-	return is_readable( $path );
+	// Readable as an image, not just listed: a half-copied or stale file fails here.
+	return is_readable( $path ) && filesize( $path ) > 0 && false !== @getimagesize( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 }
 
 /**
- * A photo swap whose sideload failed tries again on a later request, up to
- * three times, rather than being marked done with nothing swapped.
+ * Whether a photo migration should wait: its photos aren't on disk yet, or a
+ * failed sideload asked it to try again later.
+ *
+ * @param string   $flag The migration's option flag.
+ * @param string[] $rels Paths under assets/images/.
+ * @return bool
+ */
+function restwell_photo_migration_waiting( $flag, array $rels ) {
+	if ( (int) get_option( $flag . '_next', 0 ) > time() ) {
+		return true;
+	}
+	foreach ( $rels as $rel ) {
+		if ( ! restwell_theme_photo_ready( $rel ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * A photo swap whose sideload failed tries again ten minutes later, up to six
+ * times (an hour), rather than being marked done with nothing swapped. Spacing
+ * the tries means a slow media upload can't use them all up.
  *
  * @param string $flag The migration's option flag.
  */
 function restwell_retry_photo_migration( $flag ) {
 	$tries = (int) get_option( $flag . '_tries', 0 ) + 1;
 	update_option( $flag . '_tries', $tries, false );
-	if ( $tries < 3 ) {
+	if ( $tries < 6 ) {
+		update_option( $flag . '_next', time() + 10 * MINUTE_IN_SECONDS, false );
 		delete_option( $flag );
 	}
 }
@@ -1911,7 +1934,7 @@ function restwell_migrate_daylight_heroes_v75() {
 	}
 	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
 	// live minutes before its images, and a swap skipped then never retries.
-	if ( ! restwell_theme_photo_ready( 'bungalow/GRDEN-3-LS.jpg' ) || ! restwell_theme_photo_ready( 'bungalow/GRDEN-4-LS.jpg' ) ) {
+	if ( restwell_photo_migration_waiting( 'restwell_daylight_heroes_v75', array( 'bungalow/GRDEN-3-LS.jpg', 'bungalow/GRDEN-4-LS.jpg' ) ) ) {
 		return;
 	}
 	// Mark first: a sideload timeout still leaves the theme-file fallback working.
@@ -2056,7 +2079,7 @@ function restwell_migrate_care_copy_v78() {
 	}
 	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
 	// live minutes before its images, and a swap skipped then never retries.
-	if ( ! restwell_theme_photo_ready( 'bungalow/BD2-2-LS.jpg' ) ) {
+	if ( restwell_photo_migration_waiting( 'restwell_care_copy_v78', array( 'bungalow/BD2-2-LS.jpg' ) ) ) {
 		return;
 	}
 	update_option( 'restwell_care_copy_v78', '1', false );
@@ -2543,7 +2566,7 @@ function restwell_migrate_our_story_hero_v82() {
 	}
 	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
 	// live minutes before its images, and a swap skipped then never retries.
-	if ( ! restwell_theme_photo_ready( 'bungalow/accessible-holiday-whitstable.png' ) ) {
+	if ( restwell_photo_migration_waiting( 'restwell_our_story_hero_v82', array( 'bungalow/accessible-holiday-whitstable.png' ) ) ) {
 		return;
 	}
 	update_option( 'restwell_our_story_hero_v82', '1', false );
