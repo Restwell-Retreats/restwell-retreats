@@ -216,6 +216,7 @@ The theme zip holds only what the site runs: no internal notes, docs, briefs, te
 | # | Task | Why |
 |---|------|-----|
 | 1 | `npm run build` before packaging | Ship minified JS (`shared.css` is edited in place) |
+| 1a | `node restwell-theme/tools/build-access-statement.mjs`, then commit the PDF | The access statement PDF is a snapshot of the print view; rebuild it whenever access copy or kit changes, or guests download old wording |
 | 2 | `./restwell-theme/tools/build-release-zips.sh` | Optimised images only, no dev files |
 | 3 | Upload & activate theme | WP Admin → Appearance → Themes |
 | 4 | **Settings → Permalinks → Save** | Flush rewrite rules (redirects, `llms.txt`, CRM routes) |
