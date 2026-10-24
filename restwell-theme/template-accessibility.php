@@ -585,6 +585,8 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		</details>
 
 		<?php
+		// Off for now (24 Oct 2026): no PDF ships, so this box stays hidden until
+		// tools/build-access-statement.mjs builds one again.
 		$acc_pdf_url  = function_exists( 'restwell_access_statement_pdf_url' ) ? restwell_access_statement_pdf_url() : '';
 		$acc_pdf_size = function_exists( 'restwell_access_statement_pdf_size' ) ? restwell_access_statement_pdf_size() : '';
 		if ( '' !== $acc_pdf_url ) :
