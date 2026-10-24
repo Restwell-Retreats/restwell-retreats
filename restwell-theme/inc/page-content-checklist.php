@@ -129,19 +129,6 @@ function restwell_page_content_section_for_field( WP_Post $post, string $meta_ke
 }
 
 /**
- * Normalize text for keyphrase matching (same idea as SEO admin checks).
- *
- * @param string $text Raw text.
- * @return string
- */
-function restwell_page_content_normalize_text( string $text ): string {
-	$text = strtolower( trim( wp_strip_all_tags( $text ) ) );
-	$text = (string) preg_replace( '/\s+/u', ' ', $text );
-	$text = (string) preg_replace( '/[\x{2018}\x{2019}\x{2032}]/u', "'", $text );
-	return $text;
-}
-
-/**
  * Effective SEO values for a page (saved meta, else theme defaults).
  *
  * @param WP_Post $post Page post.
@@ -200,102 +187,26 @@ function restwell_page_content_run_checks( WP_Post $post ): array {
 		}
 	}
 
-	$h1_key = restwell_page_content_h1_meta_key( $post );
-	$h1     = $h1_key !== '' ? trim( (string) restwell_page_content_meta_or_default( (int) $post->ID, $h1_key ) ) : '';
-	$seo    = restwell_page_content_effective_seo( $post );
-	$kp     = restwell_page_content_normalize_text( $seo['focus_keyphrase'] );
-	$h1_n   = restwell_page_content_normalize_text( $h1 );
-	$title_n = restwell_page_content_normalize_text( $seo['meta_title'] );
-	$desc_n  = restwell_page_content_normalize_text( $seo['meta_description'] );
-
-	if ( $kp === '' ) {
-		$issues[] = array(
-			'id'       => 'seo_no_keyphrase',
-			'severity' => 'warn',
-			'message'  => __( 'No focus keyphrase set for this page (set it under SEO → Edit SEO).', 'restwell-retreats' ),
-			'field'    => '',
-			'section'  => '',
-		);
-	} else {
-		if ( $h1 !== '' && ! str_contains( $h1_n, $kp ) ) {
+	// SEO findings are the SEO screen's own checks (restwell_seo_admin_run_checks),
+	// so this panel, SEO → Edit SEO and the SEO table always agree (24 Oct 2026:
+	// this panel had its own exact-phrase rules and flagged nearly every page).
+	// The H1 is not checked for the keyphrase: the approved SEO plan keeps page
+	// headings in plain words and carries the keyphrase in the SEO title, the
+	// meta description and the opening lines (docs/seo-blueprint-2026-10-22.md, §4).
+	if ( function_exists( 'restwell_seo_admin_run_checks' ) && function_exists( 'restwell_seo_checklist_effective_meta' ) ) {
+		$seo = restwell_seo_checklist_effective_meta( $post );
+		foreach ( restwell_seo_admin_run_checks( $post, $seo['focus_keyphrase'], $seo['meta_title'], $seo['meta_description'] ) as $check ) {
+			if ( 'ok' === $check['state'] ) {
+				continue;
+			}
 			$issues[] = array(
-				'id'       => 'seo_kp_not_in_h1',
-				'severity' => 'warn',
-				'message'  => sprintf(
-					/* translators: %s: focus keyphrase */
-					__( 'H1 does not include the focus keyphrase (“%s”). It does not need to match the SEO title word-for-word — but the keyphrase should appear in the H1.', 'restwell-retreats' ),
-					$seo['focus_keyphrase']
-				),
-				'field'    => $h1_key,
-				'section'  => restwell_page_content_section_for_field( $post, $h1_key ),
-			);
-		}
-
-		if ( $seo['meta_title'] !== '' && ! str_contains( $title_n, $kp ) ) {
-			$issues[] = array(
-				'id'       => 'seo_kp_not_in_title',
-				'severity' => 'warn',
-				'message'  => sprintf(
-					/* translators: %s: focus keyphrase */
-					__( 'SEO title does not include the focus keyphrase (“%s”). Fix under SEO → Edit SEO.', 'restwell-retreats' ),
-					$seo['focus_keyphrase']
-				),
+				'id'       => 'seo_' . $check['id'],
+				'severity' => 'bad' === $check['state'] ? 'error' : $check['state'],
+				'message'  => $check['label'],
 				'field'    => '',
 				'section'  => '',
 			);
 		}
-
-		if ( $seo['meta_description'] !== '' && ! str_contains( $desc_n, $kp ) ) {
-			$issues[] = array(
-				'id'       => 'seo_kp_not_in_desc',
-				'severity' => 'warn',
-				'message'  => sprintf(
-					/* translators: %s: focus keyphrase */
-					__( 'Meta description does not include the focus keyphrase (“%s”). Fix under SEO → Edit SEO.', 'restwell-retreats' ),
-					$seo['focus_keyphrase']
-				),
-				'field'    => '',
-				'section'  => '',
-			);
-		}
-	}
-
-	$title_len = mb_strlen( $seo['meta_title'] );
-	if ( $seo['meta_title'] !== '' && ( $title_len < 25 || $title_len > 60 ) ) {
-		$issues[] = array(
-			'id'       => 'seo_title_length',
-			'severity' => ( $title_len < 25 ) ? 'warn' : 'info',
-			'message'  => sprintf(
-				/* translators: %d: character count */
-				__( 'SEO title is %d characters (solid range ~30–60; Google may truncate past ~60). Adjust under SEO → Edit SEO.', 'restwell-retreats' ),
-				$title_len
-			),
-			'field'    => '',
-			'section'  => '',
-		);
-	}
-
-	$desc_len = mb_strlen( $seo['meta_description'] );
-	if ( $seo['meta_description'] === '' ) {
-		$issues[] = array(
-			'id'       => 'seo_no_desc',
-			'severity' => 'warn',
-			'message'  => __( 'No meta description set (or default missing). Add one under SEO → Edit SEO.', 'restwell-retreats' ),
-			'field'    => '',
-			'section'  => '',
-		);
-	} elseif ( $desc_len < 100 || $desc_len > 160 ) {
-		$issues[] = array(
-			'id'       => 'seo_desc_length',
-			'severity' => 'info',
-			'message'  => sprintf(
-				/* translators: %d: character count */
-				__( 'Meta description is %d characters (ideal about 120–160). Adjust under SEO → Edit SEO.', 'restwell-retreats' ),
-				$desc_len
-			),
-			'field'    => '',
-			'section'  => '',
-		);
 	}
 
 	return $issues;

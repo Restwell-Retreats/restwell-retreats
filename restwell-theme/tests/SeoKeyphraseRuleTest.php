@@ -35,4 +35,12 @@ class SeoKeyphraseRuleTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringNotContainsString( 'indexOf(kpN)', $script );
 		$this->assertStringNotContainsString( 'ideal: 50-60', $script );
 	}
+
+	public function test_page_editor_content_check_uses_the_same_checks() {
+		$panel = (string) file_get_contents( dirname( __DIR__ ) . '/inc/page-content-checklist.php' );
+		$this->assertStringContainsString( "restwell_seo_admin_run_checks( \$post, \$seo['focus_keyphrase'], \$seo['meta_title'], \$seo['meta_description'] )", $panel );
+		// Its old exact-phrase checks, H1 included, are gone.
+		$this->assertStringNotContainsString( 'seo_kp_not_in_h1', $panel );
+		$this->assertStringNotContainsString( 'str_contains( $title_n, $kp )', $panel );
+	}
 }
