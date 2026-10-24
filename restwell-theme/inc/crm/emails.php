@@ -227,9 +227,8 @@ function restwell_email_wrap_welcome( string $content, string $preview = '' ): s
 	$home  = esc_url( home_url( '/' ) );
 	$year  = gmdate( 'Y' );
 	$phone = esc_html( (string) get_option( 'restwell_phone_number', '01622 809881' ) );
-	$logo  = function_exists( 'restwell_theme_image_url' )
-		? restwell_theme_image_url( 'long_logo.png' )
-		: get_template_directory_uri() . '/assets/images/long_logo.png';
+	// The PNG, not the Opt WebP: Outlook for Windows can't show WebP.
+	$logo  = get_template_directory_uri() . '/assets/images/long_logo.png';
 	$logo_url   = esc_url( $logo );
 	$reset      = restwell_email_table_reset_style();
 	$pre_header = $preview

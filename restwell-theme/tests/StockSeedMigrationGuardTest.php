@@ -109,7 +109,40 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'false !== @getimagesize( $path )', $ready );
 		$build = (string) file_get_contents( dirname( __DIR__ ) . '/tools/build-release-zips.sh' );
 		$this->assertStringContainsString( 'git -C "$REPO_ROOT" archive HEAD restwell-theme', $build );
-		$this->assertStringContainsString( 'grep -qxF "$rel" "$KEEP"', $build );
+	}
+
+	public function test_release_ships_optimised_images_and_no_dev_files() {
+		$build = (string) file_get_contents( dirname( __DIR__ ) . '/tools/build-release-zips.sh' );
+		// Photo masters with an Opt WebP stay out; the PNG logos and partners/ ship as they are.
+		$this->assertStringContainsString( 'find "$THEME/assets/images/bungalow" "$THEME/assets/images/stock" "$THEME/assets/images/journey" -type f ! -path \'*/opt/*\' -print0', $build );
+		// Internal notes and dev files never reach the server, but the migrations' copy-overwrites/ does.
+		$this->assertStringContainsString( 'rm -rf "$THEME/docs" "$THEME/seo-briefs" "$THEME/tests" "$THEME/tools"', $build );
+		$this->assertStringContainsString( "-name '*.md'", $build );
+		$this->assertStringContainsString( 'find "$THEME" -maxdepth 1', $build );
+		$this->assertStringNotContainsString( '"$THEME/copy-overwrites"', $build );
+		// Code that needs a photo on disk falls back to the widest Opt WebP.
+		$abs = $this->function_body( (string) file_get_contents( dirname( __DIR__ ) . '/inc/page-hero.php' ), 'restwell_theme_image_abs_path' );
+		$this->assertStringContainsString( "\$opt    = dirname( \$path ) . '/opt/';", $abs );
+		$ready = $this->function_body( $this->migrations(), 'restwell_theme_photo_ready' );
+		$this->assertStringContainsString( 'restwell_theme_image_abs_path( $rel )', $ready );
+		$twins = $this->function_body( (string) file_get_contents( dirname( __DIR__ ) . '/inc/responsive-images.php' ), 'restwell_theme_twin_url' );
+		$this->assertStringContainsString( "glob( \$root . \$dir . '/opt/*.webp' )", $twins );
+		// Emails keep the PNG logo: Outlook for Windows can't show WebP.
+		$emails = (string) file_get_contents( dirname( __DIR__ ) . '/inc/crm/emails.php' );
+		$this->assertStringContainsString( "\$logo  = get_template_directory_uri() . '/assets/images/long_logo.png';", $emails );
+	}
+
+	public function test_every_photo_the_code_names_is_in_the_theme() {
+		// A photo deleted from assets/images must not leave a page, fallback or alt lookup pointing at it.
+		$root  = dirname( __DIR__ );
+		$files = array_merge( glob( $root . '/*.php' ), glob( $root . '/template-parts/*.php' ), glob( $root . '/inc/*.php' ), glob( $root . '/inc/*/*.php' ), glob( $root . '/inc/*/*/*.php' ) );
+		foreach ( $files as $file ) {
+			preg_match_all( '#[\'"]((?:bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(?:jpe?g|png|webp))[\'"]#', (string) file_get_contents( $file ), $m );
+			foreach ( array_unique( $m[1] ) as $rel ) {
+				$opt = $root . '/assets/images/' . dirname( $rel ) . '/opt/' . pathinfo( $rel, PATHINFO_FILENAME ) . '.webp';
+				$this->assertTrue( is_file( $root . '/assets/images/' . $rel ) || is_file( $opt ), $rel . ' named in ' . basename( $file ) . ' is in assets/images' );
+			}
+		}
 	}
 
 	public function test_seed_catch_up_only_replaces_our_own_past_wording() {

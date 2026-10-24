@@ -85,8 +85,7 @@ function restwell_get_default_og_image_url_for_request( $post_id = 0 ) {
 	if ( false === strpos( $filename, '/' ) ) {
 		$rel = 'stock/' . $rel;
 	}
-	$path = get_template_directory() . '/assets/images/' . $rel;
-	if ( ! is_readable( $path ) ) {
+	if ( ! function_exists( 'restwell_theme_image_abs_path' ) || '' === restwell_theme_image_abs_path( $rel ) ) {
 		return '';
 	}
 

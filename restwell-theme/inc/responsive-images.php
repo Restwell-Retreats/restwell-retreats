@@ -145,6 +145,16 @@ function restwell_theme_twin_url( $url ) {
 					$index[ $stem ] = $dir . '/' . basename( $file );
 				}
 			}
+			// Release zips ship only the Opt WebPs, so index those too.
+			foreach ( (array) glob( $root . $dir . '/opt/*.webp' ) as $file ) {
+				$name = (string) pathinfo( $file, PATHINFO_FILENAME );
+				if ( preg_match( '/-\d+w$/', $name ) ) {
+					continue;
+				}
+				if ( ! isset( $index[ strtolower( $name ) ] ) ) {
+					$index[ strtolower( $name ) ] = $dir . '/' . $name . '.webp';
+				}
+			}
 		}
 	}
 	$stem = strtolower( (string) preg_replace( '/-(?:\d+x\d+|scaled)$/i', '', (string) pathinfo( $path, PATHINFO_FILENAME ) ) );

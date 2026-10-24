@@ -215,7 +215,7 @@ get_template_part(
 	<?php // Who runs both (21 Oct 2026): Victoria's full-length portrait in the first of the page's three columns, her words across the other two. It was another half-and-half split, the third in a row. ?>
 	<section class="section-y band-white" id="host" aria-labelledby="host-h">
 	  <div class="container story-host">
-		<img class="story-host__photo" src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker-full.webp' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker.webp' ) ); ?>" width="1620" height="1859" sizes="(min-width: 1200px) 352px, (min-width: 768px) 30vw, 100vw" loading="lazy" decoding="async" data-reveal />
+		<img class="story-host__photo" src="<?php echo esc_url( restwell_theme_image_url( 'journey/victoria-walker-full.webp' ) ); ?>" alt="<?php echo esc_attr( restwell_theme_image_alt( 'journey/victoria-walker-full.webp' ) ); ?>" width="1620" height="1859" sizes="(min-width: 1200px) 352px, (min-width: 768px) 30vw, 100vw" loading="lazy" decoding="async" data-reveal />
 		<div class="story-host__copy">
 		  <header class="section-head section-head--tight">
 			<?php if ( '' !== $story_host_label ) : ?>

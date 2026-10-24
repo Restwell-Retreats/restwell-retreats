@@ -7,9 +7,17 @@
 #   restwell-theme-media-<version>.zip   restwell-theme/assets/images, unzipped
 #                                        inside wp-content/themes/ on the server
 #
-# Image masters with an Opt WebP sibling are dropped, as in build-slim-theme.sh,
-# except photos copied into the Media Library by exact path (the migrations and
-# the default social images): dropping those would silently skip a hero swap.
+# The media zip carries the optimised images only. Every photo master in
+# bungalow/, stock/ and journey/ that has an Opt WebP is left out: the site
+# serves the Opt WebPs, and the code that copies photos into the Media Library
+# or checks they exist falls back to them (restwell_theme_image_abs_path()).
+# The PNG logos and partners/ ship as they are: emails, the printable access
+# statement and Theme Setup's Seed media use those files by name.
+#
+# The theme zip leaves out everything the site doesn't run: internal notes and
+# audits (the server would serve those .md files to anyone), docs, briefs,
+# tests, build tools, mockups and the unused Phosphor icon font. It keeps
+# copy-overwrites/ (the migrations read it) and llms.txt (served at /llms.txt).
 #
 # Usage:
 #   ./restwell-theme/tools/build-release-zips.sh            # zips land in the repo root
@@ -30,32 +38,25 @@ git -C "$REPO_ROOT" archive HEAD restwell-theme | tar -x -C "$STAGE"
 THEME="$STAGE/restwell-theme"
 VERSION="$(sed -n 's/^Version:[[:space:]]*//p' "$THEME/style.css" | head -1)"
 
-# Photos copied into the Media Library by exact path: the migrations, and the
-# default social images Theme Setup sideloads (inc/seo-social-meta.php).
-KEEP="$STAGE/keep.txt"
-grep -hoE "['\"](bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(jpe?g|png|webp)['\"]" "$THEME/inc/theme-setup/migrations.php" "$THEME/inc/seo-social-meta.php" \
-	| tr -d "'\"" | sort -u > "$KEEP"
+rm -rf "$THEME/docs" "$THEME/seo-briefs" "$THEME/tests" "$THEME/tools" "$THEME/scripts" "$THEME/mockups" "$THEME/assets/fonts/phosphor"
+find "$THEME" -maxdepth 1 -type f \( -name '*.md' -o -name '.cursorrules' -o -name 'package.json' -o -name 'package-lock.json' -o -name 'phpunit.xml*' \) -delete
 
 dropped=0
 while IFS= read -r -d '' master; do
-	dir="$(dirname "$master")"
-	[ "$(basename "$dir")" = "opt" ] && continue
 	stem="$(basename "$master")"; stem="${stem%.*}"
-	rel="${master#"$THEME/assets/images/"}"
-	if grep -qxF "$rel" "$KEEP"; then
-		continue
-	fi
-	if [ -f "$dir/opt/${stem}.webp" ]; then
+	if [ -f "$(dirname "$master")/opt/${stem}.webp" ]; then
 		rm -f "$master"
 		dropped=$((dropped + 1))
 	fi
-done < <(find "$THEME/assets/images" -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) ! -path '*/opt/*' -print0)
+done < <(find "$THEME/assets/images/bungalow" "$THEME/assets/images/stock" "$THEME/assets/images/journey" -type f ! -path '*/opt/*' -print0)
 
 THEME_ZIP="$OUT_DIR/restwell-theme-$VERSION.zip"
 MEDIA_ZIP="$OUT_DIR/restwell-theme-media-$VERSION.zip"
 rm -f "$THEME_ZIP" "$MEDIA_ZIP"
-(cd "$STAGE" && zip -rqX "$THEME_ZIP" restwell-theme -x 'restwell-theme/assets/images/*' -x 'restwell-theme/mockups/*')
+(cd "$STAGE" && zip -rqX "$THEME_ZIP" restwell-theme -x 'restwell-theme/assets/images/*')
 (cd "$STAGE" && zip -rqX "$MEDIA_ZIP" restwell-theme/assets/images)
 
-echo "Version $VERSION: dropped $dropped masters with an Opt WebP; kept $(wc -l < "$KEEP" | tr -d ' ') the Media Library copies by name."
+echo "Version $VERSION: left out $dropped photo masters; the media zip holds their Opt WebPs."
+left="$(find "$THEME/assets/images/bungalow" "$THEME/assets/images/stock" "$THEME/assets/images/journey" -type f ! -path '*/opt/*' | wc -l | tr -d ' ')"
+[ "$left" = 0 ] || echo "Note: $left photo masters have no Opt WebP and ship as they are (run tools/generate-opt-webp.sh)." >&2
 ls -lh "$THEME_ZIP" "$MEDIA_ZIP"

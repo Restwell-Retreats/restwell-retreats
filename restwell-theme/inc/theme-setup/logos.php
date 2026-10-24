@@ -79,6 +79,10 @@ function restwell_upload_theme_logos( array &$result ) {
 
 		$file_path = get_template_directory() . '/assets/images/' . $filename;
 		if ( ! file_exists( $file_path ) ) {
+			// The WebP logos live in opt/ beside their PNGs.
+			$file_path = get_template_directory() . '/assets/images/opt/' . $filename;
+		}
+		if ( ! file_exists( $file_path ) ) {
 			$result['logos_missing'][] = $filename;
 			continue;
 		}

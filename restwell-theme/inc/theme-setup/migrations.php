@@ -1879,8 +1879,12 @@ function restwell_migrate_our_story_companies_dedupe_v74() {
  * @return bool
  */
 function restwell_theme_photo_ready( $rel ) {
-	$path = get_template_directory() . '/assets/images/' . ltrim( (string) $rel, '/' );
-	clearstatcache( true, $path );
+	clearstatcache();
+	// The master, or the Opt WebP that the release ships in its place.
+	$path = function_exists( 'restwell_theme_image_abs_path' ) ? restwell_theme_image_abs_path( $rel ) : '';
+	if ( '' === $path ) {
+		return false;
+	}
 	// Readable as an image, not just listed: a half-copied or stale file fails here.
 	return is_readable( $path ) && filesize( $path ) > 0 && false !== @getimagesize( $path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 }

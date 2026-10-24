@@ -21,7 +21,7 @@ Custom front end for [Restwell Retreats](https://restwellretreats.co.uk/): acces
 | 4. WordPress | Symlink or copy `restwell-theme` into `wp-content/themes/`; activate **Restwell Retreats** |
 | 5. CRM (local) | Ensure `wp-content/mu-plugins/restwell-crm/` is present (theme `functions.php` can bootstrap it from the monorepo sibling path) |
 | 6. First-time content | **WP Admin → Restwell → Theme Setup** — create pages, seed home meta; tick **Seed media** on first install (logos/partners + image sizes) |
-| 7. Deploy | Prefer `./tools/build-slim-theme.sh` (drops masters with Opt WebP). Or zip the full theme. Upload via **Appearance → Themes** |
+| 7. Deploy | Commit, then `./tools/build-release-zips.sh` (two zips, see the deploy checklist) |
 
 ---
 
@@ -193,13 +193,8 @@ Run after uploading a new theme zip or merging a release branch.
 ### Image weight (masters vs Opt)
 
 - Runtime delivery prefers `assets/images/**/opt/*.webp` via `restwell_theme_image_url()` / SEO social helpers.
-- Keep JPEG/PNG **masters** in the git working tree for regeneration (`tools/generate-opt-webp.sh`).
-- For production uploads, build a slim package that drops masters when an Opt sibling exists:
-
-```bash
-npm run build
-./restwell-theme/tools/build-slim-theme.sh /tmp/restwell-theme-slim.tgz
-```
+- Keep JPEG/PNG **masters** in the git working tree for regeneration (`tools/generate-opt-webp.sh`). Releases never ship them: the media zip holds the Opt WebPs only, and `restwell_theme_image_abs_path()` falls back to the widest Opt WebP wherever code needs a file on disk (Media Library copies, share-image checks).
+- Every photo in `assets/images` is used by a page, a fallback or a migration. Delete a photo from the theme when it stops being used, rather than leaving an old copy behind.
 
 **Two-zip release (how live is deployed).** Commit first, then:
 
@@ -214,12 +209,14 @@ It builds from `HEAD` (never the working tree) and writes two zips to the repo r
 | `restwell-theme-<version>.zip` | The theme without `assets/images` | WP Admin → Appearance → Themes → Add New Theme → Upload → **Replace active with uploaded** |
 | `restwell-theme-media-<version>.zip` | `restwell-theme/assets/images` | Hosting file manager: upload into `wp-content/themes/` and extract, so it lands in `restwell-theme/assets/images` |
 
-Upload the theme first, then the media straight away: replacing the theme removes the old images folder. Until the media is extracted, pages show no photos. The migrations that set hero photos wait for their files and run on the first page load after the media arrives. Originals that migrations and Theme Setup copy into the Media Library by exact name are always kept in the media zip.
+Upload the theme first, then the media straight away: replacing the theme removes the old images folder. Until the media is extracted, pages show no photos. The migrations that set hero photos wait for their files and run on the first page load after the media arrives, copying the Opt WebP into the Media Library.
+
+The theme zip holds only what the site runs: no internal notes, docs, briefs, tests, build tools or mockups (the server would serve those files to anyone who guessed the address).
 
 | # | Task | Why |
 |---|------|-----|
 | 1 | `npm run build` before packaging | Ship minified JS (`shared.css` is edited in place) |
-| 2 | Prefer slim tarball (above) or zip full theme | Slim omits redundant masters; full tree is fine for staging |
+| 2 | `./restwell-theme/tools/build-release-zips.sh` | Optimised images only, no dev files |
 | 3 | Upload & activate theme | WP Admin → Appearance → Themes |
 | 4 | **Settings → Permalinks → Save** | Flush rewrite rules (redirects, `llms.txt`, CRM routes) |
 | 5 | Regenerate thumbnails | CLI: `wp media regenerate --yes` or **Theme Setup** image regen — enables `restwell-hero` / `restwell-cta-bg` sizes |

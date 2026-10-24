@@ -197,7 +197,24 @@ function restwell_theme_image_abs_path( $rel ) {
 		$rel = 'stock/' . $rel;
 	}
 	$path = get_template_directory() . '/assets/images/' . $rel;
-	return is_readable( $path ) ? $path : '';
+	if ( is_readable( $path ) ) {
+		return $path;
+	}
+
+	// Release zips ship only the Opt WebPs (tools/build-release-zips.sh), so
+	// fall back to the widest one: opt/<stem>.webp or opt/<stem>-<w>w.webp.
+	$stem   = pathinfo( $rel, PATHINFO_FILENAME );
+	$opt    = dirname( $path ) . '/opt/';
+	$best   = is_readable( $opt . $stem . '.webp' ) ? $opt . $stem . '.webp' : '';
+	$best_w = ( $best !== '' && function_exists( 'restwell_image_file_width' ) ) ? restwell_image_file_width( $best ) : 0;
+	foreach ( (array) glob( $opt . $stem . '-*w.webp' ) as $variant ) {
+		// The glob's * also matches sibling crops (victoria-walker-full-480w).
+		if ( preg_match( '/^' . preg_quote( $stem, '/' ) . '-(\d+)w\.webp$/', basename( $variant ), $m ) && (int) $m[1] > $best_w ) {
+			$best   = $variant;
+			$best_w = (int) $m[1];
+		}
+	}
+	return $best;
 }
 
 /**
@@ -281,7 +298,7 @@ function restwell_page_hero_default_eyebrow( $post_id = 0 ) {
  */
 function restwell_theme_image_alt_map() {
 	return array(
-		'journey/victoria-walker.webp'                              => __( 'Victoria Walker cutting the ribbon at the Restwell Retreats bungalow', 'restwell-retreats' ),
+		'journey/victoria-walker-full.webp'                         => __( 'Victoria Walker cutting the ribbon at the Restwell Retreats bungalow', 'restwell-retreats' ),
 		'stock/restwell-whitstable-beach-huts-promenade-sunset.jpg' => __( 'Colourful beach huts along Tankerton promenade at sunset, Whitstable', 'restwell-retreats' ),
 		'stock/restwell-kent-riverside-brick-house.jpg'             => __( 'Brick house beside a riverside path in Kent', 'restwell-retreats' ),
 		'bungalow/accessible-holiday-whitstable.png'               => __( 'The front of the adapted bungalow in Whitstable, a white single-storey house with hanging baskets and a level drive', 'restwell-retreats' ),
@@ -303,16 +320,11 @@ function restwell_theme_image_alt_map() {
 		'stock/restwell-whitstable-beach-huts.webp'                => __( 'Colourful beach huts along the Whitstable seafront', 'restwell-retreats' ),
 		'stock/restwell-whitstable-sunset-pier.webp'               => __( 'Whitstable harbour area at sunset', 'restwell-retreats' ),
 		'stock/restwell-whitstable-coastal-walk.webp'              => __( 'Coastal walk near the Whitstable seafront', 'restwell-retreats' ),
-		'stock/tankerton-residential-street.webp'                      => __( 'Quiet residential street near Tankerton', 'restwell-retreats' ),
 		'stock/whitstable-days-out.webp'                           => __( 'Woodland day out near the Kent coast', 'restwell-retreats' ),
 		'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' => __( 'Colourful seaside buildings on the Kent coast', 'restwell-retreats' ),
 		'stock/st-augustines-abbey-in-caterbury-city-england-2026-03-20-01-00-24-utc.webp' => __( 'Historic stone ruins in Canterbury', 'restwell-retreats' ),
 		'stock/restwell-whitstable-beach-relaxation.webp'          => __( 'Guest relaxing on the Whitstable seafront', 'restwell-retreats' ),
-		'stock/restwell-kent-woodland-ferns.jpg'                   => __( 'Woodland ferns beside a path in Kent', 'restwell-retreats' ),
-		'stock/restwell-kent-woodland-trail.jpg'                   => __( 'Woodland trail in Kent', 'restwell-retreats' ),
-		'stock/restwell-whitstable-beach-hut-mural.jpg'            => __( 'Painted beach-hut mural on the Whitstable seafront', 'restwell-retreats' ),
 		'bungalow/LR-RNR-LS.jpg'                                   => __( 'Open-plan living room with a rise-and-recline chair and wide walkways', 'restwell-retreats' ),
-		'bungalow/SB-3-LS.jpg'                                     => __( 'Conservatory sofa bed opened into a fifth guest bed', 'restwell-retreats' ),
 		'bungalow/BD1-2-LS.jpg'                                    => __( 'Second double bedroom with beach-hut bedding', 'restwell-retreats' ),
 		'bungalow/SB-1-LS.jpg'                                     => __( 'Conservatory sofa with level access to the garden', 'restwell-retreats' ),
 		'bungalow/EX-1-LS.jpg'                                     => __( 'Restwell bungalow exterior in Whitstable', 'restwell-retreats' ),
@@ -328,7 +340,6 @@ function restwell_theme_image_alt_map() {
 		'bungalow/PT-2-LS.jpg'                                     => __( 'The bungalow and conservatory seen from the sunny back garden', 'restwell-retreats' ),
 		'bungalow/GRDEN-3-LS.jpg'                                  => __( 'Resin path curving through the back garden lawn', 'restwell-retreats' ),
 		'bungalow/GRDEN-4-LS.jpg'                                  => __( 'Back garden lawn beside the conservatory', 'restwell-retreats' ),
-		'bungalow/WHIT-SEAFRONT-3-LS.jpg'                          => __( 'Tankerton seafront on a calm morning, Whitstable', 'restwell-retreats' ),
 		'bungalow/WHIT-SEAFRONT-4-LS.jpg'                          => __( 'Beach huts along the green Tankerton slopes above the sea', 'restwell-retreats' ),
 		'bungalow/entrance.png'                                    => __( 'Step-free entrance doors to the Restwell bungalow', 'restwell-retreats' ),
 		'partners/care-spaces.png'                                 => __( 'Care Spaces', 'restwell-retreats' ),
@@ -719,6 +730,12 @@ function restwell_sideload_stock_image( $rel ) {
 	$prepared = restwell_prepare_theme_image_for_sideload( $path );
 	if ( ! $prepared ) {
 		return 0;
+	}
+	// An Opt WebP standing in for its master keeps the master's name, so
+	// restwell_theme_twin_url() still pairs the upload with its theme twin.
+	$stem = pathinfo( $rel, PATHINFO_FILENAME );
+	if ( pathinfo( $path, PATHINFO_FILENAME ) !== $stem ) {
+		$prepared['name'] = $stem . ( empty( $prepared['cleanup'] ) ? '.' . pathinfo( $path, PATHINFO_EXTENSION ) : '-hero.jpg' );
 	}
 
 	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme asset.
