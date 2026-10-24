@@ -214,7 +214,7 @@ It builds from `HEAD` (never the working tree) and writes two zips to the repo r
 | `restwell-theme-<version>.zip` | The theme without `assets/images` | WP Admin → Appearance → Themes → Add New Theme → Upload → **Replace active with uploaded** |
 | `restwell-theme-media-<version>.zip` | `restwell-theme/assets/images` | Hosting file manager: upload into `wp-content/themes/` and extract, so it lands in `restwell-theme/assets/images` |
 
-Upload the theme first, then the media straight away: replacing the theme removes the old images folder. Until the media is extracted, pages show no photos. The migrations that set hero photos wait for their files and run on the first page load after the media arrives. Photos the PHP names by path are always kept in the media zip, because migrations copy them into the Media Library by exact name.
+Upload the theme first, then the media straight away: replacing the theme removes the old images folder. Until the media is extracted, pages show no photos. The migrations that set hero photos wait for their files and run on the first page load after the media arrives. Originals that migrations and Theme Setup copy into the Media Library by exact name are always kept in the media zip.
 
 | # | Task | Why |
 |---|------|-----|

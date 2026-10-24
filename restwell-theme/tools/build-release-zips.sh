@@ -8,8 +8,8 @@
 #                                        inside wp-content/themes/ on the server
 #
 # Image masters with an Opt WebP sibling are dropped, as in build-slim-theme.sh,
-# except any file the PHP names directly: migrations sideload those by exact
-# path, so dropping them would silently skip a hero swap on the live site.
+# except photos copied into the Media Library by exact path (the migrations and
+# the default social images): dropping those would silently skip a hero swap.
 #
 # Usage:
 #   ./restwell-theme/tools/build-release-zips.sh            # zips land in the repo root
@@ -30,9 +30,10 @@ git -C "$REPO_ROOT" archive HEAD restwell-theme | tar -x -C "$STAGE"
 THEME="$STAGE/restwell-theme"
 VERSION="$(sed -n 's/^Version:[[:space:]]*//p' "$THEME/style.css" | head -1)"
 
-# Image paths the code names, e.g. 'bungalow/BD2-2-LS.jpg'.
+# Photos copied into the Media Library by exact path: the migrations, and the
+# default social images Theme Setup sideloads (inc/seo-social-meta.php).
 KEEP="$STAGE/keep.txt"
-grep -rhoE "['\"](bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(jpe?g|png|webp)['\"]" --include='*.php' "$THEME" \
+grep -hoE "['\"](bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(jpe?g|png|webp)['\"]" "$THEME/inc/theme-setup/migrations.php" "$THEME/inc/seo-social-meta.php" \
 	| tr -d "'\"" | sort -u > "$KEEP"
 
 dropped=0
@@ -56,5 +57,5 @@ rm -f "$THEME_ZIP" "$MEDIA_ZIP"
 (cd "$STAGE" && zip -rqX "$THEME_ZIP" restwell-theme -x 'restwell-theme/assets/images/*' -x 'restwell-theme/mockups/*')
 (cd "$STAGE" && zip -rqX "$MEDIA_ZIP" restwell-theme/assets/images)
 
-echo "Version $VERSION: dropped $dropped masters with an Opt WebP; kept $(wc -l < "$KEEP" | tr -d ' ') named in code."
+echo "Version $VERSION: dropped $dropped masters with an Opt WebP; kept $(wc -l < "$KEEP" | tr -d ' ') the Media Library copies by name."
 ls -lh "$THEME_ZIP" "$MEDIA_ZIP"

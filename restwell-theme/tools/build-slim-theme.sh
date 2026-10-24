@@ -24,7 +24,7 @@ rsync -a \
 # Keep any image the PHP names directly: migrations sideload those by exact
 # path, so dropping them would silently skip a hero swap on the live site.
 KEEP="$STAGE/keep.txt"
-grep -rhoE "['\"](bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(jpe?g|png|webp)['\"]" --include='*.php' "$STAGE/restwell-theme" \
+grep -hoE "['\"](bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(jpe?g|png|webp)['\"]" "$STAGE/restwell-theme/inc/theme-setup/migrations.php" "$STAGE/restwell-theme/inc/seo-social-meta.php" \
 	| tr -d "'\"" | sort -u > "$KEEP"
 
 # Drop masters that have a matching Opt WebP (by stem).
