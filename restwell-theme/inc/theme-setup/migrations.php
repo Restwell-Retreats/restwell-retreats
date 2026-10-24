@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 112;
+const RESTWELL_SCHEMA_VERSION = 113;
 
 
 /**
@@ -5376,6 +5376,107 @@ function restwell_migrate_heading_intros_v112() {
 }
 
 /**
+ * The five kept guides, second pass (24 Oct 2026). On live, v98 found older
+ * copies of them (drafts or binned posts from an earlier setup) and skipped
+ * them, so the blog stayed empty. Ellie wants them published, so any of the
+ * five that isn't live is now published: an older copy is brought back and
+ * given the current wording, or the guide is created. v107 then runs again
+ * to give each guide its own share photo.
+ */
+function restwell_migrate_publish_guides_v113() {
+	$flag = 'restwell_publish_guides_v113';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+
+	$keep   = array( 'accessible-beaches-coastal-walks-kent', 'direct-payment-holiday-accommodation', 'revitalise-alternatives-accessible-holidays', 'how-to-choose-accessible-self-catering-holiday', 'how-to-read-holiday-cottage-access-statement' );
+	$defs   = function_exists( 'restwell_get_blog_category_definitions' ) ? restwell_get_blog_category_definitions() : array();
+	$seo    = restwell_get_seo_meta_defaults_by_slug();
+	$admins = get_users(
+		array(
+			'role'    => 'administrator',
+			'number'  => 1,
+			'orderby' => 'ID',
+			'fields'  => 'ID',
+		)
+	);
+	$made   = false;
+
+	foreach ( restwell_get_priority_blog_post_articles() as $article ) {
+		if ( ! in_array( $article['slug'], $keep, true ) ) {
+			continue;
+		}
+		// WordPress renames a binned post to "{slug}__trashed", so look for both.
+		$copies = get_posts(
+			array(
+				'post_name__in'  => array( $article['slug'], $article['slug'] . '__trashed' ),
+				'post_type'      => 'post',
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'posts_per_page' => -1,
+				'orderby'        => 'modified',
+				'order'          => 'DESC',
+			)
+		);
+		if ( wp_list_filter( $copies, array( 'post_status' => 'publish' ) ) ) {
+			continue;
+		}
+		$args = array(
+			'post_title'   => $article['title'],
+			'post_name'    => $article['slug'],
+			'post_status'  => 'publish',
+			'post_type'    => 'post',
+			'post_content' => wp_kses_post( $article['content'] ),
+			'post_excerpt' => $article['excerpt'],
+		);
+		$cat = isset( $article['category_slug'] ) ? sanitize_title( $article['category_slug'] ) : '';
+		if ( $cat && isset( $defs[ $cat ] ) ) {
+			$term = term_exists( $cat, 'category' );
+			if ( ! $term ) {
+				$term = wp_insert_term(
+					$defs[ $cat ]['name'],
+					'category',
+					array(
+						'slug'        => $cat,
+						'description' => $defs[ $cat ]['description'],
+					)
+				);
+			}
+			if ( $term && ! is_wp_error( $term ) ) {
+				$args['post_category'] = array( (int) ( is_array( $term ) ? $term['term_id'] : $term ) );
+			}
+		}
+		if ( $copies ) {
+			$copy = $copies[0];
+			if ( 'trash' === $copy->post_status ) {
+				wp_untrash_post( $copy->ID );
+			}
+			$args['ID'] = (int) $copy->ID;
+			$post_id    = wp_update_post( wp_slash( $args ), true );
+		} else {
+			$args['post_author'] = $admins ? (int) $admins[0] : 1;
+			$post_id             = wp_insert_post( wp_slash( $args ), true );
+		}
+		if ( is_wp_error( $post_id ) || ! $post_id ) {
+			continue;
+		}
+		update_post_meta( $post_id, 'meta_title', $article['meta_title'] );
+		update_post_meta( $post_id, 'meta_description', $article['meta_description'] );
+		if ( ! empty( $seo[ $article['slug'] ]['focus_keyphrase'] ) ) {
+			update_post_meta( $post_id, 'focus_keyphrase', $seo[ $article['slug'] ]['focus_keyphrase'] );
+		}
+		$made = true;
+	}
+
+	if ( $made ) {
+		// v107 found no guides to give share photos to; let it run again.
+		delete_option( 'restwell_guide_share_images_v107' );
+		delete_option( 'restwell_guide_share_images_v107_tries' );
+		delete_option( 'restwell_guide_share_images_v107_next' );
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5523,6 +5624,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_seo_keyphrase_words_v110',
 		'restwell_keyphrase_headings_v111',
 		'restwell_heading_intros_v112',
+		'restwell_publish_guides_v113',
 	);
 }
 
@@ -5733,6 +5835,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_headings_v111', 149 );
 	add_action( 'init', 'restwell_migrate_heading_intros_v112', 155 );
 	add_action( 'after_switch_theme', 'restwell_migrate_heading_intros_v112', 150 );
+	add_action( 'init', 'restwell_migrate_publish_guides_v113', 156 );
+	add_action( 'after_switch_theme', 'restwell_migrate_publish_guides_v113', 151 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );
