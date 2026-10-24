@@ -64,7 +64,7 @@ $hiw_steps_intro   = $restwell_hiw_prefer_live(
 	function_exists( 'restwell_page_content_text' )
 		? restwell_page_content_text( $restwell_hiw_id, 'hiw_steps_intro', '' )
 		: '',
-	'There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.'
+	'There are three steps between your first message and the front door. You don’t pay anything until we’ve agreed the house fits.'
 );
 
 $hiw_step_live = array(
@@ -177,9 +177,9 @@ $hiw_arrival_lede    = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_hiw_id,
 		'hiw_arrival_lede',
-		'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.'
+		'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves in. The house is already set up for your group.'
 	)
-	: 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.';
+	: 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves in. The house is already set up for your group.';
 
 $hiw_arrival_items = array();
 $hiw_arrival_live  = array(

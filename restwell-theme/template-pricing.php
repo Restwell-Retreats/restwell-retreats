@@ -69,7 +69,7 @@ $pricing_care_rates_label   = $pricing_txt( 'pricing_care_rates_label', __( 'Gui
 $pricing_care_rates_heading = $pricing_txt( 'pricing_care_rates_heading', __( 'Guide rates for optional care', 'restwell-retreats' ) );
 $pricing_care_rates_intro   = $pricing_txt(
 	'pricing_care_rates_intro',
-	__( 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.', 'restwell-retreats' )
+	__( 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need. Continuity will give you a quote once you’ve talked it through.', 'restwell-retreats' )
 );
 $pricing_faq_label   = $pricing_txt( 'pricing_faq_label', __( 'Money questions', 'restwell-retreats' ) );
 $pricing_faq_heading = $pricing_txt( 'pricing_faq_heading', __( 'Questions about prices', 'restwell-retreats' ) );

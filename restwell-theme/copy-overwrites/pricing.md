@@ -48,7 +48,7 @@ If your plans change, our terms and cancellation policy explain what happens nex
 
 H2: Guide rates for optional care
 
-If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.
+If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need. Continuity will give you a quote once you’ve talked it through.
 
 Never say care is charged, quoted or invoiced “separately”, and never put a “same price either way” line next to care.
 

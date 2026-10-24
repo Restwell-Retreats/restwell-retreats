@@ -399,7 +399,7 @@ function restwell_get_how_it_works_page_defaults() {
 
 		'hiw_steps_label'   => 'How it works',
 		'hiw_steps_heading' => 'Enquire, confirm, arrive',
-		'hiw_steps_intro'   => 'There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.',
+		'hiw_steps_intro'   => 'There are three steps between your first message and the front door. You don’t pay anything until we’ve agreed the house fits.',
 		'hiw_step1_title'   => 'Enquire',
 		'hiw_step1_body'    => 'Send us your dates, who’s coming and anything that would help the house work for you. That could be how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.',
 		'hiw_step2_title'   => 'Confirm',
@@ -411,7 +411,7 @@ function restwell_get_how_it_works_page_defaults() {
 
 		'hiw_arrival_label'       => 'Arrival day',
 		'hiw_arrival_heading'     => 'What happens on arrival day',
-		'hiw_arrival_lede'        => 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.',
+		'hiw_arrival_lede'        => 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves in. The house is already set up for your group.',
 		'hiw_arrival_1_dt'        => 'Check-in',
 		'hiw_arrival_1_dd'        => 'From 3pm, using the key safe. Check-out is by 11am.',
 		'hiw_arrival_2_dt'        => 'Parking',
@@ -584,7 +584,7 @@ function restwell_get_pricing_page_defaults() {
 		'pricing_payment_intro'   => 'You can pay by bank transfer or card. If a council, the NHS or a charity is paying, the price is the same. Funding & Support explains how the invoice works.',
 		'pricing_care_rates_label'   => 'Guide rates',
 		'pricing_care_rates_heading' => 'Guide rates for optional care',
-		'pricing_care_rates_intro'   => 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.',
+		'pricing_care_rates_intro'   => 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need. Continuity will give you a quote once you’ve talked it through.',
 		'pricing_faq_label'     => 'Money questions',
 		'pricing_faq_heading'   => 'Questions about prices',
 		'pricing_faq_intro'     => 'What the bungalow price covers, how care is charged, and what changes when a council or the NHS pays.',
@@ -738,7 +738,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_spotlight_image_3_caption' => 'Shingle beach and timber groynes on the Whitstable shore',
 		'wg_access_label'            => 'Along the route',
 		'wg_access_heading'          => 'Castle, harbour and beach pub',
-		'wg_access_intro'            => 'These are level stops on the promenade route, with access notes and links so you can check opening times before you set out.',
+		'wg_access_intro'            => 'These are level stops on the promenade route. Each has access notes and a link to check opening times before you set out.',
 		'wg_spotlight_label'         => 'Visual guide',
 		'wg_spotlight_heading'       => 'Key local areas at a glance',
 		'wg_spotlight_intro'         => 'Photos help you picture routes and surfaces before you arrive.',
@@ -777,7 +777,7 @@ function restwell_get_care_page_defaults() {
 		'care_day_3_time' => 'Overnight',
 		'care_day_3_body' => 'A carer can sleep in, or stay awake if you need help during the night. That way, everyone gets a proper night’s sleep.',
 		'care_who_heading' => 'Rated Good by the Care Quality Commission',
-		'care_who_lede' => 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.',
+		'care_who_lede' => 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so one call covers both.',
 
 		'care_own_heading' => 'Bringing your own carer',
 		'care_own_lede'    => 'Plenty of guests do. They can have the second double bedroom or the conservatory sofa bed. They can use the hoist and shower chair, and park on the drive.',
@@ -802,7 +802,7 @@ function restwell_get_care_page_defaults() {
 		'care_faq_1_q'     => 'Do I have to book care?',
 		'care_faq_1_a'     => 'No. Plenty of guests book the house as a self-catering holiday and don’t need any extra support. Care from Continuity is there if you’d like it.',
 		'care_faq_2_q'     => 'Is Restwell a care home?',
-		'care_faq_2_a'     => 'No. Restwell is a private holiday home, not a care service. Any care during your stay comes from our sister company, Continuity of Care Services, which is registered with the CQC.',
+		'care_faq_2_a'     => 'No, Restwell is a private holiday home, not a care service. Any care during your stay comes from our sister company, Continuity, which the CQC regulates.',
 		'care_faq_3_q'     => 'Do I need to book care on its own?',
 		'care_faq_3_a'     => 'No. Just mention it when you enquire about the bungalow. Restwell and Continuity share 01622 809881, so the house and the care can start in one conversation.',
 		'care_faq_4_q'     => 'Can I bring my own carers?',
@@ -832,7 +832,7 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_origin_label'   => 'The gap',
 		'story_origin_heading' => 'How Restwell started',
-		'story_origin_lede'    => 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.',
+		'story_origin_lede'    => 'For over a decade, Continuity of Care Services has supported people in their own homes across Kent. In that time, we lost count of families who couldn’t make a holiday work. Honest access details were hard to find, and so was care for the stay.',
 		'story_origin_body'    => 'People would travel three hours, only to find a door they couldn’t get through. So we bought a bungalow in Whitstable, adapted it properly and published every measurement. Now guests can check the fit first, and ask about care through the same office.',
 
 		'story_month_label'   => 'The build',
@@ -850,7 +850,7 @@ function restwell_get_our_story_page_defaults() {
 
 		'story_host_label'   => 'Who runs both',
 		'story_host_heading' => 'Victoria Walker',
-		'story_host_lede'    => 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.',
+		'story_host_lede'    => 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and the care. Day to day, you’ll usually speak with someone else in the office. They work across both companies too, so you won’t have to start again each time.',
 
 		'story_companies_label'     => 'Who does what',
 		'story_companies_heading'   => 'Two companies, one conversation',
@@ -862,8 +862,8 @@ function restwell_get_our_story_page_defaults() {
 		'story_companies_note'      => 'Restwell is not a registered care provider, but Continuity of Care Services is.',
 
 		'story_shaped_label'   => 'Shaped with guests',
-		'story_shaped_heading' => 'Planned with disabled people before it opened',
-		'story_shaped_lede'    => 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.',
+		'story_shaped_heading' => 'Built around what disabled people told us',
+		'story_shaped_lede'    => 'Before we opened, we asked what helps during a transfer and what gets in the way. The layout and the kit came from the answers, not from guesswork.',
 
 		'story_specialists_label'      => 'Check the details for yourself',
 		'story_specialists_heading'    => 'Every measurement is published',

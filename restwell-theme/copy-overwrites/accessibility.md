@@ -92,7 +92,7 @@ Two bedrooms plus the conservatory sofa bed. Five is what our safety checks are 
 
 H2: What we can’t promise
 
-We can’t guarantee every piece of specialist kit at short notice, because some of it has to be hired in and some depends on what’s free that week. What we can promise is a straight answer, quickly, rather than leaving you hoping.
+We can’t promise every piece of specialist kit at short notice. Some of it has to be hired in, and some depends on what’s free that week. What we can promise is a quick, straight answer.
 
 Ring 01622 809881 or email hello@restwellretreats.co.uk and tell us what would make the stay work. Five guests is the limit our safety checks are based on.
 

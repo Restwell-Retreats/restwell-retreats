@@ -494,7 +494,7 @@ get_template_part(
 		  <header class="faq__intro">
 			<p class="eyebrow">Suitability</p>
 			<h2 id="faq-h">Questions about planning a stay</h2>
-			<p class="lede">How to plan a stay when someone has complex care needs, and when a private bungalow suits better than respite in a care home.</p>
+			<p class="lede">How to plan a stay around complex care needs, and when a bungalow suits better than a respite placement.</p>
 		  </header>
 		  <div class="faq-list faq-list--split" data-faq-accordion>
 			<div class="faq-list__col">

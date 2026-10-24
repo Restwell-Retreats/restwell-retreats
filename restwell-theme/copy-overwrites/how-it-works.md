@@ -22,7 +22,7 @@ There’s no online checkout. You tell us your dates and what you need, and we c
 
 H2: Enquire, confirm, arrive
 
-There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.
+There are three steps between your first message and the front door. You don’t pay anything until we’ve agreed the house fits.
 
 1. **Enquire.** Send us your dates, who’s coming and anything that would help the house work for you. That could be how you’d like the bedroom set up. We aim to reply within 48 hours, and there’s nothing to pay at this stage.
 2. **Confirm.** Once we’ve agreed the house fits, a 50% deposit holds your dates. The rest is due a week before you arrive. In the meantime, we set the furniture and equipment up around what you’ve told us.
@@ -32,7 +32,7 @@ There are three steps between your first message and the front door, and you don
 
 H2: What happens on arrival day
 
-There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.
+There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves in. The house is already set up for your group.
 
 - **Check-in:** From 3pm, using the key safe. Check-out is by 11am.
 - **Parking:** A level driveway for two cars, including an adapted vehicle

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 102;
+const RESTWELL_SCHEMA_VERSION = 103;
 
 
 /**
@@ -4995,6 +4995,48 @@ function restwell_migrate_seed_catch_up_v102() {
 }
 
 /**
+ * 24 Oct 2026: Our Story's "shaped with guests" heading read badly, and its
+ * intro listed diagnoses in a 33-word sentence; the heading now names what
+ * happened and the intro sorts by need, not condition. The October checks
+ * also skipped section intros, so seven more over 20 words a sentence are
+ * split here. Each field moves only while it still holds a shipped value.
+ */
+function restwell_migrate_our_story_shaped_v103() {
+	if ( get_option( 'restwell_our_story_shaped_v103', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_our_story_shaped_v103', '1', false );
+	foreach ( array( 'Planned with disabled people before it opened', 'Designed with the people who’d actually stay' ) as $old ) {
+		restwell_replace_stale_page_copy( array( 'our-story' => array( 'story_shaped_heading' => array( $old, 'Built around what disabled people told us' ) ) ) );
+	}
+	// Section intros over 20 words a sentence, which the October checks missed.
+	foreach (
+		array(
+			array( 'how-it-works' => array( 'hiw_steps_intro' => array( 'There are three steps between your first message and the front door, and you don’t pay anything until we’ve agreed the house fits.', 'There are three steps between your first message and the front door. You don’t pay anything until we’ve agreed the house fits.' ) ) ),
+			array( 'how-it-works' => array( 'hiw_arrival_lede' => array( 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves into a house that’s already set up for your group.', 'There’s no reception desk to queue at. You park on the level driveway, open the key safe and let yourselves in. The house is already set up for your group.' ) ) ),
+			array( 'our-story' => array( 'story_origin_lede' => array( 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.', 'For over a decade, Continuity of Care Services has supported people in their own homes across Kent. In that time, we lost count of families who couldn’t make a holiday work. Honest access details were hard to find, and so was care for the stay.' ) ) ),
+			array( 'our-story' => array( 'story_host_lede' => array( 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.', 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and the care. Day to day, you’ll usually speak with someone else in the office. They work across both companies too, so you won’t have to start again each time.' ) ) ),
+			array( 'pricing' => array( 'pricing_care_rates_intro' => array( 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need, and Continuity will give you a quote once you’ve talked it through with them.', 'If you’d like home care during your stay, these are Continuity’s guide rates. What you pay depends on the hours and tasks you need. Continuity will give you a quote once you’ve talked it through.' ) ) ),
+			array( 'whitstable-area-guide' => array( 'wg_access_intro' => array( 'These are level stops on the promenade route, with access notes and links so you can check opening times before you set out.', 'These are level stops on the promenade route. Each has access notes and a link to check opening times before you set out.' ) ) ),
+			array( 'optional-care' => array( 'care_who_lede' => array( 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so the house and the care start in one conversation.', 'The people who come in work for Continuity of Care Services, our sister company. Victoria Walker owns Restwell and is Continuity’s registered manager, so one call covers both.' ) ) ),
+			array( 'optional-care' => array( 'care_faq_2_a' => array( 'No. Restwell is a private holiday home, not a care service. Any care during your stay comes from our sister company, Continuity of Care Services, which is registered with the CQC.', 'No, Restwell is a private holiday home, not a care service. Any care during your stay comes from our sister company, Continuity, which the CQC regulates.' ) ) ),
+		) as $restwell_v103_change
+	) {
+		restwell_replace_stale_page_copy( $restwell_v103_change );
+	}
+	restwell_replace_stale_page_copy(
+		array(
+			'our-story' => array(
+				'story_shaped_lede' => array(
+					'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.',
+					'Before we opened, we asked what helps during a transfer and what gets in the way. The layout and the kit came from the answers, not from guesswork.',
+				),
+			),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5132,6 +5174,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_page_seo_batch_b_v100',
 		'restwell_legal_plain_english_v101',
 		'restwell_seed_catch_up_v102',
+		'restwell_our_story_shaped_v103',
 	);
 }
 
@@ -5322,6 +5365,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_legal_plain_english_v101', 139 );
 	add_action( 'init', 'restwell_migrate_seed_catch_up_v102', 145 );
 	add_action( 'after_switch_theme', 'restwell_migrate_seed_catch_up_v102', 140 );
+	add_action( 'init', 'restwell_migrate_our_story_shaped_v103', 146 );
+	add_action( 'after_switch_theme', 'restwell_migrate_our_story_shaped_v103', 141 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

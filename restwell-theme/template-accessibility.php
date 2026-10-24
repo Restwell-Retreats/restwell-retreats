@@ -613,7 +613,7 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 		<header class="section-head">
 		  <p class="eyebrow"><?php esc_html_e( 'Honest limits', 'restwell-retreats' ); ?></p>
 		  <h2 id="acc-limits-h"><?php esc_html_e( 'What we can’t promise', 'restwell-retreats' ); ?></h2>
-		  <p class="lede"><?php esc_html_e( 'We can’t guarantee every piece of specialist kit at short notice, because some of it has to be hired in and some depends on what’s free that week. What we can promise is a straight answer, quickly, rather than leaving you hoping.', 'restwell-retreats' ); ?></p>
+		  <p class="lede"><?php esc_html_e( 'We can’t promise every piece of specialist kit at short notice. Some of it has to be hired in, and some depends on what’s free that week. What we can promise is a quick, straight answer.', 'restwell-retreats' ); ?></p>
 		</header>
 		<p class="acc-limits__contact">
 			<?php

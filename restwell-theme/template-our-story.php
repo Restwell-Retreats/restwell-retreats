@@ -40,7 +40,7 @@ $story_txt = static function ( $key, $fallback ) use ( $restwell_story_id ) {
 
 $story_origin_label   = $story_txt( 'story_origin_label', 'The gap' );
 $story_origin_heading = $story_txt( 'story_origin_heading', 'How Restwell started' );
-$story_origin_lede    = $story_txt( 'story_origin_lede', 'Continuity of Care Services has been supporting people in their own homes across Kent for over a decade. In that time we lost count of the families who wanted a holiday and couldn’t make it work. Finding a house with honest access information was only part of it. Arranging suitable care during the stay could be just as difficult.' );
+$story_origin_lede    = $story_txt( 'story_origin_lede', 'For over a decade, Continuity of Care Services has supported people in their own homes across Kent. In that time, we lost count of families who couldn’t make a holiday work. Honest access details were hard to find, and so was care for the stay.' );
 $story_origin_body    = $story_txt( 'story_origin_body', 'People would travel three hours, only to find a door they couldn’t get through. So we bought a bungalow in Whitstable, adapted it properly and published every measurement. Now guests can check the fit first, and ask about care through the same office.' );
 
 $story_month_label   = $story_txt( 'story_month_label', 'The build' );
@@ -59,7 +59,7 @@ $story_month_3_body  = $story_txt( 'story_month_3_body', 'We measured everything
 
 $story_host_label   = $story_txt( 'story_host_label', 'Who runs both' );
 $story_host_heading = $story_txt( 'story_host_heading', 'Victoria Walker' );
-$story_host_lede    = $story_txt( 'story_host_lede', 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and for the care. Day to day, you’re more likely to speak with someone else in the office. They work across both companies too, so you won’t need to start from the beginning each time you call.' );
+$story_host_lede    = $story_txt( 'story_host_lede', 'Victoria owns Restwell and is Continuity’s registered manager, so one person answers for the house and the care. Day to day, you’ll usually speak with someone else in the office. They work across both companies too, so you won’t have to start again each time.' );
 
 $story_companies_label   = $story_txt( 'story_companies_label', 'Who does what' );
 $story_companies_heading = $story_txt( 'story_companies_heading', 'Two companies, one conversation' );
@@ -77,8 +77,8 @@ $story_companies_items   = array(
 $story_companies_note = $story_txt( 'story_companies_note', 'Restwell is not a registered care provider, but Continuity of Care Services is.' );
 
 $story_shaped_label   = $story_txt( 'story_shaped_label', 'Shaped with guests' );
-$story_shaped_heading = $story_txt( 'story_shaped_heading', 'Planned with disabled people before it opened' );
-$story_shaped_lede    = $story_txt( 'story_shaped_lede', 'People with muscular dystrophy or cerebral palsy, and people recovering from strokes, told us what mattered during transfers, what got in the way, and what they needed from the stay. The layout and the kit grew from those conversations, rather than from assumptions on paper.' );
+$story_shaped_heading = $story_txt( 'story_shaped_heading', 'Built around what disabled people told us' );
+$story_shaped_lede    = $story_txt( 'story_shaped_lede', 'Before we opened, we asked what helps during a transfer and what gets in the way. The layout and the kit came from the answers, not from guesswork.' );
 
 $story_specialists_label      = $story_txt( 'story_specialists_label', 'Check the details for yourself' );
 $story_specialists_heading    = $story_txt( 'story_specialists_heading', 'Every measurement is published' );

@@ -66,7 +66,7 @@ function restwell_access_statement_notes() {
 		),
 		'limits' => array(
 			'title' => __( 'What we can’t promise', 'restwell-retreats' ),
-			'body'  => __( 'We can’t guarantee every piece of specialist kit at short notice, because some of it has to be hired in and some depends on what’s free that week. What we can promise is a straight answer, quickly, rather than leaving you hoping.', 'restwell-retreats' ),
+			'body'  => __( 'We can’t promise every piece of specialist kit at short notice. Some of it has to be hired in, and some depends on what’s free that week. What we can promise is a quick, straight answer.', 'restwell-retreats' ),
 		),
 	);
 }

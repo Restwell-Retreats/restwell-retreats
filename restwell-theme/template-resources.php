@@ -330,7 +330,7 @@ get_template_part(
 		  <header class="faq__intro">
 			<p class="eyebrow">Common questions</p>
 			<h2 id="faq-h">Questions about funding</h2>
-			<p class="lede">It’s worth getting the yes in writing before anyone pays a deposit. We’ll send the quote and the access statement; the decision sits with your coordinator.</p>
+			<p class="lede">Get the yes in writing before anyone pays a deposit. We’ll send the quote and the access statement, but the decision is your coordinator’s.</p>
 		  </header>
 		  <div class="faq-list" data-faq-accordion>
 			<div class="faq-item is-open">
@@ -398,7 +398,7 @@ if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
 		'resources',
 		array(
 			'heading' => __( 'Guides by funding route', 'restwell-retreats' ),
-			'intro'   => __( 'Longer guides for direct payments, Care Act personal budgets, NHS CHC, carers and commissioners, if you want to go deeper.', 'restwell-retreats' ),
+			'intro'   => __( 'Longer guides on paying for a break, if you want more detail.', 'restwell-retreats' ),
 		)
 	);
 }

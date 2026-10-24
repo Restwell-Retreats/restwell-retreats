@@ -57,7 +57,7 @@ $wg_access_label   = $wg_txt( 'wg_access_label', 'Along the route' );
 $wg_access_heading = $wg_txt( 'wg_access_heading', 'Castle, harbour and beach pub' );
 $wg_access_intro   = $wg_txt(
 	'wg_access_intro',
-	'These are level stops on the promenade route, with access notes and links so you can check opening times before you set out.'
+	'These are level stops on the promenade route. Each has access notes and a link to check opening times before you set out.'
 );
 
 $wg_eating_heading = $wg_txt( 'wg_eating_heading', 'Pubs and restaurants near the house' );
