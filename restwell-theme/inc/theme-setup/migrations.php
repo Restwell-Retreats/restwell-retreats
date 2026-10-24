@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 108;
+const RESTWELL_SCHEMA_VERSION = 109;
 
 
 /**
@@ -5230,6 +5230,33 @@ function restwell_migrate_funding_share_image_v108() {
 }
 
 /**
+ * Who It's For's stored body still links to /resources/ on sites set up before
+ * the Funding page moved to /funding-and-support/. The template doesn't show
+ * the body, but the SEO area reads its links, so point them at the page itself
+ * and match a new install.
+ */
+function restwell_migrate_who_its_for_funding_links_v109() {
+	$flag = 'restwell_who_its_for_funding_links_v109';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	$page = get_page_by_path( 'who-its-for' );
+	if ( ! $page instanceof WP_Post ) {
+		return;
+	}
+	$old = 'href="' . home_url( '/resources/' ) . '"';
+	if ( false !== strpos( (string) $page->post_content, $old ) ) {
+		wp_update_post(
+			array(
+				'ID'           => (int) $page->ID,
+				'post_content' => wp_slash( str_replace( $old, 'href="' . home_url( '/funding-and-support/' ) . '"', (string) $page->post_content ) ),
+			)
+		);
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5373,6 +5400,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_seo_meta_tips_v106',
 		'restwell_guide_share_images_v107',
 		'restwell_funding_share_image_v108',
+		'restwell_who_its_for_funding_links_v109',
 	);
 }
 
@@ -5575,6 +5603,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_guide_share_images_v107', 145 );
 	add_action( 'init', 'restwell_migrate_funding_share_image_v108', 151 );
 	add_action( 'after_switch_theme', 'restwell_migrate_funding_share_image_v108', 146 );
+	add_action( 'init', 'restwell_migrate_who_its_for_funding_links_v109', 152 );
+	add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_funding_links_v109', 147 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

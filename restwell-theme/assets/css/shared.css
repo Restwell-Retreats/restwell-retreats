@@ -1336,7 +1336,7 @@ body.nav-open { overflow: hidden; }
 .hero__media:not(:has(.hero__media-img)) {
   background:
     linear-gradient(180deg, rgba(12, 35, 42, 0.28) 0%, rgba(12, 35, 42, 0.48) 50%, rgba(12, 35, 42, 0.74) 100%),
-    url('../images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
+    url('../images/stock/opt/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
 }
 .hero__content {
   position: relative;
@@ -1445,7 +1445,7 @@ body.nav-open { overflow: hidden; }
   .hero__media:not(:has(.hero__media-img)) {
     background:
       linear-gradient(180deg, rgba(12, 35, 42, 0.2) 0%, rgba(12, 35, 42, 0.55) 55%, rgba(12, 35, 42, 0.82) 100%),
-      url('../images/stock/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
+      url('../images/stock/opt/restwell-whitstable-coastline-panorama.webp') center/cover no-repeat;
   }
   .hero__media-img {
     object-position: center 35%;
@@ -1569,7 +1569,7 @@ body.nav-open { overflow: hidden; }
   inset: 0;
   background:
     linear-gradient(180deg, rgba(27, 77, 92, 0.72), rgba(27, 77, 92, 0.86)),
-    url('../images/stock/restwell-whitstable-beach-huts.webp') center/cover no-repeat;
+    url('../images/stock/opt/restwell-whitstable-beach-huts.webp') center/cover no-repeat;
 }
 .mid-cta__inner {
   position: relative;
@@ -5065,7 +5065,7 @@ a.tag:hover {
      still leaves white text above 6:1 at its lightest point. */
   background:
     radial-gradient(ellipse at center, rgba(14, 42, 50, 0.86) 0%, rgba(14, 42, 50, 0.72) 70%),
-    url('../images/stock/restwell-whitstable-beach-huts.webp') center 60% / cover no-repeat;
+    url('../images/stock/opt/restwell-whitstable-beach-huts.webp') center 60% / cover no-repeat;
 }
 
 /*

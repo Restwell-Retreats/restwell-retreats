@@ -97,6 +97,16 @@ function restwell_get_blog_index_lede() {
 		}
 	}
 
+	return restwell_get_blog_index_excerpt_default();
+}
+
+/**
+ * The blog index lede a new install starts with, saved as the posts page's
+ * excerpt by Theme Setup (restwell_migrate_strip_em_dashes_v26()).
+ *
+ * @return string
+ */
+function restwell_get_blog_index_excerpt_default() {
 	return __(
 		'Our guides are written from one adapted bungalow in Whitstable. They cover Kent coast days out, paying for a break, and checking an access statement.',
 		'restwell-retreats'
