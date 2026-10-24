@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 111;
+const RESTWELL_SCHEMA_VERSION = 112;
 
 
 /**
@@ -5352,6 +5352,30 @@ function restwell_migrate_keyphrase_headings_v111() {
 }
 
 /**
+ * 24 Oct 2026: the new keyphrase headings (v111) left three intros repeating
+ * their heading word for word. These versions say something new instead, and
+ * Who It's For now opens with what Restwell is rather than what it isn't (the
+ * care-home point is made in the FAQ, Optional Care and Our Story). Each intro
+ * changes only while it still holds the wording it replaces.
+ */
+function restwell_migrate_heading_intros_v112() {
+	$flag = 'restwell_heading_intros_v112';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	foreach (
+		array(
+			array( 'who-its-for' => array( 'wif_intro' => array( 'Restwell is a private holiday home for disabled adults, their carers, families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.', 'Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.' ) ) ),
+			array( 'accessibility' => array( 'acc_intro' => array( 'This is the full access statement for Restwell, our adapted holiday bungalow in Whitstable with a wet room and hoists. Check it against your own needs before you book.', 'This is the full access statement for Restwell, our adapted bungalow in Whitstable. Check every measurement against your own needs before you book.' ) ) ),
+			array( 'optional-care' => array( 'care_intro' => array( 'If you’d like a holiday with care provided, our sister company, Continuity of Care Services, can come in while you’re here. Tell us what you need and we’ll check who’s free.', 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. Tell us what you need and we’ll check who’s free.' ) ) ),
+		) as $restwell_v112_change
+	) {
+		restwell_replace_stale_page_copy( $restwell_v112_change );
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5498,6 +5522,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_who_its_for_funding_links_v109',
 		'restwell_seo_keyphrase_words_v110',
 		'restwell_keyphrase_headings_v111',
+		'restwell_heading_intros_v112',
 	);
 }
 
@@ -5706,6 +5731,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_seo_keyphrase_words_v110', 148 );
 	add_action( 'init', 'restwell_migrate_keyphrase_headings_v111', 154 );
 	add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_headings_v111', 149 );
+	add_action( 'init', 'restwell_migrate_heading_intros_v112', 155 );
+	add_action( 'after_switch_theme', 'restwell_migrate_heading_intros_v112', 150 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

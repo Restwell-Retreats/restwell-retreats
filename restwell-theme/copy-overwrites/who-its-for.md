@@ -18,7 +18,7 @@ Holidays for disabled adults, their carers and families
 
 ## Intro (`wif_intro`)
 
-Restwell is a private holiday home for disabled adults, their carers, families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.
+Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.
 
 ## If you’re coming as a guest or a family
 

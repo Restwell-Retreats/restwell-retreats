@@ -21,9 +21,9 @@ $restwell_care_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_care_id,
 		'care_intro',
-		'If you’d like a holiday with care provided, our sister company, Continuity of Care Services, can come in while you’re here. Tell us what you need and we’ll check who’s free.'
+		'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. Tell us what you need and we’ll check who’s free.'
 	)
-	: 'If you’d like a holiday with care provided, our sister company, Continuity of Care Services, can come in while you’re here. Tell us what you need and we’ll check who’s free.';
+	: 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. Tell us what you need and we’ll check who’s free.';
 $restwell_care_eyebrow = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_care_id, 'care_label', '' )
 	: '';

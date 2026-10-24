@@ -18,7 +18,7 @@ A disabled holiday cottage with a wet room and hoists
 
 ## Intro (`acc_intro`)
 
-This is the full access statement for Restwell, our adapted holiday bungalow in Whitstable with a wet room and hoists. Check it against your own needs before you book.
+This is the full access statement for Restwell, our adapted bungalow in Whitstable. Check every measurement against your own needs before you book.
 
 ## The house in numbers
 

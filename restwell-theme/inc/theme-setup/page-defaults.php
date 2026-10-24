@@ -465,7 +465,7 @@ function restwell_get_accessibility_page_defaults() {
 	return array(
 		'acc_label'   => 'Accessibility',
 		'acc_heading' => 'A disabled holiday cottage with a wet room and hoists',
-		'acc_intro'   => 'This is the full access statement for Restwell, our adapted holiday bungalow in Whitstable with a wet room and hoists. Check it against your own needs before you book.',
+		'acc_intro'   => 'This is the full access statement for Restwell, our adapted bungalow in Whitstable. Check every measurement against your own needs before you book.',
 
 		'acc_stat_1_label' => 'Front door, clear opening',
 		'acc_stat_1_value' => '965mm',
@@ -663,7 +663,7 @@ function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'         => 'Who it is for',
 		'wif_heading'       => 'Holidays for disabled adults, their carers and families',
-		'wif_intro'         => 'Restwell is a private holiday home for disabled adults, their carers, families and friends. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome. It sleeps five, and it isn’t a care home or respite centre.',
+		'wif_intro'         => 'Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.',
 		'wif_hero_image_id' => 0,
 
 		'wif_audience_heading' => 'Who Restwell is built for',
@@ -766,7 +766,7 @@ function restwell_get_care_page_defaults() {
 	return array(
 		'care_label'   => 'Optional care',
 		'care_heading' => 'Holidays with care provided, if you want it',
-		'care_intro'   => 'If you’d like a holiday with care provided, our sister company, Continuity of Care Services, can come in while you’re here. Tell us what you need and we’ll check who’s free.',
+		'care_intro'   => 'Our sister company, Continuity of Care Services, can come into the bungalow while you’re here. Tell us what you need and we’ll check who’s free.',
 
 		'care_day_heading' => 'Morning, daytime and overnight help',
 		'care_day_lede' => 'Tell us what a normal day looks like, and Continuity will plan around it.',
