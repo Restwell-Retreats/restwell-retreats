@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 105;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 107;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -74,6 +74,19 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_our_story_shaped_v103',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_our_story_shaped_v104',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_seo_titles_v105',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_seo_meta_tips_v106',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_guide_share_images_v107',", $source );
+	}
+
+	public function test_guide_share_images_only_touch_the_share_field() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_guide_share_images_v107' );
+		// Waits for its photos, like the hero migrations, before marking itself done.
+		$this->assertLessThan( strpos( $body, 'update_option( $flag' ), strpos( $body, 'restwell_photo_migration_waiting(' ) );
+		// Sets the share image only, never the featured image, so cards and pages look the same.
+		$this->assertStringContainsString( 'update_post_meta( $post_id, \'og_image_id\', $att_id );', $body );
+		$this->assertStringNotContainsString( 'set_post_thumbnail(', $body );
+		// Skips a guide that already has a featured or share image.
+		$this->assertStringContainsString( '! has_post_thumbnail( $post->ID ) && ! get_post_meta( $post->ID, \'og_image_id\', true )', $body );
 	}
 
 	public function test_photo_migrations_wait_for_their_files() {

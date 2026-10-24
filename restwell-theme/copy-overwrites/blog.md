@@ -8,7 +8,7 @@ Accessible travel guides from a Whitstable bungalow
 
 ## Meta description
 
-Guides written from one adapted bungalow in Whitstable: Kent coast days out, how to pay for a break, and how to check an access statement before you book.
+Accessible travel guides from our adapted bungalow in Whitstable. Read about Kent coast days out, paying for a break and checking an access statement.
 
 ## H1
 

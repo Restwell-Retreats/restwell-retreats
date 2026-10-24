@@ -16,7 +16,7 @@ Accessible holiday cottage in Whitstable, Kent, sleeps five
 
 ## Meta description
 
-A private bungalow by the sea in Whitstable, Kent, with a level wet room and ceiling hoist fitted. It sleeps five, and our sister company can add care.
+An accessible holiday bungalow by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.
 
 ## H1 (`hero_heading`)
 

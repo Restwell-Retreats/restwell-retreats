@@ -10,7 +10,7 @@ A holiday with care provided in Whitstable, if you want it
 
 ## Meta description
 
-Continuity of Care Services, our sister company, can come into the bungalow while you stay. Ask on the same enquiry as the house, or call 01622 809881.
+A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.
 
 ## H1 (`care_heading`)
 

@@ -22,17 +22,17 @@ function restwell_get_seo_meta_defaults_by_slug() {
 	return array(
 		'how-it-works'          => array(
 			'meta_title'       => 'Booking a stay, from first email to front door',
-			'meta_description' => 'Tell us your dates and who’s coming. We confirm the bungalow, you pay a deposit, and you arrive to a house set up for you. Care can go on the same note.',
+			'meta_description' => 'How booking a stay at Restwell works, from your first message to the front door. We check the bungalow fits before you pay any deposit.',
 			'focus_keyphrase'  => 'how to book a stay at restwell',
 		),
 		'home'                  => array(
 			'meta_title'       => 'Accessible holiday cottage in Whitstable, Kent, sleeps five',
-			'meta_description' => 'A private bungalow by the sea in Whitstable, Kent, with a level wet room and ceiling hoist fitted. It sleeps five, and our sister company can add care.',
+			'meta_description' => 'An accessible holiday bungalow by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.',
 			'focus_keyphrase'  => 'accessible holiday cottages kent',
 		),
 		'the-property'          => array(
 			'meta_title'       => 'Look inside the accessible holiday bungalow',
-			'meta_description' => 'A room-by-room look round the bungalow: two bedrooms, a level-access wet room, an open kitchen and French doors to the garden. Sleeps five, and it’s all yours.',
+			'meta_description' => 'Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.',
 			'focus_keyphrase'  => 'accessible holiday bungalow',
 		),
 		'accessibility'         => array(
@@ -47,22 +47,22 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'pricing'               => array(
 			'meta_title'       => 'Accessible holiday prices at Restwell, Whitstable',
-			'meta_description' => 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all the access equipment included. The rate is the same whoever pays the invoice.',
+			'meta_description' => 'Restwell Retreats prices: a week is £1,300 off-peak and £1,400 in peak season, or you can book one night. The access equipment is included.',
 			'focus_keyphrase'  => 'restwell retreats prices',
 		),
 		'whitstable-area-guide' => array(
 			'meta_title'       => 'Is Whitstable wheelchair friendly? A local access guide',
-			'meta_description' => 'In parts, and we’ll tell you which. Tankerton’s promenade is level, the harbour is step-free with a Changing Places toilet, and the main beach is shingle.',
+			'meta_description' => 'Is Whitstable wheelchair friendly? In parts. Tankerton’s prom is level, the harbour is step-free with a Changing Places toilet, and the beach is shingle.',
 			'focus_keyphrase'  => 'is whitstable wheelchair friendly',
 		),
 		'enquire'               => array(
 			'meta_title'       => 'Ask us anything about a stay at Restwell',
-			'meta_description' => 'Call, email or fill in the form. Tell us your dates and what you need from the house, with any care questions on the same note. Nothing to pay until it fits.',
+			'meta_description' => 'Contact Restwell Retreats on 01622 809881, by email or with the form. Ask about dates, access or care, and we aim to reply within 48 hours.',
 			'focus_keyphrase'  => 'contact restwell retreats',
 		),
 		'faq'                   => array(
 			'meta_title'       => 'The questions guests ask us before booking',
-			'meta_description' => 'Straight answers about the house, the access equipment, optional home care, deposits and who we can invoice. Then a link to the page that covers it properly.',
+			'meta_description' => 'The Restwell FAQ answers what people ask before they book. It covers door widths, hoists, home care, prices and who can pay.',
 			'focus_keyphrase'  => 'restwell faq',
 		),
 		'resources'             => array(
@@ -72,22 +72,22 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'blog'                  => array(
 			'meta_title'       => 'Accessible travel guides from a Whitstable bungalow',
-			'meta_description' => 'Guides written from one adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.',
+			'meta_description' => 'Accessible travel guides from our adapted bungalow in Whitstable. Read about Kent coast days out, paying for a break and checking an access statement.',
 			'focus_keyphrase'  => 'accessible travel guides',
 		),
 		'our-story'             => array(
 			'meta_title'       => 'Why we built Restwell Retreats, and who Continuity are',
-			'meta_description' => 'Restwell is a private adapted bungalow in Whitstable. Continuity of Care Services is our sister company for home care. Two companies, one family, one phone.',
+			'meta_description' => 'Why we built Restwell Retreats, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.',
 			'focus_keyphrase'  => 'restwell retreats',
 		),
 		'optional-care'         => array(
 			'meta_title'       => 'A holiday with care provided in Whitstable, if you want it',
-			'meta_description' => 'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Same conversation as the house. Ring 01622 809881 or send us a note.',
+			'meta_description' => 'A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.',
 			'focus_keyphrase'  => 'holidays with care provided',
 		),
 		'guest-guide'                              => array(
 			'meta_title'       => 'Restwell guest guide for confirmed stays',
-			'meta_description' => 'Check-in, WiFi, bins and the departure list for guests with a booking.',
+			'meta_description' => 'The Restwell guest guide for booked guests: check-in, WiFi, the bins and the list of jobs before you leave. We email you the access code.',
 			'focus_keyphrase'  => 'restwell guest guide',
 		),
 		'accessible-beaches-coastal-walks-kent'    => array(
@@ -102,7 +102,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'revitalise-alternatives-accessible-holidays' => array(
 			'meta_title'       => 'Revitalise holidays: what happened, and where to go now' . $name,
-			'meta_description' => 'Revitalise closed its holiday centres in November 2024 and now gives respite grants. Here’s what changed, and where to find a break with care now.',
+			'meta_description' => 'Revitalise holidays ended when its centres closed in November 2024, and it now gives respite grants. Here’s where to find a break with care now.',
 			'focus_keyphrase'  => 'revitalise holidays',
 		),
 		'how-to-choose-accessible-self-catering-holiday' => array(
@@ -187,7 +187,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'privacy-policy'        => array(
 			'meta_title'       => 'Restwell Retreats privacy policy',
-			'meta_description' => 'What we collect when you enquire or book, and how long we keep it. We also cover cookies and your rights under UK GDPR.',
+			'meta_description' => 'Our privacy policy covers what we collect when you enquire or book, and how long we keep it. It also explains cookies and your rights under UK GDPR.',
 			'focus_keyphrase'  => 'restwell retreats privacy policy',
 		),
 		'terms-and-conditions'  => array(
@@ -197,7 +197,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'accessibility-policy'  => array(
 			'meta_title'       => 'Restwell Retreats website accessibility statement',
-			'meta_description' => 'How we build and test this website against WCAG 2.2 AA, and the gaps we know about. Ask for any page in a format that suits you.',
+			'meta_description' => 'Our website accessibility statement explains how we test this site against WCAG 2.2 AA. It lists the gaps we know about, and how to ask for another format.',
 			'focus_keyphrase'  => 'restwell retreats website accessibility statement',
 		),
 	);

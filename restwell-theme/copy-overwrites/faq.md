@@ -8,7 +8,7 @@ Restwell FAQ: the questions guests ask before booking
 
 ## Meta description
 
-Straight answers to what people ask before booking, from door widths and hoists to home care, prices and who can pay, each linked to the page with more.
+The Restwell FAQ answers what people ask before they book. It covers door widths, hoists, home care, prices and who can pay.
 
 ## H1 (`faq_heading`)
 

@@ -12,7 +12,7 @@ Restwell guest guide for confirmed stays
 
 ## Meta description
 
-Check-in, WiFi, bins and the departure list for guests with a booking.
+The Restwell guest guide for booked guests: check-in, WiFi, the bins and the list of jobs before you leave. We email you the access code.
 
 ## H1
 

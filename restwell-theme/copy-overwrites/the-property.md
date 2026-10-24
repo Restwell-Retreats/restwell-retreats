@@ -8,7 +8,7 @@ Inside the accessible holiday bungalow in Whitstable
 
 ## Meta description
 
-A room-by-room look round the bungalow: two bedrooms, a level-access wet room, a kitchen you can wheel under and a level garden. It sleeps up to five.
+Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.
 
 ## H1 (`prop_hero_heading`)
 

@@ -10,7 +10,7 @@ Why we built Restwell Retreats, and who Continuity are
 
 ## Meta description
 
-Why we built Restwell, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.
+Why we built Restwell Retreats, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.
 
 ## H1
 

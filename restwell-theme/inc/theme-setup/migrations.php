@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 105;
+const RESTWELL_SCHEMA_VERSION = 107;
 
 
 /**
@@ -5101,6 +5101,98 @@ function restwell_migrate_seo_titles_v105() {
 }
 
 /**
+ * SEO area tips, 24 Oct 2026: fourteen meta descriptions didn't carry their
+ * page's focus keyphrase (two of its words, as the SEO screens check). Each
+ * moves only while it still holds a shipped value.
+ */
+function restwell_migrate_seo_meta_tips_v106() {
+	if ( get_option( 'restwell_seo_meta_tips_v106', '' ) === '1' ) {
+		return;
+	}
+	update_option( 'restwell_seo_meta_tips_v106', '1', false );
+	foreach (
+		array(
+			array( 'home' => array( 'meta_description' => array( 'A private bungalow by the sea in Whitstable, Kent, with a level wet room and ceiling hoist fitted. It sleeps five, and our sister company can add care.', 'An accessible holiday bungalow by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.' ) ) ),
+			array( 'the-property' => array( 'meta_description' => array( 'A room-by-room look round the bungalow: two bedrooms, a level-access wet room, a kitchen you can wheel under and a level garden. It sleeps up to five.', 'Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.' ) ) ),
+			array( 'the-property' => array( 'meta_description' => array( 'A room-by-room look round the bungalow: two bedrooms, a level-access wet room, an open kitchen and French doors to the garden. Sleeps five, and it’s all yours.', 'Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.' ) ) ),
+			array( 'how-it-works' => array( 'meta_description' => array( 'From your first message to the front door: how we check the bungalow fits, when the deposit is due and what happens when you arrive on the day.', 'How booking a stay at Restwell works, from your first message to the front door. We check the bungalow fits before you pay any deposit.' ) ) ),
+			array( 'how-it-works' => array( 'meta_description' => array( 'Tell us your dates and who’s coming. We confirm the bungalow, you pay a deposit, and you arrive to a house set up for you. Care can go on the same note.', 'How booking a stay at Restwell works, from your first message to the front door. We check the bungalow fits before you pay any deposit.' ) ) ),
+			array( 'faq' => array( 'meta_description' => array( 'Straight answers to what people ask before booking, from door widths and hoists to home care, prices and who can pay, each linked to the page with more.', 'The Restwell FAQ answers what people ask before they book. It covers door widths, hoists, home care, prices and who can pay.' ) ) ),
+			array( 'faq' => array( 'meta_description' => array( 'Straight answers about the house, the access equipment, optional home care, deposits and who we can invoice. Then a link to the page that covers it properly.', 'The Restwell FAQ answers what people ask before they book. It covers door widths, hoists, home care, prices and who can pay.' ) ) ),
+			array( 'enquire' => array( 'meta_description' => array( 'Call 01622 809881, email or use the form to ask about dates, access or care. We aim to reply within 48 hours, and there’s no deposit until it fits.', 'Contact Restwell Retreats on 01622 809881, by email or with the form. Ask about dates, access or care, and we aim to reply within 48 hours.' ) ) ),
+			array( 'enquire' => array( 'meta_description' => array( 'Call, email or fill in the form. Tell us your dates and what you need from the house, with any care questions on the same note. Nothing to pay until it fits.', 'Contact Restwell Retreats on 01622 809881, by email or with the form. Ask about dates, access or care, and we aim to reply within 48 hours.' ) ) ),
+			array( 'pricing' => array( 'meta_description' => array( 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, and you can book a single night. The access equipment is included in the price.', 'Restwell Retreats prices: a week is £1,300 off-peak and £1,400 in peak season, or you can book one night. The access equipment is included.' ) ) ),
+			array( 'pricing' => array( 'meta_description' => array( 'A week in the bungalow is £1,300 off-peak and £1,400 in peak season, with all the access equipment included. The rate is the same whoever pays the invoice.', 'Restwell Retreats prices: a week is £1,300 off-peak and £1,400 in peak season, or you can book one night. The access equipment is included.' ) ) ),
+			array( 'whitstable-area-guide' => array( 'meta_description' => array( 'In parts, and we’ll tell you which. Tankerton’s promenade is level, the harbour is step-free with a Changing Places toilet, and the main beach is shingle.', 'Is Whitstable wheelchair friendly? In parts. Tankerton’s prom is level, the harbour is step-free with a Changing Places toilet, and the beach is shingle.' ) ) ),
+			array( 'blog' => array( 'meta_description' => array( 'Guides written from one adapted bungalow in Whitstable: Kent coast days out, how to pay for a break, and how to check an access statement before you book.', 'Accessible travel guides from our adapted bungalow in Whitstable. Read about Kent coast days out, paying for a break and checking an access statement.' ) ) ),
+			array( 'blog' => array( 'meta_description' => array( 'Guides written from one adapted house on the Kent coast: days out that work, funding explained, and how to read an access statement without getting caught out.', 'Accessible travel guides from our adapted bungalow in Whitstable. Read about Kent coast days out, paying for a break and checking an access statement.' ) ) ),
+			array( 'our-story' => array( 'meta_description' => array( 'Why we built Restwell, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.', 'Why we built Restwell Retreats, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.' ) ) ),
+			array( 'our-story' => array( 'meta_description' => array( 'Restwell is a private adapted bungalow in Whitstable. Continuity of Care Services is our sister company for home care. Two companies, one family, one phone.', 'Why we built Restwell Retreats, a private adapted bungalow in Whitstable. Our sister company, Continuity of Care Services, can add home care to your stay.' ) ) ),
+			array( 'optional-care' => array( 'meta_description' => array( 'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Ask on the same enquiry as the house, or call 01622 809881.', 'A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.' ) ) ),
+			array( 'optional-care' => array( 'meta_description' => array( 'Continuity of Care Services, our sister company, can come into the bungalow while you stay. Same conversation as the house. Ring 01622 809881 or send us a note.', 'A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.' ) ) ),
+			array( 'accessibility-policy' => array( 'meta_description' => array( 'How we build and test this website against WCAG 2.2 AA, and the gaps we know about. Ask for any page in a format that suits you.', 'Our website accessibility statement explains how we test this site against WCAG 2.2 AA. It lists the gaps we know about, and how to ask for another format.' ) ) ),
+			array( 'privacy-policy' => array( 'meta_description' => array( 'What we collect when you enquire or book, and how long we keep it. We also cover cookies and your rights under UK GDPR.', 'Our privacy policy covers what we collect when you enquire or book, and how long we keep it. It also explains cookies and your rights under UK GDPR.' ) ) ),
+			array( 'guest-guide' => array( 'meta_description' => array( 'Check-in, WiFi, bins and the departure list for guests with a booking.', 'The Restwell guest guide for booked guests: check-in, WiFi, the bins and the list of jobs before you leave. We email you the access code.' ) ) ),
+		) as $restwell_v106_change
+	) {
+		restwell_replace_stale_page_copy( $restwell_v106_change );
+	}
+	$guide = get_page_by_path( 'revitalise-alternatives-accessible-holidays', OBJECT, 'post' );
+	if ( $guide instanceof WP_Post && in_array( (string) get_post_meta( $guide->ID, 'meta_description', true ), array( 'Revitalise closed its holiday centres in November 2024 and now gives respite grants. Here’s what changed, and where to find a break with care now.' ), true ) ) {
+		update_post_meta( $guide->ID, 'meta_description', 'Revitalise holidays ended when its centres closed in November 2024, and it now gives respite grants. Here’s where to find a break with care now.' );
+	}
+}
+
+/**
+ * SEO area tips, 24 Oct 2026: the five guides share a Restwell photo of their
+ * own instead of the blog-card default. Each photo is copied into the Media
+ * Library and set as the guide's share image only (og_image_id), so blog
+ * cards and the guide pages look the same. It waits for the photos like v75,
+ * and copies one per request so the first load after an upload stays quick.
+ */
+function restwell_migrate_guide_share_images_v107() {
+	$flag = 'restwell_guide_share_images_v107';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	$photos = array(
+		'accessible-beaches-coastal-walks-kent'          => 'stock/restwell-whitstable-coastal-walk.webp',
+		'direct-payment-holiday-accommodation'           => 'bungalow/BD2-2-LS.jpg',
+		'revitalise-alternatives-accessible-holidays'    => 'bungalow/GRDEN-3-LS.jpg',
+		'how-to-choose-accessible-self-catering-holiday' => 'bungalow/LR-1-LS.jpg',
+		'how-to-read-holiday-cottage-access-statement'   => 'bungalow/WR-1-LS.jpg',
+	);
+	if ( restwell_photo_migration_waiting( $flag, array_values( $photos ) ) ) {
+		return;
+	}
+	// Mark first: a sideload timeout leaves the blog-card default in place.
+	update_option( $flag, '1', false );
+	if ( ! function_exists( 'restwell_sideload_stock_image' ) ) {
+		return;
+	}
+	$todo = array();
+	foreach ( $photos as $slug => $rel ) {
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( $post instanceof WP_Post && ! has_post_thumbnail( $post->ID ) && ! get_post_meta( $post->ID, 'og_image_id', true ) ) {
+			$todo[ $post->ID ] = $rel;
+		}
+	}
+	if ( ! $todo ) {
+		return;
+	}
+	$post_id = (int) array_key_first( $todo );
+	$att_id  = restwell_sideload_stock_image( $todo[ $post_id ] );
+	if ( $att_id < 1 ) {
+		restwell_retry_photo_migration( $flag );
+		return;
+	}
+	update_post_meta( $post_id, 'og_image_id', $att_id );
+	if ( count( $todo ) > 1 ) {
+		delete_option( $flag ); // The next guide's photo follows on the next request.
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5241,6 +5333,8 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_our_story_shaped_v103',
 		'restwell_our_story_shaped_v104',
 		'restwell_seo_titles_v105',
+		'restwell_seo_meta_tips_v106',
+		'restwell_guide_share_images_v107',
 	);
 }
 
@@ -5437,6 +5531,10 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_our_story_shaped_v104', 142 );
 	add_action( 'init', 'restwell_migrate_seo_titles_v105', 148 );
 	add_action( 'after_switch_theme', 'restwell_migrate_seo_titles_v105', 143 );
+	add_action( 'init', 'restwell_migrate_seo_meta_tips_v106', 149 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_meta_tips_v106', 144 );
+	add_action( 'init', 'restwell_migrate_guide_share_images_v107', 150 );
+	add_action( 'after_switch_theme', 'restwell_migrate_guide_share_images_v107', 145 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

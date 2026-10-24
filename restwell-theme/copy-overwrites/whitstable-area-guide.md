@@ -10,7 +10,7 @@ Is Whitstable wheelchair friendly? A local access guide
 
 ## Meta description
 
-In parts, and we’ll tell you which. Tankerton’s promenade is level, the harbour is step-free with a Changing Places toilet, and the main beach is shingle.
+Is Whitstable wheelchair friendly? In parts. Tankerton’s prom is level, the harbour is step-free with a Changing Places toilet, and the beach is shingle.
 
 ## H1 (`wg_heading`)
 

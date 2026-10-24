@@ -8,7 +8,7 @@ Accessible holiday prices at Restwell, Whitstable
 
 ## Meta description
 
-A week in the bungalow is £1,300 off-peak and £1,400 in peak season, and you can book a single night. The access equipment is included in the price.
+Restwell Retreats prices: a week is £1,300 off-peak and £1,400 in peak season, or you can book one night. The access equipment is included.
 
 ## H1 (`pricing_heading`)
 

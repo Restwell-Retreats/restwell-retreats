@@ -8,7 +8,7 @@ Contact Restwell about a stay in Whitstable
 
 ## Meta description
 
-Call 01622 809881, email or use the form to ask about dates, access or care. We aim to reply within 48 hours, and there’s no deposit until it fits.
+Contact Restwell Retreats on 01622 809881, by email or with the form. Ask about dates, access or care, and we aim to reply within 48 hours.
 
 ## H1 (`enq_heading`)
 

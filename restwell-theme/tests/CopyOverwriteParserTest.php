@@ -32,7 +32,7 @@ class CopyOverwriteParserTest extends PHPUnit\Framework\TestCase {
 	public function test_guest_guide_brief_has_meta_description() {
 		$parsed = restwell_parse_copy_overwrite_file( dirname( __DIR__ ) . '/copy-overwrites/guest-guide.md' );
 		$this->assertSame(
-			'Check-in, WiFi, bins and the departure list for guests with a booking.',
+			'The Restwell guest guide for booked guests: check-in, WiFi, the bins and the list of jobs before you leave. We email you the access code.',
 			$parsed['meta_description']
 		);
 		$this->assertSame(

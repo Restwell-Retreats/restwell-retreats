@@ -40,7 +40,7 @@ function restwell_get_priority_blog_post_articles(): array {
 			'title'            => 'What happened to Revitalise holidays, and where to go now',
 			'excerpt'          => 'Here’s where to find a break with care now that the Revitalise centres have closed.',
 			'meta_title'       => 'Revitalise holidays: what happened, and where to go now',
-			'meta_description' => 'Revitalise closed its holiday centres in November 2024 and now gives respite grants. Here’s what changed, and where to find a break with care now.',
+			'meta_description' => 'Revitalise holidays ended when its centres closed in November 2024, and it now gives respite grants. Here’s where to find a break with care now.',
 			'content'          => restwell_get_blog_post_revitalise_html(),
 			'category_slug'    => 'news-updates',
 		),
