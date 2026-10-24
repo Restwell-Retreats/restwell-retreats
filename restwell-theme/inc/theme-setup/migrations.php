@@ -1882,6 +1882,11 @@ function restwell_migrate_daylight_heroes_v75() {
 	if ( get_option( 'restwell_daylight_heroes_v75', '' ) === '1' ) {
 		return;
 	}
+	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
+	// live minutes before its images, and a swap skipped then never retries.
+	if ( function_exists( 'restwell_theme_image_abs_path' ) && ( '' === restwell_theme_image_abs_path( 'bungalow/GRDEN-3-LS.jpg' ) || '' === restwell_theme_image_abs_path( 'bungalow/GRDEN-4-LS.jpg' ) ) ) {
+		return;
+	}
 	// Mark first: a sideload timeout still leaves the theme-file fallback working.
 	update_option( 'restwell_daylight_heroes_v75', '1', false );
 	if ( ! function_exists( 'restwell_sideload_stock_image' ) || ! function_exists( 'restwell_page_id_for_stock_slug' ) ) {
@@ -2015,6 +2020,11 @@ function restwell_migrate_oven_door_wording_v77() {
  */
 function restwell_migrate_care_copy_v78() {
 	if ( get_option( 'restwell_care_copy_v78', '' ) === '1' ) {
+		return;
+	}
+	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
+	// live minutes before its images, and a swap skipped then never retries.
+	if ( function_exists( 'restwell_theme_image_abs_path' ) && ( '' === restwell_theme_image_abs_path( 'bungalow/BD2-2-LS.jpg' ) ) ) {
 		return;
 	}
 	update_option( 'restwell_care_copy_v78', '1', false );
@@ -2495,6 +2505,11 @@ function restwell_migrate_page_copy_v81() {
  */
 function restwell_migrate_our_story_hero_v82() {
 	if ( get_option( 'restwell_our_story_hero_v82', '' ) === '1' ) {
+		return;
+	}
+	// Wait for the photo (23 Oct 2026): in a two-zip deploy the theme can go
+	// live minutes before its images, and a swap skipped then never retries.
+	if ( function_exists( 'restwell_theme_image_abs_path' ) && ( '' === restwell_theme_image_abs_path( 'bungalow/accessible-holiday-whitstable.png' ) ) ) {
 		return;
 	}
 	update_option( 'restwell_our_story_hero_v82', '1', false );

@@ -21,6 +21,12 @@ rsync -a \
 	--exclude '*.map' \
 	"$THEME_ROOT/" "$STAGE/restwell-theme/"
 
+# Keep any image the PHP names directly: migrations sideload those by exact
+# path, so dropping them would silently skip a hero swap on the live site.
+KEEP="$STAGE/keep.txt"
+grep -rhoE "['\"](bungalow|stock|journey|partners)/[A-Za-z0-9_.-]+\.(jpe?g|png|webp)['\"]" --include='*.php' "$STAGE/restwell-theme" \
+	| tr -d "'\"" | sort -u > "$KEEP"
+
 # Drop masters that have a matching Opt WebP (by stem).
 while IFS= read -r -d '' master; do
 	dir="$(dirname "$master")"
@@ -32,6 +38,9 @@ while IFS= read -r -d '' master; do
 		continue
 	fi
 	opt="$dir/opt/${stem}.webp"
+	if grep -qxF "${master#"$STAGE/restwell-theme/assets/images/"}" "$KEEP"; then
+		continue
+	fi
 	if [ -f "$opt" ]; then
 		rm -f "$master"
 	fi

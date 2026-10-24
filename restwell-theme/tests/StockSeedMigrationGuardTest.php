@@ -73,6 +73,21 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_seed_catch_up_v102',", $source );
 	}
 
+	public function test_photo_migrations_wait_for_their_files() {
+		// In a two-zip deploy the theme can go live before its images; these
+		// migrations must not mark themselves done until the photo is on disk.
+		foreach ( array( 'restwell_migrate_daylight_heroes_v75', 'restwell_migrate_care_copy_v78', 'restwell_migrate_our_story_hero_v82' ) as $fn ) {
+			$body  = $this->function_body( $this->migrations(), $fn );
+			$wait  = strpos( $body, "'' === restwell_theme_image_abs_path(" );
+			$mark  = strpos( $body, 'update_option(' );
+			$this->assertNotFalse( $wait, $fn . ' checks its photo' );
+			$this->assertLessThan( $mark, $wait, $fn . ' checks before marking itself done' );
+		}
+		$build = (string) file_get_contents( dirname( __DIR__ ) . '/tools/build-release-zips.sh' );
+		$this->assertStringContainsString( 'git -C "$REPO_ROOT" archive HEAD restwell-theme', $build );
+		$this->assertStringContainsString( 'grep -qxF "$rel" "$KEEP"', $build );
+	}
+
 	public function test_seed_catch_up_only_replaces_our_own_past_wording() {
 		$body = $this->function_body( $this->migrations(), 'restwell_migrate_seed_catch_up_v102' );
 		$this->assertStringContainsString( "update_option( 'restwell_seed_catch_up_v102', '1'", $body );
