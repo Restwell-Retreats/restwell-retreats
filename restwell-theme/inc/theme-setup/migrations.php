@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 109;
+const RESTWELL_SCHEMA_VERSION = 110;
 
 
 /**
@@ -5257,6 +5257,48 @@ function restwell_migrate_who_its_for_funding_links_v109() {
 }
 
 /**
+ * SEO area, 24 Oct 2026: the SEO table and the page editor now share one
+ * keyphrase rule (every main word, in any order), where the table used to
+ * accept any two words and the editor only the exact phrase. Two titles and
+ * eleven descriptions were missing a word; these versions carry it. Each value
+ * changes only while it still holds the wording it replaces.
+ */
+function restwell_migrate_seo_keyphrase_words_v110() {
+	$flag = 'restwell_seo_keyphrase_words_v110';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	foreach (
+		array(
+			array( 'home' => array( 'meta_description' => array( 'An accessible holiday bungalow by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.', 'An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.' ) ) ),
+			array( 'how-it-works' => array( 'meta_description' => array( 'How booking a stay at Restwell works, from your first message to the front door. We check the bungalow fits before you pay any deposit.', 'How to book a stay at Restwell, from your first message to the front door. We check the bungalow fits before you pay any deposit.' ) ) ),
+			array( 'accessibility' => array( 'meta_description' => array( 'Exact access details: a 965mm front door, 926mm inside doors, and hoists rated to 180kg. There’s also a profiling bed and a level wet room.', 'Our disabled holiday cottage in Whitstable has a 965mm front door, 926mm inside doors and a level wet room. Its ceiling and mobile hoists take 180kg.' ) ) ),
+			array( 'who-its-for' => array( 'meta_description' => array( 'A private adapted bungalow in Whitstable for disabled adults, their families and carers, in groups of up to five. Check the measurements before you book.', 'Book holidays for disabled adults and their carers in a private adapted bungalow in Whitstable. It sleeps up to five, so families can come too.' ) ) ),
+			array( 'enquire' => array( 'meta_title' => array( 'Contact Restwell about a stay in Whitstable', 'Contact Restwell Retreats about a stay in Whitstable' ) ) ),
+			array( 'pricing' => array( 'meta_title' => array( 'Accessible holiday prices at Restwell, Whitstable', 'Accessible holiday prices at Restwell Retreats, Whitstable' ) ) ),
+			array( 'terms-and-conditions' => array( 'meta_description' => array( 'The terms for booking the bungalow: deposits, cancelling and changing dates. They also cover guest numbers, the access kit and what happens if we cancel.', 'The Restwell Retreats terms and conditions cover deposits, cancelling and changing dates. They also cover guest numbers and what happens if we cancel.' ) ) ),
+			array( 'accessibility-policy' => array( 'meta_description' => array( 'Our website accessibility statement explains how we test this site against WCAG 2.2 AA. It lists the gaps we know about, and how to ask for another format.', 'The Restwell Retreats website accessibility statement explains how we test against WCAG 2.2 AA. It lists known gaps and how to ask for another format.' ) ) ),
+			array( 'privacy-policy' => array( 'meta_description' => array( 'Our privacy policy covers what we collect when you enquire or book, and how long we keep it. It also explains cookies and your rights under UK GDPR.', 'The Restwell Retreats privacy policy covers what we collect when you enquire or book, and how long we keep it. It also explains cookies and your rights.' ) ) ),
+		) as $restwell_v110_change
+	) {
+		restwell_replace_stale_page_copy( $restwell_v110_change );
+	}
+	$guides = array(
+		'accessible-beaches-coastal-walks-kent' => array( 'Which Kent beaches work with a wheelchair: the level promenades, where shingle stops you, and where to borrow a beach wheelchair in Thanet.', 'Which accessible beaches in Kent work with a wheelchair? See the level promenades, where shingle stops you, and where to borrow a beach wheelchair in Thanet.' ),
+		'direct-payment-holiday-accommodation' => array( 'A direct payment rarely covers the holiday itself, but it can often pay for your care while you’re away. Here’s what councils allow, and what to ask.', 'Can you use direct payments for a holiday? They rarely cover the stay itself, but they can often pay for your care while you’re away. Here’s what to ask.' ),
+		'how-to-choose-accessible-self-catering-holiday' => array( 'A checklist for choosing an accessible holiday cottage: the kit, the beds, parking, care nearby and the cancellation terms, checked before you pay.', 'Here’s how to choose an accessible holiday cottage. Check the equipment, beds, parking, nearby care and cancellation terms before you pay.' ),
+		'how-to-read-holiday-cottage-access-statement' => array( 'Door widths, turning space, hoist clearance and bed heights explained, with the questions to ask when a cottage’s access statement leaves gaps.', 'Will your wheelchair fit? Door widths, turning space, hoist clearance and bed heights explained, plus what to ask when an access statement leaves gaps.' ),
+	);
+	foreach ( $guides as $slug => $pair ) {
+		$guide = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( $guide instanceof WP_Post && (string) get_post_meta( $guide->ID, 'meta_description', true ) === $pair[0] ) {
+			update_post_meta( $guide->ID, 'meta_description', $pair[1] );
+		}
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5401,6 +5443,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_guide_share_images_v107',
 		'restwell_funding_share_image_v108',
 		'restwell_who_its_for_funding_links_v109',
+		'restwell_seo_keyphrase_words_v110',
 	);
 }
 
@@ -5605,6 +5648,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_funding_share_image_v108', 146 );
 	add_action( 'init', 'restwell_migrate_who_its_for_funding_links_v109', 152 );
 	add_action( 'after_switch_theme', 'restwell_migrate_who_its_for_funding_links_v109', 147 );
+	add_action( 'init', 'restwell_migrate_seo_keyphrase_words_v110', 153 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_keyphrase_words_v110', 148 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

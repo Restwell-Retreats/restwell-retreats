@@ -10,7 +10,7 @@ A disabled holiday cottage with a wet room and hoist
 
 ## Meta description
 
-Exact access details: a 965mm front door, 926mm inside doors, and hoists rated to 180kg. There’s also a profiling bed and a level wet room.
+Our disabled holiday cottage in Whitstable has a 965mm front door, 926mm inside doors and a level wet room. Its ceiling and mobile hoists take 180kg.
 
 ## H1 (`acc_heading`)
 

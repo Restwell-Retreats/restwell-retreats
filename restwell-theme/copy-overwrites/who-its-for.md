@@ -10,7 +10,7 @@ Holidays for disabled adults and their carers
 
 ## Meta description
 
-A private adapted bungalow in Whitstable for disabled adults, their families and carers, in groups of up to five. Check the measurements before you book.
+Book holidays for disabled adults and their carers in a private adapted bungalow in Whitstable. It sleeps up to five, so families can come too.
 
 ## H1 (`wif_heading`)
 

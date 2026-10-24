@@ -65,13 +65,13 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 	$preview_desc  = $meta_desc !== '' ? $meta_desc : (string) ( $seo_defs['meta_description'] ?? '' );
 	$preview_url   = get_permalink( $post->ID );
 
-	// Schema status.
-	$template     = get_page_template_slug( $post->ID );
-	$schema_items = restwell_seo_admin_schema_status( $post, $template );
 	?>
 	<div
 		class="rw-seo"
 		id="rw-seo-root"
+		data-post-id="<?php echo esc_attr( (string) $post->ID ); ?>"
+		data-checks-nonce="<?php echo esc_attr( wp_create_nonce( 'restwell_seo_live_checks_' . $post->ID ) ); ?>"
+		data-page-url="<?php echo esc_url( (string) get_permalink( $post->ID ) ); ?>"
 		data-seo-default-kp="<?php echo esc_attr( $seo_defs['focus_keyphrase'] ?? '' ); ?>"
 		data-seo-default-title="<?php echo esc_attr( $seo_defs['meta_title'] ?? '' ); ?>"
 		data-seo-default-desc="<?php echo esc_attr( $seo_defs['meta_description'] ?? '' ); ?>"
@@ -247,40 +247,16 @@ function restwell_seo_admin_meta_box_callback( $post ) {
 		<!-- ── SEO analysis panel ───────────────────────────────────────── -->
 		<div class="rw-seo__section" aria-label="<?php esc_attr_e( 'SEO analysis', 'restwell-retreats' ); ?>">
 			<p class="rw-seo__section-label"><?php esc_html_e( 'SEO analysis', 'restwell-retreats' ); ?></p>
-			<ul class="rw-seo__checks" id="rw-seo-checks"
-				data-content="<?php echo esc_attr( $post->post_content ); ?>"
-				data-post-type="<?php echo esc_attr( $post->post_type ); ?>">
-
-				<?php
-				$checks = restwell_seo_admin_run_checks( $post, $focus_kp, $meta_title, $meta_desc );
-				foreach ( $checks as $check ) :
-					$state = $check['state']; // 'ok', 'warn', 'bad'
-					$icons = array(
-						'ok'   => '✓',
-						'warn' => '~',
-						'bad'  => '✗',
-						'info' => 'i',
-					);
-					$icon  = $icons[ $state ] ?? '•';
-					?>
-				<li class="rw-seo__check rw-seo__check--<?php echo esc_attr( $state ); ?>" data-check="<?php echo esc_attr( $check['id'] ); ?>">
-					<span class="rw-seo__check-icon" aria-hidden="true"><?php echo esc_html( $icon ); ?></span>
-					<span class="rw-seo__check-label"><?php echo esc_html( $check['label'] ); ?></span>
-				</li>
-				<?php endforeach; ?>
+			<ul class="rw-seo__checks" id="rw-seo-checks" aria-live="polite">
+				<?php restwell_seo_admin_render_checks( restwell_seo_admin_run_checks( $post, $focus_kp, $meta_title, $meta_desc ) ); ?>
 			</ul>
 		</div>
 
-		<!-- ── Schema status panel ──────────────────────────────────────── -->
-		<div class="rw-seo__section rw-seo__schema-panel" aria-label="<?php esc_attr_e( 'Schema status', 'restwell-retreats' ); ?>">
-			<p class="rw-seo__section-label"><?php esc_html_e( 'Active schema', 'restwell-retreats' ); ?></p>
-			<ul class="rw-seo__schema-list">
-				<?php foreach ( $schema_items as $name => $active ) : ?>
-				<li class="rw-seo__schema-item rw-seo__schema-item--<?php echo esc_attr( $active ? 'on' : 'off' ); ?>">
-					<span class="rw-seo__schema-dot" aria-hidden="true"><?php echo esc_html( $active ? '✓' : '✗' ); ?></span>
-					<?php echo esc_html( $name ); ?>
-				</li>
-				<?php endforeach; ?>
+		<!-- ── Schema on the live page (read from its JSON-LD by seo-admin.js) ── -->
+		<div class="rw-seo__section rw-seo__schema-panel" aria-label="<?php esc_attr_e( 'Schema on this page', 'restwell-retreats' ); ?>">
+			<p class="rw-seo__section-label"><?php esc_html_e( 'Schema on this page', 'restwell-retreats' ); ?></p>
+			<ul class="rw-seo__schema-list" id="rw-seo-schema" aria-live="polite">
+				<li class="rw-seo__schema-item"><?php esc_html_e( 'Reading the live page…', 'restwell-retreats' ); ?></li>
 			</ul>
 		</div>
 
@@ -442,14 +418,14 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 	$title      = $meta_title !== '' ? $meta_title : $post->post_title;
 	$desc       = $meta_desc;
 	$kp         = restwell_seo_admin_normalize_for_keyphrase_match( $focus_kp );
-	$title_l    = restwell_seo_admin_normalize_for_keyphrase_match( $title );
-	$desc_l     = restwell_seo_admin_normalize_for_keyphrase_match( $desc );
 	$title_len  = mb_strlen( $title );
 	$desc_len   = mb_strlen( $desc );
 	$word_count = str_word_count( $plain );
 	$has_og     = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
 	$has_site_og = ! $has_og && function_exists( 'restwell_get_default_og_image_url_for_request' )
 		? (bool) restwell_get_default_og_image_url_for_request( $post->ID )
+			// Posts share their blog-card fallback photo (see restwell_output_social_meta()).
+			|| ( 'post' === $post->post_type && function_exists( 'restwell_get_post_fallback_image' ) && '' !== (string) restwell_get_post_fallback_image( $post->ID ) )
 		: false;
 
 	$checks = array();
@@ -485,24 +461,29 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 			'state' => $expects_kp ? 'bad' : 'warn',
 		);
 	} else {
-		$kp_fn = function_exists( 'restwell_seo_checklist_keyphrase_tokens_match' )
-			? 'restwell_seo_checklist_keyphrase_tokens_match'
-			: null;
-		$in_title = $kp_fn
-			? restwell_seo_checklist_keyphrase_tokens_match( $title_l, $kp )
-			: str_contains( $title_l, $kp );
-		$checks[] = array(
+		$title_missing = restwell_seo_keyphrase_missing_words( $title, $focus_kp );
+		$checks[]      = array(
 			'id'    => 'kp_title',
-			'label' => __( 'Focus keyphrase reflected in SEO title', 'restwell-retreats' ),
-			'state' => $in_title ? 'ok' : 'warn',
+			'label' => $title_missing
+				? sprintf(
+					/* translators: %s: keyphrase words not found, comma separated. */
+					__( 'Focus keyphrase not fully in SEO title (missing: %s)', 'restwell-retreats' ),
+					implode( ', ', $title_missing )
+				)
+				: __( 'Focus keyphrase in SEO title', 'restwell-retreats' ),
+			'state' => $title_missing ? 'warn' : 'ok',
 		);
-		$in_desc = $kp_fn
-			? restwell_seo_checklist_keyphrase_tokens_match( $desc_l, $kp )
-			: str_contains( $desc_l, $kp );
-		$checks[] = array(
+		$desc_missing = restwell_seo_keyphrase_missing_words( $desc, $focus_kp );
+		$checks[]     = array(
 			'id'    => 'kp_desc',
-			'label' => __( 'Focus keyphrase reflected in meta description', 'restwell-retreats' ),
-			'state' => $in_desc ? 'ok' : 'info',
+			'label' => $desc_missing
+				? sprintf(
+					/* translators: %s: keyphrase words not found, comma separated. */
+					__( 'Focus keyphrase not fully in meta description (missing: %s)', 'restwell-retreats' ),
+					implode( ', ', $desc_missing )
+				)
+				: __( 'Focus keyphrase in meta description', 'restwell-retreats' ),
+			'state' => $desc_missing ? 'info' : 'ok',
 		);
 	}
 
@@ -575,12 +556,19 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 		'state' => $has_og ? 'ok' : ( $has_site_og ? 'info' : 'warn' ),
 	);
 
+	// 6–8 - content checks. Posts only: a post's text is its whole body, but a
+	// page's copy lives in its template as well as its fields, so these checks
+	// gave pages false alarms ("0 words" on the blog index, 28 on the terms).
+	if ( 'post' !== $post->post_type ) {
+		return $checks;
+	}
+
 	// 6 - content contains at least one heading (HTML corpus / derived heading meta).
 	$has_heading = preg_match( '/<h[23]/i', $html ) === 1;
 	$checks[]    = array(
 		'id'    => 'headings',
 		'label' => __( 'Content contains at least one subheading (h2/h3)', 'restwell-retreats' ),
-		'state' => $has_heading ? 'ok' : ( $post->post_type === 'page' ? 'warn' : 'bad' ),
+		'state' => $has_heading ? 'ok' : 'bad',
 	);
 
 	// 7 - word count (posts stricter).
@@ -589,7 +577,7 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 	} elseif ( $word_count >= 150 ) {
 		$state = 'warn';
 	} else {
-		$state = ( 'post' === $post->post_type ) ? 'bad' : 'warn';
+		$state = 'bad';
 	}
 	$checks[] = array(
 		'id'    => 'word_count',
@@ -615,33 +603,51 @@ function restwell_seo_admin_run_checks( WP_Post $post, string $focus_kp, string 
 }
 
 /**
- * Determine which JSON-LD schemas are active for this post.
+ * Print the analysis list items. The page editor and the live re-check
+ * (restwell_seo_admin_ajax_live_checks) both use this.
  *
- * @param WP_Post $post     Post object.
- * @param string  $template Page template slug.
- * @return array<string, bool>
+ * @param array<int, array{id:string,label:string,state:string}> $checks Checks from restwell_seo_admin_run_checks().
  */
-function restwell_seo_admin_schema_status( WP_Post $post, string $template ): array {
-	$front_id  = (int) get_option( 'page_on_front', 0 );
-	$is_front  = ( $front_id > 0 && (int) $post->ID === $front_id );
-	$breadcrumb = ! ( $post->post_type === 'page' && $front_id === (int) $post->ID );
-
-	$is_property = ( 'template-property.php' === $template );
-
-	return array(
-		__( 'WebSite + Organization', 'restwell-retreats' ) => ! $is_front,
-		__( 'WebSite + WebPage + Organization + LocalBusiness (front page)', 'restwell-retreats' ) => $is_front,
-		__( 'LocalBusiness + Service (property template)', 'restwell-retreats' ) => $is_property && ! $is_front,
-		__( 'BreadcrumbList', 'restwell-retreats' ) => $breadcrumb,
-		__( 'FAQPage', 'restwell-retreats' ) => ( 'template-faq.php' === $template ) || ( 'template-pricing.php' === $template ) || ( 'template-care.php' === $template ) || ( 'template-resources.php' === $template ) || $is_front,
-		__( 'AboutPage', 'restwell-retreats' ) => ( 'template-our-story.php' === $template ),
-		__( 'CollectionPage', 'restwell-retreats' ) => ( 'template-resources.php' === $template ),
-		__( 'Service (optional care)', 'restwell-retreats' ) => ( 'template-care.php' === $template ),
-		__( 'ContactPage', 'restwell-retreats' ) => ( 'template-enquire.php' === $template ),
-		__( 'TouristDestination', 'restwell-retreats' ) => ( 'template-whitstable-guide.php' === $template ),
-		__( 'BlogPosting', 'restwell-retreats' ) => ( 'post' === $post->post_type ),
+function restwell_seo_admin_render_checks( array $checks ) {
+	$icons = array(
+		'ok'   => '✓',
+		'warn' => '~',
+		'bad'  => '✗',
+		'info' => 'i',
 	);
+	foreach ( $checks as $check ) {
+		$state = (string) $check['state'];
+		printf(
+			'<li class="rw-seo__check rw-seo__check--%1$s" data-check="%2$s"><span class="rw-seo__check-icon" aria-hidden="true">%3$s</span><span class="rw-seo__check-label">%4$s</span></li>',
+			esc_attr( $state ),
+			esc_attr( (string) $check['id'] ),
+			esc_html( $icons[ $state ] ?? '•' ),
+			esc_html( (string) $check['label'] )
+		);
+	}
 }
+
+/**
+ * Re-run the checks while someone types in the SEO fields.
+ *
+ * The browser used to score the fields itself with different rules, so the
+ * editor and the SEO table disagreed (24 Oct 2026). Now it asks the server.
+ */
+function restwell_seo_admin_ajax_live_checks() {
+	$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+	check_ajax_referer( 'restwell_seo_live_checks_' . $post_id, 'nonce' );
+	$post = get_post( $post_id );
+	if ( ! $post instanceof WP_Post || ! current_user_can( 'edit_post', $post_id ) ) {
+		wp_send_json_error( null, 403 );
+	}
+	$field = static function ( string $key ): string {
+		return isset( $_POST[ $key ] ) ? sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- checked above.
+	};
+	ob_start();
+	restwell_seo_admin_render_checks( restwell_seo_admin_run_checks( $post, $field( 'focus_keyphrase' ), $field( 'meta_title' ), $field( 'meta_description' ) ) );
+	wp_send_json_success( array( 'html' => (string) ob_get_clean() ) );
+}
+add_action( 'wp_ajax_restwell_seo_live_checks', 'restwell_seo_admin_ajax_live_checks' );
 
 // =============================================================================
 // Save handler

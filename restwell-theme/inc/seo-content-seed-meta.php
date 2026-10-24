@@ -22,12 +22,12 @@ function restwell_get_seo_meta_defaults_by_slug() {
 	return array(
 		'how-it-works'          => array(
 			'meta_title'       => 'Booking a stay, from first email to front door',
-			'meta_description' => 'How booking a stay at Restwell works, from your first message to the front door. We check the bungalow fits before you pay any deposit.',
+			'meta_description' => 'How to book a stay at Restwell, from your first message to the front door. We check the bungalow fits before you pay any deposit.',
 			'focus_keyphrase'  => 'how to book a stay at restwell',
 		),
 		'home'                  => array(
 			'meta_title'       => 'Accessible holiday cottage in Whitstable, Kent, sleeps five',
-			'meta_description' => 'An accessible holiday bungalow by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.',
+			'meta_description' => 'An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.',
 			'focus_keyphrase'  => 'accessible holiday cottages kent',
 		),
 		'the-property'          => array(
@@ -37,7 +37,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'accessibility'         => array(
 			'meta_title'       => 'A disabled holiday cottage with a wet room and hoist',
-			'meta_description' => 'Exact access details: a 965mm front door, 926mm inside doors, and hoists rated to 180kg. There’s also a profiling bed and a level wet room.',
+			'meta_description' => 'Our disabled holiday cottage in Whitstable has a 965mm front door, 926mm inside doors and a level wet room. Its ceiling and mobile hoists take 180kg.',
 			'focus_keyphrase'  => 'disabled holiday cottage with wet room and hoists',
 		),
 		'who-its-for'           => array(
@@ -46,7 +46,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'holidays for disabled adults and carers',
 		),
 		'pricing'               => array(
-			'meta_title'       => 'Accessible holiday prices at Restwell, Whitstable',
+			'meta_title'       => 'Accessible holiday prices at Restwell Retreats, Whitstable',
 			'meta_description' => 'Restwell Retreats prices: a week is £1,300 off-peak and £1,400 in peak season, or you can book one night. The access equipment is included.',
 			'focus_keyphrase'  => 'restwell retreats prices',
 		),
@@ -92,12 +92,12 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'accessible-beaches-coastal-walks-kent'    => array(
 			'meta_title'       => 'Accessible beaches and coastal walks in Kent' . $name,
-			'meta_description' => 'Which Kent beaches work with a wheelchair: the level promenades, where shingle stops you, and where to borrow a beach wheelchair in Thanet.',
+			'meta_description' => 'Which accessible beaches in Kent work with a wheelchair? See the level promenades, where shingle stops you, and where to borrow a beach wheelchair in Thanet.',
 			'focus_keyphrase'  => 'accessible beaches kent',
 		),
 		'direct-payment-holiday-accommodation'     => array(
 			'meta_title'       => 'Can I use direct payments for a holiday? A UK guide' . $name,
-			'meta_description' => 'A direct payment rarely covers the holiday itself, but it can often pay for your care while you’re away. Here’s what councils allow, and what to ask.',
+			'meta_description' => 'Can you use direct payments for a holiday? They rarely cover the stay itself, but they can often pay for your care while you’re away. Here’s what to ask.',
 			'focus_keyphrase'  => 'can I use direct payments for a holiday',
 		),
 		'revitalise-alternatives-accessible-holidays' => array(
@@ -107,7 +107,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'how-to-choose-accessible-self-catering-holiday' => array(
 			'meta_title'       => 'How to choose an accessible holiday cottage: a checklist' . $name,
-			'meta_description' => 'A checklist for choosing an accessible holiday cottage: the kit, the beds, parking, care nearby and the cancellation terms, checked before you pay.',
+			'meta_description' => 'Here’s how to choose an accessible holiday cottage. Check the equipment, beds, parking, nearby care and cancellation terms before you pay.',
 			'focus_keyphrase'  => 'how to choose an accessible holiday cottage',
 		),
 		'carers-respite-holiday-guide'             => array(
@@ -177,7 +177,7 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'how-to-read-holiday-cottage-access-statement' => array(
 			'meta_title'       => 'Will my wheelchair fit? Door widths and access statements' . $name,
-			'meta_description' => 'Door widths, turning space, hoist clearance and bed heights explained, with the questions to ask when a cottage’s access statement leaves gaps.',
+			'meta_description' => 'Will your wheelchair fit? Door widths, turning space, hoist clearance and bed heights explained, plus what to ask when an access statement leaves gaps.',
 			'focus_keyphrase'  => 'wheelchair door width',
 		),
 		'fatigue-friendly-whitstable-coastal-day' => array(
@@ -187,17 +187,17 @@ function restwell_get_seo_meta_defaults_by_slug() {
 		),
 		'privacy-policy'        => array(
 			'meta_title'       => 'Restwell Retreats privacy policy',
-			'meta_description' => 'Our privacy policy covers what we collect when you enquire or book, and how long we keep it. It also explains cookies and your rights under UK GDPR.',
+			'meta_description' => 'The Restwell Retreats privacy policy covers what we collect when you enquire or book, and how long we keep it. It also explains cookies and your rights.',
 			'focus_keyphrase'  => 'restwell retreats privacy policy',
 		),
 		'terms-and-conditions'  => array(
 			'meta_title'       => 'Restwell Retreats booking terms and conditions',
-			'meta_description' => 'The terms for booking the bungalow: deposits, cancelling and changing dates. They also cover guest numbers, the access kit and what happens if we cancel.',
+			'meta_description' => 'The Restwell Retreats terms and conditions cover deposits, cancelling and changing dates. They also cover guest numbers and what happens if we cancel.',
 			'focus_keyphrase'  => 'restwell retreats terms and conditions',
 		),
 		'accessibility-policy'  => array(
 			'meta_title'       => 'Restwell Retreats website accessibility statement',
-			'meta_description' => 'Our website accessibility statement explains how we test this site against WCAG 2.2 AA. It lists the gaps we know about, and how to ask for another format.',
+			'meta_description' => 'The Restwell Retreats website accessibility statement explains how we test against WCAG 2.2 AA. It lists known gaps and how to ask for another format.',
 			'focus_keyphrase'  => 'restwell retreats website accessibility statement',
 		),
 	);

@@ -202,97 +202,95 @@
   }
 
   /* ── Live analysis (client-side re-run as the editor types) ─────────── */
+  /**
+   * Re-run the SEO analysis on the server while the fields change.
+   *
+   * The rules live in PHP only (restwell_seo_admin_run_checks), shared with the
+   * SEO table, so the editor and the table can never disagree again.
+   */
   function initLiveAnalysis() {
     var checksEl = byId('rw-seo-checks');
     var rootEl   = byId('rw-seo-root');
-    if (!checksEl || !rootEl) return;
+    if (!checksEl || !rootEl || !window.ajaxurl || !window.fetch) return;
 
     var titleInput = byId('rw_meta_title');
     var descInput  = byId('rw_meta_description');
     var kpInput    = byId('rw_focus_keyphrase');
-
     if (!titleInput || !descInput || !kpInput) return;
 
-    var postTitle = titleInput.getAttribute('placeholder') || '';
+    var timer = null;
+    var latest = 0;
 
-    function getData(name) {
-      return rootEl.getAttribute(name) || '';
+    function recheck() {
+      var ticket = ++latest;
+      var data = new FormData();
+      data.append('action', 'restwell_seo_live_checks');
+      data.append('post_id', rootEl.getAttribute('data-post-id') || '');
+      data.append('nonce', rootEl.getAttribute('data-checks-nonce') || '');
+      data.append('focus_keyphrase', kpInput.value);
+      data.append('meta_title', titleInput.value);
+      data.append('meta_description', descInput.value);
+      fetch(window.ajaxurl, { method: 'POST', body: data, credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          // Ignore answers to older keystrokes.
+          if (ticket === latest && res && res.success && res.data && typeof res.data.html === 'string') {
+            checksEl.innerHTML = res.data.html;
+          }
+        })
+        .catch(function () { /* Keep the last result; saving re-runs the checks. */ });
     }
 
-    /**
-     * Match PHP restwell_seo_admin_normalize_for_keyphrase_match: lowercase, collapse spaces, straighten apostrophes.
-     * @param {string} s
-     * @returns {string}
-     */
-    function normForKp(s) {
-      if (!s) return '';
-      return s
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, ' ')
-        .replace(/[\u2018\u2019\u2032]/g, "'");
+    function queue() {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(recheck, 400);
     }
 
-    function runChecks() {
-      var defKp    = getData('data-seo-default-kp');
-      var defTitle = getData('data-seo-default-title');
-      var defDesc  = getData('data-seo-default-desc');
+    titleInput.addEventListener('input', queue);
+    descInput.addEventListener('input', queue);
+    kpInput.addEventListener('input', queue);
+  }
 
-      // Same effective values as server-side checks when fields are left empty.
-      var kpRaw =
-        kpInput.value.trim() || defKp;
-      var titleRaw =
-        titleInput.value.trim() || defTitle || postTitle;
-      var descRaw =
-        descInput.value.trim() || defDesc;
+  /**
+   * List the schema types the live page actually outputs, read from its JSON-LD.
+   */
+  function initSchemaPanel() {
+    var listEl = byId('rw-seo-schema');
+    var rootEl = byId('rw-seo-root');
+    var url = rootEl ? rootEl.getAttribute('data-page-url') : '';
+    if (!listEl || !url || !window.fetch || !window.DOMParser) return;
 
-      var kpN = normForKp(kpRaw);
-      var titleN = normForKp(titleRaw);
-      var descN = normForKp(descRaw);
-
-      var updates = {
-        kp_title: !kpN ? 'warn' : (titleN.indexOf(kpN) >= 0 ? 'ok' : 'bad'),
-        kp_desc:  !kpN ? 'warn' : (descN.indexOf(kpN) >= 0 ? 'ok' : 'bad'),
-        title_len: (function() {
-          var l = (titleInput.value.trim() || defTitle || postTitle).length;
-          return l >= 50 && l <= 60 ? 'ok' : (l >= 40 ? 'warn' : 'bad');
-        })(),
-        desc_len: (function() {
-          var l = (descInput.value.trim() || defDesc).length;
-          return l >= 120 && l <= 160 ? 'ok' : (l >= 100 ? 'warn' : 'bad');
-        })(),
-      };
-
-      // Apply visual state updates.
-      Object.keys(updates).forEach(function (id) {
-        var el = checksEl.querySelector('[data-check="' + id + '"]');
-        if (!el) return;
-        var iconEl = el.querySelector('.rw-seo__check-icon');
-        var icons = { ok: '✓', warn: '~', bad: '✗' };
-        el.classList.remove('rw-seo__check--ok', 'rw-seo__check--warn', 'rw-seo__check--bad');
-        el.classList.add('rw-seo__check--' + updates[id]);
-        if (iconEl) iconEl.textContent = icons[updates[id]];
+    function show(items) {
+      listEl.innerHTML = '';
+      items.forEach(function (text) {
+        var li = document.createElement('li');
+        li.className = 'rw-seo__schema-item rw-seo__schema-item--on';
+        li.textContent = text;
+        listEl.appendChild(li);
       });
-
-      // Update title-len label with live count (saved or effective default).
-      var tlEl = checksEl.querySelector('[data-check="title_len"] .rw-seo__check-label');
-      if (tlEl) {
-        var tl = (titleInput.value.trim() || defTitle || postTitle).length;
-        tlEl.textContent = 'SEO title length: ' + tl + ' characters (ideal: 50-60)';
-      }
-
-      // Update desc-len label with live count.
-      var dlEl = checksEl.querySelector('[data-check="desc_len"] .rw-seo__check-label');
-      if (dlEl) {
-        var dl = (descInput.value.trim() || defDesc).length;
-        dlEl.textContent = 'Meta description length: ' + dl + ' characters (ideal: 120-160)';
-      }
     }
 
-    titleInput.addEventListener('input', runChecks);
-    descInput.addEventListener('input',  runChecks);
-    kpInput.addEventListener('input',    runChecks);
-    runChecks();
+    function collect(node, out) {
+      if (!node || typeof node !== 'object') return;
+      if (Array.isArray(node)) { node.forEach(function (n) { collect(n, out); }); return; }
+      var type = node['@type'];
+      (Array.isArray(type) ? type : [type]).forEach(function (t) {
+        if (t && out.indexOf(t) < 0) out.push(t);
+      });
+      if (node['@graph']) collect(node['@graph'], out);
+    }
+
+    fetch(url, { credentials: 'same-origin' })
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var types = [];
+        doc.querySelectorAll('script[type="application/ld+json"]').forEach(function (el) {
+          try { collect(JSON.parse(el.textContent), types); } catch (e) { /* Skip a broken block. */ }
+        });
+        show(types.length ? types : ['No structured data found on the live page']);
+      })
+      .catch(function () { show(['Could not read the live page']); });
   }
 
   /* ── Init ─────────────────────────────────────────────────────────────── */
@@ -302,12 +300,14 @@
     var titleCounter = byId('rw-title-counter');
     var descCounter  = byId('rw-desc-counter');
 
-    initCounter(titleInput, titleCounter, 60, { min: 50, max: 60 });
+    // Same ranges as the PHP checks: title 30–60, description 120–160.
+    initCounter(titleInput, titleCounter, 60, { min: 30, max: 60 });
     initCounter(descInput,  descCounter,  160, { min: 120, max: 160 });
     initPreviews();
     initSocialTabs();
     initOgImage();
     initLiveAnalysis();
+    initSchemaPanel();
   }
 
   if (document.readyState === 'loading') {

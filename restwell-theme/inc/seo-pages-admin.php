@@ -84,7 +84,7 @@ function restwell_seo_pages_enqueue( $hook_suffix ) {
 		'restwell-seo-admin',
 		$uri . '/assets/js/seo-admin.js',
 		array( 'wp-util', 'jquery' ),
-		$ver,
+		function_exists( 'restwell_theme_asset_version' ) ? restwell_theme_asset_version( '/assets/js/seo-admin.js' ) : $ver,
 		true
 	);
 

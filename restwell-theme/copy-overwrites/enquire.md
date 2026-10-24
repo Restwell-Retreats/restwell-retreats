@@ -4,7 +4,7 @@
 
 ## Title
 
-Contact Restwell about a stay in Whitstable
+Contact Restwell Retreats about a stay in Whitstable
 
 ## Meta description
 

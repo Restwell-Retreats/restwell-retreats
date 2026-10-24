@@ -8,7 +8,7 @@ How to book a stay at Restwell, step by step
 
 ## Meta description
 
-How booking a stay at Restwell works, from your first message to the front door. We check the bungalow fits before you pay any deposit.
+How to book a stay at Restwell, from your first message to the front door. We check the bungalow fits before you pay any deposit.
 
 ## H1 (`hiw_heading`)
 

@@ -91,45 +91,45 @@ function restwell_seo_checklist_build_summary_from_checks( array $checks, WP_Pos
 }
 
 /**
- * Whether haystack contains enough keyphrase tokens (natural-variant match).
+ * Words of a focus keyphrase that a title or description is missing.
  *
- * Exact phrase match wins. Otherwise require at least 2 significant tokens
- * (3+ chars), or all tokens when the keyphrase has only one significant token.
+ * The keyphrase counts as present when each of its main words appears, in any
+ * order. Small words ("a", "for", "with", "how"…) are ignored, and singular and
+ * plural count as the same word ("hoist" / "hoists", "beach" / "beaches"). The
+ * SEO table and the page editor both use this, so they always agree (24 Oct
+ * 2026: the table matched any two words, the editor only the exact phrase).
  *
- * @param string $haystack_norm Normalised haystack.
- * @param string $kp_norm       Normalised keyphrase.
- * @return bool
+ * @param string $text Title or description.
+ * @param string $kp   Focus keyphrase.
+ * @return string[] Missing words as typed in the keyphrase; empty when all are there.
  */
-function restwell_seo_checklist_keyphrase_tokens_match( string $haystack_norm, string $kp_norm ): bool {
-	if ( $kp_norm === '' || $haystack_norm === '' ) {
-		return false;
-	}
-	if ( str_contains( $haystack_norm, $kp_norm ) ) {
-		return true;
-	}
-	$split_tokens = preg_split( '/\s+/', $kp_norm );
-	if ( ! is_array( $split_tokens ) ) {
-		$split_tokens = array();
-	}
-	$tokens = array_values(
-		array_filter(
-			$split_tokens,
-			static function ( $t ) {
-				return is_string( $t ) && mb_strlen( $t ) >= 3;
-			}
-		)
-	);
-	if ( empty( $tokens ) ) {
-		return false;
-	}
-	$hits = 0;
-	foreach ( $tokens as $token ) {
-		if ( str_contains( $haystack_norm, $token ) ) {
-			++$hits;
+function restwell_seo_keyphrase_missing_words( string $text, string $kp ): array {
+	$stop  = array( 'a', 'an', 'and', 'the', 'of', 'to', 'in', 'on', 'for', 'with', 'at', 'by', 'from', 'or', 'is', 'are', 'be', 'can', 'i', 'my', 'your', 'our', 'you', 'it', 'its', 'do', 'does', 'how', 'what', 'when', 'where', 'which', 'who', 'why', 'this', 'that', 'about', 'into', 'as', 'if', 'we', 'us' );
+	$words = static function ( string $value ): array {
+		$value = strtolower( (string) preg_replace( '/[\x{2018}\x{2019}\x{2032}]/u', "'", $value ) );
+		preg_match_all( "/[a-z0-9]+(?:'[a-z]+)?/", $value, $found );
+		return $found[0];
+	};
+	$base  = static function ( string $word ): string {
+		if ( strlen( $word ) > 4 && 'ies' === substr( $word, -3 ) ) {
+			return substr( $word, 0, -3 ) . 'y';
+		}
+		if ( strlen( $word ) > 4 && preg_match( '/(ch|sh|x|z|ss)es$/', $word ) ) {
+			return substr( $word, 0, -2 );
+		}
+		if ( strlen( $word ) > 3 && 's' === substr( $word, -1 ) && 'ss' !== substr( $word, -2 ) ) {
+			return substr( $word, 0, -1 );
+		}
+		return $word;
+	};
+	$have = array_map( $base, $words( $text ) );
+	$miss = array();
+	foreach ( $words( $kp ) as $word ) {
+		if ( ! in_array( $word, $stop, true ) && ! in_array( $base( $word ), $have, true ) ) {
+			$miss[] = $word;
 		}
 	}
-	$need = ( count( $tokens ) === 1 ) ? 1 : min( 2, count( $tokens ) );
-	return $hits >= $need;
+	return array_values( array_unique( $miss ) );
 }
 
 /**
@@ -169,9 +169,10 @@ function restwell_seo_checklist_effective_meta( WP_Post $post ): array {
 }
 
 /**
- * Lightweight SEO checks for the All pages / Blog posts list (no content aggregation).
+ * SEO summary for one row of the All pages / Blog posts tables.
  *
- * Hard fails vs tips: length tips are info; missing description is bad; keyphrase uses token match.
+ * Runs exactly the checks the page editor shows (restwell_seo_admin_run_checks),
+ * so a row only says "Looking good" when the editor agrees.
  *
  * @param WP_Post $post Post or page.
  * @return array{
@@ -184,144 +185,10 @@ function restwell_seo_checklist_effective_meta( WP_Post $post ): array {
  * }
  */
 function restwell_seo_checklist_summarize_post_list( WP_Post $post ): array {
-	$meta      = restwell_seo_checklist_effective_meta( $post );
-	$focus_kp  = $meta['focus_keyphrase'];
-	$title     = $meta['meta_title'];
-	$desc      = $meta['meta_description'];
-	$kp        = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
-		? restwell_seo_admin_normalize_for_keyphrase_match( $focus_kp )
-		: strtolower( trim( $focus_kp ) );
-	$title_l   = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
-		? restwell_seo_admin_normalize_for_keyphrase_match( $title )
-		: strtolower( trim( $title ) );
-	$desc_l    = function_exists( 'restwell_seo_admin_normalize_for_keyphrase_match' )
-		? restwell_seo_admin_normalize_for_keyphrase_match( $desc )
-		: strtolower( trim( $desc ) );
-	$title_len = mb_strlen( $title );
-	$desc_len  = mb_strlen( $desc );
-	$has_og    = (bool) get_post_meta( $post->ID, 'og_image_id', true ) || has_post_thumbnail( $post->ID );
-	$has_site_og = ! $has_og && function_exists( 'restwell_get_default_og_image_url_for_request' )
-		? (bool) restwell_get_default_og_image_url_for_request( $post->ID )
-			// Posts share their blog-card fallback photo (see restwell_output_social_meta()).
-			|| ( 'post' === $post->post_type && function_exists( 'restwell_get_post_fallback_image' ) && '' !== (string) restwell_get_post_fallback_image( $post->ID ) )
-		: false;
-	$defaults  = function_exists( 'restwell_get_seo_default_meta_for_post_id' )
-		? restwell_get_seo_default_meta_for_post_id( $post->ID )
+	$meta   = restwell_seo_checklist_effective_meta( $post );
+	$checks = function_exists( 'restwell_seo_admin_run_checks' )
+		? restwell_seo_admin_run_checks( $post, $meta['focus_keyphrase'], $meta['meta_title'], $meta['meta_description'] )
 		: array();
-	$expects_kp = ! empty( $defaults['focus_keyphrase'] );
-	$checks     = array();
-
-	if ( $title === '' ) {
-		$checks[] = array(
-			'id'    => 'title_missing',
-			'label' => __( 'SEO title is missing', 'restwell-retreats' ),
-			'state' => 'bad',
-		);
-	}
-
-	if ( $desc === '' ) {
-		$checks[] = array(
-			'id'    => 'desc_missing',
-			'label' => __( 'Meta description is missing', 'restwell-retreats' ),
-			'state' => 'bad',
-		);
-	}
-
-	if ( $kp === '' ) {
-		$checks[] = array(
-			'id'    => 'kp_missing',
-			'label' => $expects_kp
-				? __( 'No focus keyphrase set (this page has a theme default — add one)', 'restwell-retreats' )
-				: __( 'No focus keyphrase set (optional but recommended)', 'restwell-retreats' ),
-			'state' => $expects_kp ? 'bad' : 'warn',
-		);
-	} else {
-		$kp_in_title = restwell_seo_checklist_keyphrase_tokens_match( $title_l, $kp );
-		$checks[]    = array(
-			'id'    => 'kp_title',
-			'label' => $kp_in_title
-				? __( 'Focus keyphrase reflected in SEO title', 'restwell-retreats' )
-				: __( 'Focus keyphrase not clearly reflected in SEO title', 'restwell-retreats' ),
-			'state' => $kp_in_title ? 'ok' : 'warn',
-		);
-		$kp_in_desc = restwell_seo_checklist_keyphrase_tokens_match( $desc_l, $kp );
-		$checks[]   = array(
-			'id'    => 'kp_desc',
-			'label' => $kp_in_desc
-				? __( 'Focus keyphrase reflected in meta description', 'restwell-retreats' )
-				: __( 'Focus keyphrase not clearly reflected in meta description', 'restwell-retreats' ),
-			'state' => $kp_in_desc ? 'ok' : 'info',
-		);
-	}
-
-	// Title length: 30–60 fine; tip outside; never bad for 30–45 alone.
-	if ( $title_len > 0 ) {
-		if ( $title_len >= 30 && $title_len <= 60 ) {
-			$title_state = 'ok';
-			$title_label = sprintf(
-				/* translators: %d - character count */
-				__( 'SEO title length: %d characters (good range)', 'restwell-retreats' ),
-				$title_len
-			);
-		} elseif ( $title_len < 25 ) {
-			$title_state = 'warn';
-			$title_label = sprintf(
-				/* translators: %d - character count */
-				__( 'SEO title length: %d characters (very short — may be vague in search)', 'restwell-retreats' ),
-				$title_len
-			);
-		} elseif ( $title_len > 60 ) {
-			$title_state = 'info';
-			$title_label = sprintf(
-				/* translators: %d - character count */
-				__( 'SEO title length: %d characters (may truncate in Google ~50–60)', 'restwell-retreats' ),
-				$title_len
-			);
-		} else {
-			// 25–29: tip only.
-			$title_state = 'info';
-			$title_label = sprintf(
-				/* translators: %d - character count */
-				__( 'SEO title length: %d characters (tip: 30–60 is a solid SERP range)', 'restwell-retreats' ),
-				$title_len
-			);
-		}
-		$checks[] = array(
-			'id'    => 'title_len',
-			'label' => $title_label,
-			'state' => $title_state,
-		);
-	}
-
-	if ( $desc_len > 0 ) {
-		if ( $desc_len >= 120 && $desc_len <= 160 ) {
-			$desc_state = 'ok';
-		} elseif ( $desc_len < 80 ) {
-			$desc_state = 'warn';
-		} else {
-			$desc_state = 'info';
-		}
-		$checks[] = array(
-			'id'    => 'desc_len',
-			'label' => sprintf(
-				/* translators: %d - character count */
-				__( 'Meta description length: %d characters (guide: 120–160)', 'restwell-retreats' ),
-				$desc_len
-			),
-			'state' => $desc_state,
-		);
-	}
-
-	$checks[] = array(
-		'id'    => 'og_image',
-		'label' => $has_og
-			? __( 'Featured or OG image is set', 'restwell-retreats' )
-			: ( $has_site_og
-				? __( 'No page OG/featured image — site default image will be used', 'restwell-retreats' )
-				: __( 'No OG/featured image and no usable site default', 'restwell-retreats' ) ),
-		'state' => $has_og ? 'ok' : ( $has_site_og ? 'info' : 'warn' ),
-	);
-
 	return restwell_seo_checklist_build_summary_from_checks( $checks, $post );
 }
 

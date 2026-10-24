@@ -4,7 +4,7 @@
 
 ## Title
 
-Accessible holiday prices at Restwell, Whitstable
+Accessible holiday prices at Restwell Retreats, Whitstable
 
 ## Meta description
 
