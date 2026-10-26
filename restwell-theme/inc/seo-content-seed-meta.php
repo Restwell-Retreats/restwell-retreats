@@ -116,9 +116,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'respite for carers',
 		),
 		'what-to-pack-accessible-self-catering-uk' => array(
-			'meta_title'       => 'What to pack for an accessible self-catering break' . $name,
-			'meta_description' => 'What to pack for an accessible self-catering UK break: meds, continence, hoist extras, kitchen aids, and what to confirm with the owner before you travel.',
-			'focus_keyphrase'  => 'accessible holiday packing list uk',
+			'meta_title'       => 'A self-catering packing list for an accessible UK holiday' . $name,
+			'meta_description' => 'A self-catering packing list for a UK holiday, with the extras for access needs: medicines, your sling, chargers and supplies, plus what Restwell provides.',
+			'focus_keyphrase'  => 'self catering packing list uk',
 		),
 		'accessible-parking-whitstable-tankerton' => array(
 			'meta_title'       => 'Blue Badge parking in Whitstable and Tankerton' . $name,
@@ -161,9 +161,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'changing places toilets kent coast',
 		),
 		'quieter-times-whitstable-low-crowd-access' => array(
-			'meta_title'       => 'When Whitstable is quieter: a guide to low-crowd days' . $name,
-			'meta_description' => 'Quieter times to visit Whitstable for accessible travellers: weekday patterns, festival pitfalls, parking turnover, and fatigue-friendly pacing.',
-			'focus_keyphrase'  => 'quieter times whitstable visit',
+			'meta_title'       => 'The best time to visit Whitstable, season by season' . $name,
+			'meta_description' => 'The best time to visit Whitstable depends on what you want: quieter streets, warm weather or oysters. Here’s each season, the busy dates and calmer times.',
+			'focus_keyphrase'  => 'best time to visit whitstable',
 		),
 		'how-to-read-holiday-cottage-access-statement' => array(
 			'meta_title'       => 'Will my wheelchair fit? Door widths and access statements' . $name,
@@ -171,9 +171,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'wheelchair door width',
 		),
 		'fatigue-friendly-whitstable-coastal-day' => array(
-			'meta_title'       => 'A fatigue-friendly day out on the Whitstable coast' . $name,
-			'meta_description' => 'Fatigue-friendly coastal days around Whitstable: pacing blocks, sensory load, wind and glare, hydration, and realistic promenade targets.',
-			'focus_keyphrase'  => 'fatigue friendly whitstable coastal day',
+			'meta_title'       => 'Wheelchair accessible days out in Kent, from Whitstable' . $name,
+			'meta_description' => 'Wheelchair accessible days out in Kent near Whitstable: what’s step-free, where to borrow a wheelchair, free carer tickets and Changing Places toilets.',
+			'focus_keyphrase'  => 'wheelchair accessible days out kent',
 		),
 		'privacy-policy'        => array(
 			'meta_title'       => 'Restwell Retreats privacy policy',

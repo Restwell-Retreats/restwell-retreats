@@ -11,7 +11,7 @@
 | `/revitalise-alternatives-accessible-holidays/` | Revitalise Centres Closed \| What Next | What happened to Revitalise, and where to go now |
 | `/how-to-choose-accessible-self-catering-holiday/` | Accessible Self-Catering Holiday Guide | How to choose an accessible self-catering holiday |
 | `/carers-respite-holiday-guide/` | Carer Assessment & Respite Rights Guide | Respite for carers: how to get a break from caring (Batch D, 26 Oct 2026) |
-| `/what-to-pack-accessible-self-catering-uk/` | Accessible Holiday Packing List UK \| Self-Catering | What to pack for an accessible self-catering break |
+| `/what-to-pack-accessible-self-catering-uk/` | Accessible Holiday Packing List UK \| Self-Catering | A self-catering packing list for an accessible UK holiday (Batch F, 26 Oct 2026) |
 | `/accessible-parking-whitstable-tankerton/` | Accessible Parking Whitstable \| Tankerton | Blue Badge parking in Whitstable and Tankerton (Batch E, 26 Oct 2026) |
 | `/chc-respite-holiday-accommodation-uk/` | CHC Respite Holiday Accommodation UK | CHC respite care: what the NHS pays for on a break (Batch D, 26 Oct 2026) |
 | `/hire-mobility-scooter-equipment-uk-holiday/` | Hire Mobility Equipment UK Holiday \| Self-Catering | Mobility scooter and wheelchair hire in Whitstable (Batch E, 26 Oct 2026) |
@@ -21,7 +21,7 @@
 | `/personal-budget-short-break-care-act/` | Personal Budget Short Break Care Act | Respite under the Care Act 2014: what your council must do (Batch D, 26 Oct 2026) |
 | `/accessible-eating-out-whitstable-kent/` | Accessible Eating Out Whitstable Kent | Accessible places to eat in Whitstable and Kent |
 | `/changing-places-toilets-kent-coast-days-out/` | Changing Places Toilets Kent Coast \| Days Out | Changing Places toilets for Kent coast days out |
-| `/quieter-times-whitstable-low-crowd-access/` | Quieter Times Whitstable Visit \| Low Crowd Access | When Whitstable is quieter: a guide to low-crowd days |
+| `/quieter-times-whitstable-low-crowd-access/` | Quieter Times Whitstable Visit \| Low Crowd Access | The best time to visit Whitstable, season by season (Batch F, 26 Oct 2026) |
 | `/holiday-backup-plan-care-worker-change/` | Holiday Backup Plan Care Worker Change | Folded into an Optional Care question, 26 Oct 2026; the address redirects there |
 | `/how-to-read-holiday-cottage-access-statement/` | How to Read Holiday Cottage Access Statement | How to read a holiday cottage access statement |
-| `/fatigue-friendly-whitstable-coastal-day/` | Fatigue Friendly Whitstable Coastal Day | A fatigue-friendly day out on the Whitstable coast |
+| `/fatigue-friendly-whitstable-coastal-day/` | Fatigue Friendly Whitstable Coastal Day | Wheelchair accessible days out in Kent, from Whitstable (Batch F, 26 Oct 2026) |

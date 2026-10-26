@@ -13,10 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The supporting "mill" posts that stay noindex, follow.
  *
  * Source of truth: copy-overwrites/mill-posts.md. The five kept guides and the
- * Batch D and E rewrites (26 Oct 2026: carers, CHC, Care Act, parking, trains,
- * mobility hire, insurance) are indexable; the posts below wait for their own
- * rewrite or were folded into a page. Enforced in code so a re-seed or a fresh
- * database cannot quietly make them indexable.
+ * Batch D, E and F rewrites (26 Oct 2026) are indexable. The posts below are
+ * waiting to be folded into a page, or already were. Enforced in code so a
+ * re-seed or a fresh database cannot quietly make them indexable.
  *
  * @return string[]
  */
@@ -24,10 +23,7 @@ function restwell_get_noindex_post_slugs() {
 	return array(
 		'accessible-eating-out-whitstable-kent',
 		'changing-places-toilets-kent-coast-days-out',
-		'quieter-times-whitstable-low-crowd-access',
-		'fatigue-friendly-whitstable-coastal-day',
 		'commissioner-checklist-accessible-respite-stay',
-		'what-to-pack-accessible-self-catering-uk',
 		'holiday-backup-plan-care-worker-change',
 	);
 }

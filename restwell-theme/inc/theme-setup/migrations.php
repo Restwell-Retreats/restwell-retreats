@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 117;
+const RESTWELL_SCHEMA_VERSION = 119;
 
 
 /**
@@ -5818,6 +5818,69 @@ function restwell_migrate_batch_e_share_images_v117() {
 }
 
 /**
+ * Batch F (26 Oct 2026): the quieter-times, fatigue-friendly day and packing
+ * guides become the best time to visit Whitstable, wheelchair accessible
+ * days out in Kent and a self-catering packing list. Their addresses stay.
+ */
+function restwell_migrate_batch_f_posts_v118() {
+	$flag = 'restwell_batch_f_posts_v118';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+
+	$made = restwell_publish_rewritten_guides(
+		array(
+			'quieter-times-whitstable-low-crowd-access' => array(
+				'text'             => array( '0ebe11c6dd64e2c26fe2d42bfe08df27', '3cc39fbf7cd7ddd881b40e6794dbc133' ),
+				'title'            => array( 'Quieter times to visit Whitstable if you need space and calm' ),
+				'excerpt'          => array( 'When Whitstable is at its quietest, which events to plan around, and why parking can matter as much as the tide.', 'Weekday patterns, festival pitfalls, and why parking turnover matters as much as tide times for low-energy travellers.' ),
+				'meta_title'       => array( 'When Whitstable is quieter: a guide to low-crowd days', 'Quieter Times Whitstable Visit | Low Crowd Access' ),
+				'meta_description' => array( 'Quieter times to visit Whitstable for accessible travellers: weekday patterns, festival pitfalls, parking turnover, and fatigue-friendly pacing.' ),
+				'focus_keyphrase'  => array( 'quieter times whitstable visit' ),
+			),
+			'fatigue-friendly-whitstable-coastal-day'   => array(
+				'text'             => array( '81aad6918c020e2d4288e831b6f0ac25', 'cd15f1d7c8023e4e27a7882499eeac6b' ),
+				'title'            => array( 'Fatigue-friendly coastal days around Whitstable' ),
+				'excerpt'          => array( 'How to plan a day by the sea with places to rest, a route that suits you and an easy way home.', 'Plan a manageable outing with places to pause, a route that suits you, and an easy way back.', 'Pacing blocks, wind and glare, hydration, and realistic promenade targets for MS, long COVID, and post-stroke endurance limits.' ),
+				'meta_title'       => array( 'A fatigue-friendly day out on the Whitstable coast', 'Fatigue Friendly Whitstable Coastal Day' ),
+				'meta_description' => array( 'Plan a fatigue-friendly day around Whitstable, with practical checks for routes, seating, toilets, weather and the journey back.', 'Fatigue-friendly coastal days around Whitstable: pacing blocks, sensory load, wind and glare, hydration, and realistic promenade targets.' ),
+				'focus_keyphrase'  => array( 'fatigue friendly whitstable coastal day' ),
+			),
+			'what-to-pack-accessible-self-catering-uk'  => array(
+				'text'             => array( '5dffc672f3013d680ccaad4d3c5e0e62', '8e2049113fed985bca8b57751bedd087' ),
+				'title'            => array( 'What to pack for an accessible self-catering break in the UK' ),
+				'excerpt'          => array( 'A room-by-room packing list for hoist users, continence care, medicines and the kitchen, and what to check with the owner before you go.', 'A room-by-room packing list for hoist users, continence care, medication routines, and kitchen access, plus what to verify with the owner before you zip the case.', 'A room-by-room packing list for hoist users, continence care, medication routines, and kitchen access — plus what to verify with the owner before you zip the case.' ),
+				'meta_title'       => array( 'What to pack for an accessible self-catering break', 'Accessible Holiday Packing List UK | Self-Catering' ),
+				'meta_description' => array( 'What to pack for an accessible self-catering UK break: meds, continence, hoist extras, kitchen aids, and what to confirm with the owner before you travel.' ),
+				'focus_keyphrase'  => array( 'accessible holiday packing list uk' ),
+			),
+		)
+	);
+
+	if ( $made ) {
+		// A guide published just now needs its share photo; let v119 look again.
+		delete_option( 'restwell_batch_f_share_images_v119' );
+	}
+}
+
+/**
+ * Share photos for the three Batch F guides (26 Oct 2026), the same photos
+ * their blog cards use.
+ */
+function restwell_migrate_batch_f_share_images_v119() {
+	$flag = 'restwell_batch_f_share_images_v119';
+	restwell_set_guide_share_photos(
+		$flag,
+		array(
+			'quieter-times-whitstable-low-crowd-access' => 'stock/restwell-whitstable-shingle-beach-sunset.jpg',
+			'fatigue-friendly-whitstable-coastal-day'   => 'stock/restwell-whitstable-coastal-pathway.webp',
+			'what-to-pack-accessible-self-catering-uk'  => 'bungalow/BD1-1-LS.jpg',
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5970,6 +6033,8 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch_d_share_images_v115',
 		'restwell_batch_e_posts_v116',
 		'restwell_batch_e_share_images_v117',
+		'restwell_batch_f_posts_v118',
+		'restwell_batch_f_share_images_v119',
 	);
 }
 
@@ -6190,6 +6255,10 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_e_posts_v116', 154 );
 	add_action( 'init', 'restwell_migrate_batch_e_share_images_v117', 160 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_e_share_images_v117', 155 );
+	add_action( 'init', 'restwell_migrate_batch_f_posts_v118', 161 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_f_posts_v118', 156 );
+	add_action( 'init', 'restwell_migrate_batch_f_share_images_v119', 162 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_f_share_images_v119', 157 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

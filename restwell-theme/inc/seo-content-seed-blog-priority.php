@@ -64,10 +64,10 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'what-to-pack-accessible-self-catering-uk',
-			'title'            => 'What to pack for an accessible self-catering break in the UK',
-			'excerpt'          => 'A room-by-room packing list for hoist users, continence care, medicines and the kitchen, and what to check with the owner before you go.',
-			'meta_title'       => 'What to pack for an accessible self-catering break',
-			'meta_description' => 'What to pack for an accessible self-catering UK break: meds, continence, hoist extras, kitchen aids, and what to confirm with the owner before you travel.',
+			'title'            => 'A self-catering packing list for an accessible UK holiday',
+			'excerpt'          => 'What to pack for a self-catering holiday in the UK. It also covers the extras that help if you have access or care needs.',
+			'meta_title'       => 'A self-catering packing list for an accessible UK holiday',
+			'meta_description' => 'A self-catering packing list for a UK holiday, with the extras for access needs: medicines, your sling, chargers and supplies, plus what Restwell provides.',
 			'content'          => restwell_get_blog_post_pack_accessible_self_catering_html(),
 			'category_slug'    => 'accessible-holidays',
 		),
@@ -145,10 +145,10 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'quieter-times-whitstable-low-crowd-access',
-			'title'            => 'Quieter times to visit Whitstable if you need space and calm',
-			'excerpt'          => 'When Whitstable is at its quietest, which events to plan around, and why parking can matter as much as the tide.',
-			'meta_title'       => 'When Whitstable is quieter: a guide to low-crowd days',
-			'meta_description' => 'Quieter times to visit Whitstable for accessible travellers: weekday patterns, festival pitfalls, parking turnover, and fatigue-friendly pacing.',
+			'title'            => 'When is the best time to visit Whitstable?',
+			'excerpt'          => 'How Whitstable changes through the year, and which dates get busy. It also covers when the town is calmer for a slower pace.',
+			'meta_title'       => 'The best time to visit Whitstable, season by season',
+			'meta_description' => 'The best time to visit Whitstable depends on what you want: quieter streets, warm weather or oysters. Here’s each season, the busy dates and calmer times.',
 			'content'          => restwell_get_blog_post_quieter_whitstable_visit_html(),
 			'category_slug'    => 'kent-coast',
 		),
@@ -163,10 +163,10 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'fatigue-friendly-whitstable-coastal-day',
-			'title'            => 'Fatigue-friendly coastal days around Whitstable',
-			'excerpt'          => 'How to plan a day by the sea with places to rest, a route that suits you and an easy way home.',
-			'meta_title'       => 'A fatigue-friendly day out on the Whitstable coast',
-			'meta_description' => 'Plan a fatigue-friendly day around Whitstable, with practical checks for routes, seating, toilets, weather and the journey back.',
+			'title'            => 'Wheelchair accessible days out in Kent, from Whitstable',
+			'excerpt'          => 'Six days out within reach of Whitstable, with what’s step-free and where to borrow a wheelchair. It also lists free carer tickets and Changing Places toilets.',
+			'meta_title'       => 'Wheelchair accessible days out in Kent, from Whitstable',
+			'meta_description' => 'Wheelchair accessible days out in Kent near Whitstable: what’s step-free, where to borrow a wheelchair, free carer tickets and Changing Places toilets.',
 			'content'          => restwell_get_blog_post_fatigue_friendly_coastal_day_html(),
 			'category_slug'    => 'kent-coast',
 		),
@@ -782,79 +782,77 @@ function restwell_get_blog_post_carers_respite_html() {
 }
 
 /**
- * Draft cluster article: packing for accessible self-catering (UK).
+ * A self-catering packing list for an accessible UK holiday (Batch F, 26 Oct
+ * 2026). Lists what Restwell provides; keep it in step with the equipment list.
  *
  * @return string
  */
 function restwell_get_blog_post_pack_accessible_self_catering_html() {
-	$blog      = esc_url( home_url( '/blog/' ) );
-	$checklist = esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) );
-	$beaches   = esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) );
-	$guide     = esc_url( home_url( '/guest-guide/' ) );
-	$faq       = esc_url( home_url( '/faq/' ) );
-	$enq       = esc_url( home_url( '/enquire/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
+	$hire    = esc_url( home_url( '/hire-mobility-scooter-equipment-uk-holiday/' ) );
+	$access  = esc_url( home_url( '/accessibility/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Treat packing as part of your risk assessment: duplicate medication, spare sling parts, continence stock for closed shops, and written confirmations for anything the listing promises. If the hoist or mattress type is wrong when you arrive, bags cannot fix it. Verify specs before you pay.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Check what the holiday home provides before you pack, as it varies a lot. Then bring what only you have, such as medicines, your hoist sling, chargers and continence supplies. At Restwell, linen, towels and the access equipment are all included.</p></blockquote>
 
-<h2>What is an accessible packing plan?</h2>
-<p>An accessible packing plan is a written list that matches your clinical routine to what a self-catering kitchen, bathroom, and bedroom actually contain.</p>
+<h2>What should you check before you pack?</h2>
+<p>Ask the holiday home what's included, and get the answer in writing. Linen, towels, cooking basics and WiFi all vary between lets. So do starter supplies, such as toilet roll and washing-up liquid.</p>
+<p>At Restwell, linen, towels and WiFi are included, along with all the access equipment. The kitchen has plates, pans, cutlery and the cooking basics. Our <a href=\"{$access}\">list of the equipment at the bungalow</a> gives the makes and weight limits.</p>
 
-<h2>Why packing trips fail disabled travellers</h2>
-<p>Coastal towns quiet down early evening and Sunday trading is thin. Running out of pads, feeds, or seizure rescue meds turns a holiday into an emergency round-trip to an unfamiliar pharmacy.</p>
-<p>Self-catering assumed \"stocked like home\" is the usual failure mode. Owners rarely supply clinical quantities.</p>
-
-<h2>Supplied by the property versus packed by you</h2>
-<table>
-<caption>Compare what owners typically include against what you should still bring</caption>
-<thead><tr><th scope=\"col\">Item</th><th scope=\"col\">Often at adapted stays</th><th scope=\"col\">Usually yours to pack</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Hoist &amp; bed</th><td>Track, motor, emergency lowering tools if advertised</td><td>Personal sling labelled with SWL, bedside cables, spare wipes</td></tr>
-<tr><th scope=\"row\">Bathroom</th><td>Shower chair sometimes</td><td>Preferred slide sheets, stoma bags, catheter night drainage</td></tr>
-<tr><th scope=\"row\">Kitchen</th><td>Standard pots and kettle</td><td>Thickened fluids, allergy-safe oils, adapted cutlery</td></tr>
-<tr><th scope=\"row\">Power</th><td>UK sockets</td><td>Medical device chargers, extension rated for load, RCD awareness</td></tr>
-</tbody>
-</table>
-
-<h2>How to tailor the list</h2>
-<h3>Hoist and transfers</h3>
-<p>Photograph your home sling tag before travel. Pack colour-coded loops if mixing identical-looking slings between carers.</p>
-<h3>Medication and feeds</h3>
-<p>Split scripts across two bags in case one goes missing. Carry liquid allowances letters if flying domestically with syringes.</p>
-<h3>Continence and skin</h3>
-<p>Add twenty percent buffer stock for beach days when changes spike.</p>
-<h3>Communication and tech</h3>
-<p>Download offline maps, save owner contacts, and screenshot door codes.</p>
-
-<h2>Practical steps before you lock the door</h2>
-<ol>
-<li>Email the owner with yes-or-no questions echoing our <a href=\"{$checklist}\">self-catering checklist</a>.</li>
-<li>Pack a paper copy of emergency numbers and insurer helplines.</li>
-<li>Label bags \"medical supplies\" where airport security helps.</li>
-<li>Photograph packed equipment so claims teams have evidence.</li>
-</ol>
-
-<h2>Common packing mistakes</h2>
+<h2>What to pack for a self-catering holiday in the UK</h2>
+<p>These are the basics for most self-catering stays in the UK. Strike off anything your holiday home already provides.</p>
 <ul>
-<li>Relying on supermarket delivery slots in peak season.</li>
-<li>Assuming beach wheelchairs live at every gate without booking.</li>
-<li>Shipping-only chargers that need tools you left at home.</li>
-<li>Hiding mobility aids in the boot until day three.</li>
+<li>Clothes for wind and rain, even in summer, as the coast can be breezy.</li>
+<li>Toiletries and a small first aid kit.</li>
+<li>Food for your first evening and breakfast, in case the shops are shut when you arrive.</li>
+<li>Phone chargers, and an extension lead if you have a lot to charge.</li>
+<li>A blanket or windbreak for the beach, and a flask for days out.</li>
+<li>A bank card or app for parking, as many car parks no longer take cash.</li>
+</ul>
+
+<h2>Extras to pack if you have access or care needs</h2>
+<ul>
+<li><strong>Medicines:</strong> enough for the stay plus a few spare days, in their boxes, with a list of what you take.</li>
+<li><strong>Your hoist sling:</strong> a sling has to fit the person using it, so holiday homes can't safely supply one.</li>
+<li><strong>Continence and skin care supplies:</strong> pack a few days' extra, in case your plans change.</li>
+<li><strong>Feeding supplies:</strong> bring enough for the stay if you use them, plus spares.</li>
+<li><strong>Chargers:</strong> for your powerchair, scooter, phone and any medical devices, with labels.</li>
+<li><strong>Your own cushion:</strong> a pressure cushion or pillow you rely on at home.</li>
+<li><strong>Your routine on paper:</strong> a short note of your care routine helps anyone stepping in.</li>
+<li><strong>Your Blue Badge and clock:</strong> and your railcard if you're coming by train.</li>
+</ul>
+
+<h2>What you don't need to bring to Restwell</h2>
+<p>You don't need to bring bedding, towels or access equipment. The bungalow has two profiling beds, a ceiling track hoist, a mobile hoist and a standing aid. It also has a tilt-in-space shower chair, a shower stool, a wash-dry toilet and a height-adjustable basin.</p>
+<p>Fold-up ramps are kept by the front door, for the house and for days out. There's also a washing machine, a tumble dryer and a dishwasher.</p>
+<p>Both hoists take loop-style slings on a two-point spreader bar, so please bring the sling you already use.</p>
+
+<h2>What if you forget something?</h2>
+<p>Whitstable has pharmacies in the town centre that open seven days a week, and big supermarkets a short drive away. If you've left a prescription medicine at home, NHS 111 can ask a local pharmacy for an emergency supply. Use 111 online or call 111.</p>
+<p>If your chair or scooter breaks, see our guide to <a href=\"{$hire}\">mobility scooter and wheelchair hire in Whitstable</a>.</p>
+
+<h2>Common mistakes to avoid</h2>
+<ul>
+<li>Packing your medicines in a case you can't reach on the way.</li>
+<li>Forgetting the sling, because the hoist is already at the holiday home.</li>
+<li>Leaving a charger plugged in at home.</li>
+<li>Arriving late with nothing in for breakfast.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Should I bring my own shower chair?</h3>
-<p>If balance is marginal, yes. Molded seats feel different from rental PVC. Ask for seat height and rear wheels before you decide.</p>
-<h3>How many spare sling loops?</h3>
-<p>Two matched pairs per traveller using hoists covers laundry delays without panic buying.</p>
-<h3>Can I bring a second fridge for meds?</h3>
-<p>Ask first. Many cottages allow mini coolers in bedrooms if noise stays low.</p>
-<h3>What paperwork helps carers?</h3>
-<p>Care plans, MAR charts, and consent for emergency treatment speed unfamiliar GP calls.</p>
-<h3>Where do I double-check house specifics?</h3>
-<p>Read our <a href=\"{$guide}\">guest guide</a> once booked and skim site-wide <a href=\"{$faq}\">booking FAQs</a>.</p>
+<h3>What do you need to bring to a self-catering holiday?</h3>
+<p>Usually your food, toiletries and anything personal. Check whether linen, towels and cleaning basics are included, as they vary between holiday homes.</p>
+<h3>Do I need to bring bedding and towels to Restwell?</h3>
+<p>No, linen and towels are included in the price. So is all the access equipment.</p>
+<h3>Can I bring my own equipment?</h3>
+<p>Yes. If you'd like to bring a bed, chair or other equipment, tell us first, and we'll check it fits. The front door is 965mm wide and the doors inside are 926mm.</p>
+<h3>Should I bring my own sling?</h3>
+<p>Yes, please. A sling needs to fit the person using it, so we can't safely supply one.</p>
+
+<h2>Packing for a stay at Restwell</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable. Most of what you need for access is already there, so you can pack lighter than you might expect.</p>
 
 <h2>Closing</h2>
-<p>Packing closes the gap between marketing photos and your real routine. Pair this list with Kent coastal planning in our <a href=\"{$beaches}\">accessible beaches guide</a>, browse more on the <a href=\"{$blog}\">blog</a>, then <a href=\"{$enq}\">tell us what you still need</a> if Whitstable is on your shortlist.</p>";
+<p>If you're not sure whether to bring something, <a href=\"{$enquire}\">ask us what's at the bungalow</a>, and we'll let you know.</p>";
 }
 
 /**

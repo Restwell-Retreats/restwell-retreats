@@ -154,74 +154,77 @@ function restwell_get_blog_post_changing_places_kent_coast_html() {
 }
 
 /**
- * Quieter times to visit Whitstable (lower crowding).
+ * The best time to visit Whitstable (Batch F, 26 Oct 2026): busy and quiet
+ * times, oyster season and the festival. Event dates are as of 2026.
  *
  * @return string
  */
 function restwell_get_blog_post_quieter_whitstable_visit_html() {
-	$blog  = esc_url( home_url( '/blog/' ) );
-	$park  = esc_url( home_url( '/accessible-parking-whitstable-tankerton/' ) );
-	$eat   = esc_url( home_url( '/accessible-eating-out-whitstable-kent/' ) );
-	$fatigue = esc_url( home_url( '/fatigue-friendly-whitstable-coastal-day/' ) );
-	$enq   = esc_url( home_url( '/enquire/' ) );
+	$area    = esc_url( home_url( '/whitstable-area-guide/' ) );
+	$parking = esc_url( home_url( '/accessible-parking-whitstable-tankerton/' ) );
+	$pricing = esc_url( home_url( '/pricing/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Whitstable breathes easier midweek outside school holidays: parking turnover drops, pavements open for wider chairs, and café queues shrink. Still check oyster festivals and regatta weekends because quiet Tuesday rules vanish overnight.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> For a calmer visit, come midweek outside the school holidays, especially in spring or early autumn. Summer is the warmest time but also the busiest. Native oysters are in season from September, which is also when the oyster festival takes place.</p></blockquote>
 
-<h2>What is a low-crowd accessible visit?</h2>
-<p>A low-crowd accessible visit times travel so sensory load, kerb competition, and seating hunts stay manageable.</p>
+<h2>When is the best time to visit Whitstable?</h2>
+<p>It depends on what matters most to you. For quieter streets and easier parking, come midweek outside the school holidays. For the warmest weather, come in July or August, and expect the town to be busy.</p>
+<p>Spring and early autumn are a good middle ground. The days are often mild, the promenade is calmer, and it's easier to find a table for lunch. Our Whitstable guide lists <a href=\"{$area}\">the routes and cafés we know work</a>.</p>
 
-<h2>Why crowding hits disabled travellers harder</h2>
-<p>Stopping on narrow pavements risks rear-end bumps from bikes. Noise masks hearing-loop usefulness. Carers burn glucose faster when weaving crowds.</p>
-
-<h2>Seasonal patterns to respect</h2>
-<table>
-<caption>Rough guide only: verify event calendars yearly</caption>
-<thead><tr><th scope=\"col\">Window</th><th scope=\"col\">Usually calmer</th><th scope=\"col\">Often hectic</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Spring weekdays</th><td>Morning coffee slots</td><td>Easter school break</td></tr>
-<tr><th scope=\"row\">Summer</th><td>Tuesday–Thursday early</td><td>Weekends + festivals</td></tr>
-<tr><th scope=\"row\">Autumn</th><td>Post-school-return September</td><td>Oyster festival period</td></tr>
-<tr><th scope=\"row\">Winter</th><td>Bright dry midweeks</td><td>Boxing Day walks</td></tr>
-</tbody>
-</table>
-
-<h2>How to build a gentle itinerary</h2>
-<h3>Parking first</h3>
-<p>Use <a href=\"{$park}\">parking notes</a> before excitement commits you.</p>
-<h3>One anchor activity</h3>
-<p>Promenade roll OR harbour lunch, not both back-to-back if fatigue bites.</p>
-<h3>Escape routes</h3>
-<p>Identify calm streets parallel to the high street.</p>
-
-<h2>Practical steps</h2>
+<h2>When is Whitstable at its busiest?</h2>
+<p>Sunny weekends and the school holidays bring the most visitors, especially in summer. The harbour and the High Street get crowded, and the car parks fill early. A few big events add to that.</p>
 <ul>
-<li>Follow Met Office wind warnings; gusts tire powerchair users.</li>
-<li>Book <a href=\"{$eat}\">restaurants</a> for noon, not 13:00 rush.</li>
-<li>Pair with <a href=\"{$fatigue}\">fatigue pacing ideas</a>.</li>
+<li><strong>Whitstable Carnival:</strong> a Saturday in early August, with a procession from Tankerton Road to Saddleton Road.</li>
+<li><strong>Harbour Day:</strong> a Saturday in the middle of August.</li>
+<li><strong>The Whitstable Rocks Oyster Festival:</strong> three days in September, across the harbour, the beach and the town.</li>
+</ul>
+<p>In Kent, the school summer holiday in 2027 runs from 22 July to 31 August. There are also half-terms in February, late May and late October.</p>
+
+<h2>When is Whitstable at its quietest?</h2>
+<p>Midweek outside the school holidays is usually the calmest time. Early mornings are quieter too, before most day visitors arrive.</p>
+<p>Winter is the quietest season of all. It's colder and windier by the sea, but there's more space on the promenade. Some places shorten their hours, so check opening times before a special trip.</p>
+
+<h2>When are Whitstable oysters in season?</h2>
+<p>Native oysters are in season from September to April, in the months with an R. Rock oysters are farmed and served all year round, so you can try one whenever you visit.</p>
+<p>The Whitstable Rocks Oyster Festival takes place over three days in September. Many of its events are free, and the town gets very busy, so plan your parking ahead.</p>
+
+<h2>What is Whitstable like in each season?</h2>
+<ul>
+<li><strong>Spring:</strong> milder days and calmer weekdays, though the Easter holidays are busy.</li>
+<li><strong>Summer:</strong> the warmest weather and longest days, and the most visitors, especially in August.</li>
+<li><strong>Autumn:</strong> often still mild in September, with the oyster festival, and calmer once the schools go back.</li>
+<li><strong>Winter:</strong> the quietest time, with cold winds off the sea and shorter opening hours.</li>
 </ul>
 
-<h2>Common mistakes</h2>
+<h2>Tips for a calmer visit</h2>
 <ul>
-<li>Arriving exactly at oyster festival peak without plan B.</li>
-<li>Ignoring school inset days that mimic summer crowds.</li>
-<li>Forgetting sundown chill affects muscle stiffness.</li>
-<li>Letting social media sunset shots dictate timing.</li>
+<li>Arrive early on sunny weekends, when parking near the seafront goes quickly.</li>
+<li>Book a table for lunch, or eat a little earlier or later than most people.</li>
+<li>Check event dates before you book your stay.</li>
+<li>Use Tankerton's promenade for a quieter walk, as it's long, level and surfaced.</li>
+<li>Check the forecast for wind as well as rain, as it can be strong by the sea.</li>
 </ul>
+<p>Our guide to <a href=\"{$parking}\">Blue Badge parking in Whitstable</a> covers the car parks and the free time a badge gives you.</p>
+
+<h2>Does Restwell cost more at busy times?</h2>
+<p>A little. Peak rates apply in the school holidays, and the rest of the year is off-peak. A week is £1,300 off-peak and £1,400 in peak season.</p>
+<p>Weekend nights cost a bit more than weeknights, and you can stay for one night or a whole week. Our <a href=\"{$pricing}\">rates and peak dates</a> are all on one page.</p>
 
 <h2>Frequently asked questions</h2>
-<h3>Is winter accessible?</h3>
-<p>Yes with layers and shorter outdoor bursts.</p>
-<h3>Do attractions close midweek?</h3>
-<p>Some reduce hours; phone ahead.</p>
-<h3>Are dogs calmer midweek?</h3>
-<p>Often, but not a rule.</p>
-<h3>Can I avoid Tankerton slopes?</h3>
-<p>Plot promenade segments flatter near sea level.</p>
-<h3>Does Restwell pricing follow seasons?</h3>
-<p>Ask when you <a href=\"{$enq}\">enquire</a>; we publish clear periods.</p>
+<h3>Is Whitstable worth visiting?</h3>
+<p>Yes, if you enjoy the sea, seafood and a slower pace. Tankerton's promenade is long, level and surfaced, and the harbour is step-free. The beach itself is shingle, though.</p>
+<h3>How busy is Whitstable on a summer weekend?</h3>
+<p>Very busy, especially around the harbour and the High Street. Arrive early, or head to Tankerton for more space.</p>
+<h3>What is Whitstable like in winter?</h3>
+<p>It's quiet, cold and often windy. There's more room on the promenade, but some places open for shorter hours.</p>
+<h3>When is the Whitstable oyster festival?</h3>
+<p>The Whitstable Rocks Oyster Festival is held in September. In 2026, it ran from 11 to 13 September, so check the festival's website for the next dates.</p>
+
+<h2>Staying at Restwell</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable, with a ceiling track hoist and a level wet room. Out of season, you can enjoy a quiet town and come back to your own hoist and wet room.</p>
 
 <h2>Closing</h2>
-<p>Timing is an access feature. Explore the <a href=\"{$blog}\">blog</a> for more Kent realism.</p>";
+<p>If you're weighing up dates, <a href=\"{$enquire}\">ask us which weeks are free</a>, and we'll help you choose.</p>";
 }
 
 /**
@@ -309,56 +312,77 @@ function restwell_get_blog_post_read_access_statement_html() {
 }
 
 /**
- * Fatigue-friendly coastal day (Whitstable area).
+ * Wheelchair accessible days out in Kent (Batch F, 26 Oct 2026), from each
+ * venue’s own access page; the old fatigue-friendly day folds into its planning tips.
  *
  * @return string
  */
 function restwell_get_blog_post_fatigue_friendly_coastal_day_html() {
-	$blog   = esc_url( home_url( '/blog/' ) );
-	$quiet  = esc_url( home_url( '/quieter-times-whitstable-low-crowd-access/' ) );
-	$beach  = esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) );
-	$pack   = esc_url( home_url( '/what-to-pack-accessible-self-catering-uk/' ) );
-	$backup = esc_url( home_url( '/holiday-backup-plan-care-worker-change/' ) );
-	$enq    = esc_url( home_url( '/enquire/' ) );
+	$area    = esc_url( home_url( '/whitstable-area-guide/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
+	$beaches = esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) );
+	$hire    = esc_url( home_url( '/hire-mobility-scooter-equipment-uk-holiday/' ) );
 
-	return "<blockquote><p>A day by the sea can be as simple as one place you want to visit, somewhere to sit, and an easy way back. Leave room to change your plans.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Canterbury Cathedral, Turner Contemporary in Margate and Leeds Castle all lend wheelchairs and have step-free routes. Howletts and Leeds Castle let one carer in free with a disabled visitor's ticket. Reculver and the Beaney in Canterbury have Changing Places toilets.</p></blockquote>
 
-<h2>Choose what matters to you</h2>
-<p>You do not have to fit the harbour, town centre and promenade into the same outing. Pick the part you most want to see and plan around it. A view of the water over a cup of tea may be enough for the day.</p>
-	<p>If you already have advice from your care team about managing fatigue, use that when planning your break. There is no single timetable that suits everyone. For further reading, see <a href=\"https://www.uclh.nhs.uk/patients-and-visitors/patient-information-pages/energy-and-pacing\">UCLH’s information about energy and pacing</a>.</p>
+<h2>Which days out in Kent work well with a wheelchair?</h2>
+<p>The places below are all within reach of Whitstable, and each one publishes clear access information. We've summed up what they say, but details change, so check before you go.</p>
+<p>For the seafront itself, see our guide to <a href=\"{$beaches}\">accessible beaches and coastal walks in Kent</a>. Closer to home, our Whitstable guide covers <a href=\"{$area}\">the level routes and step-free stops in town</a>.</p>
 
-<h2>Make the return trip part of the plan</h2>
-<p>Before you leave, check where you will park or be dropped off, the distance to your destination, and how you will get back. Include the journey from the car to the seafront, rather than counting only the time spent beside the water.</p>
+<h2>Canterbury Cathedral</h2>
+<p>The main step-free way into the cathedral grounds is Christ Church Gate, on the flat but cobbled Buttermarket. Step-free entry to the Nave is through the North Door.</p>
+<p>Inside, a lift by the Dean's Steps takes you up to the Quire. The Trinity Chapel is the only part you can't reach in a wheelchair. The visitor centre lends a few wheelchairs for free.</p>
+<p>Blue Badge parking in the grounds can be booked ahead, if there's space. The accessible toilet is about 135 metres from the visitor centre. There isn't room beside it for a sideways transfer, but the Beaney's Changing Places toilet is nearby.</p>
+
+<h2>The Beaney, Canterbury</h2>
+<p>The Beaney is Canterbury's free museum, gallery and library, on the High Street. It has a Changing Places toilet on the ground floor, with a ceiling hoist and an adjustable changing bench.</p>
+<p>There's a 12-space disabled car park in Orange Street, next to the entrance on Best Lane. Ring ahead to check the lifts are working before you go.</p>
+
+<h2>Turner Contemporary, Margate</h2>
+<p>The gallery is step-free, with a ramp to the right of the entrance steps and a lift to both floors. Wheelchairs in different sizes are kept at the Access Station, and you can book one ahead.</p>
+<p>There are seven free Blue Badge bays beside the gallery, near the visitor information centre. The nearest Changing Places toilet is at Thanet Gateway Plus, and staff can give you directions. The gallery also holds quiet hours, for a calmer visit.</p>
+
+<h2>Reculver, near Herne Bay</h2>
+<p>At Reculver, the twin towers of an old church stand inside a Roman fort, right by the sea. The grounds are free to visit, and you reach them up a long slope from the car park, which charges.</p>
+<p>The country park next door has a café and toilets. One is a Changing Places toilet, with a full-room hoist and an adjustable bench. Check it's working before a long trip, as equipment can be out of use.</p>
+
+<h2>Howletts Wild Animal Park, near Canterbury</h2>
+<p>Howletts is mostly flat, with tarmac paths, a few gentle slopes and one steeper hill, where staff can help. Some paths have tree roots underneath, so expect the odd bump.</p>
+<p>You can borrow a manual wheelchair from the Gatehouse, leaving your car keys or licence as a deposit. It's best to book it by phone first. Mobility scooters are allowed, but ring ahead for advice.</p>
+<p>One carer goes in free with a disabled visitor's day ticket. You buy these tickets at the Gatehouse, with a benefit award letter or an Access Card as proof.</p>
+
+<h2>Leeds Castle, near Maidstone</h2>
+<p>The castle has step-free entry through the main front door and a wheelchair lift, though the upstairs rooms aren't accessible. A free mobility bus runs around the estate, because the land train can't take wheelchairs.</p>
+<p>Wheelchairs are free to borrow, while there are some left. One carer goes in free with each disabled ticket. The Boat House Café has an accessible toilet with adult changing facilities.</p>
+<p>Expect about 45 metres of cobbles across the drawbridge. The garden path is about 900 metres long, with one short, steep stretch.</p>
+
+<h2>How do you plan a day out that doesn't wear you out?</h2>
+<p>Choose one main place and plan around it, rather than fitting in several. Check where you'll park, how far it is to the entrance and where you can sit down. Then decide your turning-back point before you set off.</p>
 <ul>
-<li>Choose a turning-back point before setting off.</li>
-<li>Check seating and toilet access near the place you want to visit.</li>
-<li>If you plan to stop at a café, ask about step-free entry and space for your chair.</li>
-<li>Keep a shorter option available if the weather or your plans change.</li>
+<li>Book a wheelchair ahead if you'll need to borrow one.</li>
+<li>Bring proof for carer tickets, such as a benefit award letter.</li>
+<li>Find the nearest Changing Places toilet, and check it's open.</li>
+<li>Check the forecast for wind as well as rain.</li>
+<li>Keep a shorter plan in mind if the day becomes too much.</li>
 </ul>
 
-<h2>Questions to check before heading out</h2>
-<table>
-<caption>A short checklist for a coastal outing</caption>
-<thead><tr><th scope=\"col\">Check</th><th scope=\"col\">Why it helps</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Route and surface</th><td>Confirm that the route suits your chair or walking aid, including any slopes and changes in surface.</td></tr>
-<tr><th scope=\"row\">Weather</th><td>Look at the forecast, including wind, and decide whether a sheltered or indoor stop would suit you better.</td></tr>
-<tr><th scope=\"row\">Places to pause</th><td>Identify somewhere you can sit or stop without depending on an unreserved café table.</td></tr>
-<tr><th scope=\"row\">Toilets</th><td>Check the facilities, access arrangements and opening hours you need.</td></tr>
-<tr><th scope=\"row\">Getting back</th><td>Agree where to meet anyone collecting you and keep their contact details handy.</td></tr>
-</tbody>
-</table>
+<h2>Where are the Changing Places toilets near Whitstable?</h2>
+<p>Canterbury City Council has Changing Places toilets at Whitstable Harbour and Reculver Country Park. There are two more at the Beaney in Canterbury and Herons Leisure Centre in Herne Bay. The national Changing Places map lists these and many more.</p>
+<p>Equipment sometimes breaks, so check a toilet is working before you rely on it.</p>
 
-<h2>Keep the rest of the day flexible</h2>
-<p>Let the people travelling with you know which parts of the day you want to keep optional. It is easier to change a plan when nobody is relying on a full afternoon out or a fixed restaurant booking.</p>
-<p>For a quieter day at the bungalow, <a href=\"{$enq}\">ask us about the rooms and layout</a> before booking. We can help you check whether the house will work for your group.</p>
+<h2>Frequently asked questions</h2>
+<h3>What can you do in Kent in a wheelchair?</h3>
+<p>Plenty, from Canterbury Cathedral and Leeds Castle to galleries and wildlife parks. The coast has level promenades too, such as Tankerton, Herne Bay and Margate.</p>
+<h3>Do carers get in free?</h3>
+<p>Often, yes. Howletts and Leeds Castle both let one carer in free with a disabled ticket. Check each place's rules, and bring proof in case you're asked.</p>
+<h3>Can I borrow a wheelchair at Kent attractions?</h3>
+<p>Many lend them, including Canterbury Cathedral, Turner Contemporary, Howletts and Leeds Castle. They only have a few, so book ahead where you can.</p>
+<h3>Can I take a mobility scooter?</h3>
+<p>It depends on the place. Howletts allows scooters if you ring ahead, but Leeds Castle doesn't allow them inside the castle. Our guide to <a href=\"{$hire}\">mobility scooter hire in Whitstable</a> covers hiring one for your stay.</p>
 
-<h2>More help with planning</h2>
-<ul>
-<li><a href=\"{$quiet}\">Choosing quieter times to visit Whitstable</a></li>
-<li><a href=\"{$beach}\">Accessible beaches and coastal walks in Kent</a></li>
-<li><a href=\"{$pack}\">What to pack for an accessible self-catering stay</a></li>
-<li><a href=\"{$backup}\">Making a backup plan for care arrangements</a></li>
-</ul>
-<p><a href=\"{$blog}\">Back to all planning articles</a></p>";
+<h2>Coming back to Restwell</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable. After a day out, you come back to a ceiling track hoist, a profiling bed and a level wet room. The private drive is level, which makes it easier to get in and out of the car.</p>
+
+<h2>Closing</h2>
+<p>Planning a stay around a day out? <a href=\"{$enquire}\">Tell us your dates and what you'd like to see</a>, and we'll share what we know.</p>";
 }

@@ -2,7 +2,7 @@
 
 **Layer:** WordPress posts + sitemap. Not guest landing copy.
 
-Twelve guides are indexable: the five keep-guides, the three Batch D rewrites and the four Batch E rewrites (26 Oct 2026). Two guides were folded into Optional Care. The rest stay noindex until their own rewrite (Batches E and F).
+Fifteen guides are indexable: the five keep-guides and the Batch D, E and F rewrites (26 Oct 2026). Two guides were folded into Optional Care. The rest stay noindex until their own rewrite (Batches E and F).
 
 **Enforced in code (2 Oct 2026, audit I01):** the noindex slugs below are listed in `restwell_get_noindex_post_slugs()` (`inc/seo/canonical.php`). They print `noindex, follow` and are excluded from the sitemap whatever the post meta says, so a re-seed cannot make them indexable. Change that list and this file together. Until a guide is published, links to it point at its hub page (`restwell_get_guide_hub_fallbacks()` in `inc/internal-links.php`), so no page links to a 404.
 
@@ -20,6 +20,9 @@ Twelve guides are indexable: the five keep-guides, the three Batch D rewrites an
 - `/accessible-train-travel-whitstable-kent/` (is Whitstable station step-free)
 - `/hire-mobility-scooter-equipment-uk-holiday/` (mobility scooter hire Whitstable; names First Choice Mobility's Whitstable branch and its October 2026 prices, so recheck them)
 - `/travel-insurance-disability-uk-self-catering/` (travel insurance for disabled travellers, UK; quotes Restwell's cancellation terms)
+- `/quieter-times-whitstable-low-crowd-access/` (best time to visit Whitstable; event dates are as of 2026)
+- `/fatigue-friendly-whitstable-coastal-day/` (wheelchair accessible days out in Kent; the address is the old fatigue-friendly guide's)
+- `/what-to-pack-accessible-self-catering-uk/` (self-catering packing list UK; lists what Restwell provides)
 
 ## Folded into Optional Care (26 Oct 2026)
 
@@ -30,6 +33,6 @@ Both addresses 301 there while no published post holds them (`restwell_folded_gu
 
 ## Noindex, follow
 
-Eating out, Changing Places, quieter times, fatigue day and packing, plus the two folded guides should they ever be republished.
+Eating out and Changing Places (both to be folded into the Whitstable guide), plus the two folded guides should they ever be republished.
 
 No HowTo schema. No FAQ rich-result plan.
