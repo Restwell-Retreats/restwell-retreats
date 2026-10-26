@@ -32,6 +32,23 @@ class ReleaseSecurityTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'hash_equals( $stored, $code_hash )', $otp );
 	}
 
+	public function test_site_hardening_is_in_the_theme() {
+		$hard = $this->theme( 'inc/security-hardening.php' );
+		// Login names stay private: no author archives, no oEmbed author.
+		$this->assertStringContainsString( "if ( isset( \$query_vars['author'] ) || isset( \$query_vars['author_name'] ) ) {", $hard );
+		$this->assertStringContainsString( "unset( \$data['author_name'], \$data['author_url'] );", $hard );
+		// XML-RPC answers with nothing; no version in feeds; file editors off.
+		$this->assertStringContainsString( "add_filter( 'xmlrpc_methods', '__return_empty_array' );", $hard );
+		$this->assertStringContainsString( "add_filter( 'the_generator', '__return_empty_string' );", $hard );
+		$this->assertStringContainsString( "define( 'DISALLOW_FILE_EDIT', true );", $hard );
+		// 10 failed logins lock the connection out for 15 minutes.
+		$this->assertStringContainsString( ') >= 10 ) {', $hard );
+		$this->assertStringContainsString( "add_filter( 'login_errors', 'restwell_generic_login_error' );", $hard );
+		$this->assertStringContainsString( "require_once get_template_directory() . '/inc/security-hardening.php';", $this->theme( 'functions.php' ) );
+		// WordPress never offers someone else's theme as an update for this one.
+		$this->assertStringContainsString( "\nUpdate URI: false\n", $this->theme( 'style.css' ) );
+	}
+
 	public function test_photo_upload_is_capped() {
 		$this->assertStringContainsString( '> 400 * MB_IN_BYTES', $this->theme( 'inc/media-importer.php' ) );
 	}

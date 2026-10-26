@@ -48,6 +48,7 @@ require_once get_template_directory() . '/inc/post-content.php';
 require_once get_template_directory() . '/inc/privacy-page-bootstrap.php';
 require_once get_template_directory() . '/inc/redirects.php';
 require_once get_template_directory() . '/inc/security-rest.php';
+require_once get_template_directory() . '/inc/security-hardening.php';
 require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/cookie-consent.php';
 require_once get_template_directory() . '/inc/seo-admin.php';
