@@ -2103,17 +2103,25 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
   }
 }
 
+/* One line, always. Wrapping left a lone "/" at the end of the first line
+   and a post's title on a line of its own (26 Oct 2026); now only the
+   current page's name shortens, with an ellipsis, when space runs out. */
 .breadcrumb {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: inherit;
   gap: var(--space-1) var(--space-2);
+  max-width: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
   font-size: var(--text-xs);
   color: rgba(255, 255, 255, 0.88);
+}
+.breadcrumb > li {
+  flex: none;
+  white-space: nowrap;
 }
 .breadcrumb a {
   display: inline-flex;
@@ -2133,6 +2141,10 @@ body.page--interior:not(.has-photo-hero) .site-header::before { opacity: 0; }
 }
 .breadcrumb__sep { opacity: 0.45; }
 .breadcrumb [aria-current="page"] {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: rgba(255, 255, 255, 0.95);
   font-weight: 500;
 }
@@ -7135,29 +7147,53 @@ body:has(.site-header.is-menu-open) .cookie-banner { z-index: 1; }
       rgba(12, 35, 42, 0) 85%
     );
 }
+/*
+ * Photo heroes on phones (26 Oct 2026, the owner's pick of three options):
+ * the photo shows clear at the top, the title sits on its darker foot, and
+ * the intro and buttons sit on plain teal below. With everything over the
+ * photo, a five-line intro and two stacked buttons covered the picture, and
+ * the wash had to darken nearly all of it. Text-only and plain heroes have
+ * no photo and keep their own layout.
+ */
 @media (max-width: 767px) {
-  /* Phones: the copy spans the width, so the fall-off is vertical only. */
+  .hero:not(.hero--interior),
+  .hero.hero--interior.hero--place {
+    --hero-photo-h: clamp(17rem, 60vw, 24rem);
+    /* How far the title block starts above the photo's foot. Inside pages
+       carry the breadcrumb above the title, so they start higher. */
+    --hero-title-rise: 7rem;
+    display: block;
+    min-height: 0;
+  }
+  .hero.hero--interior.hero--place { --hero-title-rise: 8.5rem; }
+  .hero__media {
+    inset: 0 0 auto;
+    height: calc(var(--header-offset) + var(--hero-photo-h));
+  }
+  /* A light band under the header, clear sky, then solid teal by the foot,
+     so a long title or the intro runs on into the panel without a seam.
+     The middle stop is the darker ink, not teal: the small breadcrumb sits
+     there on inside pages and needs 4.5:1 over the palest walls. */
   .hero__media::after,
   .hero--overlay-heavy .hero__media::after {
     background: linear-gradient(
       180deg,
-      rgba(12, 35, 42, 0.45) 0%,
-      rgba(12, 35, 42, 0.12) 18%,
-      rgba(12, 35, 42, 0.3) 38%,
-      rgba(12, 35, 42, 0.72) 60%,
-      rgba(12, 35, 42, 0.82) 100%
+      rgba(12, 35, 42, 0.25) 0%,
+      rgba(12, 35, 42, 0) 24%,
+      rgba(12, 35, 42, 0.6) 54%,
+      var(--deep-teal) 90%
     );
   }
-  /* Interior photo heroes are short on phones and the breadcrumb sits near
-     the top, so they carry an even wash instead of an open sky. */
-  .hero--interior .hero__media::after {
-    background: linear-gradient(
-      180deg,
-      rgba(12, 35, 42, 0.68) 0%,
-      rgba(12, 35, 42, 0.66) 40%,
-      rgba(12, 35, 42, 0.72) 70%,
-      rgba(12, 35, 42, 0.82) 100%
-    );
+  .hero:not(.hero--interior) .hero__content,
+  .hero.hero--interior.hero--place .hero__content {
+    min-height: 0;
+    padding-top: calc(var(--header-offset) + var(--hero-photo-h) - var(--hero-title-rise));
+    justify-content: flex-start;
+  }
+  .hero:not(.hero--interior) .hero__text p:not(.eyebrow),
+  .hero.hero--place .hero__text p:not(.eyebrow) {
+    margin-top: var(--space-2);
+    text-shadow: none;
   }
 }
 

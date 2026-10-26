@@ -42,6 +42,8 @@ while ( have_posts() ) :
 	<div class="container">
 		<div class="hero__content">
 			<ol class="breadcrumb">
+				<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'restwell-retreats' ); ?></a></li>
+				<li class="breadcrumb__sep" aria-hidden="true">/</li>
 				<li><a href="<?php echo esc_url( home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'Blog', 'restwell-retreats' ); ?></a></li>
 				<li class="breadcrumb__sep" aria-hidden="true">/</li>
 				<li aria-current="page"><?php echo esc_html( $crumb ); ?></li>

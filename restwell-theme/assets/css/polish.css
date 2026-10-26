@@ -306,6 +306,8 @@ a.path-card:hover {
 /*
  * Photo heroes on phones: one copy column. shared.css used a narrower CTA
  * strip and an underline secondary, so the stack looked like a leftover.
+ * The two buttons sit side by side (26 Oct 2026): stacked full width, they
+ * took a whole extra row under the intro.
  */
 @media (max-width: 767px) {
   .hero:not(.hero--interior) h1 {
@@ -320,12 +322,17 @@ a.path-card:hover {
     text-wrap: pretty;
   }
   .hero__ctas {
-    max-width: 100%;
+    flex-direction: row;
+    /* Phone-wide; on a large phone the pair would otherwise span 600px+. */
+    max-width: 26rem;
+  }
+  .hero__ctas .btn {
+    flex: 1 1 0;
+    width: auto;
   }
   .hero__ctas .btn-outline-light {
     display: inline-flex;
     align-self: stretch;
-    width: 100%;
     min-height: 2.75rem;
     padding: var(--space-3) var(--space-5);
     border: 2px solid rgba(255, 255, 255, 0.7);
