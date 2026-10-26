@@ -486,7 +486,7 @@ function restwell_get_care_field_definitions() {
 		'care_faq_heading' => restwell_field( __( 'Section heading (h2)', 'restwell-retreats' ) ),
 		'care_faq_intro'   => restwell_field( __( 'Section intro paragraph', 'restwell-retreats' ), 'textarea' ),
 	);
-	for ( $i = 1; $i <= 5; $i++ ) {
+	for ( $i = 1; $i <= 6; $i++ ) {
 		$faq[ "care_faq_{$i}_q" ] = restwell_field(
 			sprintf(
 				/* translators: %d: question number */

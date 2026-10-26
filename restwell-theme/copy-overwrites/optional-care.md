@@ -50,6 +50,19 @@ You’re very welcome to. Just tell us who’s coming.
 
 A support worker can use the second bedroom, or we can think about the sleeping arrangements with you if that’s easier. Just tell us who’s coming.
 
+## For OTs, case managers and commissioners (`care_pro_lede`)
+
+Door widths, bed heights, hoist weight limits and LOLER checks are all published. We can send a written quote for the stay, ready for a funding panel. Continuity confirm the care plan and the cost once the hours and tasks are agreed.
+
+(26 Oct 2026: the old commissioner checklist guide was folded in here. Never claim a moving-and-handling assessment or insurance certificates for the house.)
+
+## FAQ 6: if your own carer can’t come
+
+Q: What if my own carer can’t come?
+A: Call us on 01622 809881 as soon as you know, even mid-stay. We’ll check whether anyone from Continuity is free to cover, and they’ll give you a quote. A written note of your daily routine helps anyone stepping in.
+
+(26 Oct 2026: the old holiday backup plan guide was folded in here. Never promise cover or a lead time, and never mention medicines.)
+
 ## What it costs
 
 Continuity quote for care themselves. Any guide rates we publish sit on `/pricing/` and are labelled as Continuity’s, because the right support genuinely depends on the person and we won’t quote you a figure before we understand what would help.

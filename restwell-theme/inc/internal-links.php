@@ -1052,7 +1052,6 @@ function restwell_get_guide_hub_fallbacks() {
 			'direct-payment-holiday-accommodation',
 			'chc-respite-holiday-accommodation-uk',
 			'personal-budget-short-break-care-act',
-			'commissioner-checklist-accessible-respite-stay',
 			'carers-respite-holiday-guide',
 			'travel-insurance-disability-uk-self-catering',
 		),
@@ -1063,7 +1062,7 @@ function restwell_get_guide_hub_fallbacks() {
 			'hire-mobility-scooter-equipment-uk-holiday',
 		),
 		'who-its-for'           => array( 'revitalise-alternatives-accessible-holidays' ),
-		'optional-care'         => array( 'holiday-backup-plan-care-worker-change' ),
+		'optional-care'         => array( 'commissioner-checklist-accessible-respite-stay', 'holiday-backup-plan-care-worker-change' ),
 	);
 	$map = array();
 	foreach ( $hubs as $hub => $guides ) {

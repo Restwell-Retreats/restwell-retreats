@@ -10,11 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * The fourteen supporting "mill" posts that stay noindex, follow.
+ * The supporting "mill" posts that stay noindex, follow.
  *
- * Source of truth: copy-overwrites/mill-posts.md and docs/seo/LANES.md (five
- * keep-guides indexable, fourteen noindex, no new mill). Enforced in code so a
- * re-seed or a fresh database cannot quietly make them indexable.
+ * Source of truth: copy-overwrites/mill-posts.md. The five kept guides and the
+ * three Batch D rewrites (26 Oct 2026: carers, CHC, Care Act) are indexable;
+ * the posts below wait for their own rewrite. Enforced in code so a re-seed or
+ * a fresh database cannot quietly make them indexable.
  *
  * @return string[]
  */
@@ -26,19 +27,16 @@ function restwell_get_noindex_post_slugs() {
 		'changing-places-toilets-kent-coast-days-out',
 		'quieter-times-whitstable-low-crowd-access',
 		'fatigue-friendly-whitstable-coastal-day',
-		'chc-respite-holiday-accommodation-uk',
-		'personal-budget-short-break-care-act',
 		'commissioner-checklist-accessible-respite-stay',
 		'what-to-pack-accessible-self-catering-uk',
 		'hire-mobility-scooter-equipment-uk-holiday',
 		'travel-insurance-disability-uk-self-catering',
 		'holiday-backup-plan-care-worker-change',
-		'carers-respite-holiday-guide',
 	);
 }
 
 /**
- * Whether a post is one of the fourteen noindex mill posts.
+ * Whether a post is one of the noindex mill posts.
  *
  * @param int|WP_Post $post Post or ID.
  * @return bool

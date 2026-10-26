@@ -17,10 +17,7 @@ $restwell_guide_urls = array();
 foreach (
 	array(
 		'direct-payment-holiday-accommodation',
-		'personal-budget-short-break-care-act',
-		'chc-respite-holiday-accommodation-uk',
 		'carers-respite-holiday-guide',
-		'commissioner-checklist-accessible-respite-stay',
 	) as $restwell_guide_slug
 ) {
 	$restwell_guide_post = get_page_by_path( $restwell_guide_slug, OBJECT, 'post' );
@@ -187,7 +184,7 @@ get_template_part(
 				<div class="funding-route__foot">
 				  <p><a class="text-link" href="#directory"><?php esc_html_e( 'Grant and advice sites', 'restwell-retreats' ); ?></a></p>
 				  <?php if ( ! empty( $restwell_guide_urls['carers-respite-holiday-guide'] ) ) : ?>
-					<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['carers-respite-holiday-guide'] ); ?>"><?php esc_html_e( 'Carer assessment guide', 'restwell-retreats' ); ?></a>
+					<a class="text-link" href="<?php echo esc_url( $restwell_guide_urls['carers-respite-holiday-guide'] ); ?>"><?php esc_html_e( 'Respite for carers', 'restwell-retreats' ); ?></a>
 				  <?php endif; ?>
 				</div>
 			</div>

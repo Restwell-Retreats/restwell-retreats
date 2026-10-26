@@ -55,10 +55,10 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'carers-respite-holiday-guide',
-			'title'            => 'Carers taking holidays: respite rights, funding, and how to plan a break that works',
-			'excerpt'          => 'A guide for unpaid carers who need a break. It covers your rights under the Care Act and getting a carer’s assessment in Kent, and it explains how a break is paid for.',
-			'meta_title'       => 'Carer’s assessments and your right to a respite break',
-			'meta_description' => 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.',
+			'title'            => 'Respite for carers: how to get a break from caring',
+			'excerpt'          => 'How to get a break from caring, from asking for a carer’s assessment to who pays. It also covers Carer’s Allowance and taking a holiday together.',
+			'meta_title'       => 'Respite for carers: how to get a break from caring',
+			'meta_description' => 'Respite for carers means someone else helps while you take a break. Here’s how to ask your council, what a carer’s assessment covers and who pays.',
 			'content'          => restwell_get_blog_post_carers_respite_html(),
 			'category_slug'    => 'funding-care',
 		),
@@ -82,10 +82,10 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'chc-respite-holiday-accommodation-uk',
-			'title'            => 'CHC, respite, and holiday accommodation: plain English for families and commissioners',
-			'excerpt'          => 'What NHS Continuing Healthcare can and can’t pay for on a break. It covers how the care and the rent are billed, and what a panel needs to see.',
-			'meta_title'       => 'CHC funding and respite holiday accommodation',
-			'meta_description' => 'CHC respite holiday accommodation explained: NHS continuing healthcare versus lodging costs, paperwork panels expect, and funding lines for supported breaks.',
+			'title'            => 'CHC respite care: what NHS Continuing Healthcare pays for on a break',
+			'excerpt'          => 'How NHS Continuing Healthcare covers a break for your family carer, and how a personal health budget can help. It also lists the holiday costs you still pay yourself.',
+			'meta_title'       => 'CHC respite care: what the NHS pays for on a break',
+			'meta_description' => 'CHC respite care explained: what NHS Continuing Healthcare pays for while your carer has a break, what it won’t cover on holiday, and what to ask.',
 			'content'          => restwell_get_blog_post_chc_respite_holiday_accommodation_html(),
 			'category_slug'    => 'funding-care',
 		),
@@ -117,20 +117,11 @@ function restwell_get_priority_blog_post_articles(): array {
 			'category_slug'    => 'accessible-holidays',
 		),
 		array(
-			'slug'             => 'commissioner-checklist-accessible-respite-stay',
-			'title'            => 'Commissioner checklist: evidencing an accessible respite stay',
-			'excerpt'          => 'The proof a funding panel usually wants before it agrees to nights away, from hoist paperwork to sleep-in plans and insurance.',
-			'meta_title'       => 'A commissioner’s checklist for an accessible respite stay',
-			'meta_description' => 'Commissioner checklist for accessible respite stays: hoist paperwork, safeguarding sleep-ins, insurance certificates, and audit-ready evidence before approving nights.',
-			'content'          => restwell_get_blog_post_commissioner_accessible_respite_html(),
-			'category_slug'    => 'funding-care',
-		),
-		array(
 			'slug'             => 'personal-budget-short-break-care-act',
-			'title'            => 'Personal budgets and short breaks under the Care Act',
-			'excerpt'          => 'What a direct payment can and can’t cover on a short break, such as PA hours and a PA’s travel. It also shows how to keep your council’s paperwork tidy.',
-			'meta_title'       => 'Using a personal budget for a short break',
-			'meta_description' => 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.',
+			'title'            => 'Respite under the Care Act 2014: what your council must do',
+			'excerpt'          => 'What the Care Act 2014 says about breaks from caring. It covers assessments, eligible needs, personal budgets, who pays and how to challenge a decision.',
+			'meta_title'       => 'Respite under the Care Act 2014: what your council must do',
+			'meta_description' => 'Care Act 2014 respite explained: your right to an assessment, how councils arrange a break, who pays for it, and what to do if the council says no.',
 			'content'          => restwell_get_blog_post_personal_budget_short_break_html(),
 			'category_slug'    => 'funding-care',
 		),
@@ -160,15 +151,6 @@ function restwell_get_priority_blog_post_articles(): array {
 			'meta_description' => 'Quieter times to visit Whitstable for accessible travellers: weekday patterns, festival pitfalls, parking turnover, and fatigue-friendly pacing.',
 			'content'          => restwell_get_blog_post_quieter_whitstable_visit_html(),
 			'category_slug'    => 'kent-coast',
-		),
-		array(
-			'slug'             => 'holiday-backup-plan-care-worker-change',
-			'title'            => 'Backup plans when care arrangements change on holiday',
-			'excerpt'          => 'What to do if a carer falls ill during your break, from backup cover to knowing when it’s safer to come home early.',
-			'meta_title'       => 'A holiday backup plan if your care worker changes',
-			'meta_description' => 'Holiday backup plans when care workers change or cancel: contingency cards, agency tiers, budgets for emergency cover, and safe escalation.',
-			'content'          => restwell_get_blog_post_holiday_backup_care_plan_html(),
-			'category_slug'    => 'accessible-holidays',
 		),
 		array(
 			'slug'             => 'how-to-read-holiday-cottage-access-statement',
@@ -690,82 +672,113 @@ function restwell_get_blog_post_self_catering_checklist_html() {
 }
 
 /**
+ * Respite for carers (Batch D, 26 Oct 2026): the carer's assessment, kinds of
+ * break, who pays, Carer's Allowance and taking a holiday together.
+ *
  * @return string
  */
 function restwell_get_blog_post_carers_respite_html() {
-	$res       = esc_url( home_url( '/funding-and-support/' ) );
-	$blog      = esc_url( home_url( '/blog/' ) );
-	$enq       = esc_url( home_url( '/enquire/' ) );
-	$who       = esc_url( home_url( '/who-its-for/' ) );
-	$loc       = esc_url( home_url( '/whitstable-area-guide/' ) );
+	$funding   = esc_url( home_url( '/funding-and-support/' ) );
 	$dp        = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
 	$checklist = esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) );
+	$care      = esc_url( home_url( '/optional-care/' ) );
+	$enquire   = esc_url( home_url( '/enquire/' ) );
+	$careact   = esc_url( home_url( '/personal-budget-short-break-care-act/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Unpaid carers can request a carer's assessment under the Care Act 2014; Kent County Council may fund wellbeing support after that conversation. Pair those rights with crisp paperwork about accommodation and PA hours when you plan a break together.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Respite means someone else looks after the person you care for while you take a break. It starts with a free carer's assessment from the council where they live. If you have eligible needs, the council must help.</p></blockquote>
 
 <h2>What is respite for carers?</h2>
-<p>Respite is any planned relief from day-to-day caring: sitting services, residential cover for the person you support, or a holiday where someone else delivers hands-on care so you can sleep.</p>
+<p>Respite for carers is a break from caring, while someone else looks after the person you care for. It might be a few hours, a regular night off or a week away. The help can come to the house, or happen somewhere else.</p>
+<p>Some carers use the time to sleep, see friends or keep up with work. Others use it for a holiday. A break is a normal part of caring, so you don't need to wait for a crisis to ask.</p>
 
-<h2>Why breaks matter</h2>
-<p>Long stretches without backup correlate with exhaustion, injury, and collapsed care arrangements. Pausing is injury prevention, not indulgence.</p>
-
-<h2>Types of break to compare</h2>
+<h2>What kinds of break are there?</h2>
+<p>There are more choices than most people expect. Here are the main ones, and you can mix them.</p>
 <ul>
-<li>Day care or sitting services at home.</li>
-<li>Residential short stays for the person you support while you travel solo.</li>
-<li>Supported trips where agency staff lead personal care.</li>
-<li>Joint travel where your PA or direct payment covers care hours and you share the break.</li>
+<li><strong>Care at home:</strong> a paid carer comes in for a few hours, or for a whole week while you're away.</li>
+<li><strong>A day centre:</strong> the person you care for spends the day with other people. Many offer transport, but there may be a charge.</li>
+<li><strong>A sitting service:</strong> a trained volunteer keeps them company for a few hours, often for free or a small charge.</li>
+<li><strong>A short stay away:</strong> some care homes take short stays, and some let you book ahead.</li>
+<li><strong>Family and friends:</strong> someone moves in for a while, or the person you care for goes to stay with them.</li>
+<li><strong>A holiday:</strong> you go away while someone else cares, or you go together and book care where you're staying.</li>
+</ul>
+<p>Grants can help with some of the cost. See our guide to <a href=\"{$funding}\">grants and other ways to pay for a break</a>.</p>
+
+<h2>Are carers entitled to respite?</h2>
+<p>You're entitled to a carer's assessment, and that's where respite starts. Under the Care Act 2014, the council must assess any carer who appears to need support. That's true however much care you give, and whatever money you have.</p>
+<p>If the assessment finds eligible needs, the council must help meet them.</p>
+<p>There's no set number of respite days or weeks in law. What you get depends on your assessment and the support plan you agree. One family might need a week away each year, while another needs a regular night off.</p>
+<p>Our guide to <a href=\"{$careact}\">respite under the Care Act 2014</a> explains the rules in more detail.</p>
+
+<h2>How do you ask for a carer's assessment?</h2>
+<p>Contact adult social care at the council where the person you care for lives. You can usually ask online or by phone. You don't need their permission, and they don't need to be getting help from the council already.</p>
+<p>In Kent, call Kent County Council on 03000 41 61 61, or use its online form. A local carers' organisation can also help you ask. Elsewhere, search for your council's name and \"carer's assessment\" to find the right page.</p>
+<p>The assessment is a conversation about you, not a test. Most councils do it face to face, though some do it by phone. It looks at your health, your work, your free time and your relationships, and you can bring someone with you.</p>
+
+<h2>What should you say in a carer's assessment?</h2>
+<p>Describe a normal week in detail, because the details are what the council acts on. Say what you help with, how often you're up in the night, and what you've had to give up. If you'd like a break, say what kind and how often.</p>
+<ul>
+<li>What you do each day and each night, with rough times.</li>
+<li>Anything you find hard, such as lifting or broken sleep.</li>
+<li>How caring affects your work, your health and the rest of your family.</li>
+<li>The kind of break you'd like, and how often.</li>
+<li>What happens now if you're ill or have to be away.</li>
 </ul>
 
-<h2>Legal rights you should name in meetings</h2>
-<p>The Care Act 2014 gives unpaid adults the right to a carer's assessment regardless of whether the council already funds the cared-for person. Assessments measure your wellbeing, sustainability, and emerging risks.</p>
-<p>Parent carers can request a parent-carer needs assessment under the Children and Families Act 2014 when a disabled child is involved.</p>
-<p>Kent routes assessments through KCC Adult Social Care; you may self-refer online or via the contact centre.</p>
+<h2>Who pays for respite?</h2>
+<p>The carer's assessment is free. If the council arranges care to give you a break, the person you care for is the one receiving it. So if there's a charge, they pay it, not you.</p>
+<p>Any charge depends on a check of their finances, and some councils don't charge for it at all.</p>
+<p>The council can also help you directly, for example with a direct payment for things that make caring easier. Councils don't have to charge carers for this, and the official guidance advises against it in most cases.</p>
+<p>If you pay for a break yourself, charities can help. Carers Trust and Turn2us both list grants for carers. Some charities pay for a cover carer, rather than the trip itself.</p>
 
-<h2>How to request a carer's assessment in Kent</h2>
-<p>Phone or complete KCC's online referral form. GP letters are optional extras, not prerequisites.</p>
-<p>Bring diary notes about night waking, lifting, medication rounds, and employment impact. Specific beats stoic.</p>
-<p>If the cared-for person already has a plan, ask whether it separately mentions short breaks so both documents align.</p>
+<h2>Will a break affect your Carer's Allowance?</h2>
+<p>A short break won't usually affect your Carer's Allowance. You only need to tell the DWP if you stop caring for more than 28 days. The limit is 12 weeks if either of you is in hospital, a nursing home or respite care.</p>
+<p>Having a carer's assessment won't change your Carer's Allowance either. The rules can change, so check the latest guidance on GOV.UK before a long break.</p>
 
-<h2>Practical steps for travelling together</h2>
-<p>Adapted properties must match clinical reality: hoist coverage, turning space, carer bedroom layout. Follow our <a href=\"{$checklist}\">self-catering checklist</a> before paying deposits.</p>
-<p>Direct payments can fund PA hours during travel while accommodation stays a different invoice line; see <a href=\"{$dp}\">direct payments on holiday</a>.</p>
+<h2>Can you take a holiday together?</h2>
+<p>Yes, and for many families that's the break they want most. Someone else does some of the hands-on help, so you can rest without being apart. It can work with your own PA, an agency where you're staying or care booked with the holiday.</p>
+<p>If the person you care for has a direct payment, it can often pay for their care while they're away. The council decides, so ask before you book. Our guide on <a href=\"{$dp}\">using direct payments for a holiday</a> explains what to ask.</p>
+<p>Check the holiday home as carefully as the care. Ask for the door widths, the bed heights, the hoist's details and where a carer will sleep. Our <a href=\"{$checklist}\">checklist for choosing an accessible holiday cottage</a> covers what to ask before you pay.</p>
 
-<h2>Funding routes at a glance</h2>
-<h3>Carer's personal budget</h3>
-<p>May cover wellbeing spends identified in your assessment; clarify eligible expenses with your worker.</p>
-<h3>Cared-for person's direct payment</h3>
-<p>Pays PA or agency time away from home when the plan allows; accommodation rent stays separate.</p>
-<h3>Revitalise Support Fund</h3>
-<p>Charity grants when affordability blocks any break. Apply via revitalise.org.uk.</p>
-<h3>Carer charities</h3>
-<p>Carers UK, Carers Trust, and Kent voluntary partners sometimes hold micro-grants. Ask locally.</p>
-<h3>Self-funded accommodation</h3>
-<p>Many families pay lodging privately while care hours route through statutory budgets.</p>
+<h2>What if you care for a child?</h2>
+<p>If you look after a disabled child, ask your council's children's services for a parent carer needs assessment. Councils must also offer short breaks for disabled children, and publish what's on offer in their area.</p>
+<p>Family Fund gives grants towards holidays for families on lower incomes who are raising a disabled or seriously ill child.</p>
 
-<h2>Common mistakes carers make</h2>
+<h2>Practical steps before you book</h2>
 <ul>
-<li>Waiting until crisis before requesting assessments.</li>
-<li>Assuming \"accessible\" lettings need no follow-up questions.</li>
-<li>Bringing unfamiliar agency staff on holiday without induction.</li>
-<li>Ignoring recovery days after travel.</li>
+<li>Ask for a carer's assessment, even if you're not sure you'll qualify.</li>
+<li>Ask whether the person you care for should have a new needs assessment too.</li>
+<li>Get your support plan in writing, including any breaks it agrees.</li>
+<li>If a direct payment will pay for care while you're away, get the council's answer in writing.</li>
+<li>Book the care and the holiday home at the same time, so the dates match.</li>
+</ul>
+
+<h2>Common mistakes to avoid</h2>
+<ul>
+<li>Waiting until something goes wrong before you ask for help.</li>
+<li>Asking the wrong council, when it should be the one where the person you care for lives.</li>
+<li>Paying for a holiday before the council has agreed to fund the care.</li>
+<li>Assuming last year's support plan still covers this year's break.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Can KCC refuse a carer's assessment?</h3>
-<p>They must assess on request if you appear to have needs; push back politely with Care Act references if refused outright.</p>
-<h3>Does respite money arrive instantly?</h3>
-<p>No. Budgets follow assessments and panel decisions; plan months ahead.</p>
-<h3>Can both co-parent carers ask for help?</h3>
-<p>Yes. Each situation differs; disclose household dynamics honestly.</p>
-<h3>Will a holiday cottage count as respite?</h3>
-<p>Lodging rarely comes from the same budget line as PA wages; split invoices clearly.</p>
-<h3>Where should I read local detail?</h3>
-<p>Use our <a href=\"{$loc}\">Whitstable area guide</a> when Restwell sits on your shortlist.</p>
+<h3>Can carers get free respite care?</h3>
+<p>Sometimes, yes. A sitting service from a charity may be free, and some councils don't charge for short breaks. Otherwise, the person you care for may pay towards the care after a check of their finances.</p>
+<h3>How much respite can a carer get?</h3>
+<p>There's no fixed amount. It depends on your assessment and the support plan you agree. Ask for the break that would help you most, and explain why you need it.</p>
+<h3>Does the person I care for have to agree?</h3>
+<p>Not to your own assessment, because you can ask for that in your own right. If the council arranges care for them so that you can have a break, though, they should agree to it.</p>
+<h3>What if the council says no?</h3>
+<p>Ask for the decision and the reasons in writing. You can complain to the council first. If you're still unhappy, you can take it to the Local Government and Social Care Ombudsman, which is free.</p>
+<h3>Can I get respite if I work?</h3>
+<p>Yes. A carer's assessment must look at whether you want to work, and how caring affects that. A regular break or extra help at home can make it easier to keep your job.</p>
 
-<h2>If Restwell suits your plan</h2>
-<p>We host disabled guests and carers in Whitstable with adjoining carer sleeping space, hoist-track bedroom, profiling bed, and wet room that meets published measurements.</p>
-<p>Share assessments early. We supply paperwork for funded stays when commissioners ask. Browse <a href=\"{$res}\">funding resources</a>, explore other articles on the <a href=\"{$blog}\">blog</a>, review <a href=\"{$who}\">guest fit</a>, then <a href=\"{$enq}\">message us</a>.</p>";
+<h2>How carers use Restwell</h2>
+<p>Restwell is a private, single-storey holiday bungalow in Whitstable. It has a ceiling track hoist, two profiling beds and a level wet room. Some families bring their own PA, who can have the second double bedroom or the sofa bed.</p>
+<p>Others ask our sister company, Continuity of Care Services, to come in while they're here. That way, the family carer gets time off without anyone going home.</p>
+<p>Continuity is rated Good by the Care Quality Commission, and it gives you a quote once the hours are agreed. Read more about <a href=\"{$care}\">care from our sister company during your stay</a>.</p>
+
+<h2>Closing</h2>
+<p>If your council or a charity needs a written quote for the stay, we can send one. <a href=\"{$enquire}\">Tell us your dates and who's coming</a>, and we'll help with the paperwork.</p>";
 }
 
 /**

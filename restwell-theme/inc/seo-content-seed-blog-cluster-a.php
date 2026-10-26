@@ -10,76 +10,101 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * CHC, respite and holiday accommodation (plain English).
+ * CHC respite care (Batch D, 26 Oct 2026): what NHS Continuing Healthcare
+ * pays for while a family carer has a break, and what it doesn't on holiday.
  *
  * @return string
  */
 function restwell_get_blog_post_chc_respite_holiday_accommodation_html() {
-	$blog   = esc_url( home_url( '/blog/' ) );
-	$res    = esc_url( home_url( '/funding-and-support/' ) );
-	$dp     = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
-	$carers = esc_url( home_url( '/carers-respite-holiday-guide/' ) );
-	$enq    = esc_url( home_url( '/enquire/' ) );
-	$acc    = esc_url( home_url( '/accessibility/' ) );
+	$funding = esc_url( home_url( '/funding-and-support/' ) );
+	$care    = esc_url( home_url( '/optional-care/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
+	$carers  = esc_url( home_url( '/carers-respite-holiday-guide/' ) );
+	$access  = esc_url( home_url( '/accessibility/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> NHS Continuing Healthcare (CHC) funds assessed health and care needs; it does not buy holiday cottage rent. Commissioners split invoices so personal care hours, nursing tasks, or agency cover may sit on a health budget while lodging stays a private or social-care line. Get written clarity before anyone signs.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> If you get NHS Continuing Healthcare, the NHS can pay for extra care while your family carer has a break. It doesn't pay for rent, food or the holiday itself. Your integrated care board decides what goes in your plan, so ask before you book.</p></blockquote>
 
-<h2>What is CHC in relation to holidays?</h2>
-<p>CHC is an NHS-funded package for people whose primary needs are health-led. A holiday changes the postcode, not the principle: eligible care stays eligible when it is documented and agreed.</p>
+<h2>What is CHC respite care?</h2>
+<p>CHC respite care is extra care, paid for by the NHS, so a family carer can take a break. It's for people who get NHS Continuing Healthcare at home. The care can come to the house, or you can stay elsewhere for a while.</p>
+<p>NHS Continuing Healthcare, or CHC, is care that the NHS arranges and pays for in full. It's for people with complex health needs. It isn't a benefit you claim, and it depends on your needs, not on a diagnosis.</p>
 
-<h2>Why CHC-funded respite trips stall</h2>
-<p>Teams confuse \"respite\" with \"free holiday\". Accommodation is still a market rental unless a specific funded pathway covers it. Families arrive at check-in with unpaid deposits because nobody pinned down who pays the bricks-and-mortar bill versus who pays waking-night cover.</p>
+<h2>Does CHC pay for respite?</h2>
+<p>Yes, the national rules say the NHS should pay for all your assessed care at home. That includes extra support while your carer has a break. The NHS should also make sure your carer knows that help is there.</p>
+<p>The NHS body that decides is your integrated care board, or ICB. There's no national number of days, so how much respite you get depends on your care plan. As one example, NHS Sussex's 2024 policy offers family carers up to 28 days a year.</p>
+<p>For other ways to pay for a break, see our guide to <a href=\"{$funding}\">grants, council funding and the NHS</a>.</p>
 
-<h2>How funding lines usually split</h2>
-<table>
-<caption>Typical split between health care spend and lodging (confirm locally)</caption>
-<thead><tr><th scope=\"col\">Cost line</th><th scope=\"col\">Often CHC or NHS funded when eligible</th><th scope=\"col\">Usually separate from CHC</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Registered nurse tasks</th><td>May be in package if assessed</td><td>Rarely bundled into cottage rent</td></tr>
-<tr><th scope=\"row\">Agency PA hours on trip</th><td>Sometimes via PHB or CHC care plan</td><td>Needs named worker and risk assessment</td></tr>
-<tr><th scope=\"row\">Property hire</th><td>Exceptional cases only via agreed panels</td><td>Most often personal, DP, or LA respite rules</td></tr>
-<tr><th scope=\"row\">Equipment hire off-site</th><td>If clinically coded</td><td>Often self-funded unless prescribed route exists</td></tr>
-</tbody>
-</table>
-
-<h2>How panels expect paperwork to read</h2>
-<h3>Clinical narrative</h3>
-<p>Spell night-time complexity, seizures, tissue viability, or cognition risks that do not pause for weekends.</p>
-<h3>Risk assessment for unfamiliar environment</h3>
-<p>Show hoist compatibility, emergency egress, and who holds clinical responsibility between providers.</p>
-<h3>Budget transparency</h3>
-<p>List VAT, mileage, sleep-ins, and cancellation terms on separate lines.</p>
-
-<h2>Practical steps before you book Kent</h2>
-<ol>
-<li>Ask your CHC coordinator for a written yes-or-no on which invoice lines they can reimburse.</li>
-<li>Send the property <a href=\"{$acc}\">access specification</a> to nursing so equipment matches.</li>
-<li>Cross-read our <a href=\"{$dp}\">direct payment holiday guide</a> when personal budgets mix with NHS.</li>
-<li>Keep unpaid carers in the loop using <a href=\"{$carers}\">respite rights basics</a>.</li>
-</ol>
-
-<h2>Common mistakes</h2>
+<h2>What can CHC respite look like?</h2>
+<p>It depends on what suits you and your carer. These are the usual options, though your ICB decides what it offers.</p>
 <ul>
-<li>Assuming \"NHS number on file\" equals \"full trip funded\".</li>
-<li>Booking peak weeks before contingency workers confirm.</li>
-<li>Skipping pharmacy transfers for coastal GP coverage.</li>
-<li>Mixing CHC and direct payment invoices without ledger codes.</li>
+<li>More care at home, such as extra PA hours or a live-in carer, while your carer goes away.</li>
+<li>A short stay somewhere else, such as a care home, while your carer rests at home.</li>
+<li>A holiday together, with paid care carrying on, so your carer does less of the hands-on help.</li>
+</ul>
+
+<h2>What doesn't CHC pay for on a break?</h2>
+<p>CHC pays for care, not for the place you stay. The national rules say the NHS isn't responsible for rent, food or normal bills. So on a holiday, you'll usually pay for the holiday home, travel and days out yourself.</p>
+<p>Local policies spell this out. NHS Sussex, for example, says your usual care carries on while you're away. The holiday itself, though, comes from your own money, including your PA's travel, their room and your travel insurance.</p>
+
+<h2>Can a personal health budget pay for care on holiday?</h2>
+<p>Often, yes. Since October 2014, people who get CHC have had a right to a personal health budget. This is the money for your care, and it can pay for care while you're away if your ICB agrees.</p>
+<p>There are three ways to hold a personal health budget:</p>
+<ul>
+<li>The ICB keeps the money and arranges your care.</li>
+<li>Another organisation manages the money for you.</li>
+<li>You take it as a direct payment, choose your own PAs and keep a record of spending.</li>
+</ul>
+<p>In Kent, NHS Kent and Medway uses personal health budgets as the usual way to arrange CHC care at home. Wherever you live, the budget can't pay for things like alcohol, tobacco, gambling or debts.</p>
+
+<h2>How do you get CHC?</h2>
+<p>A nurse, doctor, social worker or other professional starts with a short checklist. If that suggests you might qualify, a team of at least two professionals does a full assessment. The decision should usually come within 28 days.</p>
+<p>Once you're eligible, your care is normally reviewed after three months, and then at least once a year. It's worth asking about breaks at each review, because your carer's needs can change too.</p>
+
+<h2>What should you ask your CHC team?</h2>
+<p>Ask about the care, not the holiday. Tell your CHC team where you'd like to go, for how long and what help you'll need. Then ask what they'll fund, and get the answer in writing.</p>
+<ul>
+<li>Can my usual care carry on while I'm away?</li>
+<li>Can my carer have a break, and how many days a year does that cover?</li>
+<li>Can my PA or agency come with me, or can I use an agency near where I'm staying?</li>
+<li>Do I need to tell you before I travel, and how far ahead?</li>
+<li>Who do we call out of hours if something changes while we're away?</li>
+</ul>
+
+<h2>Practical steps before you book</h2>
+<ul>
+<li>Tell your ICB your dates early, and say whether your PA is coming with you.</li>
+<li>Check with your GP or nurse that the trip suits you.</li>
+<li>Get travel insurance that covers your health, and any PA who travels with you.</li>
+<li>Send the holiday home's access details to whoever plans your care, so the equipment matches.</li>
+<li>Get written quotes for the stay and for any care you book there.</li>
+</ul>
+
+<h2>Common mistakes to avoid</h2>
+<ul>
+<li>Expecting CHC to pay for the holiday home itself.</li>
+<li>Booking before the ICB has agreed the care in writing.</li>
+<li>Forgetting insurance for a PA who travels with you.</li>
+<li>Setting off without an out-of-hours number for the trip.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Does CHC pay for the cottage?</h3>
-<p>Usually no. CHC pays for eligible care. Rent sits elsewhere unless your commissioner explicitly agrees.</p>
-<h3>Can we combine CHC hours with direct payments?</h3>
-<p>Sometimes, if duplication rules are respected. Ask both teams to countersign the plan.</p>
-<h3>Who signs off risk for hoists away from home?</h3>
-<p>The accountable clinician or therapist named on the care plan should document sling compatibility.</p>
-<h3>What if needs spike mid-stay?</h3>
-<p>Call the out-of-hours CHC line your pack lists; keep GP and NHS 111 numbers visible.</p>
-<h3>Where do I start locally?</h3>
-<p>Open our <a href=\"{$res}\">funding hub</a>, then speak to your coordinator with dates and property facts.</p>
+<h3>Does CHC pay for a holiday?</h3>
+<p>No. CHC pays for care, not the holiday itself. Your usual care can often carry on while you're away, but you pay for the stay, travel and food.</p>
+<h3>Who decides on CHC respite?</h3>
+<p>Your integrated care board, or ICB. ICBs replaced clinical commissioning groups in July 2022. Your care coordinator is usually the best person to ask.</p>
+<h3>Can I get NHS respite without CHC?</h3>
+<p>Sometimes. The NHS can pay for respite health care as part of a joint package with your council. It has to be part of your assessment and care plan, so ask whoever coordinates your care.</p>
+<h3>Can my carer get a carer's assessment too?</h3>
+<p>Yes, the council must assess any carer who seems to need support, even if you get CHC. It can help with things CHC doesn't cover, such as their work or free time. Our guide to <a href=\"{$carers}\">respite for carers</a> explains how to ask.</p>
+<h3>Where can I get free advice on CHC?</h3>
+<p>Beacon gives free, independent advice on NHS Continuing Healthcare. You can call them on 0345 548 0300.</p>
+
+<h2>Using CHC funding at Restwell</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable, and some of our guests have their care paid for through CHC. Plenty of guests bring their own PAs or agency staff, and a carer can have the second double bedroom.</p>
+<p>Your care team can check the <a href=\"{$access}\">the bungalow's door widths, bed heights and hoist limits</a> before you book. If you'd like care from our sister company, Continuity of Care Services, they'll talk through what's needed.</p>
+<p>Continuity will then give you a quote to show your ICB. Read more about <a href=\"{$care}\">how care from Continuity works</a>.</p>
 
 <h2>Closing</h2>
-<p>CHC conversations reward specificity. Browse the <a href=\"{$blog}\">blog</a>, gather paperwork, then <a href=\"{$enq}\">contact Restwell</a> if Whitstable fits your clinical brief.</p>";
+<p>We can send a written quote for the stay as well. <a href=\"{$enquire}\">Ask us for a quote for your ICB</a>, with the dates you have in mind.</p>";
 }
 
 /**
@@ -298,146 +323,86 @@ function restwell_get_blog_post_travel_insurance_disability_uk_html() {
 }
 
 /**
- * Commissioner checklist for accessible respite stays.
- *
- * @return string
- */
-function restwell_get_blog_post_commissioner_accessible_respite_html() {
-	$blog   = esc_url( home_url( '/blog/' ) );
-	$acc    = esc_url( home_url( '/accessibility/' ) );
-	$access_doc = esc_url( home_url( '/how-to-read-holiday-cottage-access-statement/' ) );
-	$dp     = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
-	$enq    = esc_url( home_url( '/enquire/' ) );
-
-	return "<blockquote><p><strong>TL;DR:</strong> Commissioners defend placements when paperwork proves suitability: hoist SWL, infection-control alignment, sleeping arrangements for waking staff, and cancellation maths. Vague \"accessible bungalow\" lines fail audit; millimetres and named responsibilities pass.</p></blockquote>
-
-<h2>What is commissioner evidence for respite?</h2>
-<p>It is the dossier showing how a property meets assessed needs, budgets, and safeguarding rules before public money moves.</p>
-
-<h2>Why panels bounce bookings</h2>
-<p>Photos without measurements, informal WhatsApp promises, and unnamed crisis contacts trigger red flags. Panels fear stranded citizens when providers ghost Friday nights.</p>
-
-<h2>Core documents to demand</h2>
-<table>
-<caption>Minimum pack before approving nights away</caption>
-<thead><tr><th scope=\"col\">Document</th><th scope=\"col\">Why it matters</th><th scope=\"col\">Fail signal</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Access statement PDF</th><td>Matches OT goals</td><td>Marketing fluff only</td></tr>
-<tr><th scope=\"row\">Equipment service stickers</th><td>Proves hoist LOLER</td><td>Out-of-date inspections</td></tr>
-<tr><th scope=\"row\">Sleep-in capacity plan</th><td>Safeguarding</td><td>Sofa-only carer rest</td></tr>
-<tr><th scope=\"row\">Insurance certificates</th><td>Public liability</td><td>Expired dates</td></tr>
-</tbody>
-</table>
-
-<h2>How to read measurements critically</h2>
-<h3>Door schedules</h3>
-<p>Ask clear opening widths after architrave, not just structural studs.</p>
-<h3>Hoist coverage maps</h3>
-<p>Overlay sling clip heights against user anthropometrics.</p>
-<h3>Emergency egress</h3>
-<p>Two routes or documented lone-worker protocol.</p>
-
-<h2>Practical workflow</h2>
-<ol>
-<li>Request the owner's signed statement alongside OT sign-off.</li>
-<li>Cross-check numbers using <a href=\"{$access_doc}\">how to read access statements</a>.</li>
-<li>Align invoices with <a href=\"{$dp}\">direct payment rules</a>.</li>
-<li>Publish aftercare contacts for out-of-area hospitals.</li>
-</ol>
-
-<h2>Common mistakes</h2>
-<ul>
-<li>Relying on satellite imagery instead of site visits.</li>
-<li>Ignoring infection risk when shared aids arrive.</li>
-<li>Letting families pay deposits on unofficial cards.</li>
-<li>Omitting contingency if agency staff cancel.</li>
-</ul>
-
-<h2>Frequently asked questions</h2>
-<h3>Do we need a risk assessment per trip?</h3>
-<p>Yes when needs or staff mix changes materially.</p>
-<h3>Can tele-assessment replace visits?</h3>
-<p>Sometimes during pandemic-era policies; confirm locally.</p>
-<h3>Who owns safeguarding alerts?</h3>
-<p>Name the duty social worker and NHS liaison on the pack.</p>
-<h3>What if equipment differs on arrival?</h3>
-<p>Halt placement, document variance, invoke contract clauses.</p>
-<h3>Where are Restwell specs?</h3>
-<p>See <a href=\"{$acc}\">Accessibility</a> then email evidence requests.</p>
-
-<h2>Closing</h2>
-<p>Good commissioning is boring and brave. Share this via the <a href=\"{$blog}\">blog</a> internally and <a href=\"{$enq}\">invite Restwell</a> into tender conversations early.</p>";
-}
-
-/**
- * Personal budgets and short breaks (Care Act primer).
+ * Respite under the Care Act 2014 (Batch D, 26 Oct 2026). The slug is the
+ * older personal budget guide's, kept so existing links still work.
  *
  * @return string
  */
 function restwell_get_blog_post_personal_budget_short_break_html() {
-	$blog   = esc_url( home_url( '/blog/' ) );
-	$res    = esc_url( home_url( '/funding-and-support/' ) );
-	$dp     = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
-	$carers = esc_url( home_url( '/carers-respite-holiday-guide/' ) );
-	$chc    = esc_url( home_url( '/chc-respite-holiday-accommodation-uk/' ) );
-	$enq    = esc_url( home_url( '/enquire/' ) );
+	$funding = esc_url( home_url( '/funding-and-support/' ) );
+	$dp      = esc_url( home_url( '/direct-payment-holiday-accommodation/' ) );
+	$care    = esc_url( home_url( '/optional-care/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
+	$chc     = esc_url( home_url( '/chc-respite-holiday-accommodation-uk/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Personal budgets under the Care Act buy outcomes agreed in care plans, not wish lists. Short breaks succeed when nights, PA hours, transport, and accommodation lines sit on separate ledger codes with social worker sign-off. Document everything before you spend.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> The Care Act 2014 doesn't promise a set amount of respite. It gives you and your carer a right to be assessed, and makes the council meet eligible needs. A break is one way to meet them.</p></blockquote>
 
-<h2>What is a personal budget short break?</h2>
-<p>It is a slice of allocated social-care money used to purchase respite outcomes such as sitting services, transport, or PA coverage while someone rests away from home.</p>
+<h2>What does the Care Act 2014 say about respite?</h2>
+<p>The Care Act 2014 never uses the word respite. Instead, it gives people a right to be assessed, and makes councils meet any eligible needs. The official guidance calls a break \"replacement care\", which means care for you, so your carer can rest.</p>
+<p>Replacement care can be a few hours at home, regular nights or a longer stay elsewhere. The guidance gives examples, such as a carer getting to their own health appointments. It also mentions catching up on sleep, or taking a longer break from caring.</p>
+<p>This guide covers the rules in England. Our guide to <a href=\"{$funding}\">funding a break, from grants to the NHS</a>, covers the other ways to pay.</p>
 
-<h2>Why panels argue over receipts</h2>
-<p>Blurry invoices that lump \"holiday package\" scare auditors. Care Act accountability expects identifiable services tied to eligible needs.</p>
+<h2>Who has a right to an assessment?</h2>
+<p>The person who needs care can ask for a needs assessment, and their carer can ask for a carer's assessment. The council must assess anyone who appears to need support. That's true whatever their money, and whether or not they'll qualify.</p>
+<p>The two assessments can be done together or apart. A carer's assessment must look at whether the carer can and wants to keep caring. It must also look at their work, learning and free time.</p>
 
-<h2>Budget components to separate</h2>
-<table>
-<caption>Keep columns distinct for audit defence</caption>
-<thead><tr><th scope=\"col\">Spend type</th><th scope=\"col\">Often allowed when plan says so</th><th scope=\"col\">Usually scrutinised</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">PA overnight</th><td>Named hours</td><td>Unplanned overtime</td></tr>
-<tr><th scope=\"row\">Travel mileage</th><td>Agreed rates</td><td>First-class upgrades</td></tr>
-<tr><th scope=\"row\">Accommodation</th><td>Via LA respite rules</td><td>Luxury upsells</td></tr>
-<tr><th scope=\"row\">Activities</th><td>If wellbeing goal</td><td>Generic entertainment</td></tr>
-</tbody>
-</table>
+<h2>When does the council have to provide a break?</h2>
+<p>Only when there are eligible needs, and national rules set out what counts. For the person who needs care, the council checks two things.</p>
+<p>First, it asks whether they can't manage two or more everyday things, such as washing, eating or getting out. Then it asks whether that has a big effect on their wellbeing.</p>
+<p>For a carer, it asks whether caring puts their health at risk or stops them doing things that matter. That might be work, learning, seeing friends or time to themselves. Again, it must have a big effect on their wellbeing.</p>
+<p>If either of you has eligible needs, the council must meet them. A break might be part of the answer. That's agreed in the care and support plan, or the carer's support plan.</p>
 
-<h2>How to prepare conversations</h2>
-<h3>Care plan quotes</h3>
-<p>Highlight sentences backing travel.</p>
-<h3>Market comparisons</h3>
-<p>Show three quotes for similar accessibility.</p>
-<h3>Carer testimony</h3>
-<p>Link to <a href=\"{$carers}\">carer assessment guidance</a>.</p>
+<h2>How can the council arrange a break?</h2>
+<p>There's no single way, and the plan should fit what you both need. These are the common options.</p>
+<ul>
+<li><strong>Care at home:</strong> a care worker comes in so your carer can go out or get some sleep.</li>
+<li><strong>A stay away:</strong> a short stay in a care home or another setting.</li>
+<li><strong>A direct payment:</strong> money you use to arrange the care yourself, such as extra hours from a PA.</li>
+<li><strong>Help for the carer:</strong> support aimed at the carer, such as a class or help to stay in work.</li>
+</ul>
+<p>Direct payments can cover short care home stays: up to four weeks in a row, in any 12 months. The guidance gives a carer's break as one example of what that's for.</p>
+<p>A direct payment usually pays for care, though, not for a holiday itself. Our guide on <a href=\"{$dp}\">using direct payments for a holiday</a> explains what that means on a trip.</p>
+
+<h2>Who pays for respite under the Care Act?</h2>
+<p>Care that gives a carer a break counts as care for the person who receives it. So if there's a charge, that person pays it, not the carer. The council can also decide not to charge at all.</p>
+<p>Any charge depends on a financial assessment of the person getting the care. For care home stays of up to eight weeks, councils can use the rules for care at home.</p>
+<p>Councils don't have to charge carers for their own support either. The guidance says that charging carers is often a false economy.</p>
+
+<h2>Can you use a personal budget for a short break?</h2>
+<p>Yes, if your plan says a break would meet your needs. Your personal budget is what the council works out it'll cost to meet them. You can take it as a direct payment and arrange the care yourself, or let the council arrange it.</p>
+<p>Ask for any break to be written into the plan, with the number of days or hours. That makes it much easier to book with confidence, and to check later what was agreed.</p>
+
+<h2>What if the council says no?</h2>
+<p>Ask for the decision and the reasons in writing. If you disagree, use the council's complaints process. If you're still unhappy after that, you can go to the Local Government and Social Care Ombudsman, which is free.</p>
+<p>Ask for an independent advocate if you'd find it hard to take part. The council must provide one if you'd struggle to understand or share your views, and nobody suitable can help you.</p>
 
 <h2>Practical steps</h2>
 <ul>
-<li>Book a review meeting before peak holiday pricing.</li>
-<li>Use prepaid cards if your LA mandates traceability.</li>
-<li>Split NHS versus LA funding using <a href=\"{$chc}\">CHC basics</a> where dual packages exist.</li>
-<li>Pair with <a href=\"{$dp}\">direct payment detail</a> for invoice wording.</li>
-</ul>
-
-<h2>Common mistakes</h2>
-<ul>
-<li>Spending first and requesting retrospective approval.</li>
-<li>Using emergency credit cards without clarity who reimburses.</li>
-<li>Ignoring annual budget refresh dates.</li>
-<li>Forgetting to log informal family support hours.</li>
+<li>Ask for both assessments, and say that a break is one of the things you'd like.</li>
+<li>Keep a short diary of a normal week, to show what caring involves.</li>
+<li>Ask for your plan in writing, with any breaks it agrees.</li>
+<li>If a direct payment will pay for care away from home, get the council's answer before you book.</li>
+<li>Ask the council where the person who needs care lives, not the one where you're staying.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Can I buy flights with social care money?</h3>
-<p>Only if explicitly agreed; many councils forbid.</p>
-<h3>Does personal budget replace disability benefits?</h3>
-<p>No; different statutes govern each stream.</p>
-<h3>Can unused respite roll over?</h3>
-<p>Local policy decides; ask in writing.</p>
-<h3>Who audits spends?</h3>
-<p>LA fraud teams sample receipts randomly.</p>
-<h3>Where is broader funding context?</h3>
-<p>Open the <a href=\"{$res}\">resources hub</a>.</p>
+<h3>Am I entitled to respite care?</h3>
+<p>Not to a set amount. You're entitled to an assessment, and to have eligible needs met. A break is often how councils meet a carer's needs, but it depends on what the assessment finds.</p>
+<h3>What does respite care include?</h3>
+<p>It can be care at home, a day centre, a sitting service or a short stay away. It can also be care while you're on holiday, if the council agrees it meets your needs.</p>
+<h3>How often should my plan be reviewed?</h3>
+<p>The guidance expects a review at least every 12 months. You can ask for one sooner if things change, such as your carer's health or your own.</p>
+<h3>Does the Care Act cover children?</h3>
+<p>No. For disabled children and parent carers, other laws apply, including the Children and Families Act 2014. Ask your council's children's services about short breaks.</p>
+<h3>Does the Care Act apply in Scotland and Wales?</h3>
+<p>Its main parts apply in England only. Scotland and Wales have their own laws on care and carers, so check with your council there.</p>
+<h3>Can the NHS pay for respite instead?</h3>
+<p>Yes, if you get NHS Continuing Healthcare, the NHS pays for your care instead of the council. Our guide to <a href=\"{$chc}\">CHC respite care</a> explains how that works.</p>
+
+<h2>Using a council-funded break at Restwell</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable, and some guests come on a break their council has helped with. Often the council's money pays for the care, and the family pays for the stay.</p>
+<p>Care can come from your own PAs, or from our sister company, Continuity of Care Services. Continuity will give you a quote to share with your council. Read more about <a href=\"{$care}\">holidays with care from Continuity</a>.</p>
 
 <h2>Closing</h2>
-<p>Budgets reward planners. Explore the <a href=\"{$blog}\">blog</a> and <a href=\"{$enq}\">enquire</a> when Whitstable matches your plan lines.</p>";
+<p>We can also send a written quote for the bungalow. <a href=\"{$enquire}\">Tell us your dates and who the quote is for</a>, and we'll get it to you.</p>";
 }

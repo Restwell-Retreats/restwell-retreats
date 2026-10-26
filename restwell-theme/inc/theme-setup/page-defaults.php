@@ -794,7 +794,7 @@ function restwell_get_care_page_defaults() {
 		'care_cqc_link_label' => 'Read the CQC inspection profile',
 
 		'care_pro_heading' => 'For OTs, case managers and commissioners',
-		'care_pro_lede'    => 'Door widths and equipment are all published. Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
+		'care_pro_lede'    => 'Door widths, bed heights, hoist weight limits and LOLER checks are all published. We can send a written quote for the stay, ready for a funding panel. Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
 
 		'care_faq_label'   => 'Care questions',
 		'care_faq_heading' => 'Questions about care',
@@ -809,6 +809,8 @@ function restwell_get_care_page_defaults() {
 		'care_faq_4_a'     => 'Yes. A carer can have the second bedroom, and there’s space to help with transfers and personal care. Tell us who’s coming when you enquire, and we’ll set the rooms up to suit.',
 		'care_faq_5_q'     => 'Where do I see guide rates?',
 		'care_faq_5_a'     => 'You’ll find them on the Pricing page. Continuity will give you a quote once the hours and tasks are agreed.',
+		'care_faq_6_q'     => 'What if my own carer can’t come?',
+		'care_faq_6_a'     => 'Call us on 01622 809881 as soon as you know, even mid-stay. We’ll check whether anyone from Continuity is free to cover, and they’ll give you a quote. A written note of your daily routine helps anyone stepping in.',
 
 		'care_cta_heading'         => 'Tell us what you need, and we’ll work it out with you',
 		'care_cta_body'            => 'Ring 01622 809881 or send us a note, and we’ll talk through what would help.',

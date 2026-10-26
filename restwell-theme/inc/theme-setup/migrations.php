@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 113;
+const RESTWELL_SCHEMA_VERSION = 115;
 
 
 /**
@@ -5477,6 +5477,245 @@ function restwell_migrate_publish_guides_v113() {
 }
 
 /**
+ * Batch D (26 Oct 2026): three guides rewritten and published, two folded
+ * into Optional Care.
+ *
+ * - Respite for carers, CHC respite care and Care Act 2014 respite get their
+ *   new wording. A published copy changes field by field, and only where the
+ *   field still holds wording the theme shipped (the body by its text
+ *   fingerprint), so anything edited in wp-admin stays. A guide that isn't
+ *   live is published, as v113 did for the first five.
+ * - The commissioner checklist and holiday backup plan guides go back to
+ *   draft while their text is still ours. Their addresses then redirect to
+ *   Optional Care (restwell_redirect_folded_guides()).
+ * - Optional Care's professionals card names what a funding panel can check.
+ */
+function restwell_migrate_batch_d_posts_v114() {
+	$flag = 'restwell_batch_d_posts_v114';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+
+	$name = (string) get_bloginfo( 'name' );
+	$was  = array(
+		'carers-respite-holiday-guide'         => array(
+			'text'             => array( 'f629f9309048fcd2ffcc4ebc3b65f441' ),
+			'title'            => array( 'Carers taking holidays: respite rights, funding, and how to plan a break that works' ),
+			'excerpt'          => array( 'A guide for unpaid carers who need a break. It covers your rights under the Care Act and getting a carer’s assessment in Kent, and it explains how a break is paid for.' ),
+			'meta_title'       => array( 'Carer’s assessments and your right to a respite break', 'Carer Assessment & Respite Rights Guide', 'Respite Holidays for Carers | Rights' ),
+			'meta_description' => array( 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.', 'Respite holidays for unpaid carers: carer\'s assessment, Kent routes, direct payments, grants, and how to plan a break that actually restores you.' ),
+			'focus_keyphrase'  => array( 'carer assessment respite rights', 'respite holidays' ),
+		),
+		'chc-respite-holiday-accommodation-uk' => array(
+			'text'             => array( '92fb4c08a0c3d07348837ad5e622c475' ),
+			'title'            => array( 'CHC, respite, and holiday accommodation: plain English for families and commissioners' ),
+			'excerpt'          => array( 'What NHS Continuing Healthcare can and can’t pay for on a break. It covers how the care and the rent are billed, and what a panel needs to see.', 'What NHS Continuing Healthcare can and cannot pay for on a break, how to split care invoices from cottage rent, and the paperwork panels expect before they sign off.' ),
+			'meta_title'       => array( 'CHC funding and respite holiday accommodation', 'CHC Respite Holiday Accommodation UK' ),
+			'meta_description' => array( 'CHC respite holiday accommodation explained: NHS continuing healthcare versus lodging costs, paperwork panels expect, and funding lines for supported breaks.' ),
+			'focus_keyphrase'  => array( 'chc respite holiday accommodation' ),
+		),
+		'personal-budget-short-break-care-act' => array(
+			'text'             => array( 'd777868c407199807316dc83239d0c37' ),
+			'title'            => array( 'Personal budgets and short breaks under the Care Act' ),
+			'excerpt'          => array( 'What a direct payment can and can’t cover on a short break, such as PA hours and a PA’s travel. It also shows how to keep your council’s paperwork tidy.', 'Splitting PA hours, transport, and accommodation receipts so retrospective audits survive — without pretending social care money buys flights by default.' ),
+			'meta_title'       => array( 'Using a personal budget for a short break', 'Personal Budget Short Break Care Act' ),
+			'meta_description' => array( 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.' ),
+			'focus_keyphrase'  => array( 'personal budget short break care act' ),
+		),
+	);
+	// Older titles were saved with " | site name" on the end.
+	foreach ( $was as $slug => $old ) {
+		foreach ( $old['meta_title'] as $title ) {
+			$was[ $slug ]['meta_title'][] = $title . ' | ' . $name;
+		}
+	}
+
+	$defs   = function_exists( 'restwell_get_blog_category_definitions' ) ? restwell_get_blog_category_definitions() : array();
+	$seo    = restwell_get_seo_meta_defaults_by_slug();
+	$admins = get_users(
+		array(
+			'role'    => 'administrator',
+			'number'  => 1,
+			'orderby' => 'ID',
+			'fields'  => 'ID',
+		)
+	);
+	$made   = false;
+
+	foreach ( restwell_get_priority_blog_post_articles() as $article ) {
+		$slug = $article['slug'];
+		if ( empty( $was[ $slug ] ) ) {
+			continue;
+		}
+		$old = $was[ $slug ];
+		$kp  = ! empty( $seo[ $slug ]['focus_keyphrase'] ) ? $seo[ $slug ]['focus_keyphrase'] : '';
+		// WordPress renames a binned post to "{slug}__trashed", so look for both.
+		$copies = get_posts(
+			array(
+				'post_name__in'  => array( $slug, $slug . '__trashed' ),
+				'post_type'      => 'post',
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private', 'future', 'trash' ),
+				'posts_per_page' => -1,
+				'orderby'        => 'modified',
+				'order'          => 'DESC',
+			)
+		);
+		$live = wp_list_filter( $copies, array( 'post_status' => 'publish' ) );
+
+		if ( $live ) {
+			$post   = reset( $live );
+			$update = array();
+			if ( in_array( restwell_post_text_fingerprint( $post->post_content ), $old['text'], true ) ) {
+				$update['post_content'] = wp_kses_post( $article['content'] );
+			}
+			if ( in_array( $post->post_title, $old['title'], true ) ) {
+				$update['post_title'] = $article['title'];
+			}
+			if ( in_array( trim( $post->post_excerpt ), $old['excerpt'], true ) ) {
+				$update['post_excerpt'] = $article['excerpt'];
+			}
+			if ( $update ) {
+				$update['ID'] = (int) $post->ID;
+				wp_update_post( wp_slash( $update ) );
+			}
+			foreach ( array( 'meta_title', 'meta_description', 'focus_keyphrase' ) as $key ) {
+				$new = 'focus_keyphrase' === $key ? $kp : $article[ $key ];
+				if ( '' !== $new && in_array( (string) get_post_meta( $post->ID, $key, true ), $old[ $key ], true ) ) {
+					update_post_meta( $post->ID, $key, $new );
+				}
+			}
+			continue;
+		}
+
+		$args = array(
+			'post_title'   => $article['title'],
+			'post_name'    => $slug,
+			'post_status'  => 'publish',
+			'post_type'    => 'post',
+			'post_content' => wp_kses_post( $article['content'] ),
+			'post_excerpt' => $article['excerpt'],
+		);
+		$cat  = isset( $article['category_slug'] ) ? sanitize_title( $article['category_slug'] ) : '';
+		if ( $cat && isset( $defs[ $cat ] ) ) {
+			$term = term_exists( $cat, 'category' );
+			if ( ! $term ) {
+				$term = wp_insert_term(
+					$defs[ $cat ]['name'],
+					'category',
+					array(
+						'slug'        => $cat,
+						'description' => $defs[ $cat ]['description'],
+					)
+				);
+			}
+			if ( $term && ! is_wp_error( $term ) ) {
+				$args['post_category'] = array( (int) ( is_array( $term ) ? $term['term_id'] : $term ) );
+			}
+		}
+		if ( $copies ) {
+			$copy = $copies[0];
+			if ( 'trash' === $copy->post_status ) {
+				wp_untrash_post( $copy->ID );
+			}
+			$args['ID'] = (int) $copy->ID;
+			$post_id    = wp_update_post( wp_slash( $args ), true );
+		} else {
+			$args['post_author'] = $admins ? (int) $admins[0] : 1;
+			$post_id             = wp_insert_post( wp_slash( $args ), true );
+		}
+		if ( is_wp_error( $post_id ) || ! $post_id ) {
+			continue;
+		}
+		update_post_meta( $post_id, 'meta_title', $article['meta_title'] );
+		update_post_meta( $post_id, 'meta_description', $article['meta_description'] );
+		if ( '' !== $kp ) {
+			update_post_meta( $post_id, 'focus_keyphrase', $kp );
+		}
+		$made = true;
+	}
+
+	// The folded guides: back to draft while they still read as we shipped them.
+	foreach (
+		array(
+			'commissioner-checklist-accessible-respite-stay' => '06580206009bdaaaa85a598e4a239379',
+			'holiday-backup-plan-care-worker-change'         => '6532b75e0b624cafcbfb70a40c7170b1',
+		) as $slug => $text
+	) {
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( $post instanceof WP_Post && 'publish' === $post->post_status && restwell_post_text_fingerprint( $post->post_content ) === $text ) {
+			wp_update_post(
+				array(
+					'ID'          => (int) $post->ID,
+					'post_status' => 'draft',
+				)
+			);
+		}
+	}
+
+	restwell_replace_stale_page_copy(
+		array(
+			'optional-care' => array(
+				'care_pro_lede' => array(
+					'Door widths and equipment are all published. Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
+					'Door widths, bed heights, hoist weight limits and LOLER checks are all published. We can send a written quote for the stay, ready for a funding panel. Continuity confirm the care plan and the cost once the hours and tasks are agreed.',
+				),
+			),
+		)
+	);
+
+	if ( $made ) {
+		// A guide published just now needs its share photo; let v115 look again.
+		delete_option( 'restwell_batch_d_share_images_v115' );
+	}
+}
+
+/**
+ * Share photos for the three Batch D guides (26 Oct 2026), the same photos
+ * their blog cards use. Works like v107: waits for the photos, sets the share
+ * image only, and does one guide per request.
+ */
+function restwell_migrate_batch_d_share_images_v115() {
+	$flag = 'restwell_batch_d_share_images_v115';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	$photos = array(
+		'carers-respite-holiday-guide'         => 'stock/restwell-whitstable-sunset-pier.webp',
+		'chc-respite-holiday-accommodation-uk' => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
+		'personal-budget-short-break-care-act' => 'stock/restwell-whitstable-painted-beach-huts.jpg',
+	);
+	if ( restwell_photo_migration_waiting( $flag, array_values( $photos ) ) ) {
+		return;
+	}
+	// Mark first: a sideload timeout leaves the blog-card default in place.
+	update_option( $flag, '1', false );
+	if ( ! function_exists( 'restwell_sideload_stock_image' ) ) {
+		return;
+	}
+	$todo = array();
+	foreach ( $photos as $slug => $rel ) {
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( $post instanceof WP_Post && 'publish' === $post->post_status && ! has_post_thumbnail( $post->ID ) && ! get_post_meta( $post->ID, 'og_image_id', true ) ) {
+			$todo[ $post->ID ] = $rel;
+		}
+	}
+	if ( ! $todo ) {
+		return;
+	}
+	$post_id = (int) array_key_first( $todo );
+	$att_id  = restwell_sideload_stock_image( $todo[ $post_id ] );
+	if ( $att_id < 1 ) {
+		restwell_retry_photo_migration( $flag );
+		return;
+	}
+	update_post_meta( $post_id, 'og_image_id', $att_id );
+	if ( count( $todo ) > 1 ) {
+		delete_option( $flag ); // The next guide's photo follows on the next request.
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -5625,6 +5864,8 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_keyphrase_headings_v111',
 		'restwell_heading_intros_v112',
 		'restwell_publish_guides_v113',
+		'restwell_batch_d_posts_v114',
+		'restwell_batch_d_share_images_v115',
 	);
 }
 
@@ -5837,6 +6078,10 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_heading_intros_v112', 150 );
 	add_action( 'init', 'restwell_migrate_publish_guides_v113', 156 );
 	add_action( 'after_switch_theme', 'restwell_migrate_publish_guides_v113', 151 );
+	add_action( 'init', 'restwell_migrate_batch_d_posts_v114', 157 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_d_posts_v114', 152 );
+	add_action( 'init', 'restwell_migrate_batch_d_share_images_v115', 158 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_d_share_images_v115', 153 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

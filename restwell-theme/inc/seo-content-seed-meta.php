@@ -111,9 +111,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'how to choose an accessible holiday cottage',
 		),
 		'carers-respite-holiday-guide'             => array(
-			'meta_title'       => 'Carer’s assessments and your right to a respite break' . $name,
-			'meta_description' => 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.',
-			'focus_keyphrase'  => 'carer assessment respite rights',
+			'meta_title'       => 'Respite for carers: how to get a break from caring' . $name,
+			'meta_description' => 'Respite for carers means someone else helps while you take a break. Here’s how to ask your council, what a carer’s assessment covers and who pays.',
+			'focus_keyphrase'  => 'respite for carers',
 		),
 		'what-to-pack-accessible-self-catering-uk' => array(
 			'meta_title'       => 'What to pack for an accessible self-catering break' . $name,
@@ -126,9 +126,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible parking whitstable',
 		),
 		'chc-respite-holiday-accommodation-uk' => array(
-			'meta_title'       => 'CHC funding and respite holiday accommodation' . $name,
-			'meta_description' => 'CHC respite holiday accommodation explained: NHS continuing healthcare versus lodging costs, paperwork panels expect, and funding lines for supported breaks.',
-			'focus_keyphrase'  => 'chc respite holiday accommodation',
+			'meta_title'       => 'CHC respite care: what the NHS pays for on a break' . $name,
+			'meta_description' => 'CHC respite care explained: what NHS Continuing Healthcare pays for while your carer has a break, what it won’t cover on holiday, and what to ask.',
+			'focus_keyphrase'  => 'chc respite care',
 		),
 		'hire-mobility-scooter-equipment-uk-holiday' => array(
 			'meta_title'       => 'Hiring mobility equipment for a UK holiday' . $name,
@@ -145,15 +145,10 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'meta_description' => 'Travel insurance and disability on UK self-catering breaks: mobility equipment limits, pre-existing conditions, cancellation triggers, and broker questions.',
 			'focus_keyphrase'  => 'travel insurance disability uk self catering',
 		),
-		'commissioner-checklist-accessible-respite-stay' => array(
-			'meta_title'       => 'A commissioner’s checklist for an accessible respite stay' . $name,
-			'meta_description' => 'Commissioner checklist for accessible respite stays: hoist paperwork, safeguarding sleep-ins, insurance certificates, and audit-ready evidence before approving nights.',
-			'focus_keyphrase'  => 'commissioner accessible respite stay',
-		),
 		'personal-budget-short-break-care-act' => array(
-			'meta_title'       => 'Using a personal budget for a short break' . $name,
-			'meta_description' => 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.',
-			'focus_keyphrase'  => 'personal budget short break care act',
+			'meta_title'       => 'Respite under the Care Act 2014: what your council must do' . $name,
+			'meta_description' => 'Care Act 2014 respite explained: your right to an assessment, how councils arrange a break, who pays for it, and what to do if the council says no.',
+			'focus_keyphrase'  => 'care act 2014 respite',
 		),
 		'accessible-eating-out-whitstable-kent' => array(
 			'meta_title'       => 'Accessible places to eat in Whitstable and Kent' . $name,
@@ -169,11 +164,6 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'meta_title'       => 'When Whitstable is quieter: a guide to low-crowd days' . $name,
 			'meta_description' => 'Quieter times to visit Whitstable for accessible travellers: weekday patterns, festival pitfalls, parking turnover, and fatigue-friendly pacing.',
 			'focus_keyphrase'  => 'quieter times whitstable visit',
-		),
-		'holiday-backup-plan-care-worker-change' => array(
-			'meta_title'       => 'A holiday backup plan if your care worker changes' . $name,
-			'meta_description' => 'Holiday backup plans when care workers change or cancel: contingency cards, agency tiers, budgets for emergency cover, and safe escalation.',
-			'focus_keyphrase'  => 'holiday backup plan care worker',
 		),
 		'how-to-read-holiday-cottage-access-statement' => array(
 			'meta_title'       => 'Will my wheelchair fit? Door widths and access statements' . $name,

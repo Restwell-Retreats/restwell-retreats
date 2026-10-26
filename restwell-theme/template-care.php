@@ -44,7 +44,7 @@ $care_how_lede = $care_txt( 'care_how_lede', 'Mention it on the same enquiry as 
 $care_own_heading = $care_txt( 'care_own_heading', 'Bringing your own carer' );
 $care_own_lede = $care_txt( 'care_own_lede', 'Plenty of guests do. They can have the second double bedroom or the conservatory sofa bed. They can use the hoist and shower chair, and park on the drive.' );
 $care_pro_heading = $care_txt( 'care_pro_heading', 'For OTs, case managers and commissioners' );
-$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths and equipment are all published. Continuity confirm the care plan and the cost once the hours and tasks are agreed.' );
+$care_pro_lede = $care_txt( 'care_pro_lede', 'Door widths, bed heights, hoist weight limits and LOLER checks are all published. We can send a written quote for the stay, ready for a funding panel. Continuity confirm the care plan and the cost once the hours and tasks are agreed.' );
 $care_day = array();
 for ( $care_day_i = 1; $care_day_i <= 3; $care_day_i++ ) {
 	$care_day[] = array(
@@ -84,9 +84,14 @@ $care_faq_live    = array(
 		'q' => 'Where do I see guide rates?',
 		'a' => 'You’ll find them on the Pricing page. Continuity will give you a quote once the hours and tasks are agreed.',
 	),
+	// Folded in from the holiday backup plan guide (26 Oct 2026).
+	6 => array(
+		'q' => 'What if my own carer can’t come?',
+		'a' => 'Call us on 01622 809881 as soon as you know, even mid-stay. We’ll check whether anyone from Continuity is free to cover, and they’ll give you a quote. A written note of your daily routine helps anyone stepping in.',
+	),
 );
 $care_faq_items = array();
-for ( $i = 1; $i <= 5; $i++ ) {
+for ( $i = 1; $i <= 6; $i++ ) {
 	$q = $care_txt( "care_faq_{$i}_q", $care_faq_live[ $i ]['q'] );
 	$a = $care_txt( "care_faq_{$i}_a", $care_faq_live[ $i ]['a'] );
 	if ( '' === trim( $q ) || '' === trim( $a ) ) {

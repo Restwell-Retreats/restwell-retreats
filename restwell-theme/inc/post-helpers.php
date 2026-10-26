@@ -164,12 +164,10 @@ function restwell_get_post_image_map() {
 		'hire-mobility-scooter-equipment-uk-holiday'     => 'bungalow/EQU-2-LS.jpg',
 		'accessible-train-travel-whitstable-kent'        => 'stock/restwell-whitstable-drone-aerial-view.webp',
 		'travel-insurance-disability-uk-self-catering'   => 'stock/restwell-whitstable-pebble-beach-groynes.jpg',
-		'commissioner-checklist-accessible-respite-stay' => 'bungalow/BD2-6-LS.jpg',
 		'personal-budget-short-break-care-act'           => 'stock/restwell-whitstable-painted-beach-huts.jpg',
 		'accessible-eating-out-whitstable-kent'          => 'stock/restwell-whitstable-marina-sunset.webp',
 		'changing-places-toilets-kent-coast-days-out'    => 'bungalow/WR-3-LS.jpg',
 		'quieter-times-whitstable-low-crowd-access'      => 'stock/restwell-whitstable-shingle-beach-sunset.jpg',
-		'holiday-backup-plan-care-worker-change'         => 'stock/restwell-kent-nursery-hedgerow-path.jpg',
 		'fatigue-friendly-whitstable-coastal-day'        => 'stock/restwell-whitstable-coastal-pathway.webp',
 	);
 }

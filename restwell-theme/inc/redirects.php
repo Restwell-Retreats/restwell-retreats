@@ -52,6 +52,37 @@ function restwell_redirect_legacy_carers_guide_slug() {
 add_action( 'template_redirect', 'restwell_redirect_legacy_carers_guide_slug', 21 );
 
 /**
+ * Guides folded into Optional Care (Batch D, 26 Oct 2026): their addresses
+ * point at the section that now holds the advice. Only on a 404, so a guide
+ * someone republishes in wp-admin still shows.
+ *
+ * @return array<string, string> slug => path on this site
+ */
+function restwell_folded_guide_redirects() {
+	return array(
+		'commissioner-checklist-accessible-respite-stay' => '/optional-care/#for-professionals',
+		'holiday-backup-plan-care-worker-change'         => '/optional-care/#faq',
+	);
+}
+
+/**
+ * 301 a folded guide's address to its new home.
+ */
+function restwell_redirect_folded_guides() {
+	if ( is_admin() || ! is_404() ) {
+		return;
+	}
+	global $wp;
+	$path = isset( $wp->request ) && is_string( $wp->request ) ? trim( $wp->request, '/' ) : '';
+	$map  = restwell_folded_guide_redirects();
+	if ( isset( $map[ $path ] ) ) {
+		wp_safe_redirect( home_url( $map[ $path ] ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'restwell_redirect_folded_guides', 22 );
+
+/**
  * 301 redirect any ?page_id=3 request (orphaned WP sample content) to the homepage.
  * The link source is stored in the WP database (menu/post content) and cannot be removed
  * from the theme, but this redirect prevents the 404 from appearing in crawlers.
