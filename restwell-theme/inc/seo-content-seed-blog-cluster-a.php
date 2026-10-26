@@ -108,218 +108,236 @@ function restwell_get_blog_post_chc_respite_holiday_accommodation_html() {
 }
 
 /**
- * Hiring mobility equipment for a UK break.
+ * Mobility scooter and wheelchair hire in Whitstable (Batch E, 26 Oct 2026).
+ * Prices are as checked on 26 Oct 2026; recheck them before each copy pass.
  *
  * @return string
  */
 function restwell_get_blog_post_hire_mobility_equipment_uk_html() {
-	$blog      = esc_url( home_url( '/blog/' ) );
-	$checklist = esc_url( home_url( '/how-to-choose-accessible-self-catering-holiday/' ) );
-	$pack      = esc_url( home_url( '/what-to-pack-accessible-self-catering-uk/' ) );
-	$ins       = esc_url( home_url( '/travel-insurance-disability-uk-self-catering/' ) );
-	$enq       = esc_url( home_url( '/enquire/' ) );
+	$train     = esc_url( home_url( '/accessible-train-travel-whitstable-kent/' ) );
+	$enquire   = esc_url( home_url( '/enquire/' ) );
+	$access    = esc_url( home_url( '/accessibility/' ) );
+	$insurance = esc_url( home_url( '/travel-insurance-disability-uk-self-catering/' ) );
+	$beaches   = esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Treat hired scooters, profiling beds, and shower chairs like medical logistics: confirm door widths, charging points, delivery windows, and who carries liability if kit fails. Book early in peak season and photograph condition sheets before anyone signs.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> First Choice Mobility has a branch in Whitstable that hires out scooters and wheelchairs. The British Red Cross hires out wheelchairs too, but only delivers to your home, so book before you travel. At Restwell, the hoists, beds and shower chairs are already there.</p></blockquote>
 
-<h2>What is mobility equipment hire on holiday?</h2>
-<p>It is short-term rental of aids from NHS wheelchair services partners or private firms, delivered to a cottage or collected from a depot.</p>
+<h2>Can you hire a mobility scooter in Whitstable?</h2>
+<p>Yes, First Choice Mobility has a branch in Whitstable. It hires out scooters and wheelchairs for a few days, a holiday or longer. You usually collect from the branch, though it can deliver for a charge.</p>
+<p>Call 01227 907003 to check what's free for your dates.</p>
+<p>When we checked in October 2026, a travel or 4mph scooter cost £45 a week. An 8mph scooter cost £60, and every scooter needs a £250 deposit, which you get back. Prices can change, so confirm them when you book.</p>
+<p>Before you choose a scooter, check where you'll use it. Our <a href=\"{$access}\">door widths and equipment list for the bungalow</a> will tell you whether it fits indoors.</p>
 
-<h2>Why hire decisions trip people up</h2>
-<p>Coastal humidity affects batteries; narrow terraces block turning circles; overnight charging sockets sit on the wrong wall. The rental sheet says \"delivered\"; it rarely says \"fitted around your hoist track\".</p>
+<h2>Where can you hire a wheelchair?</h2>
+<p>First Choice Mobility hires out wheelchairs from £25 a week, or £5 a day. There's an £80 refundable deposit.</p>
+<p>The British Red Cross also hires out wheelchairs, for £22 a week plus £35 for delivery and collection. There's no deposit, and you don't need a referral. It only delivers to a home address, so book it before you leave.</p>
 
-<h2>How to match kit to property geometry</h2>
-<h3>Scooters and powerchairs</h3>
-<p>Ask for tyre width, folded length, and ramp gradient limits. Compare against thresholds on the <a href=\"{$checklist}\">property checklist</a>.</p>
-<h3>Bathroom aids</h3>
-<p>Seat heights must align with transfer technique; rental PVC differs from home moulded seats.</p>
-<h3>Beds and mattresses</h3>
-<p>Profiling hire must clear ceiling hoist paths already installed.</p>
+<h2>Do you need to hire anything for Restwell?</h2>
+<p>Probably not the big things. The bungalow has a ceiling track hoist, a mobile hoist and a standing aid. It also has two profiling beds, a tilt-in-space shower chair and a shower stool.</p>
+<p>Please bring the sling you already use, because a sling has to fit the person using it. Both hoists take loop-style slings on a two-point spreader bar. Fold-up ramps are kept by the front door, for the house and for days out.</p>
 
-<h2>Hire versus bring-from-home</h2>
-<table>
-<caption>Choose hire when transport risk outweighs familiarity</caption>
-<thead><tr><th scope=\"col\">Factor</th><th scope=\"col\">Hire locally</th><th scope=\"col\">Bring your own</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Airline or van damage risk</th><td>Often safer for heavy frames</td><td>You know sanitisation history</td></tr>
-<tr><th scope=\"row\">Setup time</th><td>Vendor should assemble</td><td>Faster if already dialled in</td></tr>
-<tr><th scope=\"row\">Insurance</th><td>Read hire excess clauses</td><td>Check home policy extends away</td></tr>
-<tr><th scope=\"row\">Peak season</th><td>Stock runs out fast</td><td>No waiting lists</td></tr>
-</tbody>
-</table>
+<h2>What are the rules for using a mobility scooter?</h2>
+<p>Most scooters are class 2 or class 3. A class 2 scooter goes up to 4mph and is for pavements. A class 3 scooter goes up to 8mph and can go on the road as well.</p>
+<p>A class 3 scooter has to be registered with the DVLA, but there's no vehicle tax to pay. On pavements, every scooter is limited to 4mph, and you must give way to people walking.</p>
+<p>By law, you can drive a scooter if an injury, disability or health condition makes walking hard.</p>
 
-<h2>Practical booking checklist</h2>
+<h2>Can you get VAT off the hire?</h2>
+<p>Often, yes. If you're disabled or have a long-term health condition, hiring equipment made for disabled people can be free of VAT. You'll usually sign a short form to say you qualify, and the supplier can tell you if it counts.</p>
+
+<h2>What should you check before you hire?</h2>
 <ul>
-<li>Request serial photos of actual units, not catalogue renders.</li>
-<li>Note breakdown helpline hours covering evenings.</li>
-<li>Align delivery with someone able to sign and test brakes.</li>
-<li>Pack adapters named on the <a href=\"{$pack}\">packing list</a>.</li>
+<li><strong>Width:</strong> compare the scooter or chair with the doors where you're staying. At Restwell, the front door is 965mm and the doors inside are 926mm.</li>
+<li><strong>Charging:</strong> ask how long the battery lasts, and where you'll charge it overnight.</li>
+<li><strong>Folding:</strong> check whether it folds or comes apart to fit in your car.</li>
+<li><strong>Breakdowns:</strong> save the number to call if it stops working, and ask about evenings and weekends.</li>
+<li><strong>Insurance:</strong> ask what you'd pay if it's damaged or stolen.</li>
 </ul>
+<p>Our guide to <a href=\"{$insurance}\">travel insurance for a UK holiday if you're disabled</a> covers hired kit as well.</p>
 
-<h2>Common mistakes</h2>
+<h2>Can you take a hired scooter on the train?</h2>
+<p>Yes, if it's small enough. Southeastern trains take scooters up to 1,200mm long and 700mm wide, in the wheelchair space. Our guide to <a href=\"{$train}\">step-free trains to Whitstable</a> has the rest of the rules.</p>
+
+<h2>Common mistakes to avoid</h2>
 <ul>
-<li>Waiting until the week before August bank holiday.</li>
-<li>Ignoring battery cooling rules after beach humidity.</li>
-<li>Letting informal deposits bypass VAT receipts commissioners need.</li>
-<li>Skipping compatibility checks with rental shower chairs and grab rails.</li>
+<li>Booking a scooter for a busy summer week at the last minute.</li>
+<li>Hiring a wide scooter without checking the doors where you're staying.</li>
+<li>Expecting the Red Cross to deliver to a holiday address.</li>
+<li>Forgetting to ask about VAT relief before you pay.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Does NHS wheelchair services cover Kent holidays?</h3>
-<p>Some regions loan vacation kits; others refuse outside boundaries. Phone before you promise anyone.</p>
-<h3>Who fixes a flat tyre on hire?</h3>
-<p>The contract spells roadside repair or swap-out; keep that PDF on your phone.</p>
-<h3>Can I hire a hoist?</h3>
-<p>Mobile gantry hires exist but need ceiling assessments; ceiling tracks are property-fixed.</p>
-<h3>Should I tell insurers?</h3>
-<p>Yes. See our <a href=\"{$ins}\">insurance primer</a> for wording tips.</p>
-<h3>What if equipment arrives damaged?</h3>
-<p>Refuse sign-off, photograph scrapes, demand replacement before transfer attempts.</p>
+<h3>Can I get a wheelchair for free?</h3>
+<p>If you need a wheelchair long term, your GP or physio can refer you to the NHS wheelchair service. For a short holiday, hiring is usually quicker.</p>
+<h3>Can I hire a beach wheelchair?</h3>
+<p>Yes, on some Kent beaches. Our guide to <a href=\"{$beaches}\">accessible beaches and coastal walks in Kent</a> says where to borrow one.</p>
+<h3>Do I need to hire a hoist for Restwell?</h3>
+<p>No. There's a ceiling track hoist over the bed and a mobile hoist you can use in any room. Please bring your own sling.</p>
+<h3>Can I hire a scooter for just a day?</h3>
+<p>First Choice Mobility lists weekly and monthly prices for scooters, and daily prices for wheelchairs. Ask the branch if you need a scooter for less than a week.</p>
+
+<h2>Bringing your own kit to Restwell</h2>
+<p>Restwell is a private, single-storey bungalow in Whitstable, with a step-free front door. The private drive is level, which makes it easier to get a scooter in and out of a car. If you're bringing one, ask us where it can be charged.</p>
 
 <h2>Closing</h2>
-<p>Hire adds flexibility when homework is dull. Read more on the <a href=\"{$blog}\">blog</a> and <a href=\"{$enq}\">tell us</a> what kit must marry our published dimensions.</p>";
+<p>Not sure what to bring? <a href=\"{$enquire}\">Ask us about the equipment at the bungalow</a>, and we'll tell you what's here.</p>";
 }
 
 /**
- * Accessible rail travel to Whitstable and Kent.
+ * Is Whitstable station step-free? (Batch E, 26 Oct 2026): the two platform
+ * entrances, Passenger Assist, scooters on Southeastern and the railcard.
  *
  * @return string
  */
 function restwell_get_blog_post_accessible_train_whitstable_kent_html() {
-	$blog  = esc_url( home_url( '/blog/' ) );
-	$area  = esc_url( home_url( '/whitstable-area-guide/' ) );
-	$park  = esc_url( home_url( '/accessible-parking-whitstable-tankerton/' ) );
-	$hire  = esc_url( home_url( '/hire-mobility-scooter-equipment-uk-holiday/' ) );
-	$enq   = esc_url( home_url( '/enquire/' ) );
+	$area    = esc_url( home_url( '/whitstable-area-guide/' ) );
+	$parking = esc_url( home_url( '/accessible-parking-whitstable-tankerton/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Southeastern trains serve Whitstable from London Victoria and high-speed links via St Pancras; accessibility means booking assistance ahead, knowing platform gaps, and planning onward taxis if station lifts fail. Carry a printed itinerary because rural signal drops surprise apps.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Yes, both platforms at Whitstable are step-free, but each has its own entrance. Platform 1, for London, is off Old Bridge Road, and platform 2, towards Margate, is off Railway Avenue. The footbridge between them has steps.</p></blockquote>
 
-<h2>What counts as accessible train travel here?</h2>
-<p>Accessible train travel is booked assistance plus rolling-stock features such as wheelchair bays, tactile strips, and ramp deployment agreed at least the night before travel where operators require notice.</p>
+<h2>Is Whitstable station step-free?</h2>
+<p>Yes, but each platform has its own step-free entrance. Platform 1, for trains towards London, is reached from the forecourt off Old Bridge Road. Platform 2, for trains towards Margate, is reached from Railway Avenue.</p>
+<p>There are no lifts, and the footbridge between the platforms has steps. So if you need to cross over, you go out of the station and round by road. National Rail lists Whitstable as step-free category B2, which means some step-free access to every platform.</p>
+<p>Staff keep ramps at the station for getting on and off the train. There are no wheelchairs to borrow, so bring your own if you need one. Once you arrive, our guide to <a href=\"{$area}\">getting around Whitstable on wheels</a> covers the town itself.</p>
 
-<h2>Why coastal hops still bruise plans</h2>
-<p>Replacement buses erase step-free routes. Short platforms sometimes limit carriage positions. Powerchair users face tighter turning space on older rolling stock.</p>
+<h2>Which London stations have trains to Whitstable?</h2>
+<p>Southeastern runs direct trains to Whitstable from London St Pancras and London Victoria. The trip takes about an hour and a half. Trains from St Pancras use the high-speed line for the first part of the trip.</p>
+<p>The same line runs along the coast to Herne Bay, Margate and Ramsgate. Going the other way, you can change at Faversham for trains to Canterbury and Dover.</p>
 
-<h2>How the journey segments break down</h2>
-<h3>London to Whitstable</h3>
-<p>High-speed services trim time but not always staff availability at smaller stations.</p>
-<h3>Kent hops</h3>
-<p>Connections through Faversham or Ramsgate need lift maps checked when changing platforms.</p>
-<h3>Last mile</h3>
-<p>Station forecourts slope; pre-book accessible taxis on race days and oyster-popular weekends.</p>
+<h2>How do you book help at the station?</h2>
+<p>You can book Passenger Assist through its app or website, or by calling 0800 022 3720. You can book up to two hours before you travel, but earlier is better. Staff can then set up a ramp and meet you off the train.</p>
+<p>They can also help with up to three bags, as long as one person can carry them. If you don't book, you can still turn up and go. Staff will help where they can, though it may take longer at busy times.</p>
+<p>Whitstable isn't staffed all day. National Rail lists staff help from 6am to midday, Monday to Saturday, and from 9.10am to 4pm on Sundays. At other times, there are help points inside and outside the station.</p>
+<p>If you've booked help, wait at the platform shelter, where staff on the train can see you. Make yourself known when the train comes in, or press a help point button.</p>
 
-<h2>Operator asks versus DIY</h2>
-<table>
-<caption>Know what assistance promises cover</caption>
-<thead><tr><th scope=\"col\">Need</th><th scope=\"col\">Booked Passenger Assist</th><th scope=\"col\">Turn-up-and-go limits</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Ramp onto train</th><td>Staff meet with timeline</td><td>May wait if unbooked</td></tr>
-<tr><th scope=\"row\">Station wheelchair when yours breaks</th><td>Subject to depot stock</td><td>Not guaranteed</td></tr>
-<tr><th scope=\"row\">Companion seat</th><td>Reserve adjacent bay</td><td>Peak trains fill fast</td></tr>
-<tr><th scope=\"row\">Step-free entire route</th><td>Ask for map PDF</td><td>Engineering diverts break promises</td></tr>
-</tbody>
-</table>
+<h2>Can you take a wheelchair or mobility scooter on the train?</h2>
+<p>Yes, Southeastern trains take wheelchairs and mobility scooters up to 1,200mm long and 700mm wide. You travel in the wheelchair space. You can't reserve it, but staff will try to get you on the train you want.</p>
+<p>The ramps take up to 300kg in total, which includes you, your chair or scooter and your bags. A class 3 scooter must be set to its 4mph pavement setting on board. Southeastern also suggests moving to a seat once you're on the train.</p>
+<p>A folding scooter that fits in the luggage rack can go on any train. Replacement buses may not take scooters, so check for engineering work before you travel. Southeastern publishes planned work 12 weeks ahead.</p>
 
-<h2>Practical steps</h2>
-<ol>
-<li>Book assistance when you buy tickets or at least 24 hours ahead.</li>
-<li>Download station layouts from National Rail Enquiries.</li>
-<li>Charge backup battery packs; USB sockets vary by train.</li>
-<li>Pair rail with <a href=\"{$park}\">local parking plans</a> if someone meets you by car.</li>
-</ol>
+<h2>What happens if a replacement bus isn't accessible?</h2>
+<p>Southeastern's replacement buses have to be wheelchair accessible. If you can't use the transport on the day, it will arrange an accessible taxi at no extra charge. The taxi takes you to the nearest accessible station, so you can carry on.</p>
+<p>You still need a ticket for the whole trip. If disruption stops you travelling, call Southeastern on 0800 783 4524. You can also ask staff or use a help point.</p>
 
-<h2>Common mistakes</h2>
+<h2>Is there a railcard if you're disabled?</h2>
+<p>Yes. The Disabled Persons Railcard costs £20 for a year, or £54 for three years. It takes a third off most fares for you and for one adult travelling with you.</p>
+<p>You can qualify in several ways, such as getting PIP at any rate or holding a Blue Badge. Being registered as sight impaired counts too. The full list is on the Railcard website, and the card can be on your phone or printed.</p>
+
+<h2>Getting from Whitstable station to where you're staying</h2>
+<p>There's a drop-off point by the station, and a taxi office right by the exit. When you book a taxi, ask for a wheelchair-accessible car if you need one, because not every car is adapted.</p>
+<p>The station car park has 43 spaces, and 9 of them are accessible. Southeastern lets Blue Badge holders park free in its station car parks, all day if you're catching a train.</p>
+<p>Our guide to <a href=\"{$parking}\">Blue Badge parking in Whitstable</a> covers the rest of the town.</p>
+
+<h2>Practical steps before you travel</h2>
 <ul>
-<li>Assuming every Whitstable departure uses the same door gap.</li>
-<li>Forgetting medication schedules across delayed legs.</li>
-<li>Blocking wheelchair bays with suitcases.</li>
-<li>Skipping <a href=\"{$hire}\">local hire</a> backup if your chair fails en route.</li>
+<li>Book Passenger Assist when you buy your tickets, and keep the reference number.</li>
+<li>Check which platform your train uses, so you go in by the right entrance.</li>
+<li>Look up engineering work for your dates, especially if you use a scooter.</li>
+<li>Measure your chair or scooter if you're not sure it fits the 1,200mm by 700mm space.</li>
+<li>Book an accessible taxi for the last part of the trip if you need one.</li>
+</ul>
+
+<h2>Common mistakes to avoid</h2>
+<ul>
+<li>Going in by the wrong entrance, when the footbridge between the platforms has steps.</li>
+<li>Arriving after midday and expecting staff at the station.</li>
+<li>Assuming a replacement bus will take a mobility scooter.</li>
+<li>Booking a taxi without saying you need an adapted car.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Are all Whitstable platforms step-free?</h3>
-<p>Layout changes with engineering; verify on the day via operator alerts.</p>
-<h3>Can I stay seated in my powerchair?</h3>
-<p>Yes when designated bays exist; alternatively use onboard wheelchair storage policies.</p>
-<h3>Do carers travel free?</h3>
-<p>Some operators issue companion passes; ask when booking assistance.</p>
-<h3>What if assistance no-shows?</h3>
-<p>Use station help points and note staff names for compensation claims.</p>
-<h3>Where is local orientation?</h3>
-<p>Use our <a href=\"{$area}\">Whitstable area guide</a> after you arrive.</p>
+<h3>Does Whitstable station have toilets?</h3>
+<p>Yes, there's a toilet and an accessible toilet. There's no Changing Places toilet and no baby changing at the station.</p>
+<h3>When is the ticket office open?</h3>
+<p>National Rail lists it as open from 6am to 7.30pm, Monday to Saturday, and from 9.10am to 4pm on Sundays. There are ticket machines too.</p>
+<h3>Which station is nearest if Whitstable doesn't suit?</h3>
+<p>National Rail names Faversham as the nearest accessible station. It's the next stop towards London on the same line.</p>
+<h3>What if the help I booked doesn't turn up?</h3>
+<p>Tell Southeastern, because it will look into what went wrong. Depending on what happened, you may get a full or partial refund, or vouchers.</p>
+<h3>Can a carer travel with me on a railcard?</h3>
+<p>Yes. The Disabled Persons Railcard takes a third off for one adult travelling with you. They don't have to be the same person every time.</p>
+
+<h2>Coming to Restwell by train</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable. From the station, it's a walk of 20 to 30 minutes, or a short taxi ride. If someone is driving down to meet you, the private drive has room for two cars.</p>
 
 <h2>Closing</h2>
-<p>Rails work when paperwork leads. Explore <a href=\"{$blog}\">more guides</a> and <a href=\"{$enq}\">ask Restwell</a> about station pickup timing.</p>";
+<p>If you'd like help planning the trip, <a href=\"{$enquire}\">tell us your dates and how you're travelling</a>. We'll share what we know.</p>";
 }
 
 /**
- * Travel insurance and disability (UK self-catering primer).
+ * Travel insurance for a UK holiday if you’re disabled (Batch E, 26 Oct 2026).
+ * Quotes Restwell’s cancellation terms; keep it in step with legal-content.php.
  *
  * @return string
  */
 function restwell_get_blog_post_travel_insurance_disability_uk_html() {
-	$blog = esc_url( home_url( '/blog/' ) );
-	$res  = esc_url( home_url( '/funding-and-support/' ) );
-	$hire = esc_url( home_url( '/hire-mobility-scooter-equipment-uk-holiday/' ) );
-	$enq  = esc_url( home_url( '/enquire/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
+	$hire    = esc_url( home_url( '/hire-mobility-scooter-equipment-uk-holiday/' ) );
+	$funding = esc_url( home_url( '/funding-and-support/' ) );
+	$terms   = esc_url( home_url( '/terms-and-conditions/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Standard policies often cap mobility equipment value or exclude unattended vans. Read Schedule coverage for wheelchairs, hoist damage, and cancellation due to hospital admission. This article is practical guidance, not legal advice; confirm wording with a broker.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> Travel insurance is worth having for a UK holiday, mostly in case you have to cancel. Tell the insurer about every health condition and the equipment you take. If it turns you down, it must point you to a list of specialist insurers.</p></blockquote>
 
-<h2>What is disability-aware travel insurance?</h2>
-<p>It is a policy where you declare equipment, pre-existing conditions, and likely cancellation triggers so claims teams cannot reject on non-disclosure grounds.</p>
+<h2>Do you need travel insurance for a UK holiday?</h2>
+<p>It's worth having, mostly in case you have to cancel. In England, Scotland and Wales, the NHS treats you if you're ill. So on a UK trip, cover is mainly for cancelling, coming home early, or losing things like your wheelchair.</p>
+<p>Many policies only cover a UK trip of at least two nights somewhere you pay to stay. Some also need you to travel a set distance from home. Read the policy before you buy.</p>
+<p>For help paying for the stay itself, see our guide to <a href=\"{$funding}\">grants that can go towards a stay</a>.</p>
 
-<h2>Why claims fail for UK breaks</h2>
-<p>People assume \"UK travel\" equals \"zero paperwork\". Equipment stolen from a beach hut still needs crime numbers. Cancellation because a PA drops out may fall outside narrow illness clauses.</p>
+<h2>Why does cover for cancelling matter?</h2>
+<p>Most holiday homes keep some or all of your money if you cancel late. At Restwell, you get all your money back if you cancel more than 30 days before you arrive.</p>
+<p>If you cancel 14 to 30 days before, you get half back, and under 14 days, there's no refund.</p>
+<p>After a serious illness or a care emergency, we may offer some money back or a free date change. We look at each case on its own, though, so insurance is what protects you.</p>
 
-<h2>How policies differ on kit</h2>
-<table>
-<caption>Compare headings in the policy schedule before paying</caption>
-<thead><tr><th scope=\"col\">Scenario</th><th scope=\"col\">Watch for</th><th scope=\"col\">Ask broker</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Wheelchair in car boot theft</th><td>Vehicle unattended clauses</td><td>Proof of forced entry</td></tr>
-<tr><th scope=\"row\">Hired scooter damage</th><td>Hire excess overlap</td><td>Who pays first pound</td></tr>
-<tr><th scope=\"row\">Trip cut short</th><td>Curtainment wording</td><td>Medical certification timing</td></tr>
-<tr><th scope=\"row\">Carer illness</th><td>Named traveller definitions</td><td>Whether PA counts as insured party</td></tr>
-</tbody>
-</table>
+<h2>What do you need to tell the insurer?</h2>
+<p>Tell them about every health condition and disability they ask about, even if it seems small. Most insurers mean anything you've seen a doctor about, or had treatment for, in the last two years. Some ask further back about serious illness.</p>
+<p>They'll also ask how a condition affects your day, and what equipment you use. If you leave something out, the insurer may refuse to pay when you claim.</p>
 
-<h2>Evidence to gather before travel</h2>
-<h3>Valuations</h3>
-<p>Receipts or OT letters stating replacement cost.</p>
-<h3>Photos</h3>
-<p>Timestamp equipment condition.</p>
-<h3>Medication list</h3>
-<p>Matches prescribing clinician records.</p>
+<h2>Can an insurer turn you down or charge more?</h2>
+<p>Yes, but only on fair grounds. Under the Equality Act 2010, an insurer can only treat you differently because of a disability if that's reasonable. It must also be based on good evidence about the risk.</p>
+<p>Sometimes an insurer turns you down, won't cover a condition, or charges a lot more for it. When that happens, FCA rules say it must tell you about the MoneyHelper travel insurance directory. The directory lists specialist insurers who are more likely to cover you.</p>
+<p>A broker can also shop around for you, for a fee. You can find one through the British Insurance Brokers' Association.</p>
 
-<h2>Practical steps</h2>
+<h2>Is your wheelchair or scooter covered?</h2>
+<p>Not always for what it's worth. Most policies have a limit for any one item you take. That limit may be less than a powerchair or scooter costs to replace, though some specialist policies go higher.</p>
+<p>Your home insurance may already cover your chair away from home, so check that first. If you hire one, ask the hire firm what you'd pay if it's damaged or stolen. Our guide to <a href=\"{$hire}\">mobility scooter hire in Whitstable</a> lists what to ask.</p>
+
+<h2>Does the cover include your carer?</h2>
+<p>Check what the policy says about cancelling because someone else falls ill. Ask whether that includes a carer or PA, especially one who isn't coming with you.</p>
+<p>If your care falls through and you can't travel, ask whether that's a reason the insurer will pay out for. Get the answer in writing, so there's no doubt if you need to claim.</p>
+
+<h2>Practical steps before you buy</h2>
 <ul>
-<li>Compare three specialist insurers alongside mainstream brands.</li>
-<li>Email written confirmations of coverage for hoists and hired beds.</li>
-<li>Store insurer helplines offline.</li>
-<li>Align hire contracts with <a href=\"{$hire}\">equipment hire</a> guidance.</li>
+<li>Buy cover when you book, so you're covered for cancelling straight away.</li>
+<li>Tell the insurer about every condition, and list your equipment and what it's worth.</li>
+<li>Check the limit for one item against the cost of your chair or scooter.</li>
+<li>Ask whether you're covered if your carer can't come.</li>
+<li>Keep receipts and photos of your equipment in case you need to claim.</li>
 </ul>
 
-<h2>Common mistakes</h2>
+<h2>Common mistakes to avoid</h2>
 <ul>
-<li>Ticking \"no conditions\" to save ten minutes online.</li>
-<li>Forgetting to insure hired kit separately.</li>
-<li>Relying on home contents cover without away-from-home limits.</li>
-<li>Ignoring excess stacking between policies.</li>
+<li>Leaving out a condition to keep the price down.</li>
+<li>Leaving insurance until just before you travel.</li>
+<li>Assuming your home insurance covers everything away from home.</li>
+<li>Missing a rule about how many nights a UK trip must last.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Does EHIC replace insurance?</h3>
-<p>No for equipment or cancellations; it supports emergency healthcare abroad only.</p>
-<h3>Will NHS continuing care void insurance?</h3>
-<p>Declare funded care openly; hiding funding risks claims.</p>
-<h3>Are beach injuries covered?</h3>
-<p>Depends on hazardous activity clauses; read exclusions literally.</p>
-<h3>Can I insure a hired WAV?</h3>
-<p>Often via hire firm's CDW; confirm duplication before buying extras.</p>
-<h3>Who helps if wording is vague?</h3>
-<p>Use charity helplines plus our <a href=\"{$res}\">resources hub</a> for funding context.</p>
+<h3>Does travel insurance cover you in the UK?</h3>
+<p>Many policies do, as long as the trip fits their rules. A common rule is at least two nights somewhere you pay to stay. Read the policy to be sure.</p>
+<h3>What medical conditions affect travel insurance?</h3>
+<p>Anything you've seen a doctor about or had treatment for lately, and any serious illness you've had in the past. That includes things like cancer or heart trouble. If you're not sure, tell the insurer.</p>
+<h3>Do I need a GHIC for a UK holiday?</h3>
+<p>No. The Global Health Insurance Card is for health care abroad. On a holiday in England, Scotland or Wales, you can use the NHS as you would at home.</p>
+<h3>What if I can't find cover?</h3>
+<p>Try the MoneyHelper travel insurance directory, or ask a broker. A policy for one trip, rather than a whole year, can be easier to get.</p>
+
+<h2>Booking Restwell with insurance in place</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable. Up to 14 days before you arrive, you can ask to move your dates for free.</p>
+<p>The new dates just need to be open. Our <a href=\"{$terms}\">booking and cancelling terms</a> have the full details.</p>
 
 <h2>Closing</h2>
-<p>Insurance rewards boring paperwork. Continue on the <a href=\"{$blog}\">blog</a> and <a href=\"{$enq}\">talk to us</a> about property risks we publish upfront.</p>";
+<p>Need our terms or a quote to show your insurer? <a href=\"{$enquire}\">Ask us about your dates</a>, and we'll send them over.</p>";
 }
 
 /**

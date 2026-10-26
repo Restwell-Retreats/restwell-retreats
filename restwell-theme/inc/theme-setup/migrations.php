@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 115;
+const RESTWELL_SCHEMA_VERSION = 117;
 
 
 /**
@@ -5477,53 +5477,21 @@ function restwell_migrate_publish_guides_v113() {
 }
 
 /**
- * Batch D (26 Oct 2026): three guides rewritten and published, two folded
- * into Optional Care.
+ * Give rewritten guides their new wording, or publish them (Batch D, E).
  *
- * - Respite for carers, CHC respite care and Care Act 2014 respite get their
- *   new wording. A published copy changes field by field, and only where the
- *   field still holds wording the theme shipped (the body by its text
- *   fingerprint), so anything edited in wp-admin stays. A guide that isn't
- *   live is published, as v113 did for the first five.
- * - The commissioner checklist and holiday backup plan guides go back to
- *   draft while their text is still ours. Their addresses then redirect to
- *   Optional Care (restwell_redirect_folded_guides()).
- * - Optional Care's professionals card names what a funding panel can check.
+ * A published copy changes field by field, and only while the field still
+ * holds wording the theme shipped: the body by its text fingerprint, the
+ * title, excerpt and SEO fields by their old values. Anything edited in
+ * wp-admin stays. A guide that isn't live is published with the new wording,
+ * reusing an older draft or binned copy if there is one, as v113 did.
+ *
+ * @param array $was slug => array( 'text', 'title', 'excerpt', 'meta_title',
+ *                   'meta_description', 'focus_keyphrase' ), each a list of
+ *                   values the theme has shipped.
+ * @return bool Whether a guide was published.
  */
-function restwell_migrate_batch_d_posts_v114() {
-	$flag = 'restwell_batch_d_posts_v114';
-	if ( get_option( $flag, '' ) === '1' ) {
-		return;
-	}
-	update_option( $flag, '1', false );
-
+function restwell_publish_rewritten_guides( array $was ): bool {
 	$name = (string) get_bloginfo( 'name' );
-	$was  = array(
-		'carers-respite-holiday-guide'         => array(
-			'text'             => array( 'f629f9309048fcd2ffcc4ebc3b65f441' ),
-			'title'            => array( 'Carers taking holidays: respite rights, funding, and how to plan a break that works' ),
-			'excerpt'          => array( 'A guide for unpaid carers who need a break. It covers your rights under the Care Act and getting a carer’s assessment in Kent, and it explains how a break is paid for.' ),
-			'meta_title'       => array( 'Carer’s assessments and your right to a respite break', 'Carer Assessment & Respite Rights Guide', 'Respite Holidays for Carers | Rights' ),
-			'meta_description' => array( 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.', 'Respite holidays for unpaid carers: carer\'s assessment, Kent routes, direct payments, grants, and how to plan a break that actually restores you.' ),
-			'focus_keyphrase'  => array( 'carer assessment respite rights', 'respite holidays' ),
-		),
-		'chc-respite-holiday-accommodation-uk' => array(
-			'text'             => array( '92fb4c08a0c3d07348837ad5e622c475' ),
-			'title'            => array( 'CHC, respite, and holiday accommodation: plain English for families and commissioners' ),
-			'excerpt'          => array( 'What NHS Continuing Healthcare can and can’t pay for on a break. It covers how the care and the rent are billed, and what a panel needs to see.', 'What NHS Continuing Healthcare can and cannot pay for on a break, how to split care invoices from cottage rent, and the paperwork panels expect before they sign off.' ),
-			'meta_title'       => array( 'CHC funding and respite holiday accommodation', 'CHC Respite Holiday Accommodation UK' ),
-			'meta_description' => array( 'CHC respite holiday accommodation explained: NHS continuing healthcare versus lodging costs, paperwork panels expect, and funding lines for supported breaks.' ),
-			'focus_keyphrase'  => array( 'chc respite holiday accommodation' ),
-		),
-		'personal-budget-short-break-care-act' => array(
-			'text'             => array( 'd777868c407199807316dc83239d0c37' ),
-			'title'            => array( 'Personal budgets and short breaks under the Care Act' ),
-			'excerpt'          => array( 'What a direct payment can and can’t cover on a short break, such as PA hours and a PA’s travel. It also shows how to keep your council’s paperwork tidy.', 'Splitting PA hours, transport, and accommodation receipts so retrospective audits survive — without pretending social care money buys flights by default.' ),
-			'meta_title'       => array( 'Using a personal budget for a short break', 'Personal Budget Short Break Care Act' ),
-			'meta_description' => array( 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.' ),
-			'focus_keyphrase'  => array( 'personal budget short break care act' ),
-		),
-	);
 	// Older titles were saved with " | site name" on the end.
 	foreach ( $was as $slug => $old ) {
 		foreach ( $old['meta_title'] as $title ) {
@@ -5635,6 +5603,55 @@ function restwell_migrate_batch_d_posts_v114() {
 		$made = true;
 	}
 
+	return $made;
+}
+
+/**
+ * Batch D (26 Oct 2026): three guides rewritten and published, two folded
+ * into Optional Care.
+ *
+ * - Respite for carers, CHC respite care and Care Act 2014 respite get their
+ *   new wording, or are published (restwell_publish_rewritten_guides()).
+ * - The commissioner checklist and holiday backup plan guides go back to
+ *   draft while their text is still ours. Their addresses then redirect to
+ *   Optional Care (restwell_redirect_folded_guides()).
+ * - Optional Care's professionals card names what a funding panel can check.
+ */
+function restwell_migrate_batch_d_posts_v114() {
+	$flag = 'restwell_batch_d_posts_v114';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+
+	$was = array(
+		'carers-respite-holiday-guide'         => array(
+			'text'             => array( 'f629f9309048fcd2ffcc4ebc3b65f441' ),
+			'title'            => array( 'Carers taking holidays: respite rights, funding, and how to plan a break that works' ),
+			'excerpt'          => array( 'A guide for unpaid carers who need a break. It covers your rights under the Care Act and getting a carer’s assessment in Kent, and it explains how a break is paid for.' ),
+			'meta_title'       => array( 'Carer’s assessments and your right to a respite break', 'Carer Assessment & Respite Rights Guide', 'Respite Holidays for Carers | Rights' ),
+			'meta_description' => array( 'Guide to carer assessments and respite rights for unpaid carers: legal routes, funding pathways, and planning steps for short breaks.', 'Respite holidays for unpaid carers: carer\'s assessment, Kent routes, direct payments, grants, and how to plan a break that actually restores you.' ),
+			'focus_keyphrase'  => array( 'carer assessment respite rights', 'respite holidays' ),
+		),
+		'chc-respite-holiday-accommodation-uk' => array(
+			'text'             => array( '92fb4c08a0c3d07348837ad5e622c475' ),
+			'title'            => array( 'CHC, respite, and holiday accommodation: plain English for families and commissioners' ),
+			'excerpt'          => array( 'What NHS Continuing Healthcare can and can’t pay for on a break. It covers how the care and the rent are billed, and what a panel needs to see.', 'What NHS Continuing Healthcare can and cannot pay for on a break, how to split care invoices from cottage rent, and the paperwork panels expect before they sign off.' ),
+			'meta_title'       => array( 'CHC funding and respite holiday accommodation', 'CHC Respite Holiday Accommodation UK' ),
+			'meta_description' => array( 'CHC respite holiday accommodation explained: NHS continuing healthcare versus lodging costs, paperwork panels expect, and funding lines for supported breaks.' ),
+			'focus_keyphrase'  => array( 'chc respite holiday accommodation' ),
+		),
+		'personal-budget-short-break-care-act' => array(
+			'text'             => array( 'd777868c407199807316dc83239d0c37' ),
+			'title'            => array( 'Personal budgets and short breaks under the Care Act' ),
+			'excerpt'          => array( 'What a direct payment can and can’t cover on a short break, such as PA hours and a PA’s travel. It also shows how to keep your council’s paperwork tidy.', 'Splitting PA hours, transport, and accommodation receipts so retrospective audits survive — without pretending social care money buys flights by default.' ),
+			'meta_title'       => array( 'Using a personal budget for a short break', 'Personal Budget Short Break Care Act' ),
+			'meta_description' => array( 'Personal budget short breaks under the Care Act: splitting PA hours, accommodation, and transport receipts so panel audits stay clean.' ),
+			'focus_keyphrase'  => array( 'personal budget short break care act' ),
+		),
+	);
+	$made = restwell_publish_rewritten_guides( $was );
+
 	// The folded guides: back to draft while they still read as we shipped them.
 	foreach (
 		array(
@@ -5671,20 +5688,17 @@ function restwell_migrate_batch_d_posts_v114() {
 }
 
 /**
- * Share photos for the three Batch D guides (26 Oct 2026), the same photos
- * their blog cards use. Works like v107: waits for the photos, sets the share
- * image only, and does one guide per request.
+ * Set each guide's share photo, one guide per request (Batch D, E). Works like
+ * v107: waits for the photos, sets the share image only, and skips a guide
+ * that already has a featured or share image.
+ *
+ * @param string $flag   Migration flag.
+ * @param array  $photos Guide slug => theme image path.
  */
-function restwell_migrate_batch_d_share_images_v115() {
-	$flag = 'restwell_batch_d_share_images_v115';
+function restwell_set_guide_share_photos( $flag, array $photos ) {
 	if ( get_option( $flag, '' ) === '1' ) {
 		return;
 	}
-	$photos = array(
-		'carers-respite-holiday-guide'         => 'stock/restwell-whitstable-sunset-pier.webp',
-		'chc-respite-holiday-accommodation-uk' => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
-		'personal-budget-short-break-care-act' => 'stock/restwell-whitstable-painted-beach-huts.jpg',
-	);
 	if ( restwell_photo_migration_waiting( $flag, array_values( $photos ) ) ) {
 		return;
 	}
@@ -5713,6 +5727,94 @@ function restwell_migrate_batch_d_share_images_v115() {
 	if ( count( $todo ) > 1 ) {
 		delete_option( $flag ); // The next guide's photo follows on the next request.
 	}
+}
+
+/**
+ * Share photos for the three Batch D guides (26 Oct 2026), the same photos
+ * their blog cards use.
+ */
+function restwell_migrate_batch_d_share_images_v115() {
+	$flag = 'restwell_batch_d_share_images_v115';
+	restwell_set_guide_share_photos(
+		$flag,
+		array(
+			'carers-respite-holiday-guide'         => 'stock/restwell-whitstable-sunset-pier.webp',
+			'chc-respite-holiday-accommodation-uk' => 'stock/restwell-whitstable-beach-huts-sunset-slope.jpg',
+			'personal-budget-short-break-care-act' => 'stock/restwell-whitstable-painted-beach-huts.jpg',
+		)
+	);
+}
+
+/**
+ * Batch E (26 Oct 2026): the parking, train, mobility hire and travel
+ * insurance guides rewritten and published, each aimed at what people in
+ * the UK search for (restwell_publish_rewritten_guides()).
+ */
+function restwell_migrate_batch_e_posts_v116() {
+	$flag = 'restwell_batch_e_posts_v116';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+
+	$made = restwell_publish_rewritten_guides(
+		array(
+			'accessible-parking-whitstable-tankerton'     => array(
+				'text'             => array( 'f56127af67b5a2b32c99f3c121882c01' ),
+				'title'            => array( 'Accessible parking and drop-off around Whitstable and Tankerton' ),
+				'excerpt'          => array( 'Blue Badge basics, where parking gets tight by the sea, and how to park close to the level seafront path. We won’t pretend a space is always free.', 'Blue Badge basics, where seaside crowds pinch space, and how to pair parking with level promenade walks — without pretending every bay is always empty.', 'Blue Badge basics, where seaside crowds pinch space, and how to pair parking with level promenade walks, without pretending every bay is always empty.' ),
+				'meta_title'       => array( 'Accessible parking in Whitstable and Tankerton', 'Accessible Parking Whitstable | Tankerton' ),
+				'meta_description' => array( 'Accessible parking and drop-off near Whitstable and Tankerton: Blue Badge basics, promenade access, timing tides and crowds, and links to Kent guides.' ),
+				'focus_keyphrase'  => array( 'accessible parking whitstable' ),
+			),
+			'accessible-train-travel-whitstable-kent'     => array(
+				'text'             => array( 'ee397799323699615f7cb00924621735' ),
+				'title'            => array( 'Accessible train travel to Whitstable and around Kent' ),
+				'excerpt'          => array( 'How Passenger Assist works, what to know about platform gaps and taxis, and why it’s worth having a backup plan if buses replace the trains.', 'Passenger Assist, platform gaps, onward taxis, and why seaside rail hops still need backup plans when buses replace trains.' ),
+				'meta_title'       => array( 'Accessible train travel to Whitstable and Kent', 'Accessible Train Travel Whitstable Kent' ),
+				'meta_description' => array( 'Accessible train travel to Whitstable and around Kent: Passenger Assist, platform gaps, connections, and pairing rail with local parking or taxi backup.' ),
+				'focus_keyphrase'  => array( 'accessible train travel whitstable' ),
+			),
+			'hire-mobility-scooter-equipment-uk-holiday'  => array(
+				'text'             => array( 'af4ec18e6ca835d818d940d1bb341279' ),
+				'title'            => array( 'Hiring mobility equipment for a UK self-catering holiday' ),
+				'excerpt'          => array( 'How to hire a scooter, profiling bed or shower chair for your trip. It covers door widths, insurance and delivery, so you know what to check before you sign.', 'Scooters, profiling beds, and shower chairs: how to match hire stock to door widths, insurance small-print, delivery slots, and handover photos before you sign.' ),
+				'meta_title'       => array( 'Hiring mobility equipment for a UK holiday', 'Hire Mobility Equipment UK Holiday | Self-Catering' ),
+				'meta_description' => array( 'Hire mobility scooters, shower chairs, and beds for a UK self-catering holiday: measurements, insurance, delivery slots, and what to photograph on handover.' ),
+				'focus_keyphrase'  => array( 'hire mobility equipment uk holiday' ),
+			),
+			'travel-insurance-disability-uk-self-catering' => array(
+				'text'             => array( '0c867506a14ed7e29d74d72b477122c2' ),
+				'title'            => array( 'Travel insurance, disability, and UK self-catering breaks' ),
+				'excerpt'          => array( 'What to ask an insurer about your kit, your health and cancelling before a break in the UK. This is practical help, not legal advice.', 'Equipment limits, pre-existing conditions, cancellation clauses, and broker questions — practical guidance, not legal advice.', 'Equipment limits, pre-existing conditions, cancellation clauses, and broker questions. Practical guidance, not legal advice.' ),
+				'meta_title'       => array( 'Travel insurance for disabled travellers in the UK', 'Travel Insurance Disability UK Self-Catering' ),
+				'meta_description' => array( 'Travel insurance and disability on UK self-catering breaks: mobility equipment limits, pre-existing conditions, cancellation triggers, and broker questions.' ),
+				'focus_keyphrase'  => array( 'travel insurance disability uk self catering' ),
+			),
+		)
+	);
+
+	if ( $made ) {
+		// A guide published just now needs its share photo; let v117 look again.
+		delete_option( 'restwell_batch_e_share_images_v117' );
+	}
+}
+
+/**
+ * Share photos for the four Batch E guides (26 Oct 2026), the same photos
+ * their blog cards use.
+ */
+function restwell_migrate_batch_e_share_images_v117() {
+	$flag = 'restwell_batch_e_share_images_v117';
+	restwell_set_guide_share_photos(
+		$flag,
+		array(
+			'accessible-parking-whitstable-tankerton'      => 'bungalow/EX-1-LS.jpg',
+			'accessible-train-travel-whitstable-kent'      => 'stock/restwell-whitstable-drone-aerial-view.webp',
+			'hire-mobility-scooter-equipment-uk-holiday'   => 'bungalow/EQU-2-LS.jpg',
+			'travel-insurance-disability-uk-self-catering' => 'stock/restwell-whitstable-pebble-beach-groynes.jpg',
+		)
+	);
 }
 
 /**
@@ -5866,6 +5968,8 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_publish_guides_v113',
 		'restwell_batch_d_posts_v114',
 		'restwell_batch_d_share_images_v115',
+		'restwell_batch_e_posts_v116',
+		'restwell_batch_e_share_images_v117',
 	);
 }
 
@@ -6082,6 +6186,10 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_d_posts_v114', 152 );
 	add_action( 'init', 'restwell_migrate_batch_d_share_images_v115', 158 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_d_share_images_v115', 153 );
+	add_action( 'init', 'restwell_migrate_batch_e_posts_v116', 159 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_e_posts_v116', 154 );
+	add_action( 'init', 'restwell_migrate_batch_e_share_images_v117', 160 );
+	add_action( 'after_switch_theme', 'restwell_migrate_batch_e_share_images_v117', 155 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

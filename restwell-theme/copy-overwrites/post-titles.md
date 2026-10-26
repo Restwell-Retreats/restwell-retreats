@@ -12,11 +12,11 @@
 | `/how-to-choose-accessible-self-catering-holiday/` | Accessible Self-Catering Holiday Guide | How to choose an accessible self-catering holiday |
 | `/carers-respite-holiday-guide/` | Carer Assessment & Respite Rights Guide | Respite for carers: how to get a break from caring (Batch D, 26 Oct 2026) |
 | `/what-to-pack-accessible-self-catering-uk/` | Accessible Holiday Packing List UK \| Self-Catering | What to pack for an accessible self-catering break |
-| `/accessible-parking-whitstable-tankerton/` | Accessible Parking Whitstable \| Tankerton | Accessible parking in Whitstable and Tankerton |
+| `/accessible-parking-whitstable-tankerton/` | Accessible Parking Whitstable \| Tankerton | Blue Badge parking in Whitstable and Tankerton (Batch E, 26 Oct 2026) |
 | `/chc-respite-holiday-accommodation-uk/` | CHC Respite Holiday Accommodation UK | CHC respite care: what the NHS pays for on a break (Batch D, 26 Oct 2026) |
-| `/hire-mobility-scooter-equipment-uk-holiday/` | Hire Mobility Equipment UK Holiday \| Self-Catering | Hiring mobility equipment for a UK holiday |
-| `/accessible-train-travel-whitstable-kent/` | Accessible Train Travel Whitstable Kent | Accessible train travel to Whitstable and Kent |
-| `/travel-insurance-disability-uk-self-catering/` | Travel Insurance Disability UK Self-Catering | Travel insurance for disabled travellers in the UK |
+| `/hire-mobility-scooter-equipment-uk-holiday/` | Hire Mobility Equipment UK Holiday \| Self-Catering | Mobility scooter and wheelchair hire in Whitstable (Batch E, 26 Oct 2026) |
+| `/accessible-train-travel-whitstable-kent/` | Accessible Train Travel Whitstable Kent | Is Whitstable station step-free? Trains to Whitstable (Batch E, 26 Oct 2026) |
+| `/travel-insurance-disability-uk-self-catering/` | Travel Insurance Disability UK Self-Catering | Travel insurance for a UK holiday if you’re disabled (Batch E, 26 Oct 2026) |
 | `/commissioner-checklist-accessible-respite-stay/` | Commissioner Checklist Accessible Respite Stay | Folded into Optional Care’s professionals card, 26 Oct 2026; the address redirects there |
 | `/personal-budget-short-break-care-act/` | Personal Budget Short Break Care Act | Respite under the Care Act 2014: what your council must do (Batch D, 26 Oct 2026) |
 | `/accessible-eating-out-whitstable-kent/` | Accessible Eating Out Whitstable Kent | Accessible places to eat in Whitstable and Kent |

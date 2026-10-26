@@ -73,10 +73,10 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'accessible-parking-whitstable-tankerton',
-			'title'            => 'Accessible parking and drop-off around Whitstable and Tankerton',
-			'excerpt'          => 'Blue Badge basics, where parking gets tight by the sea, and how to park close to the level seafront path. We won’t pretend a space is always free.',
-			'meta_title'       => 'Accessible parking in Whitstable and Tankerton',
-			'meta_description' => 'Accessible parking and drop-off near Whitstable and Tankerton: Blue Badge basics, promenade access, timing tides and crowds, and links to Kent guides.',
+			'title'            => 'Blue Badge parking in Whitstable and Tankerton',
+			'excerpt'          => 'Where you can park with a Blue Badge in Whitstable, and which car parks need your badge registered first. It also covers parking for Tankerton seafront.',
+			'meta_title'       => 'Blue Badge parking in Whitstable and Tankerton',
+			'meta_description' => 'Blue Badge parking in Whitstable: three free hours in council car parks, which ones need your badge registered first, and where to park for Tankerton.',
 			'content'          => restwell_get_blog_post_accessible_parking_whitstable_html(),
 			'category_slug'    => 'kent-coast',
 		),
@@ -91,28 +91,28 @@ function restwell_get_priority_blog_post_articles(): array {
 		),
 		array(
 			'slug'             => 'hire-mobility-scooter-equipment-uk-holiday',
-			'title'            => 'Hiring mobility equipment for a UK self-catering holiday',
-			'excerpt'          => 'How to hire a scooter, profiling bed or shower chair for your trip. It covers door widths, insurance and delivery, so you know what to check before you sign.',
-			'meta_title'       => 'Hiring mobility equipment for a UK holiday',
-			'meta_description' => 'Hire mobility scooters, shower chairs, and beds for a UK self-catering holiday: measurements, insurance, delivery slots, and what to photograph on handover.',
+			'title'            => 'Mobility scooter and wheelchair hire in Whitstable',
+			'excerpt'          => 'Where to hire a mobility scooter or wheelchair in Whitstable, and what it costs. It also covers the rules for using a scooter on pavements and roads.',
+			'meta_title'       => 'Mobility scooter and wheelchair hire in Whitstable',
+			'meta_description' => 'Mobility scooter hire in Whitstable: where to hire a scooter or wheelchair, what it costs, the rules for scooters, and what’s already at Restwell.',
 			'content'          => restwell_get_blog_post_hire_mobility_equipment_uk_html(),
 			'category_slug'    => 'accessible-holidays',
 		),
 		array(
 			'slug'             => 'accessible-train-travel-whitstable-kent',
-			'title'            => 'Accessible train travel to Whitstable and around Kent',
-			'excerpt'          => 'How Passenger Assist works, what to know about platform gaps and taxis, and why it’s worth having a backup plan if buses replace the trains.',
-			'meta_title'       => 'Accessible train travel to Whitstable and Kent',
-			'meta_description' => 'Accessible train travel to Whitstable and around Kent: Passenger Assist, platform gaps, connections, and pairing rail with local parking or taxi backup.',
+			'title'            => 'Is Whitstable station step-free? Accessible trains to Whitstable',
+			'excerpt'          => 'Which entrance to use for each platform at Whitstable, and how to book help. It also covers taking a wheelchair or scooter on the train.',
+			'meta_title'       => 'Is Whitstable station step-free? Trains to Whitstable',
+			'meta_description' => 'Is Whitstable station step-free? Yes, by two entrances. Here’s which to use, how to book Passenger Assist, and taking a wheelchair or scooter on the train.',
 			'content'          => restwell_get_blog_post_accessible_train_whitstable_kent_html(),
 			'category_slug'    => 'kent-coast',
 		),
 		array(
 			'slug'             => 'travel-insurance-disability-uk-self-catering',
-			'title'            => 'Travel insurance, disability, and UK self-catering breaks',
-			'excerpt'          => 'What to ask an insurer about your kit, your health and cancelling before a break in the UK. This is practical help, not legal advice.',
-			'meta_title'       => 'Travel insurance for disabled travellers in the UK',
-			'meta_description' => 'Travel insurance and disability on UK self-catering breaks: mobility equipment limits, pre-existing conditions, cancellation triggers, and broker questions.',
+			'title'            => 'Travel insurance for a UK holiday if you’re disabled',
+			'excerpt'          => 'Why cover is worth having for a holiday in the UK, and what to tell the insurer. It also covers your wheelchair, and what to do if you’re turned down.',
+			'meta_title'       => 'Travel insurance for a UK holiday if you’re disabled',
+			'meta_description' => 'Travel insurance for a UK holiday if you’re disabled: why it’s worth having, what to tell the insurer, wheelchair cover and what to do if refused.',
 			'content'          => restwell_get_blog_post_travel_insurance_disability_uk_html(),
 			'category_slug'    => 'accessible-holidays',
 		),
@@ -858,76 +858,78 @@ function restwell_get_blog_post_pack_accessible_self_catering_html() {
 }
 
 /**
- * Draft cluster article: accessible parking Whitstable / Tankerton.
+ * Blue Badge parking in Whitstable (Batch E, 26 Oct 2026): council car parks,
+ * the camera car parks that need a badge registered, street rules and Tankerton.
  *
  * @return string
  */
 function restwell_get_blog_post_accessible_parking_whitstable_html() {
-	$blog   = esc_url( home_url( '/blog/' ) );
-	$area   = esc_url( home_url( '/whitstable-area-guide/' ) );
-	$beach  = esc_url( home_url( '/accessible-beaches-coastal-walks-kent/' ) );
-	$enq    = esc_url( home_url( '/enquire/' ) );
-	$access = esc_url( home_url( '/accessibility/' ) );
+	$area    = esc_url( home_url( '/whitstable-area-guide/' ) );
+	$train   = esc_url( home_url( '/accessible-train-travel-whitstable-kent/' ) );
+	$enquire = esc_url( home_url( '/enquire/' ) );
 
-	return "<blockquote><p><strong>TL;DR:</strong> Whitstable rewards drivers who arrive early on sunny Saturdays: Blue Badge bays fill fast near the harbour, while Tankerton's slope-top streets need patience for kerb drops. Pair whatever bay you find with the shortest roll to the promenade you can manage, then adjust plans when tides and events squeeze pavements.</p></blockquote>
+	return "<blockquote><p><strong>TL;DR:</strong> In Whitstable's council car parks, a Blue Badge gives you three free hours. Gorrell Tank and Middle Wall use number-plate cameras, so register your badge online before your first visit. On the street, the national Blue Badge rules apply.</p></blockquote>
 
-<h2>What is accessible parking in a small seaside town?</h2>
-<p>Accessible parking here means a bay or drop-off point that keeps walking or rolling distance short on uneven pavements, not just a ticket with a wheelchair symbol.</p>
+<h2>Is Blue Badge parking free in Whitstable?</h2>
+<p>Often, yes, for up to three hours. Canterbury City Council runs the car parks in Whitstable. Blue Badge holders park free for up to three hours in most spaces, though not in permit bays.</p>
+<p>After three hours, you pay the normal charge. Put your badge on the dashboard, and set your blue clock to the time you arrived. Some car parks have a shorter limit, such as two hours at the harbour, so read the sign.</p>
+<p>Our guide to <a href=\"{$area}\">the level routes around Whitstable</a> covers where to go once you've parked.</p>
 
-<h2>Why parking changes your day at the coast</h2>
-<p>Harbour crowds, pop-up markets, and summer day-trippers shrink manoeuvring space. A \"nearby\" multi-storey can stay useless if lifts break or payment gates sit on cambers.</p>
+<h2>Which car parks need your badge registered first?</h2>
+<p>Gorrell Tank and Middle Wall, near the harbour and the town centre, use number-plate cameras instead of tickets. To get your three free hours there, register your badge in a council parking account before your first visit.</p>
+<p>You can register up to two vehicles against one badge. Each time you park, check that the car you're using is set as the main vehicle in your account. You still need to show the badge on the dashboard.</p>
 
-<h2>How different zones behave</h2>
-<h3>Tankerton slopes and promenade</h3>
-<p>Residential roads climb away from the sea. Scout kerb height before you commit someone to a manual chair push.</p>
-<h3>Whitstable town centre</h3>
-<p>High street footfall peaks midday. Drop-off may beat hunting a perfect bay.</p>
-<h3>Harbour and beaches</h3>
-<p>Shingle starts quickly once you leave concrete. Read terrain notes in our <a href=\"{$beach}\">Kent beaches guide</a>.</p>
+<h2>Where can you park on the street with a Blue Badge?</h2>
+<p>On the street, the national Blue Badge rules for England apply. At parking meters and pay-and-display bays, you park free for as long as you need, unless a sign says otherwise. Disabled bays are free too, though some have a time limit on the sign.</p>
+<p>You can park on single or double yellow lines for up to three hours, with your clock set. You can't park there if there's a loading ban, shown by yellow dashes on the kerb or a sign.</p>
+<p>After parking on yellow lines, wait at least an hour before parking in the same road again that day.</p>
+<p>A Blue Badge never lets you park on a crossing, such as a zebra crossing. Nor can you park by double white lines in the middle of the road.</p>
 
-<h2>On-street rules versus car parks</h2>
-<table>
-<caption>Pick a strategy by what you need most</caption>
-<thead><tr><th scope=\"col\">Need</th><th scope=\"col\">On-street Blue Badge</th><th scope=\"col\">Pay-and-display car parks</th></tr></thead>
-<tbody>
-<tr><th scope=\"row\">Shortest walk to food</th><td>Strong when bays exist near your venue</td><td>Often one flat block away</td></tr>
-<tr><th scope=\"row\">Extra vehicle height</th><td>Varies by bay signage</td><td>Check entrance height barriers first</td></tr>
-<tr><th scope=\"row\">Changing space beside vehicle</th><td>Kerb-side risk from passing traffic</td><td>End bays sometimes wider</td></tr>
-<tr><th scope=\"row\">Predictable routes</th><td>Depends on daily residency</td><td>Easier to repeat once learned</td></tr>
-</tbody>
-</table>
-<p>Council tariffs and zone maps change; verify hours and charges on official Kent or Whitstable pages the week you travel.</p>
+<h2>Where should you park for Tankerton seafront?</h2>
+<p>There's free parking along Marine Parade, at the top of Tankerton Slopes. The grassy slopes down to the promenade are steep, so use the paved paths to get down. The promenade itself is long, level and surfaced.</p>
+<p>The seafront is at its busiest on sunny weekends and in the school holidays. If you need a space close to a path down, it helps to arrive in the morning.</p>
+
+<h2>Can you park free at Whitstable station?</h2>
+<p>Southeastern lets Blue Badge holders park free in its station car parks. It's free all day if you're catching a train, and for up to three hours otherwise. Whitstable's car park has 43 spaces, and 9 are accessible.</p>
+<p>Our guide to <a href=\"{$train}\">step-free train travel to Whitstable</a> covers the platforms and booking help.</p>
+
+<h2>What about supermarkets and private car parks?</h2>
+<p>Private car parks set their own rules for Blue Badge holders. Many have disabled bays near the entrance, but parking isn't always free. The owner's signs tell you what applies, so don't assume the council's three free hours carry over.</p>
 
 <h2>Practical steps before you drive</h2>
 <ul>
-<li>Screen-capture three candidate bays and note walking distance to toilets.</li>
-<li>Carry the Blue Badge timer disc even if pay-by-phone claims \"not needed\".</li>
-<li>Plan a wet-weather alternative so you are not circling in rain.</li>
-<li>Message hosts about private drives only when listings explicitly allow it.</li>
+<li>Set up a council parking account and register your badge before you use Gorrell Tank or Middle Wall.</li>
+<li>Pack your blue parking clock as well as your badge.</li>
+<li>Check the maximum stay on the sign, as it varies between car parks.</li>
+<li>Plan to arrive early on sunny weekends if you want a space near the seafront.</li>
+<li>Keep the badge out of sight when the badge holder isn't with you.</li>
 </ul>
 
-<h2>Common mistakes</h2>
+<h2>Common mistakes to avoid</h2>
 <ul>
-<li>Trusting sat-nav \"closest\" without checking stepped alleys.</li>
-<li>Ignoring event road closures posted late.</li>
-<li>Blocking dropped kerbs while unloading.</li>
-<li>Forgetting coastal wind when stabilising doors.</li>
+<li>Driving into a camera car park before your badge is registered.</li>
+<li>Forgetting to set the clock on yellow lines or in a timed bay.</li>
+<li>Assuming every car park gives three free hours, including private ones.</li>
+<li>Parking on yellow lines where the kerb shows a loading ban.</li>
 </ul>
 
 <h2>Frequently asked questions</h2>
-<h3>Do Blue Badge holders always park free?</h3>
-<p>No. Many bays still need tickets or discs. Read the specific sign every time.</p>
-<h3>Is the promenade level all the way?</h3>
-<p>Mostly along maintained sections, but side streets vary. Scout once before sunset.</p>
-<h3>Can I reserve a harbour bay?</h3>
-<p>Public bays rarely reserve; private yards need written permission.</p>
-<h3>Where should electric wheelchair users aim?</h3>
-<p>Prioritise flat approach routes over saving five metres of distance.</p>
-<h3>What if every bay is full?</h3>
-<p>Shift your meal inland or retry after peak lunch; stubborn circling drains carers fast.</p>
+<h3>Can I use my Blue Badge in Kent if it was issued elsewhere?</h3>
+<p>Yes. A Blue Badge from another UK council works in Whitstable too. To use the camera car parks, register it in a Canterbury City Council parking account first.</p>
+<h3>Can someone else use my badge?</h3>
+<p>Only when you're travelling in the car, or they're dropping you off or picking you up. It can't be used for anyone else's errands.</p>
+<h3>Can a carer register the badge for me?</h3>
+<p>Yes. The council's camera car parks let you register up to two vehicles against one badge. That way, it works whether you drive or a carer drives you.</p>
+<h3>How do I apply for a Blue Badge in Kent?</h3>
+<p>If you live in Kent, you apply to Kent County Council. If you live somewhere else, apply to your own council.</p>
+<h3>Is there parking at Restwell?</h3>
+<p>Yes. The bungalow has a private, level drive with room for two cars, including an adapted vehicle. You can also park on the street outside if you need extra room.</p>
+
+<h2>Parking at Restwell</h2>
+<p>Restwell is a private, adapted bungalow in Whitstable. The resin-bound drive is level, so you can get in and out of the car right by the front door. That means you only need the car parks for days out, not for coming home.</p>
 
 <h2>Closing</h2>
-<p>Parking is only half the trip: confirm property access dimensions on our <a href=\"{$access}\">accessibility page</a>, explore wider Kent context in the <a href=\"{$area}\">Whitstable area guide</a>, read related posts on the <a href=\"{$blog}\">blog</a>, and <a href=\"{$enq}\">ask us</a> about arrival logistics if you plan to stay.</p>";
+<p>If you're planning a stay, <a href=\"{$enquire}\">ask us about parking and arriving</a>, and we'll help with the details.</p>";
 }
 /**
  * One-time: fix outbound links in the Revitalise blog post that return 403 to crawlers (Semrush / bot UAs).

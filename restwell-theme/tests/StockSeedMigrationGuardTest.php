@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107', 'restwell_funding_share_image_v108', 'restwell_who_its_for_funding_links_v109', 'restwell_seo_keyphrase_words_v110', 'restwell_keyphrase_headings_v111', 'restwell_heading_intros_v112', 'restwell_publish_guides_v113', 'restwell_batch_d_posts_v114', 'restwell_batch_d_share_images_v115' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107', 'restwell_funding_share_image_v108', 'restwell_who_its_for_funding_links_v109', 'restwell_seo_keyphrase_words_v110', 'restwell_keyphrase_headings_v111', 'restwell_heading_intros_v112', 'restwell_publish_guides_v113', 'restwell_batch_d_posts_v114', 'restwell_batch_d_share_images_v115', 'restwell_batch_e_posts_v116', 'restwell_batch_e_share_images_v117' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 115;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 117;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -86,15 +86,26 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_d_posts_v114',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_batch_d_share_images_v115',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_d_share_images_v115',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_batch_e_posts_v116',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_e_posts_v116',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_batch_e_share_images_v117',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_e_share_images_v117',", $source );
 	}
 
-	public function test_batch_d_only_replaces_wording_the_theme_shipped() {
-		$body = $this->function_body( $this->migrations(), 'restwell_migrate_batch_d_posts_v114' );
+	public function test_rewritten_guides_only_replace_wording_the_theme_shipped() {
+		$body = $this->function_body( $this->migrations(), 'restwell_publish_rewritten_guides' );
 		// A live guide's body changes only while its text matches a shipped version.
 		$this->assertStringContainsString( "in_array( restwell_post_text_fingerprint( \$post->post_content ), \$old['text'], true )", $body );
 		// Titles, excerpts and SEO fields likewise, one at a time.
 		$this->assertStringContainsString( "in_array( \$post->post_title, \$old['title'], true )", $body );
 		$this->assertStringContainsString( "in_array( (string) get_post_meta( \$post->ID, \$key, true ), \$old[ \$key ], true )", $body );
+		// Batch D and E both go through it.
+		$this->assertStringContainsString( 'restwell_publish_rewritten_guides( $was )', $this->function_body( $this->migrations(), 'restwell_migrate_batch_d_posts_v114' ) );
+		$this->assertStringContainsString( 'restwell_publish_rewritten_guides(', $this->function_body( $this->migrations(), 'restwell_migrate_batch_e_posts_v116' ) );
+	}
+
+	public function test_batch_d_drafts_folded_guides_only_while_their_text_is_ours() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_batch_d_posts_v114' );
 		// A folded guide goes to draft, never the bin, and only while its text is ours.
 		$this->assertStringContainsString( "'post_status' => 'draft'", $body );
 		$this->assertStringNotContainsString( 'wp_delete_post(', $body );
@@ -104,8 +115,8 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'restwell_replace_stale_page_copy(', $body );
 	}
 
-	public function test_batch_d_share_images_only_touch_the_share_field() {
-		$body = $this->function_body( $this->migrations(), 'restwell_migrate_batch_d_share_images_v115' );
+	public function test_guide_share_photos_only_touch_the_share_field() {
+		$body = $this->function_body( $this->migrations(), 'restwell_set_guide_share_photos' );
 		$this->assertLessThan( strpos( $body, 'update_option( $flag' ), strpos( $body, 'restwell_photo_migration_waiting(' ) );
 		$this->assertStringContainsString( 'update_post_meta( $post_id, \'og_image_id\', $att_id );', $body );
 		$this->assertStringNotContainsString( 'set_post_thumbnail(', $body );
@@ -124,7 +135,7 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		// The redirect only answers a 404, so a republished guide still shows.
 		$this->assertStringContainsString( '! is_404()', $redirect );
 		// The rewritten guides are indexable.
-		foreach ( array( 'carers-respite-holiday-guide', 'chc-respite-holiday-accommodation-uk', 'personal-budget-short-break-care-act' ) as $slug ) {
+		foreach ( array( 'carers-respite-holiday-guide', 'chc-respite-holiday-accommodation-uk', 'personal-budget-short-break-care-act', 'accessible-parking-whitstable-tankerton', 'accessible-train-travel-whitstable-kent', 'hire-mobility-scooter-equipment-uk-holiday', 'travel-insurance-disability-uk-self-catering' ) as $slug ) {
 			$this->assertStringNotContainsString( "'" . $slug . "',", $noindex, $slug . ' is indexable' );
 		}
 	}

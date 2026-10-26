@@ -121,9 +121,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'accessible holiday packing list uk',
 		),
 		'accessible-parking-whitstable-tankerton' => array(
-			'meta_title'       => 'Accessible parking in Whitstable and Tankerton' . $name,
-			'meta_description' => 'Accessible parking and drop-off near Whitstable and Tankerton: Blue Badge basics, promenade access, timing tides and crowds, and links to Kent guides.',
-			'focus_keyphrase'  => 'accessible parking whitstable',
+			'meta_title'       => 'Blue Badge parking in Whitstable and Tankerton' . $name,
+			'meta_description' => 'Blue Badge parking in Whitstable: three free hours in council car parks, which ones need your badge registered first, and where to park for Tankerton.',
+			'focus_keyphrase'  => 'blue badge parking whitstable',
 		),
 		'chc-respite-holiday-accommodation-uk' => array(
 			'meta_title'       => 'CHC respite care: what the NHS pays for on a break' . $name,
@@ -131,19 +131,19 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'chc respite care',
 		),
 		'hire-mobility-scooter-equipment-uk-holiday' => array(
-			'meta_title'       => 'Hiring mobility equipment for a UK holiday' . $name,
-			'meta_description' => 'Hire mobility scooters, shower chairs, and beds for a UK self-catering holiday: measurements, insurance, delivery slots, and what to photograph on handover.',
-			'focus_keyphrase'  => 'hire mobility equipment uk holiday',
+			'meta_title'       => 'Mobility scooter and wheelchair hire in Whitstable' . $name,
+			'meta_description' => 'Mobility scooter hire in Whitstable: where to hire a scooter or wheelchair, what it costs, the rules for scooters, and what’s already at Restwell.',
+			'focus_keyphrase'  => 'mobility scooter hire whitstable',
 		),
 		'accessible-train-travel-whitstable-kent' => array(
-			'meta_title'       => 'Accessible train travel to Whitstable and Kent' . $name,
-			'meta_description' => 'Accessible train travel to Whitstable and around Kent: Passenger Assist, platform gaps, connections, and pairing rail with local parking or taxi backup.',
-			'focus_keyphrase'  => 'accessible train travel whitstable',
+			'meta_title'       => 'Is Whitstable station step-free? Trains to Whitstable' . $name,
+			'meta_description' => 'Is Whitstable station step-free? Yes, by two entrances. Here’s which to use, how to book Passenger Assist, and taking a wheelchair or scooter on the train.',
+			'focus_keyphrase'  => 'whitstable station step free',
 		),
 		'travel-insurance-disability-uk-self-catering' => array(
-			'meta_title'       => 'Travel insurance for disabled travellers in the UK' . $name,
-			'meta_description' => 'Travel insurance and disability on UK self-catering breaks: mobility equipment limits, pre-existing conditions, cancellation triggers, and broker questions.',
-			'focus_keyphrase'  => 'travel insurance disability uk self catering',
+			'meta_title'       => 'Travel insurance for a UK holiday if you’re disabled' . $name,
+			'meta_description' => 'Travel insurance for a UK holiday if you’re disabled: why it’s worth having, what to tell the insurer, wheelchair cover and what to do if refused.',
+			'focus_keyphrase'  => 'travel insurance disabled uk',
 		),
 		'personal-budget-short-break-care-act' => array(
 			'meta_title'       => 'Respite under the Care Act 2014: what your council must do' . $name,
