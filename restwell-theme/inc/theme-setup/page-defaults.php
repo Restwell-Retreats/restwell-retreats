@@ -746,6 +746,8 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_related_heading'         => 'Local Whitstable guides',
 		'wg_related_intro'           => 'Longer guides on parking, trains, eating out, beaches and the quieter times to visit.',
 		'wg_eating_heading'          => 'Pubs and restaurants near the house',
+		'wg_herne_bay_heading'       => 'Herne Bay',
+		'wg_herne_bay_intro'         => 'Herne Bay is further along the coast, and its seafront makes a good day out.',
 		'wg_cta_heading'         => 'Ask for route notes for your party',
 		'wg_cta_body'            => 'Tell us your chair size and how far you like to go in a day. We’ll point you to the routes that suit.',
 		'wg_cta_primary_label'   => 'Enquire',

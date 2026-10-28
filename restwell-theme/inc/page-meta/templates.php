@@ -442,6 +442,8 @@ function restwell_get_whitstable_guide_field_definitions() {
 			'wg_related_heading'         => restwell_field( __( 'Related reading heading', 'restwell-retreats' ) ),
 			'wg_related_intro'           => restwell_field( __( 'Related reading intro', 'restwell-retreats' ), 'textarea' ),
 			'wg_eating_heading'          => restwell_field( __( 'Eating out heading', 'restwell-retreats' ) ),
+			'wg_herne_bay_heading'       => restwell_field( __( 'Herne Bay heading', 'restwell-retreats' ) ),
+			'wg_herne_bay_intro'         => restwell_field( __( 'Herne Bay intro', 'restwell-retreats' ), 'textarea' ),
 		),
 		'CTA' => array(
 			'wg_cta_heading'         => restwell_field( __( 'CTA heading', 'restwell-retreats' ) ),

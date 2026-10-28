@@ -62,6 +62,12 @@ $wg_access_intro   = $wg_txt(
 
 $wg_eating_heading = $wg_txt( 'wg_eating_heading', 'Pubs and restaurants near the house' );
 
+$wg_herne_heading = $wg_txt( 'wg_herne_bay_heading', 'Herne Bay' );
+$wg_herne_intro   = $wg_txt(
+	'wg_herne_bay_intro',
+	'Herne Bay is further along the coast, and its seafront makes a good day out.'
+);
+
 $wg_towns_heading = $wg_txt( 'wg_towns_heading', 'Wildwood, Dreamland and Canterbury' );
 $wg_towns_body    = $wg_txt(
 	'wg_towns_body',
@@ -114,6 +120,7 @@ get_template_part(
 		  <li><a href="#getting-around">Getting around</a></li>
 		  <li><a href="#stops">Along the route</a></li>
 		  <li><a href="#eat">Eat</a></li>
+		  <li><a href="#herne-bay">Herne Bay</a></li>
 		  <li><a href="#days-out">Days out</a></li>
 		  <li><a href="#faq">FAQ</a></li>
 		</ul>
@@ -290,7 +297,93 @@ get_template_part(
 	  </div>
 	</section>
 
-	<section class="section-y band-subtle" id="days-out" aria-labelledby="days-out-h">
+	<?php
+	// Herne Bay (28 Oct 2026): the printed Welcome Guide's coast QR (page 15)
+	// promises routes "along to Tankerton and Herne Bay". The getting-around
+	// cards with no photo, as there's no Herne Bay photo yet. Facts researched
+	// 28 Oct 2026; no parking prices or bus frequencies, as both can change.
+	$wg_herne = array(
+		array(
+			'title'    => __( 'Getting there', 'restwell-retreats' ),
+			'lines'    => array(
+				array( __( 'By car', 'restwell-retreats' ), __( 'Neptune car park by the Clock Tower, CT6 5JG', 'restwell-retreats' ) ),
+				array( __( 'Coast path', 'restwell-retreats' ), __( 'about 4.5 miles from Whitstable, mostly flat, for a long day out', 'restwell-retreats' ) ),
+				array( __( 'Bus 400', 'restwell-retreats' ), __( 'from The Plough becomes the 600 at Greenhill, so stay on', 'restwell-retreats' ) ),
+				array( '', __( 'Not every bus runs through, so check the Stagecoach timetable before you set out', 'restwell-retreats' ) ),
+			),
+			'more'     => __( 'Stagecoach timetable', 'restwell-retreats' ),
+			'url'      => 'https://www.stagecoachbus.com/timetables',
+			'external' => true,
+		),
+		array(
+			'title'    => __( 'The seafront', 'restwell-retreats' ),
+			'lines'    => array(
+				array( '', __( 'The pier, the restored Central Bandstand and the Clock Tower sit along one stretch', 'restwell-retreats' ) ),
+				array( '', __( 'Wheelchair users can get onto the pier', 'restwell-retreats' ) ),
+			),
+			'more'     => __( 'Directions to the pier', 'restwell-retreats' ),
+			'url'      => 'https://www.google.com/maps/dir/?api=1&destination=Herne+Bay+Pier',
+			'external' => true,
+		),
+		array(
+			'title'    => __( 'Parking', 'restwell-retreats' ),
+			'lines'    => array(
+				array( __( '3 hours free', 'restwell-retreats' ), __( 'with a Blue Badge in most council car parks', 'restwell-retreats' ) ),
+				array( __( 'Register first', 'restwell-retreats' ), __( 'Neptune and William Street car parks', 'restwell-retreats' ) ),
+				array( __( 'Always free', 'restwell-retreats' ), __( 'Chapel Street car park, with a Blue Badge', 'restwell-retreats' ) ),
+			),
+			'more'     => __( 'Badge registration', 'restwell-retreats' ),
+			'url'      => $wg_guide_urls['accessible-parking-whitstable-tankerton'],
+			'external' => false,
+		),
+		array(
+			'title'    => __( 'Toilets', 'restwell-retreats' ),
+			'lines'    => array(
+				array( '', __( 'Accessible public toilets on the seafront are limited at the moment', 'restwell-retreats' ) ),
+				array( '', __( 'Bring your RADAR key and check before you set out', 'restwell-retreats' ) ),
+				array( __( 'Station', 'restwell-retreats' ), __( 'a RADAR toilet on platform 2, open in staffed hours only', 'restwell-retreats' ) ),
+				array( __( 'Changing Places', 'restwell-retreats' ), __( 'the nearest is at Whitstable Harbour', 'restwell-retreats' ) ),
+			),
+			'more'     => __( 'Toilets in Whitstable', 'restwell-retreats' ),
+			'url'      => '#toilets',
+			'external' => false,
+		),
+	);
+	?>
+	<section class="section-y band-subtle" id="herne-bay" aria-labelledby="herne-bay-h">
+	  <div class="container">
+		<header class="section-head">
+		  <h2 id="herne-bay-h"><?php echo esc_html( $wg_herne_heading ); ?></h2>
+		  <p class="lede"><?php echo esc_html( $wg_herne_intro ); ?></p>
+		</header>
+		<div class="around">
+		  <ul class="around__cards around__cards--flat" role="list">
+			<?php foreach ( $wg_herne as $wg_card ) : ?>
+			<li>
+			  <h3><?php echo esc_html( $wg_card['title'] ); ?></h3>
+			  <ul>
+				<?php foreach ( $wg_card['lines'] as $wg_line ) : ?>
+				<li>
+					<?php if ( '' !== $wg_line[0] ) : ?>
+				  <strong><?php echo esc_html( $wg_line[0] ); ?></strong>
+				  <?php endif; ?>
+					<?php echo esc_html( $wg_line[1] ); ?>
+				</li>
+				<?php endforeach; ?>
+			  </ul>
+				<?php if ( '' !== $wg_card['url'] && $wg_card['external'] ) : ?>
+			  <a class="around__more" href="<?php echo esc_url( $wg_card['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_card['more'] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span> <span aria-hidden="true">&rarr;</span></a>
+			  <?php elseif ( '' !== $wg_card['url'] ) : ?>
+			  <a class="around__more" href="<?php echo esc_url( $wg_card['url'] ); ?>"><?php echo esc_html( $wg_card['more'] ); ?> <span aria-hidden="true">&rarr;</span></a>
+			  <?php endif; ?>
+			</li>
+			<?php endforeach; ?>
+		  </ul>
+		</div>
+	  </div>
+	</section>
+
+	<section class="section-y band-white" id="days-out" aria-labelledby="days-out-h">
 	  <div class="container">
 		<header class="section-head">
 		  <p class="eyebrow">Further afield</p>
@@ -302,7 +395,7 @@ get_template_part(
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-kent-woodland-paved-path.jpg' ) ); ?>" alt="Paved woodland path near the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p>About 30 minutes by car. Most of the woodland paths take wheelchairs and scooters, though they get muddy after rain. Book a scooter ahead on 01227 209621, as they go quickly.</p>
-			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>
+			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a><a href="#herne-bay" class="text-link">Herne Bay seafront</a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
@@ -319,7 +412,7 @@ get_template_part(
 		</ul>
 	  </div>
 	</section>
-	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+	<section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">
@@ -410,14 +503,14 @@ get_template_part(
 	$mid_cta_secondary_url   = $wg_txt( 'wg_cta_secondary_url', restwell_nav_resolve_page_url( 'the-property' ) );
 
 	// Further reading sits above the closing CTA, as on Funding & Support, so the
-	// teal CTA runs straight into the teal footer. The FAQ above is band-white.
+	// teal CTA runs straight into the teal footer. The FAQ above is band-subtle.
 	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
 		restwell_render_pillar_related_guides(
 			'whitstable-area-guide',
 			array(
 				'heading' => $wg_related_heading,
 				'intro'   => $wg_related_intro,
-				'band'    => 'band-subtle',
+				'band'    => 'band-white',
 			)
 		);
 	}
