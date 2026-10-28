@@ -728,7 +728,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_hero_image_id' => 0,
 		'wg_about_heading' => 'Tankerton promenade',
 		'wg_about_body'    => 'About two miles of paved path runs from Tankerton Slopes towards the castle and harbour. The slopes down to the shingle are steep, so stay on the promenade for the level route.',
-		'wg_towns_heading' => 'Wildwood, Dreamland and Canterbury',
+		'wg_towns_heading' => 'Herne Bay, Wildwood, Dreamland and Canterbury',
 		'wg_towns_body'    => 'Check each venue for scooter hire, companion tickets and parking.',
 		'wg_spotlight_image_1_id' => 0,
 		'wg_spotlight_image_1_caption' => 'Colourful beach huts along the Whitstable seafront',
@@ -837,7 +837,7 @@ function restwell_get_our_story_page_defaults() {
 		'story_origin_lede'    => 'For over a decade, Continuity of Care Services has supported people in their own homes across Kent. In that time, we lost count of families who couldn’t make a holiday work. Honest access details were hard to find, and so was care for the stay.',
 		'story_origin_body'    => 'People would travel three hours, only to find a door they couldn’t get through. So we bought a bungalow in Whitstable, adapted it properly and published every measurement. Now guests can check the fit first, and ask about care through the same office.',
 
-		'story_month_label'   => 'The build',
+		'story_month_label'   => 'How it was built',
 		'story_month_heading' => 'How the bungalow was built',
 		'story_month_lede'    => 'Family, friends and three teams of experts got it ready in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.',
 		'story_month_1_meta'  => 'Early March',

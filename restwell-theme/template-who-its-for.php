@@ -303,7 +303,7 @@ get_template_part(
 		  <li><a href="#care">Care</a></li>
 		  <li><a href="#funding">Funding</a></li>
 		  <li><a href="#next">Next steps</a></li>
-		  <li><a href="#faq">FAQ</a></li>
+		  <li><a href="#faq">Questions</a></li>
 		</ul>
 	  </div>
 	</nav>

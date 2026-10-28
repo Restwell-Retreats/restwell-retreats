@@ -150,9 +150,9 @@ get_template_part(
 	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#rooms">Rooms</a></li>
+		  <li><a href="#rooms">Bedrooms</a></li>
 		  <li><a href="#photos">Photos</a></li>
-		  <li><a href="#location">Location</a></li>
+		  <li><a href="#location">Quiet street</a></li>
 		  <li><a href="#care">Care</a></li>
 		</ul>
 	  </div>

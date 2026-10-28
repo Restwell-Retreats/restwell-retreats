@@ -43,7 +43,7 @@ $story_origin_heading = $story_txt( 'story_origin_heading', 'How Restwell starte
 $story_origin_lede    = $story_txt( 'story_origin_lede', 'For over a decade, Continuity of Care Services has supported people in their own homes across Kent. In that time, we lost count of families who couldn’t make a holiday work. Honest access details were hard to find, and so was care for the stay.' );
 $story_origin_body    = $story_txt( 'story_origin_body', 'People would travel three hours, only to find a door they couldn’t get through. So we bought a bungalow in Whitstable, adapted it properly and published every measurement. Now guests can check the fit first, and ask about care through the same office.' );
 
-$story_month_label   = $story_txt( 'story_month_label', 'The build' );
+$story_month_label   = $story_txt( 'story_month_label', 'How it was built' );
 $story_month_heading = $story_txt( 'story_month_heading', 'How the bungalow was built' );
 $story_month_lede    = $story_txt( 'story_month_lede', 'Family, friends and three teams of experts got it ready in a month. Before anyone stayed, occupational therapists from Kent Community Health NHS Trust checked the bedroom and wet room.' );
 $story_month_1_meta  = $story_txt( 'story_month_1_meta', 'Early March' );

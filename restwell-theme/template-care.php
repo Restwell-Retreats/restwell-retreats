@@ -165,11 +165,11 @@ $care_day_photos = array(
 	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#a-day"><?php esc_html_e( 'A day', 'restwell-retreats' ); ?></a></li>
-		  <li><a href="#who-comes-in"><?php esc_html_e( 'Who comes in', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#a-day"><?php esc_html_e( 'Daytime and overnight', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#who-comes-in"><?php esc_html_e( 'Rated Good', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#how-care-works"><?php esc_html_e( 'Asking', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#bring-your-own-carer"><?php esc_html_e( 'Your own carer', 'restwell-retreats' ); ?></a></li>
-		  <li><a href="#faq"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#faq"><?php esc_html_e( 'Questions', 'restwell-retreats' ); ?></a></li>
 		</ul>
 	  </div>
 	</nav>

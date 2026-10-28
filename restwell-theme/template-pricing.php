@@ -125,7 +125,7 @@ get_template_part(
 		  <li><a href="#availability">Dates</a></li>
 		  <li><a href="#payment">Payment</a></li>
 		  <li><a href="#care-rates">Optional care</a></li>
-		  <li><a href="#faq">FAQ</a></li>
+		  <li><a href="#faq">Questions</a></li>
 		</ul>
 	  </div>
 	</nav>

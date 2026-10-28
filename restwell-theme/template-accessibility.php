@@ -214,11 +214,11 @@ get_template_part( 'template-parts/concept/photo-hero', null, $acc_hero_args );
 	<nav class="subnav" aria-label="<?php echo esc_attr__( 'On this page', 'restwell-retreats' ); ?>" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#statement"><?php esc_html_e( 'The numbers', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#statement"><?php esc_html_e( 'Measurements', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#fit-check"><?php esc_html_e( 'Doorways', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#equipment"><?php esc_html_e( 'Equipment', 'restwell-retreats' ); ?></a></li>
 		  <li><a href="#destination"><?php esc_html_e( 'Whitstable', 'restwell-retreats' ); ?></a></li>
-		  <li><a href="#faq"><?php esc_html_e( 'FAQ', 'restwell-retreats' ); ?></a></li>
+		  <li><a href="#faq"><?php esc_html_e( 'Questions', 'restwell-retreats' ); ?></a></li>
 		</ul>
 	  </div>
 	</nav>

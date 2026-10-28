@@ -106,7 +106,7 @@ get_template_part(
 		  <li><a href="#routes">Routes</a></li>
 		  <li><a href="#directory">Grants</a></li>
 		  <li><a href="#help">What we send</a></li>
-		  <li><a href="#faq">FAQ</a></li>
+		  <li><a href="#faq">Questions</a></li>
 		</ul>
 	  </div>
 	</nav>

@@ -62,7 +62,7 @@ $wg_access_intro   = $wg_txt(
 
 $wg_eating_heading = $wg_txt( 'wg_eating_heading', 'Pubs and restaurants near the house' );
 
-$wg_towns_heading = $wg_txt( 'wg_towns_heading', 'Wildwood, Dreamland and Canterbury' );
+$wg_towns_heading = $wg_txt( 'wg_towns_heading', 'Herne Bay, Wildwood, Dreamland and Canterbury' );
 $wg_towns_body    = $wg_txt(
 	'wg_towns_body',
 	'Check each venue for scooter hire, companion tickets and parking.'
@@ -113,9 +113,9 @@ get_template_part(
 		  <li><a href="#promenade">Promenade</a></li>
 		  <li><a href="#getting-around">Getting around</a></li>
 		  <li><a href="#stops">Along the route</a></li>
-		  <li><a href="#eat">Eat</a></li>
-		  <li><a href="#days-out">Days out</a></li>
-		  <li><a href="#faq">FAQ</a></li>
+		  <li><a href="#eat">Pubs and restaurants</a></li>
+		  <li><a href="#days-out">Further afield</a></li>
+		  <li><a href="#faq">Questions</a></li>
 		</ul>
 	  </div>
 	</nav>

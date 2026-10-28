@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 119;
+const RESTWELL_SCHEMA_VERSION = 120;
 
 
 /**
@@ -5881,6 +5881,27 @@ function restwell_migrate_batch_f_share_images_v119() {
 }
 
 /**
+ * Subnav words (28 Oct 2026): every "On this page" link now uses words from
+ * the heading it jumps to. Our Story's build section shows no label, so its
+ * link takes words from its heading, and the Whitstable trips heading names Herne
+ * Bay now its card leads the section. Each field changes only while it still
+ * holds the wording it replaces.
+ */
+function restwell_migrate_subnav_headings_v120() {
+	$flag = 'restwell_subnav_headings_v120';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'our-story'             => array( 'story_month_label' => array( 'The build', 'How it was built' ) ),
+			'whitstable-area-guide' => array( 'wg_towns_heading' => array( 'Wildwood, Dreamland and Canterbury', 'Herne Bay, Wildwood, Dreamland and Canterbury' ) ),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -6035,6 +6056,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch_e_share_images_v117',
 		'restwell_batch_f_posts_v118',
 		'restwell_batch_f_share_images_v119',
+		'restwell_subnav_headings_v120',
 	);
 }
 
@@ -6259,6 +6281,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_f_posts_v118', 156 );
 	add_action( 'init', 'restwell_migrate_batch_f_share_images_v119', 162 );
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_f_share_images_v119', 157 );
+	add_action( 'init', 'restwell_migrate_subnav_headings_v120', 163 );
+	add_action( 'after_switch_theme', 'restwell_migrate_subnav_headings_v120', 158 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

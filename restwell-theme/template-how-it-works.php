@@ -317,10 +317,10 @@ get_template_part(
 	<nav class="subnav" aria-label="On this page" data-toc>
 	  <div class="container">
 		<ul class="subnav__list">
-		  <li><a href="#process">Process</a></li>
+		  <li><a href="#process">Enquire, confirm, arrive</a></li>
 		  <li><a href="#arrival">Arrival</a></li>
 		  <li><a href="#care">Care</a></li>
-		  <li><a href="#faq">FAQ</a></li>
+		  <li><a href="#faq">Questions</a></li>
 		</ul>
 	  </div>
 	</nav>

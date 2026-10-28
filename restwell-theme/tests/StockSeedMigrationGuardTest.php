@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107', 'restwell_funding_share_image_v108', 'restwell_who_its_for_funding_links_v109', 'restwell_seo_keyphrase_words_v110', 'restwell_keyphrase_headings_v111', 'restwell_heading_intros_v112', 'restwell_publish_guides_v113', 'restwell_batch_d_posts_v114', 'restwell_batch_d_share_images_v115', 'restwell_batch_e_posts_v116', 'restwell_batch_e_share_images_v117', 'restwell_batch_f_posts_v118', 'restwell_batch_f_share_images_v119' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107', 'restwell_funding_share_image_v108', 'restwell_who_its_for_funding_links_v109', 'restwell_seo_keyphrase_words_v110', 'restwell_keyphrase_headings_v111', 'restwell_heading_intros_v112', 'restwell_publish_guides_v113', 'restwell_batch_d_posts_v114', 'restwell_batch_d_share_images_v115', 'restwell_batch_e_posts_v116', 'restwell_batch_e_share_images_v117', 'restwell_batch_f_posts_v118', 'restwell_batch_f_share_images_v119', 'restwell_subnav_headings_v120' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 119;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 120;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -94,6 +94,8 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_f_posts_v118',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_batch_f_share_images_v119',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_batch_f_share_images_v119',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_subnav_headings_v120',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_subnav_headings_v120',", $source );
 	}
 
 	public function test_rewritten_guides_only_replace_wording_the_theme_shipped() {
