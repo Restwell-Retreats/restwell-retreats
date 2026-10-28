@@ -302,13 +302,13 @@ get_template_part(
 		  <li id="herne-bay"><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts-pier-view.jpg' ) ); ?>" alt="Painted beach huts on a grassy slope above the sea, with a pier in the distance" width="640" height="480" loading="lazy" />
 			<h3>Herne Bay</h3>
-			<p>A day trip along the coast. The 400 becomes the 600 at Greenhill (same bus, no need to change), or drive to Neptune car park next to the Clock Tower. The pier, bandstand and Clock Tower sit along one seafront stretch, and wheelchair users can get onto the pier. Blue Badge holders get 3 hours free, but
+			<p>A day trip along the coast. The 400 becomes the 600 at Greenhill (same bus, no need to change), and the pier and bandstand sit along one level seafront stretch. Blue Badge holders get 3 hours free parking, but
 			<?php if ( '' !== $wg_guide_urls['accessible-parking-whitstable-tankerton'] ) : ?>
 				<a class="text-link" href="<?php echo esc_url( $wg_guide_urls['accessible-parking-whitstable-tankerton'] ); ?>">register the badge online</a>
 			<?php else : ?>
 				register the badge online
 			<?php endif; ?>
-			before your first visit (same as Gorrell Tank). Accessible toilets on the seafront are limited at the moment, so bring your RADAR key. The nearest <a class="text-link" href="#toilets">Changing Places toilet</a> is at Whitstable Harbour.</p>
+			before your first visit. Accessible toilets on the seafront are limited, so bring your RADAR key.</p>
 			<p class="place-list__actions"><a href="https://www.stagecoachbus.com/timetables" class="text-link" target="_blank" rel="noopener noreferrer">Stagecoach timetable<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">

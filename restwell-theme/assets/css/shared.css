@@ -7666,6 +7666,7 @@ p.care-how__note > .text-link,
 .room-tour__card p:not(.room-tour__link) > .text-link,
 p.acc-dest__more > .text-link,
 p.pay-note > .text-link,
+#days-out .media-card > p:not(.place-list__actions) > .text-link,
 .step-photos p > .text-link,
 label .text-link {
   display: inline;
