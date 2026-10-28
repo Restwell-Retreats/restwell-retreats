@@ -302,16 +302,14 @@ get_template_part(
 		  <li id="herne-bay"><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts-pier-view.jpg' ) ); ?>" alt="Painted beach huts on a grassy slope above the sea, with a pier in the distance" width="640" height="480" loading="lazy" />
 			<h3>Herne Bay</h3>
-			<p>A day trip along the coast.</p>
-			<p><strong>Getting there:</strong> The 400 becomes the 600 at Greenhill (same bus, no need to change). Check the Stagecoach timetable before you set out. By car, Neptune car park (CT6 5JG) is next to the Clock Tower.</p>
-			<p><strong>The seafront:</strong> The pier, the Central Bandstand and the Clock Tower sit along one stretch. Wheelchair users can get onto the pier.</p>
-			<p><strong>Parking:</strong> Blue Badge holders get 3 hours free, but register the badge online before your first visit (same as Gorrell Tank and Keam’s Yard). Chapel Street car park is free with a badge at all times.</p>
-			<p><strong>Accessible toilets:</strong> Limited on the seafront at the moment. Bring your RADAR key and check before you set out. The nearest Changing Places toilet is at Whitstable Harbour.</p>
-			<p class="place-list__actions"><a href="https://www.stagecoachbus.com/timetables" class="text-link" target="_blank" rel="noopener noreferrer">Stagecoach timetable<span class="sr-only"> (opens in new tab)</span></a>
+			<p>A day trip along the coast. The 400 becomes the 600 at Greenhill (same bus, no need to change), or drive to Neptune car park next to the Clock Tower. The pier, bandstand and Clock Tower sit along one seafront stretch, and wheelchair users can get onto the pier. Blue Badge holders get 3 hours free, but
 			<?php if ( '' !== $wg_guide_urls['accessible-parking-whitstable-tankerton'] ) : ?>
-			<a href="<?php echo esc_url( $wg_guide_urls['accessible-parking-whitstable-tankerton'] ); ?>" class="text-link">Badge registration</a>
+				<a class="text-link" href="<?php echo esc_url( $wg_guide_urls['accessible-parking-whitstable-tankerton'] ); ?>">register the badge online</a>
+			<?php else : ?>
+				register the badge online
 			<?php endif; ?>
-			<a href="#toilets" class="text-link">Toilets in Whitstable</a></p>
+			before your first visit (same as Gorrell Tank). Accessible toilets on the seafront are limited at the moment, so bring your RADAR key. The nearest <a class="text-link" href="#toilets">Changing Places toilet</a> is at Whitstable Harbour.</p>
+			<p class="place-list__actions"><a href="https://www.stagecoachbus.com/timetables" class="text-link" target="_blank" rel="noopener noreferrer">Stagecoach timetable<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-kent-woodland-paved-path.jpg' ) ); ?>" alt="Paved woodland path near the Kent coast" width="640" height="480" loading="lazy" />
