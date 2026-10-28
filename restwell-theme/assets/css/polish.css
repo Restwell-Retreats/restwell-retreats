@@ -15,12 +15,9 @@
 .multistep,
 .field :is(input, select, textarea),
 .faq-item__trigger {
-  scroll-margin-top: calc(var(--header-offset) + var(--space-8));
-}
-.admin-bar .multistep,
-.admin-bar .field :is(input, select, textarea),
-.admin-bar .faq-item__trigger {
-  scroll-margin-top: calc(var(--header-offset) + var(--wp-admin--admin-bar--height, 32px) + var(--space-8));
+  /* Extra room only: html's scroll-padding-top already clears the header,
+     admin bar and --space-3, so this lands them --space-8 under the header. */
+  scroll-margin-top: var(--space-5);
 }
 
 /* Filters scroll in one row on phones like the subnav (14 Oct 2026); each
@@ -108,10 +105,11 @@
 .gg-contact h3 { margin-bottom: 0.5rem; }
 .gg-contact p { margin-bottom: 0; max-width: 60ch; }
 .gg-contact .btn { flex-shrink: 0; }
-.gg-cards h3[id] { scroll-margin-top: calc(var(--header-offset) + 5rem); }
+/* Extra room on top of html's scroll-padding-top (header + --space-3). */
+.gg-cards h3[id] { scroll-margin-top: var(--space-16); }
 .otp-box { gap: clamp(0.25rem, 1.5vw, 0.75rem); }
 .otp-box input { min-width: 0; width: min(2.75rem, 13%); }
-.page-template-page-guest-guide :is(input, button) { scroll-margin-top: calc(var(--header-offset) + 5rem); }
+.page-template-page-guest-guide :is(input, button) { scroll-margin-top: var(--space-16); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -236,8 +234,11 @@ a.path-card:hover {
   .admin-bar .mobile-nav {
     top: calc(var(--header-offset) + var(--admin-bar-header-shift, var(--wp-admin--admin-bar--height, 46px)));
   }
-  html.admin-bar {
-    scroll-padding-top: calc(var(--banner-h) + var(--header-offset) + var(--subnav-h) + var(--admin-bar-header-shift, 0px) + var(--space-3));
+  /* The bar has scrolled away by the time a jump lands, so clear only the
+     header, as for guests. The shift is read when the jump starts, at the top
+     of the page, so adding it landed every jump 46px low. */
+  html:has(> body.admin-bar) {
+    scroll-padding-top: calc(var(--banner-h) + var(--header-offset) + var(--subnav-h) + var(--space-3));
   }
 }
 
