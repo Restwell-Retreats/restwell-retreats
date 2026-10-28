@@ -300,12 +300,14 @@ get_template_part(
 		<ul class="card-grid card-grid--2" role="list">
 		  <?php // Herne Bay (28 Oct 2026): the printed Welcome Guide's coast QR (page 15) promises routes "along to Tankerton and Herne Bay". Facts researched 28 Oct 2026; no parking prices or bus frequencies, as both can change. ?>
 		  <li id="herne-bay"><article class="media-card">
+					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-whitstable-beach-huts-pier-view.jpg' ) ); ?>" alt="Painted beach huts on a grassy slope above the sea, with a pier in the distance" width="640" height="480" loading="lazy" />
 			<h3>Herne Bay</h3>
-			<p><strong>Getting there.</strong> By car, head for Neptune car park by the Clock Tower, CT6 5JG. Bus 400 from The Plough becomes the 600 at Greenhill, so stay on. Not every bus runs through, so check the Stagecoach timetable before you set out. The coast path runs about 4.5 miles from Whitstable, mostly flat, for a long day out.</p>
-			<p><strong>The seafront.</strong> The pier, the restored Central Bandstand and the Clock Tower sit along one stretch. Wheelchair users can get onto the pier.</p>
-			<p><strong>Parking.</strong> You get 3 hours free with a Blue Badge in most council car parks. Register first for Neptune and William Street car parks. Chapel Street car park is always free with a Blue Badge.</p>
-			<p><strong>Accessible toilets.</strong> Accessible public toilets on the seafront are limited at the moment. Bring your RADAR key and check before you set out. The station has a RADAR toilet on platform 2, open in staffed hours only. The nearest Changing Places is at Whitstable Harbour.</p>
-			<p class="place-list__actions"><a href="https://www.stagecoachbus.com/timetables" class="text-link" target="_blank" rel="noopener noreferrer">Stagecoach timetable<span class="sr-only"> (opens in new tab)</span></a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Herne+Bay+Pier" class="text-link" target="_blank" rel="noopener noreferrer">Directions to the pier<span class="sr-only"> (opens in new tab)</span></a>
+			<p>A day trip along the coast.</p>
+			<p><strong>Getting there:</strong> The 400 becomes the 600 at Greenhill (same bus, no need to change). Check the Stagecoach timetable before you set out. By car, Neptune car park (CT6 5JG) is next to the Clock Tower.</p>
+			<p><strong>The seafront:</strong> The pier, the Central Bandstand and the Clock Tower sit along one stretch. Wheelchair users can get onto the pier.</p>
+			<p><strong>Parking:</strong> Blue Badge holders get 3 hours free, but register the badge online before your first visit (same as Gorrell Tank and Keam’s Yard). Chapel Street car park is free with a badge at all times.</p>
+			<p><strong>Accessible toilets:</strong> Limited on the seafront at the moment. Bring your RADAR key and check before you set out. The nearest Changing Places toilet is at Whitstable Harbour.</p>
+			<p class="place-list__actions"><a href="https://www.stagecoachbus.com/timetables" class="text-link" target="_blank" rel="noopener noreferrer">Stagecoach timetable<span class="sr-only"> (opens in new tab)</span></a>
 			<?php if ( '' !== $wg_guide_urls['accessible-parking-whitstable-tankerton'] ) : ?>
 			<a href="<?php echo esc_url( $wg_guide_urls['accessible-parking-whitstable-tankerton'] ); ?>" class="text-link">Badge registration</a>
 			<?php endif; ?>
@@ -315,7 +317,7 @@ get_template_part(
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/restwell-kent-woodland-paved-path.jpg' ) ); ?>" alt="Paved woodland path near the Kent coast" width="640" height="480" loading="lazy" />
 			<h3><a href="https://kent.wildwoodtrust.org/" class="media-card__title-link" target="_blank" rel="noopener noreferrer">Wildwood, Herne Bay<span class="sr-only"> (opens in new tab)</span></a></h3>
 			<p>About 30 minutes by car. Most of the woodland paths take wheelchairs and scooters, though they get muddy after rain. Book a scooter ahead on 01227 209621, as they go quickly.</p>
-			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a><a href="#herne-bay" class="text-link">Herne Bay seafront</a></p>
+			<p class="place-list__actions"><a href="https://kent.wildwoodtrust.org/plan-your-visit/" class="text-link" target="_blank" rel="noopener noreferrer">Plan your visit<span class="sr-only"> (opens in new tab)</span></a></p>
 		  </article></li>
 		  <li><article class="media-card">
 					   <img src="<?php echo esc_url( restwell_theme_image_url( 'stock/row-of-colorful-beach-homes-2026-03-25-01-44-35-utc.webp' ) ); ?>" alt="Colourful seaside buildings on the Kent coast" width="640" height="480" loading="lazy" />
