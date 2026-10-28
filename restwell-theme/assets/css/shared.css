@@ -9722,15 +9722,6 @@ label .text-link {
   font-weight: var(--weight-semibold);
   color: var(--deep-teal);
 }
-/* Whitstable, Herne Bay (28 Oct 2026): the same cards with no photo to rise
-   over, so they sit in the flow; two across, then four from 1200px. */
-.around__cards--flat { margin: 0; }
-@media (min-width: 768px) {
-  .around__cards--flat { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 1200px) {
-  .around__cards--flat { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-}
 
 /* Whitstable, pubs and restaurants (22 Oct 2026): the harbour photo beside
    three short rows. */

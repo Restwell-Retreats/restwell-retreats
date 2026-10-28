@@ -100,6 +100,6 @@ Pace varies and so does the wind coming off the estuary, so treat both numbers a
 
 **Changing Places:** we don’t currently have a confirmed one to name. Check the Changing Places map before adding anything, rather than repeating what a listing says.
 
-**Herne Bay (28 Oct 2026):** a short `#herne-bay` section sits between `#eat` and `#days-out`, so the page keeps the printed Welcome Guide’s coast QR promise (page 15). Heading and intro are `wg_herne_bay_heading` and `wg_herne_bay_intro`; the four cards (getting there, the seafront, parking, toilets) are `$wg_herne` in the template.
+**Herne Bay (28 Oct 2026):** the first card in Further afield (`#days-out`), with `id="herne-bay"` on the card, so the page keeps the printed Welcome Guide’s coast QR promise (page 15). Its four short lines (getting there, the seafront, parking, accessible toilets) are written in the template, like the other trip cards.
 
 **Herne Bay facts:** researched 28 Oct 2026. No parking prices (the council is reviewing charges) and no bus frequency; the seafront toilets stay “limited at the moment” until one is confirmed open.
