@@ -381,7 +381,12 @@ get_template_part(
 		  </li>
 			<?php endforeach; ?>
 		</ul>
-		<p class="whats-on__credit">Event listings © <?php echo esc_html( wp_date( 'Y' ) ); ?> <a href="https://www.datathistle.com/" target="_blank" rel="noopener noreferrer">Data Thistle<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></p>
+			<?php
+			// Data Thistle's API terms ask for a credit link plus links to its Add an
+			// Event and Update an Event pages. Changes to a listing go through each
+			// event's own page, so "Update an event" opens the help page that explains it.
+			?>
+		<p class="whats-on__credit">Event listings © <?php echo esc_html( wp_date( 'Y' ) ); ?> <a href="https://www.datathistle.com/" target="_blank" rel="noopener noreferrer">Data&nbsp;Thistle<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>&nbsp;<span aria-hidden="true">·</span> <a href="https://www.datathistle.com/update/event-listing/" target="_blank" rel="noopener noreferrer">Add&nbsp;an&nbsp;event<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>&nbsp;<span aria-hidden="true">·</span> <a href="https://www.datathistle.com/update/help/" target="_blank" rel="noopener noreferrer">Update&nbsp;an&nbsp;event<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></p>
 		<?php endif; ?>
 		<h3 class="whats-on__ahead">Plan further ahead</h3>
 		<ul class="place-list whats-on__links" role="list">

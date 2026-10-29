@@ -26,4 +26,10 @@ The same card shows whether the feed is working, how many events it holds and wh
 
 ## Data Thistle’s terms
 
-The API terms (api.datathistle.com/terms) ask sites to credit Data Thistle with its logo and a link, and to link to its Add an Event and Update an Event pages. The section currently has a text credit, “Event listings © [year] Data Thistle”, linked to datathistle.com. Check the logo and the two extra links with Data Thistle before going live.
+The API terms (api.datathistle.com/terms) ask sites to credit Data Thistle with its logo and a link, and to link to its Add an Event and Update an Event pages. Under the events, the credit line reads “Event listings © [year] Data Thistle · Add an event · Update an event”:
+
+- Data Thistle → `https://www.datathistle.com/`
+- Add an event → `https://www.datathistle.com/update/event-listing/`
+- Update an event → `https://www.datathistle.com/update/help/`. Data Thistle has no general update page: changes go through an “Update this event” button on each event’s own page, and the API doesn’t return that page’s address. Their help page explains how.
+
+The logo isn’t shown yet. Check with Data Thistle whether the text credit is enough before going live.
