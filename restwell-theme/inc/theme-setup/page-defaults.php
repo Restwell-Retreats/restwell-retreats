@@ -721,6 +721,8 @@ function restwell_get_who_its_for_page_defaults() {
  * Default meta for the Whitstable Guide page.
  */
 function restwell_get_whitstable_guide_page_defaults() {
+	// What's on event slots start empty (inc/whats-on.php).
+	$events = function_exists( 'restwell_whats_on_default_values' ) ? restwell_whats_on_default_values() : array();
 	return array(
 		'wg_label'         => 'Whitstable & Kent coast',
 		'wg_heading'       => 'Is Whitstable wheelchair friendly?',
@@ -754,7 +756,7 @@ function restwell_get_whitstable_guide_page_defaults() {
 		'wg_cta_secondary_url'     => '/the-property/',
 		'wg_cta_blog_label'        => 'Read local articles',
 		'wg_cta_blog_url'          => '/blog/',
-	);
+	) + $events;
 }
 
 /**

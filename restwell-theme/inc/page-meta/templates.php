@@ -443,6 +443,8 @@ function restwell_get_whitstable_guide_field_definitions() {
 			'wg_related_intro'           => restwell_field( __( 'Related reading intro', 'restwell-retreats' ), 'textarea' ),
 			'wg_eating_heading'          => restwell_field( __( 'Eating out heading', 'restwell-retreats' ) ),
 		),
+		// Eight event slots (inc/whats-on.php). Past events hide themselves.
+		'What’s on' => function_exists( 'restwell_whats_on_field_definitions' ) ? restwell_whats_on_field_definitions() : array(),
 		'CTA' => array(
 			'wg_cta_heading'         => restwell_field( __( 'CTA heading', 'restwell-retreats' ) ),
 			'wg_cta_body'            => restwell_field( __( 'CTA body', 'restwell-retreats' ), 'textarea' ),

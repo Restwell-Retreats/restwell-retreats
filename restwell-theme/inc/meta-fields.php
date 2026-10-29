@@ -316,6 +316,13 @@ function restwell_page_content_meta_box_callback( WP_Post $post ) {
 				} elseif ( 'number' === $type ) {
 					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<input type="number" step="any" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
+				} elseif ( 'date' === $type ) {
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo '<input type="date" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
+				} elseif ( 'url' === $type ) {
+					// A text input: a browser's url-type check would block the whole save over a missing https://.
+					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo '<input type="text" inputmode="url" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" placeholder="https://" />';
 				} else {
 					echo '<label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . $req_mark . '</label>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					echo '<input type="text" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" />';
@@ -369,6 +376,13 @@ function restwell_save_page_content_meta_box( int $post_id ): void {
 				$value = sanitize_textarea_field( $raw );
 			} elseif ( 'number' === $type ) {
 				$value = sanitize_text_field( $raw );
+			} elseif ( 'date' === $type ) {
+				// Y-m-d from the date picker; anything else is stored empty.
+				$value = trim( sanitize_text_field( $raw ) );
+				$date  = '' !== $value ? DateTimeImmutable::createFromFormat( '!Y-m-d', $value ) : false;
+				$value = ( $date && $date->format( 'Y-m-d' ) === $value ) ? $value : '';
+			} elseif ( 'url' === $type ) {
+				$value = esc_url_raw( trim( sanitize_text_field( $raw ) ), array( 'http', 'https' ) );
 			} else {
 				$value = sanitize_text_field( $raw );
 			}

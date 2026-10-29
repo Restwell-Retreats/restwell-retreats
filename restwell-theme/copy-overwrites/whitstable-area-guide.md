@@ -102,6 +102,11 @@ Pace varies and so does the wind coming off the estuary, so treat both numbers a
 
 **Herne Bay (28 Oct 2026):** the first card in Further afield (`#days-out`), with `id="herne-bay"` on the card, so the page keeps the printed Welcome Guide’s coast QR promise (page 15). Its four short lines (getting there, the seafront, parking, accessible toilets) are written in the template, like the other trip cards.
 
-**What’s on (29 Oct 2026):** the section after Further afield (`#whats-on`), before the FAQ. It lists the next six events within four miles of the bungalow from Data Thistle, then four “Plan further ahead” links that always show; with no key or no events, only the links show. Copy is in the template. No Event schema, because these are other organisers’ events. Leave out the Whitstable Biennale (it ended in 2022) and other holiday lets. Key and cache: `docs/whats-on-events-feed.md`.
+**What’s on (29 Oct 2026):** the section after Further afield (`#whats-on`), before the FAQ. It shows up to six events you type in, soonest first, then four “Plan further ahead” links that always show. No Event schema, because these are other organisers’ events. Leave out the Whitstable Biennale (it ended in 2022) and other holiday lets.
+
+- **Adding an event:** in wp-admin, edit the Whitstable Area Guide page, open the **What’s on** tab in Page content, fill an empty slot and update the page. There are eight slots. An event needs a name and a date to show; the end date (for events over several days), time (free text, e.g. “from 10am”), venue or area and link are optional. With a link, the name opens the organiser’s page in a new tab.
+- **Past events hide themselves.** An event shows up to and including its last day (the end date if there is one, otherwise its date) and drops off the next day, by the site’s timezone (Settings → General). Nothing needs deleting. When you save the page, slots that ended more than 30 days ago are emptied so the list stays tidy; the page doesn’t rely on that.
+- **Nothing to show:** if every slot is empty or past, the section shows only the Plan further ahead links, with no empty list.
+- The code is `inc/whats-on.php`; the section is in the template. It makes no outbound requests.
 
 **Herne Bay facts:** researched 28 Oct 2026. No parking prices (the council is reviewing charges) and no bus frequency; the seafront toilets stay “limited at the moment” until one is confirmed open.

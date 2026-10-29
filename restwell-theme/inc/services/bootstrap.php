@@ -4,8 +4,7 @@
  *
  * Boundary: register CRM/enquiry service singletons for templates and hooks.
  * Business logic remains in inc/crm/* and mu-plugin handlers; services are the
- * stable entry surface for cross-layer calls from the theme. The events feed
- * (Whitstable guide "What's on") is registered here too.
+ * stable entry surface for cross-layer calls from the theme.
  *
  * @package Restwell_Retreats
  */
@@ -16,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/class-restwell-crm-gateway.php';
 require_once __DIR__ . '/class-restwell-enquiry-service.php';
-require_once __DIR__ . '/class-restwell-events-feed.php';
 
 /**
  * Lazy service registry (single instance per request).
@@ -32,11 +30,6 @@ final class Restwell_Services {
 	 * @var Restwell_Enquiry_Service|null
 	 */
 	private static $enquiry = null;
-
-	/**
-	 * @var Restwell_Events_Feed|null
-	 */
-	private static $events_feed = null;
 
 	/**
 	 * CRM persistence and lifecycle adapter.
@@ -61,18 +54,6 @@ final class Restwell_Services {
 		}
 		return self::$enquiry;
 	}
-
-	/**
-	 * Upcoming events near the bungalow (Data Thistle).
-	 *
-	 * @return Restwell_Events_Feed
-	 */
-	public static function events_feed(): Restwell_Events_Feed {
-		if ( null === self::$events_feed ) {
-			self::$events_feed = new Restwell_Events_Feed();
-		}
-		return self::$events_feed;
-	}
 }
 
 /**
@@ -87,13 +68,6 @@ function restwell_service_crm_gateway(): Restwell_Crm_Gateway {
  */
 function restwell_service_enquiry(): Restwell_Enquiry_Service {
 	return Restwell_Services::enquiry();
-}
-
-/**
- * @return Restwell_Events_Feed
- */
-function restwell_service_events_feed(): Restwell_Events_Feed {
-	return Restwell_Services::events_feed();
 }
 
 /**

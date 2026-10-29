@@ -335,18 +335,13 @@ get_template_part(
 	</section>
 
 	<?php
-	// What's on (29 Oct 2026): the next six events within four miles, from the
-	// Data Thistle API (inc/services/class-restwell-events-feed.php, fetched
-	// server-side and cached), then the listings for planning further ahead,
-	// which always show. Without a key or any events, only those show. No Event
-	// schema: these are other organisers' events.
-	$wg_events = function_exists( 'restwell_service_events_feed' ) ? restwell_service_events_feed()->get_events() : array();
-	if ( $wg_events ) {
-		// LiteSpeed keeps a cached copy of this page no longer than the events cache.
-		do_action( 'litespeed_control_set_ttl', Restwell_Events_Feed::CACHE_TTL );
-	}
-	$wg_events_zone = new DateTimeZone( Restwell_Events_Feed::TIMEZONE );
-	$wg_ahead       = array(
+	// What's on (29 Oct 2026): up to six events from the eight slots in this
+	// page's "What’s on" tab, soonest first, then the listings for planning
+	// further ahead, which always show. An event hides itself the day after it
+	// ends (inc/whats-on.php), so with every slot empty or past only the links
+	// show. No Event schema: these are other organisers' events.
+	$wg_events = function_exists( 'restwell_whats_on_events' ) ? restwell_whats_on_events( $restwell_wg_id ) : array();
+	$wg_ahead  = array(
 		array( 'Visit Canterbury events', 'https://www.canterbury.co.uk/events', __( 'Canterbury, Whitstable and Herne Bay', 'restwell-retreats' ) ),
 		array( 'Whitstable Rocks Oyster Festival', 'https://whitstablerocksoysterfestival.com/', __( 'Usually September', 'restwell-retreats' ) ),
 		array( 'Whitstable Harbour Day', 'https://whitstablemaritime.org.uk/', __( 'Usually August', 'restwell-retreats' ) ),
@@ -363,30 +358,27 @@ get_template_part(
 		<ul class="place-list whats-on__events" role="list">
 			<?php foreach ( $wg_events as $wg_event ) : ?>
 				<?php
-				$wg_event_when = wp_date( 'D j M', $wg_event['start'], $wg_events_zone );
-				if ( empty( $wg_event['all_day'] ) ) {
-					// "7pm" on the hour, "7.30pm" otherwise.
-					$wg_event_mins  = (int) wp_date( 'i', $wg_event['start'], $wg_events_zone );
-					$wg_event_when .= ', ' . wp_date( 0 === $wg_event_mins ? 'ga' : 'g.ia', $wg_event['start'], $wg_events_zone );
+				// One <time> per date, built from escaped values; a range reads "11–13 Sep".
+				$wg_event_dates = array();
+				foreach ( restwell_whats_on_date_parts( $wg_event ) as $wg_event_part ) {
+					$wg_event_dates[] = '<time datetime="' . esc_attr( $wg_event_part['iso'] ) . '">' . esc_html( $wg_event_part['label'] ) . '</time>';
 				}
-				$wg_event_iso   = wp_date( empty( $wg_event['all_day'] ) ? 'c' : 'Y-m-d', $wg_event['start'], $wg_events_zone );
-				$wg_event_where = implode( ', ', array_unique( array_filter( array( $wg_event['venue'], $wg_event['town'] ) ) ) );
 				?>
 		  <li class="place-list__item">
-			<h3 class="place-list__title"><a href="<?php echo esc_url( $wg_event['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_event['title'] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></h3>
-			<p class="place-list__meta"><time datetime="<?php echo esc_attr( $wg_event_iso ); ?>"><?php echo esc_html( $wg_event_when ); ?></time></p>
-				<?php if ( '' !== $wg_event_where ) : ?>
-			<p><?php echo esc_html( $wg_event_where ); ?></p>
+			<h3 class="place-list__title">
+				<?php if ( '' !== $wg_event['url'] ) : ?>
+				<a href="<?php echo esc_url( $wg_event['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_event['name'] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+				<?php else : ?>
+					<?php echo esc_html( $wg_event['name'] ); ?>
+				<?php endif; ?>
+			</h3>
+			<p class="place-list__meta"><?php echo implode( '–', $wg_event_dates ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo '' !== $wg_event['time'] ? esc_html( ', ' . $wg_event['time'] ) : ''; ?></p>
+				<?php if ( '' !== $wg_event['venue'] ) : ?>
+			<p><?php echo esc_html( $wg_event['venue'] ); ?></p>
 			<?php endif; ?>
 		  </li>
 			<?php endforeach; ?>
 		</ul>
-			<?php
-			// Data Thistle's API terms ask for a credit link plus links to its Add an
-			// Event and Update an Event pages. Changes to a listing go through each
-			// event's own page, so "Update an event" opens the help page that explains it.
-			?>
-		<p class="whats-on__credit">Event listings © <?php echo esc_html( wp_date( 'Y' ) ); ?> <a href="https://www.datathistle.com/" target="_blank" rel="noopener noreferrer">Data&nbsp;Thistle<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>&nbsp;<span aria-hidden="true">·</span> <a href="https://www.datathistle.com/update/event-listing/" target="_blank" rel="noopener noreferrer">Add&nbsp;an&nbsp;event<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>&nbsp;<span aria-hidden="true">·</span> <a href="https://www.datathistle.com/update/help/" target="_blank" rel="noopener noreferrer">Update&nbsp;an&nbsp;event<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></p>
 		<?php endif; ?>
 		<h3 class="whats-on__ahead">Plan further ahead</h3>
 		<ul class="place-list whats-on__links" role="list">

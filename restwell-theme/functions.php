@@ -68,6 +68,7 @@ require_once get_template_directory() . '/inc/crm.php';
 require_once get_template_directory() . '/inc/services/bootstrap.php';
 require_once get_template_directory() . '/inc/tldr.php';
 require_once get_template_directory() . '/inc/wif-helpers.php';
+require_once get_template_directory() . '/inc/whats-on.php';
 require_once get_template_directory() . '/inc/wp-runtime-optimization.php';
 
 if ( is_admin() ) {
