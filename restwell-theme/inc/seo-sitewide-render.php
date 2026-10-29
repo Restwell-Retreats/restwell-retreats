@@ -390,6 +390,96 @@ function restwell_seo_sitewide_render_copy_card( $issues ) {
 }
 
 /**
+ * Data Thistle key for the Whitstable guide's What's on list.
+ *
+ * @param array $issues Checklist issues.
+ */
+function restwell_seo_sitewide_render_events_card( $issues ) {
+	if ( ! function_exists( 'restwell_service_events_feed' ) ) {
+		return;
+	}
+	$feed          = restwell_service_events_feed();
+	$from_constant = $feed->key_from_constant();
+	$key_stored    = (string) get_option( Restwell_Events_Feed::KEY_OPTION, '' );
+	$key_masked    = '' !== $key_stored ? '************' . substr( $key_stored, -4 ) : '';
+	$payload       = $feed->cached_payload();
+	$event_count   = is_array( $payload ) ? count( (array) ( $payload['events'] ?? array() ) ) : 0;
+	$fetch_error   = is_array( $payload ) ? (string) ( $payload['error'] ?? '' ) : '';
+	$fetched_at    = is_array( $payload ) ? (int) ( $payload['fetched_at'] ?? 0 ) : 0;
+
+	if ( '' === $feed->api_key() ) {
+		$badge_class = 'rw-seo-flag rw-seo-flag--info';
+		$badge_text  = __( 'Not configured', 'restwell-retreats' );
+		$status      = __( 'Without a key, the guide shows the event links only.', 'restwell-retreats' );
+	} elseif ( null === $payload ) {
+		$badge_class = 'rw-seo-flag rw-seo-flag--warn';
+		$badge_text  = __( 'Key saved, waiting for first update', 'restwell-retreats' );
+		$status      = __( 'The list loads the next time someone opens the Whitstable guide.', 'restwell-retreats' );
+	} elseif ( '' !== $fetch_error ) {
+		$badge_class = 'rw-seo-flag rw-seo-flag--warn';
+		$badge_text  = __( 'Last update failed', 'restwell-retreats' );
+		$status      = sprintf(
+			/* translators: %s: error from the events feed, e.g. "HTTP 401 Unauthorized". */
+			__( 'Reason: %s. The guide keeps the last good list for up to a day, then shows the event links only. It tries again within the hour.', 'restwell-retreats' ),
+			$fetch_error
+		);
+	} else {
+		$badge_class = 'rw-seo-flag rw-seo-flag--ok';
+		$badge_text  = __( 'Working', 'restwell-retreats' );
+		$status      = sprintf(
+			/* translators: 1: number of events, 2: date and time of the last update. */
+			_n( '%1$d upcoming event, updated %2$s.', '%1$d upcoming events, updated %2$s.', $event_count, 'restwell-retreats' ),
+			$event_count,
+			wp_date( 'j M \a\t g.ia', $fetched_at )
+		);
+	}
+	?>
+				<section class="rw-seo-sitewide__card" id="rw-seo-sitewide-events">
+					<h2 class="rw-seo-sitewide__card-title"><?php esc_html_e( 'Whitstable events', 'restwell-retreats' ); ?></h2>
+					<p class="rw-seo-sitewide__card-desc">
+						<?php esc_html_e( 'The What’s on list on the Whitstable guide. Events come from Data Thistle and refresh twice a day.', 'restwell-retreats' ); ?>
+					</p>
+
+					<?php restwell_seo_sitewide_field_open( 'restwell_datathistle_api_key', __( 'Data Thistle API key', 'restwell-retreats' ), $issues ); ?>
+						<div class="rw-seo-sitewide__inline">
+							<input
+								type="password"
+								class="rw-seo-field__input"
+								id="restwell_datathistle_api_key"
+								name="restwell_datathistle_api_key"
+								value=""
+								autocomplete="new-password"
+								placeholder="<?php echo esc_attr( $key_masked ); ?>"
+								<?php disabled( $from_constant ); ?>
+							/>
+							<span class="<?php echo esc_attr( $badge_class ); ?>" aria-live="polite"><?php echo esc_html( $badge_text ); ?></span>
+						</div>
+						<p class="rw-seo-field__hint">
+							<?php
+							if ( $from_constant ) {
+								esc_html_e( 'RESTWELL_DATATHISTLE_KEY is set in wp-config.php (or the environment). This field is unused while that constant is defined.', 'restwell-retreats' );
+							} else {
+								esc_html_e( 'Copy the access token from your Data Thistle API account (Get Access Token). It is saved privately and only its last four characters are shown. Leave blank to keep the saved key.', 'restwell-retreats' );
+							}
+							?>
+						</p>
+						<?php if ( ! $from_constant ) : ?>
+							<p class="rw-seo-field__hint">
+								<label>
+									<input type="checkbox" name="restwell_datathistle_api_key_clear" value="1" />
+									<?php esc_html_e( 'Clear stored API key on save', 'restwell-retreats' ); ?>
+								</label>
+							</p>
+						<?php endif; ?>
+						<p class="rw-seo-field__hint"><?php echo esc_html( $status ); ?></p>
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Saving this page clears the cached events, so the guide fetches a fresh list on its next visit.', 'restwell-retreats' ); ?></p>
+					<?php restwell_seo_sitewide_field_close(); ?>
+				</section>
+
+	<?php
+}
+
+/**
  * Sitemap / monthly checklist aside.
  *
  * @param string $sitemap Sitemap URL.
@@ -540,6 +630,7 @@ function restwell_seo_sitewide_render_page() {
 				);
 				restwell_seo_sitewide_render_social_card( $social_urls );
 				restwell_seo_sitewide_render_copy_card( $issues );
+				restwell_seo_sitewide_render_events_card( $issues );
 				?>
 				<p class="rw-seo-sitewide__submit">
 					<?php submit_button( __( 'Save site-wide settings', 'restwell-retreats' ), 'primary large', 'submit', false ); ?>

@@ -102,4 +102,6 @@ Pace varies and so does the wind coming off the estuary, so treat both numbers a
 
 **Herne Bay (28 Oct 2026):** the first card in Further afield (`#days-out`), with `id="herne-bay"` on the card, so the page keeps the printed Welcome Guide’s coast QR promise (page 15). Its four short lines (getting there, the seafront, parking, accessible toilets) are written in the template, like the other trip cards.
 
+**What’s on (29 Oct 2026):** the section after Further afield (`#whats-on`), before the FAQ. It lists the next six events within four miles of the bungalow from Data Thistle, then four “Plan further ahead” links that always show; with no key or no events, only the links show. Copy is in the template. No Event schema, because these are other organisers’ events. Leave out the Whitstable Biennale (it ended in 2022) and other holiday lets. Key and cache: `docs/whats-on-events-feed.md`.
+
 **Herne Bay facts:** researched 28 Oct 2026. No parking prices (the council is reviewing charges) and no bus frequency; the seafront toilets stay “limited at the moment” until one is confirmed open.

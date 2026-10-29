@@ -6157,6 +6157,30 @@ body.page-template-template-accessibility-php .scroll-top {
   box-shadow: none;
 }
 
+/*
+ * What's on (Whitstable guide, 29 Oct 2026): live events, a credit line, then
+ * the listings for planning further ahead. Both lists are place-list rows with
+ * no photo, so they set their own columns: .place-list--3 keeps a photo column
+ * on tablet.
+ */
+@media (min-width: 600px) {
+  .whats-on__events,
+  .whats-on__links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .whats-on__events { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .whats-on__links { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.whats-on__credit {
+  margin-top: var(--space-6);
+  font-size: var(--text-xs);
+  color: var(--muted-grey);
+}
+.whats-on__ahead { margin: var(--space-16) 0 var(--section-after-head); }
+.section-head + .whats-on__ahead { margin-top: 0; }
+/* A step under the heading above them, as in .link-list. */
+.whats-on__links .place-list__title { font-size: var(--text-lg); }
+
 /* Linked media titles (day trips / visual stops) */
 .media-card__title-link {
   display: inline-flex;

@@ -115,6 +115,7 @@ get_template_part(
 		  <li><a href="#stops">Along the route</a></li>
 		  <li><a href="#eat">Pubs and restaurants</a></li>
 		  <li><a href="#days-out">Further afield</a></li>
+		  <li><a href="#whats-on">What’s on</a></li>
 		  <li><a href="#faq">Questions</a></li>
 		</ul>
 	  </div>
@@ -332,7 +333,70 @@ get_template_part(
 		</ul>
 	  </div>
 	</section>
-	<section class="faq section-y band-white" id="faq" aria-labelledby="faq-h">
+
+	<?php
+	// What's on (29 Oct 2026): the next six events within four miles, from the
+	// Data Thistle API (inc/services/class-restwell-events-feed.php, fetched
+	// server-side and cached), then the listings for planning further ahead,
+	// which always show. Without a key or any events, only those show. No Event
+	// schema: these are other organisers' events.
+	$wg_events = function_exists( 'restwell_service_events_feed' ) ? restwell_service_events_feed()->get_events() : array();
+	if ( $wg_events ) {
+		// LiteSpeed keeps a cached copy of this page no longer than the events cache.
+		do_action( 'litespeed_control_set_ttl', Restwell_Events_Feed::CACHE_TTL );
+	}
+	$wg_events_zone = new DateTimeZone( Restwell_Events_Feed::TIMEZONE );
+	$wg_ahead       = array(
+		array( 'Visit Canterbury events', 'https://www.canterbury.co.uk/events', __( 'Canterbury, Whitstable and Herne Bay', 'restwell-retreats' ) ),
+		array( 'Whitstable Rocks Oyster Festival', 'https://whitstablerocksoysterfestival.com/', __( 'Usually September', 'restwell-retreats' ) ),
+		array( 'Whitstable Harbour Day', 'https://whitstablemaritime.org.uk/', __( 'Usually August', 'restwell-retreats' ) ),
+		array( 'Whitstable.co.uk events', 'https://www.whitstable.co.uk/whitstable-events/', __( 'Independent local listings', 'restwell-retreats' ) ),
+	);
+	?>
+	<section class="section-y band-white" id="whats-on" aria-labelledby="whats-on-h">
+	  <div class="container">
+		<header class="section-head">
+		  <h2 id="whats-on-h">What’s on in Whitstable</h2>
+		  <p class="lede">Upcoming events near the bungalow. Details can change, so check with the organiser, and ask the venue about access before you go.</p>
+		</header>
+		<?php if ( $wg_events ) : ?>
+		<ul class="place-list whats-on__events" role="list">
+			<?php foreach ( $wg_events as $wg_event ) : ?>
+				<?php
+				$wg_event_when = wp_date( 'D j M', $wg_event['start'], $wg_events_zone );
+				if ( empty( $wg_event['all_day'] ) ) {
+					// "7pm" on the hour, "7.30pm" otherwise.
+					$wg_event_mins  = (int) wp_date( 'i', $wg_event['start'], $wg_events_zone );
+					$wg_event_when .= ', ' . wp_date( 0 === $wg_event_mins ? 'ga' : 'g.ia', $wg_event['start'], $wg_events_zone );
+				}
+				$wg_event_iso   = wp_date( empty( $wg_event['all_day'] ) ? 'c' : 'Y-m-d', $wg_event['start'], $wg_events_zone );
+				$wg_event_where = implode( ', ', array_unique( array_filter( array( $wg_event['venue'], $wg_event['town'] ) ) ) );
+				?>
+		  <li class="place-list__item">
+			<h3 class="place-list__title"><a href="<?php echo esc_url( $wg_event['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_event['title'] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></h3>
+			<p class="place-list__meta"><time datetime="<?php echo esc_attr( $wg_event_iso ); ?>"><?php echo esc_html( $wg_event_when ); ?></time></p>
+				<?php if ( '' !== $wg_event_where ) : ?>
+			<p><?php echo esc_html( $wg_event_where ); ?></p>
+			<?php endif; ?>
+		  </li>
+			<?php endforeach; ?>
+		</ul>
+		<p class="whats-on__credit">Event listings © <?php echo esc_html( wp_date( 'Y' ) ); ?> <a href="https://www.datathistle.com/" target="_blank" rel="noopener noreferrer">Data Thistle<span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></p>
+		<?php endif; ?>
+		<h3 class="whats-on__ahead">Plan further ahead</h3>
+		<ul class="place-list whats-on__links" role="list">
+			<?php foreach ( $wg_ahead as $wg_ahead_link ) : ?>
+		  <li class="place-list__item">
+			<h4 class="place-list__title"><a href="<?php echo esc_url( $wg_ahead_link[1] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_ahead_link[0] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></h4>
+			<p class="place-list__meta"><?php echo esc_html( $wg_ahead_link[2] ); ?></p>
+		  </li>
+			<?php endforeach; ?>
+		</ul>
+	  </div>
+	</section>
+
+	<?php // The FAQ and Further reading swapped bands on 29 Oct 2026 when What's on (white) arrived above them. ?>
+	<section class="faq section-y band-subtle" id="faq" aria-labelledby="faq-h">
 	  <div class="container">
 		<div class="faq__layout">
 		  <header class="faq__intro">
@@ -423,14 +487,14 @@ get_template_part(
 	$mid_cta_secondary_url   = $wg_txt( 'wg_cta_secondary_url', restwell_nav_resolve_page_url( 'the-property' ) );
 
 	// Further reading sits above the closing CTA, as on Funding & Support, so the
-	// teal CTA runs straight into the teal footer. The FAQ above is band-white.
+	// teal CTA runs straight into the teal footer. The FAQ above is band-subtle.
 	if ( function_exists( 'restwell_render_pillar_related_guides' ) ) {
 		restwell_render_pillar_related_guides(
 			'whitstable-area-guide',
 			array(
 				'heading' => $wg_related_heading,
 				'intro'   => $wg_related_intro,
-				'band'    => 'band-subtle',
+				'band'    => 'band-white',
 			)
 		);
 	}

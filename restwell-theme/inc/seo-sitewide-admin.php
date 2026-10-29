@@ -112,6 +112,25 @@ function restwell_seo_sitewide_handle_save() {
 		}
 	}
 
+	if ( function_exists( 'restwell_service_events_feed' ) ) {
+		$events_feed       = restwell_service_events_feed();
+		$events_key_clear  = isset( $_POST['restwell_datathistle_api_key_clear'] )
+			&& '1' === sanitize_text_field( wp_unslash( $_POST['restwell_datathistle_api_key_clear'] ) );
+		$events_key_posted = isset( $_POST['restwell_datathistle_api_key'] )
+			? Restwell_Events_Feed::sanitize_api_key( sanitize_text_field( wp_unslash( $_POST['restwell_datathistle_api_key'] ) ) )
+			: '';
+		// As with Bing, the wp-config constant wins; otherwise the key is saved
+		// here without autoload.
+		if ( ! $events_feed->key_from_constant() && '' !== $events_key_posted ) {
+			update_option( Restwell_Events_Feed::KEY_OPTION, $events_key_posted, false );
+		} elseif ( ! $events_feed->key_from_constant() && $events_key_clear ) {
+			update_option( Restwell_Events_Feed::KEY_OPTION, '', false );
+		}
+		// Every save clears the cached events, so the Whitstable guide fetches
+		// a fresh list on its next visit.
+		$events_feed->flush( $events_key_clear );
+	}
+
 	$ga4 = isset( $_POST['restwell_ga4_measurement_id'] )
 		? sanitize_text_field( wp_unslash( $_POST['restwell_ga4_measurement_id'] ) )
 		: '';
