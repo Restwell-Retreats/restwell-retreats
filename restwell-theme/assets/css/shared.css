@@ -6158,40 +6158,42 @@ body.page-template-template-accessibility-php .scroll-top {
 }
 
 /*
- * What's on (Whitstable guide, 29 Oct 2026; cards 30 Oct): each event is a flat
- * card on the band's card surface (the cool tint on a white band), padded like
- * the Getting around cards. A small date tile echoes the travel times: gold
- * weekday label, serif date, time beneath. The name leads in the markup and the
- * tile shows above it. Cards in a row share a height and the venue sits at the
- * foot, as in Further afield. Plan further ahead is .link-list--cards.
+ * What's on (Whitstable guide, 29 Oct 2026; rows 30 Oct): each event is a
+ * compact row on the band's card surface (the cool tint on a white band),
+ * padded like the Plan further ahead cards below it. A date tile echoes the
+ * travel times (gold weekday label, serif date, time beneath) on the left, and
+ * the name and venue sit beside it, centred on the tile. The name leads in the
+ * markup. Two columns from 600px, so even one or two events stay half the rail
+ * wide. Plan further ahead is .link-list--cards.
  */
 @media (min-width: 600px) {
   .whats-on__events { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (min-width: 900px) {
-  .whats-on__events { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
   .whats-on__links { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .whats-on__event {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-6);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  /* The tile spans all four rows; the two 1fr rows share any spare height,
+     so the name and venue sit centred against it. */
+  grid-template-rows: 1fr auto auto 1fr;
+  grid-template-areas: "when ." "when name" "when venue" "when .";
+  column-gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
   border: 1px solid var(--card-line);
   border-radius: var(--radius-lg);
   background: var(--card-bg);
 }
 .whats-on__when {
-  order: -1;
+  grid-area: when;
   display: grid;
   gap: var(--space-1);
-  align-self: flex-start;
+  align-self: center;
   /* One width for every one-day tile ("28 Nov" and "10am-4pm" fit), so
-     names line up from card to card. */
+     names line up from row to row. */
   min-width: 7rem;
-  margin: 0 0 var(--space-1);
+  margin: 0;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius);
   background: var(--card-inset);
@@ -6210,27 +6212,26 @@ body.page-template-template-accessibility-php .scroll-top {
   color: var(--deep-teal);
 }
 .whats-on__time { font-size: var(--text-sm); color: var(--muted-grey); }
+.whats-on__event .place-list__title { grid-area: name; }
 .whats-on__venue {
-  margin: auto 0 0;
+  grid-area: venue;
+  margin: var(--space-1) 0 0;
   font-size: var(--text-md);
   color: var(--muted-grey);
 }
-/* Phone: the date tile beside the name and venue, like a diary row, so six
-   events don't run to two screens each of two cards. */
+/* Phone keeps the 30 Oct diary row: name and venue from the top of the tile. */
 @media (max-width: 599px) {
   .whats-on__event {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: none;
     grid-template-areas: "when name" "when venue";
     align-content: start;
     gap: var(--space-2) var(--space-4);
     padding: var(--space-5);
   }
-  .whats-on__when { grid-area: when; margin: 0; }
-  .whats-on__event .place-list__title { grid-area: name; }
-  .whats-on__venue { grid-area: venue; margin: 0; }
+  .whats-on__when { align-self: start; }
+  .whats-on__venue { margin: 0; }
 }
-.whats-on__ahead { margin: var(--space-10) 0 var(--section-after-head); }
+.whats-on__ahead { margin: var(--section-stack-gap) 0 var(--section-after-head); }
 .section-head + .whats-on__ahead { margin-top: 0; }
 /* Plan further ahead keeps .link-list--cards (one tap target per item, the
    arrow at the right) on the events' card surface. Elsewhere that list is
