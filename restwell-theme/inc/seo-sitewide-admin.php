@@ -130,6 +130,20 @@ function restwell_seo_sitewide_handle_save() {
 	$tiktok_pixel_id = preg_replace( '/[^0-9A-Za-z]/', '', $tiktok_pixel_id );
 	update_option( 'restwell_tiktok_pixel_id', $tiktok_pixel_id );
 
+	$meta_pixel_clear  = isset( $_POST['restwell_meta_pixel_id_clear'] )
+		&& '1' === sanitize_text_field( wp_unslash( $_POST['restwell_meta_pixel_id_clear'] ) );
+	$meta_pixel_posted = isset( $_POST['restwell_meta_pixel_id'] )
+		? preg_replace( '/\D/', '', sanitize_text_field( wp_unslash( $_POST['restwell_meta_pixel_id'] ) ) )
+		: '';
+	$meta_from_constant = function_exists( 'restwell_analytics_meta_pixel_from_constant' ) && restwell_analytics_meta_pixel_from_constant();
+	// As with the Bing key: the wp-config constant wins, a blank field keeps the
+	// saved ID, and the box clears it. Autoloaded, since every page reads it.
+	if ( ! $meta_from_constant && '' !== $meta_pixel_posted ) {
+		update_option( 'restwell_meta_pixel_id', $meta_pixel_posted );
+	} elseif ( ! $meta_from_constant && $meta_pixel_clear ) {
+		update_option( 'restwell_meta_pixel_id', '' );
+	}
+
 	$analytics_mode = isset( $_POST['restwell_analytics_load_mode'] )
 		? sanitize_key( wp_unslash( $_POST['restwell_analytics_load_mode'] ) )
 		: 'consent_gated';

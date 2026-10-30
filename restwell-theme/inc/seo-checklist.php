@@ -508,7 +508,27 @@ function restwell_seo_checklist_sitewide(): array {
 		);
 	}
 
+	$meta_raw = function_exists( 'restwell_analytics_meta_pixel_from_constant' ) && restwell_analytics_meta_pixel_from_constant()
+		? trim( (string) constant( 'RESTWELL_META_PIXEL_ID' ) )
+		: trim( (string) get_option( 'restwell_meta_pixel_id', '' ) );
+	if ( $meta_raw !== '' && function_exists( 'restwell_analytics_meta_pixel_id_sanitized' ) && '' === restwell_analytics_meta_pixel_id_sanitized() ) {
+		$issues[] = array(
+			'id'       => 'meta_pixel_invalid',
+			'severity' => 'error',
+			'message'  => __( 'Meta Pixel ID looks wrong. It should be the digits copied from Meta Events Manager.', 'restwell-retreats' ),
+			'field'    => 'restwell_meta_pixel_id',
+		);
+	}
+
 	$mode = (string) get_option( 'restwell_analytics_load_mode', 'consent_gated' );
+	if ( $meta_raw !== '' && 'consent_gated' !== $mode ) {
+		$issues[] = array(
+			'id'       => 'meta_pixel_mode',
+			'severity' => 'warn',
+			'message'  => __( 'The Meta Pixel only loads in Consent-gated mode, so it is off while analytics load without consent.', 'restwell-retreats' ),
+			'field'    => 'restwell_analytics_load_mode',
+		);
+	}
 	$has_tracker = ( $ga4 !== '' || $metricool !== '' || $tiktok !== '' );
 	if ( $has_tracker && 'head' === $mode ) {
 		$issues[] = array(

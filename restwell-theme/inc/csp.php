@@ -70,6 +70,8 @@ function restwell_build_csp_directives() {
 		'https://tracker.metricool.com',
 		// TikTok Pixel, loaded after consent only when an ID is set (audit I14).
 		'https://analytics.tiktok.com',
+		// Meta Pixel (fbevents.js), loaded after consent only when an ID is set.
+		'https://connect.facebook.net',
 	);
 	if ( '' !== $nonce ) {
 		$script_src[] = "'nonce-" . $nonce . "'";
@@ -84,6 +86,9 @@ function restwell_build_csp_directives() {
 		'https://tracker.metricool.com',
 		'https://analytics.tiktok.com',
 		'https://analytics-ipv6.tiktokw.us',
+		// Meta Pixel config and the PageView beacon (www.facebook.com/tr).
+		'https://connect.facebook.net',
+		'https://www.facebook.com',
 	);
 
 	$directives = array(

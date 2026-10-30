@@ -1,6 +1,6 @@
 <?php
 /**
- * SEO: GA4, Metricool, TikTok Pixel, Bing verification, and analytics loader enqueue.
+ * SEO: GA4, Metricool, TikTok Pixel, Meta Pixel, Bing verification, and analytics loader enqueue.
  *
  * @package Restwell_Retreats
  */
@@ -52,6 +52,50 @@ function restwell_analytics_tiktok_pixel_id_sanitized() {
 }
 
 /**
+ * A Meta (Facebook) Pixel ID: digits only, or empty when it doesn't look like one.
+ *
+ * @param mixed $pixel_id Raw ID.
+ * @return string
+ */
+function restwell_analytics_sanitize_meta_pixel_id( $pixel_id ) {
+	$pixel_id = (string) preg_replace( '/\D/', '', (string) $pixel_id );
+	return preg_match( '/^\d{10,20}$/', $pixel_id ) ? $pixel_id : '';
+}
+
+/**
+ * Whether RESTWELL_META_PIXEL_ID is set in wp-config.php (the admin field is then unused).
+ *
+ * @return bool
+ */
+function restwell_analytics_meta_pixel_from_constant() {
+	return defined( 'RESTWELL_META_PIXEL_ID' ) && '' !== trim( (string) constant( 'RESTWELL_META_PIXEL_ID' ) );
+}
+
+/**
+ * Sanitized Meta Pixel ID or empty. The wp-config constant wins over SEO → Site-wide.
+ *
+ * @return string
+ */
+function restwell_analytics_meta_pixel_id_sanitized() {
+	$pixel_id = restwell_analytics_meta_pixel_from_constant()
+		? (string) constant( 'RESTWELL_META_PIXEL_ID' )
+		: (string) get_option( 'restwell_meta_pixel_id', '' );
+	return restwell_analytics_sanitize_meta_pixel_id( $pixel_id );
+}
+
+/**
+ * Meta Pixel ID for the loader, in Consent-gated mode only.
+ *
+ * The pixel must never load before Accept analytics, so the Head and Footer
+ * deferred modes (which load GA4 and TikTok without asking) leave it off.
+ *
+ * @return string
+ */
+function restwell_analytics_meta_pixel_id_for_loader() {
+	return 'consent_gated' === restwell_get_analytics_load_mode() ? restwell_analytics_meta_pixel_id_sanitized() : '';
+}
+
+/**
  * Whether analytics scripts are routed through the footer loader (defer / CMP).
  *
  * @return bool
@@ -62,7 +106,8 @@ function restwell_analytics_use_footer_loader() {
 	}
 	return restwell_analytics_ga4_measurement_id_sanitized() !== ''
 		|| restwell_analytics_metricool_hash_sanitized() !== ''
-		|| restwell_analytics_tiktok_pixel_id_sanitized() !== '';
+		|| restwell_analytics_tiktok_pixel_id_sanitized() !== ''
+		|| restwell_analytics_meta_pixel_id_for_loader() !== '';
 }
 
 /**
@@ -74,7 +119,9 @@ function restwell_output_ga4_consent_default() {
 add_action( 'wp_head', 'restwell_output_ga4_consent_default', 1 );
 
 /**
- * Enqueue deferred / consent-gated analytics loader (GA4 + Metricool + TikTok).
+ * Enqueue deferred / consent-gated analytics loader (GA4 + Metricool + TikTok + Meta).
+ *
+ * Front end only: wp_enqueue_scripts doesn't run in wp-admin or on wp-login.php.
  */
 function restwell_enqueue_analytics_loader() {
 	if ( is_admin() || ! restwell_analytics_use_footer_loader() ) {
@@ -106,10 +153,13 @@ function restwell_enqueue_analytics_loader() {
 			'gaId'           => restwell_analytics_ga4_measurement_id_sanitized(),
 			'metricoolHash'  => restwell_analytics_metricool_hash_sanitized(),
 			'tiktokPixelId' => restwell_analytics_tiktok_pixel_id_sanitized(),
+			'metaPixelId'   => restwell_analytics_meta_pixel_id_for_loader(),
 		)
 	);
 }
 add_action( 'wp_enqueue_scripts', 'restwell_enqueue_analytics_loader', 25 );
+
+// Head mode (below) has no Meta Pixel: it loads without consent, and the pixel never may.
 
 function restwell_enqueue_head_analytics() {
 	if ( is_admin() || restwell_analytics_use_footer_loader() ) {

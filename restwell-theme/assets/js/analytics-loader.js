@@ -1,8 +1,9 @@
 /**
- * Deferred / consent-gated loading for GA4, Metricool, and TikTok Pixel (front-end only).
+ * Deferred / consent-gated loading for GA4, Metricool, TikTok Pixel and Meta Pixel (front-end only).
  *
  * Theme first-party cookie `restwell_cookie_consent` = JSON `{ "v": 1, "analytics": true|false }`
- * is the only consent source when loadMode is consent_gated.
+ * is the only consent source when loadMode is consent_gated. The Meta Pixel loads
+ * in consent_gated mode only (PHP sends no metaPixelId otherwise).
  *
  * @package Restwell_Retreats
  */
@@ -14,6 +15,7 @@
 	var gaLoaded = false;
 	var metricoolLoaded = false;
 	var tiktokLoaded = false;
+	var metaLoaded = false;
 
 	/**
 	 * @return {boolean|null} true/false when set, null when absent or unreadable.
@@ -70,6 +72,9 @@
 		if (cfg.tiktokPixelId) {
 			loadTiktok(cfg.tiktokPixelId);
 		}
+		if (cfg.metaPixelId && cfg.consentGated) {
+			loadMeta(cfg.metaPixelId);
+		}
 		flushTikTokQueue();
 	};
 
@@ -82,6 +87,10 @@
 			ad_user_data: 'denied',
 			ad_personalization: 'denied'
 		});
+		// Accepted, then rejected on the same page: Meta stops sending.
+		if (metaLoaded && typeof window.fbq === 'function') {
+			window.fbq('consent', 'revoke');
+		}
 	};
 
 	var pendingTikTokEvents = window.restwellTikTokPendingEvents;
@@ -250,6 +259,46 @@
 			event_id: tiktokEventId('view')
 		});
 		flushTikTokQueue();
+	}
+
+	/**
+	 * Meta (Facebook) Pixel: init and PageView, nothing else yet.
+	 *
+	 * Meta's usual <noscript> image fallback is left out on purpose: it would
+	 * send a page view on load, before the visitor makes any cookie choice,
+	 * and it cannot wait for Accept analytics.
+	 */
+	function loadMeta(pixelId) {
+		if (metaLoaded) {
+			// Accepted again after a reject on this page.
+			window.fbq('consent', 'grant');
+			return;
+		}
+		metaLoaded = true;
+
+		if (!window.fbq) {
+			var fbq = window.fbq = function () {
+				if (fbq.callMethod) {
+					fbq.callMethod.apply(fbq, arguments);
+				} else {
+					fbq.queue.push(arguments);
+				}
+			};
+			if (!window._fbq) {
+				window._fbq = fbq;
+			}
+			fbq.push = fbq;
+			fbq.loaded = true;
+			fbq.version = '2.0';
+			fbq.queue = [];
+			var script = document.createElement('script');
+			script.async = true;
+			script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+			var firstScript = document.getElementsByTagName('script')[0];
+			firstScript.parentNode.insertBefore(script, firstScript);
+		}
+		window.fbq('init', pixelId);
+		window.fbq('track', 'PageView');
 	}
 
 	var mode = cfg.loadMode || '';

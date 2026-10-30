@@ -289,13 +289,68 @@ function restwell_seo_sitewide_render_analytics_card(
 						<p class="rw-seo-field__hint"><?php esc_html_e( 'Optional. Loads the TikTok Pixel after analytics consent. Sends ViewContent on each page, plus Lead when an enquiry is sent. Leave Automatic Advanced Matching off in TikTok Events Manager.', 'restwell-retreats' ); ?></p>
 					<?php restwell_seo_sitewide_field_close(); ?>
 
+					<?php
+					// Meta Pixel: masked like the Bing key; RESTWELL_META_PIXEL_ID in wp-config.php wins.
+					$meta_from_constant = function_exists( 'restwell_analytics_meta_pixel_from_constant' ) && restwell_analytics_meta_pixel_from_constant();
+					$meta_stored        = (string) get_option( 'restwell_meta_pixel_id', '' );
+					$meta_effective     = function_exists( 'restwell_analytics_meta_pixel_id_sanitized' ) ? restwell_analytics_meta_pixel_id_sanitized() : '';
+					$meta_masked        = '' !== $meta_stored ? '************' . substr( $meta_stored, -4 ) : '';
+					if ( '' === $meta_effective && '' === $meta_stored && ! $meta_from_constant ) {
+						$meta_badge_class = 'rw-seo-flag rw-seo-flag--warn';
+						$meta_badge_text  = __( 'Not set, tracking off', 'restwell-retreats' );
+					} elseif ( '' === $meta_effective ) {
+						$meta_badge_class = 'rw-seo-flag rw-seo-flag--bad';
+						$meta_badge_text  = __( 'Wrong format: the Pixel ID is digits only', 'restwell-retreats' );
+					} elseif ( 'consent_gated' !== $analytics_mode_current ) {
+						$meta_badge_class = 'rw-seo-flag rw-seo-flag--warn';
+						$meta_badge_text  = __( 'Set, but off until Consent-gated', 'restwell-retreats' );
+					} else {
+						$meta_badge_class = 'rw-seo-flag rw-seo-flag--ok';
+						$meta_badge_text  = __( 'Active', 'restwell-retreats' );
+					}
+					?>
+					<?php restwell_seo_sitewide_field_open( 'restwell_meta_pixel_id', __( 'Meta (Facebook) Pixel ID', 'restwell-retreats' ), $issues ); ?>
+						<div class="rw-seo-sitewide__inline">
+							<input
+								type="password"
+								class="rw-seo-field__input"
+								id="restwell_meta_pixel_id"
+								name="restwell_meta_pixel_id"
+								value=""
+								inputmode="numeric"
+								autocomplete="new-password"
+								placeholder="<?php echo esc_attr( $meta_masked ); ?>"
+								<?php disabled( $meta_from_constant ); ?>
+							/>
+							<span class="<?php echo esc_attr( $meta_badge_class ); ?>" aria-live="polite"><?php echo esc_html( $meta_badge_text ); ?></span>
+						</div>
+						<p class="rw-seo-field__hint">
+							<?php
+							if ( $meta_from_constant ) {
+								esc_html_e( 'RESTWELL_META_PIXEL_ID is set in wp-config.php (or the environment). This field is unused while that constant is defined.', 'restwell-retreats' );
+							} else {
+								esc_html_e( 'Optional. The digits from Meta Events Manager (your pixel’s Settings). It is saved privately and only its last four digits are shown. Leave blank to keep the saved ID.', 'restwell-retreats' );
+							}
+							?>
+						</p>
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Loads only in Consent-gated mode, after a visitor chooses Accept analytics, and sends PageView only. It never loads for visitors who reject.', 'restwell-retreats' ); ?></p>
+						<?php if ( ! $meta_from_constant ) : ?>
+							<p class="rw-seo-field__hint">
+								<label>
+									<input type="checkbox" name="restwell_meta_pixel_id_clear" value="1" />
+									<?php esc_html_e( 'Clear stored Pixel ID on save', 'restwell-retreats' ); ?>
+								</label>
+							</p>
+						<?php endif; ?>
+					<?php restwell_seo_sitewide_field_close(); ?>
+
 					<?php restwell_seo_sitewide_field_open( 'restwell_analytics_load_mode', __( 'When to load analytics', 'restwell-retreats' ), $issues ); ?>
 						<select class="rw-seo-field__input rw-seo-field__input--select" name="restwell_analytics_load_mode" id="restwell_analytics_load_mode">
 							<option value="head" <?php selected( $analytics_mode_current, 'head' ); ?>><?php esc_html_e( 'Head — load immediately', 'restwell-retreats' ); ?></option>
 							<option value="footer_deferred" <?php selected( $analytics_mode_current, 'footer_deferred' ); ?>><?php esc_html_e( 'Footer — deferred (better for page speed)', 'restwell-retreats' ); ?></option>
 							<option value="consent_gated" <?php selected( $analytics_mode_current, 'consent_gated' ); ?>><?php esc_html_e( 'Consent-gated — only after cookie consent', 'restwell-retreats' ); ?></option>
 						</select>
-						<p class="rw-seo-field__hint"><?php esc_html_e( 'Consent-gated is the PECR-safe default: the theme cookie banner stores the choice, and GA4, Metricool, and TikTok stay off until the visitor accepts analytics. Head and Footer deferred load tracking without that consent.', 'restwell-retreats' ); ?></p>
+						<p class="rw-seo-field__hint"><?php esc_html_e( 'Consent-gated is the PECR-safe default: the theme cookie banner stores the choice, and GA4, Metricool, TikTok and the Meta Pixel stay off until the visitor accepts analytics. Head and Footer deferred load tracking without that consent, so the Meta Pixel stays off altogether in those modes.', 'restwell-retreats' ); ?></p>
 					<?php restwell_seo_sitewide_field_close(); ?>
 				</section>
 
