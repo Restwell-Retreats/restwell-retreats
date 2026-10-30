@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 120;
+const RESTWELL_SCHEMA_VERSION = 121;
 
 
 /**
@@ -5902,6 +5902,31 @@ function restwell_migrate_subnav_headings_v120() {
 }
 
 /**
+ * Refresh stored privacy HTML so the Meta Pixel wording is used (30 Oct 2026).
+ *
+ * Same test as v64: a stored copy that still holds the theme's TikTok Pixel
+ * wording, without the Meta Pixel, is cleared so the theme default shows.
+ */
+function restwell_migrate_privacy_meta_pixel_v121() {
+	$flag = 'restwell_privacy_meta_pixel_v121';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+
+	$page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( $page instanceof WP_Post ) {
+		$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+		if ( '' !== trim( $html )
+			&& false !== strpos( $html, 'TikTok Pixel records' )
+			&& false === strpos( $html, 'Meta Pixel records' ) ) {
+			delete_post_meta( $page->ID, 'legal_body_html' );
+		}
+	}
+
+	update_option( $flag, '1', false );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -6057,6 +6082,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch_f_posts_v118',
 		'restwell_batch_f_share_images_v119',
 		'restwell_subnav_headings_v120',
+		'restwell_privacy_meta_pixel_v121',
 	);
 }
 
@@ -6283,6 +6309,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_batch_f_share_images_v119', 157 );
 	add_action( 'init', 'restwell_migrate_subnav_headings_v120', 163 );
 	add_action( 'after_switch_theme', 'restwell_migrate_subnav_headings_v120', 158 );
+	add_action( 'init', 'restwell_migrate_privacy_meta_pixel_v121', 164 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_meta_pixel_v121', 159 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

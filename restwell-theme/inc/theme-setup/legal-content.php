@@ -45,7 +45,7 @@ function restwell_get_public_site_host(): string {
  * @return string
  */
 function restwell_privacy_policy_version(): string {
-	return '2026-10-23';
+	return '2026-10-30';
 }
 
 /**
@@ -105,26 +105,26 @@ function restwell_get_privacy_policy_content(): string {
 <p>The care and accessibility boxes on the enquiry form are optional. What you write there can include health information, which the law calls special category data. We only store it if you tick the separate health-data box.</p>
 <p>The legal basis is your explicit consent (UK GDPR Article 9(2)(a)). We use these notes only to reply and to check the bungalow is likely to suit you. If you later agree in writing to a stay with care, we use them to introduce Continuity.</p>
 <p>Please put care and accessibility notes in the labelled boxes, not just in your general message. We treat what’s in those boxes as special category data. If your FAQ question includes health or care details, we use them only to reply.</p>
-<p>We never use health notes for marketing, and we don’t send them to Google, Metricool, TikTok or Mailchimp. We don’t create medical records. Ticking the privacy box on the enquiry form doesn’t share your details with Continuity.</p>
+<p>We never use health notes for marketing, and we don’t send them to Google, Metricool, TikTok, Meta or Mailchimp. We don’t create medical records. Ticking the privacy box on the enquiry form doesn’t share your details with Continuity.</p>
 
 <h2>Who we share it with</h2>
 <p>We never sell your personal information. We share it only with:</p>
 <ul>
 <li>The firms that run our website, email and hosting, who use it only as we tell them.</li>
 <li>Mailchimp (The Rocket Science Group, part of Intuit), only if you sign up for news.</li>
-<li>Google Analytics 4, Metricool and TikTok Pixel, only if you accept analytics cookies. TikTok learns when a page is viewed or an enquiry is sent, but not what you wrote on a form.</li>
+<li>Google Analytics 4, Metricool, TikTok Pixel and Meta Pixel (Meta runs Facebook and Instagram), only if you accept analytics cookies. TikTok learns when a page is viewed or an enquiry is sent. Meta learns when a page is viewed. Neither learns what you wrote on a form.</li>
 <li>Continuity, only if you later agree in writing to a stay with care.</li>
 <li>Insurers, accountants or public bodies, when the law says we must.</li>
 </ul>
 
 <h2>Sending data outside the UK</h2>
-<p>Google, Mailchimp, Metricool and TikTok may handle data outside the UK, including the US. They only get it after you accept analytics cookies or sign up for news. If a tool can’t protect it as well as UK law does, we won’t use that tool.</p>
+<p>Google, Mailchimp, Metricool, TikTok and Meta may handle data outside the UK, including the US. They only get it after you accept analytics cookies or sign up for news. If a tool can’t protect it as well as UK law does, we won’t use that tool.</p>
 
 <h2>Cookies and analytics</h2>
 <p>Essential cookies keep the site working. They remember your cookie choice and run security checks on our forms. After the email code, they also keep a booked guest signed in to the arrival guide for a while.</p>
-<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool and TikTok Pixel, if set up) are optional. None is set until you choose Accept analytics on the cookie banner.</p>
+<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool, TikTok Pixel and Meta Pixel, if set up) are optional. None is set until you choose Accept analytics on the cookie banner.</p>
 <p>You can reject them and still use the whole site, or change your mind in Cookie settings in the footer. Tracking scripts stay off until you agree, even if we add a new service later.</p>
-<p>If you accept analytics, TikTok Pixel records when a page is viewed and when an enquiry form is sent. We never send it names, email addresses, phone numbers, addresses, care or accessibility notes, or other form fields.</p>
+<p>If you accept analytics, TikTok Pixel records when a page is viewed and when an enquiry form is sent. Meta Pixel records when a page is viewed. We never send either of them names, email addresses, phone numbers, addresses, care or accessibility notes, or other form fields. If you’re signed in to Facebook or Instagram in this browser, Meta may link the visit to your account.</p>
 
 <h2>How long we keep it</h2>
 <p>We keep enquiry, FAQ, guest guide and booking records for up to three years. That lets us answer follow-up questions and meet our insurance and accounting needs. We don’t delete whole records automatically when that time is up.</p>
