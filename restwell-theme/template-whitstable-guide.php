@@ -355,16 +355,17 @@ get_template_part(
 		  <p class="lede">Upcoming events near the bungalow. Details can change, so check with the organiser, and ask the venue about access before you go.</p>
 		</header>
 		<?php if ( $wg_events ) : ?>
-		<ul class="place-list whats-on__events" role="list">
+		<ul class="card-grid whats-on__events" role="list">
 			<?php foreach ( $wg_events as $wg_event ) : ?>
 				<?php
 				// One <time> per date, built from escaped values; a range reads "11–13 Sep".
+				// The name comes first for screen readers; CSS shows the date tile above it.
 				$wg_event_dates = array();
 				foreach ( restwell_whats_on_date_parts( $wg_event ) as $wg_event_part ) {
 					$wg_event_dates[] = '<time datetime="' . esc_attr( $wg_event_part['iso'] ) . '">' . esc_html( $wg_event_part['label'] ) . '</time>';
 				}
 				?>
-		  <li class="place-list__item">
+		  <li class="whats-on__event">
 			<h3 class="place-list__title">
 				<?php if ( '' !== $wg_event['url'] ) : ?>
 				<a href="<?php echo esc_url( $wg_event['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_event['name'] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
@@ -372,20 +373,26 @@ get_template_part(
 					<?php echo esc_html( $wg_event['name'] ); ?>
 				<?php endif; ?>
 			</h3>
-			<p class="place-list__meta"><?php echo implode( '–', $wg_event_dates ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><?php echo '' !== $wg_event['time'] ? esc_html( ', ' . $wg_event['time'] ) : ''; ?></p>
+			<p class="whats-on__when">
+			  <span class="whats-on__day"><?php echo esc_html( restwell_whats_on_weekdays( $wg_event ) ); ?></span>
+			  <span class="whats-on__date"><?php echo implode( '–', $wg_event_dates ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				<?php if ( '' !== $wg_event['time'] ) : ?>
+			  <span class="whats-on__time"><?php echo esc_html( $wg_event['time'] ); ?></span>
+			  <?php endif; ?>
+			</p>
 				<?php if ( '' !== $wg_event['venue'] ) : ?>
-			<p><?php echo esc_html( $wg_event['venue'] ); ?></p>
+			<p class="whats-on__venue"><?php echo esc_html( $wg_event['venue'] ); ?></p>
 			<?php endif; ?>
 		  </li>
 			<?php endforeach; ?>
 		</ul>
 		<?php endif; ?>
 		<h3 class="whats-on__ahead">Plan further ahead</h3>
-		<ul class="place-list whats-on__links" role="list">
+		<ul class="link-list link-list--cards whats-on__links">
 			<?php foreach ( $wg_ahead as $wg_ahead_link ) : ?>
-		  <li class="place-list__item">
-			<h4 class="place-list__title"><a href="<?php echo esc_url( $wg_ahead_link[1] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_ahead_link[0] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a></h4>
-			<p class="place-list__meta"><?php echo esc_html( $wg_ahead_link[2] ); ?></p>
+		  <li>
+			<a href="<?php echo esc_url( $wg_ahead_link[1] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $wg_ahead_link[0] ); ?><span class="sr-only"> <?php esc_html_e( '(opens in new tab)', 'restwell-retreats' ); ?></span></a>
+			<span><?php echo esc_html( $wg_ahead_link[2] ); ?></span>
 		  </li>
 			<?php endforeach; ?>
 		</ul>

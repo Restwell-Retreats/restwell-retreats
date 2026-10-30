@@ -217,25 +217,34 @@ function restwell_whats_on_events( int $post_id ): array {
 }
 
 /**
+ * Unix time at noon on a Y-m-d date in the site's timezone.
+ *
+ * Noon keeps the timestamp on the same calendar day whatever the clocks do.
+ *
+ * @param string $ymd Y-m-d.
+ * @return int
+ */
+function restwell_whats_on_stamp( string $ymd ): int {
+	return ( new DateTimeImmutable( $ymd . ' 12:00:00', wp_timezone() ) )->getTimestamp();
+}
+
+/**
  * The date as one or two parts, each with a machine date for <time datetime="">.
  *
- * "Sat 21 Nov" for one day; "11" and "13 Sep" for a range within a month;
- * "28 Aug" and "2 Sep" across months. The template joins two parts with an en dash.
+ * "21 Nov" for one day; "11" and "13 Sep" for a range within a month;
+ * "28 Aug" and "2 Sep" across months. The template joins two parts with an
+ * en dash and shows the weekday (restwell_whats_on_weekdays()) above.
  *
  * @param array{start: string, end: string} $event Parsed event.
  * @return array<int, array{iso: string, label: string}>
  */
 function restwell_whats_on_date_parts( array $event ): array {
-	// Noon keeps the timestamp on the same calendar day whatever the clocks do.
-	$stamp = static function ( $ymd ) {
-		return ( new DateTimeImmutable( $ymd . ' 12:00:00', wp_timezone() ) )->getTimestamp();
-	};
-	$start = $stamp( $event['start'] );
+	$start = restwell_whats_on_stamp( $event['start'] );
 	if ( '' === $event['end'] ) {
 		return array(
 			array(
 				'iso'   => $event['start'],
-				'label' => wp_date( 'D j M', $start ),
+				'label' => wp_date( 'j M', $start ),
 			),
 		);
 	}
@@ -247,9 +256,23 @@ function restwell_whats_on_date_parts( array $event ): array {
 		),
 		array(
 			'iso'   => $event['end'],
-			'label' => wp_date( 'j M', $stamp( $event['end'] ) ),
+			'label' => wp_date( 'j M', restwell_whats_on_stamp( $event['end'] ) ),
 		),
 	);
+}
+
+/**
+ * The weekday, or first and last weekdays for a range: "Sun", "Sat–Sun".
+ *
+ * @param array{start: string, end: string} $event Parsed event.
+ * @return string
+ */
+function restwell_whats_on_weekdays( array $event ): string {
+	$days = wp_date( 'D', restwell_whats_on_stamp( $event['start'] ) );
+	if ( '' !== $event['end'] ) {
+		$days .= '–' . wp_date( 'D', restwell_whats_on_stamp( $event['end'] ) );
+	}
+	return $days;
 }
 
 /**

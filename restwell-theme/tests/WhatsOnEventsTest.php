@@ -182,8 +182,8 @@ class WhatsOnEventsTest extends PHPUnit\Framework\TestCase {
 				)
 			);
 		};
-		$this->assertSame( array( array( 'iso' => '2026-11-21', 'label' => 'Sat 21 Nov' ) ), $parts( '2026-11-21' ) );
-		$this->assertSame( array( array( 'iso' => '2026-03-29', 'label' => 'Sun 29 Mar' ) ), $parts( '2026-03-29' ), 'Clocks-change day keeps its date.' );
+		$this->assertSame( array( array( 'iso' => '2026-11-21', 'label' => '21 Nov' ) ), $parts( '2026-11-21' ) );
+		$this->assertSame( array( array( 'iso' => '2026-03-29', 'label' => '29 Mar' ) ), $parts( '2026-03-29' ), 'Clocks-change day keeps its date.' );
 		$this->assertSame(
 			array( array( 'iso' => '2026-09-11', 'label' => '11' ), array( 'iso' => '2026-09-13', 'label' => '13 Sep' ) ),
 			$parts( '2026-09-11', '2026-09-13' )
@@ -193,6 +193,21 @@ class WhatsOnEventsTest extends PHPUnit\Framework\TestCase {
 			$parts( '2026-08-28', '2026-09-02' )
 		);
 		$this->assertSame( array( '30 Dec', '2 Jan' ), array_column( $parts( '2026-12-30', '2027-01-02' ), 'label' ) );
+	}
+
+	public function test_weekday_label_above_the_date() {
+		$days = static function ( $start, $end = '' ) {
+			return restwell_whats_on_weekdays(
+				array(
+					'start' => $start,
+					'end'   => $end,
+				)
+			);
+		};
+		$this->assertSame( 'Sat', $days( '2026-11-21' ) );
+		$this->assertSame( 'Sun', $days( '2026-03-29' ), 'Clocks-change day keeps its weekday.' );
+		$this->assertSame( 'Sat–Sun', $days( '2026-11-28', '2026-11-29' ) );
+		$this->assertSame( 'Fri–Sun', $days( '2026-09-11', '2026-09-13' ) );
 	}
 
 	public function test_tidy_up_clears_slots_ended_more_than_thirty_days_ago() {
