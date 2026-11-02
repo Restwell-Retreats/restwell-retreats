@@ -232,13 +232,17 @@ function restwell_email_wrap( string $content, string $preview = '' ): string {
 }
 
 /**
- * Welcome Guide–style shell for the guest invitation email (logo, gold rule, no teal banner stack).
+ * Welcome Guide–style shell for guest email (logo, gold rule, no teal banner stack).
  *
- * @param string $content Inner HTML.
- * @param string $preview Preheader text.
+ * @param string $content      Inner HTML.
+ * @param string $preview      Preheader text.
+ * @param bool   $show_welcome Print "Welcome to" above the logo (the arrival guide invite).
  * @return string Full HTML email document.
  */
-function restwell_email_wrap_welcome( string $content, string $preview = '' ): string {
+function restwell_email_wrap_welcome( string $content, string $preview = '', bool $show_welcome = true ): string {
+	$welcome = $show_welcome
+		? '<p style="margin:0 0 14px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;font-weight:normal;letter-spacing:0.04em;color:#3A5A63;line-height:1.3;">' . esc_html__( 'Welcome to', 'restwell-retreats' ) . '</p>'
+		: '';
 	$site  = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
 	$home  = esc_url( home_url( '/' ) );
 	$year  = gmdate( 'Y' );
@@ -277,7 +281,7 @@ function restwell_email_wrap_welcome( string $content, string $preview = '' ): s
 
     <tr>
       <td align="center" bgcolor="#FFFFFF" style="padding:40px 40px 28px 40px;text-align:center;background-color:#FFFFFF;font-family:Arial,Helvetica,sans-serif;">
-        <p style="margin:0 0 14px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;font-weight:normal;letter-spacing:0.04em;color:#3A5A63;line-height:1.3;">' . esc_html__( 'Welcome to', 'restwell-retreats' ) . '</p>
+        ' . $welcome . '
         <a href="' . $home . '" style="text-decoration:none;">
           <img src="' . $logo_url . '" alt="' . esc_attr( $site ) . '" width="220" border="0" style="display:block;margin:0 auto;max-width:220px;width:220px;height:auto;border:0;outline:none;text-decoration:none;" />
         </a>
@@ -335,27 +339,45 @@ function restwell_email_banner( string $label, string $heading ): string {
 }
 
 /**
- * Render a CTA button (centred).
+ * Open serif heading with a short gold rule, for the logo-on-white shell.
  *
- * @param string $url   Destination URL.
- * @param string $label Button text.
- * @param string $color Background colour (hex). Defaults to deep teal.
+ * @param string $heading Heading text.
  * @return string HTML snippet.
  */
-function restwell_email_button( string $url, string $label, string $color = '#1B4D5C' ): string {
+function restwell_email_heading( string $heading ): string {
+	return '<h1 style="margin:8px 0 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:30px;font-weight:normal;color:#1B4D5C;line-height:1.25;mso-line-height-rule:exactly;">' . esc_html( $heading ) . '</h1>
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="56" style="margin:18px 0 28px 0;' . restwell_email_table_reset_style() . '">
+  <tr><td height="2" bgcolor="#D4A853" style="background-color:#D4A853;font-size:0;line-height:0;">&nbsp;</td></tr>
+</table>';
+}
+
+/**
+ * Render a CTA button (centred).
+ *
+ * @param string $url       Destination URL.
+ * @param string $label     Button text.
+ * @param string $color     Background colour (hex). Defaults to deep teal.
+ * @param bool   $copy_link Print the "Or copy this link" line under the button.
+ * @return string HTML snippet.
+ */
+function restwell_email_button( string $url, string $label, string $color = '#1B4D5C', bool $copy_link = true ): string {
 	$url   = esc_url( $url );
 	$label = esc_html( $label );
 	$color = esc_attr( $color );
 	$reset = restwell_email_table_reset_style();
 
 	// Padding on the td, not the <a>: Outlook ignores padding on inline-block links.
-	return '<table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:28px auto 0 auto;' . $reset . '">
+	$button = '<table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:28px auto 0 auto;' . $reset . '">
   <tr>
     <td align="center" bgcolor="' . $color . '" style="background-color:' . $color . ';padding:14px 32px;">
       <a href="' . $url . '" target="_blank" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;letter-spacing:0.04em;color:#FFFFFF;text-decoration:none;">' . $label . '</a>
     </td>
   </tr>
-</table>
+</table>';
+	if ( ! $copy_link ) {
+		return $button;
+	}
+	return $button . '
 <p style="text-align:center;margin:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#9E9589;">
   Or copy this link: <a href="' . $url . '" style="color:#1B4D5C;word-break:break-all;">' . $url . '</a>
 </p>';
@@ -833,7 +855,7 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 	$enquire    = esc_url( home_url( '/enquire/' ) );
 	$google_url = 'https://g.page/r/CcRcJZcgLeuSEBM/review';
 	$facebook_url = 'https://www.facebook.com/restwellretreats/reviews';
-	$first_name = $name ? explode( ' ', trim( $name ) )[0] : 'there';
+	$first_name = $name ? explode( ' ', trim( $name ) )[0] : 'guest';
 	$subject    = $site . ' | ' . __( 'Thank you for staying with us', 'restwell-retreats' );
 	$preview    = __( 'It was a pleasure having you. We hope you felt truly at home.', 'restwell-retreats' );
 
@@ -841,33 +863,35 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 		? restwell_email_info_table( array( __( 'Stay', 'restwell-retreats' ) => esc_html( $stay_dates ) ) )
 		: '';
 
-	$content = restwell_email_banner( 'Until next time', 'It was a pleasure having you.' )
-		. '<p style="margin:0 0 20px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
-    Dear ' . esc_html( $first_name ) . ',<br><br>
+	// One focal point: the review request in a sand panel. Coming back is an inline link.
+	$review_panel = restwell_email_panel(
+		'<p style="margin:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#3A5A63;">How was your stay?</p>
+        <p style="margin:0;font-family:Georgia,\'Times New Roman\',serif;font-size:20px;color:#1B4D5C;line-height:1.4;">Even a sentence or two helps other families decide whether Restwell is right for them.</p>'
+		. restwell_email_button( $google_url, __( 'Review us on Google', 'restwell-retreats' ), '#1B4D5C', false )
+		. '<p style="margin:12px 0 0 0;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#3A5A63;">Or <a href="' . esc_url( $facebook_url ) . '" target="_blank" style="color:#1B4D5C;text-decoration:underline;">review us on Facebook</a></p>',
+		'#F5EDE0',
+		'center',
+		'padding:28px 16px;'
+	);
+
+	$content = restwell_email_heading( __( 'Thank you for staying with us.', 'restwell-retreats' ) )
+		. '<p style="margin:0 0 12px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:17px;color:#1B4D5C;line-height:1.6;">Dear ' . esc_html( $first_name ) . ',</p>
+  <p style="margin:0 0 28px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
     We hope you are settling back in. It was our pleasure to have you, and we hope the stay gave you and your family the break you needed.
   </p>'
 		. $dates_row
-		. '
-  <p style="margin:0 0 16px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#2d4a52;line-height:1.7;">
-    Should you wish to visit us again - for yourself or someone close to you - we\'d love to welcome you back. You\'re always welcome here.
+		. $review_panel
+		. '<p style="margin:24px 0 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
+    We would love to welcome you back, whether for yourself or for someone close to you. <a href="' . $enquire . '" target="_blank" style="color:#1B4D5C;text-decoration:underline;">Send us your dates</a> whenever you are ready.
   </p>
-  <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
-    If you are happy to share your experience - even a sentence or two - it helps other families decide whether Restwell is right for them:
-  </p>
-  <p style="margin:0 0 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;">
-    &bull; <a href="' . esc_url( $google_url ) . '" target="_blank" style="color:#1B4D5C;">Leave a Google review</a><br>
-    &bull; <a href="' . esc_url( $facebook_url ) . '" target="_blank" style="color:#1B4D5C;">Review us on Facebook</a><br>
-    &bull; Reply to this email with your thoughts, or ask us for a short form.
-  </p>'
-		. restwell_email_button( $enquire, __( 'Enquire About a Return Stay', 'restwell-retreats' ), '#D4A853' )
-		. '<p style="margin:28px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
+  <p style="margin:36px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#3A5A63;line-height:1.7;border-top:1px solid #E8DFD0;padding-top:20px;">
     If there is anything we could do better, please reply to this email. Honest feedback helps us improve for every guest who follows.
   </p>'
 		. restwell_email_signoff();
 
 	return array(
 		'subject' => $subject,
-		'body'    => restwell_email_wrap( $content, $preview ),
+		'body'    => restwell_email_wrap_welcome( $content, $preview, false ),
 		'headers' => restwell_email_guest_headers(),
 	);
 }

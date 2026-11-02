@@ -196,6 +196,26 @@ class EmailOutlookMarkupTest extends PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function test_post_stay_uses_logo_shell_without_teal_banner() {
+		$mail = restwell_email_post_stay( 'jane@example.com', 'Jane Hartley' );
+		$body = $mail['body'];
+		$this->assertStringContainsString( 'long_logo.png', $body );
+		$this->assertStringNotContainsString( 'Welcome to', $body );
+		$this->assertStringNotContainsString( '#F0C97A', $body, 'The teal banner eyebrow should be gone.' );
+		$this->assertMatchesRegularExpression( '/<h1 [^>]*>Thank you for staying with us\.<\/h1>/', $body );
+		$this->assertStringContainsString( 'Dear Jane,', $body );
+		$this->assertStringContainsString( 'g.page/r/CcRcJZcgLeuSEBM/review', $body );
+		$this->assertStringContainsString( 'review us on Facebook', $body );
+		$this->assertStringContainsString( '/enquire/', $body );
+		$this->assertStringNotContainsString( 'Or copy this link', $body );
+		$this->assertStringNotContainsString( ' - ', wp_strip_all_tags( $body ), 'No spaced hyphens used as dashes.' );
+	}
+
+	public function test_post_stay_without_a_name_says_dear_guest() {
+		$mail = restwell_email_post_stay( 'jane@example.com', '' );
+		$this->assertStringContainsString( 'Dear guest,', $mail['body'] );
+	}
+
 	public function test_guest_guide_invite_uses_welcome_shell() {
 		$mail = restwell_theme_email_guest_guide_invite(
 			'jane@example.com',
