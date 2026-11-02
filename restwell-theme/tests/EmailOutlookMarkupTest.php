@@ -209,6 +209,33 @@ class EmailOutlookMarkupTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'bgcolor="#F5EDE0"', $mail['body'] );
 	}
 
+	public function test_every_guest_email_replies_to_hello() {
+		$guide_url = 'https://restwellretreats.co.uk/guest-guide/';
+		$mails     = array(
+			'enquiry ack'     => restwell_email_enquiry_ack( 'Jane Hartley', 'jane@example.com' ),
+			'access code'     => restwell_email_otp( 'jane@example.com', '847291' ),
+			'booking'         => restwell_email_booking_confirmed( 'Jane Hartley', 'jane@example.com' ),
+			'post-stay'       => restwell_email_post_stay( 'jane@example.com', 'Jane Hartley' ),
+			'guide invite'    => restwell_theme_email_guest_guide_invite( 'jane@example.com', 'Jane Hartley', $guide_url ),
+			'invite fallback' => restwell_email_guest_guide_invite( 'jane@example.com', 'Jane Hartley', $guide_url ),
+		);
+		foreach ( $mails as $label => $mail ) {
+			$this->assertContains( 'Reply-To: hello@restwellretreats.co.uk', $mail['headers'], $label );
+			$this->assertStringContainsString( 'Content-Type: text/html', $mail['headers'][0], $label );
+		}
+	}
+
+	public function test_guide_invite_keeps_cc_alongside_reply_to() {
+		$mail = restwell_theme_email_guest_guide_invite(
+			'jane@example.com',
+			'Jane Hartley',
+			'https://restwellretreats.co.uk/guest-guide/',
+			array( 'hello@restwellretreats.co.uk' )
+		);
+		$this->assertContains( 'Reply-To: hello@restwellretreats.co.uk', $mail['headers'] );
+		$this->assertContains( 'Cc: hello@restwellretreats.co.uk', $mail['headers'] );
+	}
+
 	public function test_faq_staff_body_is_outlook_safe() {
 		$html = restwell_email_staff_body(
 			array(

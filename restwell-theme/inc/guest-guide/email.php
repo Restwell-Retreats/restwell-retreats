@@ -135,7 +135,9 @@ function restwell_theme_email_guest_guide_invite( string $email, string $name, s
 		. esc_html__( 'Warm regards,', 'restwell-retreats' )
 		. '<br><strong>' . esc_html__( 'The Restwell team', 'restwell-retreats' ) . '</strong></p>';
 
-	$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+	$headers = function_exists( 'restwell_email_guest_headers' )
+		? restwell_email_guest_headers()
+		: array( 'Content-Type: text/html; charset=UTF-8', 'Reply-To: hello@restwellretreats.co.uk' );
 	if ( ! empty( $cc_list ) ) {
 		$headers[] = 'Cc: ' . implode( ', ', $cc_list );
 	}

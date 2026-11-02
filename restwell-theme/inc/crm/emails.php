@@ -25,6 +25,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ---------------------------------------------------------------------------
 
 /**
+ * Headers for every email sent to a guest.
+ *
+ * Mail goes out from wordpress@ (kept so SPF passes through the host's relay),
+ * and nobody reads that mailbox. The emails tell guests to reply, so replies
+ * must go to hello@.
+ *
+ * @return string[]
+ */
+function restwell_email_guest_headers(): array {
+	return array(
+		'Content-Type: text/html; charset=UTF-8',
+		'Reply-To: hello@restwellretreats.co.uk',
+	);
+}
+
+/**
  * Inline table reset Outlook (Word) needs. CSS collapse alone is not enough.
  *
  * @return string
@@ -434,15 +450,10 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
 		)
 		. '<p style="margin:28px 0 0 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;color:#1B4D5C;line-height:1.7;">Rest Easy, Stay Well.</p>';
 
-	$headers = array(
-		'Content-Type: text/html; charset=UTF-8',
-		'Reply-To: hello@restwellretreats.co.uk',
-	);
-
 	return array(
 		'subject' => $subject,
 		'body'    => restwell_email_wrap( $content, $preview ),
-		'headers' => $headers,
+		'headers' => restwell_email_guest_headers(),
 	);
 }
 
@@ -684,7 +695,7 @@ function restwell_email_guest_guide_invite( string $email, string $name, string 
 		. esc_html__( 'Warm regards,', 'restwell-retreats' )
 		. '<br><strong>' . esc_html__( 'The Restwell team', 'restwell-retreats' ) . '</strong></p>';
 
-	$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+	$headers = restwell_email_guest_headers();
 	if ( ! empty( $cc_list ) ) {
 		$headers[] = 'Cc: ' . implode( ', ', $cc_list );
 	}
@@ -750,7 +761,7 @@ function restwell_email_otp( string $email, string $code ): array {
 	return array(
 		'subject' => $subject,
 		'body'    => restwell_email_wrap( $content, $preview ),
-		'headers' => array( 'Content-Type: text/html; charset=UTF-8' ),
+		'headers' => restwell_email_guest_headers(),
 	);
 }
 
@@ -794,15 +805,10 @@ function restwell_email_booking_confirmed( string $name, string $email ): array 
 		)
 		. restwell_email_signoff();
 
-	$headers = array(
-		'Content-Type: text/html; charset=UTF-8',
-		'Reply-To: hello@restwellretreats.co.uk',
-	);
-
 	return array(
 		'subject' => $subject,
 		'body'    => restwell_email_wrap( $content, $preview ),
-		'headers' => $headers,
+		'headers' => restwell_email_guest_headers(),
 	);
 }
 
@@ -862,7 +868,7 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 	return array(
 		'subject' => $subject,
 		'body'    => restwell_email_wrap( $content, $preview ),
-		'headers' => array( 'Content-Type: text/html; charset=UTF-8' ),
+		'headers' => restwell_email_guest_headers(),
 	);
 }
 
