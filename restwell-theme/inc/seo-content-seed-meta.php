@@ -26,24 +26,24 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'how to book a stay at restwell',
 		),
 		'home'                  => array(
-			'meta_title'       => 'Accessible holiday cottage in Whitstable, Kent, sleeps five',
-			'meta_description' => 'An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.',
-			'focus_keyphrase'  => 'accessible holiday cottages kent',
+			'meta_title'       => 'Disabled holiday cottage in Whitstable, Kent, care optional',
+			'meta_description' => 'An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and home care is there if you want it.',
+			'focus_keyphrase'  => 'disabled holiday cottages kent',
 		),
 		'the-property'          => array(
-			'meta_title'       => 'Look inside the accessible holiday bungalow',
-			'meta_description' => 'Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.',
-			'focus_keyphrase'  => 'accessible holiday bungalow',
+			'meta_title'       => 'Wheelchair accessible holiday bungalow in Whitstable',
+			'meta_description' => 'Look round our wheelchair accessible holiday bungalow, room by room: two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.',
+			'focus_keyphrase'  => 'wheelchair accessible holiday bungalow',
 		),
 		'accessibility'         => array(
 			'meta_title'       => 'A disabled holiday cottage with a wet room and hoist',
-			'meta_description' => 'Our disabled holiday cottage in Whitstable has a 965mm front door, 926mm inside doors and a level wet room. Its ceiling and mobile hoists take 180kg.',
+			'meta_description' => 'Looking for disabled holiday accommodation in the UK? Our Whitstable cottage has a level wet room, a 965mm front door and hoists that take 180kg.',
 			'focus_keyphrase'  => 'disabled holiday cottage with wet room and hoists',
 		),
 		'who-its-for'           => array(
-			'meta_title'       => 'Holidays for disabled adults and their carers',
-			'meta_description' => 'A private adapted bungalow that sleeps five, for disabled adults, families and the people who care for them. A holiday, not a placement. See whether it fits.',
-			'focus_keyphrase'  => 'holidays for disabled adults and carers',
+			'meta_title'       => 'Respite holidays in Kent for disabled adults and carers',
+			'meta_description' => 'A private adapted bungalow in Whitstable, Kent, that sleeps five. A short break or respite holiday for disabled adults and the people who care for them.',
+			'focus_keyphrase'  => 'respite holidays in kent',
 		),
 		'pricing'               => array(
 			'meta_title'       => 'Accessible holiday prices at Restwell Retreats, Whitstable',
@@ -81,9 +81,9 @@ function restwell_get_seo_meta_defaults_by_slug() {
 			'focus_keyphrase'  => 'restwell retreats',
 		),
 		'optional-care'         => array(
-			'meta_title'       => 'A holiday with care provided in Whitstable, if you want it',
-			'meta_description' => 'A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.',
-			'focus_keyphrase'  => 'holidays with care provided',
+			'meta_title'       => 'Holidays with care in Kent: home care if you want it',
+			'meta_description' => 'Our holiday bungalow is in Whitstable. Home care comes from our sister company, Continuity of Care Services, rated Good by the CQC. One call arranges both.',
+			'focus_keyphrase'  => 'holidays with care',
 		),
 		'guest-guide'                              => array(
 			'meta_title'       => 'Restwell guest guide for confirmed stays',

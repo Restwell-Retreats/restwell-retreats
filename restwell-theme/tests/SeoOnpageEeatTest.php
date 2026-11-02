@@ -174,7 +174,7 @@ class SeoOnpageEeatTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "restwell_nav_resolve_page_url( 'accessibility' )", $faq );
 		$this->assertStringContainsString( "'wet room and hoist measurements'", $faq );
 		$seed = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo-content-seed-meta.php' );
-		foreach ( array( 'accessible holiday cottages kent', 'disabled holiday cottage with wet room and hoists', 'holidays for disabled adults and carers', 'holidays with care provided', 'funding and grants for disabled holidays', 'is whitstable wheelchair friendly' ) as $kp ) {
+		foreach ( array( 'disabled holiday cottages kent', 'disabled holiday cottage with wet room and hoists', 'respite holidays in kent', 'holidays with care', 'wheelchair accessible holiday bungalow', 'funding and grants for disabled holidays', 'is whitstable wheelchair friendly' ) as $kp ) {
 			$this->assertStringContainsString( "'focus_keyphrase'  => '" . $kp . "',", $seed );
 		}
 	}

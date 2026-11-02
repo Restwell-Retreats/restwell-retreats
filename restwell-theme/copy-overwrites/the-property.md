@@ -4,11 +4,11 @@
 
 ## Title
 
-Inside the accessible holiday bungalow in Whitstable
+Wheelchair accessible holiday bungalow in Whitstable
 
 ## Meta description
 
-Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.
+Look round our wheelchair accessible holiday bungalow, room by room: two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.
 
 ## H1 (`prop_hero_heading`)
 
@@ -16,7 +16,7 @@ Inside the accessible holiday bungalow, room by room
 
 ## Intro (`prop_hero_subtitle`)
 
-Here’s a walk round Restwell, room by room. It’s a single-storey accessible holiday bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.
+Here’s a walk round Restwell, room by room. It’s a wheelchair accessible holiday bungalow on a quiet street in Whitstable, with every room on one level. It has two bedrooms and space for up to five people.
 
 ## Bedrooms
 

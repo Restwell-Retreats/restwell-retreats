@@ -21,9 +21,9 @@ $restwell_wif_intro   = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text(
 		$restwell_wif_id,
 		'wif_intro',
-		'Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.'
+		'Restwell is a private holiday home in Whitstable that sleeps five. Carers and the people they look after can take a respite holiday in Kent together. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.'
 	)
-	: 'Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.';
+	: 'Restwell is a private holiday home in Whitstable that sleeps five. Carers and the people they look after can take a respite holiday in Kent together. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.';
 
 $wif_audience_heading = function_exists( 'restwell_page_content_text' )
 	? restwell_page_content_text( $restwell_wif_id, 'wif_audience_heading', 'Who Restwell is built for' )

@@ -41,10 +41,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 
 	public function test_every_migration_flag_is_registered_for_the_schema_gate() {
 		$source = $this->migrations();
-		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107', 'restwell_funding_share_image_v108', 'restwell_who_its_for_funding_links_v109', 'restwell_seo_keyphrase_words_v110', 'restwell_keyphrase_headings_v111', 'restwell_heading_intros_v112', 'restwell_publish_guides_v113', 'restwell_batch_d_posts_v114', 'restwell_batch_d_share_images_v115', 'restwell_batch_e_posts_v116', 'restwell_batch_e_share_images_v117', 'restwell_batch_f_posts_v118', 'restwell_batch_f_share_images_v119', 'restwell_subnav_headings_v120', 'restwell_privacy_meta_pixel_v121' ) as $flag ) {
+		foreach ( array( 'restwell_page_copy_v80', 'restwell_page_copy_v81', 'restwell_our_story_hero_v82', 'restwell_dedupe_home_blog_v83', 'restwell_batch1_copy_v84', 'restwell_batch2_copy_v85', 'restwell_blog_summaries_v86', 'restwell_batch3_copy_v87', 'restwell_batch4_copy_v88', 'restwell_pricing_faq_v89', 'restwell_pricing_faq_heading_v90', 'restwell_home_cta_labels_v91', 'restwell_pricing_rates_intro_v92', 'restwell_our_story_plain_words_v93', 'restwell_our_story_build_card_v94', 'restwell_short_intros_v95', 'restwell_care_intros_v96', 'restwell_batch_a_posts_v97', 'restwell_publish_kept_guides_v98', 'restwell_page_copy_batch_b_v99', 'restwell_page_seo_batch_b_v100', 'restwell_legal_plain_english_v101', 'restwell_seed_catch_up_v102', 'restwell_our_story_shaped_v103', 'restwell_our_story_shaped_v104', 'restwell_seo_titles_v105', 'restwell_seo_meta_tips_v106', 'restwell_guide_share_images_v107', 'restwell_funding_share_image_v108', 'restwell_who_its_for_funding_links_v109', 'restwell_seo_keyphrase_words_v110', 'restwell_keyphrase_headings_v111', 'restwell_heading_intros_v112', 'restwell_publish_guides_v113', 'restwell_batch_d_posts_v114', 'restwell_batch_d_share_images_v115', 'restwell_batch_e_posts_v116', 'restwell_batch_e_share_images_v117', 'restwell_batch_f_posts_v118', 'restwell_batch_f_share_images_v119', 'restwell_subnav_headings_v120', 'restwell_privacy_meta_pixel_v121', 'restwell_seo_usp_lanes_v122', 'restwell_keyphrase_intros_v123' ) as $flag ) {
 			$this->assertSame( 1, preg_match_all( "/'" . $flag . "',\n/", $source ), $flag . ' is in the flag list' );
 		}
-		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 121;', $source );
+		$this->assertStringContainsString( 'const RESTWELL_SCHEMA_VERSION = 123;', $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_pricing_faq_v89',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_pricing_faq_heading_v90',", $source );
@@ -98,6 +98,10 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_subnav_headings_v120',", $source );
 		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_privacy_meta_pixel_v121',", $source );
 		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_privacy_meta_pixel_v121',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_seo_usp_lanes_v122',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_seo_usp_lanes_v122',", $source );
+		$this->assertStringContainsString( "add_action( 'init', 'restwell_migrate_keyphrase_intros_v123',", $source );
+		$this->assertStringContainsString( "add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_intros_v123',", $source );
 	}
 
 	public function test_rewritten_guides_only_replace_wording_the_theme_shipped() {
@@ -284,6 +288,58 @@ class StockSeedMigrationGuardTest extends PHPUnit\Framework\TestCase {
 		foreach ( array( 'Restwell is a private holiday home in Whitstable that sleeps five.', 'can come into the bungalow while you’re here.', 'our adapted bungalow in Whitstable. Check every measurement' ) as $line ) {
 			$this->assertStringContainsString( $line, $v112 );
 			$this->assertStringContainsString( $line, $defaults );
+		}
+	}
+
+	public function test_usp_seo_lanes_only_move_the_old_seeds() {
+		$body = $this->function_body( $this->migrations(), 'restwell_migrate_seo_usp_lanes_v122' );
+		$this->assertStringContainsString( 'restwell_replace_stale_page_copy( $restwell_v122_change );', $body );
+		$this->assertStringContainsString( "update_option( \$flag, '1', false );", $body );
+		$this->assertStringContainsString( "'focus_keyphrase' => array( 'holidays with care provided', 'holidays with care' )", $body );
+		$this->assertStringContainsString( "'focus_keyphrase' => array( 'holidays for disabled adults and carers', 'respite holidays in kent' )", $body );
+		$this->assertStringContainsString( "'focus_keyphrase' => array( 'accessible holiday bungalow', 'wheelchair accessible holiday bungalow' )", $body );
+		$this->assertStringContainsString( "'focus_keyphrase' => array( 'accessible holiday cottages kent', 'disabled holiday cottages kent' )", $body );
+		// The Property's title and Who It's For's description have more than one shipped value; each moves.
+		foreach ( array( "'Look inside the accessible holiday bungalow'", "'Inside the accessible holiday bungalow in Whitstable'", 'A holiday, not a placement. See whether it fits.', 'in groups of up to five. Check the measurements before you book.', 'It sleeps up to five, so families can come too.' ) as $old ) {
+			$this->assertStringContainsString( $old, $body );
+		}
+		// Upgraded sites, fresh installs and Theme Setup's overwrite all land on the same wording.
+		$seo   = (string) file_get_contents( dirname( __DIR__ ) . '/inc/seo-content-seed-meta.php' );
+		$theme = dirname( __DIR__ );
+		foreach (
+			array(
+				'home'          => array( 'Disabled holiday cottage in Whitstable, Kent, care optional', 'It sleeps five, and home care is there if you want it.' ),
+				'the-property'  => array( 'Wheelchair accessible holiday bungalow in Whitstable', 'Look round our wheelchair accessible holiday bungalow, room by room: two bedrooms,' ),
+				'accessibility' => array( 'Looking for disabled holiday accommodation in the UK? Our Whitstable cottage has a level wet room' ),
+				'who-its-for'   => array( 'Respite holidays in Kent for disabled adults and carers', 'A private adapted bungalow in Whitstable, Kent, that sleeps five. A short break or respite holiday for disabled adults and the people who care for them.' ),
+				'optional-care' => array( 'Holidays with care in Kent: home care if you want it', 'Continuity of Care Services, rated Good by the CQC. One call arranges both.' ),
+			) as $stem => $lines
+		) {
+			$brief = (string) file_get_contents( $theme . '/copy-overwrites/' . $stem . '.md' );
+			foreach ( $lines as $line ) {
+				$this->assertStringContainsString( $line, $body, $line . ' is migrated' );
+				$this->assertStringContainsString( $line, $seo, $line . ' is seeded' );
+				$this->assertStringContainsString( $line, $brief, $line . ' is in the ' . $stem . ' brief' );
+			}
+		}
+		$this->assertStringNotContainsString( "'A holiday with care provided in Whitstable, if you want it'", $seo );
+		$this->assertStringNotContainsString( "'Holidays for disabled adults and their carers'", $seo );
+		$this->assertStringNotContainsString( "'Look inside the accessible holiday bungalow'", $seo );
+		$this->assertStringNotContainsString( 'A holiday, not a placement.', $seo );
+		// The two intros carry their keyphrase on fresh installs, upgraded sites and in the briefs.
+		$v123 = $this->function_body( $this->migrations(), 'restwell_migrate_keyphrase_intros_v123' );
+		$this->assertStringContainsString( 'restwell_replace_stale_page_copy(', $v123 );
+		$defaults = (string) file_get_contents( $theme . '/inc/theme-setup/page-defaults.php' );
+		foreach (
+			array(
+				'who-its-for'  => 'Carers and the people they look after can take a respite holiday in Kent together.',
+				'the-property' => 'It’s a wheelchair accessible holiday bungalow on a quiet street in Whitstable, with every room on one level.',
+			) as $stem => $intro
+		) {
+			$template = 'the-property' === $stem ? 'template-property.php' : 'template-who-its-for.php';
+			foreach ( array( $v123, $defaults, (string) file_get_contents( $theme . '/' . $template ), (string) file_get_contents( $theme . '/copy-overwrites/' . $stem . '.md' ) ) as $source ) {
+				$this->assertStringContainsString( $intro, $source );
+			}
 		}
 	}
 

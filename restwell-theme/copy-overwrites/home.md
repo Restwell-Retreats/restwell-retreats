@@ -12,11 +12,11 @@
 
 ## Title
 
-Accessible holiday cottage in Whitstable, Kent, sleeps five
+Disabled holiday cottage in Whitstable, Kent, care optional
 
 ## Meta description
 
-An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.
+An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and home care is there if you want it.
 
 ## H1 (`hero_heading`)
 

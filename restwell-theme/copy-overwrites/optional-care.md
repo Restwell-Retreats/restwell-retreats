@@ -6,11 +6,11 @@
 
 ## Title
 
-A holiday with care provided in Whitstable, if you want it
+Holidays with care in Kent: home care if you want it
 
 ## Meta description
 
-A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.
+Our holiday bungalow is in Whitstable. Home care comes from our sister company, Continuity of Care Services, rated Good by the CQC. One call arranges both.
 
 ## H1 (`care_heading`)
 

@@ -6,11 +6,11 @@
 
 ## Title
 
-Holidays for disabled adults and their carers
+Respite holidays in Kent for disabled adults and carers
 
 ## Meta description
 
-Book holidays for disabled adults and their carers in a private adapted bungalow in Whitstable. It sleeps up to five, so families can come too.
+A private adapted bungalow in Whitstable, Kent, that sleeps five. A short break or respite holiday for disabled adults and the people who care for them.
 
 ## H1 (`wif_heading`)
 
@@ -18,7 +18,7 @@ Holidays for disabled adults, their carers and families
 
 ## Intro (`wif_intro`)
 
-Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.
+Restwell is a private holiday home in Whitstable that sleeps five. Carers and the people they look after can take a respite holiday in Kent together. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.
 
 ## If you’re coming as a guest or a family
 

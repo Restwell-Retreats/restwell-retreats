@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 121;
+const RESTWELL_SCHEMA_VERSION = 123;
 
 
 /**
@@ -5927,6 +5927,71 @@ function restwell_migrate_privacy_meta_pixel_v121() {
 }
 
 /**
+ * SEO lanes (2 Nov 2026): titles and keyphrases now carry what sets the stay
+ * apart, an accessible bungalow with optional home care from our sister
+ * company, rated Good by the CQC. Optional Care targets "holidays with care",
+ * Who It's For "respite holidays in kent", The Property "wheelchair accessible
+ * holiday bungalow" and Home "disabled holiday cottages kent"; Home's title
+ * names Kent and the care, and five descriptions are rewritten. A field moves
+ * only while it holds the old seed
+ * or a value an earlier migration wrote (The Property's title and Who It's
+ * For's description have more than one), so anything edited in wp-admin is kept.
+ */
+function restwell_migrate_seo_usp_lanes_v122() {
+	$flag = 'restwell_seo_usp_lanes_v122';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	$wif_desc = 'A private adapted bungalow in Whitstable, Kent, that sleeps five. A short break or respite holiday for disabled adults and the people who care for them.';
+	foreach (
+		array(
+			array( 'home' => array( 'meta_title' => array( 'Accessible holiday cottage in Whitstable, Kent, sleeps five', 'Disabled holiday cottage in Whitstable, Kent, care optional' ) ) ),
+			array( 'home' => array( 'meta_description' => array( 'An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and our sister company can add care.', 'An accessible holiday cottage by the sea in Whitstable, Kent, with a level wet room and hoist. It sleeps five, and home care is there if you want it.' ) ) ),
+			array( 'home' => array( 'focus_keyphrase' => array( 'accessible holiday cottages kent', 'disabled holiday cottages kent' ) ) ),
+			array( 'the-property' => array( 'meta_title' => array( 'Look inside the accessible holiday bungalow', 'Wheelchair accessible holiday bungalow in Whitstable' ) ) ),
+			array( 'the-property' => array( 'meta_title' => array( 'Inside the accessible holiday bungalow in Whitstable', 'Wheelchair accessible holiday bungalow in Whitstable' ) ) ),
+			array( 'the-property' => array( 'meta_description' => array( 'Look round our accessible holiday bungalow, room by room. There are two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.', 'Look round our wheelchair accessible holiday bungalow, room by room: two bedrooms, a level wet room, a kitchen you can wheel under and a level garden.' ) ) ),
+			array( 'the-property' => array( 'focus_keyphrase' => array( 'accessible holiday bungalow', 'wheelchair accessible holiday bungalow' ) ) ),
+			array( 'accessibility' => array( 'meta_description' => array( 'Our disabled holiday cottage in Whitstable has a 965mm front door, 926mm inside doors and a level wet room. Its ceiling and mobile hoists take 180kg.', 'Looking for disabled holiday accommodation in the UK? Our Whitstable cottage has a level wet room, a 965mm front door and hoists that take 180kg.' ) ) ),
+			array( 'who-its-for' => array( 'meta_title' => array( 'Holidays for disabled adults and their carers', 'Respite holidays in Kent for disabled adults and carers' ) ) ),
+			array( 'who-its-for' => array( 'meta_description' => array( 'A private adapted bungalow that sleeps five, for disabled adults, families and the people who care for them. A holiday, not a placement. See whether it fits.', $wif_desc ) ) ),
+			array( 'who-its-for' => array( 'meta_description' => array( 'A private adapted bungalow in Whitstable for disabled adults, their families and carers, in groups of up to five. Check the measurements before you book.', $wif_desc ) ) ),
+			array( 'who-its-for' => array( 'meta_description' => array( 'Book holidays for disabled adults and their carers in a private adapted bungalow in Whitstable. It sleeps up to five, so families can come too.', $wif_desc ) ) ),
+			array( 'who-its-for' => array( 'focus_keyphrase' => array( 'holidays for disabled adults and carers', 'respite holidays in kent' ) ) ),
+			array( 'optional-care' => array( 'meta_title' => array( 'A holiday with care provided in Whitstable, if you want it', 'Holidays with care in Kent: home care if you want it' ) ) ),
+			array( 'optional-care' => array( 'meta_description' => array( 'A holiday with care provided, if you want it. Our sister company, Continuity of Care Services, can come into the bungalow. Just ask when you enquire.', 'Our holiday bungalow is in Whitstable. Home care comes from our sister company, Continuity of Care Services, rated Good by the CQC. One call arranges both.' ) ) ),
+			array( 'optional-care' => array( 'focus_keyphrase' => array( 'holidays with care provided', 'holidays with care' ) ) ),
+		) as $restwell_v122_change
+	) {
+		restwell_replace_stale_page_copy( $restwell_v122_change );
+	}
+	// The keyphrases changed, so the admin bar's clash check starts again.
+	delete_transient( 'restwell_keyword_cannibalisation_audit' );
+}
+
+/**
+ * Keyphrase intros (2 Nov 2026): Who It's For's intro gains a sentence naming
+ * a respite holiday in Kent, and The Property's calls the bungalow wheelchair
+ * accessible, so each page's opening carries its new v122 keyphrase. Ellie
+ * approved both. Each intro changes only while it still holds the wording
+ * v112 (Who It's For) or v100 (The Property) left.
+ */
+function restwell_migrate_keyphrase_intros_v123() {
+	$flag = 'restwell_keyphrase_intros_v123';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	restwell_replace_stale_page_copy(
+		array(
+			'who-its-for'  => array( 'wif_intro' => array( 'Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.', 'Restwell is a private holiday home in Whitstable that sleeps five. Carers and the people they look after can take a respite holiday in Kent together. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.' ) ),
+			'the-property' => array( 'prop_hero_subtitle' => array( 'Here’s a walk round Restwell, room by room. It’s a single-storey accessible holiday bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.', 'Here’s a walk round Restwell, room by room. It’s a wheelchair accessible holiday bungalow on a quiet street in Whitstable, with every room on one level. It has two bedrooms and space for up to five people.' ) ),
+		)
+	);
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -6083,6 +6148,8 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_batch_f_share_images_v119',
 		'restwell_subnav_headings_v120',
 		'restwell_privacy_meta_pixel_v121',
+		'restwell_seo_usp_lanes_v122',
+		'restwell_keyphrase_intros_v123',
 	);
 }
 
@@ -6311,6 +6378,10 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_subnav_headings_v120', 158 );
 	add_action( 'init', 'restwell_migrate_privacy_meta_pixel_v121', 164 );
 	add_action( 'after_switch_theme', 'restwell_migrate_privacy_meta_pixel_v121', 159 );
+	add_action( 'init', 'restwell_migrate_seo_usp_lanes_v122', 165 );
+	add_action( 'after_switch_theme', 'restwell_migrate_seo_usp_lanes_v122', 160 );
+	add_action( 'init', 'restwell_migrate_keyphrase_intros_v123', 166 );
+	add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_intros_v123', 161 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

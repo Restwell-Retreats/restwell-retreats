@@ -205,7 +205,7 @@ function restwell_get_property_page_defaults() {
 
 		'prop_hero_label'               => 'The bungalow',
 		'prop_hero_heading'             => 'Inside the accessible holiday bungalow, room by room',
-		'prop_hero_subtitle'            => 'Here’s a walk round Restwell, room by room. It’s a single-storey accessible holiday bungalow on a quiet street in Whitstable. It has two bedrooms and space for up to five people.',
+		'prop_hero_subtitle'            => 'Here’s a walk round Restwell, room by room. It’s a wheelchair accessible holiday bungalow on a quiet street in Whitstable, with every room on one level. It has two bedrooms and space for up to five people.',
 		'prop_hero_cta_text'            => 'Ask about your dates',
 		'prop_hero_cta_url'             => '/enquire/',
 		'prop_hero_cta_secondary_text'  => 'How it works',
@@ -663,7 +663,7 @@ function restwell_get_who_its_for_page_defaults() {
 	return array(
 		'wif_label'         => 'Who it is for',
 		'wif_heading'       => 'Holidays for disabled adults, their carers and families',
-		'wif_intro'         => 'Restwell is a private holiday home in Whitstable that sleeps five. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.',
+		'wif_intro'         => 'Restwell is a private holiday home in Whitstable that sleeps five. Carers and the people they look after can take a respite holiday in Kent together. Wheelchair users, people with learning disabilities, and guests with or without a PA are all welcome.',
 		'wif_hero_image_id' => 0,
 
 		'wif_audience_heading' => 'Who Restwell is built for',
