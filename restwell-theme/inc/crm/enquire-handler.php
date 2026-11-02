@@ -283,20 +283,22 @@ function restwell_enquiry_store_heard_about( string $slug, string $detail ): str
  */
 function restwell_enquiry_notification_data_from_row( object $row ): array {
 	return array(
-		'id'           => isset( $row->id ) ? absint( $row->id ) : 0,
-		'name'         => isset( $row->name ) ? (string) $row->name : '',
-		'email'        => isset( $row->email ) ? (string) $row->email : '',
-		'phone'        => isset( $row->phone ) ? (string) $row->phone : '',
-		'contact_pref' => isset( $row->contact_preference ) ? (string) $row->contact_preference : '',
-		'pref_time'    => isset( $row->preferred_time ) ? (string) $row->preferred_time : '',
-		'heard_about'  => isset( $row->heard_about ) ? (string) $row->heard_about : '',
-		'dates'        => isset( $row->preferred_dates ) ? (string) $row->preferred_dates : '',
-		'guests'       => isset( $row->num_guests ) ? (string) $row->num_guests : '',
-		'funding'      => isset( $row->funding_type ) ? (string) $row->funding_type : '',
-		'care'         => isset( $row->care_requirements ) ? (string) $row->care_requirements : '',
-		'access'       => isset( $row->accessibility ) ? (string) $row->accessibility : '',
-		'message'      => isset( $row->message ) ? (string) $row->message : '',
-		'urgent'       => ! empty( $row->is_urgent ),
+		'id'              => isset( $row->id ) ? absint( $row->id ) : 0,
+		'name'            => isset( $row->name ) ? (string) $row->name : '',
+		'email'           => isset( $row->email ) ? (string) $row->email : '',
+		'phone'           => isset( $row->phone ) ? (string) $row->phone : '',
+		'contact_pref'    => isset( $row->contact_preference ) ? (string) $row->contact_preference : '',
+		'pref_time'       => isset( $row->preferred_time ) ? (string) $row->preferred_time : '',
+		'heard_about'     => isset( $row->heard_about ) ? (string) $row->heard_about : '',
+		'dates'           => isset( $row->preferred_dates ) ? (string) $row->preferred_dates : '',
+		'guests'          => isset( $row->num_guests ) ? (string) $row->num_guests : '',
+		'funding'         => isset( $row->funding_type ) ? (string) $row->funding_type : '',
+		'care'            => isset( $row->care_requirements ) ? (string) $row->care_requirements : '',
+		'access'          => isset( $row->accessibility ) ? (string) $row->accessibility : '',
+		'message'         => isset( $row->message ) ? (string) $row->message : '',
+		'urgent'          => ! empty( $row->is_urgent ),
+		'health_consent'  => ! empty( $row->health_data_consent ),
+		'marketing_optin' => ! empty( $row->marketing_optin ),
 	);
 }
 
@@ -549,32 +551,43 @@ function restwell_handle_enquire_submit(): void {
 		'health_data_consent'    => $health_consent,
 	);
 
+	// Payload for restwell_email_enquiry_notification(): the staff email, its
+	// resend and the save-failed fallback all list the same fields.
+	$staff_data = array(
+		'name'            => $name,
+		'email'           => $email,
+		'phone'           => $phone,
+		'contact_pref'    => $contact_pref,
+		'pref_time'       => $pref_time,
+		'heard_about'     => $heard_about,
+		'dates'           => $dates,
+		'guests'          => $guests,
+		'funding'         => $funding,
+		'care'            => $care,
+		'access'          => $access,
+		'message'         => $message,
+		'urgent'          => $urgent,
+		'health_consent'  => $health_consent,
+		'marketing_optin' => $marketing_optin,
+	);
+
 	$crm_result   = restwell_service_enquiry()->persist_lead( $crm_data );
 	$enquiry_id   = $crm_result['id'] ?? false;
 	$is_duplicate = $crm_result['is_duplicate'] ?? false;
 
 	if ( ! $enquiry_id ) {
 		// Rare DB failure: still email staff the payload so nothing is lost.
-		$to      = restwell_get_submission_notify_email();
-		$subject = restwell_mail_staff_subject( 'enquiry_save_failed' );
-		// This fires when the database insert failed, so keep the raw payload in
-		// the email: it may be the only copy of the enquiry. Degrade to plain
-		// text if the template is unavailable for any reason.
-		if ( function_exists( 'restwell_email_staff_body' ) ) {
-			$fallback_body = restwell_email_staff_body(
-				array(
-					'label'       => __( 'Enquiry not saved', 'restwell-retreats' ),
-					'heading'     => __( 'This enquiry could not be written to the database', 'restwell-retreats' ),
-					'urgent'      => true,
-					'intro'       => __( 'The full submission is below because this email may be the only copy. Please record it manually and check the site logs.', 'restwell-retreats' ),
-					'quote'       => $body,
-					'quote_label' => __( 'Full submission', 'restwell-retreats' ),
-					'note'        => __( 'Sent automatically because the CRM insert returned false.', 'restwell-retreats' ),
-					'preview'     => __( 'An enquiry failed to save', 'restwell-retreats' ),
-				)
-			);
-			$fallback_headers = restwell_email_staff_headers( (string) $email );
+		$to = restwell_get_submission_notify_email();
+		// This fires when the database insert failed, so the email may be the
+		// only copy of the enquiry. Degrade to plain text if the template is
+		// unavailable for any reason.
+		if ( function_exists( 'restwell_email_enquiry_notification' ) ) {
+			$fallback_mail    = restwell_email_enquiry_notification( array( 'save_failed' => true ) + $staff_data );
+			$subject          = $fallback_mail['subject'];
+			$fallback_body    = $fallback_mail['body'];
+			$fallback_headers = $fallback_mail['headers'];
 		} else {
+			$subject          = restwell_mail_staff_subject( 'enquiry_save_failed' );
 			$fallback_body    = $body . "\r\n\r\n[CRM insert returned false]";
 			$fallback_headers = array_values(
 				array_filter(
@@ -624,24 +637,7 @@ function restwell_handle_enquire_submit(): void {
 		}
 	}
 
-	$staff_sent = restwell_send_enquiry_staff_notification(
-		array(
-			'id'           => (int) $enquiry_id,
-			'name'         => $name,
-			'email'        => $email,
-			'phone'        => $phone,
-			'contact_pref' => $contact_pref,
-			'pref_time'    => $pref_time,
-			'heard_about'  => $heard_about,
-			'dates'        => $dates,
-			'guests'       => $guests,
-			'funding'      => $funding,
-			'care'         => $care,
-			'access'       => $access,
-			'message'      => $message,
-			'urgent'       => $urgent,
-		)
-	);
+	$staff_sent = restwell_send_enquiry_staff_notification( array( 'id' => (int) $enquiry_id ) + $staff_data );
 	if ( ! $staff_sent ) {
 		restwell_service_crm_gateway()->add_enquiry_note(
 			(int) $enquiry_id,

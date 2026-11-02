@@ -23,23 +23,27 @@ class EnquireNotificationDataTest extends PHPUnit\Framework\TestCase {
 		$row->accessibility       = 'Powerchair 620mm';
 		$row->message             = "Hi,\nCan you confirm the hoist?";
 		$row->is_urgent           = '1';
+		$row->health_data_consent = '1';
+		$row->marketing_optin     = '0';
 
 		$this->assertSame(
 			array(
-				'id'           => 42,
-				'name'         => 'Jane Hartley',
-				'email'        => 'jane@example.com',
-				'phone'        => '01622 809881',
-				'contact_pref' => 'phone',
-				'pref_time'    => 'Weekday mornings',
-				'heard_about'  => 'other:Disabled Holidays directory',
-				'dates'        => '12 Mar 2026 - 15 Mar 2026',
-				'guests'       => '2',
-				'funding'      => 'self',
-				'care'         => 'Overnight support',
-				'access'       => 'Powerchair 620mm',
-				'message'      => "Hi,\nCan you confirm the hoist?",
-				'urgent'       => true,
+				'id'              => 42,
+				'name'            => 'Jane Hartley',
+				'email'           => 'jane@example.com',
+				'phone'           => '01622 809881',
+				'contact_pref'    => 'phone',
+				'pref_time'       => 'Weekday mornings',
+				'heard_about'     => 'other:Disabled Holidays directory',
+				'dates'           => '12 Mar 2026 - 15 Mar 2026',
+				'guests'          => '2',
+				'funding'         => 'self',
+				'care'            => 'Overnight support',
+				'access'          => 'Powerchair 620mm',
+				'message'         => "Hi,\nCan you confirm the hoist?",
+				'urgent'          => true,
+				'health_consent'  => true,
+				'marketing_optin' => false,
 			),
 			restwell_enquiry_notification_data_from_row( $row )
 		);
@@ -54,5 +58,7 @@ class EnquireNotificationDataTest extends PHPUnit\Framework\TestCase {
 		$this->assertSame( '', $out['name'] );
 		$this->assertSame( '', $out['heard_about'] );
 		$this->assertFalse( $out['urgent'] );
+		$this->assertFalse( $out['health_consent'] );
+		$this->assertFalse( $out['marketing_optin'] );
 	}
 }

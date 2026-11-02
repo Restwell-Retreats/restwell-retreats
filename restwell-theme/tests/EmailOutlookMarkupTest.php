@@ -101,6 +101,77 @@ class EmailOutlookMarkupTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( 'width="560"', $mail['body'] );
 	}
 
+	public function test_staff_enquiry_lists_every_field_with_not_given_for_blanks() {
+		$mail = restwell_email_enquiry_notification(
+			array(
+				'id'      => 42,
+				'name'    => 'Jane Hartley',
+				'email'   => 'jane@example.com',
+				'phone'   => '01622 809881',
+				'funding' => 'self',
+				'message' => 'Is the bungalow free in May?',
+			)
+		);
+		$text = restwell_email_html_to_text( $mail['body'] );
+
+		$this->assertStringContainsString(
+			implode(
+				"\n",
+				array(
+					'Name: Jane Hartley',
+					'Email: jane@example.com',
+					'Phone: 01622 809881',
+					'Preferred contact: Not given',
+					'Best time to call: Not given',
+					'How they heard about us: Not given',
+					'Preferred dates: Not given',
+					'Guests: Not given',
+					'Funding type: Self-funded',
+					'Urgent callback: No',
+					'OK to use care and access notes: No',
+					'Marketing emails: No',
+				)
+			),
+			$text
+		);
+		$this->assertStringContainsString( "Care requirements\n\nNot given\n\nAccessibility needs\n\nNot given\n\nMessage\n\nIs the bungalow free in May?", $text );
+	}
+
+	public function test_staff_enquiry_shows_yes_for_ticked_boxes() {
+		$text = restwell_email_html_to_text(
+			restwell_email_enquiry_notification(
+				array(
+					'id'              => 42,
+					'name'            => 'Jane Hartley',
+					'urgent'          => true,
+					'health_consent'  => true,
+					'marketing_optin' => true,
+					'care'            => 'Morning personal care',
+				)
+			)['body']
+		);
+		$this->assertStringContainsString( "Urgent callback: Yes\nOK to use care and access notes: Yes\nMarketing emails: Yes", $text );
+		$this->assertStringContainsString( "Care requirements\n\nMorning personal care", $text );
+	}
+
+	public function test_save_failed_fallback_uses_the_staff_enquiry_layout() {
+		$mail = restwell_email_enquiry_notification(
+			array(
+				'save_failed' => true,
+				'name'        => 'Jane Hartley',
+				'email'       => 'jane@example.com',
+				'message'     => 'Hello',
+			)
+		);
+		$this->assert_outlook_safe( $mail['body'] );
+		$this->assertSame( '[Restwell] Enquiry save failed', $mail['subject'] );
+		$this->assertStringContainsString( 'Enquiry not saved', $mail['body'] );
+		$this->assertStringContainsString( 'may be the only copy', $mail['body'] );
+		$this->assertStringContainsString( 'Marketing emails', $mail['body'] );
+		$this->assertStringNotContainsString( 'Open in CRM', $mail['body'] );
+		$this->assertStringNotContainsString( 'enquiry ID', $mail['body'] );
+	}
+
 	public function test_otp_digits_are_table_cells() {
 		$mail = restwell_email_otp( 'jane@example.com', '847291' );
 		$this->assert_outlook_safe( $mail['body'] );

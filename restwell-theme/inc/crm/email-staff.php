@@ -277,6 +277,9 @@ function restwell_email_html_to_text( string $html ): string {
 	// The hidden pre-header duplicates the subject line; it is noise in plain text.
 	$text = (string) preg_replace( '#<div style="display:none[^"]*"[^>]*>.*?</div>#is', '', $text );
 	$text = (string) preg_replace( '#<!--.*?-->#s', '', $text );
+	// Template indentation is not copy. Collapse it as a browser would, so only
+	// the tag boundaries below start new lines.
+	$text = (string) preg_replace( '/\s+/', ' ', $text );
 
 	// Keep the destination of links rather than losing them to tag-stripping.
 	$text = (string) preg_replace_callback(
@@ -292,9 +295,11 @@ function restwell_email_html_to_text( string $html ): string {
 		$text
 	);
 
-	// Block-level boundaries become line breaks; table cells become separators.
+	// Table rows sit on consecutive lines; other blocks get a blank line between
+	// them. Table cells become "label: value" separators.
 	$text = str_ireplace( array( '<br>', '<br/>', '<br />' ), "\n", $text );
-	$text = (string) preg_replace( '#</(p|h1|h2|h3|tr|div)>#i', "\n", $text );
+	$text = (string) preg_replace( '#</tr>#i', "\n", $text );
+	$text = (string) preg_replace( '#</(p|h1|h2|h3|div|table)>#i', "\n\n", $text );
 	$text = (string) preg_replace( '#</td>\s*<td[^>]*>#i', ': ', $text );
 
 	$text = wp_strip_all_tags( $text );

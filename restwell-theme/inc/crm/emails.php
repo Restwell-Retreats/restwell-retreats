@@ -449,18 +449,30 @@ function restwell_email_enquiry_ack( string $name, string $email, bool $urgent =
 /**
  * Build the internal enquiry notification email for staff.
  *
+ * Every field is listed, blank or not, so staff can see what the guest left
+ * out without opening the CRM. The same layout serves the first send, the
+ * CRM resend ('resent') and the fallback when the CRM save fails ('save_failed').
+ *
  * @param array<string, mixed> $data Enquiry data and CRM id.
  * @return array{ subject: string, body: string, headers: string[] }
  */
 function restwell_email_enquiry_notification( array $data ): array {
-	$id     = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
-	$name   = isset( $data['name'] ) ? (string) $data['name'] : '';
-	$email  = isset( $data['email'] ) ? (string) $data['email'] : '';
-	$phone  = isset( $data['phone'] ) ? (string) $data['phone'] : '';
-	$urgent = ! empty( $data['urgent'] );
-	$resent = ! empty( $data['resent'] );
+	$id          = isset( $data['id'] ) ? absint( $data['id'] ) : 0;
+	$name        = isset( $data['name'] ) ? (string) $data['name'] : '';
+	$email       = isset( $data['email'] ) ? (string) $data['email'] : '';
+	$phone       = isset( $data['phone'] ) ? (string) $data['phone'] : '';
+	$urgent      = ! empty( $data['urgent'] );
+	$resent      = ! empty( $data['resent'] );
+	$save_failed = ! empty( $data['save_failed'] );
+	$not_given   = __( 'Not given', 'restwell-retreats' );
+	$yes         = __( 'Yes', 'restwell-retreats' );
+	$no          = __( 'No', 'restwell-retreats' );
 
-	$subject = restwell_mail_staff_subject( $urgent ? 'urgent_enquiry' : 'enquiry', $id );
+	if ( $save_failed ) {
+		$subject = restwell_mail_staff_subject( 'enquiry_save_failed' );
+	} else {
+		$subject = restwell_mail_staff_subject( $urgent ? 'urgent_enquiry' : 'enquiry', $id );
+	}
 	if ( $resent ) {
 		$subject .= ' ' . __( '(resent)', 'restwell-retreats' );
 	}
@@ -477,29 +489,30 @@ function restwell_email_enquiry_notification( array $data ): array {
 			: (string) $data['heard_about'];
 	}
 
+	// A blank slug is the form's "Not sure yet" option, so it gets that label, as in the CRM.
 	$funding_slug = isset( $data['funding'] ) ? (string) $data['funding'] : '';
-	$funding      = '';
-	if ( '' !== $funding_slug && function_exists( 'restwell_enquiry_funding_label' ) ) {
-		$funding = restwell_enquiry_funding_label( $funding_slug );
-	}
+	$funding      = function_exists( 'restwell_enquiry_funding_label' )
+		? restwell_enquiry_funding_label( $funding_slug )
+		: $funding_slug;
 
 	$rows = array(
-		__( 'Name', 'restwell-retreats' )                    => $name,
-		__( 'Email', 'restwell-retreats' )                   => $email,
-		__( 'Phone', 'restwell-retreats' )                   => $phone,
-		__( 'Preferred contact', 'restwell-retreats' )       => $contact_pref,
-		__( 'Best time to call', 'restwell-retreats' )       => isset( $data['pref_time'] ) ? (string) $data['pref_time'] : '',
-		__( 'How they heard about us', 'restwell-retreats' ) => $heard,
-		__( 'Preferred dates', 'restwell-retreats' )         => isset( $data['dates'] ) ? (string) $data['dates'] : '',
-		__( 'Guests', 'restwell-retreats' )                  => isset( $data['guests'] ) ? (string) $data['guests'] : '',
-		__( 'Funding type', 'restwell-retreats' )            => $funding,
+		__( 'Name', 'restwell-retreats' )                            => $name,
+		__( 'Email', 'restwell-retreats' )                           => $email,
+		__( 'Phone', 'restwell-retreats' )                           => $phone,
+		__( 'Preferred contact', 'restwell-retreats' )               => $contact_pref,
+		__( 'Best time to call', 'restwell-retreats' )               => isset( $data['pref_time'] ) ? (string) $data['pref_time'] : '',
+		__( 'How they heard about us', 'restwell-retreats' )         => $heard,
+		__( 'Preferred dates', 'restwell-retreats' )                 => isset( $data['dates'] ) ? (string) $data['dates'] : '',
+		__( 'Guests', 'restwell-retreats' )                          => isset( $data['guests'] ) ? (string) $data['guests'] : '',
+		__( 'Funding type', 'restwell-retreats' )                    => $funding,
+		__( 'Urgent callback', 'restwell-retreats' )                 => $urgent ? $yes : $no,
+		__( 'OK to use care and access notes', 'restwell-retreats' ) => ! empty( $data['health_consent'] ) ? $yes : $no,
+		__( 'Marketing emails', 'restwell-retreats' )                => ! empty( $data['marketing_optin'] ) ? $yes : $no,
 	);
-	$rows = array_filter(
-		$rows,
-		static function ( $value ) {
-			return '' !== trim( wp_strip_all_tags( (string) $value ) );
-		}
-	);
+	foreach ( $rows as $label => $value ) {
+		$value          = trim( (string) $value );
+		$rows[ $label ] = '' === $value ? $not_given : $value;
+	}
 
 	$sections = array();
 	foreach (
@@ -509,13 +522,11 @@ function restwell_email_enquiry_notification( array $data ): array {
 			'message' => __( 'Message', 'restwell-retreats' ),
 		) as $key => $label
 	) {
-		$value = isset( $data[ $key ] ) ? trim( (string) $data[ $key ] ) : '';
-		if ( '' !== $value ) {
-			$sections[] = array(
-				'label' => $label,
-				'text'  => $value,
-			);
-		}
+		$value      = isset( $data[ $key ] ) ? trim( (string) $data[ $key ] ) : '';
+		$sections[] = array(
+			'label' => $label,
+			'text'  => '' === $value ? $not_given : $value,
+		);
 	}
 
 	$crm_url = '';
@@ -529,8 +540,22 @@ function restwell_email_enquiry_notification( array $data ): array {
 		);
 	}
 
-	$intro = '';
-	if ( $resent ) {
+	$label   = $urgent ? __( 'Urgent enquiry', 'restwell-retreats' ) : __( 'New enquiry', 'restwell-retreats' );
+	$intro   = '';
+	$note    = sprintf(
+		/* translators: %d: enquiry ID. */
+		__( 'CRM enquiry ID: #%d', 'restwell-retreats' ),
+		$id
+	);
+	$preview = $urgent
+		? __( 'Urgent Restwell enquiry requiring a priority callback.', 'restwell-retreats' )
+		: __( 'New Restwell enquiry received.', 'restwell-retreats' );
+	if ( $save_failed ) {
+		$label   = __( 'Enquiry not saved', 'restwell-retreats' );
+		$intro   = __( 'This enquiry could not be saved to the CRM, so this email may be the only copy. Please record it by hand and check the site logs.', 'restwell-retreats' );
+		$note    = __( 'Sent automatically because the CRM insert returned false.', 'restwell-retreats' );
+		$preview = __( 'An enquiry failed to save', 'restwell-retreats' );
+	} elseif ( $resent ) {
 		$intro = __( 'Resent from the CRM. Same enquiry, sent again to the staff inbox.', 'restwell-retreats' );
 	} elseif ( $urgent ) {
 		$intro = __( 'Priority callback requested.', 'restwell-retreats' );
@@ -538,22 +563,16 @@ function restwell_email_enquiry_notification( array $data ): array {
 
 	$body = restwell_email_staff_body(
 		array(
-			'label'        => $urgent ? __( 'Urgent enquiry', 'restwell-retreats' ) : __( 'New enquiry', 'restwell-retreats' ),
+			'label'        => $label,
 			'heading'      => $name,
-			'urgent'       => $urgent,
+			'urgent'       => $urgent || $save_failed,
 			'intro'        => $intro,
 			'rows'         => $rows,
 			'sections'     => $sections,
 			'button_url'   => $crm_url,
 			'button_label' => __( 'Open in CRM', 'restwell-retreats' ),
-			'note'         => sprintf(
-				/* translators: %d: enquiry ID. */
-				__( 'CRM enquiry ID: #%d', 'restwell-retreats' ),
-				$id
-			),
-			'preview'      => $urgent
-				? __( 'Urgent Restwell enquiry requiring a priority callback.', 'restwell-retreats' )
-				: __( 'New Restwell enquiry received.', 'restwell-retreats' ),
+			'note'         => $note,
+			'preview'      => $preview,
 		)
 	);
 
