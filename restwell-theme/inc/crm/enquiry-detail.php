@@ -62,7 +62,7 @@ function restwell_crm_enquiry_detail( int $id ) {
 				<span class="rw-urgent-flag" title="<?php esc_attr_e( 'Urgent', 'restwell-retreats' ); ?>">&#9873; <?php esc_html_e( 'URGENT', 'restwell-retreats' ); ?>:</span>
 			<?php endif; ?>
 			<?php echo esc_html( $row->name ); ?>
-			<?php echo restwell_crm_status_badge( $row->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+			<?php echo wp_kses_post( restwell_crm_status_badge( $row->status ) ); ?>
 		</h1>
 
 		<?php if ( isset( $_GET['updated'] ) ) : ?>
@@ -613,7 +613,7 @@ function restwell_crm_render_enquiry_sidebar( $row, array $notes, array $statuse
 					<?php if ( $row->phone ) : ?>
 						<a
 							class="rw-quick-contact__link"
-							href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>"
+							href="<?php echo esc_url( 'tel:' . preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>"
 						>
 							<span class="rw-quick-contact__label"><?php esc_html_e( 'Call', 'restwell-retreats' ); ?></span>
 							<span class="rw-quick-contact__value"><?php echo esc_html( $row->phone ); ?></span>

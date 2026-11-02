@@ -202,7 +202,7 @@ function restwell_crm_render_enquiry_flags( array $ctx ): void {
 			<span class="rw-badge rw-badge--overdue"><?php esc_html_e( 'Overdue', 'restwell-retreats' ); ?></span>
 		<?php endif; ?>
 		<?php if ( $ctx['sla_badge'] ) : ?>
-			<span class="rw-sla-badge"><?php echo $ctx['sla_badge']; // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+			<span class="rw-sla-badge"><?php echo wp_kses_post( $ctx['sla_badge'] ); ?></span>
 		<?php endif; ?>
 	</div>
 	<?php
@@ -224,7 +224,7 @@ function restwell_crm_render_enquiry_status_badge( array $ctx ): void {
 		data-enquiry-id="<?php echo esc_attr( (string) $row->id ); ?>"
 		data-status-key="<?php echo esc_attr( (string) $row->status ); ?>"
 	>
-		<?php echo restwell_crm_status_badge( (string) $row->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+		<?php echo wp_kses_post( restwell_crm_status_badge( (string) $row->status ) ); ?>
 		<span class="rw-status-hint"><?php esc_html_e( 'Tap to change', 'restwell-retreats' ); ?></span>
 	</div>
 	<?php
@@ -265,9 +265,9 @@ function restwell_crm_render_enquiry_card( array $ctx ): void {
 		<?php endif; ?>
 
 		<div class="rw-enquiry-card__contact">
-			<a class="rw-tap-link" href="mailto:<?php echo esc_attr( $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a>
+			<a class="rw-tap-link" href="<?php echo esc_url( 'mailto:' . $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a>
 			<?php if ( $row->phone ) : ?>
-				<a class="rw-tap-link" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>">
+				<a class="rw-tap-link" href="<?php echo esc_url( 'tel:' . preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>">
 					<?php echo esc_html( $row->phone ); ?>
 				</a>
 			<?php endif; ?>
@@ -339,10 +339,10 @@ function restwell_crm_render_enquiry_table_row( array $ctx ): void {
 			<?php endif; ?>
 		</td>
 		<td class="column-rw-contact">
-			<a class="rw-tap-link" href="mailto:<?php echo esc_attr( $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a>
+			<a class="rw-tap-link" href="<?php echo esc_url( 'mailto:' . $row->email ); ?>"><?php echo esc_html( $row->email ); ?></a>
 			<?php if ( $row->phone ) : ?>
 				<br>
-				<a class="rw-tap-link" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>">
+				<a class="rw-tap-link" href="<?php echo esc_url( 'tel:' . preg_replace( '/[^\d+]/', '', $row->phone ) ); ?>">
 					<?php echo esc_html( $row->phone ); ?>
 				</a>
 			<?php endif; ?>
@@ -374,7 +374,7 @@ function restwell_crm_render_enquiry_table_row( array $ctx ): void {
 				data-enquiry-id="<?php echo esc_attr( (string) $row->id ); ?>"
 				data-status-key="<?php echo esc_attr( (string) $row->status ); ?>"
 			>
-				<?php echo restwell_crm_status_badge( (string) $row->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+				<?php echo wp_kses_post( restwell_crm_status_badge( (string) $row->status ) ); ?>
 			</div>
 			<div class="rw-status-actions">
 				<a class="rw-details-link" href="<?php echo esc_url( $ctx['detail_url'] ); ?>">

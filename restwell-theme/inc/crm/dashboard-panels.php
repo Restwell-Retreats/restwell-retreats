@@ -167,7 +167,7 @@ function restwell_crm_dashboard_render_follow_ups( $follow_up_rows, string $enqu
 												<?php echo esc_html( $r->name ); ?>
 											</a>
 										</td>
-										<td data-label="<?php echo esc_attr__( 'Status', 'restwell-retreats' ); ?>"><?php echo restwell_crm_status_badge( $r->status ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td data-label="<?php echo esc_attr__( 'Status', 'restwell-retreats' ); ?>"><?php echo wp_kses_post( restwell_crm_status_badge( $r->status ) ); ?></td>
 										<td class="rw-table-meta" data-label="<?php echo esc_attr__( 'Due', 'restwell-retreats' ); ?>">
 											<?php echo esc_html( date_i18n( 'j M Y', strtotime( $r->follow_up_at ) ) ); ?>
 										</td>
