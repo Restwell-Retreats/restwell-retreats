@@ -1541,6 +1541,32 @@
 	margin-bottom: var(--rw-space-2);
 }
 
+.restwell-admin-enquiry-detail .rw-delete-enquiry-form {
+	margin-top: var(--rw-space-6);
+	padding-top: var(--rw-space-4);
+	border-top: 1px solid #dcdcde;
+}
+
+.restwell-admin-enquiry-detail .rw-delete-enquiry-form .button-link-delete {
+	min-height: 40px;
+	padding: 8px 12px;
+	margin-left: -12px;
+	color: #b32d2e;
+	border: none;
+	background: transparent;
+	box-shadow: none;
+}
+
+.restwell-admin-enquiry-detail .rw-delete-enquiry-form .button-link-delete:hover,
+.restwell-admin-enquiry-detail .rw-delete-enquiry-form .button-link-delete:focus {
+	color: #8a2424;
+	background: #fcf0f1;
+}
+
+.restwell-admin-enquiry-detail .rw-delete-enquiry-form .description {
+	margin-top: 4px;
+}
+
 /* ── Guest Guide admin ─────────────────────────────────────────────────── */
 
 .restwell-admin-guest-guide h2 {

@@ -20,6 +20,7 @@ $restwell_crm_modules = array(
 	'status-helpers.php',
 	'notes.php',
 	'handlers.php',
+	'delete.php',
 	'status-transition.php',
 	'mailing-list.php',
 	'retention.php',

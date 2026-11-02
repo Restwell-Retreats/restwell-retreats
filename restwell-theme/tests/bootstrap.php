@@ -50,6 +50,12 @@ if ( ! function_exists( '__' ) ) {
 		return $text;
 	}
 }
+if ( ! function_exists( '_n' ) ) {
+	function _n( $single, $plural, $number, $domain = 'default' ) {
+		unset( $domain );
+		return 1 === (int) $number ? $single : $plural;
+	}
+}
 if ( ! function_exists( 'sanitize_text_field' ) ) {
 	function sanitize_text_field( $str ) {
 		return trim( wp_strip_all_tags( (string) $str ) );
@@ -193,6 +199,8 @@ if ( ! class_exists( 'WP_Post' ) ) {
 $theme = dirname( __DIR__ );
 require_once $theme . '/inc/smtp-config.php';
 require_once $theme . '/inc/crm/enquire-handler.php';
+require_once $theme . '/inc/crm/capabilities.php';
 require_once $theme . '/inc/crm/handlers.php';
+require_once $theme . '/inc/crm/delete.php';
 require_once $theme . '/inc/guest-guide.php';
 require_once $theme . '/inc/theme-setup/apply-overwrites.php';

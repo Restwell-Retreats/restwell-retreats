@@ -194,6 +194,10 @@ function restwell_crm_render_enquiries_panel( array $list ) {
 		return 'ASC' === $current_order ? 'ascending' : 'descending';
 	};
 	$sort_extras = restwell_crm_list_preserve_args( $list );
+	// Bulk delete asks first; status changes go straight through.
+	$bulk_confirm = "return 'delete' !== this.rw_bulk_action.value || confirm('"
+		. esc_js( __( 'Delete the ticked enquiries and their activity logs? This cannot be undone.', 'restwell-retreats' ) )
+		. "');";
 	?>
 	<div class="rw-enquiries-panel">
 		<div class="rw-enquiries-controls">
@@ -295,7 +299,7 @@ function restwell_crm_render_enquiries_panel( array $list ) {
 			<?php restwell_crm_render_enquiries_pagination( $list ); ?>
 		</div>
 
-		<form method="post" action="" class="rw-enquiries-desktop">
+		<form method="post" action="" class="rw-enquiries-desktop" onsubmit="<?php echo esc_attr( $bulk_confirm ); ?>">
 			<?php wp_nonce_field( 'restwell_crm_bulk', 'rw_bulk_nonce' ); ?>
 
 			<div class="rw-table-shell rw-table-shell--enquiries">
@@ -316,6 +320,7 @@ function restwell_crm_render_enquiries_panel( array $list ) {
 									?>
 								</option>
 							<?php endforeach; ?>
+							<option value="delete"><?php esc_html_e( 'Delete', 'restwell-retreats' ); ?></option>
 						</select>
 						<input type="submit" class="button action" value="<?php esc_attr_e( 'Apply', 'restwell-retreats' ); ?>">
 					</div>

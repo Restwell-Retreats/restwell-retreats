@@ -82,7 +82,7 @@ function restwell_crm_handle_enquiry_detail_post( string $table ) {
 }
 
 /**
- * Handle the bulk status-update POST from the enquiries list view.
+ * Handle the bulk status-update or delete POST from the enquiries list view.
  *
  * Redirects and exits on a handled submission; returns (falls through)
  * if the request isn't a matching, nonce-verified POST.
@@ -96,7 +96,11 @@ function restwell_crm_handle_bulk_status_post() {
 	}
 
 	$bulk_action = sanitize_key( $_POST['rw_bulk_action'] );
-	$ids         = array_filter( array_map( 'absint', (array) $_POST['rw_bulk_ids'] ) );
+	$ids         = restwell_crm_sanitize_enquiry_ids( wp_unslash( $_POST['rw_bulk_ids'] ) );
+
+	if ( 'delete' === $bulk_action && $ids ) {
+		restwell_crm_redirect_after_delete( restwell_crm_delete_enquiries( $ids ) );
+	}
 
 	if ( array_key_exists( $bulk_action, restwell_crm_statuses() ) && $ids ) {
 		foreach ( $ids as $id ) {
@@ -158,6 +162,13 @@ function restwell_crm_enquiries_page() {
 
 		<?php if ( isset( $_GET['updated'] ) ) : ?>
 			<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Changes saved.', 'restwell-retreats' ); ?></p></div>
+		<?php endif; ?>
+		<?php
+		if ( isset( $_GET['deleted'] ) ) :
+			$deleted_count  = absint( wp_unslash( $_GET['deleted'] ) );
+			$deleted_notice = $deleted_count > 0 ? 'notice-success' : 'notice-warning';
+			?>
+			<div class="notice <?php echo esc_attr( $deleted_notice ); ?> is-dismissible"><p><?php echo esc_html( restwell_crm_deleted_notice_text( $deleted_count ) ); ?></p></div>
 		<?php endif; ?>
 		<?php
 		$dsr_error = isset( $_GET['dsr_error'] ) ? sanitize_key( wp_unslash( $_GET['dsr_error'] ) ) : '';

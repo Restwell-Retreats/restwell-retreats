@@ -505,6 +505,8 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 
 					</div><!-- .inside -->
 				</div><!-- .postbox -->
+
+				<?php restwell_crm_render_enquiry_delete( $row ); ?>
 			</div>
 	<?php
 }
@@ -723,5 +725,36 @@ function restwell_crm_render_enquiry_sidebar( $row, array $notes, array $statuse
 				<?php endif; ?>
 
 			</div><!-- right column -->
+	<?php
+}
+
+/**
+ * Delete button at the foot of the details column. On a phone the sidebar
+ * moves above the details, so this still comes last; on desktop it stays
+ * clear of the sticky sidebar.
+ *
+ * @param object $row Enquiry row from the database.
+ */
+function restwell_crm_render_enquiry_delete( $row ) {
+	$delete_confirm = "return confirm('"
+		. esc_js( __( 'Delete this enquiry and its activity log? This cannot be undone.', 'restwell-retreats' ) )
+		. "');";
+	?>
+			<form
+				method="post"
+				action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>"
+				class="rw-delete-enquiry-form"
+				onsubmit="<?php echo esc_attr( $delete_confirm ); ?>"
+			>
+				<?php wp_nonce_field( 'restwell_crm_delete_enquiry_' . $row->id ); ?>
+				<input type="hidden" name="action" value="restwell_crm_delete_enquiry" />
+				<input type="hidden" name="rw_enquiry_id" value="<?php echo esc_attr( (string) $row->id ); ?>" />
+				<button type="submit" class="button button-link-delete">
+					<?php esc_html_e( 'Delete enquiry', 'restwell-retreats' ); ?>
+				</button>
+				<p class="description rw-description-tiny">
+					<?php esc_html_e( 'Deletes this enquiry and its activity log for good.', 'restwell-retreats' ); ?>
+				</p>
+			</form>
 	<?php
 }
