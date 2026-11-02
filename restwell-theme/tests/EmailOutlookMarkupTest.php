@@ -209,6 +209,8 @@ class EmailOutlookMarkupTest extends PHPUnit\Framework\TestCase {
 		$this->assertStringContainsString( '/enquire/', $body );
 		$this->assertStringNotContainsString( 'Or copy this link', $body );
 		$this->assertStringNotContainsString( ' - ', wp_strip_all_tags( $body ), 'No spaced hyphens used as dashes.' );
+		// Guests come alone, with friends, a partner or a carer: don't assume family.
+		$this->assertDoesNotMatchRegularExpression( '/(?<![-\w])famil(y|ies)\b/i', $body );
 	}
 
 	public function test_post_stay_without_a_name_says_dear_guest() {

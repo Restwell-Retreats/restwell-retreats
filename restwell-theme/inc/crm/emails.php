@@ -866,7 +866,7 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 	// One focal point: the review request in a sand panel. Coming back is an inline link.
 	$review_panel = restwell_email_panel(
 		'<p style="margin:0 0 6px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#3A5A63;">How was your stay?</p>
-        <p style="margin:0;font-family:Georgia,\'Times New Roman\',serif;font-size:20px;color:#1B4D5C;line-height:1.4;">Even a sentence or two helps other families decide whether Restwell is right for them.</p>'
+        <p style="margin:0;font-family:Georgia,\'Times New Roman\',serif;font-size:20px;color:#1B4D5C;line-height:1.4;">Even a sentence or two helps others decide whether Restwell is right for them.</p>'
 		. restwell_email_button( $google_url, __( 'Review us on Google', 'restwell-retreats' ), '#1B4D5C', false )
 		. '<p style="margin:12px 0 0 0;text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#3A5A63;">Or <a href="' . esc_url( $facebook_url ) . '" target="_blank" style="color:#1B4D5C;text-decoration:underline;">review us on Facebook</a></p>',
 		'#F5EDE0',
@@ -877,7 +877,7 @@ function restwell_email_post_stay( string $email, string $name, string $stay_dat
 	$content = restwell_email_heading( __( 'Thank you for staying with us.', 'restwell-retreats' ) )
 		. '<p style="margin:0 0 12px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:17px;color:#1B4D5C;line-height:1.6;">Dear ' . esc_html( $first_name ) . ',</p>
   <p style="margin:0 0 28px 0;font-family:Georgia,\'Times New Roman\',serif;font-size:16px;color:#1B4D5C;line-height:1.7;">
-    We hope you are settling back in. It was our pleasure to have you, and we hope the stay gave you and your family the break you needed.
+    We hope you are settling back in. It was our pleasure to have you, and we hope the stay gave you the break you needed.
   </p>'
 		. $dates_row
 		. $review_panel
