@@ -242,8 +242,16 @@ class EmailOutlookMarkupTest extends PHPUnit\Framework\TestCase {
 			'invite fallback' => restwell_email_guest_guide_invite( 'jane@example.com', 'Jane Hartley', $guide_url ),
 		);
 		foreach ( $mails as $label => $mail ) {
+			$this->assertContains( 'From: Restwell Retreats <hello@restwellretreats.co.uk>', $mail['headers'], $label );
 			$this->assertContains( 'Reply-To: hello@restwellretreats.co.uk', $mail['headers'], $label );
 			$this->assertStringContainsString( 'Content-Type: text/html', $mail['headers'][0], $label );
+		}
+	}
+
+	public function test_staff_notifications_keep_the_default_sender() {
+		// Staff mail is delivered to hello@; sending it from hello@ too risks Outlook's spoof check.
+		foreach ( restwell_email_staff_headers( 'jane@example.com' ) as $header ) {
+			$this->assertStringStartsNotWith( 'From:', $header );
 		}
 	}
 

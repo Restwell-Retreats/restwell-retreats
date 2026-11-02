@@ -27,15 +27,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Headers for every email sent to a guest.
  *
- * Mail goes out from wordpress@ (kept so SPF passes through the host's relay),
- * and nobody reads that mailbox. The emails tell guests to reply, so replies
- * must go to hello@.
+ * Guests see hello@ as the sender, not WordPress's default wordpress@, which
+ * nobody reads. SPF and DMARC cover the whole domain, so the address makes no
+ * difference to delivery. Staff notifications keep wordpress@ because they are
+ * delivered to hello@ itself. Reply-To stays as well, so replies still reach
+ * hello@ if an SMTP setting ever overrides the sender.
  *
  * @return string[]
  */
 function restwell_email_guest_headers(): array {
+	$site = wp_strip_all_tags( (string) get_bloginfo( 'name' ) );
+	$site = '' !== $site ? str_replace( array( "\r", "\n", '<', '>', '"' ), '', $site ) : 'Restwell Retreats';
 	return array(
 		'Content-Type: text/html; charset=UTF-8',
+		'From: ' . $site . ' <hello@restwellretreats.co.uk>',
 		'Reply-To: hello@restwellretreats.co.uk',
 	);
 }
