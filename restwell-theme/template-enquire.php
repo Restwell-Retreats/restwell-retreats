@@ -199,7 +199,7 @@ get_template_part(
 						<div class="form-grid form-grid--2">
 							<div class="field"><label for="enq-name"><?php esc_html_e( 'Full name *', 'restwell-retreats' ); ?></label><input id="enq-name" name="enq_name" required autocomplete="name" aria-describedby="enq-name-error" value="<?php echo esc_attr( $enq_val( 'enq_name', $enq_fields ) ); ?>" /><p class="field-error" id="enq-name-error" role="alert" hidden><?php esc_html_e( 'Enter your full name.', 'restwell-retreats' ); ?></p></div>
 							<div class="field"><label for="enq-email"><?php esc_html_e( 'Email *', 'restwell-retreats' ); ?></label><input id="enq-email" name="enq_email" type="email" required autocomplete="email" aria-describedby="enq-email-error" value="<?php echo esc_attr( $enq_val( 'enq_email', $enq_fields ) ); ?>" /><p class="field-error" id="enq-email-error" role="alert" hidden><?php esc_html_e( 'Enter a valid email address.', 'restwell-retreats' ); ?></p></div>
-							<div class="field"><label for="enq-phone"><?php esc_html_e( 'Phone *', 'restwell-retreats' ); ?></label><input id="enq-phone" name="enq_phone" type="tel" required autocomplete="tel" aria-describedby="enq-phone-error" value="<?php echo esc_attr( $enq_val( 'enq_phone', $enq_fields ) ); ?>" /><p class="field-error" id="enq-phone-error" role="alert" hidden><?php esc_html_e( 'Enter your phone number.', 'restwell-retreats' ); ?></p></div>
+							<div class="field"><label for="enq-phone"><?php esc_html_e( 'Phone *', 'restwell-retreats' ); ?></label><input id="enq-phone" name="enq_phone" type="tel" required autocomplete="tel" aria-describedby="enq-phone-hint enq-phone-error" value="<?php echo esc_attr( $enq_val( 'enq_phone', $enq_fields ) ); ?>" /><p class="field-hint" id="enq-phone-hint"><?php esc_html_e( 'So we can talk through your dates and any care needs.', 'restwell-retreats' ); ?></p><p class="field-error" id="enq-phone-error" role="alert" hidden><?php esc_html_e( 'Enter your phone number.', 'restwell-retreats' ); ?></p></div>
 							<div class="field"><label for="enq-time"><?php esc_html_e( 'Best time to call', 'restwell-retreats' ); ?></label><input id="enq-time" name="enq_preferred_time" placeholder="e.g. weekday mornings" value="<?php echo esc_attr( $enq_val( 'enq_preferred_time', $enq_fields ) ); ?>" /></div>
 						</div>
 						<?php
@@ -255,7 +255,7 @@ get_template_part(
 					</fieldset>
 					<div class="form-actions form-actions--split">
 						<button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button>
-						<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button>
+						<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send my enquiry', 'restwell-retreats' ); ?></button>
 					</div>
 				</div>
 			</form>

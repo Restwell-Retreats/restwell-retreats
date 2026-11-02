@@ -360,7 +360,7 @@ $times_line    = sprintf(
 							<p class="field-error" id="availability-consent-error" role="alert" hidden><?php esc_html_e( 'Check this box so we can contact you about your enquiry.', 'restwell-retreats' ); ?></p>
 						</div>
 						<button class="btn btn-outline-teal" type="button" data-step-prev><?php esc_html_e( 'Back', 'restwell-retreats' ); ?></button>
-						<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send enquiry', 'restwell-retreats' ); ?></button>
+						<button class="btn btn-gold" type="submit"><?php esc_html_e( 'Send my enquiry', 'restwell-retreats' ); ?></button>
 					</div>
 				</form>
 			</dialog>
