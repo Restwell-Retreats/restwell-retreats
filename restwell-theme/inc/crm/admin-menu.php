@@ -38,7 +38,7 @@ function restwell_crm_register_menu() {
 	);
 
 	// Enquiries submenu (new slug).
-	add_submenu_page(
+	$enquiries_hook = add_submenu_page(
 		'restwell-crm',
 		__( 'Enquiries', 'restwell-retreats' ),
 		__( 'Enquiries', 'restwell-retreats' ),
@@ -46,6 +46,10 @@ function restwell_crm_register_menu() {
 		'restwell-enquiries',
 		'restwell_crm_enquiries_page'
 	);
+	// Status and bulk-status POSTs redirect, so they must run before any output.
+	if ( $enquiries_hook ) {
+		add_action( 'load-' . $enquiries_hook, 'restwell_crm_handle_enquiries_page_posts' );
+	}
 
 	add_submenu_page(
 		'restwell-crm',

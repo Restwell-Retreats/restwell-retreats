@@ -118,6 +118,23 @@ function restwell_crm_handle_bulk_status_post() {
 }
 
 /**
+ * Run the Enquiries page POST handlers on load-{$hook_suffix}.
+ *
+ * This fires before wp-admin prints its header, so the handlers can
+ * redirect back with ?updated=1 instead of leaving a blank page.
+ */
+function restwell_crm_handle_enquiries_page_posts() {
+	if ( ! restwell_crm_can_manage() ) {
+		return;
+	}
+
+	global $wpdb;
+
+	restwell_crm_handle_enquiry_detail_post( $wpdb->prefix . RESTWELL_CRM_TABLE );
+	restwell_crm_handle_bulk_status_post();
+}
+
+/**
  * Render the Enquiries admin page (list and detail views).
  */
 function restwell_crm_enquiries_page() {
@@ -127,9 +144,6 @@ function restwell_crm_enquiries_page() {
 
 	global $wpdb;
 	$table = $wpdb->prefix . RESTWELL_CRM_TABLE;
-
-	restwell_crm_handle_enquiry_detail_post( $table );
-	restwell_crm_handle_bulk_status_post();
 
 	// ── Single enquiry detail view ───────────────────────────────────────────
 	if ( isset( $_GET['view'] ) ) {
