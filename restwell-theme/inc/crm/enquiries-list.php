@@ -25,7 +25,6 @@ require_once __DIR__ . '/enquiries-list-ui.php';
 function restwell_crm_get_enquiries_list_data( string $table ) {
 	global $wpdb;
 
-	// SAFETY: only append fragments returned by $wpdb->prepare() — never raw $_GET strings.
 	$status_filter       = isset( $_GET['status_filter'] ) ? sanitize_key( wp_unslash( $_GET['status_filter'] ) ) : '';
 	$search              = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
 	$urgent_filter       = isset( $_GET['urgent_filter'] ) ? absint( wp_unslash( $_GET['urgent_filter'] ) ) : 0;
@@ -42,42 +41,63 @@ function restwell_crm_get_enquiries_list_data( string $table ) {
 	$order_raw       = isset( $_GET['order'] ) ? strtoupper( sanitize_key( wp_unslash( $_GET['order'] ) ) ) : 'DESC';
 	$order           = ( 'ASC' === $order_raw ) ? 'ASC' : 'DESC';
 
-	$where_parts = array( '1=1' );
+	$submitted_since_ts = $submitted_since_raw ? strtotime( $submitted_since_raw ) : false;
+	$submitted_since    = $submitted_since_ts ? gmdate( 'Y-m-d H:i:s', $submitted_since_ts ) : '';
+	$like               = '%' . $wpdb->esc_like( $search ) . '%';
 
-	if ( $status_filter && array_key_exists( $status_filter, restwell_crm_statuses() ) ) {
-		$where_parts[] = $wpdb->prepare( 'status = %s', $status_filter );
-	}
-	if ( $search ) {
-		$like          = '%' . $wpdb->esc_like( $search ) . '%';
-		$where_parts[] = $wpdb->prepare( '(name LIKE %s OR email LIKE %s OR phone LIKE %s)', $like, $like, $like );
-	}
-	if ( $urgent_filter ) {
-		$where_parts[] = 'is_urgent = 1';
-	}
-	if ( 'overdue' === $follow_up_filter ) {
-		$where_parts[] = $wpdb->prepare(
-			'follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != %s',
-			current_time( 'mysql' ),
-			'closed'
-		);
-	}
-	if ( $submitted_since_raw ) {
-		$submitted_since_ts = strtotime( $submitted_since_raw );
-		if ( $submitted_since_ts ) {
-			$where_parts[] = $wpdb->prepare( 'submitted_at >= %s', gmdate( 'Y-m-d H:i:s', $submitted_since_ts ) );
-		}
-	}
-
-	$where = implode( ' AND ', $where_parts );
-
-	// $where is built only from $wpdb->prepare() fragments and fixed SQL; $orderby/$order are allow-listed.
-	// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- dynamic WHERE cannot be re-prepared (LIKE % wildcards); table via %i below.
-	$from_sql = $wpdb->prepare( 'FROM %i', $table );
-	$total    = (int) $wpdb->get_var( "SELECT COUNT(*) {$from_sql} WHERE {$where}" );
-	$rows     = $wpdb->get_results(
-		"SELECT * {$from_sql} WHERE {$where} ORDER BY {$orderby} {$order} LIMIT " . absint( $per_page ) . ' OFFSET ' . absint( $offset )
+	// Every filter is always in the SQL and switched on by a 1/0 flag, so both queries
+	// below are fixed strings that $wpdb->prepare() fills in whole.
+	$where_args = array(
+		$status_filter && array_key_exists( $status_filter, restwell_crm_statuses() ) ? 1 : 0,
+		$status_filter,
+		$search ? 1 : 0,
+		$like,
+		$like,
+		$like,
+		$urgent_filter ? 1 : 0,
+		'overdue' === $follow_up_filter ? 1 : 0,
+		current_time( 'mysql' ),
+		$submitted_since ? 1 : 0,
+		$submitted_since,
 	);
-	// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+	$total = (int) $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT COUNT(*) FROM %i
+			 WHERE ( %d = 0 OR status = %s )
+			   AND ( %d = 0 OR name LIKE %s OR email LIKE %s OR phone LIKE %s )
+			   AND ( %d = 0 OR is_urgent = 1 )
+			   AND ( %d = 0 OR ( follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != 'closed' ) )
+			   AND ( %d = 0 OR submitted_at >= %s )",
+			array_merge( array( $table ), $where_args )
+		)
+	);
+
+	// Same WHERE as the count above: change both together. SQL has no placeholder for
+	// ASC/DESC, so the two CASE keys sort when ascending and are NULL otherwise, leaving
+	// the two descending keys in charge. Ties on the column fall back to id (submission
+	// order) in the same direction, as the status index ordered them before.
+	$ascending = 'ASC' === $order ? 1 : 0;
+	$rows      = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT * FROM %i
+			 WHERE ( %d = 0 OR status = %s )
+			   AND ( %d = 0 OR name LIKE %s OR email LIKE %s OR phone LIKE %s )
+			   AND ( %d = 0 OR is_urgent = 1 )
+			   AND ( %d = 0 OR ( follow_up_at IS NOT NULL AND follow_up_at <= %s AND status != 'closed' ) )
+			   AND ( %d = 0 OR submitted_at >= %s )
+			 ORDER BY CASE WHEN %d = 1 THEN %i END ASC,
+			          CASE WHEN %d = 1 THEN id END ASC,
+			          %i DESC,
+			          id DESC
+			 LIMIT %d OFFSET %d",
+			array_merge(
+				array( $table ),
+				$where_args,
+				array( $ascending, $orderby, $ascending, $orderby, $per_page, $offset )
+			)
+		)
+	);
 
 	$total_pages = (int) ceil( $total / $per_page );
 	$statuses    = restwell_crm_statuses();

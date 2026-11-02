@@ -76,19 +76,13 @@ function restwell_crm_handle_export_csv() {
 	}
 
 	global $wpdb;
-	$table       = $wpdb->prefix . RESTWELL_CRM_TABLE;
-	$where_parts = array();
-	if ( $from ) {
-		$where_parts[] = $wpdb->prepare( 'submitted_at >= %s', $from . ' 00:00:00' );
-	}
-	if ( $to ) {
-		$next_day = ( new DateTimeImmutable( $to ) )->modify( '+1 day' )->format( 'Y-m-d' );
-		$where_parts[] = $wpdb->prepare( 'submitted_at < %s', $next_day . ' 00:00:00' );
-	}
-	$where_sql = $where_parts ? ( ' WHERE ' . implode( ' AND ', $where_parts ) ) : '';
+	$table   = $wpdb->prefix . RESTWELL_CRM_TABLE;
+	$from_at = $from ? $from . ' 00:00:00' : '';
+	$to_at   = $to ? ( new DateTimeImmutable( $to ) )->modify( '+1 day' )->format( 'Y-m-d' ) . ' 00:00:00' : '';
 
 	// Explicit column list — avoids pulling unexpected columns added by future migrations.
-	// phpcs:disable WordPress.DB.PreparedSQL -- $where_sql is built solely from $wpdb->prepare() fragments; table via %i.
+	// Each date bound is always in the SQL and switched on by a 1/0 flag, so the query
+	// stays one fixed string that $wpdb->prepare() fills in whole.
 	$rows = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT id, submitted_at, name, email, phone,
@@ -101,12 +95,18 @@ function restwell_crm_handle_export_csv() {
 			        status, staff_notes, follow_up_at,
 			        last_reminder_at, contacted_at, qualified_at, booked_at, closed_at,
 			        anonymised_at
-			 FROM %i' . $where_sql . ' ORDER BY submitted_at DESC',
-			$table
+			 FROM %i
+			 WHERE ( %d = 0 OR submitted_at >= %s )
+			   AND ( %d = 0 OR submitted_at < %s )
+			 ORDER BY submitted_at DESC',
+			$table,
+			$from_at ? 1 : 0,
+			$from_at,
+			$to_at ? 1 : 0,
+			$to_at
 		),
 		ARRAY_A
 	);
-	// phpcs:enable WordPress.DB.PreparedSQL
 	if ( ! is_array( $rows ) ) {
 		$rows = array();
 	}
