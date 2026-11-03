@@ -74,6 +74,14 @@ function restwell_sitemap_exclude_attachment_post_type( $post_types ) {
 }
 add_filter( 'wp_sitemaps_post_types', 'restwell_sitemap_exclude_attachment_post_type' );
 
+/*
+ * Serve the sitemaps as plain XML. Core links an XSL stylesheet that only
+ * dresses them up as a table for people; Chrome is dropping XSLT and warns
+ * on every sitemap page. Search engines read the XML and never used it.
+ */
+add_filter( 'wp_sitemaps_stylesheet_url', '__return_false' );
+add_filter( 'wp_sitemaps_stylesheet_index_url', '__return_false' );
+
 /**
  * Keep WP demo / retired / noindex utility pages out of the XML sitemap.
  *
