@@ -287,7 +287,8 @@ function restwell_output_social_meta() {
 	}
 	if ( $pid && is_front_page() ) {
 		echo '<meta property="article:published_time" content="' . esc_attr( get_the_date( 'c', $pid ) ) . '">' . "\n";
-		echo '<meta property="article:modified_time" content="' . esc_attr( get_the_modified_date( 'c', $pid ) ) . '">' . "\n";
+		$modified = function_exists( 'restwell_content_modified_iso' ) ? restwell_content_modified_iso( $pid ) : get_the_modified_date( 'c', $pid );
+		echo '<meta property="article:modified_time" content="' . esc_attr( $modified ) . '">' . "\n";
 	}
 	if ( is_singular( 'post' ) ) {
 		$post_obj = get_post();

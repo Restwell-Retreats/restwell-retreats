@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 123;
+const RESTWELL_SCHEMA_VERSION = 124;
 
 
 /**
@@ -5992,6 +5992,45 @@ function restwell_migrate_keyphrase_intros_v123() {
 }
 
 /**
+ * v124: date the October rewrites in the sitemap.
+ *
+ * The October copy went into page fields, which never moved WordPress's
+ * "last modified" date, so the sitemap still said Home, Accessibility, FAQ and
+ * the rest last changed in April or May. Every published page last touched
+ * before 2 Nov 2026 gets a content stamp of 2 Nov, the 1.1.1 release: the
+ * first one known to be live with all the October copy and the v122/v123 SEO
+ * wording. Pages changed since then, and fresh installs, keep their own date.
+ */
+function restwell_migrate_content_modified_backfill_v124() {
+	$flag = 'restwell_content_modified_backfill_v124';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+	if ( ! defined( 'RESTWELL_CONTENT_MODIFIED_META' ) ) {
+		return;
+	}
+	$stamp = '2026-11-02 12:00:00';
+	$pages = get_posts(
+		array(
+			'post_type'              => 'page',
+			'post_status'            => 'publish',
+			'numberposts'            => -1,
+			'update_post_term_cache' => false,
+		)
+	);
+	foreach ( $pages as $page ) {
+		if ( strcmp( (string) $page->post_modified_gmt, $stamp ) >= 0 ) {
+			continue;
+		}
+		if ( '' !== (string) get_post_meta( $page->ID, RESTWELL_CONTENT_MODIFIED_META, true ) ) {
+			continue;
+		}
+		update_post_meta( $page->ID, RESTWELL_CONTENT_MODIFIED_META, $stamp );
+	}
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -6150,6 +6189,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_privacy_meta_pixel_v121',
 		'restwell_seo_usp_lanes_v122',
 		'restwell_keyphrase_intros_v123',
+		'restwell_content_modified_backfill_v124',
 	);
 }
 
@@ -6382,6 +6422,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_seo_usp_lanes_v122', 160 );
 	add_action( 'init', 'restwell_migrate_keyphrase_intros_v123', 166 );
 	add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_intros_v123', 161 );
+	add_action( 'init', 'restwell_migrate_content_modified_backfill_v124', 167 );
+	add_action( 'after_switch_theme', 'restwell_migrate_content_modified_backfill_v124', 162 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

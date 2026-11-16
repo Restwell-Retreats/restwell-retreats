@@ -231,7 +231,7 @@ function restwell_output_jsonld_front_page_webpage() {
 	$url      = get_permalink( $pid );
 	$title    = get_the_title( $pid );
 	$pub      = get_the_date( 'c', $pid );
-	$mod      = get_the_modified_date( 'c', $pid );
+	$mod      = function_exists( 'restwell_content_modified_iso' ) ? restwell_content_modified_iso( $pid ) : get_the_modified_date( 'c', $pid );
 	$schema   = array(
 		'@context'      => 'https://schema.org',
 		'@type'         => 'WebPage',

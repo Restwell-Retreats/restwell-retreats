@@ -58,6 +58,7 @@ require_once get_template_directory() . '/inc/seo-sitewide-admin.php';
 require_once get_template_directory() . '/inc/seo-dashboard.php';
 require_once get_template_directory() . '/inc/seo-social-meta.php';
 require_once get_template_directory() . '/inc/sitemap-robots.php';
+require_once get_template_directory() . '/inc/content-modified.php';
 require_once get_template_directory() . '/inc/smtp-config.php';
 require_once get_template_directory() . '/inc/social-profiles.php';
 require_once get_template_directory() . '/inc/theme-setup.php';
