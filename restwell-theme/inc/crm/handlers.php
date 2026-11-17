@@ -37,6 +37,37 @@ function restwell_crm_redact_sensitive_export_rows( array $rows, bool $include_s
 }
 
 /**
+ * Make one CSV cell safe to open in Excel, Numbers or Google Sheets.
+ *
+ * Guests type names and messages, so a cell could start with = + - @ (or a
+ * tab / carriage return) and run as a formula when staff open the export.
+ * Such text gets a leading apostrophe so it shows as text. Plain numbers
+ * (e.g. +447700900123) are left alone.
+ *
+ * @param mixed $value Cell value.
+ * @return mixed
+ */
+function restwell_crm_csv_safe_cell( $value ) {
+	if ( ! is_string( $value ) || '' === $value || is_numeric( $value ) ) {
+		return $value;
+	}
+	if ( false !== strpos( "=+-@\t\r", $value[0] ) ) {
+		return "'" . $value;
+	}
+	return $value;
+}
+
+/**
+ * Apply restwell_crm_csv_safe_cell() to every cell in a row.
+ *
+ * @param array<int|string, mixed> $row CSV row.
+ * @return array<int|string, mixed>
+ */
+function restwell_crm_csv_safe_row( array $row ): array {
+	return array_map( 'restwell_crm_csv_safe_cell', $row );
+}
+
+/**
  * Accept a Y-m-d date from an export form field.
  *
  * @param mixed $raw Posted value.
@@ -155,7 +186,7 @@ function restwell_crm_handle_export_csv() {
 	if ( ! empty( $rows ) ) {
 		fputcsv( $out, array_keys( $rows[0] ) );
 		foreach ( $rows as $row ) {
-			fputcsv( $out, $row );
+			fputcsv( $out, restwell_crm_csv_safe_row( $row ) );
 		}
 	}
 

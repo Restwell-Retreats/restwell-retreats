@@ -253,7 +253,7 @@ function restwell_crm_handle_dsr_export(): void {
 	if ( array() !== $rows ) {
 		fputcsv( $out, array_keys( $rows[0] ) );
 		foreach ( $rows as $row ) {
-			fputcsv( $out, $row );
+			fputcsv( $out, restwell_crm_csv_safe_row( $row ) );
 		}
 	} else {
 		fputcsv( $out, array( 'id' ) );
