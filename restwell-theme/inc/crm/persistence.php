@@ -82,6 +82,14 @@ function restwell_crm_save_enquiry( array $data ): array {
 			? __( 'Marketing updates consent: Yes (opted in).', 'restwell-retreats' )
 			: __( 'Marketing updates consent: No (not opted in).', 'restwell-retreats' );
 	}
+	// Already cleaned by restwell_enquiry_source_from_post(); missing keys stay blank ("Unknown").
+	$source = array_merge(
+		restwell_enquiry_source_empty(),
+		array_intersect_key(
+			isset( $data['source'] ) && is_array( $data['source'] ) ? $data['source'] : array(),
+			restwell_enquiry_source_empty()
+		)
+	);
 
 	$result = $wpdb->insert(
 		$table,
@@ -100,6 +108,16 @@ function restwell_crm_save_enquiry( array $data ): array {
 			'contact_preference'       => $data['contact_pref'] ?? '',
 			'preferred_time'           => $data['pref_time'] ?? '',
 			'heard_about'              => $data['heard_about'] ?? '',
+			'utm_source'               => (string) $source['utm_source'],
+			'utm_medium'               => (string) $source['utm_medium'],
+			'utm_campaign'             => (string) $source['utm_campaign'],
+			'utm_content'              => (string) $source['utm_content'],
+			'utm_term'                 => (string) $source['utm_term'],
+			'has_fbclid'               => (int) $source['has_fbclid'],
+			'has_gclid'                => (int) $source['has_gclid'],
+			'landing_path'             => (string) $source['landing_path'],
+			'referrer_domain'          => (string) $source['referrer_domain'],
+			'source_label'             => (string) $source['source_label'],
 			'message'                  => $data['message'] ?? '',
 			'is_urgent'                => ! empty( $data['urgent'] ) ? 1 : 0,
 			'marketing_optin'          => $marketing_optin,
@@ -111,7 +129,8 @@ function restwell_crm_save_enquiry( array $data ): array {
 			'status'                   => 'new',
 			'staff_notes'              => $staff_notes,
 		),
-		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
+		// Formats in column order: submitted_at … heard_about, then utm_source … source_label, then message … staff_notes.
+		array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%s', '%s', '%s' )
 	);
 
 	if ( $result ) {

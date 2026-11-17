@@ -428,6 +428,16 @@ function restwell_handle_enquire_submit(): void {
 	$heard_other  = isset( $_POST['enq_heard_other'] ) ? sanitize_text_field( wp_unslash( $_POST['enq_heard_other'] ) ) : '';
 	$heard_about  = restwell_enquiry_store_heard_about( $heard_slug, $heard_other );
 
+	// Where the enquiry came from (hidden enq_src_* fields). Untrusted: every
+	// value is cleaned, and the label worked out, in restwell_enquiry_source_from_post().
+	$source_post = array();
+	foreach ( array_merge( array( 'enq_src_v' ), array_values( restwell_enquiry_source_post_fields() ) ) as $source_field ) {
+		if ( isset( $_POST[ $source_field ] ) && is_scalar( $_POST[ $source_field ] ) ) {
+			$source_post[ $source_field ] = (string) wp_unslash( $_POST[ $source_field ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- cleaned field by field in restwell_enquiry_source_from_post().
+		}
+	}
+	$source = restwell_enquiry_source_from_post( $source_post );
+
 	$fields_flash = array(
 		'enq_name'               => $name,
 		'enq_email'              => $email,
@@ -448,6 +458,12 @@ function restwell_handle_enquire_submit(): void {
 		'enq_heard_about'        => $heard_slug,
 		'enq_heard_other'        => $heard_other,
 	);
+	// Keep the cleaned source through a validation redirect, so a failed first
+	// try (even from the Pricing dialog, which comes back to /enquire/) is not lost.
+	$fields_flash['enq_src_v'] = '' !== $source['source_label'] ? '1' : '';
+	foreach ( restwell_enquiry_source_post_fields() as $source_column => $source_field ) {
+		$fields_flash[ $source_field ] = (string) $source[ $source_column ];
+	}
 
 	$errors = array();
 	if ( '' === $name ) {
@@ -549,6 +565,7 @@ function restwell_handle_enquire_submit(): void {
 		'privacy_consent'        => true,
 		'privacy_policy_version' => $policy_version,
 		'health_data_consent'    => $health_consent,
+		'source'                 => $source,
 	);
 
 	// Payload for restwell_email_enquiry_notification(): the staff email, its
