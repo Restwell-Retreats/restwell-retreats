@@ -9,7 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RESTWELL_CRM_DB_VERSION', '3.10' );
+// 3.11 (Nov 2026): enquiry source columns (UTMs, click-ID flags, landing path,
+// referrer domain, source_label). Older rows keep '' and show as "Unknown".
+define( 'RESTWELL_CRM_DB_VERSION', '3.11' );
 define( 'RESTWELL_CRM_TABLE', 'rw_enquiries' );
 define( 'RESTWELL_NOTES_TABLE', 'rw_enquiry_notes' );
 define( 'RESTWELL_GUESTS_TABLE', 'rw_guests' );
