@@ -189,6 +189,7 @@ get_template_part(
 				<input type="hidden" name="restwell_enquire" value="1" />
 				<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $current_url ); ?>" />
 				<input type="hidden" name="restwell_form_opened_at" value="" data-restwell-form-opened />
+				<?php get_template_part( 'template-parts/enquire-source-fields', null, array( 'fields' => $enq_fields ) ); ?>
 				<div class="field" hidden aria-hidden="true">
 					<label for="enq_website">Website</label>
 					<input type="text" id="enq_website" name="enq_website" tabindex="-1" autocomplete="off" />

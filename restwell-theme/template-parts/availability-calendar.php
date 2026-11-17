@@ -318,6 +318,7 @@ $times_line    = sprintf(
 					<input type="hidden" name="enq_redirect" value="<?php echo esc_url( $enquire_url ); ?>" />
 					<input type="hidden" name="enq_date_from" data-availability-enquiry-from value="" />
 					<input type="hidden" name="enq_date_to" data-availability-enquiry-to value="" />
+					<?php get_template_part( 'template-parts/enquire-source-fields' ); ?>
 					<div class="form-step" data-step-panel="1">
 						<div class="field"><label for="availability-name"><?php esc_html_e( 'Name', 'restwell-retreats' ); ?> <span aria-hidden="true">*</span></label><input id="availability-name" name="enq_name" autocomplete="name" required /></div>
 						<div class="field"><label for="availability-email"><?php esc_html_e( 'Email', 'restwell-retreats' ); ?> <span aria-hidden="true">*</span></label><input id="availability-email" name="enq_email" type="email" autocomplete="email" required /></div>
