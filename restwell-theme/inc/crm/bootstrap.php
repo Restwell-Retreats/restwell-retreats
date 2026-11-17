@@ -32,6 +32,7 @@ $restwell_crm_modules = array(
 	'email-staff.php',
 	'mailchimp.php',
 	'crm-reminders.php',
+	'enquiry-source.php',
 	'enquire-handler.php',
 );
 

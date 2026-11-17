@@ -198,6 +198,7 @@ if ( ! class_exists( 'WP_Post' ) ) {
 
 $theme = dirname( __DIR__ );
 require_once $theme . '/inc/smtp-config.php';
+require_once $theme . '/inc/crm/enquiry-source.php';
 require_once $theme . '/inc/crm/enquire-handler.php';
 require_once $theme . '/inc/crm/capabilities.php';
 require_once $theme . '/inc/crm/handlers.php';
