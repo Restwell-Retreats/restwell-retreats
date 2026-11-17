@@ -1023,6 +1023,12 @@
 	}
 }
 
+.restwell-admin-enquiries .rw-enquiries-table .column-rw-source {
+	min-width: 6.5rem;
+	max-width: 11rem;
+	word-break: break-word;
+}
+
 .restwell-admin-enquiries .rw-enquiries-table .column-rw-dates {
 	min-width: 6.5rem;
 	max-width: 11rem;

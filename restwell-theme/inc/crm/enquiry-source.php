@@ -264,6 +264,42 @@ function restwell_enquiry_source_from_post( array $post ): array {
 }
 
 /**
+ * Rows for the "Source" section of the single enquiry view.
+ *
+ * The label is always shown; the details only when they hold something.
+ *
+ * @param object $row Enquiry row.
+ * @return array<string, string> Plain-text label => plain-text value.
+ */
+function restwell_enquiry_source_detail_fields( $row ): array {
+	$get    = static function ( string $key ) use ( $row ): string {
+		return isset( $row->$key ) ? trim( (string) $row->$key ) : '';
+	};
+	$fields = array(
+		__( 'Source', 'restwell-retreats' ) => restwell_enquiry_source_display_label( $row ),
+	);
+	$text   = array(
+		'utm_source'      => __( 'UTM source', 'restwell-retreats' ),
+		'utm_medium'      => __( 'UTM medium', 'restwell-retreats' ),
+		'utm_campaign'    => __( 'UTM campaign', 'restwell-retreats' ),
+		'utm_content'     => __( 'UTM content', 'restwell-retreats' ),
+		'utm_term'        => __( 'UTM term', 'restwell-retreats' ),
+		'landing_path'    => __( 'First page they saw', 'restwell-retreats' ),
+		'referrer_domain' => __( 'Sent by website', 'restwell-retreats' ),
+	);
+	foreach ( $text as $key => $label ) {
+		if ( '' !== $get( $key ) ) {
+			$fields[ $label ] = $get( $key );
+		}
+	}
+	if ( '' !== $get( 'source_label' ) ) {
+		$fields[ __( 'Facebook click ID (fbclid)', 'restwell-retreats' ) ] = '1' === $get( 'has_fbclid' ) ? __( 'Yes', 'restwell-retreats' ) : __( 'No', 'restwell-retreats' );
+		$fields[ __( 'Google click ID (gclid)', 'restwell-retreats' ) ]    = '1' === $get( 'has_gclid' ) ? __( 'Yes', 'restwell-retreats' ) : __( 'No', 'restwell-retreats' );
+	}
+	return $fields;
+}
+
+/**
  * Source label to show for a stored row ("Unknown" when none was recorded).
  *
  * @param object|array<string, mixed> $row Enquiry row.

@@ -148,6 +148,31 @@ class EnquireSourceTest extends PHPUnit\Framework\TestCase {
 		$this->assertSame( '', restwell_enquiry_source_clean_domain( 'localhost' ) );
 	}
 
+	public function test_detail_fields_for_recorded_source() {
+		$row    = (object) restwell_enquiry_source_from_post(
+			$this->post(
+				array(
+					'utm_source'   => 'facebook',
+					'utm_medium'   => 'paid_social',
+					'utm_campaign' => 'december_stays',
+					'fbclid'       => '1',
+					'landing'      => '/pricing/',
+				)
+			)
+		);
+		$fields = restwell_enquiry_source_detail_fields( $row );
+		$this->assertSame( 'Meta ad', $fields['Source'] );
+		$this->assertSame( 'december_stays', $fields['UTM campaign'] );
+		$this->assertSame( '/pricing/', $fields['First page they saw'] );
+		$this->assertSame( 'Yes', $fields['Facebook click ID (fbclid)'] );
+		$this->assertSame( 'No', $fields['Google click ID (gclid)'] );
+		$this->assertArrayNotHasKey( 'UTM term', $fields );
+	}
+
+	public function test_detail_fields_for_old_enquiry_are_just_unknown() {
+		$this->assertSame( array( 'Source' => 'Unknown' ), restwell_enquiry_source_detail_fields( (object) array( 'id' => 9 ) ) );
+	}
+
 	public function test_click_id_flags_only_accept_one() {
 		$src = restwell_enquiry_source_from_post( $this->post( array( 'fbclid' => 'IwAR123', 'gclid' => 'yes' ) ) );
 		$this->assertSame( 0, $src['has_fbclid'] );

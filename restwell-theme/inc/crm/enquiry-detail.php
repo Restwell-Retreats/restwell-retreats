@@ -323,6 +323,16 @@ function restwell_crm_render_enquiry_main( $row, string $promote_url ) {
 							<?php endforeach; ?>
 						</table>
 
+						<h3 class="rw-detail-section-title"><?php esc_html_e( 'Source', 'restwell-retreats' ); ?></h3>
+						<table class="form-table rw-readonly-table" role="presentation">
+							<?php foreach ( restwell_enquiry_source_detail_fields( $row ) as $label => $value ) : ?>
+								<tr>
+									<th scope="row"><?php echo esc_html( $label ); ?></th>
+									<td><?php echo esc_html( $value ); ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+
 						<?php
 						$gg_guest = function_exists( 'restwell_get_guest_by_email' )
 							? restwell_get_guest_by_email( (string) $row->email )

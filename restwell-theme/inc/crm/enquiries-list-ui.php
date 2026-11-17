@@ -298,6 +298,10 @@ function restwell_crm_render_enquiry_card( array $ctx ): void {
 					<?php endif; ?>
 				</dd>
 			</div>
+			<div class="rw-enquiry-card__meta-row">
+				<dt><?php esc_html_e( 'Source', 'restwell-retreats' ); ?></dt>
+				<dd><?php echo esc_html( restwell_enquiry_source_display_label( $row ) ); ?></dd>
+			</div>
 			<?php if ( ! empty( $row->marketing_optin ) ) : ?>
 				<div class="rw-enquiry-card__meta-row">
 					<dt><?php esc_html_e( 'Marketing', 'restwell-retreats' ); ?></dt>
@@ -355,6 +359,13 @@ function restwell_crm_render_enquiry_table_row( array $ctx ): void {
 				<?php endif; ?>
 			<?php else : ?>
 				<span class="rw-text-dim"><?php esc_html_e( 'No', 'restwell-retreats' ); ?></span>
+			<?php endif; ?>
+		</td>
+		<td class="column-rw-source rw-text-meta">
+			<?php if ( empty( $row->source_label ) ) : ?>
+				<span class="rw-text-dim"><?php echo esc_html( restwell_enquiry_source_display_label( $row ) ); ?></span>
+			<?php else : ?>
+				<?php echo esc_html( restwell_enquiry_source_display_label( $row ) ); ?>
 			<?php endif; ?>
 		</td>
 		<td class="column-rw-dates">

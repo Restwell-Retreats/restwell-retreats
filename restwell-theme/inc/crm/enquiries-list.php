@@ -339,6 +339,7 @@ function restwell_crm_render_enquiries_panel( array $list ) {
 							</th>
 							<th scope="col" class="column-rw-contact"><?php esc_html_e( 'Contact', 'restwell-retreats' ); ?></th>
 							<th scope="col" class="column-rw-marketing"><?php esc_html_e( 'Marketing', 'restwell-retreats' ); ?></th>
+							<th scope="col" class="column-rw-source"><?php esc_html_e( 'Source', 'restwell-retreats' ); ?></th>
 							<th scope="col" class="column-rw-dates"><?php esc_html_e( 'Dates / Guests', 'restwell-retreats' ); ?></th>
 							<th scope="col" class="column-rw-status sortable <?php echo 'status' === $orderby ? 'sorted' : ''; ?>" aria-sort="<?php echo esc_attr( $sort_aria( 'status', $orderby, $order ) ); ?>">
 								<?php echo wp_kses_post( $sort_link( 'status', __( 'Status', 'restwell-retreats' ), $orderby, $order, admin_url( 'admin.php' ), $sort_extras ) ); ?>
