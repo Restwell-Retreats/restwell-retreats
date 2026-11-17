@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Bump when adding new restwell_migrate_* callbacks that must run on existing sites.
  */
-const RESTWELL_SCHEMA_VERSION = 124;
+const RESTWELL_SCHEMA_VERSION = 125;
 
 
 /**
@@ -6031,6 +6031,62 @@ function restwell_migrate_content_modified_backfill_v124() {
 }
 
 /**
+ * v125 (17 Nov 2026): the privacy policy says enquiries note how people found
+ * us, and that accepting analytics lets the browser remember it until the tab
+ * closes. Ellie approved both sentences; they ship with enquiry source tracking.
+ *
+ * A site showing the theme's default policy needs nothing: the default already
+ * has them, so only the sitemap date is stamped. A stored copy (edited in
+ * wp-admin) keeps every edit: each sentence is added next to the paragraph it
+ * belongs with, and the version line moves to 2026-11-17. If the enquiry
+ * paragraph it hangs off has been reworded, the copy is left alone.
+ */
+function restwell_migrate_privacy_enquiry_source_v125() {
+	$flag = 'restwell_privacy_enquiry_source_v125';
+	if ( get_option( $flag, '' ) === '1' ) {
+		return;
+	}
+	update_option( $flag, '1', false );
+
+	$page = get_page_by_path( 'privacy-policy', OBJECT, 'page' );
+	if ( ! $page instanceof WP_Post ) {
+		return;
+	}
+	$html = (string) get_post_meta( $page->ID, 'legal_body_html', true );
+	if ( '' === trim( $html ) ) {
+		if ( defined( 'RESTWELL_CONTENT_MODIFIED_META' ) ) {
+			update_post_meta( $page->ID, RESTWELL_CONTENT_MODIFIED_META, gmdate( 'Y-m-d H:i:s' ) );
+		}
+		return;
+	}
+	if ( false !== strpos( $html, 'we note how you found us' ) ) {
+		return;
+	}
+
+	$html   = str_replace( array( "\r\n", "\r" ), "\n", $html );
+	$anchor = 'and how you found us if you say.</p>';
+	if ( false === strpos( $html, $anchor ) ) {
+		return;
+	}
+	$html = str_replace(
+		$anchor,
+		$anchor . "\n<p>When you send an enquiry, we note how you found us, such as a Facebook ad or a Google search. This helps us understand which of our adverts and posts are useful.</p>",
+		$html
+	);
+	$html = str_replace(
+		'None is set until you choose Accept analytics on the cookie banner.</p>',
+		'None is set until you choose Accept analytics on the cookie banner. If you accept analytics, your browser also remembers which advert or website brought you here until you close the tab.</p>',
+		$html
+	);
+	$html = str_replace(
+		'This is version 2026-10-30, last updated on 30 October 2026.',
+		'This is version 2026-11-17, last updated on 17 November 2026.',
+		$html
+	);
+	update_post_meta( $page->ID, 'legal_body_html', wp_slash( $html ) );
+}
+
+/**
  * Migration option flags that must be complete before the schema gate closes.
  *
  * @return string[]
@@ -6190,6 +6246,7 @@ function restwell_content_migration_flag_keys(): array {
 		'restwell_seo_usp_lanes_v122',
 		'restwell_keyphrase_intros_v123',
 		'restwell_content_modified_backfill_v124',
+		'restwell_privacy_enquiry_source_v125',
 	);
 }
 
@@ -6424,6 +6481,8 @@ function restwell_register_content_migrations(): void {
 	add_action( 'after_switch_theme', 'restwell_migrate_keyphrase_intros_v123', 161 );
 	add_action( 'init', 'restwell_migrate_content_modified_backfill_v124', 167 );
 	add_action( 'after_switch_theme', 'restwell_migrate_content_modified_backfill_v124', 162 );
+	add_action( 'init', 'restwell_migrate_privacy_enquiry_source_v125', 168 );
+	add_action( 'after_switch_theme', 'restwell_migrate_privacy_enquiry_source_v125', 163 );
 
 	add_action( 'init', 'restwell_maybe_mark_schema_current', 100 );
 	add_action( 'admin_init', 'restwell_maybe_mark_schema_current', 100 );

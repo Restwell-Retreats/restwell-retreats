@@ -45,7 +45,7 @@ function restwell_get_public_site_host(): string {
  * @return string
  */
 function restwell_privacy_policy_version(): string {
-	return '2026-10-30';
+	return '2026-11-17';
 }
 
 /**
@@ -95,6 +95,7 @@ function restwell_get_privacy_policy_content(): string {
 
 <h2>What we collect, and why</h2>
 <p>Our enquiry form, including the date picker on the Pricing page, asks for your name, email, phone number and message. We also keep any dates, guest numbers, funding notes and contact preferences, and how you found us if you say.</p>
+<p>When you send an enquiry, we note how you found us, such as a Facebook ad or a Google search. This helps us understand which of our adverts and posts are useful.</p>
 <p>We use these details with your consent, which you give by ticking the privacy box (UK GDPR Article 6(1)(a)). If you book, we use them to carry out our contract with you (Article 6(1)(b)).</p>
 <p>Where needed, we also rely on our legitimate interest in running the holiday let (Article 6(1)(f)).</p>
 <p>If you ask a question on the FAQ page, we collect your name, email, phone number and question. This uses the same consent tick, and we use it only to reply.</p>
@@ -122,7 +123,7 @@ function restwell_get_privacy_policy_content(): string {
 
 <h2>Cookies and analytics</h2>
 <p>Essential cookies keep the site working. They remember your cookie choice and run security checks on our forms. After the email code, they also keep a booked guest signed in to the arrival guide for a while.</p>
-<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool, TikTok Pixel and Meta Pixel, if set up) are optional. None is set until you choose Accept analytics on the cookie banner.</p>
+<p>Analytics and advertising measurement cookies (Google Analytics 4, Metricool, TikTok Pixel and Meta Pixel, if set up) are optional. None is set until you choose Accept analytics on the cookie banner. If you accept analytics, your browser also remembers which advert or website brought you here until you close the tab.</p>
 <p>You can reject them and still use the whole site, or change your mind in Cookie settings in the footer. Tracking scripts stay off until you agree, even if we add a new service later.</p>
 <p>If you accept analytics, TikTok Pixel records when a page is viewed and when an enquiry form is sent. Meta Pixel records when a page is viewed. We never send either of them names, email addresses, phone numbers, addresses, care or accessibility notes, or other form fields. If you’re signed in to Facebook or Instagram in this browser, Meta may link the visit to your account.</p>
 
