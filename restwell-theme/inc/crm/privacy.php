@@ -57,7 +57,9 @@ function restwell_crm_privacy_export_enquiries( string $email_address, int $page
 	$rows  = $wpdb->get_results(
 		$wpdb->prepare(
 			'SELECT id, submitted_at, name, email, phone, preferred_dates, date_from, date_to,
-			        num_guests, care_requirements, accessibility, funding_type, heard_about, message,
+			        num_guests, care_requirements, accessibility, funding_type, heard_about,
+			        source_label, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+			        has_fbclid, has_gclid, landing_path, referrer_domain, message,
 			        status, privacy_consented_at, privacy_policy_version,
 			        health_data_consent, health_data_consented_at
 			 FROM %i WHERE anonymised_at IS NULL AND LOWER(email) = %s',
@@ -71,6 +73,9 @@ function restwell_crm_privacy_export_enquiries( string $email_address, int $page
 	foreach ( $rows as $row ) {
 		$item = array();
 		foreach ( (array) $row as $key => $value ) {
+			if ( 'source_label' === $key ) {
+				$value = restwell_enquiry_source_display_label( $row );
+			}
 			$item[] = array(
 				'name'  => (string) $key,
 				'value' => (string) $value,
@@ -226,7 +231,10 @@ function restwell_crm_handle_dsr_export(): void {
 			'SELECT id, submitted_at, name, email, phone,
 			        preferred_dates, date_from, date_to, num_guests,
 			        care_requirements, accessibility, funding_type,
-			        contact_preference, preferred_time, heard_about, message,
+			        contact_preference, preferred_time, heard_about,
+			        source_label, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+			        has_fbclid, has_gclid, landing_path, referrer_domain,
+			        message,
 			        is_urgent, marketing_optin, marketing_optin_at,
 			        privacy_consented_at, privacy_policy_version,
 			        health_data_consent, health_data_consented_at,
@@ -241,6 +249,10 @@ function restwell_crm_handle_dsr_export(): void {
 	if ( ! is_array( $rows ) ) {
 		$rows = array();
 	}
+	foreach ( $rows as &$sar_row ) {
+		$sar_row['source_label'] = restwell_enquiry_source_display_label( $sar_row );
+	}
+	unset( $sar_row );
 
 	$filename = 'restwell-sar-' . gmdate( 'Y-m-d' ) . '.csv';
 	header( 'Content-Type: text/csv; charset=UTF-8' );

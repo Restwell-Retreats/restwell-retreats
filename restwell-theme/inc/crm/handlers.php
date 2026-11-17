@@ -119,7 +119,10 @@ function restwell_crm_handle_export_csv() {
 			'SELECT id, submitted_at, name, email, phone,
 			        preferred_dates, date_from, date_to, num_guests,
 			        care_requirements, accessibility, funding_type,
-			        contact_preference, preferred_time, heard_about, message,
+			        contact_preference, preferred_time, heard_about,
+			        source_label, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+			        has_fbclid, has_gclid, landing_path, referrer_domain,
+			        message,
 			        is_urgent, marketing_optin, marketing_optin_at,
 			        privacy_consented_at, privacy_policy_version,
 			        health_data_consent, health_data_consented_at,
@@ -143,6 +146,11 @@ function restwell_crm_handle_export_csv() {
 	}
 
 	$rows = restwell_crm_redact_sensitive_export_rows( $rows, $include_sensitive );
+	// Enquiries from before source tracking (or sent without the script) read "Unknown".
+	foreach ( $rows as &$export_row ) {
+		$export_row['source_label'] = restwell_enquiry_source_display_label( $export_row );
+	}
+	unset( $export_row );
 
 	// Append to audit log before streaming headers (headers cannot be sent before update_option).
 	$export_log_entry = array(
