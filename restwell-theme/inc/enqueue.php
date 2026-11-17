@@ -117,6 +117,20 @@ function restwell_enqueue_scripts() {
 		true
 	);
 
+	// Every page: notes where the visit came from for the enquiry forms' hidden
+	// source fields. Stores nothing until analytics are accepted (see the file).
+	$source_rel = '/assets/js/enquiry-source' . $js_suffix;
+	if ( $use_min && ! is_readable( get_template_directory() . $source_rel ) ) {
+		$source_rel = '/assets/js/enquiry-source.js';
+	}
+	wp_enqueue_script(
+		'restwell-enquiry-source',
+		$theme_uri . $source_rel,
+		array(),
+		restwell_theme_asset_version( $source_rel ),
+		true
+	);
+
 	// Enquire form helpers — enquire page, and the pricing diary dialog (same POST).
 	$needs_enquire_js = is_page_template( 'template-enquire.php' )
 		|| (
@@ -178,9 +192,15 @@ function restwell_defer_front_script( $tag, $handle, $src ) {
 		'restwell-main',
 		'restwell-availability',
 		'restwell-analytics-loader',
+		'restwell-enquiry-source',
 	);
 	if ( ! in_array( $handle, $deferred, true ) ) {
 		return $tag;
+	}
+	// The source script asks first unless analytics are set to load without a banner.
+	if ( 'restwell-enquiry-source' === $handle && false === strpos( $tag, 'data-consent-gated' ) ) {
+		$gated = ! function_exists( 'restwell_cookie_consent_is_gated' ) || restwell_cookie_consent_is_gated();
+		$tag   = str_replace( '<script ', '<script data-consent-gated="' . ( $gated ? '1' : '0' ) . '" ', $tag );
 	}
 	if ( false !== strpos( $tag, ' defer' ) ) {
 		return $tag;
